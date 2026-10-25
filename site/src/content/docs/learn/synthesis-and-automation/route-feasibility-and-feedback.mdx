@@ -50,6 +50,31 @@ real constraint.
 | forward model     | input representation, model/version, output set and uncertainty/abstention | predicted, unavailable, out of scope             | an observed product  |
 | laboratory record | actual inputs, outcome, measurement/provenance and failed/unknown fields   | observed, failed, inconclusive                   | a model score        |
 
+## TANGO: a required route node differs from a product motif
+
+The [TANGO preprint, v1 submitted on 2024-10-15](https://arxiv.org/abs/2410.11527), introduces a reward for constrained synthesizability. It is a reward mechanism used with a generator and retrosynthesis oracle, not a new reaction model or a method first invented in 2026. The [method and algorithm](https://arxiv.org/html/2410.11527v1) compare enforced blocks with non-root nodes in a predicted synthesis graph. The default combines Tanimoto similarity and fuzzy substructure matching with equal weights, `0.50` each, then selects the maximum over eligible nodes. Starting-material mode restricts eligibility to deepest leaf nodes; intermediate mode admits non-root nodes more generally.
+
+The dense reward supplies a learning signal even when no enforced block is used exactly. The exact route requirement remains a separate check. A product containing a desired motif does not establish that its predicted route used the required material. All terminal nodes must also belong to the declared inventory for the planner's route to count as solved. The [Saturn repository](https://github.com/schwallergroup/saturn) identifies `de5cd7f` as the TANGO-preprint code revision. Its [Apache 2.0 source notice](https://raw.githubusercontent.com/schwallergroup/saturn/master/LICENSE) does not establish terms for every external reaction model, checkpoint or inventory; those asset terms were not fully inspected here.
+
+### Constructed route-node exercise
+
+Use one enforced block B and three abstract predicted graphs. All terminal nodes are assumed to be in the declared toy inventory; the deepest leaves have depth `2`. The following numbers are supplied teaching scores, not computed chemical similarities or synthesis results. The proxy column uses intermediate mode.
+
+| Graph | Exact B occurrence | Dense node proxy | Starting-material requirement | Intermediate requirement |
+| --- | --- | --- | --- | --- |
+| A | Product has B's motif, but no non-root node is B | `0.50 * 0.80 + 0.50 * 1.00 = 0.90` | Fails | Fails |
+| B | Exact B is a deepest leaf, depth `2` | `1.00` | Passes | Passes |
+| C | Exact B is an internal node, depth `1` | `1.00` | Fails | Passes |
+
+Why does A fail despite a high proxy? If the requirement switches from an intermediate to a starting material, can C keep its pass? Name the additional record needed before interpreting any pass as a real route decision.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+A's motif and `0.90` reward do not supply an exact B node in the predicted route. C loses the starting-material pass because B is not a deepest leaf. Its starting-mode proxy would have to be recomputed over eligible leaves; the displayed intermediate-mode `1.00` cannot be reused. B passes both constructed graph checks because its exact B leaf meets both definitions. Even those passes remain conditional on the reaction model, inventory snapshot, search budget and graph returned. Save those versions and identities, then apply the material, authority and evidence gates above. A planner's solved graph is not an observed synthesis outcome. No generator, planner or laboratory procedure was run for this exercise.
+
+</details>
+
 ## Forward prediction and a result are different data objects
 
 A forward model maps a declared representation of inputs to an output proposal,
@@ -143,14 +168,17 @@ label for failed or inconclusive cases. The score does not replace any of them.
 
 ## Sources and next lesson
 
-The following official ORD sources were opened on 2026-09-09. They support a
+The ORD documentation and repository below were opened on 2026-09-09. They support a
 structured distinction among inputs, outcomes and provenance, not the constructed
-route statuses or any laboratory action.
+route statuses or any laboratory action. The TANGO preprint and its code/version
+and licence sources were opened on 2026-10-25; this reading uses the 2024 v1 mechanism
+and imports no result unique to a later journal version.
 
 <div data-case-sources>
 
 - [Open Reaction Database Schema documentation](https://docs.open-reaction-database.org/en/latest/schema.html)
 - [Open Reaction Database ord-schema repository](https://github.com/open-reaction-database/ord-schema)
+- [TANGO preprint record](https://arxiv.org/abs/2410.11527), [v1 full text and algorithm](https://arxiv.org/html/2410.11527v1), [Saturn code-version mapping](https://github.com/schwallergroup/saturn) and [source licence](https://raw.githubusercontent.com/schwallergroup/saturn/master/LICENSE)
 
 </div>
 
@@ -158,4 +186,4 @@ Return to [Reaction prediction to the lab](/learn/synthesis-and-automation/react
 to connect a feasibility record to a broader experimental decision boundary.
 Original lesson prose is CC BY 4.0; linked sources retain their own terms.
 
-Last reviewed: 2026-09-09.
+Last reviewed: 2026-10-25.

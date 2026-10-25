@@ -3,6 +3,12 @@ description: Report a factual, scientific, citation, licence, translation, or ac
 title: "[Correction]: "
 labels: ["correction"]
 body:
+  - type: input
+    id: location
+    attributes:
+      label: Page and build context
+      description: Public page URL, lesson identifier, and build source revision, if known.
+    validations: { required: false }
   - type: textarea
     id: summary
     attributes:

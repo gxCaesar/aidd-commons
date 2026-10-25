@@ -16,7 +16,7 @@ construct the sign convention of an alchemical cycle, and explain why an
 apparently stable estimate is not automatically converged or experimentally
 validated. Read [Force fields, solvent, and sampling](/learn/physics-based-modeling/force-fields-and-sampling/)
 first. This is a handworked conceptual lesson. It does not run an alchemical
-calculation, rank a ligand series, or claim experimental affinity.
+calculation, rank a real ligand series, or claim experimental affinity.
 
 ## Name the endpoint before drawing the cycle
 
@@ -137,6 +137,31 @@ flag a protocol or sampling concern. It is not enough to declare the direct edge
 converged: both routes can share an inadequate water model, state definition, or
 slow degree of freedom.
 
+## An announced blind test: ranking and energy calibration
+
+As of 2026-10-25, the [Alchemistry organizer announcement](https://omsf.io/alchemistry/news/2026/10/alchemistry-blind-challenge-2027/), dated 2026-10-21, describes a future blind evaluation with 54 congeneric ligands. The [OpenBind announcement](https://openbind.uk/news/putting-free-energy-methods-to-the-test-the-openbind-alchemistry-blind-challenge/), dated 2026-10-22, names a single reference X-ray structure and a planned start on 2026-11-01. Submissions are described in kcal/mol, while the primary endpoint is Kendall's tau, a rank statistic. This is a dated reading of the announced contract, not a completed blind result or evidence that its data and implementation have already been released under verified terms.
+
+The organizer distinguishes a live leaderboard using a subset from a later full-set evaluation. A method changed after observing live scores is no longer the same prespecified method. Record that feedback and selection history before making a prospective claim. No registration, challenge-data download or prediction submission accompanies this lesson.
+
+### Constructed worked comparison
+
+The following relative energies are invented for teaching, not challenge data or predictions. They share ligand A as the zero reference and use kcal/mol. Lower values mean more favorable relative binding under this toy convention.
+
+| Ligand | Constructed reference | Prediction P | Prediction Q |
+| --- | ---: | ---: | ---: |
+| A | `0.0` | `0.0` | `0.0` |
+| B | `1.0` | `1.0` | `3.0` |
+| C | `2.0` | `2.0` | `6.0` |
+
+Compute Kendall's tau without ties and the mean absolute energy error over the three displayed ligands. Would adding a common `5.0 kcal/mol` offset to every Q value alter its ranking? Would that offset survive subtracting Q's value for A from every entry?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Both predictions preserve all three pairwise orderings: three concordant pairs and zero discordant pairs give `tau = (3 - 0) / 3 = 1`. Yet P's MAE is `0.0 kcal/mol`, while Q's is `(0 + 2 + 4) / 3 = 2.0 kcal/mol`. A perfect rank statistic has not calibrated Q's energy scale. Adding the common `5.0` offset changes neither ordering nor tau; subtracting each vector's A reference cancels the offset. An absolute-energy comparison would need its own stated reference and any allowed alignment. Neither a rank statistic nor reference alignment fixes a scale error. This arithmetic does not test sampling convergence, uncertainty calibration or experimental accuracy.
+
+</details>
+
 ## Limits and independent exercise
 
 Absolute and relative routes can fail for different reasons. An RBFE edge may be
@@ -181,6 +206,7 @@ against the article text.
 - [OpenFE tutorial: setting up an RBFE network](https://docs.openfree.energy/en/stable/tutorials/rbfe_python_tutorial.html)
 - [OpenFE RBFE benchmark results](/atlas/dataset-openfe-rbfe-benchmark/)
 - [OpenFE collaborative binding free energy assessment](/atlas/paper-openfe-collaborative-assessment/)
+- [Alchemistry 2027 blind-challenge announcement](https://omsf.io/alchemistry/news/2026/10/alchemistry-blind-challenge-2027/) and [OpenBind announcement](https://openbind.uk/news/putting-free-energy-methods-to-the-test-the-openbind-alchemistry-blind-challenge/), opened on 2026-10-25; future task and metric contract only
 
 </div>
 
@@ -194,4 +220,4 @@ when the stated question includes electronic reorganization that a fixed-topolog
 force field cannot represent. Original lesson prose is CC BY 4.0; linked sources
 retain their own terms.
 
-Last reviewed: 2026-10-23.
+Last reviewed: 2026-10-25.

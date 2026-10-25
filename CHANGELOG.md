@@ -9,13 +9,17 @@ No changes yet.
 - Add four source-reviewed frontier Atlas records and integrate them into seven
   bilingual lessons. The Atlas contains 232 records; curriculum routes and
   frozen scientific results retain their established scope.
+- Add three bilingual worked readings on evaluator validity, rank versus energy
+  calibration and route-node constraints. Preserve future-challenge status and
+  distinguish constructed examples from executed results.
 - Repair standalone notebook output locations and loaded-library version checks.
   Add source-pinned Colab entry links for the four editable notebook pairs.
   Local isolated runs are recorded separately from actual Colab execution,
   which remains unobserved.
-- Add a learner question form and connect the contribution page to all seven
-  issue forms. Document the dated competitor product review separately from
-  the frozen comparison and its unchanged correction window.
+- Add a learner question form, connect all seven contribution forms, and add
+  lesson-level links carrying public page and build context. Complete current
+  qualitative review of the historical external cohort and document it separately
+  from the frozen comparison and its unchanged correction window.
 - Correct live figure denominators, the retained-reading date and a clipped
   count axis. Deliver PNG previews with vector PDF downloads, preserve native
   author SVGs internally and exclude legacy scientific SVG copies from releases.

@@ -1,0 +1,15 @@
+{
+  "purpose": "Negative controls with synthetic local paths, never real user context.",
+  "publicSiteUrls": [
+    "http://localhost:4321/",
+    "https://localhost/",
+    "https://127.0.0.1/",
+    "file:///Users/example/"
+  ],
+  "pathnames": [
+    "file:///Users/example/lesson.mdx",
+    "/Users/example/lesson.mdx",
+    "//localhost/learn/",
+    "/learn/../../Users/example/"
+  ]
+}

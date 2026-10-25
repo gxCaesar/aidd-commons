@@ -15,7 +15,7 @@ import ScrollableRegions from "../../../../../components/ScrollableRegions.astro
 
 你将区分相对与绝对结合自由能终点，构造炼金循环的符号约定，并说明为何一个看似稳定的估计并不
 自动收敛或得到实验验证。请先读[力场、溶剂与采样](/zh-cn/learn/physics-based-modeling/force-fields-and-sampling/)。
-本课为手算概念教学，不运行炼金计算、不排序配体系列，也不主张实验亲和力。
+本课为手算概念教学，不运行炼金计算、不排序真实配体系列，也不主张实验亲和力。
 
 ## 画循环前先命名终点
 
@@ -102,6 +102,31 @@ import ScrollableRegions from "../../../../../components/ScrollableRegions.astro
 `-2.3 - (-2.2) = -0.1 kcal/mol`。它值得记录，因为大的闭环差异会标记协议或采样担忧。但这不足以
 宣布直接边已收敛：两条路径可能共有不充分的水模型、状态定义或缓慢自由度。
 
+## 已公告的盲测：排序与能量校准
+
+截至 2026-10-25，日期为 2026-10-21 的 [Alchemistry 主办方公告](https://omsf.io/alchemistry/news/2026/10/alchemistry-blind-challenge-2027/)描述了一项包含 54 个同系配体的未来盲评估。日期为 2026-10-22 的 [OpenBind 公告](https://openbind.uk/news/putting-free-energy-methods-to-the-test-the-openbind-alchemistry-blind-challenge/)给出单一参考 X-ray 结构和计划开始日 2026-11-01。公告要求以 kcal/mol 提交预测，而主要终点是秩统计量 Kendall's tau。这是对已公告约定的注明日期阅读，不是已完成的盲测结果，也不能证明数据和实现已按核实过的条款发布。
+
+主办方区分使用子集的实时排行榜和后续全量评估。若方法在观察实时分数后发生变化，就不再是原先预设的同一方法。提出前瞻性主张前，应记录这些反馈和选择历史。本课不注册、不下载挑战数据，也不提交预测。
+
+### 构造算例
+
+以下相对能量是为教学构造的数据，不是挑战数据或预测。它们均以配体 A 为零参考，单位为 kcal/mol。在此构造约定下，数值越低表示相对结合越有利。
+
+| 配体 | 构造参考 | 预测 P | 预测 Q |
+| --- | ---: | ---: | ---: |
+| A | `0.0` | `0.0` | `0.0` |
+| B | `1.0` | `1.0` | `3.0` |
+| C | `2.0` | `2.0` | `6.0` |
+
+计算无并列值时的 Kendall's tau，以及对展示的三个配体计算的平均绝对能量误差。若给每个 Q 值都加上 `5.0 kcal/mol` 的共同偏移，排序是否改变？若从每项减去 Q 对 A 的值，该偏移是否保留？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+两套预测都保留全部三个成对次序：三个一致对、零个不一致对，给出 `tau = (3 - 0) / 3 = 1`。但 P 的 MAE 是 `0.0 kcal/mol`，Q 的 MAE 则为 `(0 + 2 + 4) / 3 = 2.0 kcal/mol`。完美秩统计量没有校准 Q 的能量尺度。共同增加 `5.0` 偏移既不改变排序，也不改变 tau；减去各向量的 A 参考会消去偏移。绝对能量比较则需要另行说明参考及允许的对齐。秩统计量和参考对齐均不能修复尺度错误。这些算术不检验采样收敛、不确定性校准或实验准确性。
+
+</details>
+
 ## 局限与独立练习
 
 绝对与相对路径会因不同原因失效。一个 RBFE 边可能匹配不良，ABFE 计算则可能受约束、构象或状态
@@ -133,6 +158,7 @@ import ScrollableRegions from "../../../../../components/ScrollableRegions.astro
 - [OpenFE tutorial: setting up an RBFE network](https://docs.openfree.energy/en/stable/tutorials/rbfe_python_tutorial.html)
 - [OpenFE RBFE benchmark results](/atlas/dataset-openfe-rbfe-benchmark/)
 - [OpenFE collaborative binding free energy assessment](/atlas/paper-openfe-collaborative-assessment/)
+- [Alchemistry 2027 盲测公告](https://omsf.io/alchemistry/news/2026/10/alchemistry-blind-challenge-2027/)与 [OpenBind 公告](https://openbind.uk/news/putting-free-energy-methods-to-the-test-the-openbind-alchemistry-blind-challenge/)，于 2026-10-25 打开；仅支持未来任务与指标约定
 
 </div>
 
@@ -142,4 +168,4 @@ import ScrollableRegions from "../../../../../components/ScrollableRegions.astro
 继续阅读[QM/MM 边界与反应事件](/zh-cn/learn/physics-based-modeling/qm-mm-and-reactive-events/)。
 原创课程文字采用 CC BY 4.0；链接来源保留各自条款。
 
-最后审阅：2026-10-23。
+最后审阅：2026-10-25。

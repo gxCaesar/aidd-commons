@@ -4,8 +4,10 @@ description: Audit the independent generalization unit before interpreting an AI
 ---
 
 import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
 
 <LessonProgress lessonId="evaluation-and-reproducibility/honest-evaluation" />
+<ScrollableRegions />
 
 ## Foundations
 
@@ -29,6 +31,33 @@ failed runs, and uncertainty over the actual independent unit. For structures,
 [PoseBusters](https://github.com/maabuu/posebusters) checks selected physical
 plausibility conditions; it does not validate biological efficacy.
 
+## Audit the evaluator as part of the instrument
+
+The [BenchGuard paper, revision v2 dated 2026-10-02](https://arxiv.org/html/2604.24955v2), treats an execution benchmark as a coupled contract among instructions, reference programs, evaluators and environments. Its method asks an external language model to cross-check those artifacts, optionally using agent code or traces as diagnostic evidence. The audit workflow introduces no newly trained model. A finding is a candidate for expert review; the paper's reported defect counts are not defects independently reproduced in this lesson.
+
+Version changes matter on both sides of that contract. The [ScienceAgentBench maintainer notice](https://github.com/OSU-NLP-Group/ScienceAgentBench) dated 2026-04-30 announces a `verified` dataset split and `benchmark_verified.zip` to reduce false-negative grading. That establishes a revision to name, not proof that every remaining task is correct. Preserve the instruction, input, reference, evaluator and environment versions before comparing old and revised scores.
+
+### Constructed case: a grader measures the wrong property
+
+This is an original handworked example, not a task from either benchmark. The instruction requests one arithmetic mean per sample, with row order irrelevant. Sample A has observations `2, 4`; sample B has `4, 6`. The reference table is `A: 3; B: 5`. A defective evaluator E0 accepts exactly two rows whose sample IDs appear in the order `A, B`, but never checks their mean values. The declared environment parses the means as numbers, so `3` and `3.0` have the same meaning.
+
+| Submitted rows | Scientific contract | E0 |
+| --- | --- | --- |
+| `A: 3; B: 5` | Valid reference | Accepts |
+| `B: 5.0; A: 3.0` | Valid alternative order and numeric spelling | Rejects |
+| `A: 3; B: 6` | Incorrect mean for B | Accepts |
+
+What does E0 actually measure? State a repair that accepts the valid alternative and rejects the known error. If a later instruction explicitly requires sorted rows, does the second submission still satisfy that revised contract?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+E0 measures identifier order and row count, not the requested calculation. The means are `(2 + 4) / 2 = 3` and `(4 + 6) / 2 = 5`. A repaired evaluator should require the declared columns, unique and complete sample IDs, parse numeric values, align by sample ID and check the exact means in this exercise. A real benchmark must declare the tolerance appropriate to its measurements. The repair should accept the second row of the teaching table and reject the third. Missing or duplicate IDs need their own rejection cases. If sorted output becomes an explicit requirement, the reversed submission fails that new format requirement; record the instruction and grader revision rather than silently relabelling an old agent result. A reference-program mismatch, an agent error and an environment failure require different diagnoses.
+
+</details>
+
+The public [BenchGuard source](https://github.com/XinmingTu/BenchGuard) has an [Apache 2.0 code licence](https://raw.githubusercontent.com/XinmingTu/BenchGuard/main/LICENSE). ScienceAgentBench's [MIT code licence](https://raw.githubusercontent.com/OSU-NLP-Group/ScienceAgentBench/main/LICENSE) does not replace its separate full-grading-artifact distribution instructions and request against online redistribution. No protected grading archive, plugin, external model or benchmark was used here. This source reading was checked on 2026-10-25.
+
 ## Frontier and open questions
 
 Out-of-distribution evaluation, dataset shift, label noise, and benchmark
@@ -46,7 +75,7 @@ free by default, or certify reproducibility from a repository link alone.
 Apply these distinctions in [Splits and leakage across three labs](/learn/evaluation-and-reproducibility/split-and-leakage-cases/).
 The browser-only exercise includes four cases and worked answers drawn from
 the completed ChEMBL, rMD17 and pool-budget labs.
-Exercise link added: 2026-09-08; the scientific-source review date below is unchanged.
+Exercise link added: 2026-09-08; the original scientific-source review was 2026-09-04.
 
 Continue with [Metrics and uncertainty across four labs](/learn/evaluation-and-reproducibility/metrics-and-uncertainty/)
 to distinguish prediction error, rank association, interval coverage and
@@ -56,4 +85,6 @@ Start from the [TDC](https://tdcommons.ai/) and [OGB](https://ogb.stanford.edu/)
 task documentation, then inspect the exact data and split implementation before
 adopting a reported comparison.
 
-Last reviewed: 2026-09-04.
+The evaluator-contract addition uses the [BenchGuard v2 paper](https://arxiv.org/html/2604.24955v2), [official repository](https://github.com/XinmingTu/BenchGuard) and [ScienceAgentBench revision notice](https://github.com/OSU-NLP-Group/ScienceAgentBench), opened on 2026-10-25. The constructed calculation is not an audit of their tasks or a benchmark score.
+
+Last reviewed: 2026-10-25.

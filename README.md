@@ -46,7 +46,10 @@ The [current product review](docs/CURRENT_RESOURCE_COMPARISON.md) records a sepa
 25 October 2026 source review and retains other resources' strengths. Four new
 Atlas records are linked to seven bilingual lessons on protein design, perturbation
 modelling, structural prediction and scientific agents. This does not rescore the
-historical comparison.
+historical comparison. Three further bilingual worked readings cover evaluator
+validity, ranking versus energy calibration, and enforced synthesis-route nodes.
+The current product review now includes all twelve historical external
+identities, plus additional resources, without changing the frozen scores.
 
 The layered textbook now has an explicit core route, five specialist routes and
 a granular [curriculum blueprint](site/src/content/docs/learn/foundations/curriculum-map.mdx).

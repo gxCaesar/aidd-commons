@@ -15,6 +15,7 @@ __pycache__/
 # Generated artifacts
 site/public/data/
 report/build/
+0Paper/build/
 public-release/
 public-release.inventory.txt
 release-hygiene-report.json

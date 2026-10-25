@@ -41,6 +41,31 @@ unavailable 或 not checked 等状态。搜索索引中的“可购买”不等�
 | 正向模型   | 输入表示、模型/版本、输出集合和不确定性/abstention | predicted、unavailable、out of scope      | 已观察产物   |
 | 实验室记录 | 实际输入、结局、测量/来源与 failed/unknown 字段    | observed、failed、inconclusive            | 模型分数     |
 
+## TANGO：指定路线节点不同于产品片段
+
+[TANGO 预印本 v1 于 2024-10-15 提交](https://arxiv.org/abs/2410.11527)，提出了受约束可合成性的奖励。它是与生成器及逆合成 oracle 配合使用的奖励机制，不是新反应模型，也不是 2026 年首次发明的方法。[方法与算法](https://arxiv.org/html/2410.11527v1)把指定 building block 与预测合成图中的非根节点比较。默认以 `0.50` 的相同权重组合 Tanimoto 相似度与模糊子结构匹配，再对合格节点取最大值。起始材料模式只允许最深的叶节点参与，中间体模式则更广泛地允许非根节点。
+
+即使没有精确使用指定 block，稠密奖励也能提供学习信号；精确路线要求仍需另行检查。产品包含期望片段，不能确立预测路线使用了指定材料。所有终端节点还必须属于已声明库存，规划器的路线才能算作求解成功。[Saturn 仓库](https://github.com/schwallergroup/saturn)将 `de5cd7f` 指为 TANGO 预印本代码版本。其 [Apache 2.0 源码声明](https://raw.githubusercontent.com/schwallergroup/saturn/master/LICENSE)不能确立每个外部反应模型、检查点或库存的条款；本课没有完整核查这些资产条款。
+
+### 构造的路线节点练习
+
+使用一个指定 block B 和三个抽象预测图。假定全部终端节点都在已声明的构造库存中，最深叶节点的深度为 `2`。下列数值是给定的教学分数，不是计算出的化学相似度或合成结果。代理分数一列采用中间体模式。
+
+| 图 | 精确 B 的位置 | 稠密节点代理分数 | 起始材料要求 | 中间体要求 |
+| --- | --- | --- | --- | --- |
+| A | 产品有 B 的片段，但没有非根节点等于 B | `0.50 * 0.80 + 0.50 * 1.00 = 0.90` | 失败 | 失败 |
+| B | 精确 B 是最深叶节点，深度为 `2` | `1.00` | 通过 | 通过 |
+| C | 精确 B 是内部节点，深度为 `1` | `1.00` | 失败 | 通过 |
+
+A 为何在代理分数很高时仍失败？若要求从中间体改为起始材料，C 能否保留通过状态？说出一项额外记录，使任何通过状态能被用于真实路线决策。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+A 的片段与 `0.90` 奖励没有提供预测路线中的精确 B 节点。C 失去起始材料通过状态，因为 B 不是最深叶节点。其起始模式代理分数必须基于合格叶节点重算，不能复用展示的中间体模式 `1.00`。B 的精确 B 叶节点符合两项定义，所以通过这两项构造图检查。即使通过，也仍取决于反应模型、库存快照、搜索预算和返回的图。应保存这些版本与身份，再应用上文的材料、权威和证据门槛。规划器求解成功的图不是观察到的合成结果。本练习没有运行生成器、规划器或实验室程序。
+
+</details>
+
 ## 正向预测与结果是不同的数据对象
 
 正向模型将已声明输入表示映射到产物提案，示意为 `X -> P_hat`。其输入契约包括分子身份、角色、
@@ -106,17 +131,19 @@ workups、outcomes 和 provenance
 
 ## 来源与下一课
 
-下列官方 ORD 来源于 2026-09-09 打开。它们支持 inputs、outcomes 和 provenance 之间的结构化区别，
-不支持构造路线状态或任何实验室行动。
+下列 ORD 文档与仓库于 2026-09-09 打开。它们支持 inputs、outcomes 和 provenance 之间的结构化区别，
+不支持构造路线状态或任何实验室行动。TANGO 预印本及其代码版本和许可来源于 2026-10-25 打开；
+本阅读采用 2024 年 v1 的机制，没有引入仅见于后续期刊版的结果。
 
 <div data-case-sources>
 
 - [Open Reaction Database Schema documentation](https://docs.open-reaction-database.org/en/latest/schema.html)
 - [Open Reaction Database ord-schema repository](https://github.com/open-reaction-database/ord-schema)
+- [TANGO 预印本记录](https://arxiv.org/abs/2410.11527)、[v1 全文与算法](https://arxiv.org/html/2410.11527v1)、[Saturn 代码版本映射](https://github.com/schwallergroup/saturn)与[源码许可](https://raw.githubusercontent.com/schwallergroup/saturn/master/LICENSE)
 
 </div>
 
 回到[从反应预测到实验室](/zh-cn/learn/synthesis-and-automation/reaction-to-lab/)，以将可行性记录连接到更广的实验决策边界。
 原创课程文字采用 CC BY 4.0；链接来源保留各自条款。
 
-最后审阅：2026-09-09。
+最后审阅：2026-10-25。

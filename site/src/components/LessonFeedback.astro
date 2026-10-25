@@ -1,0 +1,51 @@
+---
+import publication from "../../../catalog/comparisons/publication.json";
+import manifest from "../../../package.json";
+import { lessonFeedbackLinks } from "../lib/lesson-feedback";
+
+interface Props { lessonId: string; }
+const feedback = lessonFeedbackLinks({
+  lessonId: Astro.props.lessonId,
+  pathname: Astro.url.pathname,
+  base: import.meta.env.BASE_URL,
+  publicSiteUrl: publication.site_url,
+  repositoryUrl: publication.repository_url,
+  sourceRevision: process.env.AIDD_SOURCE_REVISION,
+  githubSha: process.env.GITHUB_SHA,
+  version: manifest.version,
+});
+---
+
+<aside class="lesson-feedback" data-lesson-feedback data-source-revision={feedback.revision} aria-label={feedback.chinese ? "本课交流" : "Lesson feedback"}>
+  <div class="lesson-feedback__actions">
+    <a href={feedback.questionUrl} data-lesson-question>{feedback.chinese ? "本课提问" : "Ask about this lesson"}</a>
+    <a href={feedback.correctionUrl} data-lesson-correction>{feedback.chinese ? "反馈错误" : "Report a correction"}</a>
+  </div>
+  <p>{feedback.chinese ? "发帖需要登录 GitHub。链接预填页面、课号和构建版本，不会自动发帖；阅读本课无需账号。" : "Posting requires a GitHub sign-in. Links prefill the page, lesson and build version; no post is sent automatically. Reading needs no account."}</p>
+</aside>
+
+<style>
+  .lesson-feedback {
+    margin: 1rem 0;
+    font-size: 0.875rem;
+  }
+
+  .lesson-feedback__actions {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 1rem;
+  }
+
+  .lesson-feedback__actions a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .lesson-feedback p {
+    margin: 0;
+  }
+</style>

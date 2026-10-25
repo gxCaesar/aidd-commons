@@ -755,6 +755,8 @@ The lab's own README makes one further point worth repeating. The v0.52 release 
 
 ## The ChEMBL 37 EGFR representation comparison
 
+The database is attributed to Mendez et al. [@mendez2019chembl], with the version fixed to the ChEMBL 37 release [@chembl37Release]. This source attribution does not reopen the completed evaluation.
+
 The protocol froze the admission rule, the scaffold split, the alpha grid, the selected alphas, and two separate evaluations. The entity is the ChEMBL parent molecule, and the rule requires the molecule identifier to equal the parent identifier, so a salt form is never admitted as a separate observation. The label is the pChEMBL value, aggregated by median across the admitted exact IC50 records in nanomolar units, and the split is by chirality-aware Bemis--Murcko scaffold.
 
 What the run produced is more informative than a single number would be. Table 9 gives the three baselines on the two evaluations.

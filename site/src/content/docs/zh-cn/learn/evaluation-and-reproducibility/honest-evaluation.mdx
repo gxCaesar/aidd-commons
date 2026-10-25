@@ -4,12 +4,14 @@ description: 在解读 AIDD 结果之前审查独立泛化单位。
 ---
 
 import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
 
 英文原文：[Honest evaluation](/learn/evaluation-and-reproducibility/honest-evaluation/)。
 
-译文更新：2026-09-08。
+译文更新：2026-10-25。
 
 <LessonProgress lessonId="evaluation-and-reproducibility/honest-evaluation" />
+<ScrollableRegions />
 
 ## 基础
 
@@ -29,6 +31,33 @@ import LessonProgress from "../../../../../components/LessonProgress.astro";
 对于结构，[PoseBusters](https://github.com/maabuu/posebusters) 检查选定的物理合理性条件；
 它不验证生物效力。
 
+## 将评测器作为测量工具的一部分核查
+
+[BenchGuard 论文的 v2 修订版（2026-10-02）](https://arxiv.org/html/2604.24955v2)把可执行基准看作指令、参考程序、评测器与环境之间的耦合约定。其方法让外部语言模型交叉核查这些资产，并可用智能体代码或轨迹作为诊断证据。审计流程没有引入新训练的模型。发现项须交由专家审阅；论文报告的缺陷数量并非本课独立复现的缺陷。
+
+约定两侧的版本变化都很重要。日期为 2026-04-30 的 [ScienceAgentBench 维护者公告](https://github.com/OSU-NLP-Group/ScienceAgentBench)发布了 `verified` 数据集分割和 `benchmark_verified.zip`，以减少误判失败的评分。它确立了应注明的修订版本，却不证明剩余每项任务都正确。比较旧版与修订版分数前，应保存指令、输入、参考、评测器和环境版本。
+
+### 构造案例：评分器测错了属性
+
+这是原创手算示例，不是任一基准的题目。指令要求每个样本一行算术均值，行顺序无关。样本 A 的观测为 `2, 4`，样本 B 为 `4, 6`。参考表是 `A: 3; B: 5`。有缺陷的评测器 E0 只接受恰好两行且样本 ID 顺序为 `A, B` 的输出，却从不检查均值。已声明环境把均值解析为数值，因此 `3` 与 `3.0` 含义相同。
+
+| 提交的行 | 科学任务约定 | E0 |
+| --- | --- | --- |
+| `A: 3; B: 5` | 有效参考 | 接受 |
+| `B: 5.0; A: 3.0` | 有效的替代行序与数值写法 | 拒绝 |
+| `A: 3; B: 6` | B 的均值错误 | 接受 |
+
+E0 实际测量什么？提出一项能接受有效替代解、拒绝已知错误的修复。若后续指令明确要求行排序，第二项提交还满足修订后的约定吗？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+E0 测的是标识符顺序和行数，而非所要求的计算。均值是 `(2 + 4) / 2 = 3` 与 `(4 + 6) / 2 = 5`。修复后的评测器应要求已声明列、唯一且完整的样本 ID，解析数值，按样本 ID 对齐，并在本练习中检查精确均值。真实基准须声明适合其测量的容差。修复应接受教学表第二行，拒绝第三行；缺失或重复 ID 还需要各自的拒绝案例。若排序成为明确要求，逆序提交就不满足新的格式要求；应记录指令与评分器修订，而不是悄悄重标旧智能体结果。参考程序不匹配、智能体错误和环境失败需要不同诊断。
+
+</details>
+
+公开的 [BenchGuard 源码](https://github.com/XinmingTu/BenchGuard)使用 [Apache 2.0 代码许可](https://raw.githubusercontent.com/XinmingTu/BenchGuard/main/LICENSE)。ScienceAgentBench 的 [MIT 代码许可](https://raw.githubusercontent.com/OSU-NLP-Group/ScienceAgentBench/main/LICENSE)不能替代完整评分资产另行适用的分发说明及禁止在线再分发的要求。本课没有使用受保护评分归档、插件、外部模型或基准。本来源阅读核查于 2026-10-25。
+
 ## 前沿与开放问题
 
 分布外评估、数据集偏移、标签噪声和基准泄漏仍是活跃问题。
@@ -43,7 +72,7 @@ v0.1 不发布新的基准分数，不断言任何划分默认无泄漏，也不
 
 在[三个实验中的数据划分与泄漏](/zh-cn/learn/evaluation-and-reproducibility/split-and-leakage-cases/)中
 练习这些区别。只需浏览器，四个案例与参考答案取自已完成的 ChEMBL、rMD17 和候选池预算实验。
-练习入口添加于 2026-09-08；下方科学来源的审阅日期保持不变。
+练习入口添加于 2026-09-08；原有科学来源的审阅日期为 2026-09-04。
 
 接着阅读[四个实验中的指标与不确定性](/zh-cn/learn/evaluation-and-reproducibility/metrics-and-uncertainty/)，
 区分预测误差、秩关联、区间覆盖率和预算内找回表现。第二项练习入口添加于 2026-09-09。
@@ -51,4 +80,6 @@ v0.1 不发布新的基准分数，不断言任何划分默认无泄漏，也不
 从 [TDC](https://tdcommons.ai/) 和 [OGB](https://ogb.stanford.edu/) 的任务文档开始，
 然后在采用已报告的比较之前检查确切的数据和划分实现。
 
-最后审阅：2026-09-04。
+评测器约定补充采用于 2026-10-25 打开的 [BenchGuard v2 论文](https://arxiv.org/html/2604.24955v2)、[官方仓库](https://github.com/XinmingTu/BenchGuard)与 [ScienceAgentBench 修订公告](https://github.com/OSU-NLP-Group/ScienceAgentBench)。构造计算不是对它们任务的审计，也不是基准分数。
+
+最后审阅：2026-10-25。

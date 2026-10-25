@@ -1,5 +1,6 @@
 ---
 import LessonResources from "./LessonResources.astro";
+import LessonFeedback from "./LessonFeedback.astro";
 import { withoutSiteBase } from "../lib/site-paths";
 interface Props {
   lessonId: string;
@@ -15,6 +16,7 @@ const chinese = withoutSiteBase(Astro.url.pathname, import.meta.env.BASE_URL).st
 </lesson-progress>
 
 <LessonResources lessonId={lessonId} />
+<LessonFeedback lessonId={lessonId} />
 
 <script>
   import {
