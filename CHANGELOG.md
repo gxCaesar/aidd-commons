@@ -4,6 +4,25 @@
 
 No changes yet.
 
+## 0.3.0 — 25 October 2026
+
+- Add four source-reviewed frontier Atlas records and integrate them into seven
+  bilingual lessons. The Atlas contains 232 records; curriculum routes and
+  frozen scientific results retain their established scope.
+- Repair standalone notebook output locations and loaded-library version checks.
+  Add source-pinned Colab entry links for the four editable notebook pairs.
+  Local isolated runs are recorded separately from actual Colab execution,
+  which remains unobserved.
+- Add a learner question form and connect the contribution page to all seven
+  issue forms. Document the dated competitor product review separately from
+  the frozen comparison and its unchanged correction window.
+- Correct live figure denominators, the retained-reading date and a clipped
+  count axis. Deliver PNG previews with vector PDF downloads, preserve native
+  author SVGs internally and exclude legacy scientific SVG copies from releases.
+- Add maintained source/rendered-text encoding checks. Correct bibliography
+  identities and unsupported web publication years without altering frozen
+  study protocols or results.
+
 ## 0.2.1 — 25 October 2026
 
 - Repair three Chinese text encoding errors in the home page, lab directory and

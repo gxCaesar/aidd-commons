@@ -256,7 +256,7 @@ def _code_cells(canonical_core: str) -> list[str]:
 
             print(f"REPORT_PATH={report_path}")
             print("Wrote a fresh JSON report and retained it for download.")
-            display(FileLink(str(report_path), result_html_prefix="Download: "))
+            display(FileLink(report_path.relative_to(Path.cwd()).as_posix(), result_html_prefix="Download: "))
 
             print(
                 "REPORT_JSON="
@@ -294,7 +294,7 @@ The pair of pyridine strings should canonicalize to the same RDKit identity. The
 The tables compare graph-derived fields. The SVG drawings make the input graph visible; they do not establish a solution conformation, binding pose, affinity, efficacy, safety, or synthesizability. Canonicalization also does not decide protonation, tautomer state, or assay identity.""",
         """## Fresh output
 
-The output cell creates a fresh retained directory beneath its current working directory, exclusively creates `representation-report.json`, prints its path, and displays a download link. Delete that generated directory yourself when it is no longer needed; do not point this exercise at a frozen author-results directory.""",
+The output cell creates a fresh retained directory beneath its current working directory, exclusively creates `representation-report.json`, prints its path, and displays a notebook-relative download link. The same directory is visible in the notebook file browser. Download the report before ending a temporary runtime. Delete that generated directory yourself when it is no longer needed; do not point this exercise at a frozen author-results directory.""",
         """## Exercises and answers
 
 1. Before looking at the tables, predict whether the two pyridine inputs will have the same canonical isomeric SMILES and InChIKey. **Answer:** yes in this RDKit version; they encode the same parsed graph.
@@ -328,7 +328,7 @@ SMILES 字符串是输入记法，不是实验测量。RDKit 将该记法解析�
 表格比较由分子图导出的字段。SVG 图展示输入图，但不能建立溶液构象、结合 pose、affinity、efficacy、safety 或 synthesizability。canonicalization 同样不能决定 protonation、tautomer state 或 assay identity。""",
         """## 新鲜输出
 
-输出单元会在当前工作目录下创建新的保留目录，以独占方式创建 `representation-report.json`，打印其路径并显示下载链接。不再需要时请自行删除该生成目录；不要把本练习指向冻结的作者结果目录。""",
+输出单元会在当前工作目录下创建新的保留目录，以独占方式创建 `representation-report.json`，打印其路径并显示相对于 notebook 的下载链接。同一目录也可在 notebook 文件浏览器中找到。结束临时运行时前请下载报告。不再需要时请自行删除该生成目录；不要把本练习指向冻结的作者结果目录。""",
         """## 练习与答案
 
 1. 在查看表格前，预测两条 pyridine 输入是否会有相同的 canonical isomeric SMILES 和 InChIKey。**答案：** 在此 RDKit 版本中会相同；它们编码同一个已解析分子图。

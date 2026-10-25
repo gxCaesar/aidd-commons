@@ -15,7 +15,7 @@ neither is derived from an existing ChEMBL endpoint.
   the runner refuses to write a report.
 - Resources: CPU only; ten rows, normally under one second; output under 0.01 MB.
 - Network/data: no download, credentials, real assay data or GPU.
-- Output: a fresh file inside `tmp/student-modelling/` in this checkout.
+- CLI output: a fresh file inside `tmp/student-modelling/` in this checkout.
   Existing files and symlink output paths are rejected. Pick another filename
   for another run; no automatic overwrite or deletion is performed.
 
@@ -28,8 +28,8 @@ Download one notebook and use **File → Upload notebook** in
 [Google Colab](https://colab.research.google.com/). It requires only the Python
 standard library and the bundled Jupyter display helper: no installation, network
 request, GPU, API key, or Drive mount. Run it top to bottom. It writes its JSON
-report and the fitted-model SVG to a fresh temporary directory in that runtime,
-never into this checkout or over a previous report.
+report and the fitted-model SVG to a fresh directory beneath its current working
+directory. It does not replace previous reports or author result files.
 
 The notebooks embed the tested pure functions and visibly unfold the canonical
 split/fit/select/score body rather than calling a repository helper. Rebuild both

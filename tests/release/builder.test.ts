@@ -201,6 +201,44 @@ async function fixtureSource(): Promise<string> {
 }
 
 describe("curated public release builder", () => {
+  it("delivers scientific PDF and PNG without legacy scientific SVG copies", async () => {
+    const { buildPublicRelease, exclusionReason } = await loadBuilder();
+    const sourceRoot = await fixtureSource();
+    const workspace = await mkdtemp(join(tmpdir(), "aidd-figure-output-"));
+    const destination = join(workspace, "public-release");
+    const delivered = [
+      "site/public/figures/current.pdf",
+      "site/public/figures/current.png",
+      "report/figures/out/current.pdf",
+      "site/public/favicon.svg",
+    ];
+    const legacy = [
+      "site/public/figures/legacy.svg",
+      "report/figures/out/legacy.svg",
+    ];
+    for (const path of [...delivered, ...legacy]) {
+      await mkdir(join(sourceRoot, path, ".."), { recursive: true });
+      await writeFile(join(sourceRoot, path), "Fixture figure asset.\n");
+    }
+    const result = await buildPublicRelease({
+      sourceRoot,
+      destination,
+      inventoryPath: join(workspace, "inventory.txt"),
+    });
+    for (const path of delivered) {
+      expect(exclusionReason(path)).toBeUndefined();
+      await expect(access(join(destination, path))).resolves.toBeUndefined();
+    }
+    for (const path of legacy) {
+      expect(exclusionReason(path)).toMatch(/legacy scientific SVG/);
+      await expect(access(join(destination, path))).rejects.toThrow();
+      expect(
+        result.skipped.some((entry) => entry.startsWith(`${path} (`)),
+      ).toBe(true);
+      await expect(access(join(sourceRoot, path))).resolves.toBeUndefined();
+    }
+  });
+
   it("keeps the project-local collaboration log out of the public copy", async () => {
     const { buildPublicRelease } = await loadBuilder();
     const sourceRoot = await fixtureSource();

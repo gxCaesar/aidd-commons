@@ -537,7 +537,7 @@ tracks:
             scope-and-what-the-material-does-not-show,
             sources
           ]
-        source_ids: [model-geneformer, model-tgpt, model-scgpt, model-scfoundation, model-gears, model-cpa, model-uce, model-cellfm, model-pertformer, model-zeroshot-scfoundation]
+        source_ids: [model-geneformer, model-tgpt, model-scgpt, model-scfoundation, model-gears, model-cpa, model-uce, model-cellfm, model-pertformer, model-zeroshot-scfoundation, model-pie-replogle-wdataset]
         prerequisites: [complex-cell-and-knowledge-graphs]
         capabilities: [orientation, explanation, worked-example, exercise]
       - id: protein-language-models
@@ -699,6 +699,7 @@ tracks:
             db-biogrid,
             dataset-cellxgene-census,
             dataset-connectivity-map-l1000,
+            model-pie-replogle-wdataset,
           ]
         prerequisites: [disease-to-target, biological-representations]
         capabilities: [explanation, worked-example, exercise]
@@ -1136,6 +1137,7 @@ tracks:
             model-isodde,
             model-boltz-1,
             model-boltz-2,
+            model-openfold3-openbind0,
           ]
         prerequisites: []
       - id: structure-affinity-mechanisms
@@ -1241,7 +1243,7 @@ tracks:
             scope,
             sources,
           ]
-        source_ids: [model-aqaffinity, model-nesso, model-byteff, model-byteff2]
+        source_ids: [model-aqaffinity, model-nesso, model-byteff, model-byteff2, model-openfold3-openbind0]
         prerequisites: [structure-affinity-mechanisms]
         capabilities: [explanation, worked-example, exercise]
       - id: structure-core-source-path
@@ -1518,7 +1520,7 @@ tracks:
             scope-and-what-the-material-does-not-show,
             sources,
           ]
-        source_ids: [tool-bindcraft, model-alphaproteo, model-boltzgen, model-rfdiffusion2]
+        source_ids: [tool-bindcraft, model-alphaproteo, model-boltzgen, model-rfdiffusion2, model-rfd4-proteina-20261019]
         prerequisites: [flows-and-constrained-search]
         capabilities: [orientation, explanation, worked-example, exercise]
       - id: open-generation-assets-2026
@@ -1744,8 +1746,8 @@ tracks:
 
       - id: frontier-protein-design-2026
         order: 12
-        title: "Three protein-design methods from 2026"
-        title_zh: "2026 年的三个蛋白质设计方法"
+        title: "Four protein-design methods from 2026"
+        title_zh: "2026 年的四个蛋白质设计方法"
         type: lesson
         sections:
           [
@@ -1760,7 +1762,7 @@ tracks:
             scope,
             sources,
           ]
-        source_ids: [model-raygun, model-nise, model-lasermpnn]
+        source_ids: [model-raygun, model-nise, model-lasermpnn, model-rfd4-proteina-20261019]
         prerequisites: [construct-identity-and-objectives]
         capabilities: [explanation, worked-example, exercise]
 
@@ -1985,7 +1987,7 @@ tracks:
         title_zh: 选择科学智能体资源与评测
         type: lesson
         sections: [goals, resource-selection, implementation-boundaries, evaluation, worked-case, exercise]
-        source_ids: [model-biogpt, agent-paperqa, agent-chemcrow, benchmark-lab-bench, benchmark-bixbench]
+        source_ids: [model-biogpt, agent-paperqa, agent-chemcrow, benchmark-lab-bench, benchmark-bixbench, benchmark-bixbench3]
         prerequisites: [retrieval-tools-feedback]
         capabilities: [explanation, worked-example, exercise]
       - id: agent-frontier-2026

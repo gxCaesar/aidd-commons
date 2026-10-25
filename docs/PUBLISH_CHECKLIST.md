@@ -1,7 +1,13 @@
 # Publish checklist
 
-This file records the release checks and publication choices for AIDD Commons.
-The actual public availability and correction window are recorded in
+This is a reusable checklist for each future AIDD Commons release candidate.
+The unchecked boxes below are template fields, not the status of an already
+completed release. [v0.2.1](https://github.com/gxCaesar/aidd-commons/releases/tag/v0.2.1)
+was published on 25 October 2026 after all seven stages of its
+[hosted validation and deployment](https://github.com/gxCaesar/aidd-commons/actions/runs/40161346027)
+passed. Its accepted scope and exact-artifact checks are recorded in the
+[current project status](ROADMAP_V0.2.md).
+Actual first public availability and the correction window are recorded in
 [`PUBLICATION.md`](PUBLICATION.md) and its canonical metadata.
 
 Publishing is a separate authorisation from building. The repository can be in
@@ -45,9 +51,10 @@ node node_modules/vitest/vitest.mjs run --exclude 'tests/e2e/**'
 .venv/bin/python -m ruff check labs
 .venv/bin/python -m mypy
 
-# 5. link and citation integrity, against the built site
+# 5. links, citations and text encoding, against the built site
 npm run links:internal
 npm run citations:check
+npm run text:check -- --rendered site/dist
 
 # 6. browser and accessibility
 node node_modules/@playwright/test/cli.js test tests/e2e
@@ -68,7 +75,10 @@ editable install of `aidd_commons` puts the working tree's package on the
 import path, so without it the export's suite silently tests the working tree
 instead of the export, and a broken export passes its own gate.
 
-## State that must hold before the gate is run
+## Candidate checklist template
+
+Complete a fresh copy for the candidate being checked. The completed v0.2.1
+receipt above remains historical evidence for that release.
 
 - [ ] The working tree is clean and the commit is the one intended for release.
 - [ ] The generated surfaces are regenerated from the canonical sources and
@@ -94,7 +104,7 @@ instead of the export, and a broken export passes its own gate.
 | The public repository's name and owner | it is an identity claim | `gxCaesar/aidd-commons` |
 | The licence of the released code and prose | it is a rights decision | currently Apache-2.0 for code and CC BY 4.0 for prose |
 | The deployment target and its address | it is an outward-facing service choice | GitHub Pages at `https://gxcaesar.github.io/aidd-commons/` |
-| The release title and date | it is a naming decision | AIDD Commons v0.2.1; actual public date belongs in the publication record |
+| The release title and date | it is a naming decision | match the candidate version and date; the latest accepted release is v0.2.1 |
 | Whether to mint a DOI and deposit a release | it is a permanent public commitment | no DOI deposit in this release |
 | Who may correct the published record | it is a governance decision | the correction issue template is the route |
 | When the thirty-day correction window starts | it is a public commitment to a date | record actual public source availability and check the correction route; verify the site before announcing completion |

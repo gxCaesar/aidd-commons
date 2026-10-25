@@ -1,0 +1,62 @@
+id: model-rfd4-proteina-20261019
+name: RFD4-Proteina, 2026-10-19 release
+kind: model
+summary: A biomolecular design model that jointly generates sequence identities and all-atom structures through a latent flow model paired with its trained autoencoder. This record identifies the matched 2026-10-19 release rather than the earlier pair used for published efficiency measurements.
+canonical_url: https://huggingface.co/nvidia/RFD4-Proteina
+identifiers:
+  - scheme: code
+    value: RFD4-Proteina source and generation, training and evaluation interfaces
+    url: https://github.com/RosettaCommons/RFD4-Proteina
+  - scheme: model
+    value: rfd4-proteina-flow-release-2026-10-19 paired with rfd4-proteina-ae-release-2026-10-19
+    url: https://huggingface.co/nvidia/RFD4-Proteina
+  - scheme: dataset
+    value: Published PDB- and AlphaFold DB-derived training-data subset
+    url: https://huggingface.co/datasets/nvidia/RFD4-Proteina
+stages: [biologics-design, evaluation]
+modalities: [protein, biomolecular-complex]
+tasks: [protein-generation, sequence-structure-co-design, protein-binder-design]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: open_source, evidence: [model-card, license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [model-card] }
+  architecture: { value: available, evidence: [model-card, repository] }
+  data_recipe: { value: unverified, evidence: [data-card] }
+  training_data: { value: unverified, evidence: [data-card] }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: BSD-3-Clause
+    scope: Repository source and the RFD4 model and weights, as identified by the code licence and model card. External refolding models and other optional assets retain their own terms.
+    evidence: [license, model-card]
+  - name: CC BY 4.0
+    scope: Annotations, sampling tables, indices and packaging added to the published training-data subset. Upstream molecular structures retain their source terms.
+    evidence: [data-card]
+evidence:
+  - id: model-card
+    url: https://huggingface.co/nvidia/RFD4-Proteina
+    label: Model card opened 2026-10-25, including paired checkpoint identities, the earlier-benchmark warning and licence scope
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: repository
+    url: https://github.com/RosettaCommons/RFD4-Proteina
+    label: Repository README opened 2026-10-25, including generation, training, scoring and search interfaces
+    supports: [summary, identifiers, tasks, caveats]
+  - id: data-card
+    url: https://huggingface.co/datasets/nvidia/RFD4-Proteina
+    label: Dataset card opened 2026-10-25 establishes a released PDB/AFDB subset only; the complete recipe and training-data attribution for the named checkpoint pair remain unverified
+    supports: [identifiers, caveats]
+  - id: license
+    url: https://github.com/RosettaCommons/RFD4-Proteina/blob/main/LICENSE
+    label: BSD 3-Clause licence file opened 2026-10-25
+    supports: []
+caveats:
+  - The flow model and autoencoder form a matched pair. Components from incompatible releases do not define the same latent space and must not be mixed.
+  - The model card attributes its published efficiency measurements to the previous release pair in an October 9, 2026 benchmark. Those measurements have not been repeated on the 2026-10-19 pair and do not describe its measured performance.
+  - Computational filter passers per GPU-hour are not experimental binder yields. No model inference or benchmark was run for this record.
+  - The published training data cover a PDB- and AlphaFold DB-derived subset, not the full training mixture. Other distilled, synthetic, small-molecule, RNA and protein-ligand components are omitted. A source snapshot date is not a universal checkpoint training cutoff, and subset availability does not establish which components trained a particular checkpoint. The training-data field therefore remains unverified for the named checkpoint pair.
+  - Published metadata and the loading and sampling recipe cover the released subset. Complete reconstruction of the named pair's training population remains unverified, so the data-recipe field does not promote that subset recipe to a complete model-training recipe. Evaluation-code availability identifies the published scoring interface, not a local reproduction of the earlier comparative benchmark.
+  - The released checkpoints initialize inference or fine-tuning, but do not contain the full optimizer and loop state needed to resume an interrupted training run. Optional refolding environments and weights are separate assets.
+acknowledgements: []
+last_verified: "2026-10-25"

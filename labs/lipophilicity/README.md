@@ -32,9 +32,11 @@ uv run jupyter lab labs/lipophilicity/lipophilicity_tutorial.ipynb
 ```
 
 The setup cell installs missing or mismatched pinned packages into the active
-environment. Use a dedicated local environment; if a changed dependency was already
-imported, restart as instructed. Full notebook execution creates a fresh temporary
-output directory. Re-running export cells replaces files only within that directory.
+environment. It checks imported versions as well as installed package metadata.
+Use a dedicated local environment; if an older dependency is still loaded, restart
+as instructed. Full notebook execution creates a fresh output
+directory beneath the notebook's current working directory, visible in its file
+browser. Re-running export cells replaces files only within that directory.
 Download `summary.json`, `split-membership.csv`, `test-predictions.csv`, and
 `prediction-errors.png` before the runtime expires. The notebook does not write to
 any existing lab result directory.

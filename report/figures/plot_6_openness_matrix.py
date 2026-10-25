@@ -4,6 +4,7 @@ Source of every number: `site/public/data/openness.v1.json`, the openness
 projection of the catalogue export, joined to `site/public/data/resources.v1.json`
 on the record id to recover the record's kind. The join key is the id and
 nothing else; the openness values are not recomputed.
+This is the live canonical projection, not a historical release snapshot.
 
 What the figure shows. Each cell is one record kind against one of the seven
 openness dimensions. The fill is the share of that kind's records for which the
@@ -35,6 +36,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
 import figure_style as style  # noqa: E402  (the module sits next to this script)
+from figure_sources import catalogue_projection, validate_openness_join  # noqa: E402
 
 FIGURE_NUMBER = 6
 STEM = "plot_6_openness_matrix"
@@ -52,11 +54,13 @@ BIN_EDGES = [0.0, 0.25, 0.5, 0.75, 1.0]
 BIN_LABELS = ["none", "up to 25%", "up to 50%", "up to 75%", "all"]
 
 
-def caption(record_count: int) -> str:
+def caption(resources: list[dict]) -> str:
     """The caption fragment, with its numbers taken from the file that was read."""
+    snapshot = catalogue_projection(resources)
     return (
-        f"Openness by record kind and by the seven openness dimensions, over {record_count} "
-        "catalogue records. The fill is the share of a kind's records for which a dimension is "
+        f"Openness by record kind and by the seven openness dimensions, over {snapshot.records} "
+        f"catalogue records. {snapshot.source_note()} "
+        "The fill is the share of a kind's records for which a dimension is "
         "available, counted over the records for which it applies, and the hatch says why the rest "
         "is not available, unverified, recorded as not available, or not applicable to that kind. "
         "Openness is recorded per dimension and is never collapsed here into a single open or "
@@ -79,6 +83,7 @@ def build() -> dict[str, Path]:
 
     openness = style.load_json(style.DATA_DIR / "openness.v1.json")
     resources = style.load_json(style.DATA_DIR / "resources.v1.json")
+    validate_openness_join(resources, openness)
     kind_of = {record["id"]: record["kind"] for record in resources}
 
     kind_counts = Counter(kind_of.values())
@@ -186,7 +191,7 @@ def build() -> dict[str, Path]:
     hatch_legend.set_in_layout(False)
 
     written = style.save(fig, STEM)
-    style.register_caption(FIGURE_NUMBER, caption(len(openness)))
+    style.register_caption(FIGURE_NUMBER, caption(resources))
     return written
 
 

@@ -2,7 +2,13 @@
 
 AIDD Commons accepts source records, corrections, lessons, labs, reproducible experiment reports, translations, accessibility fixes, and engineering improvements. The governing rule is simple: a reader must be able to distinguish what a source directly establishes from what the project decides, infers, or has not verified.
 
-Start with the matching issue form. Small factual corrections may go directly to a pull request when the evidence and affected paths are unambiguous. Material changes to scope, schema, evaluation policy, licensing, or governance require an RFC.
+Start with the matching issue form on the website's Contribute page. Learning
+questions in English or Chinese are welcome; only the page or exercise and the
+question are required, while an attempted answer is optional. See the
+[question and exchange process](GOVERNANCE.md#learning-questions-and-exchange).
+Small factual corrections may go directly to a pull request when the evidence
+and affected paths are unambiguous. Material changes to scope, schema, evaluation
+policy, licensing, or governance require an RFC.
 
 ## Source records
 

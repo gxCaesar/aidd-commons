@@ -149,6 +149,7 @@ export type DepthCandidate = {
 
 export type ComparisonPayload = {
   as_of: string;
+  external_survey_frozen_on: string;
   claims: {
     most_comprehensive: {
       self_lower_at_explained: number;

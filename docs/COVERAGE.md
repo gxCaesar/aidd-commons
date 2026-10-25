@@ -6,7 +6,7 @@ reports current measured coverage, not an exhaustive survey of AI drug discovery
 
 ## Overall registry
 
-228 distinct validated resource records are in the current
+232 distinct validated resource records are in the current
 catalog. A source count is not proof of comprehensiveness: omitted domains,
 unverified legal terms, and missing evaluation protocols remain coverage gaps.
 
@@ -20,7 +20,7 @@ summed into an overall total.
 | ------------------------------ | ------: |
 | active-learning                |       9 |
 | admet-pk                       |      16 |
-| biologics-design               |      28 |
+| biologics-design               |      29 |
 | candidate-nomination           |      11 |
 | data-governance                |      23 |
 | drug-discovery-foundations     |       6 |
@@ -28,13 +28,13 @@ summed into an overall total.
 | evaluation-and-reproducibility |      22 |
 | foundations                    |      16 |
 | machine-learning               |      11 |
-| mechanism-targets              |      15 |
-| molecular-generation           |      27 |
+| mechanism-targets              |      16 |
+| molecular-generation           |      28 |
 | physics-based-modeling         |      18 |
 | qsar-properties                |       8 |
-| representations                |      39 |
-| scientific-agents              |      18 |
-| structure-and-pockets          |      23 |
+| representations                |      40 |
+| scientific-agents              |      19 |
+| structure-and-pockets          |      24 |
 | synthesis-and-automation       |       8 |
 
 ## Coverage by resource kind
@@ -42,10 +42,10 @@ summed into an overall total.
 | Category    | Records |
 | ----------- | ------: |
 | agent       |      11 |
-| benchmark   |      26 |
+| benchmark   |      27 |
 | database    |      22 |
 | dataset     |      14 |
-| model       |      81 |
+| model       |      84 |
 | model-asset |       1 |
 | paper       |       4 |
 | software    |      59 |
@@ -62,13 +62,13 @@ source-backed metadata; it does not mean the resource is unusable.
 | analysis                |       6 |
 | analyze                 |       3 |
 | benchmark-discovery     |       1 |
-| biologics-design        |       6 |
+| biologics-design        |       7 |
 | candidate-nomination    |       5 |
 | data-intake             |      31 |
 | design                  |      60 |
 | disease-mechanism       |      11 |
 | dmpk-toxicology         |      13 |
-| evaluation              |     103 |
+| evaluation              |     107 |
 | evidence-synthesis      |       6 |
 | governance              |       3 |
 | hit-discovery           |      46 |
@@ -81,8 +81,8 @@ source-backed metadata; it does not mean the resource is unusable.
 | property-prediction     |      24 |
 | representation-learning |      43 |
 | repurposing             |       2 |
-| structure-prediction    |      24 |
-| target-discovery        |      20 |
+| structure-prediction    |      25 |
+| target-discovery        |      21 |
 | unclassified            |       1 |
 
 ## Coverage by access level
@@ -91,10 +91,10 @@ source-backed metadata; it does not mean the resource is unusable.
 | ---------------- | ------: |
 | closed           |       2 |
 | gated            |      10 |
-| open_source      |     162 |
+| open_source      |     164 |
 | open_weights     |       1 |
-| research_only    |       6 |
-| source_available |      41 |
+| research_only    |       7 |
+| source_available |      42 |
 | unverified       |       6 |
 
 ## Evidence-state interpretation
@@ -107,7 +107,7 @@ for a particular experimental protocol.
 
 | Category           | Records |
 | ------------------ | ------: |
-| claim-backed       |     227 |
+| claim-backed       |     231 |
 | metadata-supported |       1 |
 
 ## v0.2a measured comparison audit

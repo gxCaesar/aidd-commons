@@ -1996,6 +1996,160 @@
     "last_verified": "2026-09-09"
   },
   {
+    "id": "benchmark-bixbench3",
+    "name": "BixBench3, public release v1.0.0",
+    "kind": "benchmark",
+    "summary": "Research-study-scale computational-biology evaluation in which an agent follows a supplied objective and high-level methods to turn raw data into structured artifacts. Artifact agreement is graded programmatically, while process and failure modes are judged separately.",
+    "canonical_url": "https://github.com/EdisonScientific/BixBench3",
+    "identifiers": [
+      {
+        "scheme": "paper",
+        "value": "BixBench3: Benchmarking AI agents on research-study-scale computational biology tasks; Koch and colleagues, arXiv 2608.25286v2, revised 2026-09-22",
+        "url": "https://arxiv.org/abs/2608.25286"
+      },
+      {
+        "scheme": "documentation",
+        "value": "Public runner and grader; raw-input and ground-truth manifests identify releases/v1.0.0",
+        "url": "https://github.com/EdisonScientific/BixBench3"
+      }
+    ],
+    "stages": [
+      "evaluation"
+    ],
+    "modalities": [
+      "biological-data",
+      "scientific-text"
+    ],
+    "tasks": [
+      "scientific-workflow-reproduction",
+      "artifact-evaluation",
+      "agent-evaluation"
+    ],
+    "relations": [],
+    "status": {
+      "value": "active",
+      "evidence": [
+        "repository"
+      ]
+    },
+    "access_level": {
+      "value": "source_available",
+      "evidence": [
+        "repository",
+        "license"
+      ]
+    },
+    "openness": {
+      "inference_code": {
+        "value": "available",
+        "evidence": [
+          "repository"
+        ]
+      },
+      "training_code": {
+        "value": "not_applicable",
+        "evidence": [
+          "paper"
+        ]
+      },
+      "weights": {
+        "value": "not_applicable",
+        "evidence": [
+          "paper"
+        ]
+      },
+      "architecture": {
+        "value": "not_applicable",
+        "evidence": [
+          "paper"
+        ]
+      },
+      "data_recipe": {
+        "value": "available",
+        "evidence": [
+          "paper",
+          "repository"
+        ]
+      },
+      "training_data": {
+        "value": "not_applicable",
+        "evidence": [
+          "paper"
+        ]
+      },
+      "evaluation_code": {
+        "value": "available",
+        "evidence": [
+          "repository"
+        ]
+      }
+    },
+    "licenses": [
+      {
+        "name": "CC BY-SA 4.0",
+        "scope": "Edison-authored runner, grader and benchmark materials. Mirrored scientific data and published reference artifacts retain their upstream terms; separately licensed 10x binaries are not redistributed.",
+        "evidence": [
+          "repository",
+          "license"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "paper-record",
+        "url": "https://arxiv.org/abs/2608.25286",
+        "label": "Primary record opened 2026-10-25, identifying submission on 2026-08-26 and revision v2 on 2026-09-22",
+        "supports": [
+          "name",
+          "kind",
+          "summary",
+          "identifiers",
+          "stages",
+          "modalities",
+          "tasks",
+          "caveats"
+        ]
+      },
+      {
+        "id": "paper",
+        "url": "https://arxiv.org/html/2608.25286v2",
+        "label": "Full-text Sections 4.1–4.6 opened 2026-10-25, including artifact grading, aggregation, runtime and task construction",
+        "supports": [
+          "summary",
+          "tasks",
+          "caveats"
+        ]
+      },
+      {
+        "id": "repository",
+        "url": "https://github.com/EdisonScientific/BixBench3",
+        "label": "Public README opened 2026-10-25, including v1.0.0 manifests, runtime prerequisites, graders and material-specific terms",
+        "supports": [
+          "name",
+          "summary",
+          "identifiers",
+          "caveats"
+        ]
+      },
+      {
+        "id": "license",
+        "url": "https://raw.githubusercontent.com/EdisonScientific/BixBench3/main/LICENSE",
+        "label": "CC BY-SA 4.0 licence file opened 2026-10-25",
+        "supports": []
+      }
+    ],
+    "caveats": [
+      "This version is distinct from the earlier BixBench question-and-capsule evaluation. The paper evaluates 20 tasks containing 138 artifacts, with the objective and high-level method supplied to the agent.",
+      "Artifact grading aligns identifiers and evaluates numerical or categorical agreement. A task score is the fraction of its artifacts that pass, not a binary declaration that the complete study was reproduced.",
+      "Agreement with published artifacts does not independently validate the original biological conclusion. A separate model judge assesses process and failure modes; its judgment is not the deterministic artifact score.",
+      "The runner requires a billed GCP project, provider APIs, and separately obtained Cell Ranger and Cell Ranger ARC binaries under their own terms. Public code does not make a run fee-free or dependency-free.",
+      "Task and grader development used model attempts and expert-reviewed artifacts. This exposure belongs to the evaluation history and must not be relabelled as untouched confirmation.",
+      "Inference-code availability refers to the public agent runner, not released weights for the models it calls. Task inputs and reference artifacts are evaluation assets, not a model training-data release. No benchmark or paid service was run for this record."
+    ],
+    "acknowledgements": [],
+    "last_verified": "2026-10-25"
+  },
+  {
     "id": "benchmark-cache-challenge",
     "name": "CACHE Challenge",
     "kind": "benchmark",
@@ -16858,6 +17012,159 @@
     "last_verified": "2026-09-04"
   },
   {
+    "id": "model-openfold3-openbind0",
+    "name": "OpenFold3 with OpenBind-0 default parameters",
+    "kind": "model",
+    "summary": "The OpenBind-0 biomolecular structure-prediction checkpoint used by default in OpenFold3 package releases from 0.5.0, with a 2025-06-30 PDB training cutoff. Package version, parameter set and chemical-steering settings remain separate parts of the prediction protocol.",
+    "canonical_url": "https://github.com/aqlaboratory/openfold-3",
+    "identifiers": [
+      {
+        "scheme": "model",
+        "value": "openbind-2025-06-30-174k, file of3-ob-2025-06-30-174k.pt",
+        "url": "https://openfold-3.readthedocs.io/en/latest/parameters_reference.html"
+      },
+      {
+        "scheme": "release",
+        "value": "OpenBind-0 announcement, 2026-08-21; default parameters in OpenFold3 >=0.5.0",
+        "url": "https://openbind.uk/news/blog-openbind-0-advancing-open-molecular-structure-prediction/"
+      }
+    ],
+    "stages": [
+      "structure-prediction",
+      "evaluation"
+    ],
+    "modalities": [
+      "biomolecular-complex",
+      "protein-ligand-complex"
+    ],
+    "tasks": [
+      "structure-prediction",
+      "protein-ligand-cofolding",
+      "pose-validation"
+    ],
+    "relations": [],
+    "status": {
+      "value": "active",
+      "evidence": [
+        "repository"
+      ]
+    },
+    "access_level": {
+      "value": "open_source",
+      "evidence": [
+        "repository",
+        "license",
+        "release"
+      ]
+    },
+    "openness": {
+      "inference_code": {
+        "value": "available",
+        "evidence": [
+          "repository"
+        ]
+      },
+      "training_code": {
+        "value": "available",
+        "evidence": [
+          "repository"
+        ]
+      },
+      "weights": {
+        "value": "available",
+        "evidence": [
+          "parameters",
+          "release"
+        ]
+      },
+      "architecture": {
+        "value": "available",
+        "evidence": [
+          "repository",
+          "release"
+        ]
+      },
+      "data_recipe": {
+        "value": "available",
+        "evidence": [
+          "repository",
+          "release"
+        ]
+      },
+      "training_data": {
+        "value": "unverified"
+      },
+      "evaluation_code": {
+        "value": "unverified"
+      }
+    },
+    "licenses": [
+      {
+        "name": "Apache-2.0",
+        "scope": "OpenFold3 repository source and the OpenBind-0 model weights and recipes described by the release announcement. The complete inventory and terms of upstream training structures were not inspected here.",
+        "evidence": [
+          "license",
+          "release"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "repository",
+        "url": "https://github.com/aqlaboratory/openfold-3",
+        "label": "Official README opened 2026-10-25, including default parameter change, original OpenFold distinction, training interfaces and preview status",
+        "supports": [
+          "name",
+          "kind",
+          "summary",
+          "identifiers",
+          "stages",
+          "modalities",
+          "tasks",
+          "caveats"
+        ]
+      },
+      {
+        "id": "parameters",
+        "url": "https://openfold-3.readthedocs.io/en/latest/parameters_reference.html",
+        "label": "Parameter reference opened 2026-10-25, including current and deprecated checkpoint names and package compatibility",
+        "supports": [
+          "name",
+          "summary",
+          "identifiers",
+          "caveats"
+        ]
+      },
+      {
+        "id": "release",
+        "url": "https://openbind.uk/news/blog-openbind-0-advancing-open-molecular-structure-prediction/",
+        "label": "Author release analysis dated 2026-08-21 and opened 2026-10-25, including training cutoff, chemical steering and target-dependent failures",
+        "supports": [
+          "summary",
+          "identifiers",
+          "modalities",
+          "tasks",
+          "caveats"
+        ]
+      },
+      {
+        "id": "license",
+        "url": "https://github.com/aqlaboratory/openfold-3/blob/main/LICENSE",
+        "label": "Apache-2.0 code licence opened 2026-10-25",
+        "supports": []
+      }
+    ],
+    "caveats": [
+      "This record identifies the OpenBind-0 default checkpoint, not the original AlphaFold2-based OpenFold repository or every OpenFold3 preview parameter set. Deprecated preview2 parameters require a compatible package release below 0.5.0.",
+      "The repository still describes a research preview and lists final-model work as ongoing. The current default must not be described as completed parity with every AlphaFold3 capability.",
+      "The release states that code, weights, training recipes and data are public, but the complete current-default training-corpus inventory and its asset-level access and terms were not checked end to end. Training data therefore remain unverified in this record. Linked benchmark scripts were not inspected, leaving evaluation code unverified.",
+      "Inference-time chemical steering changes predicted ligand geometry. Pose accuracy and chemical validity remain separate from binding affinity and experimental activity.",
+      "Comparisons span different training cutoffs and target regimes. More recent training data and fragment fine-tuning do not uniformly repair difficult pocket and conformational failures. The record supplies no universal ranking and ran no inference or benchmark."
+    ],
+    "acknowledgements": [],
+    "last_verified": "2026-10-25"
+  },
+  {
     "id": "model-pephar",
     "name": "PepHAR",
     "kind": "model",
@@ -17155,6 +17462,220 @@
     ],
     "acknowledgements": [],
     "last_verified": "2026-10-21"
+  },
+  {
+    "id": "model-pie-replogle-wdataset",
+    "name": "PIE, Replogle within-dataset release",
+    "kind": "model",
+    "summary": "A population-level perturbation-effect predictor combining biological knowledge, control expression and training response evidence. This release provides four independently trained held-out-cell-line models with differential-expression probability, log2 fold-change and processed-mean-change outputs.",
+    "canonical_url": "https://huggingface.co/arcinstitute/PIE_replogle_wdataset",
+    "identifiers": [
+      {
+        "scheme": "code",
+        "value": "PIE Perceiver IO implementation and training, evaluation and inference CLI",
+        "url": "https://github.com/ArcInstitute/pie"
+      },
+      {
+        "scheme": "model",
+        "value": "replogle_wdataset hepg2, jurkat, k562 and rpe1 held-out folds, each selected by validation binary_auprc",
+        "url": "https://huggingface.co/arcinstitute/PIE_replogle_wdataset"
+      },
+      {
+        "scheme": "dataset",
+        "value": "Replogle-Nadig essential Perturb-seq processed data",
+        "url": "https://huggingface.co/datasets/arcinstitute/PIE_replogle_nadig_essential"
+      },
+      {
+        "scheme": "dataset",
+        "value": "Canonical unseen-context, unseen-perturbation and joint-holdout splits",
+        "url": "https://huggingface.co/datasets/arcinstitute/PIE_splits"
+      }
+    ],
+    "stages": [
+      "target-discovery",
+      "evaluation"
+    ],
+    "modalities": [
+      "single-cell",
+      "gene-expression"
+    ],
+    "tasks": [
+      "perturbation-prediction",
+      "differential-expression-prediction",
+      "out-of-distribution-evaluation"
+    ],
+    "relations": [],
+    "status": {
+      "value": "active",
+      "evidence": [
+        "repository"
+      ]
+    },
+    "access_level": {
+      "value": "research_only",
+      "evidence": [
+        "code-license",
+        "model-license",
+        "model-policy"
+      ]
+    },
+    "openness": {
+      "inference_code": {
+        "value": "available",
+        "evidence": [
+          "repository",
+          "model-card"
+        ]
+      },
+      "training_code": {
+        "value": "available",
+        "evidence": [
+          "repository"
+        ]
+      },
+      "weights": {
+        "value": "available",
+        "evidence": [
+          "model-card"
+        ]
+      },
+      "architecture": {
+        "value": "available",
+        "evidence": [
+          "repository"
+        ]
+      },
+      "data_recipe": {
+        "value": "available",
+        "evidence": [
+          "data-card",
+          "sources-card",
+          "splits-card"
+        ]
+      },
+      "training_data": {
+        "value": "available",
+        "evidence": [
+          "data-card",
+          "sources-card"
+        ]
+      },
+      "evaluation_code": {
+        "value": "available",
+        "evidence": [
+          "repository",
+          "model-card",
+          "splits-card"
+        ]
+      }
+    },
+    "licenses": [
+      {
+        "name": "CC BY-NC-SA 4.0",
+        "scope": "PIE repository source code, separately from the checkpoints and accompanying model files.",
+        "evidence": [
+          "code-license"
+        ]
+      },
+      {
+        "name": "Arc Research Institute PIE Model Non-Commercial License",
+        "scope": "The published model checkpoints and accompanying model files, subject also to the PIE Model Acceptable Use Policy. The model licence is dated 2026-10-02 and is separate from the code licence.",
+        "evidence": [
+          "model-card",
+          "model-license",
+          "model-policy"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "repository",
+        "url": "https://github.com/ArcInstitute/pie",
+        "label": "Repository README opened 2026-10-25, including Perceiver IO inputs and training, evaluation and inference recipes",
+        "supports": [
+          "name",
+          "kind",
+          "summary",
+          "identifiers",
+          "stages",
+          "modalities",
+          "tasks",
+          "caveats"
+        ]
+      },
+      {
+        "id": "model-card",
+        "url": "https://huggingface.co/arcinstitute/PIE_replogle_wdataset",
+        "label": "Model card opened 2026-10-25, including output definitions, held-out fold identities, validation selection and licence links",
+        "supports": [
+          "name",
+          "summary",
+          "identifiers",
+          "tasks",
+          "caveats"
+        ]
+      },
+      {
+        "id": "data-card",
+        "url": "https://huggingface.co/datasets/arcinstitute/PIE_replogle_nadig_essential",
+        "label": "Processed-data card opened 2026-10-25 establishes the prepared fitting inputs, controls and processing recipe for the named replogle_wdataset folds; original upstream corpora and their terms remain unverified",
+        "supports": [
+          "identifiers",
+          "caveats"
+        ]
+      },
+      {
+        "id": "sources-card",
+        "url": "https://huggingface.co/datasets/arcinstitute/PIE_sources",
+        "label": "Knowledge-source card opened 2026-10-25 establishes the prepared knowledge inputs used by the named replogle_wdataset folds; upstream embedding-model training corpora and redistribution terms remain unverified",
+        "supports": [
+          "caveats"
+        ]
+      },
+      {
+        "id": "splits-card",
+        "url": "https://huggingface.co/datasets/arcinstitute/PIE_splits",
+        "label": "Canonical split card opened 2026-10-25, including held-out contexts, perturbations and pair definitions",
+        "supports": [
+          "identifiers",
+          "tasks",
+          "caveats"
+        ]
+      },
+      {
+        "id": "code-license",
+        "url": "https://github.com/ArcInstitute/pie/blob/main/LICENSE.md",
+        "label": "CC BY-NC-SA 4.0 source-code licence opened 2026-10-25",
+        "supports": []
+      },
+      {
+        "id": "model-license",
+        "url": "https://huggingface.co/arcinstitute/PIE_replogle_wdataset/blob/main/MODEL_LICENSE.md",
+        "label": "Model Non-Commercial License opened 2026-10-25, last updated 2026-10-02",
+        "supports": [
+          "caveats"
+        ]
+      },
+      {
+        "id": "model-policy",
+        "url": "https://huggingface.co/arcinstitute/PIE_replogle_wdataset/blob/main/MODEL_ACCEPTABLE_USE_POLICY.md",
+        "label": "Model Acceptable Use Policy opened 2026-10-25, last updated 2026-10-02",
+        "supports": [
+          "caveats"
+        ]
+      }
+    ],
+    "caveats": [
+      "Each row represents a context-perturbation pair. Population differential-expression probability and effect estimates are not an individualized before-and-after cell trajectory or independent causal validation.",
+      "The four checkpoint directories identify held-out cell lines. They are independent folds, not an ensemble. A checkpoint selected by validation AUPRC must be matched to its own training assets, gene axis and canonical split.",
+      "Training-data availability refers to published processed data and knowledge-source assets for the named experiment. Their upstream licences and redistribution terms remain unverified and are not supplied by the code licence.",
+      "Code uses CC BY-NC-SA 4.0, while checkpoints and accompanying model files use a separate noncommercial model licence and acceptable-use policy. Neither asset is an unrestricted commercial-use grant.",
+      "Differential-expression targets depend on preprocessing, control selection, gene filtering and statistical thresholds. The unseen-context, unseen-perturbation and joint settings support different generalization claims.",
+      "Rebuilding some knowledge embeddings uses an external API, while the published experiment recipes use prepared assets. No API call, checkpoint inference, training or benchmark was run for this record.",
+      "The linked preprint could not be opened directly because it returned HTTP 403. This record uses the opened repository and model/data cards and imports no paper-only numerical performance claim."
+    ],
+    "acknowledgements": [],
+    "last_verified": "2026-10-25"
   },
   {
     "id": "model-pocket2mol",
@@ -18291,6 +18812,172 @@
     ],
     "acknowledgements": [],
     "last_verified": "2026-10-23"
+  },
+  {
+    "id": "model-rfd4-proteina-20261019",
+    "name": "RFD4-Proteina, 2026-10-19 release",
+    "kind": "model",
+    "summary": "A biomolecular design model that jointly generates sequence identities and all-atom structures through a latent flow model paired with its trained autoencoder. This record identifies the matched 2026-10-19 release rather than the earlier pair used for published efficiency measurements.",
+    "canonical_url": "https://huggingface.co/nvidia/RFD4-Proteina",
+    "identifiers": [
+      {
+        "scheme": "code",
+        "value": "RFD4-Proteina source and generation, training and evaluation interfaces",
+        "url": "https://github.com/RosettaCommons/RFD4-Proteina"
+      },
+      {
+        "scheme": "model",
+        "value": "rfd4-proteina-flow-release-2026-10-19 paired with rfd4-proteina-ae-release-2026-10-19",
+        "url": "https://huggingface.co/nvidia/RFD4-Proteina"
+      },
+      {
+        "scheme": "dataset",
+        "value": "Published PDB- and AlphaFold DB-derived training-data subset",
+        "url": "https://huggingface.co/datasets/nvidia/RFD4-Proteina"
+      }
+    ],
+    "stages": [
+      "biologics-design",
+      "evaluation"
+    ],
+    "modalities": [
+      "protein",
+      "biomolecular-complex"
+    ],
+    "tasks": [
+      "protein-generation",
+      "sequence-structure-co-design",
+      "protein-binder-design"
+    ],
+    "relations": [],
+    "status": {
+      "value": "active",
+      "evidence": [
+        "repository"
+      ]
+    },
+    "access_level": {
+      "value": "open_source",
+      "evidence": [
+        "model-card",
+        "license"
+      ]
+    },
+    "openness": {
+      "inference_code": {
+        "value": "available",
+        "evidence": [
+          "repository"
+        ]
+      },
+      "training_code": {
+        "value": "available",
+        "evidence": [
+          "repository"
+        ]
+      },
+      "weights": {
+        "value": "available",
+        "evidence": [
+          "model-card"
+        ]
+      },
+      "architecture": {
+        "value": "available",
+        "evidence": [
+          "model-card",
+          "repository"
+        ]
+      },
+      "data_recipe": {
+        "value": "unverified",
+        "evidence": [
+          "data-card"
+        ]
+      },
+      "training_data": {
+        "value": "unverified",
+        "evidence": [
+          "data-card"
+        ]
+      },
+      "evaluation_code": {
+        "value": "available",
+        "evidence": [
+          "repository"
+        ]
+      }
+    },
+    "licenses": [
+      {
+        "name": "BSD-3-Clause",
+        "scope": "Repository source and the RFD4 model and weights, as identified by the code licence and model card. External refolding models and other optional assets retain their own terms.",
+        "evidence": [
+          "license",
+          "model-card"
+        ]
+      },
+      {
+        "name": "CC BY 4.0",
+        "scope": "Annotations, sampling tables, indices and packaging added to the published training-data subset. Upstream molecular structures retain their source terms.",
+        "evidence": [
+          "data-card"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "model-card",
+        "url": "https://huggingface.co/nvidia/RFD4-Proteina",
+        "label": "Model card opened 2026-10-25, including paired checkpoint identities, the earlier-benchmark warning and licence scope",
+        "supports": [
+          "name",
+          "kind",
+          "summary",
+          "identifiers",
+          "stages",
+          "modalities",
+          "tasks",
+          "caveats"
+        ]
+      },
+      {
+        "id": "repository",
+        "url": "https://github.com/RosettaCommons/RFD4-Proteina",
+        "label": "Repository README opened 2026-10-25, including generation, training, scoring and search interfaces",
+        "supports": [
+          "summary",
+          "identifiers",
+          "tasks",
+          "caveats"
+        ]
+      },
+      {
+        "id": "data-card",
+        "url": "https://huggingface.co/datasets/nvidia/RFD4-Proteina",
+        "label": "Dataset card opened 2026-10-25 establishes a released PDB/AFDB subset only; the complete recipe and training-data attribution for the named checkpoint pair remain unverified",
+        "supports": [
+          "identifiers",
+          "caveats"
+        ]
+      },
+      {
+        "id": "license",
+        "url": "https://github.com/RosettaCommons/RFD4-Proteina/blob/main/LICENSE",
+        "label": "BSD 3-Clause licence file opened 2026-10-25",
+        "supports": []
+      }
+    ],
+    "caveats": [
+      "The flow model and autoencoder form a matched pair. Components from incompatible releases do not define the same latent space and must not be mixed.",
+      "The model card attributes its published efficiency measurements to the previous release pair in an October 9, 2026 benchmark. Those measurements have not been repeated on the 2026-10-19 pair and do not describe its measured performance.",
+      "Computational filter passers per GPU-hour are not experimental binder yields. No model inference or benchmark was run for this record.",
+      "The published training data cover a PDB- and AlphaFold DB-derived subset, not the full training mixture. Other distilled, synthetic, small-molecule, RNA and protein-ligand components are omitted. A source snapshot date is not a universal checkpoint training cutoff, and subset availability does not establish which components trained a particular checkpoint. The training-data field therefore remains unverified for the named checkpoint pair.",
+      "Published metadata and the loading and sampling recipe cover the released subset. Complete reconstruction of the named pair's training population remains unverified, so the data-recipe field does not promote that subset recipe to a complete model-training recipe. Evaluation-code availability identifies the published scoring interface, not a local reproduction of the earlier comparative benchmark.",
+      "The released checkpoints initialize inference or fine-tuning, but do not contain the full optimizer and loop state needed to resume an interrupted training run. Optional refolding environments and weights are separate assets."
+    ],
+    "acknowledgements": [],
+    "last_verified": "2026-10-25"
   },
   {
     "id": "model-rfdiffusion",

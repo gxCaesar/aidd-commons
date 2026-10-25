@@ -1,11 +1,15 @@
 """Execute exact teaching cells in clean kernels on explicitly invented labels."""
 
 import json
+import subprocess
+import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import nbformat
 import numpy as np
 import pandas as pd
+import pytest
 from nbclient import NotebookClient
 
 LAB = Path(__file__).parents[1] / "lipophilicity"
@@ -27,6 +31,25 @@ def test_notebooks_have_identical_executable_cells_and_clean_portable_outputs():
     assert [cell.source for cell in en.cells if cell.cell_type == "code"] == [
         cell.source for cell in zh.cells if cell.cell_type == "code"
     ]
+
+
+def test_setup_refuses_a_stale_import_even_when_installed_metadata_is_pinned(monkeypatch):
+    monkeypatch.setitem(sys.modules, "numpy", SimpleNamespace(__version__="0.0.0"))
+    monkeypatch.setattr(
+        subprocess, "check_call", lambda *_args: pytest.fail("stale imports require a restart")
+    )
+    setup = next(cell for cell in notebook().cells if cell.id == "setup-code")
+    with pytest.raises(RuntimeError, match="numpy.*Restart"):
+        exec(setup.source, {})
+
+
+def test_setup_accepts_the_equivalent_zero_padded_rdkit_release(monkeypatch):
+    monkeypatch.setitem(sys.modules, "rdkit", SimpleNamespace(__version__="2025.09.6"))
+    monkeypatch.setattr(
+        subprocess, "check_call", lambda *_args: pytest.fail("pinned dependencies are installed")
+    )
+    setup = next(cell for cell in notebook().cells if cell.id == "setup-code")
+    exec(setup.source, {})
 
 
 def execute_fixture(tmp_path, language, mutation=False):
@@ -65,18 +88,19 @@ def execute_fixture(tmp_path, language, mutation=False):
         data.loc[:1, "exp"] += 10  # Singleton scaffold ordering puts first rows in test.
     path = tmp_path / "constructed.csv"
     data.to_csv(path, index=False)
-    output = tmp_path / "student-output"
-    output.mkdir()
     for cell in book.cells:
         if "parameters" in cell.metadata.get("tags", []):
-            cell.source = (
-                f"DATA_PATH = Path({str(path)!r})\n"
-                "DATA_KIND = 'constructed-test-fixture-not-assay-results'\n"
-                "DATA_URL = ''\n"
-                f"OUTPUT_DIR = Path({str(output)!r})\n"
+            cell.source = cell.source.replace(
+                'DATA_PATH = Path("Lipophilicity.csv")', f"DATA_PATH = Path({str(path)!r})"
+            ).replace(
+                'DATA_KIND = "public-MoleculeNet-lipophilicity"',
+                'DATA_KIND = "constructed-test-fixture-not-assay-results"',
             )
     executed = NotebookClient(book, timeout=120, kernel_name="python3").execute(cwd=str(tmp_path))
     nbformat.write(executed, tmp_path / "executed.ipynb")
+    reports = list(tmp_path.glob("aidd-lipophilicity-*/summary.json"))
+    assert len(reports) == 1, "keep output beside the notebook for file-browser download"
+    output = reports[0].parent
     result = json.loads((output / "summary.json").read_text())
     assert result["data_kind"] == "constructed-test-fixture-not-assay-results"
     assert result["counts"] == {"train": 16, "validation": 2, "test": 2}

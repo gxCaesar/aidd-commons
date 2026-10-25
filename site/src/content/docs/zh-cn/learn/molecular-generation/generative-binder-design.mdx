@@ -1,6 +1,6 @@
 ---
 title: 生成式结合蛋白设计的已发布资产
-description: 从流水线、检查点、依赖、数据与许可边界阅读四份注明日期的结合蛋白设计记录。
+description: 从流水线、检查点、依赖、数据与许可边界阅读五份注明日期的结合蛋白设计记录。
 ---
 
 import LessonProgress from "../../../../../components/LessonProgress.astro";
@@ -14,13 +14,13 @@ import ScrollableRegions from "../../../../../components/ScrollableRegions.astro
 
 ## 学习目标与前置知识
 
-学完[流模型与受约束分子搜索](/zh-cn/learn/molecular-generation/flows-and-constrained-search/)后，借这份注明日期的阅读材料把四份结合蛋白设计记录作为发布物检查。完成本课后，你应能说明流水线的哪一部分可用，区分可取得的检查点与完整的训练材料，并指出依赖与许可证据止于何处。
+学完[流模型与受约束分子搜索](/zh-cn/learn/molecular-generation/flows-and-constrained-search/)后，借这份注明日期的阅读材料把五份结合蛋白设计记录作为发布物检查。完成本课后，你应能说明流水线的哪一部分可用，区分可取得的检查点与完整的训练材料，并指出依赖与许可证据止于何处。
 
 这是一份附有书面练习的来源阅读。本课没有运行模型或流水线、下载权重或下载数据集。记录不提供匹配的比较，因此本课不作性能排名或结合蛋白质量主张。
 
 ## 任务约定
 
-这些记录描述不同类型的资产。BindCraft 发布一条流水线，对设计进行过滤，直至达到所要求的通过筛选的候选数量。AlphaProteo 为一个访问受限的模型发布靶点输入准备 notebook。BoltzGen 接收设计规格并返回排序后的候选。RFdiffusion2 为原子层面的支架构建模型发布推理资产。排序后的候选、已准备的输入与已发布检查点是不同的输出，其中没有一项是实测结合结果。
+这些记录描述不同类型的资产。BindCraft 发布一条流水线，对设计进行过滤，直至达到所要求的通过筛选的候选数量。AlphaProteo 为一个访问受限的模型发布靶点输入准备 notebook。BoltzGen 接收设计规格并返回排序后的候选。RFdiffusion2 为原子层面的支架构建模型发布推理资产。RFD4-Proteina 用配对的流模型与自编码器联合生成序列身份和全原子结构。排序后的候选、已准备的输入与已发布检查点是不同的输出，其中没有一项是实测结合结果。
 
 本课的任务是识别实际发布的资产及其依赖。开放的仓库许可不能自动支配另行获取的模型、未发布的服务或条款未声明的训练数据。
 
@@ -48,6 +48,12 @@ README 称大型模型还需要今后才会发布的蒸馏数据集。因此，�
 
 仓库描述了一个从 41 种 M-CSA 酶收集的基准，却没有描述训练语料。[项目文档](https://rosettacommons.github.io/RFdiffusion2/)建议结合蛋白设计使用原始 RFdiffusion。该基准是评估描述，并不证明 RFdiffusion2 在哪些材料上训练，也不证明某项结合蛋白专属的发布主张。
 
+## RFD4-Proteina：识别发布的配对检查点
+
+[RFD4-Proteina 模型卡](https://huggingface.co/nvidia/RFD4-Proteina)指明配套的 `rfd4-proteina-flow-release-2026-10-19` 与 `rfd4-proteina-ae-release-2026-10-19`。自编码器定义流模型使用的潜在表示，因此不兼容版本的组件不能混用。[仓库](https://github.com/RosettaCommons/RFD4-Proteina)提供生成、训练和评分接口。模型卡明确将已发表的效率测量归于 2026-10-09 基准所用的上一对检查点；具名的当前配对没有重做这些测量。每 GPU 小时通过计算筛选的候选也不同于实验确认的结合蛋白。
+
+[已发布训练数据子集](https://huggingface.co/datasets/nvidia/RFD4-Proteina)包含来自 PDB 与 AlphaFold DB 的材料，完整混合数据中的其他组件没有发布。其来源快照日期不能确立通用训练截止日，也不能指明每个检查点使用的组件。[BSD 3-Clause 许可](https://github.com/RosettaCommons/RFD4-Proteina/blob/main/LICENSE)与模型卡覆盖源码和模型权重；新增数据注释与打包采用 CC BY 4.0，上游结构保留自身条款。检查点缺少恢复中断训练所需的优化器与循环状态。联合生成机制与练习见[蛋白质设计前沿课](/zh-cn/learn/biologics-design/frontier-protein-design-2026/)。
+
 ## 按维度记录开放状态
 
 可用表示目录确立了资产，不代表本课使用过。未核实让主张保持开放。不可用记录的是在所检查页面上未发现 AlphaProteo 的对应资产，不适用则将 BindCraft 流水线与模型权重发布区分开来。
@@ -58,6 +64,9 @@ README 称大型模型还需要今后才会发布的蒸馏数据集。因此，�
 | AlphaProteo | 不可用 | 未核实 | 不可用 | 未核实 | 未核实 | 未核实 | 未核实 |
 | BoltzGen | 可用 | 可用 | 可用 | 可用 | 未核实 | 可用 | 未核实 |
 | RFdiffusion2 | 可用 | 未核实 | 可用 | 可用 | 未核实 | 未核实 | 未核实 |
+| RFD4-Proteina，具名配对 | 可用 | 可用 | 可用 | 可用 | 未核实 | 未核实 | 可用，评分接口 |
+
+RFD4-Proteina 已发布的子集与子集配方仍然可用。两个未核实单元格问的是，具名检查点配对实际拟合的群体及完整组装配方是否已确立；仅凭子集无法回答这两个问题。
 
 访问与许可仍取决于具体资产。BindCraft 的源码许可不解决 PyRosetta 或 ProteinMPNN 的条款。AlphaProteo 的 notebook 许可不覆盖模型。BoltzGen 已发布的训练归档没有声明条款，RFdiffusion2 的代码许可也不解决另行托管的权重或映像条款。
 
@@ -69,6 +78,7 @@ README 称大型模型还需要今后才会发布的蒸馏数据集。因此，�
 | AlphaProteo | 所检查页面没有公开的训练资产 | 语料与配方未核实 |
 | BoltzGen | 归档包含靶点结构、MSA 与小分子字典 | 更多蒸馏数据将来发布，配方未核实 |
 | RFdiffusion2 | 仓库描述 41 种 M-CSA 酶的基准 | 基准不是已声明的训练语料 |
+| RFD4-Proteina | 来自 PDB 与 AlphaFold DB 的子集及采样元数据 | 完整混合数据与逐检查点组件归属仍不完整 |
 
 归档数量、基准来源或已发布检查点都不能代替准确的训练配方。这些记录没有在共享协议下确立支持某项具体结合蛋白主张的训练材料。
 
@@ -80,8 +90,9 @@ README 称大型模型还需要今后才会发布的蒸馏数据集。因此，�
 2. AlphaProteo 的公开 notebook 允许检查输入准备，却不提供访问受限的模型。它们的 Apache 2.0 与 CC BY 4.0 条款也不授予模型访问权。
 3. BoltzGen 有代码和检查点，但已发布训练材料不完整，归档条款未说明，基础模型也有自己的条款。
 4. RFdiffusion2 有推理代码和另行托管的权重，但代码许可不确立权重条款，酶基准也不是其训练语料。
+5. RFD4-Proteina 有具名的配对检查点和公开训练接口。发布的子集不能重建完整训练混合数据，上一对检查点的基准也不是对当前配对的测量。
 
-由此得到的清单可以描述已发布资产和剩余条件，却不能把这四种不同的发布物变成候选质量比较。
+由此得到的清单可以描述已发布资产和剩余条件，却不能把这五种不同的发布物变成候选质量比较。
 
 ## 独立练习
 
@@ -96,7 +107,7 @@ BindCraft 的 MIT 许可覆盖其源码，PyRosetta 与用户提供的 ProteinMP
 
 ## 适用范围与材料未展示的内容
 
-这四条记录最后核验于 2026-10-21。它们确立发布与许可边界，而不是已执行的设计、实测结合、完整训练来源、匹配性能或读者学习成果。本课没有安装或运行模型、依赖或数据集。
+原有四条记录最后核验于 2026-10-21；`model-rfd4-proteina-20261019` 于 2026-10-25 核查。它们确立发布与许可边界，而不是已执行的设计、实测结合、完整训练来源、匹配性能或读者学习成果。本课没有安装或运行模型、依赖或数据集。
 
 ## 来源
 
@@ -106,9 +117,10 @@ BindCraft 的 MIT 许可覆盖其源码，PyRosetta 与用户提供的 ProteinMP
 - [AlphaProteo Trusted Tester 仓库](https://github.com/google-deepmind/ap_trusted_testers)、[公告](https://deepmind.google/discover/blog/alphaproteo-generates-novel-proteins-for-biology-and-health-research/)与[摘要](https://arxiv.org/abs/2409.08022)
 - [BoltzGen 仓库](https://github.com/HannesStark/boltzgen)与[检查点模型卡](https://huggingface.co/boltzgen/boltzgen-1)
 - [RFdiffusion2 仓库](https://github.com/RosettaCommons/RFdiffusion2)、[项目文档](https://rosettacommons.github.io/RFdiffusion2/)及 [BSD 3-Clause 许可](https://raw.githubusercontent.com/RosettaCommons/RFdiffusion2/main/LICENSE.md)
+- [RFD4-Proteina 模型卡](https://huggingface.co/nvidia/RFD4-Proteina)、[仓库](https://github.com/RosettaCommons/RFD4-Proteina)、[数据卡](https://huggingface.co/datasets/nvidia/RFD4-Proteina)与 [BSD 3-Clause 许可](https://github.com/RosettaCommons/RFD4-Proteina/blob/main/LICENSE)
 
 </div>
 
 原创课程文字采用 CC BY 4.0。链接的资产保留各自条款。
 
-最后审阅：2026-10-23。
+最后审阅：2026-10-25。

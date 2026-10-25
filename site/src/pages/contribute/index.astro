@@ -4,14 +4,82 @@ import SiteShell from "../../components/SiteShell.astro";
 
 <SiteShell
   title="Contribute"
-  description="Contribute source corrections, lessons, labs, and reproducible evidence."
+  description="Ask learning questions and contribute source corrections, lessons, labs, and reproducible evidence."
 >
   <section aria-labelledby="contribute-title">
     <p class="eyebrow">Community review</p>
     <h1 id="contribute-title" class="page-heading">Contribute</h1>
     <p class="page-intro">
-      Propose a source, correction, lesson, or lab with the evidence, licence,
-      audience, scientific assumptions, and conflict disclosures needed for review.
+      Ask about an explanation, share a reproduction, or propose a source, lesson
+      or lab. Start with the scientific question and the evidence a reader can inspect.
     </p>
+    <p class="section-intro">
+      <a href="https://github.com/gxCaesar/aidd-commons/issues">Read existing questions and reports</a>{" "}
+      before opening a new issue. GitHub sign-in is required to submit an issue;
+      reading the teaching material and public issues does not require an account.
+    </p>
+  </section>
+
+  <section class="section" aria-labelledby="contribution-routes-title">
+    <div class="section__header">
+      <h2 id="contribution-routes-title">Ask a question or contribute</h2>
+    </div>
+    <div class="track-grid">
+      <article class="track-card">
+        <h3>Ask a learning question</h3>
+        <p>Discuss an explanation, worked example or student exercise in English or Chinese. A partial interpretation is welcome.</p>
+        <a class="button-secondary" href="https://github.com/gxCaesar/aidd-commons/issues/new?template=learning-question.yml">Ask a learning question / 学习提问</a>
+      </article>
+      <article class="track-card">
+        <h3>Correct the record</h3>
+        <p>Point to a factual, scientific, citation, licence, translation or accessibility problem and the evidence for a correction.</p>
+        <a class="button-secondary" href="https://github.com/gxCaesar/aidd-commons/issues/new?template=correction.yml">Report a correction</a>
+      </article>
+      <article class="track-card">
+        <h3>Propose a source</h3>
+        <p>Suggest a paper, dataset, model, tool or standard. Explain the task it supports and which claims remain unverified.</p>
+        <a class="button-secondary" href="https://github.com/gxCaesar/aidd-commons/issues/new?template=source-proposal.yml">Propose a source</a>
+      </article>
+      <article class="track-card">
+        <h3>Develop a lesson</h3>
+        <p>Name a learner question, prerequisites, a worked example and an independent exercise. Connect it to an existing track.</p>
+        <a class="button-secondary" href="https://github.com/gxCaesar/aidd-commons/issues/new?template=lesson-proposal.yml">Propose a lesson</a>
+      </article>
+      <article class="track-card">
+        <h3>Design a lab</h3>
+        <p>Define inputs, expected artifacts and compute needs. For a predictive lab, specify the split, baseline and evaluation before running it.</p>
+        <a class="button-secondary" href="https://github.com/gxCaesar/aidd-commons/issues/new?template=lab-proposal.yml">Propose a lab</a>
+      </article>
+      <article class="track-card">
+        <h3>Share a reproduction or failure</h3>
+        <p>Report a fresh result, replication, timeout or failure analysis with the command, environment and observed output.</p>
+        <a class="button-secondary" href="https://github.com/gxCaesar/aidd-commons/issues/new?template=experiment-report.yml">Share an experiment report</a>
+      </article>
+      <article class="track-card">
+        <h3>Propose a project change</h3>
+        <p>Request discussion of a material scope, curriculum, schema, governance or evaluation-policy change, including credible alternatives.</p>
+        <a class="button-secondary" href="https://github.com/gxCaesar/aidd-commons/issues/new?template=rfc.yml">Open a request for comments</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="question-context-title">
+    <article class="detail-panel">
+      <h2 id="question-context-title">Give a useful scientific question or reproduction context</h2>
+      <p>Use the learning-question form for help understanding a passage, and the correction form for an error. Include the details relevant to your question:</p>
+      <ul>
+        <li><strong>Where:</strong> page URL, lesson or lab identifier, section, and release or commit.</li>
+        <li><strong>Question:</strong> what you expected, what you observed, and the source or reasoning behind the difference. Keep observations and hypotheses separate.</li>
+        <li><strong>Reproduction:</strong> exact command, software and data versions, input and output, environment, and the original error or negative result. For modelling, name the endpoint, split, baseline, metric and independent unit.</li>
+        <li><strong>Reuse:</strong> asset-specific licences, source attribution and relevant conflicts of interest. Share only material you are permitted to make public.</li>
+      </ul>
+      <p>Use fresh student outputs for a new exercise. Keep frozen author results and the original failure evidence intact.</p>
+      <p>Issues are public. Do not post credentials, personal or patient information, or restricted datasets.</p>
+      <p>
+        The <a href="https://github.com/gxCaesar/aidd-commons/blob/main/CONTRIBUTING.md">contribution guide</a>{" "}
+        explains the review process; <a href="https://github.com/gxCaesar/aidd-commons/blob/main/GOVERNANCE.md">governance</a>{" "}
+        describes how evidence-backed corrections and project decisions are handled.
+      </p>
+    </article>
   </section>
 </SiteShell>

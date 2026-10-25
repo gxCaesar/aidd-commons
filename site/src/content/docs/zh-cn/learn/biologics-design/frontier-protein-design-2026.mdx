@@ -1,6 +1,6 @@
 ---
-title: 2026 年的三种蛋白质设计方法
-description: 根据任务约定、已发布资产和证据边界，阅读 Raygun、NISE 与 LASErMPNN 的资源记录。
+title: 2026 年的四种蛋白质设计方法
+description: 根据机制、已发布资产和证据边界，阅读 Raygun、NISE、LASErMPNN 与 RFD4-Proteina。
 ---
 
 import LessonProgress from "../../../../../components/LessonProgress.astro";
@@ -12,11 +12,11 @@ import ScrollableRegions from "../../../../../components/ScrollableRegions.astro
 
 ## 学习目标与前置知识
 
-学完[核酸与肽设计的开放模型](/zh-cn/learn/biologics-design/nucleic-acid-and-peptide-models/)后，用这些注明日期的目录记录区分序列编辑方法、迭代设计流程，以及该流程使用的序列网络。找出每份记录对训练材料、已发布资产和使用许可确立了什么。本课是附带书面练习的阅读课，没有运行任何方法或资产。[英文原版](/learn/biologics-design/frontier-protein-design-2026/)是规范版本。
+学完[核酸与肽设计的开放模型](/zh-cn/learn/biologics-design/nucleic-acid-and-peptide-models/)后，用这些注明日期的目录记录区分序列编辑、迭代设计流程、流程使用的序列网络，以及序列与结构的联合生成。找出每份记录对训练材料、已发布资产和使用许可确立了什么。本课是附带书面练习的阅读课，没有运行任何方法或资产。[英文原版](/learn/biologics-design/frontier-protein-design-2026/)是规范版本。
 
 ## 比较约定
 
-Raygun 对现有蛋白质序列同时进行插入、删除和替换。NISE 在针对已放置配体的序列提案与结构及结合预测之间迭代。LASErMPNN 在 NISE 中提供以配体为条件的序列设计和侧链装配，但 NISE 也可用 LigandMPNN 进行序列设计。这些资源彼此相关，却不是三个可互换的预测器。记录没有提供可用于排名的共同输入集合、分割、指标或基线。代码或权重的发布提供核查路径，不等于结果已复现。
+Raygun 对现有蛋白质序列同时进行插入、删除和替换。NISE 在针对已放置配体的序列提案与结构及结合预测之间迭代。LASErMPNN 在 NISE 中提供以配体为条件的序列设计和侧链装配，但 NISE 也可用 LigandMPNN 进行序列设计。RFD4-Proteina 在自编码器的潜在空间中联合生成序列身份和全原子结构。它们的输入与可修改变量不同。记录没有提供可用于排名的共同输入集合、分割、指标或基线。代码或权重的发布提供核查路径，不等于结果已复现。
 
 ## Raygun
 
@@ -36,6 +36,23 @@ Raygun 对现有蛋白质序列同时进行插入、删除和替换。NISE 在�
 
 记录确立了已发布的推断和训练代码。README 将 `laser_weights_0p1A_nothing_heldout.pt` 指为默认检查点，并说明其他权重位于仓库的 `model_weights` 目录，但没有给出独立的检查点下载地址。这些材料可供读者核查记录中的模型和训练路径，本课却没有执行它们或复现评估。README 没有许可声明，记录也未检查 LICENSE 文件。资产可用因此不能确立使用权利。由于语料未具名，也无法将已发布权重准确对应到可重建的训练集。
 
+## RFD4-Proteina：联合生成与测量单位
+
+[模型卡](https://huggingface.co/nvidia/RFD4-Proteina)与[仓库](https://github.com/RosettaCommons/RFD4-Proteina)描述了配对的潜在流模型和自编码器。自编码器将序列身份与全原子坐标连接到连续表示，流模型在该表示中生成，再解码为候选。这不同于为 LASErMPNN 的固定骨架分配序列。设计规格及其固定上下文约束生成的候选，候选仍需计算检查和独立实验测量。
+
+当前配对是 `rfd4-proteina-flow-release-2026-10-19` 与 `rfd4-proteina-ae-release-2026-10-19`，两个组件必须兼容。模型卡的效率基准于 2026-10-09 使用上一对检查点，当前配对没有重做。即使对于旧配对，每 GPU 小时通过计算筛选的候选也只测量流水线的一个阶段，并非实验确认的结合或不依赖靶点的成功概率。[数据卡](https://huggingface.co/datasets/nvidia/RFD4-Proteina)发布来自 PDB 与 AlphaFold DB 的子集，而非完整训练混合数据。源码、模型和权重使用 BSD 3-Clause；新增数据注释与打包使用 CC BY 4.0，上游条款仍保留。发布边界见[资产核查课](/zh-cn/learn/molecular-generation/generative-binder-design/)。
+
+### 构造的机制练习
+
+任务 A 提供固定骨架和已放置的配体。任务 B 希望在设计规格内联合生成序列身份与全原子结构。哪种接口分别符合请求？团队随后为当前 RFD4 流模型换上不兼容的自编码器，并将旧配对的效率引用为修改后系统的结果。运行前应指出哪两个问题？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+LASErMPNN 的固定骨架、配体条件序列设计接口符合 A；RFD4-Proteina 的联合生成接口符合 B。这是按可修改变量分配任务，不是实测优劣。替换的自编码器破坏了流模型的潜在表示约定；效率引用又对应另一对发布的检查点。有效评估需分别记录匹配的流模型和自编码器、设计输入、搜索与筛选设置、计算分母及实验终点。本练习没有测得任务 B 的任何结果。
+
+</details>
+
 ## 按维度记录开放状态
 
 以下七列保留目录中的不同维度。可用表示被引用的记录确立了访问或文档证据，不代表本课执行过资产。未核实表示记录没有确立该维度。
@@ -45,6 +62,9 @@ Raygun 对现有蛋白质序列同时进行插入、删除和替换。NISE 在�
 | Raygun | 可用 | 可用 | 可用 | 可用 | 可用 | 可用 | 未核实 |
 | NISE | 可用 | 未核实 | 未核实 | 可用 | 未核实 | 未核实 | 未核实 |
 | LASErMPNN | 可用 | 可用 | 可用 | 可用 | 可用 | 可用 | 可用 |
+| RFD4-Proteina，具名配对 | 可用 | 可用 | 可用 | 可用 | 未核实 | 未核实 | 可用，评分接口 |
+
+RFD4-Proteina 的数据单元格指向具名配对实际拟合的群体与完整配方。已确立 PDB/AFDB 子集及其采样元数据已发布，但它们可用并不能确立该群体或其完整重建方式。
 
 ## 推演案例
 
@@ -63,10 +83,12 @@ NISE 自身记录中的训练代码、权重、数据配方、训练数据和评
 
 ## 适用范围
 
-记录未打开各论文的正文，因此本课不转述报告的命中率和亲和力。NISE 与 LASErMPNN 的 README 均没有许可声明，记录也未检查其 LICENSE 文件，所以两份记录均未记载许可。两者都没有给出训练语料名称。Raygun 子集的过滤方法和许可冲突的解决方式仍不明确。阅读开放状态字段不等于执行资产、复现模型，也不能确立共同基准或已测得的读者学习成效。
+原有三篇论文的正文未打开，因此本课不转述报告的命中率和亲和力。NISE 与 LASErMPNN 的 README 均没有许可声明，记录也未检查其 LICENSE 文件，所以两份记录均未记载许可。两者都没有给出训练语料名称。Raygun 子集的过滤方法和许可冲突的解决方式仍不明确。新增 RFD4-Proteina 内容依据已打开的模型卡、仓库和数据卡，没有引入仅见于论文的结果；发布的子集也不能确立完整训练来源。阅读开放状态字段不等于执行资产、复现模型，也不能确立共同基准或已测得的读者学习成效。
 
 ## 来源
 
 目录记录 `model-raygun`、`model-nise` 和 `model-lasermpnn` 均于 2026-10-23 最后核实。Raygun 记录引用了[仓库](https://github.com/rohitsinghlab/raygun)、[README](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/README.md)、[LICENSE 文件](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/LICENSE)和 [Zenodo 记录](https://zenodo.org/records/19546626)。NISE 记录引用了[仓库](https://github.com/polizzilab/NISE)和 [README](https://raw.githubusercontent.com/polizzilab/NISE/main/README.md)。LASErMPNN 记录引用了[仓库](https://github.com/polizzilab/LASErMPNN)和 [README](https://raw.githubusercontent.com/polizzilab/LASErMPNN/main/README.md)。各来源保留自身声明的适用范围。
 
-Last reviewed: 2026-10-23.
+`model-rfd4-proteina-20261019` 记录于 2026-10-25 对照[模型卡](https://huggingface.co/nvidia/RFD4-Proteina)、[仓库](https://github.com/RosettaCommons/RFD4-Proteina)、[数据卡](https://huggingface.co/datasets/nvidia/RFD4-Proteina)与[许可](https://github.com/RosettaCommons/RFD4-Proteina/blob/main/LICENSE)核查。
+
+Last reviewed: 2026-10-25.

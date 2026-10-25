@@ -71,7 +71,9 @@ the [RDKit Book](https://www.rdkit.org/docs/RDKit_Book.html), and the
 
 The final notebook cell creates a fresh directory beneath the notebook's current
 working directory and exclusively creates `representation-report.json` inside
-it. It prints the exact path and displays a download link; delete that generated
-directory yourself when it is no longer needed. It never reads or changes author
+it. It prints the exact path and displays a notebook-relative download link. The
+same directory is visible in the notebook file browser. Download the report before
+ending a temporary runtime; delete the generated directory yourself when it is no
+longer needed. It never reads or changes author
 caches, result directories, or frozen protocol artifacts. Restarting a notebook
 runtime removes in-memory state; run the cells again in order after a reset.

@@ -36,15 +36,21 @@ each record that would change and exits non-zero, so a registry edit cannot
 silently move a number the lesson quotes. Membership in the extract follows the
 declared task and nothing else, so no system can be hand-picked in or out.
 
+The current extract, checked on 2026-10-25, selects 32 records from 232 source
+records. OpenFold3/OpenBind-0 enters through `structure-prediction` and
+`pose-validation`. The three-record co-folding subset follows the literal
+`co-folding` task label; this grouping is not a new assessment of model capability.
+
 ## What the checks do and do not establish
 
 The checks verify the extract's internal consistency and the separation between
 claim classes. They say nothing about whether any system's predictions are
-accurate. One check records that no co-folding system in this family evidences
-the evaluation code behind its accuracy claim, and the inspector names the 7
-systems in the wider family that do publish theirs, which is a statement about
-what was found on the declared review surfaces by the recorded date, not a claim
-that the code does not exist.
+accurate. Two of the three literal co-folding records evidence training data;
+none evidences evaluation code. The inspector names the 7 records in the wider
+32-record family with evidenced evaluation code, including 5 benchmarks and 2
+models. Benchmark scoring code and model-evaluation code answer different
+questions. These are states on the declared review surfaces by the recorded
+date, not claims that unverified code does not exist or that an evaluation ran.
 
 The bilingual lesson is at `site/src/content/docs/labs/cofolding-claim-separation.mdx`
 and its Chinese edition under `zh-cn/`. Tests are in

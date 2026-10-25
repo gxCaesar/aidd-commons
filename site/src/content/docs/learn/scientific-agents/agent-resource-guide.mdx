@@ -6,6 +6,7 @@ description: Match literature questions, chemistry tools and biological data ana
 import LessonProgress from "../../../../components/LessonProgress.astro";
 import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
 import ResourceGuideTables from "../../../../components/ResourceGuideTables.astro";
+import LabDownloads from "../../../../components/LabDownloads.astro";
 
 <LessonProgress lessonId="scientific-agents/agent-resource-guide" />
 <ScrollableRegions />
@@ -79,10 +80,10 @@ unavailable, stop and report the cause instead of switching to a paid service.
 
 ### Start with the observed-answer notebook
 
-Download the <a href="/downloads/labs/paperqa_local/paperqa_local_tutorial.ipynb" download>English notebook</a>,
-<a href="/downloads/labs/paperqa_local/paperqa_local_tutorial.zh-CN.ipynb" download>Chinese notebook</a>, or
-<a href="/downloads/labs/paperqa_local/reviewed-example.json" download>observed answers and attributed source texts</a>.
-The notebooks are standalone: open in Jupyter or upload through Colab's
+<LabDownloads lab="paperqa-local" />
+
+The notebooks are standalone: open in Jupyter, use the source-pinned Colab link,
+or upload through Colab's
 **File → Upload notebook**. Default cells read embedded results, make no network
 requests or model calls, and need no API key or GPU. They write a fresh student
 report without changing the observed answers. See the [notebook environment guide](/labs/notebook-guide/)
@@ -245,6 +246,32 @@ should preserve the original and grade a working copy. The
 separate generating trajectories from postprocessing. No such execution is
 performed in this guide.
 
+## BixBench3: raw data to structured artifacts
+
+`benchmark-bixbench3` is a different evaluation from the question-and-capsule BixBench above. The [paper, revision v2 dated 2026-09-22](https://arxiv.org/abs/2608.25286), describes 20 computational-biology tasks with 138 unique artifacts. The researcher supplies an objective and high-level methods; the agent must turn raw data into the required structured outputs. Artifacts form a dependency graph, so a downstream failure can inherit an upstream error. The [public repository](https://github.com/EdisonScientific/BixBench3) identifies its input and reference manifests as release `v1.0.0`.
+
+The [full-text grading definition](https://arxiv.org/html/2608.25286v2) aligns identifiers and applies metrics appropriate to the output, including row and column F1, scale-sensitive concordance correlation, categorical macro F1 or interval overlap. Applicable components multiply into an artifact score, with a pass threshold of `0.8`. A task score is the fraction of its artifacts passing. It is not the fraction of whole studies reproduced, and agreement with a published artifact is not independent validation of its biological conclusion. A separate language-model judge assesses process and failure modes; it does not replace the deterministic artifact score. Model attempts and expert review helped develop tasks and graders, so that exposure remains part of the evaluation history.
+
+### Constructed aggregation exercise
+
+Suppose a task requires only the two numeric-table artifacts below. These invented component scores illustrate the grading rule; they are not BixBench3 results.
+
+| Artifact | Row F1 | Column F1 | Concordance correlation | Product | Pass at `0.8`? |
+| --- | --- | --- | --- | --- | --- |
+| A | `1` | `1` | `0.90` | `0.90` | Yes |
+| B | `0.50` | `1` | `1` | `0.50` | No |
+
+What is the task score? Does perfect concordance on B's aligned values overcome its missing row identifiers? Would a favorable process judge change this artifact score?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Only A passes, so the task score is `1 / 2 = 0.50`. B fails because the components multiply: matching values on the aligned subset does not recover missing rows. A favorable process judgment is a different observation and does not change the artifact result. The score does not establish that half a study's scientific conclusions are correct, and these dependent artifacts are not independent biological replications.
+
+</details>
+
+The public runner requires a billed GCP project, provider APIs and separately licensed Cell Ranger and Cell Ranger ARC binaries. The [CC BY-SA 4.0 licence](https://raw.githubusercontent.com/EdisonScientific/BixBench3/main/LICENSE) covers Edison-authored code and materials; mirrored data and reference artifacts retain upstream terms. This reading runs no paid service and does not turn the runner into a fee-free local exercise.
+
 ## Constructed case: two questions about the same submission
 
 A **fictional teaching audit**, not a result from either benchmark, reviews
@@ -330,6 +357,7 @@ abstention is an observable outcome, not proof that the answer is false.
 - [LAB-Bench: official evaluation interface](https://github.com/Future-House/LAB-Bench)
 - [BixBench: evaluation modes and execution](https://github.com/Future-House/BixBench)
 - [BixBench dataset: version-change notice](https://huggingface.co/datasets/futurehouse/BixBench)
+- [BixBench3 paper record](https://arxiv.org/abs/2608.25286), [v2 full text](https://arxiv.org/html/2608.25286v2), [public release](https://github.com/EdisonScientific/BixBench3) and [licence](https://raw.githubusercontent.com/EdisonScientific/BixBench3/main/LICENSE), checked on 2026-10-25
 
 </div>
 
@@ -338,4 +366,4 @@ No upstream agent, benchmark, paid API or wet experiment was run. Benchmark
 scores and reader learning remain unmeasured here. Original prose is CC BY 4.0;
 linked code, datasets and third-party sources retain their own terms.
 
-Last reviewed: 2026-09-09.
+Last reviewed: 2026-10-25.

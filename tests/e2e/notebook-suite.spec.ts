@@ -40,6 +40,20 @@ test("bilingual notebook route reaches runnable downloads and keeps result readi
         await expect(
           page.locator(`main a[href="/downloads/${path}"]`),
         ).toBeVisible();
+        const colab = page
+          .locator(`main a[href="/downloads/${path}"]`)
+          .locator("..")
+          .locator("a[data-colab-notebook]");
+        await expect(colab).toBeVisible();
+        const colabUrl = new URL((await colab.getAttribute("href"))!);
+        const pinnedPath = colabUrl.pathname.match(
+          /^\/github\/gxCaesar\/aidd-commons\/blob\/([a-f0-9]{40}|v\d+\.\d+\.\d+(?:-rc\.\d+)?)\/(.+)$/u,
+        );
+        expect(
+          pinnedPath,
+          "Colab opens an immutable public source revision",
+        ).not.toBeNull();
+        expect(pinnedPath?.[2]).toBe(path);
         const response = await request.get(`/downloads/${path}`);
         expect(response.status()).toBe(200);
         expect(await response.text()).toBe(await readFile(path, "utf8"));

@@ -1,0 +1,82 @@
+id: model-pie-replogle-wdataset
+name: PIE, Replogle within-dataset release
+kind: model
+summary: A population-level perturbation-effect predictor combining biological knowledge, control expression and training response evidence. This release provides four independently trained held-out-cell-line models with differential-expression probability, log2 fold-change and processed-mean-change outputs.
+canonical_url: https://huggingface.co/arcinstitute/PIE_replogle_wdataset
+identifiers:
+  - scheme: code
+    value: PIE Perceiver IO implementation and training, evaluation and inference CLI
+    url: https://github.com/ArcInstitute/pie
+  - scheme: model
+    value: replogle_wdataset hepg2, jurkat, k562 and rpe1 held-out folds, each selected by validation binary_auprc
+    url: https://huggingface.co/arcinstitute/PIE_replogle_wdataset
+  - scheme: dataset
+    value: Replogle-Nadig essential Perturb-seq processed data
+    url: https://huggingface.co/datasets/arcinstitute/PIE_replogle_nadig_essential
+  - scheme: dataset
+    value: Canonical unseen-context, unseen-perturbation and joint-holdout splits
+    url: https://huggingface.co/datasets/arcinstitute/PIE_splits
+stages: [target-discovery, evaluation]
+modalities: [single-cell, gene-expression]
+tasks: [perturbation-prediction, differential-expression-prediction, out-of-distribution-evaluation]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: research_only, evidence: [code-license, model-license, model-policy] }
+openness:
+  inference_code: { value: available, evidence: [repository, model-card] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [model-card] }
+  architecture: { value: available, evidence: [repository] }
+  data_recipe: { value: available, evidence: [data-card, sources-card, splits-card] }
+  training_data: { value: available, evidence: [data-card, sources-card] }
+  evaluation_code: { value: available, evidence: [repository, model-card, splits-card] }
+licenses:
+  - name: CC BY-NC-SA 4.0
+    scope: PIE repository source code, separately from the checkpoints and accompanying model files.
+    evidence: [code-license]
+  - name: Arc Research Institute PIE Model Non-Commercial License
+    scope: The published model checkpoints and accompanying model files, subject also to the PIE Model Acceptable Use Policy. The model licence is dated 2026-10-02 and is separate from the code licence.
+    evidence: [model-card, model-license, model-policy]
+evidence:
+  - id: repository
+    url: https://github.com/ArcInstitute/pie
+    label: Repository README opened 2026-10-25, including Perceiver IO inputs and training, evaluation and inference recipes
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: model-card
+    url: https://huggingface.co/arcinstitute/PIE_replogle_wdataset
+    label: Model card opened 2026-10-25, including output definitions, held-out fold identities, validation selection and licence links
+    supports: [name, summary, identifiers, tasks, caveats]
+  - id: data-card
+    url: https://huggingface.co/datasets/arcinstitute/PIE_replogle_nadig_essential
+    label: Processed-data card opened 2026-10-25 establishes the prepared fitting inputs, controls and processing recipe for the named replogle_wdataset folds; original upstream corpora and their terms remain unverified
+    supports: [identifiers, caveats]
+  - id: sources-card
+    url: https://huggingface.co/datasets/arcinstitute/PIE_sources
+    label: Knowledge-source card opened 2026-10-25 establishes the prepared knowledge inputs used by the named replogle_wdataset folds; upstream embedding-model training corpora and redistribution terms remain unverified
+    supports: [caveats]
+  - id: splits-card
+    url: https://huggingface.co/datasets/arcinstitute/PIE_splits
+    label: Canonical split card opened 2026-10-25, including held-out contexts, perturbations and pair definitions
+    supports: [identifiers, tasks, caveats]
+  - id: code-license
+    url: https://github.com/ArcInstitute/pie/blob/main/LICENSE.md
+    label: CC BY-NC-SA 4.0 source-code licence opened 2026-10-25
+    supports: []
+  - id: model-license
+    url: https://huggingface.co/arcinstitute/PIE_replogle_wdataset/blob/main/MODEL_LICENSE.md
+    label: Model Non-Commercial License opened 2026-10-25, last updated 2026-10-02
+    supports: [caveats]
+  - id: model-policy
+    url: https://huggingface.co/arcinstitute/PIE_replogle_wdataset/blob/main/MODEL_ACCEPTABLE_USE_POLICY.md
+    label: Model Acceptable Use Policy opened 2026-10-25, last updated 2026-10-02
+    supports: [caveats]
+caveats:
+  - Each row represents a context-perturbation pair. Population differential-expression probability and effect estimates are not an individualized before-and-after cell trajectory or independent causal validation.
+  - The four checkpoint directories identify held-out cell lines. They are independent folds, not an ensemble. A checkpoint selected by validation AUPRC must be matched to its own training assets, gene axis and canonical split.
+  - Training-data availability refers to published processed data and knowledge-source assets for the named experiment. Their upstream licences and redistribution terms remain unverified and are not supplied by the code licence.
+  - Code uses CC BY-NC-SA 4.0, while checkpoints and accompanying model files use a separate noncommercial model licence and acceptable-use policy. Neither asset is an unrestricted commercial-use grant.
+  - Differential-expression targets depend on preprocessing, control selection, gene filtering and statistical thresholds. The unseen-context, unseen-perturbation and joint settings support different generalization claims.
+  - Rebuilding some knowledge embeddings uses an external API, while the published experiment recipes use prepared assets. No API call, checkpoint inference, training or benchmark was run for this record.
+  - The linked preprint could not be opened directly because it returned HTTP 403. This record uses the opened repository and model/data cards and imports no paper-only numerical performance claim.
+acknowledgements: []
+last_verified: "2026-10-25"

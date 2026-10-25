@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -95,6 +96,15 @@ def _retained_report_payload(notebook: nbformat.NotebookNode, tmp_path: Path) ->
     assert report_path.parent.parent.resolve() == tmp_path.resolve()
     assert report_path.exists(), (
         "the notebook removed the JSON report before students could download it"
+    )
+    html = "".join(
+        output.get("data", {}).get("text/html", "")
+        for cell in notebook.cells
+        for output in cell.get("outputs", [])
+    )
+    download_links = re.findall(r"href=['\"]([^'\"]+)['\"]", html)
+    assert report_path.relative_to(tmp_path).as_posix() in download_links, (
+        "the report link must use the notebook-relative path, not an OS absolute path"
     )
     return json.loads(report_path.read_text(encoding="utf-8"))
 

@@ -1,6 +1,6 @@
 {
   "source": "site/public/data/resources.v1.json",
-  "source_records": 228,
+  "source_records": 232,
   "claim_classes": {
     "monomer prediction": [
       "structure-prediction"
@@ -495,6 +495,30 @@
         "weights": "available",
         "architecture": "unverified",
         "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-openfold3-openbind0",
+      "name": "OpenFold3 with OpenBind-0 default parameters",
+      "kind": "model",
+      "tasks": [
+        "structure-prediction",
+        "protein-ligand-cofolding",
+        "pose-validation"
+      ],
+      "modalities": [
+        "biomolecular-complex",
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-25",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "available",
         "training_data": "unverified",
         "evaluation_code": "unverified"
       }

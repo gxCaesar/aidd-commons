@@ -7,7 +7,7 @@ import LessonProgress from "../../../../../components/LessonProgress.astro";
 
 英文原文：[Structure, pockets, and co-folding](/learn/structure-and-pockets/cofolding-frontier/)。
 
-译文更新：2026-09-08。
+译文更新：2026-10-25。
 
 <LessonProgress lessonId="structure-and-pockets/cofolding-frontier" />
 
@@ -42,6 +42,31 @@ import LessonProgress from "../../../../../components/LessonProgress.astro";
 [Protenix](https://github.com/bytedance/Protenix) 提供了不同的资产和文档组合。因此，
 报告的准确性不能替代资产级可复现性审查。
 
+## OpenFold3 与 OpenBind-0：软件包、参数与截止日
+
+上文原始 OpenFold 实现的是 AlphaFold2 家族。另一个 [OpenFold3 仓库](https://github.com/aqlaboratory/openfold-3)预测生物分子结构，目前仍是研究预览，最终模型工作尚在进行。其[参数参考](https://openfold-3.readthedocs.io/en/latest/parameters_reference.html)于 2026-10-25 核查，表明软件包更新会产生科学上的变化：
+
+| 资源或参数集 | 软件包约定 | 训练日期边界 |
+| --- | --- | --- |
+| 原始 OpenFold | 独立的 `aqlaboratory/openfold` 仓库 | 不能继承 OpenFold3 的截止日 |
+| OpenFold3 preview2 | 需要低于 `0.5.0` 的兼容版本 | 指明该预览自己的参数集 |
+| 使用 OpenBind-0 的 OpenFold3 | 从 `0.5.0` 起为默认；`openbind-2025-06-30-174k`，文件 `of3-ob-2025-06-30-174k.pt` | PDB 训练截止日 `2025-06-30` |
+
+日期为 2026-08-21 的 [OpenBind-0 发布分析](https://openbind.uk/news/blog-openbind-0-advancing-open-molecular-structure-prediction/)说明代码、权重与训练配方按 Apache 2.0 公开。已打开的[代码许可](https://github.com/aqlaboratory/openfold-3/blob/main/LICENSE)确认仓库授权。完整训练语料清单与逐资产条款未端到端核查，链接的基准脚本也未检查，因此目录将训练数据和评估代码保留为未核实。训练截止日不同于发布日期。
+
+推理时的化学引导是另一项协议选择，它改变配体几何形状，却不是新的训练截止日。发布分析保留了因靶点而异的失败，包括困难的柔性配体与口袋变化；更新训练和片段微调并没有一致地修复这些问题。比较涉及不同截止日和靶点场景，不能确立通用排名。化学上合理的预测姿态仍不能确立亲和力。[亲和力路径课](/zh-cn/learn/structure-and-pockets/affinity-routes-2026/)区分结构主干与亲和力预测模块。
+
+### 构造的版本练习
+
+一份报告只记录“OpenFold3 默认”。作者使用兼容 preview2 的软件包，读者却安装 `0.5.0` 并接受其默认参数。相同的序列与配体是否使两者成为同一模型比较？报告还需要哪些字段？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+不是。软件包改变了默认参数集，旧预览参数也有兼容性边界。解释差异前，应记录软件包版本、具名检查点与文件、检查点自己的训练截止日、输入准备和化学引导设置。受控比较还需固定评估群体与指标。不同姿态或改善的几何指标均不能提供亲和力测量。本练习没有运行任一配置。
+
+</details>
+
 ## v0.1 尚未教授的内容
 
 v0.1 不对共折叠系统作普遍排序，不提供前瞻性验证数据集，也不在第一手证据未说明时
@@ -54,4 +79,6 @@ v0.1 不对共折叠系统作普遍排序，不提供前瞻性验证数据集，
 [Boltz](https://github.com/jwohlwend/boltz) 的实现和许可材料。使用
 [Atlas 清单](/atlas/open-cofolding-frontier/)识别每条记录仍未验证的问题。
 
-最后审阅：2026-09-04。
+`model-openfold3-openbind0` 记录采用 [OpenFold3 仓库](https://github.com/aqlaboratory/openfold-3)、[参数参考](https://openfold-3.readthedocs.io/en/latest/parameters_reference.html)、[OpenBind-0 发布分析](https://openbind.uk/news/blog-openbind-0-advancing-open-molecular-structure-prediction/)与[代码许可](https://github.com/aqlaboratory/openfold-3/blob/main/LICENSE)，核查于 2026-10-25。新增内容没有运行推理或基准。
+
+最后审阅：2026-10-25。

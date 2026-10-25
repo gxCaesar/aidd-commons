@@ -17,7 +17,7 @@
     "A claim that two candidate edges should be merged",
     "Prediction of a relation the catalogue does not declare"
   ],
-  "expected_node_count": 228,
+  "expected_node_count": 232,
   "isolated_node_rule": "A record is isolated when it declares no outgoing relation, even if another record points to it.",
   "issued_on": "2026-10-23",
   "node_types": [

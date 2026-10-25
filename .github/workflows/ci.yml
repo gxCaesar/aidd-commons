@@ -112,6 +112,7 @@ jobs:
       - run: pnpm --dir site build
       - run: pnpm links:internal
       - run: pnpm citations:check
+      - run: pnpm text:check --rendered site/dist
 
   python-labs:
     name: 4. Python tests, lint, types, and CPU notebook

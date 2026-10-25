@@ -1,6 +1,6 @@
 ---
-title: Three protein-design methods from 2026
-description: Read the Raygun, NISE, and LASErMPNN records through their task contracts, published assets, and evidence limits.
+title: Four protein-design methods from 2026
+description: Read Raygun, NISE, LASErMPNN and RFD4-Proteina through their mechanisms, published assets and evidence limits.
 ---
 
 import LessonProgress from "../../../../components/LessonProgress.astro";
@@ -12,11 +12,11 @@ import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
 
 ## Learning goals and prerequisites
 
-After [Open models for nucleic-acid and peptide design](/learn/biologics-design/nucleic-acid-and-peptide-models/), use these dated catalogue records to distinguish a sequence-editing method, an iterative design protocol, and the sequence network used within that protocol. Identify what each record establishes about training material, published assets, and permission to use them. This is a reading lesson with a written exercise. None of the methods or assets was run here.
+After [Open models for nucleic-acid and peptide design](/learn/biologics-design/nucleic-acid-and-peptide-models/), use these dated catalogue records to distinguish sequence editing, an iterative design protocol, its sequence network and joint sequence–structure generation. Identify what each record establishes about training material, published assets, and permission to use them. This is a reading lesson with a written exercise. None of the methods or assets was run here.
 
 ## Comparison contract
 
-Raygun edits an existing protein sequence with insertions, deletions, and substitutions. NISE iterates between sequence proposals and structure and binding predictions for a placed ligand. LASErMPNN supplies ligand-conditioned sequence design and side-chain packing within NISE, although NISE can instead use LigandMPNN for sequence design. These are related resources, not three interchangeable predictors. The records provide no shared input collection, split, metric, or baseline from which to rank them. Published code or weights establish a route for inspection, not a reproduced result.
+Raygun edits an existing protein sequence with insertions, deletions, and substitutions. NISE iterates between sequence proposals and structure and binding predictions for a placed ligand. LASErMPNN supplies ligand-conditioned sequence design and side-chain packing within NISE, although NISE can instead use LigandMPNN for sequence design. RFD4-Proteina jointly generates sequence identities and all-atom structures in an autoencoder's latent space. Their inputs and editable variables differ. The records provide no shared input collection, split, metric, or baseline from which to rank them. Published code or weights establish a route for inspection, not a reproduced result.
 
 ## Raygun
 
@@ -36,6 +36,23 @@ The [LASErMPNN repository](https://github.com/polizzilab/LASErMPNN) describes th
 
 The record establishes published inference and training code. The README names `laser_weights_0p1A_nothing_heldout.pt` as the default checkpoint and places other weights in the repository's `model_weights` directory. It supplies no separate checkpoint download URL. These materials let a reader inspect the documented model and training route, but this lesson has not executed them or reproduced an evaluation. The README makes no licence statement, and a LICENSE file was not inspected. Asset availability therefore does not establish usage rights. The unnamed corpora also prevent exact attribution of the published weights to a reconstructable training set.
 
+## RFD4-Proteina: joint generation and the measurement unit
+
+The [model card](https://huggingface.co/nvidia/RFD4-Proteina) and [repository](https://github.com/RosettaCommons/RFD4-Proteina) describe a latent flow model paired with an autoencoder. The autoencoder connects sequence identities and all-atom coordinates to a continuous representation; the flow model generates in that representation before decoding. This differs from assigning a sequence to LASErMPNN's fixed backbone. A design specification and its fixed context constrain the generated candidate. The candidate still needs computational checks and independent experimental measurement.
+
+The current pair is `rfd4-proteina-flow-release-2026-10-19` with `rfd4-proteina-ae-release-2026-10-19`. Its components must remain compatible. The card's efficiency benchmark used a previous pair on 2026-10-09 and was not repeated on the current pair. Even for that older pair, computational filter passers per GPU-hour measure a pipeline stage, not experimentally confirmed binding or a target-independent success probability. The [data card](https://huggingface.co/datasets/nvidia/RFD4-Proteina) releases a PDB- and AlphaFold DB-derived subset rather than the full training mixture. Source, model and weights use BSD 3-Clause; added data annotations and packaging use CC BY 4.0, with upstream terms retained. See the [asset audit](/learn/molecular-generation/generative-binder-design/) for the release boundaries.
+
+### Constructed mechanism exercise
+
+A team has a fixed backbone and a placed ligand for task A. For task B it wants sequence identities and all-atom structure to be generated together within a design specification. Which interface matches each request? It then substitutes an incompatible autoencoder into the current RFD4 flow and quotes the older pair's efficiency as a result for the modified system. Identify both failures before any run.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+LASErMPNN's fixed-backbone, ligand-conditioned sequence-design interface matches A; RFD4-Proteina's joint-generation interface matches B. This assignment follows editable variables, not measured superiority. The substituted autoencoder breaks the flow's latent-representation contract. The efficiency citation also refers to a different released pair. A valid evaluation would identify the matched flow and autoencoder, design inputs, search and filter settings, computational denominator and experimental endpoint separately. No result for task B has been measured in this exercise.
+
+</details>
+
 ## Openness by dimension
 
 The seven columns preserve the catalogue's distinct dimensions. Available means the cited record established access or documentation, not that this lesson executed the asset. Unverified means the record did not establish that dimension.
@@ -45,6 +62,9 @@ The seven columns preserve the catalogue's distinct dimensions. Available means 
 | Raygun | available | available | available | available | available | available | unverified |
 | NISE | available | unverified | unverified | available | unverified | unverified | unverified |
 | LASErMPNN | available | available | available | available | available | available | available |
+| RFD4-Proteina, named pair | available | available | available | available | unverified | unverified | available, scoring interface |
+
+The RFD4-Proteina data cells refer to the named pair's fitted-on population and complete recipe. A released PDB/AFDB subset and its sampling metadata are established, but their availability does not establish that population or its complete reconstruction.
 
 ## Worked case
 
@@ -63,10 +83,12 @@ NISE's training code, weights, data recipe, training data, and evaluation code a
 
 ## Scope
 
-The article text of each paper was not opened, so reported hit rates and affinities are not carried here. The NISE and LASErMPNN READMEs state no licence, and their LICENSE files were not inspected, so neither record has a licence. Neither names its training corpora. Raygun's subset-filtering procedure and the resolution of its licence conflict remain unknown. Reading an openness cell does not execute an asset, reproduce a model, or establish a common benchmark or measured reader learning.
+The original three papers' article texts were not opened, so reported hit rates and affinities are not carried here. The NISE and LASErMPNN READMEs state no licence, and their LICENSE files were not inspected, so neither record has a licence. Neither names its training corpora. Raygun's subset-filtering procedure and the resolution of its licence conflict remain unknown. The RFD4-Proteina addition uses its opened model card, repository and data card, with no paper-only result imported. Its released subset does not establish complete training provenance. Reading an openness cell does not execute an asset, reproduce a model, or establish a common benchmark or measured reader learning.
 
 ## Sources
 
 The catalogue records `model-raygun`, `model-nise`, and `model-lasermpnn` were each last verified on 2026-10-23. The Raygun record cites its [repository](https://github.com/rohitsinghlab/raygun), [README](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/README.md), [LICENSE file](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/LICENSE), and [Zenodo record](https://zenodo.org/records/19546626). The NISE record cites its [repository](https://github.com/polizzilab/NISE) and [README](https://raw.githubusercontent.com/polizzilab/NISE/main/README.md). The LASErMPNN record cites its [repository](https://github.com/polizzilab/LASErMPNN) and [README](https://raw.githubusercontent.com/polizzilab/LASErMPNN/main/README.md). Each source retains its own stated scope.
 
-Last reviewed: 2026-10-23.
+The `model-rfd4-proteina-20261019` record was checked on 2026-10-25 against its [model card](https://huggingface.co/nvidia/RFD4-Proteina), [repository](https://github.com/RosettaCommons/RFD4-Proteina), [data card](https://huggingface.co/datasets/nvidia/RFD4-Proteina) and [licence](https://github.com/RosettaCommons/RFD4-Proteina/blob/main/LICENSE).
+
+Last reviewed: 2026-10-25.

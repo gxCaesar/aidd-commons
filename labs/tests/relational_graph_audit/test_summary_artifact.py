@@ -24,5 +24,5 @@ def test_committed_summary_matches_catalogue() -> None:
     assert artifact["edge_count"] == (
         artifact["evidenced_edge_count"] + artifact["unevidenced_edge_count"]
     )
-    assert artifact["candidate_edge_count"] == 10100
+    assert artifact["candidate_edge_count"] == 10560
     assert "records" not in artifact

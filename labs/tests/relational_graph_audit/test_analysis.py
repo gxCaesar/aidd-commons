@@ -60,10 +60,10 @@ def test_constructed_graph_candidate_and_provenance_rules() -> None:
 def test_current_catalogue_aggregates() -> None:
     graph = build_graph(load_catalogue(ROOT / "catalog/resources"), NODE_TYPES, EDGE_TYPES)
     result = analyze(graph)
-    assert result["node_count"] == 228
+    assert result["node_count"] == 232
     assert result["edge_count"] == 39
-    assert result["candidate_edge_count"] == 10100
+    assert result["candidate_edge_count"] == 10560
     assert len(result["evidenced_edges"]) == 39
     assert len(result["unevidenced_edges"]) == 0
-    assert sum(map(len, result["isolated_nodes"].values())) == 192
-    assert check_invariants(graph, result, expected_nodes=228, edge_types=EDGE_TYPES) == []
+    assert sum(map(len, result["isolated_nodes"].values())) == 196
+    assert check_invariants(graph, result, expected_nodes=232, edge_types=EDGE_TYPES) == []

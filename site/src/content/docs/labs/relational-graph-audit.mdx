@@ -23,23 +23,25 @@ Mode is fresh independent computation over a frozen protocol and the committed c
 
 ## Source records and graph contract
 
-The audit reads 228 committed resource records in the local catalogue snapshot recomputed on 2026-10-25. Each record supplies one typed node. A `relations` entry supplies a directed edge from its declaring record to the named target. The loader refuses a missing target, duplicate identifier or undeclared type. An edge is evidenced only when an evidence entry in its declaring record names `relations` in `supports`. The inspector prints the evidence identifiers, and the check refuses an unevidenced edge before export.
+The audit reads 232 committed resource records in the local catalogue snapshot recomputed on 2026-10-25. Each record supplies one typed node. A `relations` entry supplies a directed edge from its declaring record to the named target. The loader refuses a missing target, duplicate identifier or undeclared type. An edge is evidenced only when an evidence entry in its declaring record names `relations` in `supports`. The inspector prints the evidence identifiers, and the check refuses an unevidenced edge before export.
+
+The graph interpretation retains its 2026-10-23 protocol date. The expected node count and compact projection bind this current catalogue snapshot; catalogue growth does not change the provenance, degree or candidate rules.
 
 The tables report the computation dated 2026-10-25 with Python 3.11.15 and PyYAML 6.0.3. The node table counts each record once. The isolated column counts records that declare no outgoing relation. A target with an incoming edge can therefore appear in that column.
 
 | Node kind | Nodes | No outgoing relation |
 | --- | ---: | ---: |
 | `agent` | 11 | 11 |
-| `benchmark` | 26 | 25 |
+| `benchmark` | 27 | 26 |
 | `database` | 22 | 22 |
 | `dataset` | 14 | 11 |
-| `model` | 81 | 60 |
+| `model` | 84 | 63 |
 | `model-asset` | 1 | 0 |
 | `paper` | 4 | 3 |
 | `software` | 59 | 55 |
 | `standard` | 3 | 3 |
 | `tutorial` | 7 | 2 |
-| Total | 228 | 192 |
+| Total | 232 | 196 |
 
 | Directed edge type | Edges |
 | --- | ---: |
@@ -58,9 +60,9 @@ All 39 declared edges have source-record relation evidence under this rule. The 
 
 ## Candidate pairs and isolated nodes
 
-An unordered pair becomes a candidate when the records share at least 1 task or at least 1 stage and neither declares a relation to the other. The audit finds 10100 such pairs. It does not add them to the 39 declared edges. `model-opendde`, `model-pocket2mol` and `model-targetdiff` each occur in 158 candidate pairs, the largest observed counts. Shared metadata makes a pair worth inspecting, not a prediction that its records should be joined.
+An unordered pair becomes a candidate when the records share at least 1 task or at least 1 stage and neither declares a relation to the other. The audit finds 10560 such pairs. It does not add them to the 39 declared edges. `model-opendde`, `model-pocket2mol` and `model-targetdiff` each occur in 162 candidate pairs, the largest observed counts. Shared metadata makes a pair worth inspecting, not a prediction that its records should be joined.
 
-The 192 records with no outgoing declaration are listed by kind in the inspector and committed summary. `model-rxnflow` is among them even though `model-cgflow` points to it. This is the protocol's declaration-based isolation measure, not the graph-theoretic claim that the node has degree 0.
+The 196 records with no outgoing declaration are listed by kind in the inspector and committed summary. `model-rxnflow` is among them even though `model-cgflow` points to it. This is the protocol's declaration-based isolation measure, not the graph-theoretic claim that the node has degree 0.
 
 ## Limits of the material
 

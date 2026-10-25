@@ -1,14 +1,14 @@
-"""Self record against the independent reading.
+"""Current self record against retained automated readings.
 
-Source of every number: `site/public/data/comparison.v1.json`, the frozen
-comparison audit, and only its `second_readings` entry. That entry holds one
-blind reading of this project's own 93 topics by a reviewer from a different
-model family, the per-topic outcome counts, and the per-threshold counts the
-reading gave against the counts this project recorded.
+Source of every number: the current `second_readings` aggregate in
+`site/public/data/comparison.v1.json`. The retained per-topic readings belong
+to a series initiated on the record's `reviewed_on` date, with later batches
+documented in its reviewer description. The projection's `as_of` date names
+the current aggregate, not the date of a single reading.
 
-What the figure shows. The left panel counts the per-topic outcome of the
-blind reading: how many topics the reading agreed with, how many it read deeper
-than this project recorded, and how many it read shallower. The right panel
+What the figure shows. The upper panel counts the per-topic outcome of the
+retained readings against the current self record: how many topic scores agree,
+how many read deeper, and how many read shallower. The lower panel
 puts the two counts side by side at each threshold, so the reader can see which
 thresholds the disagreement sits at and how large it is.
 
@@ -18,9 +18,8 @@ second reading by a different model family, which is a weaker instrument than a
 blind replication and is reported as such. No topic was read shallower, and the
 audit's validator refuses to publish a record in which one is, so that number is
 a constraint on the record rather than an observation about the material. The
-reading also re-read seven topics whose material changed after the first pass
-and four more after later material landed, which is why the reading is a
-successive instrument rather than one pass.
+retained scores include successive re-readings after material changed, so their
+agreement with an updated self record is not the original pass's outcome.
 """
 
 from __future__ import annotations
@@ -28,15 +27,18 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+from matplotlib.ticker import MaxNLocator
+
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
 import figure_style as style  # noqa: E402  (the module sits next to this script)
+from figure_sources import reading_series, validate_count_bounds  # noqa: E402
 
 FIGURE_NUMBER = 5
 STEM = "plot_5_self_record_vs_reading"
-TOTAL_TOPICS = 93
+READING_ID = "aidd-commons-blind-2026-09-11"
 
 OUTCOME_COLOUR = {"equal": "slate", "reading_deeper": "coral", "reading_shallower": "ember"}
 THRESHOLD_TITLES = {
@@ -48,11 +50,15 @@ THRESHOLD_TITLES = {
 }
 
 CAPTION = (
-    "This project's own record against a blind second reading of the same {cells} topics by a "
-    "reviewer from a different model family on {reviewed}. The reading agreed with the record on "
-    "{equal} topics, read {deeper} deeper and {shallower} shallower. At the thresholds the reading "
-    "gave {reading} against the recorded {recorded}. The reviewer had also written parts of the "
-    "course, so this is a second reading and not a blind replication."
+    "The current self record against the retained automated readings of {cells} topics in the "
+    "comparison.v1 projection dated {as_of}. The series began on {reviewed}, and its description "
+    "documents re-readings through {documented_through}. These totals aggregate the latest "
+    "retained topic scores rather than a single pass. The current aggregate agrees on {equal} "
+    "topics, reads {deeper} deeper and {shallower} shallower. At the thresholds "
+    "the retained readings give {reading} against the current record's {recorded}. "
+    "The reviewer also authored parts of the "
+    "course, so this is not an independent replication or evidence of reader learning. The "
+    "shallower count is constrained by the audit's rule against inflated self scores."
 )
 
 
@@ -64,7 +70,8 @@ def build() -> dict[str, Path]:
     hatches = style.atlas_palette.HATCH
 
     payload = style.load_json(style.DATA_DIR / "comparison.v1.json")
-    reading = payload["second_readings"][0]
+    reading = next(item for item in payload["second_readings"] if item["id"] == READING_ID)
+    series = reading_series(payload, reading)
 
     fig = style.figure(style.FIGURE_WIDTH, 5.0)
     axes = style.axes_grid(
@@ -103,9 +110,9 @@ def build() -> dict[str, Path]:
     outcome_ax.set_yticks(positions)
     outcome_ax.set_yticklabels([label for label, _ in outcomes], fontsize=8.4)
     outcome_ax.tick_params(axis="y", length=0)
-    outcome_ax.set_xlabel("Topics out of 93", fontsize=8.5)
-    outcome_ax.set_xlim(0, 66)
-    outcome_ax.set_xticks([0, 20, 40, 60])
+    outcome_ax.set_xlabel(f"Topics out of {series.topics}", fontsize=8.5)
+    outcome_ax.set_xlim(0, series.topics * 1.14)
+    outcome_ax.xaxis.set_major_locator(MaxNLocator(nbins=4, integer=True))
     outcome_ax.set_ylim(-0.6, len(outcomes) - 0.4)
     outcome_ax.grid(axis="x", linewidth=0.6, alpha=0.7)
     outcome_ax.set_axisbelow(True)
@@ -163,9 +170,9 @@ def build() -> dict[str, Path]:
         [THRESHOLD_TITLES[entry["threshold"]] for entry in rows], fontsize=8.4
     )
     threshold_ax.tick_params(axis="y", length=0)
-    threshold_ax.set_xlabel("Topics out of 93", fontsize=8.5)
-    threshold_ax.set_xlim(-3, 100)
-    threshold_ax.set_xticks([0, 30, 60, 90])
+    threshold_ax.set_xlabel(f"Topics out of {series.topics}", fontsize=8.5)
+    threshold_ax.set_xlim(-0.03 * series.topics, series.topics * 1.14)
+    threshold_ax.xaxis.set_major_locator(MaxNLocator(nbins=4, integer=True))
     threshold_ax.set_ylim(-0.7, len(rows) - 0.3)
     threshold_ax.grid(axis="x", linewidth=0.6, alpha=0.7)
     threshold_ax.set_axisbelow(True)
@@ -177,7 +184,7 @@ def build() -> dict[str, Path]:
     ]
     threshold_ax.legend(
         handles,
-        ["Recorded by this project", "Independent reading"],
+        ["Current self record", "Retained topic readings"],
         loc="upper left",
         fontsize=8.0,
         handletextpad=0.5,
@@ -188,12 +195,19 @@ def build() -> dict[str, Path]:
         bbox_to_anchor=(0.0, 1.02),
     )
 
+    validate_count_bounds(values, outcome_ax.get_xlim())
+    validate_count_bounds(
+        [entry[key] for entry in rows for key in ("recorded", "reading")],
+        threshold_ax.get_xlim(),
+    )
     written = style.save(fig, STEM)
     style.register_caption(
         FIGURE_NUMBER,
         CAPTION.format(
             cells=reading["cells"],
-            reviewed=reading["reviewed_on"],
+            reviewed=series.initiated_on,
+            as_of=series.aggregate_as_of,
+            documented_through=series.documented_through,
             equal=reading["equal"],
             deeper=reading["reading_deeper"],
             shallower=reading["reading_shallower"],

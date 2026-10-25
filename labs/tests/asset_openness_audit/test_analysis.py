@@ -48,6 +48,6 @@ def test_aggregate_counts_recompute_from_catalogue() -> None:
         "records_with_scope_limit": 9,
     }
     assert result["whole_catalogue"] == {
-        "records": 228,
-        "records_with_seven_separate_dimensions": 228,
+        "records": 232,
+        "records_with_seven_separate_dimensions": 232,
     }

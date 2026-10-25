@@ -38,6 +38,30 @@ Maintainers triage credible corrections promptly. High-impact errors involving s
 
 Records are deprecated when a resource is withdrawn, superseded, inaccessible, or outside maintained scope. Historical records may remain with a clear lifecycle state and successor relation. Removal is reserved for content that cannot lawfully or safely remain, duplicates with no independent identity, or personal information.
 
+## Learning questions and exchange
+
+The current public exchange route is GitHub Issues. The learning-question form
+accepts English or Chinese and requires only the relevant lesson, resource or
+exercise and the question. An attempted solution is helpful but optional.
+Corrections, reproduction reports and contribution proposals have separate
+forms linked from the website's Contribute page. Reading the website does not
+require a GitHub account; posting an issue does.
+
+A maintainer triages a new question to the relevant scientific object and
+records who will answer or review it. Questions about interpretation should
+receive an explanation with a source or a worked step. Execution questions
+should identify the attempted runtime and first useful error before proposing
+a fix. A factual correction follows the correction process above. When a useful
+answer improves a lesson, the follow-up change links back to the question and
+updates both language editions where applicable.
+
+Maintainers distinguish an answered question from a verified reproduction and
+an accepted content change. They keep unresolved points visible and do not
+close a question merely because a program passed a test. Conduct and sensitive
+reports follow the Code of Conduct and security routes rather than a public
+scientific thread. Response times depend on volunteer availability; no response
+rate, active forum or community impact is claimed by preparing these routes.
+
 ## Conflicts and recusal
 
 Contributors and reviewers disclose employment, funding, authorship, investment, or close collaboration relevant to a decision. A conflicted maintainer may provide facts but should not be the sole approver of a disputed ranking, licence interpretation, correction, or enforcement action.

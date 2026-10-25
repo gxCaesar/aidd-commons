@@ -8,7 +8,7 @@ import ScrollableRegions from "../../../../../components/ScrollableRegions.astro
 
 英文原文：[Perturbation prediction across cellular contexts](/learn/mechanism-targets/perturbation-context-generalization/)。
 
-译文更新：2026-09-12。
+译文更新：2026-10-25。
 
 <LessonProgress lessonId="mechanism-targets/perturbation-context-generalization" />
 
@@ -44,6 +44,31 @@ import ScrollableRegions from "../../../../../components/ScrollableRegions.astro
 
 学习到的预测器/对照参数和扰动效应估计仅在训练数据上拟合。若被明确允许，可以在推理时汇总新语境
 的未扰动基线；绝不能汇总其留出的扰动后反应。
+
+## PIE：说明效应与留出轴
+
+于 2026-10-25 核查的 [PIE 数据集内发布](https://huggingface.co/arcinstitute/PIE_replogle_wdataset)明确了这种群体目标。Perceiver IO 结合知识嵌入、基线对照均值和训练响应证据。对每个语境与扰动的配对，它逐基因预测差异表达概率（`p_de`）、log2 倍数变化（`lfc_pred`）和处理后平均表达变化（`delta_p_pred`）。三者是不同的量，其中没有一项是单个细胞的前后轨迹，均值变化也不能决定完整表达分布。[处理后数据定义](https://huggingface.co/datasets/arcinstitute/PIE_replogle_nadig_essential)将对照选择、过滤和统计阈值纳入目标的一部分。
+
+其[规范分割](https://huggingface.co/datasets/arcinstitute/PIE_splits)区分 `unseen_ctx`、`unseen_pert` 与 `unseen_ctx_pert`。已发布的 4 个检查点目录指明被留出的细胞系，是独立的折而非集成模型。留出语境测试可以允许使用该语境的未扰动基线，同时不允许使用其扰动响应。[单细胞模型阅读课](/zh-cn/learn/representations/single-cell-and-virtual-cell-models/)分别说明代码、检查点与数据条款。本课没有运行 PIE 模型。
+
+### 构造的留出练习
+
+训练响应覆盖 `(Alpha, A)`、`(Alpha, B)`、`(Beta, A)` 与 `(Beta, B)`。Gamma 只有被允许使用的未扰动基线，扰动 C 没有训练响应。按发布的分割词汇分类以下测试配对：
+
+| 查询 | 留出轴 |
+| --- | --- |
+| `(Gamma, A)` | 仅语境：`unseen_ctx` |
+| `(Alpha, C)` | 仅扰动：`unseen_pert` |
+| `(Gamma, C)` | 两者：`unseen_ctx_pert` |
+
+若把 `(Alpha, A)` 的训练细胞重新分出一个测试文件，它能支持上述哪种主张？Gamma 的基线能否提供其扰动效应标签？这是构造的分区练习，不是 PIE 数据或实测结果。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+`(Alpha, A)` 既没有留出语境，也没有留出扰动，即使细胞位于另一个文件中也是如此。Gamma 的未扰动均值只提供基线信息；若拟合时使用其扰动后响应构成效应标签，就跨越了留出边界。三行测试不同类型的迁移，必须分别报告。增加同一留出细胞系中的细胞数，不会增加独立留出的细胞系、供体或组织数。
+
+</details>
 
 ## 表示、对照与干预标签
 
@@ -153,6 +178,7 @@ Beta 的符号相反。供体泛化主张应留出供体，而不是仅留出来
 
 - [Perturb-seq：池化 CRISPR 扰动与单细胞 RNA 读出](https://pmc.ncbi.nlm.nih.gov/articles/PMC5181115/)
 - [Arc Institute：2026 Virtual Cell Challenge 任务说明](https://arcinstitute.org/news/virtual-cell-challenge-2026)
+- `model-pie-replogle-wdataset`：[模型卡](https://huggingface.co/arcinstitute/PIE_replogle_wdataset)、[处理后数据定义](https://huggingface.co/datasets/arcinstitute/PIE_replogle_nadig_essential)与[规范分割](https://huggingface.co/datasets/arcinstitute/PIE_splits)，核查于 2026-10-25
 - [从疾病问题到靶标假设](/zh-cn/learn/mechanism-targets/disease-to-target/)
 - [GEO 序列 GSE70138(LINCS L1000,Phase II)](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70138)，通过 [L1000 扰动语境实验](/zh-cn/labs/l1000-perturbation-context/) 读取
 
@@ -166,4 +192,4 @@ Alpha/Beta/Gamma 表格与练习中的数值是构造的；LINCS L1000 那个案
 继续阅读 [L1000 扰动语境实验](/zh-cn/labs/l1000-perturbation-context/) 亲自
 运行这个比较。
 
-最后审阅：2026-09-12。
+最后审阅：2026-10-25。

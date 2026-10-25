@@ -1,22 +1,9 @@
 #!/usr/bin/env python3
-"""Check the site's figures before they ship.
+"""Validate the PNG/PDF products the site actually publishes and their source captions.
 
-Four things are checked, and every one of them is a property of the products rather than
-of the intent behind them.
-
-1. Every file in `site/public/figures/` is a figure, it is not empty, and it is well
-   formed XML.
-2. Every one of them refers to a CSS custom property, so the drawing follows the site's
-   theme rather than carrying a palette of its own.
-3. No colour of the report's own palette is left in any of them. A leftover hex is a
-   colour that will not change with the theme, which is the defect this check exists to
-   catch.
-4. Every figure the site places is registered in `site/src/data/atlas-figures.json` with
-   a file that exists, an alt text, a caption and the pages it belongs on, and every
-   figure that is placed is placed on a page that asks for it.
-
-The script exits with a non-zero status when a check fails, so it can be run on its own or
-from a build.
+Legacy SVG inputs are outside this delivery contract and are never changed by this
+check. A nonempty manifest must cover every page placement, each image must decode at
+its declared intrinsic dimensions, and each vector download must be a regular PDF file.
 """
 
 from __future__ import annotations
@@ -24,123 +11,124 @@ from __future__ import annotations
 import json
 import re
 import sys
-import xml.etree.ElementTree as ElementTree
 from pathlib import Path
+from typing import Any
+
+from PIL import Image
 
 HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parents[1]
-FIGURE_DIR = REPO_ROOT / "site" / "public" / "figures"
-MANIFEST_PATH = REPO_ROOT / "site" / "src" / "data" / "atlas-figures.json"
+FIGURE_DIR = REPO_ROOT / "site/public/figures"
+REPORT_OUT = REPO_ROOT / "report/figures/out"
+MANIFEST_PATH = REPO_ROOT / "site/src/data/atlas-figures.json"
 PAGES = {
-    "/": REPO_ROOT / "site" / "src" / "pages" / "index.astro",
-    "/audit/": REPO_ROOT / "site" / "src" / "pages" / "audit" / "index.astro",
-    "/labs/": REPO_ROOT / "site" / "src" / "pages" / "labs" / "index.astro",
-    "/report/": REPO_ROOT / "site" / "src" / "pages" / "report" / "index.astro",
+    "/": REPO_ROOT / "site/src/pages/index.astro",
+    "/audit/": REPO_ROOT / "site/src/pages/audit/index.astro",
+    "/labs/": REPO_ROOT / "site/src/pages/labs/index.astro",
+    "/report/": REPO_ROOT / "site/src/pages/report/index.astro",
 }
 
-HEX_RE = re.compile(r"#[0-9a-fA-F]{6}\b")
-VARIABLE_RE = re.compile(r"var\(--atlas")
 
-
-def palette_hexes() -> dict[str, set[str]]:
-    """Every colour the report's palette defines, by theme."""
-    sys.path.insert(0, str(REPO_ROOT / "report" / "figures"))
-    import atlas_palette
-
-    colours: dict[str, set[str]] = {}
-    for theme in atlas_palette.THEMES:
-        found: set[str] = set()
-        for group in (
-            atlas_palette.tokens(theme),
-            atlas_palette.categorical(theme),
-            atlas_palette.fills(theme),
-        ):
-            found.update(value.lower() for value in group.values())
-        found.update(value.lower() for value in atlas_palette.ladder(theme))
-        colours[theme] = found
-    return colours
-
-
-def check_figures(hexes: set[str]) -> list[str]:
-    """Every file in the figures directory, checked on its own."""
+def check_delivery(
+    figure: dict[str, Any],
+    directory: Path,
+    captions: dict[str, str],
+    schematics: dict[str, str],
+) -> list[str]:
+    """Check one declared pair, including the known wrong-size and stale-caption defects."""
     problems: list[str] = []
-    if not FIGURE_DIR.is_dir():
-        return [f"{FIGURE_DIR} does not exist"]
-
-    files = sorted(FIGURE_DIR.glob("*.svg"))
-    if not files:
-        return [f"{FIGURE_DIR} holds no figure"]
-
-    for path in files:
-        text = path.read_text(encoding="utf-8")
-        if not text.strip():
-            problems.append(f"{path.name}: the file is empty")
+    name = figure.get("id", "?")
+    required = ("id", "file", "pdf", "source_stem", "width", "height", "alt", "caption", "pages")
+    for field in required:
+        if not figure.get(field):
+            problems.append(f"{name}: the manifest has no {field}")
+    stem = figure.get("source_stem", "")
+    if not re.fullmatch(r"(?:plot_\d+_[a-z_]+|schematic-\d+-[a-z-]+)", stem):
+        problems.append(f"{name}: invalid source generator stem {stem!r}")
+        return problems
+    plot = re.match(r"plot_(\d+)_", stem)
+    if plot:
+        expected_caption = captions.get(plot.group(1))
+    else:
+        schematic = re.match(r"schematic-(\d+)-", stem)
+        expected_caption = schematics.get(f"S{int(schematic.group(1))}")
+    if expected_caption is None or figure.get("caption") != expected_caption:
+        problems.append(f"{name}: caption differs from its native source manifest")
+    for field, suffix in (("file", ".png"), ("pdf", ".pdf")):
+        filename = figure.get(field)
+        expected = stem.replace("_", "-") + suffix
+        if filename != expected:
+            problems.append(f"{name}: {field} must be the source-derived {expected}")
             continue
-        if not VARIABLE_RE.search(text):
-            problems.append(f"{path.name}: no reference to a site colour property")
-        left = sorted({value.lower() for value in HEX_RE.findall(text)} & hexes)
-        if left:
-            problems.append(f"{path.name}: palette colours left in the file: {', '.join(left)}")
-        try:
-            ElementTree.fromstring(text)
-        except ElementTree.ParseError as error:
-            problems.append(f"{path.name}: not well formed XML: {error}")
+        path = directory / filename
+        if not path.is_file() or path.is_symlink():
+            problems.append(f"{name}: {filename} is not a regular delivery file")
+            continue
+        if suffix == ".png":
+            try:
+                with Image.open(path) as image:
+                    if image.format != "PNG":
+                        problems.append(f"{name}: preview is not PNG")
+                    if image.size != (figure.get("width"), figure.get("height")):
+                        problems.append(f"{name}: declared dimensions differ from the PNG")
+                    image.verify()
+            except (OSError, ValueError, SyntaxError) as error:
+                problems.append(f"{name}: PNG cannot be decoded: {error}")
+        else:
+            content = path.read_bytes()
+            if not content.startswith(b"%PDF-") or not content.rstrip().endswith(b"%%EOF"):
+                problems.append(f"{name}: vector download is not a complete PDF")
     return problems
 
 
 def check_manifest() -> list[str]:
-    """The manifest, and the pages that place the figures."""
-    problems: list[str] = []
-    if not MANIFEST_PATH.exists():
-        return [f"{MANIFEST_PATH} does not exist"]
-
+    """Check all products and both directions of the page-placement registration."""
     payload = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
     figures = payload.get("figures", [])
     if not figures:
         return ["the manifest registers no figure"]
-
+    captions = json.loads((REPORT_OUT / "captions.json").read_text(encoding="utf-8"))
+    schematics = json.loads((REPORT_OUT / "captions-schematics.json").read_text(encoding="utf-8"))
+    problems: list[str] = []
+    ids: set[str] = set()
     for figure in figures:
-        for field in ("id", "file", "alt", "caption", "pages"):
-            if not figure.get(field):
-                problems.append(f"{figure.get('id', '?')}: the manifest has no {field}")
-        if not (FIGURE_DIR / figure["file"]).exists():
-            problems.append(f"{figure['id']}: {figure['file']} is not in the figures directory")
+        problems.extend(check_delivery(figure, FIGURE_DIR, captions, schematics))
+        name = figure.get("id", "?")
+        if name in ids:
+            problems.append(f"{name}: duplicate figure id")
+        ids.add(name)
+        generator = (
+            REPO_ROOT / "report/figures" / (figure.get("source_stem", "").replace("-", "_") + ".py")
+        )
+        if not generator.is_file():
+            problems.append(f"{name}: source generator does not exist")
         for page in figure.get("pages", []):
             source = PAGES.get(page)
             if source is None:
-                problems.append(f"{figure['id']}: {page} is not a page this site serves")
-            elif f'id="{figure["id"]}"' not in source.read_text(encoding="utf-8"):
-                problems.append(f"{figure['id']}: {page} does not place the figure")
-
+                problems.append(f"{name}: {page} is not a registered figure page")
+            elif f'id="{name}"' not in source.read_text(encoding="utf-8"):
+                problems.append(f"{name}: {page} does not place the figure")
     for page, source in PAGES.items():
-        if not source.exists():
-            continue
-        text = source.read_text(encoding="utf-8")
-        for used in re.findall(r'<AtlasFigure id="([^"]+)"', text):
-            if not any(figure["id"] == used for figure in figures):
-                problems.append(f"{page}: places {used}, which the manifest does not register")
+        for used in re.findall(r'<AtlasFigure id="([^"]+)"', source.read_text(encoding="utf-8")):
+            if not any(
+                figure.get("id") == used and page in figure.get("pages", []) for figure in figures
+            ):
+                problems.append(f"{page}: places {used} without a matching manifest placement")
     return problems
 
 
 def main() -> int:
-    colours = palette_hexes()
-    problems = check_figures(colours["light"] | colours["dark"])
-    problems += check_manifest()
-
-    files = sorted(FIGURE_DIR.glob("*.svg")) if FIGURE_DIR.is_dir() else []
-    print(f"checked {len(files)} figures in {FIGURE_DIR}")
-    for path in files:
-        print(f"  {path.name:<44} {path.stat().st_size:>7} bytes")
-
-    if problems:
-        print()
-        print("the site figures do not pass:", file=sys.stderr)
-        for problem in problems:
-            print(f"  {problem}", file=sys.stderr)
+    try:
+        problems = check_manifest()
+    except (OSError, ValueError) as error:
+        print(f"site figure validation failed: {error}", file=sys.stderr)
         return 1
-
-    print()
-    print("every figure is themed, empty of palette colours, and registered")
+    if problems:
+        for problem in problems:
+            print(problem, file=sys.stderr)
+        return 1
+    payload = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    print(f"checked {len(payload['figures'])} source-bound PNG/PDF pairs and all page placements")
     return 0
 
 

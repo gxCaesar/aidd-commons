@@ -1,6 +1,6 @@
 ---
 title: 单细胞基础模型与虚拟细胞
-description: 通过任务约定、表示、开放维度、许可范围，以及细胞嵌入与扰动结果预测之间的界线，阅读 10 份注明日期的资源记录。
+description: 通过任务约定、表示、开放维度、许可范围，以及细胞嵌入与扰动结果预测之间的界线，阅读 11 份注明日期的资源记录。
 ---
 
 import LessonProgress from "../../../../../components/LessonProgress.astro";
@@ -12,7 +12,7 @@ import ScrollableRegions from "../../../../../components/ScrollableRegions.astro
 
 ## 学习目标与前置知识
 
-学完[蛋白、复合物、细胞状态与知识图谱表示](/zh-cn/learn/representations/complex-cell-and-knowledge-graphs/)后，用这份注明日期的阅读材料判断关于单细胞基础模型与虚拟细胞的 10 份目录记录究竟确立了什么。上一课讲的是细胞状态如何编码，以及这种编码丢失了什么。本课向上走一层，讲的是在大规模上学习细胞状态嵌入的模型，以及声称能预测扰动会如何改变细胞的模型。
+学完[蛋白、复合物、细胞状态与知识图谱表示](/zh-cn/learn/representations/complex-cell-and-knowledge-graphs/)后，用这份注明日期的阅读材料判断关于单细胞基础模型与虚拟细胞的 11 份目录记录究竟确立了什么。上一课讲的是细胞状态如何编码，以及这种编码丢失了什么。本课向上走一层，讲的是在大规模上学习细胞状态嵌入的模型，以及声称能预测扰动会如何改变细胞的模型。
 
 学完本课，你应能做到：
 
@@ -28,6 +28,8 @@ import ScrollableRegions from "../../../../../components/ScrollableRegions.astro
 第一种约定以一个细胞为输入，返回一个向量。输入是某个细胞在既定测量与预处理流程下的表达谱。输出是共享潜空间中的一个嵌入，在若干记录中还带有被测基因的第二个嵌入。它的用处是迁移。语料中从未包含的组织、平台或物种的细胞仍可放进同一空间，因为编码器产生坐标不需要标签、不需要重新训练，也不需要微调。[UCE](https://github.com/snap-stanford/UCE)以最强的方式陈述了这一性质，把新组织和新物种的新细胞映射进一个潜空间。这一约定不预测任何结果。嵌入说明一个细胞相对其他细胞处在什么位置，而坐标轴是从相关性而非干预中学出来的。
 
 第二种约定以一次干预为输入，返回一个反事实。输入是基线细胞状态、声明过的扰动（一个基因、一个基因集或一种化合物），以及语境（细胞类型、剂量或条件）。输出是预测的扰动后表达谱，或相对对照的变化。它的用处是一个可以被实测筛选推翻的反事实。
+
+目标可以是群体层面的效应，而非某个细胞未来的状态。下文的 PIE 针对语境与扰动的配对，预测逐基因的差异表达概率与效应估计。基线群体和扰动群体不必包含同一批细胞。效应预测本身不能识别因果机制，也不能重建细胞状态分布。
 
 两种约定之间的落差正是本课的重点。细胞表示不是关于干预的预测，而一个善于嵌入细胞的模型，并不能给出它能预测某个药物作用的证据。本家族记录对第一种约定的确立远多于第二种。还有两条界线要让阅读保持诚实。目录中的任务标签，例如 cell-context-inspection 或 out-of-distribution-evaluation，是对项目声称覆盖范围的分类，不是实测结果，也不携带指标、分割或评估集。模型名不是能力。某件资产是做什么的、其证据到哪里为止，都必须从记录中读出。
 
@@ -47,7 +49,7 @@ Tahoe-x1 加入了预训练规模主张，但其记录没有数值基准结果�
 
 ## CellFM
 
-[CellFM代码仓库](https://github.com/biomed-AI/CellFM)描述了一个基于 RetNet 的基础模型，在约 100 million 个人类细胞的转录组上预训练，用于细胞注释、扰动预测、基因功能预测、批次校正以及细胞类型特异的 lncRNA 鉴定。[模型卡](https://huggingface.co/ShangguanNingyuan/CellFM)报告 19,914 个样本，包含 102,304,686 个人类细胞；[Zenodo记录](https://zenodo.org/records/15138665)保存 CellFM 所用数据集的 CellFM_data.zip 归档，约 5.3 GB。架构证据是 [Nature Communications 16:4679 (2025)](https://doi.org/10.1038/s41467-025-59926-5)。这是本家族中唯一指明数据归档的记录，而归档说明与模型卡都没有列出来源图谱或逐样本的来源。
+[CellFM代码仓库](https://github.com/biomed-AI/CellFM)描述了一个基于 RetNet 的基础模型，在约 100 million 个人类细胞的转录组上预训练，用于细胞注释、扰动预测、基因功能预测、批次校正以及细胞类型特异的 lncRNA 鉴定。[模型卡](https://huggingface.co/ShangguanNingyuan/CellFM)报告 19,914 个样本，包含 102,304,686 个人类细胞；[Zenodo记录](https://zenodo.org/records/15138665)保存 CellFM 所用数据集的 CellFM_data.zip 归档，约 5.3 GB。架构证据是 [Nature Communications 16:4679 (2025)](https://doi.org/10.1038/s41467-025-59926-5)。该记录指明了数据归档，但归档说明与模型卡都没有列出来源图谱或逐样本的来源。
 
 CellFM 的训练代码也依据 README 标为可用，推断代码、权重、架构和训练数据同样标为可用，数据配方与评估代码仍是未核实。它的条款按资产拆分，并改变了读者能做什么。仓库源代码与模型卡采用 CC-BY-NC-ND-4.0，它为非商业目的授予被许可材料的复制与分享，允许为非商业目的制作和再现改编材料，但禁止分享该改编材料。因此微调得到的衍生模型可以在组内存在，却不能公开发布。[Zenodo归档](https://zenodo.org/records/15138665)另行采用 CC-BY-4.0，[许可文件](https://raw.githubusercontent.com/biomed-AI/CellFM/main/LICENSE-cc-by-nc-nd-4.0)也按其非商业、禁止衍生的授权命名。数据条款与模型条款并不一致，而命名归档的许可对读取它的代码只字未提。
 
@@ -72,6 +74,14 @@ CellFM 的训练代码也依据 README 标为可用，推断代码、权重、�
 论文还报告了包含 82,525 与 24,527 个特征的两份图谱；99.8% 的特征无法被奇异值分解发现；29–59% 的特征可注释到 Gene Ontology、KEGG、Reactome、STRING 或 TRRUST 这些具名数据库中的通路。论文还报告了 141 与 76 个共激活模块，中位因果特异性为 2.36 倍，跨层信息高速通道覆盖 63–99.8%。这些数字来自目录记录所读的预印本摘要与概要，并非对全文的重新分析。应带走的是 CRISPRi 结果对结论的限制，而不是把图谱规模当作能力结果。
 
 这篇论文是 2026-03-03 提交的 arXiv 预印本，没有列出期刊或会议发表场所。记录将推断代码标为可用，其他 6 个开放维度标为未核实；访问级别也是未核实，且没有列出许可。两个仓库都是没有 README 和许可文件的网页应用源码树，因此读者通过托管页面访问图谱，而非通过已发布的软件包。仓库包含应用源码，却不包含提取出的特征、训练好的稀疏自编码器、注释表或逐层结果，因此只靠仓库无法重新计算图谱。
+
+## PIE：带有明确留出设置的群体效应
+
+[PIE 仓库](https://github.com/ArcInstitute/pie)用 Perceiver IO 结合生物学知识嵌入、基线对照表达均值和训练响应证据。[Replogle 数据集内模型卡](https://huggingface.co/arcinstitute/PIE_replogle_wdataset)将语境与扰动的配对定义为预测单位，逐基因输出 `p_de`（预测差异表达概率）、`lfc_pred`（预测 log2 倍数变化）与 `delta_p_pred`（预测的处理后平均表达变化）。三者具有不同尺度与目标，概率不是倍数变化，其中也没有一项是单个细胞的轨迹。
+
+该发布包含 4 个独立训练的模型。`hepg2`、`jurkat`、`k562` 与 `rpe1` 目录指明被留出的细胞系，不是集成模型，也不是训练细胞系。每一折在其余 3 个细胞系上训练和验证，再按验证集 `binary_auprc` 选择检查点。[规范分割](https://huggingface.co/datasets/arcinstitute/PIE_splits)区分未见语境、未见扰动以及两者同时未见。这是不同的泛化主张；解读某一折前，先完成[留出设置练习](/zh-cn/learn/mechanism-targets/perturbation-context-generalization/)。
+
+[处理后数据卡](https://huggingface.co/datasets/arcinstitute/PIE_replogle_nadig_essential)与[知识来源卡](https://huggingface.co/datasets/arcinstitute/PIE_sources)公开了具名实验的资产及预处理。对照选择、基因过滤与统计阈值参与定义差异表达目标。上游数据和嵌入的条款仍未核实。代码采用 [CC BY-NC-SA 4.0](https://github.com/ArcInstitute/pie/blob/main/LICENSE.md)，检查点与随附文件则使用日期为 2026-10-02 的[独立非商业模型许可](https://huggingface.co/arcinstitute/PIE_replogle_wdataset/blob/main/MODEL_LICENSE.md)及[可接受使用政策](https://huggingface.co/arcinstitute/PIE_replogle_wdataset/blob/main/MODEL_ACCEPTABLE_USE_POLICY.md)。这些许可均不补齐缺失的上游条款。训练、评估与推理接口公开，但本课没有运行检查点或评估。链接的预印本返回 HTTP 403，因此新增内容没有引入仅见于论文的性能结果。
 
 ## GEARS
 
@@ -109,12 +119,13 @@ CellFM 的训练代码也依据 README 标为可用，推断代码、权重、�
 | UCE | 可用 | 未核实 | 可用 | 可用 | 未核实 | 未核实 | 未核实 |
 | Tahoe-x1 | 可用 | 可用 | 可用 | 可用 | 可用 | 可用 | 未核实 |
 | 稀疏自编码器特征图谱 | 可用 | 未核实 | 未核实 | 未核实 | 未核实 | 未核实 | 未核实 |
+| PIE，具名数据集内发布 | 可用 | 可用 | 可用 | 可用 | 可用 | 可用，处理后资产 | 可用 |
 | GEARS | 可用 | 未核实 | 未核实 | 可用 | 未核实 | 可用 | 可用 |
 | CPA | 可用 | 未核实 | 可用 | 可用 | 未核实 | 未核实 | 未核实 |
 | PertFormer | 可用 | 未核实 | 可用 | 可用 | 未核实 | 未核实 | 未核实 |
 | 零样本评估 | 可用 | 不适用 | 不适用 | 不适用 | 未核实 | 不适用 | 可用 |
 
-决定多数下游选择的是权重一列。7 条记录把权重标为可用，2 条标为未核实，零样本基准则标为不适用。特征图谱这一行描述的是网页应用代码，不是已发布的稀疏自编码器权重。Tahoe-x1 显示出另一种缺口：权重可用，但部分训练语料需要提出访问申请。可用模型权重所附的条款从只覆盖源代码的 MIT，到非商业且禁止衍生、因而禁止分享改编模型的授权，跨度很大。计划微调、再分发或对外提供这些模型的读者，必须读资产的许可，而不是读仓库的许可。
+决定多数下游选择的是权重一列。8 条记录把权重标为可用，2 条标为未核实，零样本基准则标为不适用。特征图谱这一行描述的是网页应用代码，不是已发布的稀疏自编码器权重。Tahoe-x1 显示出另一种缺口：权重可用，但部分训练语料需要提出访问申请。PIE 公开处理后资产，并使用独立模型条款。可用模型权重所附的条款从只覆盖源代码的 MIT，到非商业且禁止衍生、因而禁止分享改编模型的授权，跨度很大。计划微调、再分发或对外提供这些模型的读者，必须读资产的许可，而不是读仓库的许可。
 
 ## 训练语料与细胞类型覆盖
 
@@ -133,7 +144,7 @@ CellFM 的训练代码也依据 README 标为可用，推断代码、权重、�
 1. 任务标签。目录的任务字段分类的是项目声称覆盖的范围，不是实测的分布外结果，CPA 记录也不带指标、分割和具名的评估数据集。
 2. 语料。scFoundation 的 README 没有指明来源数据集，因此该数字界定的是语料大小而非语料组成。两份记录都没有说明肝细胞在其中。团队需要真实训练语料中的逐细胞类型计数，而记录不提供这一项。
 3. 许可。CPA 的代码是 BSD-3-Clause，而 Google Drive 集合中的预训练模型和数据集没有声明逐文件条款。scFoundation 的代码是 Apache-2.0，其权重仅限非商业研究，因此团队想复用的基因嵌入才是受限资产，代码不是。
-4. 比较。要声称 CPA 预测了该化合物的作用，团队需要一次实测筛选、一个声明过的留出集、一项指标和一个同协议的基线。本家族没有任何记录为扰动预测同时提供这四样。
+4. 比较。要声称 CPA 预测了该化合物的作用，团队需要一次实测筛选、一个声明过的留出集、一项指标和一个同协议的基线。PIE 的基因扰动各折不能提供这项肝细胞中的匹配 CPA 评估。
 
 团队今天能陈述的范围很窄。这些资产存在，许可如此，语料未经核实，而本家族没有任何记录测量过这一预测。这是一份来源描述，也正是阅读应有的交付物。
 
@@ -158,7 +169,7 @@ CellFM 的训练代码也依据 README 标为可用，推断代码、权重、�
 
 ## 适用范围与材料未展示的内容
 
-这 10 条记录确立的是资产、许可与任务声明：原来的 8 条于 2026-10-21 审阅，Tahoe-x1 与特征图谱记录于 2026-10-23 审阅。它们没有确立可执行的共同基准、已复现的模型、推演案例所需的实测扰动预测、每一项链接资产都可无限制复用，或已测得的读者学习成效。5 条模型记录把训练语料留为未核实，因此无法作出关于细胞类型覆盖的宽泛结论；Tahoe-x1 指明语料，但有访问和过滤限制，其记录也没有数值基准结果。特征图谱报告了 CRISPRi 下有限的调控响应。这项结果来自预印本，应用仓库也无法重算图谱。零样本评估研究的匹配协议在记录中不带任何指标数值，也没有指明其归档中的数据集。本课没有运行这些模型。
+这 11 条记录确立的是资产、许可与任务声明：原来的 8 条于 2026-10-21 审阅，Tahoe-x1 与特征图谱记录于 2026-10-23 审阅，PIE 于 2026-10-25 审阅。它们没有确立可执行的共同基准、已复现的模型、推演案例所需的实测扰动预测、每一项链接资产都可无限制复用，或已测得的读者学习成效。5 条模型记录把训练语料留为未核实，因此无法作出关于细胞类型覆盖的宽泛结论；Tahoe-x1 指明语料，但有访问和过滤限制，其记录也没有数值基准结果。特征图谱报告了 CRISPRi 下有限的调控响应。这项结果来自预印本，应用仓库也无法重算图谱。零样本评估研究的匹配协议在记录中不带任何指标数值，也没有指明其归档中的数据集。PIE 增加了明确的折与目标定义，没有提供与其他模型的匹配比较。本课没有运行这些模型。
 
 ## 来源
 
@@ -166,4 +177,6 @@ CellFM 的训练代码也依据 README 标为可用，推断代码、权重、�
 
 Tahoe-x1 的来源是其[仓库](https://github.com/tahoebio/tahoe-x1)、[README](https://raw.githubusercontent.com/tahoebio/tahoe-x1/main/README.md)与 [bioRxiv 预印本](https://www.biorxiv.org/content/10.1101/2025.10.23.683759v1)。特征图谱的来源是 [arXiv 预印本](https://arxiv.org/abs/2603.02952)，以及 [scGPT](https://github.com/biodyn-ai/scgpt-atlas) 与 [Geneformer](https://github.com/biodyn-ai/geneformer-atlas) 应用仓库。记录没有列出图谱仓库的许可。
 
-Last reviewed: 2026-10-23.
+`model-pie-replogle-wdataset` 记录引用已打开的[代码仓库](https://github.com/ArcInstitute/pie)、[模型卡](https://huggingface.co/arcinstitute/PIE_replogle_wdataset)、[处理后数据](https://huggingface.co/datasets/arcinstitute/PIE_replogle_nadig_essential)、[知识来源](https://huggingface.co/datasets/arcinstitute/PIE_sources)、[分割](https://huggingface.co/datasets/arcinstitute/PIE_splits)、[代码许可](https://github.com/ArcInstitute/pie/blob/main/LICENSE.md)、[模型许可](https://huggingface.co/arcinstitute/PIE_replogle_wdataset/blob/main/MODEL_LICENSE.md)与[模型政策](https://huggingface.co/arcinstitute/PIE_replogle_wdataset/blob/main/MODEL_ACCEPTABLE_USE_POLICY.md)，核查日期为 2026-10-25。
+
+Last reviewed: 2026-10-25.

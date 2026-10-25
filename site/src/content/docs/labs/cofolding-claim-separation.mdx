@@ -1,6 +1,6 @@
 ---
 title: Five claims that arrive in one file
-description: Separate monomer prediction, complex prediction, co-folding, pose generation and experimental binding evidence across 31 registered systems, with one offline command.
+description: Separate monomer prediction, complex prediction, co-folding, pose generation and experimental binding evidence across 32 registered records, with one offline command.
 ---
 
 import ScrollableRegions from "../../../components/ScrollableRegions.astro";
@@ -13,8 +13,9 @@ import LabDownloads from "../../../components/LabDownloads.astro";
 ## Before you run
 
 **Mode: runnable inspection of committed files.** The command reads a frozen
-extract of the resource registry, committed beside it, holding the 31
-registered systems that make a structural or affinity claim. It makes no network
+extract of the resource registry, committed beside it, holding the 32
+registered records that make a structural or affinity claim, selected from 232
+source records and checked on 2026-10-25. It makes no network
 request, downloads no structure, imports no third-party package and predicts
 nothing. It does not evaluate any system's accuracy. It answers a question that
 comes before accuracy: what is this system's output a claim about?
@@ -39,8 +40,8 @@ would change.
 
 The first block groups every registered system in this family by the claim its
 task licenses. Read the modality column beside it. The label
-`biomolecular-complex` appears under three different claim classes, and
-`small-molecule` under three as well.
+`biomolecular-complex` appears under four different claim classes, and
+`small-molecule` under three.
 
 That is the first place a reader gets moved from one claim to another without
 noticing. Two systems can both be labelled for complexes while one predicts a
@@ -49,7 +50,7 @@ on complexes" is true of both while meaning different things.
 
 ## 2. One system can make two claims at once
 
-Of the 31 systems, exactly one declares both a co-folded complex and an
+Of the 32 records, exactly one declares both a co-folded complex and an
 affinity estimate: `model-boltz-2`. That is not a flaw in the record. It is a
 real property of a real model, and it is precisely where the two claims are
 easiest to merge.
@@ -58,6 +59,12 @@ A pose and a potency are separate outputs of the same run. One being good does
 not make the other good. They can disagree on the same compounds, and a reader
 who has seen a convincing structure figure has been given no information about
 whether the compound is active.
+
+OpenFold3/OpenBind-0 also occupies two extract classes, through
+`structure-prediction` and `pose-validation`. It does not add a second
+pose-plus-affinity record. The three-record co-folding subset uses the literal
+`co-folding` task label; these groups follow declarations, not a fresh assessment
+of every model's capabilities.
 
 ## 3. None of these is an experimental measurement
 
@@ -83,20 +90,21 @@ accuracy claim, that exactly one system claims both a pose and an affinity, that
 no measurement record is hiding in the family, and that at least one modality
 label spans more than one claim class.
 
-The family is not uniform on the training-data dimension, and the check says so
-rather than assuming it. One of the three publishes its preprocessed training
-data and its training code; the other two do not. None of the three publishes
-the evaluation code. What stays true across all of them is that the code which
-produced a reported number is not there to be read.
+The literal co-folding subset is not uniform on training-data evidence. Two of
+its three records mark training data available: `model-boltz-1` and
+`model-boltz-2`. Only the first also has verified training code; Chai-1's training
+data remain unverified. All three leave evaluation code unverified. These are
+recorded evidence states, not findings from a training or evaluation run.
 
-One check deserves reading twice. **No co-folding system in this family
-evidences the evaluation code behind its accuracy claim.** Inference code and
-weights are often available; the code that produced the reported numbers is not.
-Two systems in the wider family do publish theirs, the DiffDock release and the
-RosettaFold all-atom release, and the check names them rather than hiding them.
-That is a statement about what has been published, not about whether the numbers
-are right, and it means an accuracy claim from a co-folding system currently has
-to be taken on trust rather than rechecked from source.
+One check deserves reading twice. **None of the three records declaring the
+literal co-folding task evidences evaluation code.** Seven records in the wider
+family do: `benchmark-multipardigm-docking`, `benchmark-plabench`,
+`benchmark-plinder`, `benchmark-posebench`, `benchmark-protdbench`,
+`model-diffdock` and `model-rosettafold-all-atom`. The five benchmark entries
+expose scoring assets; the two model entries expose model-evaluation assets.
+Those are different objects. This extract supplies no route to recompute the
+co-folding scores, and it does not establish that unverified code is absent
+outside the recorded review surfaces.
 
 ## Independent exercise
 
@@ -114,10 +122,10 @@ one say whether anything in this registry can support it.
 of that set, not of your target. Even taken at face value it says nothing about
 the hardest cases, and a median hides the tail where a pose is wrong by enough to
 change a decision. The registry can locate the system and its task, and it shows
-that the evaluation code is not evidenced for the co-folding systems, and for
-24 of the 31 systems in the family, so this number cannot be
-rechecked from published artefacts. It can be cited; it cannot
-be verified here.
+that evaluation code is not evidenced for the literal co-folding subset, and for
+25 of the 32 records in the family. The extract therefore does not establish how
+to recheck this number from the published artifacts. The number is not verified
+here.
 
 **Claim two, this pose is right.** A benchmark median does not transfer to one
 new complex, and the registry offers nothing about your target at all. This is
@@ -145,8 +153,8 @@ against another. It cannot tell you whether a prediction is accurate. It reads
 declarations and evidence states from a registry maintained in this repository,
 so its authority is exactly the authority of those records, and each record's own
 caveats and review date travel with it. An `unverified` openness state means the
-declared surfaces were reviewed on the recorded date and the artefact was not
-found there. It is not a claim that the artefact does not exist.
+recorded review has not established the asset's availability. It is not a claim
+that the artefact does not exist.
 
 For the systems themselves, see the
 [open co-folding frontier inventory](/atlas/open-cofolding-frontier/) and the

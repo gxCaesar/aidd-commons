@@ -9,9 +9,8 @@ runs, and it does four things.
    `schematic_*.py` drawings, in name order. Each generator exposes its own entry point:
    a plot exposes `build()`, which saves the vector PDF and the site PNG and registers its
    caption; a schematic exposes `build()`, which returns the canvas, and `main()`, which
-   saves it as a PDF and an SVG. The orchestrator calls `build()` on both, because the
-   canvas is what lets it write the schematic's raster copy from the same drawing rather
-   than from a conversion of the vector file.
+   saves it as a PDF and a PNG. The orchestrator calls `build()` on both, and the shared
+   save helper writes the schematic's two products from the same native canvas.
 
 2. It writes the raster copy of every schematic, so that every figure in the set has a
    vector file and a raster file, and the site can take either.
@@ -66,9 +65,6 @@ SCHEMATIC_STEM_PATTERN = re.compile(r"^schematic-\d+-")
 #: The suffixes a figure may be written under. Every one of them is a product of a
 #: generator and every one of them has to carry a caption.
 PRODUCT_SUFFIXES = (".pdf", ".png", ".svg")
-
-#: The resolution of the raster copy, the same one the data figures use.
-PNG_DPI = 300
 
 
 def generator_names(pattern: re.Pattern[str]) -> list[str]:
@@ -125,13 +121,6 @@ def draw_schematics() -> list[str]:
         module = importlib.import_module(name)
         canvas = module.build()
         canvas.save(OUT_DIR, module.STEM)
-        with plt.rc_context({"savefig.bbox": None, "savefig.pad_inches": 0.0}):
-            canvas.fig.savefig(
-                OUT_DIR / f"{module.STEM}.png",
-                format="png",
-                dpi=PNG_DPI,
-                metadata={"Software": "AIDD Commons report figures"},
-            )
         plt.close(canvas.fig)
         stems.append(module.STEM)
     return stems

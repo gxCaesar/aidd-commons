@@ -20,6 +20,7 @@ import {
   excludedReleasePaths,
   fileAllowlist,
   intentionalReleaseExclusions,
+  isLegacyScientificSvg,
   type ReleaseBuildResult,
 } from "../../scripts/release/build.js";
 
@@ -44,6 +45,9 @@ function gitTrackedFiles(paths: string[]): string[] {
 }
 
 function isExcluded(path: string): boolean {
+  if (isLegacyScientificSvg(path)) {
+    return true;
+  }
   if (excludedReleasePaths.has(path)) {
     return true;
   }
@@ -66,6 +70,9 @@ function isPublished(path: string): boolean {
 }
 
 function isIntentionallyExcluded(path: string): boolean {
+  if (isLegacyScientificSvg(path)) {
+    return true;
+  }
   for (const prefix of intentionalReleaseExclusions.keys()) {
     if (path.startsWith(prefix)) {
       return true;

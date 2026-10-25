@@ -50,6 +50,10 @@ AQAffinity 是基于 OpenFold3 主干、无需外部结构输入的亲和力预�
 这项授权对代码、权重或附带数据的适用范围。记录也未确立检查点名称、训练数据
 构建方式、输出约定或论文标识符。资源描述依据项目公开元数据，而非已读取的模型卡。
 
+### 公开结构检查点不能指明亲和力预测模块
+
+另行建立的 `model-openfold3-openbind0` 记录于 2026-10-25 核查，指明公开的 OpenBind-0 结构检查点。[OpenFold3 参数参考](https://openfold-3.readthedocs.io/en/latest/parameters_reference.html)将它设为软件包 `0.5.0` 起的默认参数，PDB 训练截止日为 `2025-06-30`。这些参数预测结构，并不指明或发布 AQAffinity 训练过的亲和力预测模块。[OpenBind-0 发布分析](https://openbind.uk/news/blog-openbind-0-advancing-open-molecular-structure-prediction/)与[共折叠版本练习](/zh-cn/learn/structure-and-pockets/cofolding-frontier/)还区分软件包、检查点与化学引导选择。因此，结构主干公开不能填补 AQAffinity 的未核实字段，也不能消除其访问门槛。若同事声称下载 OpenBind-0 就能执行 AQAffinity 亲和力预测，缺失的证据是兼容的亲和力模块检查点、其输入输出约定，以及它自己的访问和许可条款。本课没有运行这项预测。
+
 ## Nesso-1
 
 Nesso-1 在 token 层面共同折叠蛋白与配体的粗粒度表示，不使用 MSA 模块或重原子
@@ -158,4 +162,6 @@ ByteFF2 则需要从源码构建依赖并选择一种力场。更根本的区别
 
 原创课程文字采用 CC BY 4.0。链接来源保留各自的条款。
 
-Last reviewed: 2026-10-23.
+结构检查点的区分另行采用 [OpenFold3 参数参考](https://openfold-3.readthedocs.io/en/latest/parameters_reference.html)与 [OpenBind-0 发布分析](https://openbind.uk/news/blog-openbind-0-advancing-open-molecular-structure-prediction/)，核查于 2026-10-25。它没有增加第五条亲和力路径。
+
+Last reviewed: 2026-10-25.

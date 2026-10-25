@@ -28,9 +28,8 @@ and no rescaling afterwards, so the source point size is the rendered point size
 laid out in *units*, where one unit is one hundredth of the figure width in both directions, so a
 shape measures the same on the page whichever direction it is drawn along.
 
-Output is deterministic. `SOURCE_DATE_EPOCH` is pinned so the PDF carries no wall-clock date, the
-SVG carries no creation date, and the SVG element ids are salted, so two runs of the same script
-produce byte-identical files.
+Output is a vector PDF and a PNG preview saved from the same native canvas. The artwork
+carries no wall-clock date. Existing SVG inputs are preserved and no new SVG is written.
 """
 
 from __future__ import annotations
@@ -272,9 +271,7 @@ def sheet(
     zorder: float = 1.0,
 ) -> None:
     """A document. Ruled lines stand for text that the figure does not need to quote."""
-    rounded_box(
-        canvas, x, y, w, h, face=PANEL, edge=CAT[colour], lw=lw, radius=0.5, zorder=zorder
-    )
+    rounded_box(canvas, x, y, w, h, face=PANEL, edge=CAT[colour], lw=lw, radius=0.5, zorder=zorder)
     pad = min(1.0, w * 0.12)
     top = y + h - pad * 1.4
     step = (h - pad * 2.6) / max(1, lines)
@@ -566,14 +563,23 @@ def funnel(
 
 
 def save_pair(fig, out_dir: Path, stem: str) -> tuple[Path, Path]:
-    """Write the vector pair. Deterministic: no clock, no salted ids."""
+    """Write the vector PDF and 300 dpi preview from the same authored canvas."""
     out_dir.mkdir(parents=True, exist_ok=True)
     pdf_path = out_dir / f"{stem}.pdf"
-    svg_path = out_dir / f"{stem}.svg"
+    png_path = out_dir / f"{stem}.png"
     with plt.rc_context({"savefig.bbox": None, "savefig.pad_inches": 0.0}):
-        fig.savefig(pdf_path, format="pdf")
-        fig.savefig(svg_path, format="svg", metadata={"Date": None})
-    return pdf_path, svg_path
+        fig.savefig(
+            pdf_path,
+            format="pdf",
+            metadata={"CreationDate": None, "Producer": "AIDD Commons report figures"},
+        )
+        fig.savefig(
+            png_path,
+            format="png",
+            dpi=300,
+            metadata={"Software": "AIDD Commons report figures"},
+        )
+    return pdf_path, png_path
 
 
 def separator(canvas: Canvas, y: float, x0: float = 1.5, x1: float = 98.5) -> None:

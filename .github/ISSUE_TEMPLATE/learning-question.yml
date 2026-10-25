@@ -1,0 +1,36 @@
+name: Learning question
+description: Ask about an explanation, worked example, or student exercise.
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Questions in English or Chinese are welcome. Search existing issues first.
+        This is a public discussion. Do not include credentials, personal or patient information, or restricted datasets.
+        For a factual error, use the correction form; for an executed reproduction, use the experiment-report form.
+  - type: input
+    id: location
+    attributes:
+      label: Lesson, resource, or exercise
+      description: Link the page and name the relevant section. Include a version if known.
+    validations: { required: true }
+  - type: textarea
+    id: question
+    attributes:
+      label: What would you like to understand?
+      description: State one question and the part of the explanation or result that is unclear.
+    validations: { required: true }
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: Your current reasoning or attempt
+      description: Share your interpretation or what you tried. A partial explanation is useful; an attempted solution is not a condition for asking.
+    validations: { required: false }
+  - type: textarea
+    id: execution
+    attributes:
+      label: Execution context, if relevant
+      description: Include the command or cell, runtime and versions, and the first useful error. Use a small public example and a fresh student output directory.
+      render: text
+    validations: { required: false }

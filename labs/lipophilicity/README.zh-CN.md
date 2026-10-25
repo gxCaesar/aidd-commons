@@ -26,9 +26,10 @@ uv sync --python 3.11
 uv run jupyter lab labs/lipophilicity/lipophilicity_tutorial.zh-CN.ipynb
 ```
 
-安装 cell 会在当前环境安装缺失或版本不匹配的固定依赖，本地请使用独立环境。
-若旧版依赖已导入，需按提示重启内核。完整执行创建新的临时输出目录；重复导出 cell 会
-更新该目录内的文件。断开运行时前，请下载 `summary.json`、`split-membership.csv`、
+安装 cell 会在当前环境安装缺失或版本不匹配的固定依赖，并同时检查内存中的已导入版本与
+已安装软件包的元数据。本地请使用独立环境；若旧版依赖仍留在内存，需按提示重启内核。
+完整执行会在 notebook 当前工作目录下创建新输出目录，可在文件浏览器中找到；重复导出 cell
+会更新该目录内的文件。断开运行时前，请下载 `summary.json`、`split-membership.csv`、
 `test-predictions.csv` 和 `prediction-errors.png`，不会写入旧实验结果目录。
 
 中英文版本的可执行 cell 完全一致。`tutorial.py` 保存经过测试的小函数，

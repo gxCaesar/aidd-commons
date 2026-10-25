@@ -11,6 +11,14 @@ async function read(relativePath: string) {
 }
 
 describe("comparison audit page", () => {
+  it("makes the external freeze and separate current product review visible", async () => {
+    const page = await read("site/src/pages/audit/index.astro");
+    expect(page).toContain("data-comparison-date-boundary");
+    expect(page).toContain("comparison.external_survey_frozen_on");
+    expect(page).toContain("CURRENT_RESOURCE_COMPARISON.md");
+    expect(page).toContain("without rescoring this matrix");
+  });
+
   it("publishes bounded coverage without collapsing it into an overall score", async () => {
     const [page, bounds, matrix] = await Promise.all([
       read("site/src/pages/audit/index.astro"),

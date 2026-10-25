@@ -2,9 +2,9 @@
 
 Source of every number: `site/public/data/resources.v1.json`, the catalogue
 export that `scripts/catalog/export.ts` generates from `catalog/resources/*.yaml`.
-The export was regenerated for this figure, because the catalogue grew after the
-last committed export was written. Nothing in this script is estimated, and no
-value is carried over from an earlier export.
+This is a live projection, not a frozen release snapshot. Its caption identifies
+the projection schema and the range of record verification dates. Nothing in
+this script is estimated or carried over from an earlier export.
 
 What the figure shows: how many records of each kind the registry holds.
 
@@ -27,6 +27,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
 import figure_style as style  # noqa: E402  (the module sits next to this script)
+from figure_sources import catalogue_projection  # noqa: E402
 
 FIGURE_NUMBER = 1
 STEM = "plot_1_registry_composition"
@@ -35,8 +36,10 @@ STEM = "plot_1_registry_composition"
 def caption(resources: list[dict], ordered: list[tuple[str, int]]) -> str:
     """The caption fragment, with its numbers taken from the file that was read."""
     kinds = ", ".join(f"{count} {name.replace('-', ' ')}" for name, count in ordered)
+    snapshot = catalogue_projection(resources)
     return (
-        f"Registry composition by kind. {len(resources)} catalogue records: {kinds}. "
+        f"Registry composition by kind. {snapshot.records} catalogue records: {kinds}. "
+        f"{snapshot.source_note()} "
         "A count of records says nothing about whether a record has been verified, and the figure "
         "carries no status, access or openness information."
     )

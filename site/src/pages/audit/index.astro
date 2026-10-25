@@ -41,6 +41,13 @@ const label = (value: string) =>
         across {comparison.taxonomy.tracks} tracks and {comparison.taxonomy.topics}
         {" "}topics. Every cell preserves its evidence state and uncertainty.
       </p>
+      <p class="section-intro" data-comparison-date-boundary>
+        External provider observations are frozen as of {comparison.external_survey_frozen_on}.
+        This project's records extend to {comparison.as_of}. These dates describe a
+        historical comparison, not a current global ranking. The
+        <a href="https://github.com/gxCaesar/aidd-commons/blob/main/docs/CURRENT_RESOURCE_COMPARISON.md">25 October 2026 product review</a>
+        records a separate sample of current capabilities without rescoring this matrix.
+      </p>
     </div>
     <dl class="audit-snapshot">
       <div><dt>Direct observations</dt><dd>{comparison.observations.direct_cells}</dd></div>

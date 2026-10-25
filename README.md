@@ -32,7 +32,7 @@ generalization claim. The audit does **not** establish a â€œmost comprehensiveâ€
 
 The [current resource map](site/src/content/docs/learn/foundations/resource-map.mdx)
 connects all 120 units to their registered chapter reading and activities, with a
-downloadable JSON projection. The Atlas now contains 228 resources, including
+downloadable JSON projection. The Atlas now contains 232 resources, including
 tutorials and teaching collections. Six bilingual selection guides cover target evidence,
 ADMET/PK, antibody/epitope resources, physical modelling, molecular generation
 and scientific agents.
@@ -42,6 +42,11 @@ resources, access limitations and remaining gaps. These are curation and teachin
 additions, not executed upstream workflows or updated historical audit scores.
 The [factual corrections](docs/RESOURCE_FACT_CHECK.md) document CLUE retirement,
 source-licence discrepancies, GTEx access boundaries and training-data scope.
+The [current product review](docs/CURRENT_RESOURCE_COMPARISON.md) records a separate
+25 October 2026 source review and retains other resources' strengths. Four new
+Atlas records are linked to seven bilingual lessons on protein design, perturbation
+modelling, structural prediction and scientific agents. This does not rescore the
+historical comparison.
 
 The layered textbook now has an explicit core route, five specialist routes and
 a granular [curriculum blueprint](site/src/content/docs/learn/foundations/curriculum-map.mdx).
@@ -69,7 +74,7 @@ The browser checks cover bilingual routes, downloads, progress, worked answers a
 serious/critical accessibility findings. Cloud execution and reader learning remain
 unverified; local software acceptance does not establish either.
 
-Current version: **0.2.1**. The [website](https://gxcaesar.github.io/aidd-commons/)
+Current version: **0.3.0**. The [website](https://gxcaesar.github.io/aidd-commons/)
 and [source repository](https://github.com/gxCaesar/aidd-commons) provide the
 same curated learning materials. See the
 [changes](CHANGELOG.md) and [v0.2 report addendum](report/aidd-commons-v0.2-addendum.md).

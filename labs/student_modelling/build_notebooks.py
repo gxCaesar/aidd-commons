@@ -109,15 +109,15 @@ def build(language):
         ## 1. Imports and a fresh output folder
 
         These are Python standard-library modules and the `IPython.display` helper
-        already included with Jupyter and Colab. `mkdtemp` creates a new directory,
-        so this notebook neither writes into the author checkout nor overwrites an
-        earlier report.
+        already included with Jupyter and Colab. `mkdtemp` creates a new directory
+        beneath the current working directory. The notebook does not replace an
+        earlier report or alter author result files.
         """,
         """
         ## 1. 导入与新输出文件夹
 
         这里仅使用 Python 标准库，以及 Jupyter 和 Colab 自带的 `IPython.display`。`mkdtemp`
-        会创建一个新目录，因此本 notebook 不会写入作者 checkout，也不会覆盖之前的报告。
+        会在当前工作目录下创建新目录。本 notebook 不会覆盖之前的报告，也不会改动作者结果文件。
         """,
         """
         import json

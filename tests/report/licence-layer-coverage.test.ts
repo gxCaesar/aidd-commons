@@ -53,6 +53,7 @@ const layerNames = [
   "GTEx Portal Data License",
   "DrugBank Academic License",
   "Proprietary, no open-source licence",
+  "Arc Research Institute PIE Model Non-Commercial License",
 ];
 
 type Resource = {

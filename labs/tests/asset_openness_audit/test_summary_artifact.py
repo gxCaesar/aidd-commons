@@ -24,5 +24,5 @@ def test_committed_summary_matches_current_catalogue() -> None:
     assert len(artifact["records"]) == 24
     assert all(len(row["openness"]) == 7 for row in artifact["records"])
     assert artifact["examined_counts"]["available"] == 57
-    assert artifact["whole_catalogue"]["records_with_seven_separate_dimensions"] == 228
+    assert artifact["whole_catalogue"]["records_with_seven_separate_dimensions"] == 232
     assert "caveats" not in artifact["records"][0]

@@ -1,6 +1,6 @@
 ---
 title: Released assets in generative binder design
-description: Read four dated binder-design records through their pipeline, checkpoint, dependency, data and licence boundaries.
+description: Read five dated binder-design records through their pipeline, checkpoint, dependency, data and licence boundaries.
 ---
 
 import LessonProgress from "../../../../components/LessonProgress.astro";
@@ -12,13 +12,13 @@ import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
 
 ## Learning goals and prerequisites
 
-After [Flows and constrained molecular search](/learn/molecular-generation/flows-and-constrained-search/), use this dated reading to inspect four binder-design records as releases. You should be able to say which part of a pipeline is available, distinguish an accessible checkpoint from complete training material, and identify where dependency and licence evidence stops.
+After [Flows and constrained molecular search](/learn/molecular-generation/flows-and-constrained-search/), use this dated reading to inspect five binder-design records as releases. You should be able to say which part of a pipeline is available, distinguish an accessible checkpoint from complete training material, and identify where dependency and licence evidence stops.
 
 This is a source reading with a written exercise. No model or pipeline was run, no weights were downloaded, and no dataset was downloaded. The records do not provide a matched comparison, so the lesson makes no performance ranking or binder-quality claim.
 
 ## Task contract
 
-The records describe different kinds of asset. BindCraft distributes a pipeline that filters designs until a requested candidate count passes its filters. AlphaProteo publishes target-input preparation notebooks for a gated model. BoltzGen takes a design specification and returns ranked candidates. RFdiffusion2 publishes inference assets for an atom-level scaffolding model. A ranked candidate, a prepared input and a released checkpoint are different outputs, and none is a measured binding result.
+The records describe different kinds of asset. BindCraft distributes a pipeline that filters designs until a requested candidate count passes its filters. AlphaProteo publishes target-input preparation notebooks for a gated model. BoltzGen takes a design specification and returns ranked candidates. RFdiffusion2 publishes inference assets for an atom-level scaffolding model. RFD4-Proteina jointly generates sequence identities and all-atom structures with a paired flow model and autoencoder. A ranked candidate, a prepared input and a released checkpoint are different outputs, and none is a measured binding result.
 
 For this reading, the task is to identify the asset actually distributed and its dependencies. An open repository licence cannot silently govern a separately fetched model, a service that is not distributed, or training data whose terms are unstated.
 
@@ -46,6 +46,12 @@ The [RFdiffusion2 repository](https://github.com/RosettaCommons/RFdiffusion2) re
 
 The repository describes a benchmark crawled from 41 M-CSA enzymes without describing its training corpus. The [project documentation](https://rosettacommons.github.io/RFdiffusion2/) recommends the original RFdiffusion for binder design. The benchmark is an evaluation description, not evidence of which material trained RFdiffusion2 or of a binder-specific release claim.
 
+## RFD4-Proteina: identify the released pair
+
+The [RFD4-Proteina model card](https://huggingface.co/nvidia/RFD4-Proteina) names a matched pair, `rfd4-proteina-flow-release-2026-10-19` and `rfd4-proteina-ae-release-2026-10-19`. The autoencoder defines the latent representation used by its flow model, so components from incompatible releases cannot be mixed. The [repository](https://github.com/RosettaCommons/RFD4-Proteina) provides generation, training and scoring interfaces. The card explicitly attributes published efficiency measurements to the previous pair in a 2026-10-09 benchmark; those measurements were not repeated on the named current pair. Computational filter passers per GPU-hour also differ from experimentally confirmed binders.
+
+The [published training-data subset](https://huggingface.co/datasets/nvidia/RFD4-Proteina) contains PDB- and AlphaFold DB-derived material, with other components of the full mixture omitted. Its source snapshot date does not establish a universal training cutoff or the components used for every checkpoint. The [BSD 3-Clause licence](https://github.com/RosettaCommons/RFD4-Proteina/blob/main/LICENSE) and model card cover source and model weights; CC BY 4.0 covers added dataset annotations and packaging, while upstream structures retain their terms. Checkpoints omit optimizer and loop state needed to resume an interrupted training run. See [the joint-generation mechanism and exercise](/learn/biologics-design/frontier-protein-design-2026/).
+
 ## Openness by dimension
 
 Available identifies an asset established by the catalogue, not an asset used in this lesson. Unverified leaves a claim open. Not available records an absence on the pages inspected for AlphaProteo, and not applicable distinguishes BindCraft's pipeline from a model-weight release.
@@ -56,6 +62,9 @@ Available identifies an asset established by the catalogue, not an asset used in
 | AlphaProteo | not available | unverified | not available | unverified | unverified | unverified | unverified |
 | BoltzGen | available | available | available | available | unverified | available | unverified |
 | RFdiffusion2 | available | unverified | available | available | unverified | unverified | unverified |
+| RFD4-Proteina, named pair | available | available | available | available | unverified | unverified | available, scoring interface |
+
+RFD4-Proteina's published subset and subset recipe remain available. The two unverified cells ask whether the named checkpoint pair's fitted-on population and complete assembly recipe are established; the subset alone does not answer those questions.
 
 Access and permission still depend on the particular asset. BindCraft's source licence does not settle PyRosetta or ProteinMPNN terms. AlphaProteo's notebook licence does not cover its model. BoltzGen's published training archives have no stated terms, and RFdiffusion2's code licence does not settle hosted weights or images.
 
@@ -67,6 +76,7 @@ Access and permission still depend on the particular asset. BindCraft's source l
 | AlphaProteo | No public training assets on the pages inspected | Corpus and recipe unverified |
 | BoltzGen | Archives contain target structures, MSAs and a small-molecule dictionary | Later distillation data promised, recipe unverified |
 | RFdiffusion2 | Repository describes a 41 M-CSA enzyme benchmark | Benchmark is not a stated training corpus |
+| RFD4-Proteina | PDB- and AlphaFold DB-derived subset and sampling metadata | Full mixture and checkpoint-specific component attribution remain incomplete |
 
 An archive count, a benchmark source or a released checkpoint cannot substitute for the exact training recipe. These records do not establish which training material supports a particular binder claim under a shared protocol.
 
@@ -78,8 +88,9 @@ Consider a reader cataloguing which release could be independently inspected wit
 2. AlphaProteo's public notebooks permit inspection of input preparation. They do not supply the gated model, and their Apache 2.0 and CC BY 4.0 terms do not grant model access.
 3. BoltzGen has code and checkpoints, but its published training material is partial, archive terms are unstated and a base model carries its own terms.
 4. RFdiffusion2 has inference code and hosted weights, but the code licence does not establish the weight terms, and the enzyme benchmark is not its training corpus.
+5. RFD4-Proteina has a named matched pair and public training interfaces. Its subset release does not reconstruct the full training mixture, and the prior pair's benchmark is not a measurement of the current pair.
 
-The resulting inventory can describe released assets and remaining conditions. It cannot convert these four unlike releases into a comparison of candidate quality.
+The resulting inventory can describe released assets and remaining conditions. It cannot convert these five unlike releases into a comparison of candidate quality.
 
 ## Independent exercise
 
@@ -94,7 +105,7 @@ BindCraft's MIT licence covers its source, while PyRosetta and the supplied Prot
 
 ## Scope and what the material does not show
 
-These four records were verified on 2026-10-21. They establish release and licence boundaries, not executed designs, measured binding, complete training provenance, matched performance or reader outcomes. No model, dependency or dataset was installed or run for this reading.
+The original four records were verified on 2026-10-21; `model-rfd4-proteina-20261019` was checked on 2026-10-25. They establish release and licence boundaries, not executed designs, measured binding, complete training provenance, matched performance or reader outcomes. No model, dependency or dataset was installed or run for this reading.
 
 ## Sources
 
@@ -104,9 +115,10 @@ These four records were verified on 2026-10-21. They establish release and licen
 - [AlphaProteo Trusted Tester repository](https://github.com/google-deepmind/ap_trusted_testers), [announcement](https://deepmind.google/discover/blog/alphaproteo-generates-novel-proteins-for-biology-and-health-research/) and [abstract](https://arxiv.org/abs/2409.08022)
 - [BoltzGen repository](https://github.com/HannesStark/boltzgen) and [checkpoint card](https://huggingface.co/boltzgen/boltzgen-1)
 - [RFdiffusion2 repository](https://github.com/RosettaCommons/RFdiffusion2), [project documentation](https://rosettacommons.github.io/RFdiffusion2/) and [BSD 3-Clause licence](https://raw.githubusercontent.com/RosettaCommons/RFdiffusion2/main/LICENSE.md)
+- [RFD4-Proteina model card](https://huggingface.co/nvidia/RFD4-Proteina), [repository](https://github.com/RosettaCommons/RFD4-Proteina), [data card](https://huggingface.co/datasets/nvidia/RFD4-Proteina) and [BSD 3-Clause licence](https://github.com/RosettaCommons/RFD4-Proteina/blob/main/LICENSE)
 
 </div>
 
 Original lesson prose is CC BY 4.0. Linked assets retain their own terms.
 
-Last reviewed: 2026-10-23.
+Last reviewed: 2026-10-25.

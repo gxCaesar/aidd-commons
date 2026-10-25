@@ -6,6 +6,7 @@ description: 将文献问答、化学工具和生物数据分析对应到合适�
 import LessonProgress from "../../../../../components/LessonProgress.astro";
 import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
 import ResourceGuideTables from "../../../../../components/ResourceGuideTables.astro";
+import LabDownloads from "../../../../../components/LabDownloads.astro";
 
 <LessonProgress lessonId="scientific-agents/agent-resource-guide" />
 <ScrollableRegions />
@@ -69,10 +70,10 @@ import ResourceGuideTables from "../../../../../components/ResourceGuideTables.a
 
 ### 从真实答案 notebook 开始
 
-下载<a href="/downloads/labs/paperqa_local/paperqa_local_tutorial.ipynb" download>英文 notebook</a>、
-<a href="/downloads/labs/paperqa_local/paperqa_local_tutorial.zh-CN.ipynb" download>中文 notebook</a>，或
-<a href="/downloads/labs/paperqa_local/reviewed-example.json" download>真实答案与附署名的来源文本</a>。
-两份 notebook 均可独立运行：用 Jupyter 打开，或通过 Colab 的 **File → Upload notebook** 上传。
+<LabDownloads lab="paperqa-local" />
+
+两份 notebook 均可独立运行：用 Jupyter 打开、使用固定源码版本的 Colab 链接，
+或通过 Colab 的 **File → Upload notebook** 上传。
 默认 cell 读取嵌入结果，不发网络请求、不调用模型，不需要 API key 或 GPU；学生报告写入新目录，
 不改动已有真实答案。通用执行与恢复方法见 [notebook 环境指南](/zh-cn/labs/notebook-guide/)。
 
@@ -198,6 +199,32 @@ BixBench 的 agent 可经模型路由层适配，但开放答案评分器也可�
 评分。[执行说明](https://github.com/Future-House/BixBench#agentic-evaluations)
 区分轨迹生成与后处理。本页不执行这些操作。
 
+## BixBench3：从原始数据到结构化产物
+
+`benchmark-bixbench3` 与上文按问题和 capsule 评估的 BixBench 是不同评估。[论文的 v2 修订版（2026-09-22）](https://arxiv.org/abs/2608.25286)描述了 20 项计算生物学任务，含 138 个独立命名的产物。研究者提供目标与高层方法，智能体须把原始数据转化为要求的结构化输出。产物构成依赖图，因此下游失败可能继承上游错误。[公开仓库](https://github.com/EdisonScientific/BixBench3)将输入和参考清单标为 `v1.0.0` 发布。
+
+[全文评分定义](https://arxiv.org/html/2608.25286v2)先对齐标识符，再应用适合输出的指标，包括行和列 F1、对尺度敏感的一致性相关系数、类别宏平均 F1 或区间重叠。适用的分量相乘得到产物分数，通过阈值为 `0.8`。任务分数是通过的产物比例，不是完整研究复现比例；与已发表产物一致，也不是对其生物学结论的独立验证。另一个语言模型评审器判断过程和失败模式，不能替代确定性的产物分数。任务与评分器开发使用过模型尝试和专家审阅，这些接触仍属于评估历史。
+
+### 构造的聚合练习
+
+假设某任务只要求下列两个数值表产物。构造的分量分数用于说明评分规则，不是 BixBench3 结果。
+
+| 产物 | 行 F1 | 列 F1 | 一致性相关系数 | 乘积 | 达到 `0.8`？ |
+| --- | --- | --- | --- | --- | --- |
+| A | `1` | `1` | `0.90` | `0.90` | 是 |
+| B | `0.50` | `1` | `1` | `0.50` | 否 |
+
+任务分数是多少？B 对齐数值的完美一致性是否能弥补缺失的行标识符？有利的过程评审是否会改变这一产物分数？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+仅 A 通过，所以任务分数为 `1 / 2 = 0.50`。B 因分量相乘而未通过，对齐子集的数值匹配不能补回缺失行。有利的过程判断是另一项观测，不会改变产物结果。该分数不能确立半项研究的科学结论正确，这些存在依赖的产物也不是独立生物学重复。
+
+</details>
+
+公开运行器要求开启计费的 GCP 项目、服务商 API，以及另行许可的 Cell Ranger 与 Cell Ranger ARC 二进制程序。[CC BY-SA 4.0 许可](https://raw.githubusercontent.com/EdisonScientific/BixBench3/main/LICENSE)覆盖 Edison 编写的代码与材料，镜像数据和参考产物保留上游条款。本阅读不运行付费服务，也不把运行器当作免费的本地练习。
+
 ## 构造案例：对同一份提交提出两个问题
 
 一次**虚构教学检查**审阅来自 `4` 个源数据 capsule 的 `12` 个分析问题，并非上述
@@ -266,6 +293,7 @@ BixBench 的 agent 可经模型路由层适配，但开放答案评分器也可�
 - [LAB-Bench：官方评测接口](https://github.com/Future-House/LAB-Bench)
 - [BixBench：评测模式与执行](https://github.com/Future-House/BixBench)
 - [BixBench 数据：版本修订说明](https://huggingface.co/datasets/futurehouse/BixBench)
+- [BixBench3 论文记录](https://arxiv.org/abs/2608.25286)、[v2 全文](https://arxiv.org/html/2608.25286v2)、[公开发布](https://github.com/EdisonScientific/BixBench3)与[许可](https://raw.githubusercontent.com/EdisonScientific/BixBench3/main/LICENSE)，核查于 2026-10-25
 
 </div>
 
@@ -273,4 +301,4 @@ BixBench 的 agent 可经模型路由层适配，但开放答案评分器也可�
 实验。本页未测量基准得分或读者学习效果。原创正文采用 CC BY 4.0；链接的代码、
 数据集与第三方来源保留各自条款。
 
-最后审阅：2026-09-09。
+最后审阅：2026-10-25。

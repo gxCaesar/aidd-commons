@@ -31,7 +31,8 @@ EDGE_TYPES = (
     "used-by",
     "uses",
 )
-EXPECTED_NODE_COUNT = 228
+# Bind the current catalogue snapshot without changing the graph interpretation.
+EXPECTED_NODE_COUNT = 232
 
 
 class ProtocolError(ValueError):

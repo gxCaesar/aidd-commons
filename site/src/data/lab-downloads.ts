@@ -108,7 +108,7 @@ export const labDownloads = [
   {
     lab: "egfr-structure-evidence",
     path: "labs/egfr_structures/entries.json",
-    label: "Manifest with sources, digests, declared cutoffs and ligand roles",
+    label: "Manifest with sources, declared cutoffs and ligand roles",
     content: egfrStructureManifest,
   },
   {

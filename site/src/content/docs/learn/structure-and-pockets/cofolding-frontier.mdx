@@ -48,6 +48,31 @@ each registered system actually supports, in one offline command.
 of assets and documentation. Reported accuracy is therefore not a substitute
 for an asset-level reproducibility audit.
 
+## OpenFold3 and OpenBind-0: package, parameters and cutoff
+
+The original OpenFold above implements the AlphaFold2 family. The distinct [OpenFold3 repository](https://github.com/aqlaboratory/openfold-3) predicts biomolecular structures and remains a research preview, with final-model work ongoing. Its [parameter reference](https://openfold-3.readthedocs.io/en/latest/parameters_reference.html), checked on 2026-10-25, makes a package update scientifically consequential:
+
+| Resource or parameter set | Package contract | Training-date boundary |
+| --- | --- | --- |
+| Original OpenFold | Separate `aqlaboratory/openfold` repository | Do not inherit an OpenFold3 cutoff |
+| OpenFold3 preview2 | Requires a compatible version below `0.5.0` | Identify that preview's own parameter set |
+| OpenFold3 with OpenBind-0 | Default from `0.5.0`; `openbind-2025-06-30-174k`, file `of3-ob-2025-06-30-174k.pt` | PDB training cutoff `2025-06-30` |
+
+The [OpenBind-0 release analysis](https://openbind.uk/news/blog-openbind-0-advancing-open-molecular-structure-prediction/), dated 2026-08-21, describes public code, weights and training recipes under Apache 2.0. The opened [code licence](https://github.com/aqlaboratory/openfold-3/blob/main/LICENSE) confirms the repository grant. The complete training-corpus inventory and asset-level terms were not checked end to end, and linked benchmark scripts were not inspected, so the catalogue leaves training data and evaluation code unverified. The training cutoff is distinct from the release date.
+
+Inference-time chemical steering is another protocol choice: it changes ligand geometry without being a new training cutoff. The release analysis preserves target-dependent failures, including difficult flexible ligands and pocket changes; newer training and fragment fine-tuning did not uniformly repair them. Comparisons span different cutoffs and target regimes and establish no universal ranking. A chemically valid predicted pose still does not establish affinity. The [affinity routes lesson](/learn/structure-and-pockets/affinity-routes-2026/) distinguishes a structure trunk from an affinity head.
+
+### Constructed version exercise
+
+A report records only “OpenFold3 default.” Its author used a preview2-compatible package, while a reader installs `0.5.0` and accepts its default parameters. Do identical sequences and ligands make these the same model comparison? Which additional fields belong in the report?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+No. The package changed the default parameter set, and the older preview parameters also have a compatibility boundary. Record the package version, named checkpoint and file, checkpoint-specific training cutoff, input preparation and chemical-steering settings before interpreting a difference. Hold the evaluation population and metrics fixed for a controlled comparison. Neither a different pose nor an improved geometric metric supplies an affinity measurement. This exercise runs neither configuration.
+
+</details>
+
 ## What v0.1 does not yet teach
 
 v0.1 does not make a universal ranking of co-folding systems, offer a
@@ -63,4 +88,6 @@ then the implementation and licence materials for
 [Atlas inventory](/atlas/open-cofolding-frontier/) to identify which questions
 remain unverified for every record.
 
-Last reviewed: 2026-09-04.
+The `model-openfold3-openbind0` record uses the [OpenFold3 repository](https://github.com/aqlaboratory/openfold-3), [parameter reference](https://openfold-3.readthedocs.io/en/latest/parameters_reference.html), [OpenBind-0 release analysis](https://openbind.uk/news/blog-openbind-0-advancing-open-molecular-structure-prediction/) and [code licence](https://github.com/aqlaboratory/openfold-3/blob/main/LICENSE), checked on 2026-10-25. No inference or benchmark was run for this addition.
+
+Last reviewed: 2026-10-25.

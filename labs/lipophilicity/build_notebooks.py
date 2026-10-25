@@ -90,7 +90,8 @@ def build(language):
         current Python environment. In Colab that is your disposable runtime;
         for local Jupyter, first select a dedicated project kernel. Python 3.11+
         is required; the local reference environment is Python 3.11.
-        If an older library was already imported, restart the session as instructed
+        The cell checks imported versions as well as installed package metadata.
+        If an older library is still in memory, restart the session as instructed
         and run from the top. Installation failures are not a reason to silently
         change versions. Actual Colab execution has not yet been verified.
     """,
@@ -99,7 +100,8 @@ def build(language):
 
         本 cell 在当前 Python 环境安装缺失或版本不匹配的固定依赖。在 Colab 中，这是你的临时
         运行时；本地 Jupyter 请先选择独立的项目内核。需要 Python 3.11+，本地参考环境为 3.11。
-        如果旧版库已被导入，请按提示重启 session，再从头执行。安装失败时不要静默更换版本。
+        本 cell 同时检查内存中的已导入版本与已安装软件包的元数据。
+        如果旧版库仍留在内存中，请按提示重启 session，再从头执行。安装失败时不要静默更换版本。
         当前尚未在真实 Colab 运行时验证。
     """,
         """
@@ -114,16 +116,30 @@ def build(language):
             "numpy": "2.4.6", "pandas": "2.3.3", "rdkit": "2025.9.6",
             "scikit-learn": "1.9.0", "matplotlib": "3.11.1",
         }
+
+
+        def version_key(value):
+            return tuple(int(part) if part.isdigit() else part for part in str(value).split("."))
+
+
         missing = []
         loaded = False
         for package, wanted in required.items():
+            module_name = "sklearn" if package == "scikit-learn" else package
+            module = sys.modules.get(module_name)
+            imported_version = getattr(module, "__version__", "unknown")
+            if module is not None and version_key(imported_version) != version_key(wanted):
+                raise RuntimeError(
+                    f"{package} {imported_version} is already loaded; expected {wanted}. "
+                    "Restart the session, then Run all."
+                )
             try:
                 mismatch = version(package) != wanted
             except PackageNotFoundError:
                 mismatch = True
             if mismatch:
                 missing.append(f"{package}=={wanted}")
-                loaded |= ("sklearn" if package == "scikit-learn" else package) in sys.modules
+                loaded |= module is not None
         if missing:
             subprocess.check_call([sys.executable, "-m", "pip", "install", *missing])
             if loaded:
@@ -140,7 +156,8 @@ def build(language):
 
         The default CSV is downloaded into the current runtime only when absent.
         An existing named CSV is reused and validated, never silently replaced.
-        Each full execution creates a new temporary output directory. Re-executing
+        Each full execution creates a new output directory beneath the notebook's
+        current working directory, where the notebook file browser can find it. Re-executing
         export cells updates files inside that directory. Download those outputs
         if you want to keep them; none is written into another lab's results.
     """,
@@ -148,7 +165,8 @@ def build(language):
         ## 2. 选择工作文件
 
         默认 CSV 仅在不存在时下载到当前运行时。已有同名文件会复用并检查，不会静默替换。
-        每次完整执行创建新的临时输出目录；重复执行导出 cell 会更新该目录内的文件。
+        每次完整执行在 notebook 当前工作目录下创建新的输出目录，可在 notebook 文件浏览器中找到；
+        重复执行导出 cell 会更新该目录内的文件。
         要保留结果请下载；不会向其他实验的结果目录写入。
     """,
         """
@@ -189,7 +207,7 @@ def build(language):
         DATA_PATH = Path("Lipophilicity.csv")
         DATA_KIND = "public-MoleculeNet-lipophilicity"
         DATA_URL = "https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/Lipophilicity.csv"
-        OUTPUT_DIR = Path(tempfile.mkdtemp(prefix="aidd-lipophilicity-"))
+        OUTPUT_DIR = Path(tempfile.mkdtemp(prefix="aidd-lipophilicity-", dir=Path.cwd()))
     """,
         tags=("parameters",),
     )

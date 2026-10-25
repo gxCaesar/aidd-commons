@@ -60,6 +60,10 @@ training-data construction, output convention, or paper identifier. The
 recorded description rests on public project metadata rather than a read
 model card.
 
+### A public structure checkpoint does not identify the affinity head
+
+The separate `model-openfold3-openbind0` record, checked on 2026-10-25, identifies the public OpenBind-0 structure checkpoint. The [OpenFold3 parameter reference](https://openfold-3.readthedocs.io/en/latest/parameters_reference.html) makes it the default from package `0.5.0`, with PDB training cutoff `2025-06-30`. Those parameters predict structure; they do not identify or distribute AQAffinity's trained affinity head. The [OpenBind-0 release analysis](https://openbind.uk/news/blog-openbind-0-advancing-open-molecular-structure-prediction/) and [co-folding version exercise](/learn/structure-and-pockets/cofolding-frontier/) also separate package, checkpoint and chemical-steering choices. Public trunk access therefore does not fill AQAffinity's unverified fields or remove its access gate. If a colleague claims that downloading OpenBind-0 enables an AQAffinity affinity prediction, the missing evidence is the compatible affinity-head checkpoint, its input/output contract and its own access and licence terms. No such prediction was run here.
+
 ## Nesso-1
 
 Nesso-1 co-folds a coarse-grained protein–ligand representation at token level
@@ -199,4 +203,6 @@ recorded access, openness, licence scopes, and caveats define this lesson.
 
 Original lesson prose is CC BY 4.0. Linked sources retain their own terms.
 
-Last reviewed: 2026-10-23.
+The structure-checkpoint distinction additionally uses the [OpenFold3 parameter reference](https://openfold-3.readthedocs.io/en/latest/parameters_reference.html) and [OpenBind-0 release analysis](https://openbind.uk/news/blog-openbind-0-advancing-open-molecular-structure-prediction/), checked on 2026-10-25. It adds no fifth affinity route.
+
+Last reviewed: 2026-10-25.

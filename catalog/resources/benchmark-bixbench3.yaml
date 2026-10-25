@@ -1,0 +1,56 @@
+id: benchmark-bixbench3
+name: BixBench3, public release v1.0.0
+kind: benchmark
+summary: Research-study-scale computational-biology evaluation in which an agent follows a supplied objective and high-level methods to turn raw data into structured artifacts. Artifact agreement is graded programmatically, while process and failure modes are judged separately.
+canonical_url: https://github.com/EdisonScientific/BixBench3
+identifiers:
+  - scheme: paper
+    value: "BixBench3: Benchmarking AI agents on research-study-scale computational biology tasks; Koch and colleagues, arXiv 2608.25286v2, revised 2026-09-22"
+    url: https://arxiv.org/abs/2608.25286
+  - scheme: documentation
+    value: Public runner and grader; raw-input and ground-truth manifests identify releases/v1.0.0
+    url: https://github.com/EdisonScientific/BixBench3
+stages: [evaluation]
+modalities: [biological-data, scientific-text]
+tasks: [scientific-workflow-reproduction, artifact-evaluation, agent-evaluation]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: source_available, evidence: [repository, license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: not_applicable, evidence: [paper] }
+  weights: { value: not_applicable, evidence: [paper] }
+  architecture: { value: not_applicable, evidence: [paper] }
+  data_recipe: { value: available, evidence: [paper, repository] }
+  training_data: { value: not_applicable, evidence: [paper] }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: CC BY-SA 4.0
+    scope: Edison-authored runner, grader and benchmark materials. Mirrored scientific data and published reference artifacts retain their upstream terms; separately licensed 10x binaries are not redistributed.
+    evidence: [repository, license]
+evidence:
+  - id: paper-record
+    url: https://arxiv.org/abs/2608.25286
+    label: Primary record opened 2026-10-25, identifying submission on 2026-08-26 and revision v2 on 2026-09-22
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: paper
+    url: https://arxiv.org/html/2608.25286v2
+    label: Full-text Sections 4.1–4.6 opened 2026-10-25, including artifact grading, aggregation, runtime and task construction
+    supports: [summary, tasks, caveats]
+  - id: repository
+    url: https://github.com/EdisonScientific/BixBench3
+    label: Public README opened 2026-10-25, including v1.0.0 manifests, runtime prerequisites, graders and material-specific terms
+    supports: [name, summary, identifiers, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/EdisonScientific/BixBench3/main/LICENSE
+    label: CC BY-SA 4.0 licence file opened 2026-10-25
+    supports: []
+caveats:
+  - This version is distinct from the earlier BixBench question-and-capsule evaluation. The paper evaluates 20 tasks containing 138 artifacts, with the objective and high-level method supplied to the agent.
+  - Artifact grading aligns identifiers and evaluates numerical or categorical agreement. A task score is the fraction of its artifacts that pass, not a binary declaration that the complete study was reproduced.
+  - Agreement with published artifacts does not independently validate the original biological conclusion. A separate model judge assesses process and failure modes; its judgment is not the deterministic artifact score.
+  - The runner requires a billed GCP project, provider APIs, and separately obtained Cell Ranger and Cell Ranger ARC binaries under their own terms. Public code does not make a run fee-free or dependency-free.
+  - Task and grader development used model attempts and expert-reviewed artifacts. This exposure belongs to the evaluation history and must not be relabelled as untouched confirmation.
+  - Inference-code availability refers to the public agent runner, not released weights for the models it calls. Task inputs and reference artifacts are evaluation assets, not a model training-data release. No benchmark or paid service was run for this record.
+acknowledgements: []
+last_verified: "2026-10-25"

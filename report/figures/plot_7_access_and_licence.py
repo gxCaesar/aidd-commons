@@ -1,7 +1,8 @@
 """Access level and licence layers.
 
 Source of every number: `site/public/data/resources.v1.json`, the catalogue
-export. Every record carries an access level and a list of licences, each with
+export, used as a live projection rather than a historical release snapshot.
+Every record carries an access level and a list of licences, each with
 its own scope and evidence.
 
 What the figure shows. The left panel counts records by access level. The right
@@ -13,8 +14,8 @@ catalogue must appear in the table below, and a name that does not raise an
 error instead of being counted silently. The layers run from the most
 permissive to the most restrictive, and a record that carries more than one
 licence is counted once, in the most restrictive layer it carries, so that the
-unit of the panel is the record rather than the licence entry. Nineteen
-records carry more than one licence and are counted this way.
+unit of the panel is the record rather than the licence entry. The number of
+multi-licence records is derived from the same projection in the caption.
 
 What it does not show. The access level is what a reader could establish about
 access, not a guarantee that the artefact runs. A licence name is not a legal
@@ -35,6 +36,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
 import figure_style as style  # noqa: E402  (the module sits next to this script)
+from figure_sources import catalogue_projection  # noqa: E402
 
 FIGURE_NUMBER = 7
 STEM = "plot_7_access_and_licence"
@@ -118,6 +120,9 @@ LICENCE_LAYERS: list[tuple[str, list[str]]] = [
             "The scFoundation License",
             "Other (Open)",
             "Proprietary, no open-source licence",
+            # PIE checkpoints use Arc's custom model terms, separate from the
+            # repository's Creative Commons source-code licence.
+            "Arc Research Institute PIE Model Non-Commercial License",
         ],
     ),
 ]
@@ -135,6 +140,7 @@ ACCESS_ORDER = [
     "unverified",
 ]
 
+
 def caption(
     resources: list[dict],
     access_counts: Counter,
@@ -149,20 +155,21 @@ def caption(
     layers = ", ".join(
         f"{layer_counts[name]} {name.lower()}" for name, _ in LICENCE_LAYERS if layer_counts[name]
     )
+    snapshot = catalogue_projection(resources)
+    multi_licence = sum(len(record.get("licenses", [])) > 1 for record in resources)
     return (
-        f"Access level and licence layer for the {len(resources)} catalogue records. "
+        f"Access level and licence layer for the {snapshot.records} catalogue records. "
+        f"{snapshot.source_note()} "
         f"{access_counts['unverified']} records carry no verified access level and "
         f"{layer_counts[NO_LICENCE]} record no licence. The verified access levels are {access}. "
-        f"By licence layer, {layers}. A record with more than one licence is counted once, in the "
-        "most restrictive layer it carries."
+        f"By licence layer, {layers}. The {multi_licence} records with more than one licence "
+        "are counted once, in their most restrictive stated layer."
     )
 
 
 def _licence_layer(names: list[str]) -> str:
     """The most restrictive layer among a record's licences."""
-    rank = {
-        name: index for index, (_, members) in enumerate(LICENCE_LAYERS) for name in members
-    }
+    rank = {name: index for index, (_, members) in enumerate(LICENCE_LAYERS) for name in members}
     unknown = [name for name in names if name not in rank]
     if unknown:
         raise KeyError(f"licence names without a layer: {unknown}")
@@ -244,10 +251,10 @@ def build() -> dict[str, Path]:
     licence_ax.set_yticklabels(
         [
             "public domain dedication",
-            "permissive software licence",
-            "Creative Commons attribution",
+            "permissive software\nlicence",
+            "Creative Commons\nattribution",
             "copyleft",
-            "Creative Commons non-commercial",
+            "Creative Commons\nnon-commercial",
             "other stated terms",
             "no licence recorded",
         ],

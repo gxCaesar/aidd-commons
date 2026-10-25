@@ -56,6 +56,31 @@ Learned predictor/control parameters and perturbation-effect estimates are fit
 on training data only. An explicitly allowed new-context unperturbed baseline
 may be summarized at inference, never its held-out post-perturbation response.
 
+## PIE: name the effect and the held-out axis
+
+The [PIE within-dataset release](https://huggingface.co/arcinstitute/PIE_replogle_wdataset), checked on 2026-10-25, makes this population target explicit. Perceiver IO combines knowledge embeddings, baseline control means and training response evidence. For each context–perturbation pair it predicts gene-wise DE probability (`p_de`), log2 fold change (`lfc_pred`) and change in processed mean expression (`delta_p_pred`). These are distinct quantities. None is the before-and-after trajectory of an individual cell, and a mean change does not determine a full expression distribution. The [processed-data definition](https://huggingface.co/datasets/arcinstitute/PIE_replogle_nadig_essential) makes control choice, filtering and statistical thresholds part of the target.
+
+Its [canonical splits](https://huggingface.co/datasets/arcinstitute/PIE_splits) distinguish `unseen_ctx`, `unseen_pert` and `unseen_ctx_pert`. The 4 released checkpoint folders name the held-out cell line; they are independent folds, not an ensemble. A held-out-context test can allow its unperturbed baseline without allowing its perturbation responses. The [single-cell model reading](/learn/representations/single-cell-and-virtual-cell-models/) separates the release's code, checkpoint and data terms. No PIE model was run here.
+
+### Constructed holdout exercise
+
+Training responses cover `(Alpha, A)`, `(Alpha, B)`, `(Beta, A)` and `(Beta, B)`. Gamma has only an allowed unperturbed baseline; perturbation C has no training response. Classify these proposed test pairs using the released split vocabulary:
+
+| Query | Held-out axis |
+| --- | --- |
+| `(Gamma, A)` | Context only: `unseen_ctx` |
+| `(Alpha, C)` | Perturbation only: `unseen_pert` |
+| `(Gamma, C)` | Both: `unseen_ctx_pert` |
+
+Would `(Alpha, A)` support any of those claims if its training cells were split again into a test file? Could the baseline for Gamma supply its perturbation-effect label? This is a constructed partition exercise, not PIE data or a measured result.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+`(Alpha, A)` holds out neither context nor perturbation, even if its cells occur in a different file. Gamma's unperturbed mean supplies baseline information only; using its perturbed response to form an effect label during fitting would cross the holdout. The three rows test different kinds of transfer and must be reported separately. Counting more cells within a held-out line does not create more independent held-out cell lines, donors or tissues.
+
+</details>
+
 ## Representation, controls, and intervention labels
 
 A useful input contract records how `X` was measured, how `A` was assigned or
@@ -201,6 +226,7 @@ held-out unit, and the control before interpreting an output.
 
 - [Perturb-seq: pooled CRISPR perturbations with single-cell RNA readout](https://pmc.ncbi.nlm.nih.gov/articles/PMC5181115/)
 - [Arc Institute: 2026 Virtual Cell Challenge task description](https://arcinstitute.org/news/virtual-cell-challenge-2026)
+- `model-pie-replogle-wdataset`: [model card](https://huggingface.co/arcinstitute/PIE_replogle_wdataset), [processed-data definition](https://huggingface.co/datasets/arcinstitute/PIE_replogle_nadig_essential) and [canonical splits](https://huggingface.co/datasets/arcinstitute/PIE_splits), checked on 2026-10-25
 - [From disease question to target hypothesis](/learn/mechanism-targets/disease-to-target/)
 - [GEO series GSE70138 (LINCS L1000, Phase II)](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70138), read via the [L1000 perturbation-context lab](/labs/l1000-perturbation-context/)
 
@@ -215,4 +241,4 @@ Original lesson prose is CC BY 4.0; linked sources retain their own terms.
 Continue to [the L1000 perturbation-context lab](/labs/l1000-perturbation-context/)
 to run this comparison yourself.
 
-Last reviewed: 2026-09-12.
+Last reviewed: 2026-10-25.

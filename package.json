@@ -1,6 +1,6 @@
 {
   "name": "aidd-commons",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.13.1",
@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "pnpm catalog:build && pnpm comparisons:build && pnpm --dir site dev",
     "build": "pnpm catalog:build && pnpm comparisons:build && pnpm --dir site build",
-    "check": "pnpm catalog:validate && pnpm comparisons:validate && pnpm catalog:build && pnpm comparisons:build && pnpm --dir site check && pnpm --dir site build && pnpm test:unit",
+    "check": "pnpm catalog:validate && pnpm comparisons:validate && pnpm catalog:build && pnpm comparisons:build && pnpm --dir site check && pnpm --dir site build && pnpm text:check --rendered site/dist && pnpm test:unit",
     "catalog:build": "tsx scripts/catalog/export.ts",
     "catalog:validate": "tsx scripts/catalog/validate.ts",
     "comparisons:build": "tsx scripts/comparisons/export.ts",
@@ -23,6 +23,7 @@
     "links:internal": "tsx scripts/quality/check-internal-links.ts",
     "citations:check": "tsx scripts/quality/check-citations.ts",
     "links:external": "tsx scripts/quality/check-external-links.ts",
+    "text:check": "tsx scripts/quality/check-text-encoding.ts",
     "release:build": "tsx scripts/release/build.ts",
     "release:scan": "tsx scripts/release/hygiene.ts",
     "format:check": "prettier --check .",

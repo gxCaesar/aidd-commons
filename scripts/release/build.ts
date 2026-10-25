@@ -539,7 +539,15 @@ function isMacosMetadata(path: string): boolean {
 // are two different decisions and they live in two different files.
 const knownBadFixtureDirectory = "tests/release/fixtures/known-bad/";
 
-function exclusionReason(path: string): string | undefined {
+export function isLegacyScientificSvg(path: string): boolean {
+  return (
+    (path.startsWith("site/public/figures/") ||
+      path.startsWith("report/figures/out/")) &&
+    path.toLowerCase().endsWith(".svg")
+  );
+}
+
+export function exclusionReason(path: string): string | undefined {
   // The deliberate negative controls ship verbatim. A fixture for the
   // agent-instruction rule has to be called AGENTS.md, one for the
   // environment-file rule has to be called .env, and one for the receipt rule
@@ -554,6 +562,9 @@ function exclusionReason(path: string): string | undefined {
 
   if (excludedReleasePaths.has(path)) {
     return "answer-bearing reader-trial material";
+  }
+  if (isLegacyScientificSvg(path)) {
+    return "legacy scientific SVG retained internally; PDF and PNG are delivered";
   }
   for (const [prefix, reason] of intentionalReleaseExclusions) {
     if (path.startsWith(prefix)) {

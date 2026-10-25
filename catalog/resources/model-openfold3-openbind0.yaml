@@ -1,0 +1,55 @@
+id: model-openfold3-openbind0
+name: OpenFold3 with OpenBind-0 default parameters
+kind: model
+summary: The OpenBind-0 biomolecular structure-prediction checkpoint used by default in OpenFold3 package releases from 0.5.0, with a 2025-06-30 PDB training cutoff. Package version, parameter set and chemical-steering settings remain separate parts of the prediction protocol.
+canonical_url: https://github.com/aqlaboratory/openfold-3
+identifiers:
+  - scheme: model
+    value: openbind-2025-06-30-174k, file of3-ob-2025-06-30-174k.pt
+    url: https://openfold-3.readthedocs.io/en/latest/parameters_reference.html
+  - scheme: release
+    value: OpenBind-0 announcement, 2026-08-21; default parameters in OpenFold3 >=0.5.0
+    url: https://openbind.uk/news/blog-openbind-0-advancing-open-molecular-structure-prediction/
+stages: [structure-prediction, evaluation]
+modalities: [biomolecular-complex, protein-ligand-complex]
+tasks: [structure-prediction, protein-ligand-cofolding, pose-validation]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: open_source, evidence: [repository, license, release] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [parameters, release] }
+  architecture: { value: available, evidence: [repository, release] }
+  data_recipe: { value: available, evidence: [repository, release] }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: OpenFold3 repository source and the OpenBind-0 model weights and recipes described by the release announcement. The complete inventory and terms of upstream training structures were not inspected here.
+    evidence: [license, release]
+evidence:
+  - id: repository
+    url: https://github.com/aqlaboratory/openfold-3
+    label: Official README opened 2026-10-25, including default parameter change, original OpenFold distinction, training interfaces and preview status
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: parameters
+    url: https://openfold-3.readthedocs.io/en/latest/parameters_reference.html
+    label: Parameter reference opened 2026-10-25, including current and deprecated checkpoint names and package compatibility
+    supports: [name, summary, identifiers, caveats]
+  - id: release
+    url: https://openbind.uk/news/blog-openbind-0-advancing-open-molecular-structure-prediction/
+    label: Author release analysis dated 2026-08-21 and opened 2026-10-25, including training cutoff, chemical steering and target-dependent failures
+    supports: [summary, identifiers, modalities, tasks, caveats]
+  - id: license
+    url: https://github.com/aqlaboratory/openfold-3/blob/main/LICENSE
+    label: Apache-2.0 code licence opened 2026-10-25
+    supports: []
+caveats:
+  - This record identifies the OpenBind-0 default checkpoint, not the original AlphaFold2-based OpenFold repository or every OpenFold3 preview parameter set. Deprecated preview2 parameters require a compatible package release below 0.5.0.
+  - The repository still describes a research preview and lists final-model work as ongoing. The current default must not be described as completed parity with every AlphaFold3 capability.
+  - The release states that code, weights, training recipes and data are public, but the complete current-default training-corpus inventory and its asset-level access and terms were not checked end to end. Training data therefore remain unverified in this record. Linked benchmark scripts were not inspected, leaving evaluation code unverified.
+  - Inference-time chemical steering changes predicted ligand geometry. Pose accuracy and chemical validity remain separate from binding affinity and experimental activity.
+  - Comparisons span different training cutoffs and target regimes. More recent training data and fragment fine-tuning do not uniformly repair difficult pocket and conformational failures. The record supplies no universal ranking and ran no inference or benchmark.
+acknowledgements: []
+last_verified: "2026-10-25"

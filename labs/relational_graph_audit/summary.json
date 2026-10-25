@@ -6,14 +6,14 @@
     "python": "3.11.15",
     "pyyaml": "6.0.3"
   },
-  "node_count": 228,
+  "node_count": 232,
   "edge_count": 39,
   "node_counts_by_kind": {
     "agent": 11,
-    "benchmark": 26,
+    "benchmark": 27,
     "database": 22,
     "dataset": 14,
-    "model": 81,
+    "model": 84,
     "model-asset": 1,
     "paper": 4,
     "software": 59,
@@ -51,6 +51,7 @@
       "benchmark-beyond-affinity",
       "benchmark-biostudybench",
       "benchmark-bixbench",
+      "benchmark-bixbench3",
       "benchmark-cache-challenge",
       "benchmark-chem-bench",
       "benchmark-cryptobench",
@@ -147,8 +148,10 @@
       "model-nesso",
       "model-neuralplexer",
       "model-nise",
+      "model-openfold3-openbind0",
       "model-pephar",
       "model-pertformer",
+      "model-pie-replogle-wdataset",
       "model-pocket2mol",
       "model-ppi-llama2",
       "model-progen",
@@ -157,6 +160,7 @@
       "model-prottrans",
       "model-raygun",
       "model-reinvent-3",
+      "model-rfd4-proteina-20261019",
       "model-rfdiffusion",
       "model-rfdiffusion2",
       "model-ribonannanet",
@@ -246,47 +250,47 @@
   },
   "evidenced_edge_count": 39,
   "unevidenced_edge_count": 0,
-  "candidate_edge_count": 10100,
+  "candidate_edge_count": 10560,
   "highest_candidate_nodes": [
     [
       "model-opendde",
-      158
+      162
     ],
     [
       "model-pocket2mol",
-      158
+      162
     ],
     [
       "model-targetdiff",
-      158
+      162
     ],
     [
       "benchmark-tdc",
-      153
+      157
     ],
     [
       "model-rosettafold-all-atom",
-      150
+      154
     ],
     [
       "model-chai-1",
-      149
+      153
     ],
     [
       "model-molnextr",
-      149
+      153
     ],
     [
       "model-reinvent-3",
-      149
+      153
     ],
     [
       "model-swinocsr",
-      149
+      153
     ],
     [
       "tool-reinvent-4",
-      149
+      153
     ]
   ],
   "highest_degree_nodes": [
