@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "Cite the version used and the primary sources for reused resources or results. The historical v0.1 citation is in report/CITATION-v0.1.cff."
 title: "AIDD Commons"
 type: software
-version: 0.2.0
+version: 0.2.1
 date-released: "2026-10-25"
 repository-code: https://github.com/gxCaesar/aidd-commons
 url: https://gxcaesar.github.io/aidd-commons/
@@ -15,4 +15,4 @@ preferred-citation:
   authors:
     - name: "AIDD Commons contributors"
   year: 2026
-  version: 0.2.0
+  version: 0.2.1

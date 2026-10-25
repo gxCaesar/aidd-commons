@@ -94,7 +94,7 @@ instead of the export, and a broken export passes its own gate.
 | The public repository's name and owner | it is an identity claim | `gxCaesar/aidd-commons` |
 | The licence of the released code and prose | it is a rights decision | currently Apache-2.0 for code and CC BY 4.0 for prose |
 | The deployment target and its address | it is an outward-facing service choice | GitHub Pages at `https://gxcaesar.github.io/aidd-commons/` |
-| The release title and date | it is a naming decision | AIDD Commons v0.2.0; actual public date belongs in the publication record |
+| The release title and date | it is a naming decision | AIDD Commons v0.2.1; actual public date belongs in the publication record |
 | Whether to mint a DOI and deposit a release | it is a permanent public commitment | no DOI deposit in this release |
 | Who may correct the published record | it is a governance decision | the correction issue template is the route |
 | When the thirty-day correction window starts | it is a public commitment to a date | record actual public source availability and check the correction route; verify the site before announcing completion |

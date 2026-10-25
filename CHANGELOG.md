@@ -4,6 +4,14 @@
 
 No changes yet.
 
+## 0.2.1 — 25 October 2026
+
+- Repair three Chinese text encoding errors in the home page, lab directory and
+  target-validation lesson. The ROSETTA description again states the 528
+  perturbations recorded in its unchanged summary.
+- Synchronize version and citation metadata. The first-publication timestamp,
+  correction window, scientific results and lab protocols are unchanged.
+
 ## 0.2.0 — 25 October 2026
 
 - Publish the bilingual learning system with 18 tracks, 120 declared teaching

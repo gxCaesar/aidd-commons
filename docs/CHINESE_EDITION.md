@@ -1,6 +1,6 @@
 # Chinese edition scope
 
-Updated 25 October 2026 for version 0.2.0. Historical additions below retain
+Updated 25 October 2026 for version 0.2.1. Historical additions below retain
 their original dates and scope.
 
 The Chinese edition now contains prose translations of all 111 current Learn
