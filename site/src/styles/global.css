@@ -163,6 +163,11 @@ nav a[aria-current="page"]:hover {
   color: var(--sl-color-text-invert);
 }
 
+/* Shortcut labels need readable text on Starlight's shaded key background. */
+site-search button[data-open-modal] > kbd {
+  color: var(--atlas-ink);
+}
+
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -1294,12 +1299,15 @@ lesson-progress p {
   }
   site-navigation {
     position: relative;
-    flex: 0 0 auto;
+    flex: 0 1 auto;
+    min-width: 0;
     flex-direction: column;
     align-items: flex-end;
   }
   .nav-toggle {
     display: inline-flex;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     align-items: center;
     justify-content: center;
   }

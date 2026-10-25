@@ -121,6 +121,49 @@ test("active lesson navigation retains readable text in both themes", async ({
   }
 });
 
+test("Linux search shortcuts retain AA text contrast in both themes", async ({
+  browser,
+  baseURL,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium", "desktop keyboard shortcut");
+  const context = await browser.newContext({
+    baseURL,
+    viewport: { width: 1280, height: 900 },
+    userAgent: `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${browser.version()} Safari/537.36`,
+  });
+  await context.addInitScript(() => {
+    Object.defineProperty(navigator, "platform", { get: () => "Linux x86_64" });
+  });
+  const page = await context.newPage();
+  try {
+    for (const colorScheme of ["light", "dark"] as const) {
+      await page.emulateMedia({ colorScheme });
+      await page.goto("/learn/foundations/getting-started/");
+      const selector = "site-search button[data-open-modal] > kbd";
+      const shortcut = page.locator(selector);
+      await expect(shortcut).toHaveText("CtrlK");
+      await expect(shortcut).toBeVisible();
+      expect(
+        await computedContrast(page, selector),
+        colorScheme,
+      ).toBeGreaterThanOrEqual(4.5);
+      await page.locator("site-search button[data-open-modal]").hover();
+      expect(
+        await computedContrast(page, selector),
+        `${colorScheme} hover`,
+      ).toBeGreaterThanOrEqual(4.5);
+      const results = await new AxeBuilder({ page }).analyze();
+      expect(
+        results.violations.filter((violation) =>
+          ["serious", "critical"].includes(violation.impact ?? ""),
+        ),
+      ).toEqual([]);
+    }
+  } finally {
+    await context.close();
+  }
+});
+
 test("Chinese onboarding provides an entry route and all eighteen pathway summaries", async ({
   page,
 }) => {
@@ -331,6 +374,40 @@ test("mobile coverage bounds remain readable inside a local scroll region", asyn
   );
   await page.setViewportSize({ width: 320, height: 720 });
   await page.goto("/audit/");
+  // Wider fallback glyphs expose the same header min-content pressure as Linux.
+  await page.evaluate(() => {
+    document.documentElement.style.fontFamily = "Verdana, sans-serif";
+  });
+  for (const selector of [".nav-toggle", ".theme-toggle"]) {
+    const control = page.locator(selector);
+    await expect(control).toBeVisible();
+    const size = await control.evaluate((element) => {
+      const box = element.getBoundingClientRect();
+      return {
+        width: box.width,
+        height: box.height,
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+        clientHeight: element.clientHeight,
+        scrollHeight: element.scrollHeight,
+      };
+    });
+    expect(size.width, selector).toBeGreaterThanOrEqual(44);
+    expect(size.height, selector).toBeGreaterThanOrEqual(44);
+    expect(size.scrollWidth, selector).toBeLessThanOrEqual(size.clientWidth);
+    expect(size.scrollHeight, selector).toBeLessThanOrEqual(size.clientHeight);
+  }
+
+  const publication = page.locator("[data-correction-window]");
+  await expect(publication.locator("time")).toBeVisible();
+  const publicationDimensions = await publication.evaluate((element) => ({
+    clientWidth: element.clientWidth,
+    scrollWidth: element.scrollWidth,
+  }));
+  expect(
+    publicationDimensions.scrollWidth,
+    "published correction-window metadata",
+  ).toBeLessThanOrEqual(publicationDimensions.clientWidth);
 
   const boundsRegion = page.getByRole("region", {
     name: "Coverage bounds by depth threshold",
