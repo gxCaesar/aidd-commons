@@ -6,13 +6,17 @@ Null publication fields mean that first publication has not been recorded.
 A local build, a release export and an intended public address do not start the
 correction window.
 
-After the release content is publicly accessible, record its actual first
+After the curated release source is publicly accessible, record its actual first
 publication time in `first_published_at`, using an ISO UTC timestamp ending in
 `Z`. Record the working public repository, site and correction URLs in the same
 change. The correction URL should open the repository's correction issue form
-(`issues/new?template=correction.yml`). Verify that readers can open all three
-URLs before recording them. Do not substitute a planned date or a local build
-time for the first public availability of the release content.
+(`issues/new?template=correction.yml`). Verify the public source and correction
+route before recording them. The timestamp refers to source-repository
+availability, where the full comparison record is open to corrections. Record
+the site's deployment address in the same change and verify it separately
+before announcing the completed release. A pending site deployment is not a
+completed website publication. Do not substitute a planned date or local build
+time for the source's first public availability.
 
 The correction window lasts 30 full days from that timestamp. Its end is
 calculated by the exporter; it is not a separate editable field. Regenerate the

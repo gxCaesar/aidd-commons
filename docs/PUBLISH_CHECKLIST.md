@@ -97,7 +97,7 @@ instead of the export, and a broken export passes its own gate.
 | The release title and date | it is a naming decision | AIDD Commons v0.2.0; actual public date belongs in the publication record |
 | Whether to mint a DOI and deposit a release | it is a permanent public commitment | no DOI deposit in this release |
 | Who may correct the published record | it is a governance decision | the correction issue template is the route |
-| When the thirty-day correction window starts | it is a public commitment to a date | record actual public content availability, after checking the repository, site and correction route |
+| When the thirty-day correction window starts | it is a public commitment to a date | record actual public source availability and check the correction route; verify the site before announcing completion |
 
 ## Publishing the verified export
 
@@ -105,8 +105,9 @@ Publish only the curated export with a fresh public history. Keep the internal
 working tree, hidden execution state and facilitator answer sheets outside that
 repository. Its CI builds the Pages artifact from another curated export and
 deploys only after its checks pass. Enable GitHub Pages with the Actions source.
-Verify the public pages and downloads before recording the correction-window
-timestamp, then synchronize citation metadata and tag the released commit.
+Record actual public source availability for the correction-window timestamp,
+then verify the public pages and downloads, synchronize citation metadata and
+tag the released commit.
 Publication does not promote a coverage claim, establish reader outcomes, send
 reader invitations or create a DOI deposit.
 

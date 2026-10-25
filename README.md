@@ -32,8 +32,8 @@ generalization claim. The audit does **not** establish a â€œmost comprehensiveâ€
 
 The [current resource map](site/src/content/docs/learn/foundations/resource-map.mdx)
 connects all 120 units to their registered chapter reading and activities, with a
-downloadable JSON projection. The Atlas now contains 228 resources, including six
-tutorial collections. Six bilingual selection guides cover target evidence,
+downloadable JSON projection. The Atlas now contains 228 resources, including
+tutorials and teaching collections. Six bilingual selection guides cover target evidence,
 ADMET/PK, antibody/epitope resources, physical modelling, molecular generation
 and scientific agents.
 Atlas entries link back to their teaching
