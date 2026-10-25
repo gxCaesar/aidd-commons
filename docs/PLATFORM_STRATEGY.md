@@ -1,8 +1,8 @@
 # AIDD Commons platform and publication strategy
 
-Decision date: 25 October 2026. The current execution state and owners belong in
-`ROADMAP_V0.2.md`. This document defines the product direction and the evidence
-needed to assess it.
+Decision date: 25 October 2026. [Public milestones](PUBLIC_ROADMAP.md) record
+dated teaching delivery and scientific boundaries. This document defines the
+product direction and the evidence needed to assess it.
 
 ## The intended position
 

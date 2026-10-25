@@ -245,7 +245,7 @@ describe("rMD17 physical-model system-state curriculum tranche", () => {
         join(repositoryRoot, "catalog/comparisons/systems/aidd-commons.yaml"),
         "utf8",
       ),
-      readFile(join(repositoryRoot, "docs/ROADMAP_V0.2.md"), "utf8"),
+      readFile(join(repositoryRoot, "docs/PUBLIC_ROADMAP.md"), "utf8"),
     ]);
     const candidates = parse(candidateSet) as {
       candidates: Array<{

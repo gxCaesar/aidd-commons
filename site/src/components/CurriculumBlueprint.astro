@@ -97,7 +97,7 @@ function unitTitle(unit: Curriculum["units"][number]): string {
   {curriculum.tracks.map((track) => {
     const units = unitsByTrack.get(track.id) ?? [];
     return (
-      <details class="curriculum-blueprint__track" open={track.id === "foundations"}>
+      <details class="curriculum-blueprint__track" id={`track-${track.id}`} open={track.id === "foundations"}>
         <summary>
           <span>{labels.track} {track.order}</span>
           <strong>{chinese ? track.title_zh : track.title}</strong>

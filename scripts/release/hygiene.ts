@@ -7,6 +7,19 @@ export type HygieneFinding = {
   rule: string;
 };
 
+// The legacy citation path remains public, but only as this compatibility page.
+// Keeping the text shared with the builder makes curated-source re-exports stable.
+export const roadmapCompatibilityPath = "docs/ROADMAP_V0.2.md";
+export const publicRoadmapPath = "docs/PUBLIC_ROADMAP.md";
+export const publicRoadmapPointer = `# Public roadmap compatibility link
+
+Public milestones and limitations are maintained in [PUBLIC_ROADMAP.md](PUBLIC_ROADMAP.md).
+This compatibility page preserves existing citation paths.
+
+- [rMD17 system-state results](PUBLIC_ROADMAP.md#rmd17-system-state).
+- [PK source screening on 2026-09-12](PUBLIC_ROADMAP.md#pk-source-screening-2026-09-12).
+`;
+
 const forbiddenControlDirectories = new Set([
   ".agents",
   ".codex",
@@ -40,6 +53,8 @@ const internalTaskReportPattern =
   /\btask\s+\d+\s+(?:implementer|review|fix|license\s+fix)\s+report\b/iu;
 const approvalReceiptPattern = /\bapproval\s+receipt\b/iu;
 const absoluteUserPathPattern = /\/Users\/[A-Za-z0-9._-]+(?:\/[^\s"']*)?/u;
+const internalMarkdownVisibilityPattern =
+  /^\s*(?:<!--\s*)?(?:#{1,6}\s*)?visibility\s*:\s*internal\b/imu;
 const pipelineStateKeys = new Set([
   "activity_id",
   "activity_ids",
@@ -329,6 +344,22 @@ function scanText(
   path: string,
   text: string,
 ): void {
+  if (/\.(?:md|mdx|markdown)$/iu.test(path)) {
+    const markedInternal = internalMarkdownVisibilityPattern.test(text);
+    const unconvertedCheckpoint =
+      path === roadmapCompatibilityPath &&
+      text.replace(/\r\n/gu, "\n") !== publicRoadmapPointer;
+    if (markedInternal || unconvertedCheckpoint) {
+      addFinding(
+        findings,
+        path,
+        "internal-checkpoint-content",
+        markedInternal
+          ? "Markdown declares internal visibility"
+          : "legacy roadmap path must contain the generated public compatibility pointer",
+      );
+    }
+  }
   if (agentInstructionPattern.test(text)) {
     addFinding(
       findings,

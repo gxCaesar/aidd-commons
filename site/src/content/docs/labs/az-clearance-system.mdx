@@ -69,14 +69,14 @@ The microsome assay reports clearance per gram of microsomal protein
 (`mL.min-1.g-1`); both hepatocyte assays report it per million whole cells
 (`uL.min-1.(10^6cells)-1`). These are different physical bases, not two
 units of the same quantity, and this protocol applies no scaling factor to
-convert between them. Spearman rho and Pearson r are unaffected by that
-difference: both are invariant to any fixed monotonic rescaling of either
-side, which is exactly what a unit change is. A raw ratio between one
-system's number and another's is not: the `log10 ratio` `show` prints for
-the two microsome-involving pairs is a real, deterministic computation over
-the reported values, but it is not a literal fold-change in clearance the
-way it is for the two hepatocyte assays, which share a unit. Read it as a
-same-direction size signal for those two pairs, not a physical magnitude.
+convert between them. Multiplying either axis by a fixed positive unit-conversion
+factor leaves both Spearman rho and Pearson r unchanged. This mathematical
+property does not make the two biological normalization bases interchangeable.
+The `log10 ratio` printed for a microsome-involving pair compares the reported
+numbers, but its magnitude and sign depend on their numerical units. It cannot
+establish a physical fold change or the direction of a clearance difference
+between those systems. The two hepatocyte assays share a physical basis and
+unit, so their paired values support literal fold-change comparisons.
 
 ## Three comparisons, two variables
 
@@ -92,9 +92,11 @@ where possible:
 The full overlap and the clean single-pair subset agree exactly here because
 no parent in this snapshot carries a repeated admitted activity in any
 assay; `check` asserts that the clean subset is always a subset of the full
-overlap regardless. All three correlations are real and positive, and all
-three are far short of 1: swapping species alone, or matrix alone, already
-loses more than half the predictive value in rank terms.
+overlap regardless. All three observed Spearman coefficients are positive and
+below 1, indicating partial rank agreement among the shared parents. A
+correlation coefficient is not a fraction of predictive value retained. This
+descriptive lab fits no predictive model and does not estimate a loss of
+predictive performance or a causal effect of species or matrix.
 
 ## What the correlation hides
 
@@ -139,22 +141,19 @@ A summary table reports "Compound Z: CL = 22" with no further detail.
 <summary>Worked answer</summary>
 
 The missing axes are species (human vs. rat) and matrix (microsome vs.
-whole-cell hepatocyte); this protocol admits three named assays precisely
-because both can change the number independently. `CHEMBL361546` differs by
-close to tenfold between human and rat hepatocytes, both reported in the
+whole-cell hepatocyte). The three named assays make those system identities
+explicit, while the descriptive comparisons do not isolate their causal effects.
+`CHEMBL361546` differs by close to tenfold between human and rat hepatocytes, both reported in the
 same unit, so that is a real fold-change with the other axis fixed. The
 microsome-vs-hepatocyte pair cannot show an equally clean example: its two
 assays report clearance in different physical units (per gram of
 microsomal protein versus per million whole cells), so a raw ratio between
-them, such as `CHEMBL2181927`'s or `CHEMBL1916271`'s, is a real signal that
-the two systems disagree in the same direction, not a literal fold-change
-the way the hepatocyte pair's number is. A similar correlation coefficient across
-two pairs is not evidence of a shared mechanism; two very different
-biological reasons for disagreement, species metabolic differences and
-subcellular-versus-whole-cell composition, can produce numerically similar
-rank correlations by coincidence. Telling them apart needs a mechanistic
-study of each axis separately, which this protocol, reading only these three
-assays' reported clearance values, does not supply.
+them, such as `CHEMBL2181927`'s or `CHEMBL1916271`'s, cannot establish a
+physical fold change or its direction. Changing the numerical units can change
+the sign of the printed log ratio. A similar correlation coefficient across two
+pairs does not identify a shared mechanism. Discriminating the causes would require additional evidence with
+controls that separate the proposed species and matrix effects. These
+observational records alone do not provide that identification.
 
 </details>
 
@@ -169,12 +168,16 @@ assays' reported clearance values, does not supply.
 
 </div>
 
-This page shares its admission discipline with, but reads independent data
-from, the completed ChEMBL EGFR representation lab and the CYP
-assay-system lab; it changes no split, no selected hyperparameter and no
-locked result in either. Continue to [From clearance and exposure to
+This lab uses an admission discipline also employed by the completed ChEMBL
+EGFR representation lab and the CYP assay-system lab. Here the endpoint is
+intrinsic clearance. The neighboring studies retain their frozen protocols
+and results. Continue to [From clearance and exposure to
 PK/PD](/learn/admet-pk/exposure-clearance-pkpd/) for where this fits among
 the other PK-exposure concepts.
 
 Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
 reviewed: 2026-09-12.
+
+Statistical interpretation clarified: 2026-10-25. See the definitions of
+[Spearman rank correlation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html)
+and [Pearson correlation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.pearsonr.html).

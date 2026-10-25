@@ -2,6 +2,7 @@ import {
   copyFile,
   lstat,
   mkdir,
+  readFile,
   readdir,
   stat,
   writeFile,
@@ -18,6 +19,9 @@ import {
 
 import {
   isTestMaterialFinding,
+  publicRoadmapPath,
+  publicRoadmapPointer,
+  roadmapCompatibilityPath,
   scanPublicTree,
   type HygieneFinding,
 } from "./hygiene.js";
@@ -557,6 +561,10 @@ export function exclusionReason(path: string): string | undefined {
     return undefined;
   }
 
+  if (path === roadmapCompatibilityPath) {
+    return "reserved citation path regenerated from the public roadmap";
+  }
+
   const parts = path.split("/");
   const name = basename(path).toLowerCase();
 
@@ -754,6 +762,38 @@ function inventory(entries: InventoryEntry[]): string {
   return `AIDD Commons public release inventory\n\n${lines.join("\n")}\n`;
 }
 
+async function hasPublicRoadmap(sourceRoot: string): Promise<boolean> {
+  const source = join(sourceRoot, publicRoadmapPath);
+  if (!(await pathExists(source))) {
+    if (await pathExists(join(sourceRoot, roadmapCompatibilityPath))) {
+      throw new Error(
+        "docs/PUBLIC_ROADMAP.md is required before replacing the roadmap checkpoint",
+      );
+    }
+    return false;
+  }
+  if (!(await lstat(source)).isFile()) {
+    throw new Error("docs/PUBLIC_ROADMAP.md must be a regular public file");
+  }
+  if (!(await readFile(source, "utf8")).trim()) {
+    throw new Error("docs/PUBLIC_ROADMAP.md must not be empty");
+  }
+  return true;
+}
+
+async function writeRoadmapPointer(
+  destination: string,
+  entries: InventoryEntry[],
+): Promise<void> {
+  const target = join(destination, roadmapCompatibilityPath);
+  await mkdir(dirname(target), { recursive: true });
+  await writeFile(target, publicRoadmapPointer, "utf8");
+  entries.push({
+    path: roadmapCompatibilityPath,
+    size: humanSize((await stat(target)).size),
+  });
+}
+
 function inventoryIsInsideDestination(
   destination: string,
   inventoryPath: string,
@@ -782,6 +822,7 @@ export async function buildPublicRelease(
     );
   }
 
+  const includeRoadmapPointer = await hasPublicRoadmap(sourceRoot);
   await ensureEmptyDestination(destination);
 
   const entries: InventoryEntry[] = [];
@@ -803,6 +844,9 @@ export async function buildPublicRelease(
       entries,
       skipped,
     );
+  }
+  if (includeRoadmapPointer) {
+    await writeRoadmapPointer(destination, entries);
   }
 
   const scanned = await scanPublicTree(destination);

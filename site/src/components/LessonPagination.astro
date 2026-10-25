@@ -1,0 +1,67 @@
+---
+import DefaultPagination from "@astrojs/starlight/components/Pagination.astro";
+import { parse } from "yaml";
+import type { Curriculum } from "../../../scripts/curriculum/curriculum.js";
+import curriculumSource from "../../../catalog/curriculum/tracks.yaml?raw";
+import { lessonNavigation } from "../lib/lesson-navigation";
+import { withSiteBase, withoutSiteBase } from "../lib/site-paths";
+
+const pathname = withoutSiteBase(Astro.url.pathname, import.meta.env.BASE_URL);
+const chinese = pathname.startsWith("/zh-cn/");
+const match = pathname.match(/^\/(?:zh-cn\/)?learn\/([^/]+\/[^/]+)\/$/u);
+const navigation = match
+  ? lessonNavigation(parse(curriculumSource) as Curriculum, match[1])
+  : null;
+const href = (id: string) => withSiteBase(`${chinese ? "/zh-cn" : ""}/learn/${id}/`, import.meta.env.BASE_URL);
+const map = href("foundations/curriculum-map");
+---
+
+{navigation ? (
+  <nav class="lesson-navigation print:hidden" aria-label={chinese ? "继续学习" : "Continue learning"} data-lesson-navigation>
+    <div class="lesson-navigation__header">
+      <h2>{chinese ? "继续学习" : "Continue learning"}</h2>
+      <a class="lesson-navigation__map" href={map}>{chinese ? "查看课程地图" : "View curriculum map"}</a>
+    </div>
+    <p>{chinese ? "选择你正在学习的路径。序号表示本课在路径中的位置。" : "Choose the route you are following. The step shows this lesson's position in that route."}</p>
+    <div class="lesson-navigation__routes">
+      {navigation.routes.map((route) => (
+        <section class="lesson-navigation__route" data-lesson-route={route.id}>
+          <p class="lesson-navigation__position">{route.kind === "track" ? (chinese ? "本专题内" : "Within this track") : (chinese ? "学习路径" : "Learning route")} · {chinese ? `第 ${route.position} / ${route.total} 课` : `Step ${route.position} of ${route.total}`}</p>
+          <h3><a href={route.kind === "track" ? `${map}#track-${route.id}` : `${map}#learning-route-${route.id}`}>{chinese ? route.title_zh : route.title}</a></h3>
+          <div class="lesson-navigation__links">
+            {route.previous ? (
+              <a href={href(route.previous.id)} data-previous-lesson>
+                <span>{chinese ? "上一课" : "Previous lesson"}</span>
+                {chinese ? route.previous.title_zh : route.previous.title}
+              </a>
+            ) : <p>{chinese ? (route.kind === "track" ? "这是本专题的第一课。" : "这是本路径的第一课。") : (route.kind === "track" ? "This is the first lesson in this track." : "This is the first lesson in this route.")}</p>}
+            {route.next ? (
+              <a href={href(route.next.id)} data-next-lesson>
+                <span>{chinese ? "下一课" : "Next lesson"}</span>
+                {chinese ? route.next.title_zh : route.next.title}
+              </a>
+            ) : <p>{chinese ? (route.kind === "track" ? "已到本专题末尾。可回到课程地图选择后续内容。" : "已到本路径末尾。可回到课程地图选择后续专题。") : (route.kind === "track" ? "This is the end of this track. Return to the curriculum map to choose another topic." : "This is the end of this route. Return to the curriculum map to choose another topic.")}</p>}
+          </div>
+        </section>
+      ))}
+    </div>
+  </nav>
+) : <DefaultPagination><slot /></DefaultPagination>}
+
+<style>
+  .lesson-navigation { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--sl-color-gray-5); }
+  .lesson-navigation__header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; }
+  .lesson-navigation__map { display: inline-flex; align-items: center; min-height: 44px; }
+  h2 { font-size: 1.25rem; margin: 0 0 0.5rem; }
+  h3 { font-size: 1rem; margin: 0; }
+  h3 a { display: flex; align-items: center; min-height: 44px; }
+  p { margin: 0.5rem 0; }
+  .lesson-navigation__routes { display: grid; gap: 1rem; }
+  .lesson-navigation__route { padding: 1rem; border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; min-width: 0; }
+  .lesson-navigation__position { font-size: 0.85rem; color: var(--sl-color-gray-2); }
+  .lesson-navigation__links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 0.5rem; }
+  .lesson-navigation__links a { display: flex; flex-direction: column; justify-content: center; min-height: 44px; padding-block: 0.5rem; overflow-wrap: anywhere; }
+  .lesson-navigation__links span { font-size: 0.85rem; color: var(--sl-color-gray-2); }
+  .lesson-navigation__links p { font-size: 0.9rem; color: var(--sl-color-gray-2); }
+  @media (max-width: 28rem) { .lesson-navigation__links { grid-template-columns: 1fr; gap: 0.25rem; } }
+</style>

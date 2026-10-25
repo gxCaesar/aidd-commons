@@ -99,10 +99,11 @@ def show(protocol: dict, datasets: dict[str, SystemDataset]) -> None:
         print(f"  overlap: {len(overlap)} parents; clean single-pair subset: {len(clean)}")
         if primary_units != secondary_units:
             print(
-                f"  NOTE: units differ ({primary_units} vs. {secondary_units}); the correlation "
-                "below is unaffected by that (both are rank/linear measures invariant to a fixed "
-                "rescaling of either side), but the log10 ratio in the divergent examples below "
-                "is not a literal fold-change here, only a same-direction size signal."
+                f"  NOTE: normalization units differ ({primary_units} vs. {secondary_units}). "
+                "Fixed positive numerical rescaling leaves Pearson r and Spearman rho unchanged, "
+                "but does not make these normalization bases interchangeable. The printed log10 "
+                "ratios depend on the numerical units and do not establish physical fold changes "
+                "or the direction of a between-system clearance difference."
             )
         full_correlation = correlation_summary(overlap)
         clean_correlation = correlation_summary(clean)

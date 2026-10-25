@@ -79,9 +79,8 @@ type Claim = {
   // The measurement the sentence is expected to agree with.
   subject: keyof Counts;
   pattern: RegExp;
-  // A heading whose body holds the claim. Logs such as docs/ROADMAP_V0.2.md
-  // keep dated rounds as historical narrative, so only the section that is
-  // rewritten each round is searched.
+  // A heading whose body holds the claim, when a document also preserves
+  // historical counts outside its current public delivery section.
   section?: string;
 };
 
@@ -105,11 +104,10 @@ const learnClaims: Claim[] = [
     pattern: /brings the current count to (\d+)/,
   },
   {
-    file: "docs/ROADMAP_V0.2.md",
+    file: "docs/PUBLIC_ROADMAP.md",
     label: "English learn pages",
     subject: "englishLearnPages",
-    pattern: /\(now (\d+)\) English learn pages/,
-    section: "Current status at a glance",
+    pattern: /English Learn pages: (\d+)/,
   },
 ];
 

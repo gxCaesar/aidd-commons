@@ -1,6 +1,6 @@
 # Chinese edition scope
 
-Updated 25 October 2026 for version 0.2.1. Historical additions below retain
+Updated 25 October 2026 for version 0.3.1. Historical additions below retain
 their original dates and scope.
 
 The Chinese edition now contains prose translations of all 111 current Learn
@@ -8,6 +8,9 @@ pages, all 56 lab guides and a shared notebook practice guide. The lab-guide
 count grew from six across several rounds of gap-closing labs without this
 note being refreshed each time; it is corrected here to the current,
 directly counted total, not a claim of new translation work in this round.
+Teaching chapters now offer localized previous/next links for each applicable
+learning route and a direct return to the corresponding curriculum-map entry.
+Chapters outside the declared routes expose their track's reading order.
 The content-first
 pass adds 23 chapter pairs to the prior 39 pages, including a five-case capstone
 workbook with answers and transfer questions. All 120 declared units link to

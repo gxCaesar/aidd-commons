@@ -4,6 +4,24 @@
 
 No changes yet.
 
+## 0.3.1 — 25 October 2026
+
+- Add continuation links to the 109 canonical teaching chapters in each language.
+  A chapter in several learning routes retains each route's own previous and
+  next lesson. Chapters outside the six declared routes follow their track's
+  chapter order.
+- Link every route and track back to its curriculum-map location. Navigation
+  is rendered without requiring JavaScript, with localized labels and usable
+  mobile touch targets.
+- Clarify that the reusable publishing checklist retains a historical
+  acceptance example rather than declaring it the latest release.
+- Separate the internal project checkpoint from public milestones and preserve
+  historical source links through a public compatibility pointer. The release
+  gate now rejects internal Markdown records that would otherwise pass.
+- Correct the clearance lesson's interpretation of correlation and cross-basis
+  raw ratios. The descriptive coefficients are not a predictive-loss fraction;
+  the retained measurements, protocols and numerical outputs are unchanged.
+
 ## 0.3.0 — 25 October 2026
 
 - Add four source-reviewed frontier Atlas records and integrate them into seven

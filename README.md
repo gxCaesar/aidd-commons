@@ -57,6 +57,9 @@ All 120 declared units now link to a written teaching chapter. This is the first
 full written pass, not 120 runnable labs or evidence of reader mastery. The first complete modelling
 line connects records, fitting, regression/classification errors and an
 [editable synthetic student sandbox](labs/student_modelling/README.md).
+Teaching chapters end with previous/next links for each applicable learning
+route. When a chapter belongs to several routes, learners can choose the one
+they are following and return directly to its place in the curriculum map.
 Four additional bilingual chapters explain structure/affinity, generative models,
 cellular perturbations and scientific-agent feedback. These are mechanism lessons,
 not new empirical SOTA comparisons. A further biological-evidence tranche teaches
@@ -77,7 +80,7 @@ The browser checks cover bilingual routes, downloads, progress, worked answers a
 serious/critical accessibility findings. Cloud execution and reader learning remain
 unverified; local software acceptance does not establish either.
 
-Current version: **0.3.0**. The [website](https://gxcaesar.github.io/aidd-commons/)
+Current version: **0.3.1**. The [website](https://gxcaesar.github.io/aidd-commons/)
 and [source repository](https://github.com/gxCaesar/aidd-commons) provide the
 same curated learning materials. See the
 [changes](CHANGELOG.md) and [v0.2 report addendum](report/aidd-commons-v0.2-addendum.md).

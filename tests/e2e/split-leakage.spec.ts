@@ -31,7 +31,9 @@ for (const { id, track, entryId, sourceCount } of lessons) {
       request,
     }) => {
       await page.goto(`${prefix}${track}${entryId}/`);
-      const entry = page.locator(`main a[href="${prefix}${lesson}"]`);
+      const entry = page.locator(
+        `.sl-markdown-content a[href="${prefix}${lesson}"]`,
+      );
       await expect(entry).toBeVisible();
       await entry.click();
       await expect(page).toHaveURL(`${prefix}${lesson}`);

@@ -131,10 +131,9 @@ test("language navigation preserves the lesson and untranslated section targets"
     sidebar.locator('a[href="/zh-cn/learn/foundations/getting-started/"]'),
   ).toHaveCount(0);
   await page.goto("/zh-cn/learn/foundations/getting-started/");
-  await expect(page.locator('a[rel="next"]')).toHaveAttribute(
-    "href",
-    "/atlas/",
-  );
+  await expect(
+    page.locator('[data-lesson-route="core"] [data-next-lesson]'),
+  ).toHaveAttribute("href", "/zh-cn/learn/foundations/first-session/");
 });
 
 test("Chinese lessons are accessible at narrow widths", async ({ page }) => {

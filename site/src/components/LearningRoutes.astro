@@ -99,7 +99,7 @@ function canonicalPrerequisites(lessonId: string): string[] {
   {corePath && (
     <section class="learning-routes__group" id="core-route" aria-labelledby="core-route-title">
       <p class="learning-routes__eyebrow">{labels.core}</p>
-      <article class="learning-routes__route" data-learning-path={corePath.id}>
+      <article class="learning-routes__route" data-learning-path={corePath.id} id={`learning-route-${corePath.id}`}>
         <h2 id="core-route-title">{chinese ? corePath.title_zh : corePath.title}</h2>
         <p>{chinese ? corePath.description_zh : corePath.description}</p>
         <ol class="learning-routes__steps">
@@ -142,7 +142,7 @@ function canonicalPrerequisites(lessonId: string): string[] {
     <h2 id="specialist-routes-title">{chinese ? "按问题进入专题学习" : "Specialist routes by question"}</h2>
     <div class="learning-routes__specialists">
       {specialistPaths.map((path) => (
-        <article class="learning-routes__route" data-learning-path={path.id}>
+        <article class="learning-routes__route" data-learning-path={path.id} id={`learning-route-${path.id}`}>
           <h3>{chinese ? path.title_zh : path.title}</h3>
           <p>{chinese ? path.description_zh : path.description}</p>
           {path.prerequisites.length > 0 && (

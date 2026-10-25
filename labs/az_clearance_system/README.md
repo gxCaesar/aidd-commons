@@ -79,10 +79,19 @@ complete, machine-readable list.
 | Human liver microsomes vs. human hepatocytes | matrix, species fixed | 96 | 0.4864 |
 | Human liver microsomes vs. rat hepatocytes | both differ | 359 | 0.3868 |
 
-All three correlations are real and positive, and all three are far short of 1: swapping species
-alone, or matrix alone, already loses more than half the predictive value in rank terms. Named
-examples in `summary.json` show real compounds diverging strongly between any two of the three
-systems. Only the hepatocyte-vs-hepatocyte pair reports clearance in one shared unit, so only its
-divergent examples are a literal fold-change; the microsome-involving pairs report clearance in
-different physical units (per gram of protein versus per million cells) with no conversion factor
-applied, so their divergence is a real same-direction signal, not a physical magnitude.
+All three observed Spearman coefficients are positive and below perfect rank agreement.
+They describe the ordering of shared parent molecules across the assays. A correlation
+coefficient is not a fraction of predictive value retained. This descriptive lab fits no
+predictive model and does not estimate a loss of predictive performance or a causal effect
+of species or matrix.
+
+Only the hepatocyte-vs-hepatocyte pair reports clearance on the same physical basis, so its
+paired values support literal fold-change comparisons. The microsome-involving pairs use
+protein-normalized and cell-normalized measurements. Their printed log ratios are arithmetic
+comparisons of the reported numbers. Both their magnitude and sign depend on the numerical
+units, so they do not establish a physical fold change or which system has greater clearance.
+The original example labels and numerical outputs remain in `summary.json`.
+
+Statistical interpretation clarified on 2026-10-25. Definitions:
+[SciPy Spearman rank correlation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html)
+and [Pearson correlation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.pearsonr.html).

@@ -15,6 +15,9 @@ export default defineConfig({
         "zh-cn": { label: "简体中文", lang: "zh-CN" },
       },
       routeMiddleware: "./src/route-middleware.ts",
+      components: {
+        Pagination: "./src/components/LessonPagination.astro",
+      },
       sidebar: [
         {
           label: "AIDD Commons",
