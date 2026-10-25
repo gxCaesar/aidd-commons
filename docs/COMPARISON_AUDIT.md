@@ -23,7 +23,7 @@ claim conditions.
 
 ## Public correction window
 
-No public correction window has been recorded.
+First publication was recorded at 2026-10-25T03:02:17Z. The public 30-day correction window ends at 2026-11-24T03:02:17.000Z; its status was open when checked on 2026-10-25 (UTC). Submit source-backed corrections through [the public correction route](https://github.com/gxCaesar/aidd-commons/issues/new?template=correction.yml). Elapsed time alone does not establish either claim; submitted corrections and the other claim conditions still need review.
 
 ## Method
 
@@ -67,10 +67,10 @@ equal.
 
 ## Claim checks
 
-| Claim                                                | Status          | Decisive current evidence                                                                                                                                                                                                |
-| ---------------------------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| World's most comprehensive open AIDD learning system | not established | Explained lower bound 93; strongest external upper bound 92; bound condition met; correction window not_recorded.                                                                                                        |
-| Most detailed AIDD learning system                   | not established | 18 of the required 12 self-audit tracks contain executable or assessed coverage, 17 of them on real data; worked lower bound 93; strongest external upper bound 91; bound condition met; correction window not_recorded. |
+| Claim                                                | Status          | Decisive current evidence                                                                                                                                                                                        |
+| ---------------------------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| World's most comprehensive open AIDD learning system | not established | Explained lower bound 93; strongest external upper bound 92; bound condition met; correction window open.                                                                                                        |
+| Most detailed AIDD learning system                   | not established | 18 of the required 12 self-audit tracks contain executable or assessed coverage, 17 of them on real data; worked lower bound 93; strongest external upper bound 91; bound condition met; correction window open. |
 
 ## Independent second reading of this project's row
 

@@ -1,7 +1,7 @@
 {
   "schema_version": "aidd-commons.claims-evidence-audit-summary.v1",
   "protocol_id": "aidd-commons.claims-evidence-audit-v1",
-  "computed_on": "2026-10-24",
+  "computed_on": "2026-10-25",
   "software": {
     "python": "3.11.15",
     "pyyaml": "6.0.3"
@@ -126,7 +126,7 @@
       },
       "condition": "Own explained lower bound exceeds every external explained upper bound",
       "correction_window_condition": "Public 30-day correction window must be completed",
-      "correction_window_status": "not_recorded"
+      "correction_window_status": "open"
     },
     "most_detailed": {
       "status": "not_established",
@@ -140,7 +140,7 @@
       },
       "condition": "At least 12 own tracks are executable or assessed and own worked lower bound exceeds every external worked upper bound",
       "correction_window_condition": "Public 30-day correction window must be completed",
-      "correction_window_status": "not_recorded"
+      "correction_window_status": "open"
     }
   },
   "interpretation_limits": [

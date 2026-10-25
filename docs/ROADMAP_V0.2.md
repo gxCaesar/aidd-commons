@@ -79,9 +79,10 @@ numbers the audit already produces; it changes nothing on its own.
   detailed" (worked 93 > strongest external upper 91, with all 18 of the
   required 12 tracks at executable or assessed, 17 of them on real data).
   **Both claims still read `not_established`.** The gate's sixth
-  criterion, a public 30-day correction window, cannot start before
-  publication. Publication is in progress for version 0.2.0; the actual public
-  date and correction route belong in `docs/PUBLICATION.md` once verified.
+  criterion requires a public 30-day correction window. The curated source
+  was published on 2026-10-25 and the window is open. The timestamp, derived end
+  and correction route are recorded
+  through `docs/PUBLICATION.md`; an open window does not satisfy this condition.
   A bound condition being satisfied is a necessary, not sufficient, part
   of the claim.
 - **Frozen v0.2b depth tranche:** 3 candidates selected and completed
@@ -94,7 +95,12 @@ numbers the audit already produces; it changes nothing on its own.
   other track; a second lesson closed that specific outlier this round. 19 of
   the (now 111) English learn pages remain under 500 words, mostly track intro
   pages by design.
-- **Not observed:** any human reader trial. Publication checks are in progress;
+- **Publication:** curated source is public at
+  `https://github.com/gxCaesar/aidd-commons`; the website address is
+  `https://gxcaesar.github.io/aidd-commons/`. Hosted validation and deployment
+  status are recorded by the repository's public CI/Pages workflow. A source
+  commit alone does not establish successful website deployment.
+- **Not observed:** any human reader trial;
   there is no new external re-survey. External provider records are frozen as of
   2026-09-11 (`externalSurveyFrozenOn`); a comparator cell changes only
   through a source-backed correction from here.

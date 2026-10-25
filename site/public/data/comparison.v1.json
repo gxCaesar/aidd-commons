@@ -3,7 +3,7 @@
   "claims": {
     "most_comprehensive": {
       "bound_condition_satisfied": true,
-      "correction_window_status": "not_recorded",
+      "correction_window_status": "open",
       "self_lower_at_explained": 93,
       "status": "not_established",
       "strongest_external_upper_at_explained": 92
@@ -5070,15 +5070,15 @@
     }
   ],
   "publication": {
-    "correction_url": null,
+    "correction_url": "https://github.com/gxCaesar/aidd-commons/issues/new?template=correction.yml",
     "correction_window_days": 30,
-    "first_published_at": null,
-    "repository_url": null,
+    "first_published_at": "2026-10-25T03:02:17Z",
+    "repository_url": "https://github.com/gxCaesar/aidd-commons",
     "schema_version": "publication.v1",
-    "site_url": null,
-    "correction_window_ends_at": null,
-    "correction_window_status": "not_recorded",
-    "status_checked_on": null
+    "site_url": "https://gxcaesar.github.io/aidd-commons/",
+    "correction_window_ends_at": "2026-11-24T03:02:17.000Z",
+    "correction_window_status": "open",
+    "status_checked_on": "2026-10-25"
   },
   "rows": [
     {

@@ -1,8 +1,8 @@
 {
   "schema_version": "publication.v1",
-  "first_published_at": null,
-  "repository_url": null,
-  "site_url": null,
-  "correction_url": null,
+  "first_published_at": "2026-10-25T03:02:17Z",
+  "repository_url": "https://github.com/gxCaesar/aidd-commons",
+  "site_url": "https://gxcaesar.github.io/aidd-commons/",
+  "correction_url": "https://github.com/gxCaesar/aidd-commons/issues/new?template=correction.yml",
   "correction_window_days": 30
 }

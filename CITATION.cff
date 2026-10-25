@@ -3,6 +3,7 @@ message: "Cite the version used and the primary sources for reused resources or 
 title: "AIDD Commons"
 type: software
 version: 0.2.0
+date-released: "2026-10-25"
 repository-code: https://github.com/gxCaesar/aidd-commons
 url: https://gxcaesar.github.io/aidd-commons/
 authors:

@@ -673,7 +673,7 @@ Before describing AIDD Commons as the world's most comprehensive tutorial, the p
 6. invite corrections from compared projects;
 7. report both strengths and gaps rather than compressing everything into one score.
 
-That audit has now been run, and its method and results are the subject of Chapter 10. Two candidate claims are on the table, and both read as not established. The claim-promotion gate has a sixth condition, a public correction window that requires publication, and that correction window is not recorded, so the condition is unmet. A bound condition being satisfied is a necessary part of the claim and not a sufficient one.
+That audit has now been run, and its method and results are the subject of Chapter 10. Two candidate claims are on the table, and both read as not established. The claim-promotion gate has a sixth condition, a public correction window that requires publication, and that correction window is open following first public source availability on 25 October 2026. Its 30 days and review of submitted corrections are still required, so the condition is unmet. A bound condition being satisfied is a necessary part of the claim and not a sufficient one.
 
 Until that gate passes, the public wording remains "building the most comprehensive open AIDD learning system". This is a constraint on the project's own claims, and not a reduction in ambition.
 

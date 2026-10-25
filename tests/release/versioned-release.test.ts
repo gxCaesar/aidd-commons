@@ -37,6 +37,16 @@ it("ships consistent release metadata, the report addendum, and the historical c
     "https://github.com/gxCaesar/aidd-commons",
   );
   expect(citation.url).toBe("https://gxcaesar.github.io/aidd-commons/");
+  const publication = JSON.parse(
+    await read("catalog/comparisons/publication.json"),
+  );
+  if (publication.first_published_at === null) {
+    expect(citation).not.toHaveProperty("date-released");
+  } else {
+    expect(citation["date-released"]).toBe(
+      publication.first_published_at.slice(0, 10),
+    );
+  }
   const pythonVersion = (await read("pyproject.toml")).match(
     /^version = "([^"]+)"$/mu,
   )?.[1];
