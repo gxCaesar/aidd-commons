@@ -1,0 +1,61 @@
+id: model-rfdiffusion2
+name: RFdiffusion2
+kind: model
+summary: RFdiffusion2 is an atom-level diffusion model for de novo enzyme and binder design that scaffolds backbones around atomic active-site descriptions; the released repository supports inference only.
+canonical_url: https://github.com/RosettaCommons/RFdiffusion2
+identifiers:
+  - scheme: paper
+    value: "Atom level enzyme active site scaffolding using RFdiffusion2; DOI 10.1101/2025.04.09.648075"
+    url: https://www.biorxiv.org/content/10.1101/2025.04.09.648075v2.full-text
+  - scheme: documentation
+    value: "RFdiffusion2 project documentation"
+    url: https://rosettacommons.github.io/RFdiffusion2/
+  - scheme: model-weights
+    value: "RFD_173.pt and RFD_140.pt model weights"
+    url: https://files.ipd.uw.edu/pub/rfdiffusion2/model_weights/RFD_173.pt
+stages: [design, evaluation]
+modalities: [protein, protein-ligand-complex]
+tasks: [protein-design, protein-generation]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [setup-py] }
+  architecture: { value: available, evidence: [readme] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: BSD-3-Clause
+    scope: covers the repository source code of the Institute for Protein Design; the model weights and the Apptainer container images are downloaded from files.ipd.uw.edu and the opened pages state no terms for them
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/RosettaCommons/RFdiffusion2
+    label: RFdiffusion2 repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/RosettaCommons/RFdiffusion2/main/README.md
+    label: RFdiffusion2 README (reviewed 2026-10-21)
+    supports: []
+  - id: setup-py
+    url: https://raw.githubusercontent.com/RosettaCommons/RFdiffusion2/main/setup.py
+    label: RFdiffusion2 setup script (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: documentation
+    url: https://rosettacommons.github.io/RFdiffusion2/
+    label: RFdiffusion2 documentation site (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/RosettaCommons/RFdiffusion2/main/LICENSE.md
+    label: RFdiffusion2 BSD-3-Clause licence file (reviewed 2026-10-21)
+    supports: []
+caveats:
+  - The repository states that only inference is supported, so the training code field stays unverified.
+  - The model weights and container images are hosted at files.ipd.uw.edu, and no page opened states licence terms for them.
+  - The project documentation recommends the original RFdiffusion for binder design.
+  - The repository describes a benchmark crawled from 41 M-CSA enzymes but does not describe the training corpus.
+acknowledgements: []
+last_verified: "2026-10-21"

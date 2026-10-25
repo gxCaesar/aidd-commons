@@ -1,0 +1,142 @@
+---
+title: 目标产品概况与化学系列反馈
+description: 将治疗决策写成可检验的产品约束，并让类似物系列修订而非装饰原始假设。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Target product profiles and chemical-series feedback](/learn/drug-discovery-foundations/product-profile-and-series/)。
+
+<LessonProgress lessonId="drug-discovery-foundations/product-profile-and-series" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+完成本阅读与手算课后，你能把目标产品概况（TPP）写成决策契约，区分阈值与偏好，并用类似物系列检验结构—性质假设。请先读[药物发现语境](/zh-cn/learn/drug-discovery-foundations/discovery-context/)和[测定对照与剂量反应](/zh-cn/learn/drug-discovery-foundations/assay-controls-dose-response/)。本课不是合成、测定、临床给药或患者选择方案。
+
+## TPP 是可证伪的产品决策，不是愿望清单
+
+TPP 从未来决策的使用者或生物学语境出发，写明预期作用、给药途径或形式（仅高层次）、作出行动所需证据，以及**最低**与**期望**属性。最低值是门槛；低于它，候选项不能按该理由推进。期望值是讨论取舍的方向，不表示所有属性可同时最优。可获得的 TPP 在字段数上差异很大，且常不报告形成方法；这意味着应记录假设，而不是为每一行编造数字 [Ibnidris et al.](https://pubmed.ncbi.nlm.nih.gov/39075460/)。
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>固定其含义的问题</th>
+      <th>缺失时的错误</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>使用语境</td>
+      <td>何种疾病状态和决策在范围内？</td>
+      <td>“强效”没有对象和用途。</td>
+    </tr>
+    <tr>
+      <td>机制假设</td>
+      <td>预期哪一靶点状态或通路改变？</td>
+      <td>把表型误作因果靶点证据。</td>
+    </tr>
+    <tr>
+      <td>终点与单位</td>
+      <td>哪个测定、如何归一化、在什么层级？</td>
+      <td>比较不兼容系统的数字。</td>
+    </tr>
+    <tr>
+      <td>最低 / 期望</td>
+      <td>哪个是门槛，哪个只是方向？</td>
+      <td>事后提升方便的候选项。</td>
+    </tr>
+    <tr>
+      <td>证据与排除项</td>
+      <td>哪种替代解释必须被检验？</td>
+      <td>单一漂亮信号被升级为提名主张。</td>
+    </tr>
+  </tbody>
+</table>
+
+TPP 的对象是**针对已说明决策的候选项**，不是孤立分子。其表示可包括化学结构、系列标识和终点记录表。目标是受约束的选择规则，而不是一个分数：保留满足预先声明所有门槛者，再描述幸存者间的取舍。后来观测值只能以带日期的理由更新 TPP，不能悄悄重定义门槛。
+
+## 化学系列是对假设的干预
+
+类似物系列在尽可能保持其他因素不变时改变一个可解释特征。对于一对化合物，在相同终点、单位、测定语境和汇总规则下定义有符号差 `Δy = y(analogue B) − y(analogue A)`。若 `y` 为 `pIC50 = −log10(IC50 in mol/L)`，正 `Δy` 表示更低 `IC50`，即在该测定条件下表观效力更高；它不证明亲和力、机制、选择性或转运。匹配分子对只能支持“该改动在此终点上伴随 0.30 单位升高”这一狭窄句子，不能支持“该基团导致疗效”。
+
+反馈有三种工作：检验假定因果特征是否在多个比较中预测同一方向；暴露冲突（效力收益可能伴随更差溶解度、稳定性或对照窗口）；挑选能区分两种解释的低成本下一比较。不要把单位未知的端点平均为“系列分数”。
+
+## 已构造案例：推进决策
+
+以下**完全为教学构造**。团队在看下一批类似物前声明 TPP 片段：1 µM 时归一化抑制必须至少 60%；溶解度代理值至少 20 arbitrary units；报告基因反筛抑制低于 15%；期望细胞 `pIC50` 至少 6.30。它们不是任何项目的推荐门槛。
+
+<table>
+  <thead>
+    <tr>
+      <th>构造类似物</th>
+      <th>1 µM 时抑制</th>
+      <th>细胞 pIC50</th>
+      <th>溶解度代理</th>
+      <th>报告基因抑制</th>
+      <th>声明规则下的决定</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A（母体）</td>
+      <td>65%</td>
+      <td>6.10</td>
+      <td>34</td>
+      <td>6%</td>
+      <td>低于期望效力；保留作比较。</td>
+    </tr>
+    <tr>
+      <td>B（一个极性取代）</td>
+      <td>75%</td>
+      <td>6.45</td>
+      <td>18</td>
+      <td>5%</td>
+      <td>未过最低溶解度门槛。</td>
+    </tr>
+    <tr>
+      <td>C（另一取代）</td>
+      <td>70%</td>
+      <td>6.32</td>
+      <td>27</td>
+      <td>9%</td>
+      <td>满足此片段；仍需指定证据。</td>
+    </tr>
+  </tbody>
+</table>
+
+A→B 的 `ΔpIC50 = 6.45 − 6.10 = +0.35`。因 `pIC50` 为对数，构造浓度比为 `10^0.35 = 2.24`：若两条曲线定义相同，B 的拟合 `IC50` 约低 2.24 倍。该数值收益不能覆盖 B 的门槛失败。C 的 `ΔpIC50 = +0.22` 且通过三个构造门槛；下一决策不是“C 成功”，而是用正交的靶点近端读数和独立制备批次确认这一细胞信号是否保留。表中没有暴露、整体效应或临床获益证据。
+
+## 替代方法、局限与独立练习
+
+加权效用 `U = Σ w_j z_j` 只有在各归一化 `z_j`、方向、权重 `w_j` 和缺失规则在选择前固定时才有用。Pareto 前沿保留不存在另一候选项在所有已声明终点均不差且至少一个更好的候选项。两者都会掩盖缺失测量，除非明确显示；都不能代替 TPP 门槛和独立验证。
+
+**手算练习（不可运行、非实证）：** 使用同一构造 TPP。D 的 1 µM 抑制为 `80%`、`pIC50 = 6.55`、溶解度 `24`、报告基因抑制 `22%`；E 的 1 µM 抑制为 `65%`、`pIC50 = 6.26`、溶解度 `29`、报告基因抑制 `4%`。哪些项在该片段下推进？相对 A 计算 D 的 `ΔpIC50` 与构造 `IC50` 比。写一个 C 对 D 的下一测量和一个表格不能支持的结论。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+D 虽通过构造的 1 µM 抑制门槛，却因 `22%` 不低于 15% 的报告基因门槛而失败；E 通过构造的 1 µM 抑制门槛，未达到期望 `pIC50`，但这不是最低门槛，故在此片段下可保留为比较项。D 的 `ΔpIC50 = 6.55 − 6.10 = +0.45`，构造 `IC50` 为 `10^0.45 = 2.82` 倍更低。正交靶点近端读数或独立制备重复可区分真实系列信号与测量伪影。该表不能证明相关生物体内靶点结合、人类暴露、安全性或临床获益。
+
+</details>
+
+## 来源与下一课
+
+下列页面于 2026-09-09 打开；它们支持 TPP 与测定解释边界，以上数值均为虚构教学值。
+
+<div data-case-sources>
+
+- [Facilitating the use of the target product profile in academic research](https://pubmed.ncbi.nlm.nih.gov/39075460/)
+- [Data Standardization for Results Management — NCBI Assay Guidance Manual](https://www.ncbi.nlm.nih.gov/books/NBK91993/)
+- [Basic Guidelines for Reporting Non-Clinical Data — NCBI Assay Guidance Manual](https://www.ncbi.nlm.nih.gov/books/NBK550206/)
+
+</div>
+
+[目标产品 profile 实验](/zh-cn/labs/target-product-profile/)把一份由硬性门槛与偏好组成、在读测量之前
+就定下的 profile,套到三个实测终点族共有的化合物上，并报告哪些化合物被后来的测量推翻了。
+
+下一步读[从扰动到靶点验证](/zh-cn/learn/mechanism-targets/perturbation-to-target-validation/)，检验面向产品的靶点叙述能否经得起替代解释。原始课程文字为 CC BY 4.0；链接来源保留其自身条款。
+
+译文更新：2026-09-09。

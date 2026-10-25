@@ -1,0 +1,267 @@
+---
+title: Two readouts of one perturbation
+description: Ground a perturbation claim in a runnable cross-modality check, and see how much of the agreement between two readouts survives when plate and batch structure are held out.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="mechanism-targets/cross-modality-perturbation-evidence" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+Read [From perturbation to target validation](/learn/mechanism-targets/perturbation-to-target-validation/)
+first. That lesson built a mechanism claim out of an object, a contrast and a losing
+alternative, and it warned that a score is evidence about that score rather than a
+target-validation certificate. This lesson takes one step further and asks what would
+have to be true of the measurement itself before a perturbational readout can be read
+as mechanism support at all.
+
+After this lesson you should be able to:
+
+1. state what agreement between two readouts of the same perturbation does and does not
+   establish about mechanism.
+2. explain why a random split over perturbations overstates that agreement when the
+   measurement has plate and batch structure.
+3. read a design cost and a survival ratio, and say which number to report.
+4. name the comparisons a design-blind analysis would not have run.
+
+This is a conceptual lesson with a runnable companion. It provides no gene-editing
+conditions, guide design, cell culture steps, or clinical recommendation, and it
+nominates no target.
+
+## Two readouts of one perturbation
+
+A perturbation does not produce one observable. It produces a cellular state, and
+every instrument that records that state records a different projection of it. In this
+lesson the two projections are a transcriptomic profile, 978 landmark probe sets
+measured with L1000, and a morphological profile, 291 features measured with Cell
+Painting. When the same perturbation is measured by both instruments on the same cells
+at the same time, the two profiles can be joined and a question becomes measurable.
+How well does the transcriptomic profile of a perturbation predict its imaging
+profile?
+
+That question is worth asking because a signature that predicts a phenotype the
+signature was never derived from is harder to explain away than a signature that only
+reproduces itself. A cross-modal map from transcriptome to imaging is one concrete
+way to ask it.
+
+The answer is a correlation, and a correlation is not a mechanism. Two instruments
+agreeing about a perturbation says that the perturbation left a coherent state that
+both instruments could see. It does not say which molecular event caused that state,
+which of the two instruments is closer to the truth, or that the state matters for
+anything downstream. The map in this lesson is descriptive. It names no target and
+predicts no phenotype.
+
+The subtlety is that agreement has a second possible source. The two readouts were
+also produced by the same experiment. They shared plates and plate maps, and every one
+of them belongs to a single batch of a single study. A map can learn the shape of the
+experiment as easily as the shape of the perturbation, and when it does, the agreement
+it reports is real and completely uninformative about biology.
+
+## The design between the readouts
+
+Suppose a random split divides the perturbations into a training side and a test
+side, with one perturbation on one side or the other. A perturbation is measured on
+8 of the 16 plates in each readout, so the training side usually contains
+perturbations that were measured on the same plates, in the same plate map and in the
+same run as the held-out perturbation. The map can then lean on the design instead of
+on the perturbation, and the held-out score measures how well the design generalises
+within itself.
+
+Two controls make that visible, and both are cheap.
+
+The first destroys only the pairing. Each perturbation keeps its plate, its batch and
+its position in the experiment, but its imaging profile is replaced by another
+perturbation's imaging profile from the same batch. Any agreement that survives this
+null is produced by the design alone, and the agreement of a real analysis has to be
+read against it rather than against zero.
+
+The second fixes the training-set size. A blocked evaluation holds out a whole plate
+or a whole batch, which necessarily leaves fewer training rows than a random fold, so
+a drop in performance is ambiguous on its own. The control is a random split with
+exactly the same training and test sizes drawn from the same population. The gap
+between a blocked fold and its size-matched twin is the design cost of the structural
+separation, and it is the part of the apparent agreement that a design-blind analysis
+would have reported as biology.
+
+The last quantity is the survival ratio. It is the share of the above-null agreement
+that remains once the structure is held out, so it is bounded below by zero and above
+by one, and it reads directly as the fraction of the cross-modal signal that is a
+property of the perturbation rather than of the experiment.
+
+## The runnable check
+
+The companion lab measures all of this on real published data. Its protocol version is
+`cpg0003-rosetta-luad-cross-modality-v1` and its committed summary was computed once,
+on 2026-10-21. The seed 20261021 fixes every partition and every permutation.
+
+```bash
+uv run python labs/rosetta_cross_modality/run_lab.py download
+uv run python labs/rosetta_cross_modality/inspect_rosetta_cross_modality.py show
+uv run python labs/rosetta_cross_modality/inspect_rosetta_cross_modality.py check
+```
+
+The lab is the place to run the numbers. What follows is the reading of them.
+
+## Worked case
+
+The data is one batch of one Cell Painting Gallery study, `cpg0003-rosetta`, batch
+`LUAD-BBBC041-Caicedo`, in A549 lung adenocarcinoma cells carrying engineered
+genetic perturbations, read 96 hours after the perturbation. The transcriptomic object
+carries 4,232 wells over 16 assay plates, and the imaging object 6,144 wells over 16
+assay plates drawn from two plate maps, which are the two batches of this batch.
+Joining the two readouts on the perturbation identifier leaves 528 perturbations that
+carry both profiles.
+
+The apparent agreement is strong. With a random five-fold split, the imaging profile
+of a held-out perturbation is predicted from its transcriptomic profile at a
+correlation of 0.8158 per perturbation and 0.8256 per imaging feature. The first control
+says the design is not the explanation. Replacing each perturbation's imaging profile
+with another perturbation's imaging profile from the same batch drops the per-feature
+agreement to 0.0033 and the per-perturbation agreement to 0.1317. A model-free check
+agrees with the fitted one, fitting nothing and drawing no split, with a median
+Spearman correlation of 0.7449 between the transcriptomic and the imaging similarity
+rankings against 0.0007 under the permuted pairing.
+
+The design is then taken apart. The imaging plate accounts for 2.71% of the imaging
+feature variance, the L1000 plate for 1.56% of the transcriptomic feature variance, and
+the imaging batch for 0.36%. A small variance share is not a small effect on a
+prediction, so the agreement is measured again with the structure held out.
+
+| Evaluation | Perturbation r | Feature r | Perturbations tested |
+| --- | ---: | ---: | ---: |
+| Apparent (random five-fold) | 0.8158 | 0.8256 | 528 |
+| Null, pairing destroyed within batch | 0.1317 | 0.0033 | 528 |
+| Batch blocked (one whole batch held out) | 0.6886 | 0.6326 | 509 |
+| Size-matched random, same sizes | 0.7923 | 0.7877 | 509 |
+| Imaging plate blocked | 0.6921 | 0.6516 | 528 |
+| Size-matched random, same sizes | 0.7931 | 0.8014 | 528 |
+| Transcriptome plate blocked | 0.7041 | 0.6694 | 528 |
+| Size-matched random, same sizes | 0.7972 | 0.8089 | 528 |
+
+Holding out one whole batch drops the per-feature agreement from 0.8256 to 0.6326, while
+a random split with exactly the same training and test sizes reaches 0.7877. The batch
+separation costs 0.1551 of per-feature agreement that a smaller training set does
+not explain. Holding out one imaging assay plate costs 0.1497 and holding out one
+transcriptome assay plate 0.1394, by the same comparison. The survival
+ratio is the share of the above-null agreement that remains, computed as the blocked
+per-feature correlation minus the null, divided by the apparent per-feature correlation
+minus the null. It is 0.7653 for a held-out batch, 0.7885 for a held-out imaging plate
+and 0.8101 for a held-out transcriptome plate.
+
+Read back into the language of the earlier lesson, this is what a mechanism claim can
+rest on and what it cannot. Three quarters of the agreement between two readouts of the
+same perturbation survives an evaluation in which the model never sees the batch the
+perturbation came from. That is real support for the claim that the perturbation
+produced a coherent cellular state visible to two independent modalities. The other
+quarter does not survive, and a design-blind analysis would have reported all of it as
+though it had. The claim is therefore weaker than the statement that the signature is
+the mechanism, and stronger than the statement that the two readouts agree.
+
+The named perturbations at the ends of the apparent agreement distribution show what
+the number is about and what it is not. `LAP3_WT.o` sits at 0.9861 and `MDM2_p.E421Q` at
+-0.1525, where a negative correlation means the transcriptomic profile of that
+perturbation points the wrong way for its imaging profile. These are the ends of a
+distribution, so they are where to start reading if you want to know which entity a
+number concerns. They are not evidence about LAP3 or about MDM2, and the same
+discipline the earlier lesson applied to a rescue and a stress control applies here.
+A claim about a gene needs a contrast that separates the gene's mechanism from the
+alternatives, and no number of readouts supplies that contrast.
+
+## What this does not show
+
+- The agreement is not a mechanism. It is not evidence about a gene, a target
+  hypothesis or a clinical outcome, and this material nominates none.
+- The blocked evaluations hold out structure inside one published experiment. A batch
+  or plate held out here is still a batch or plate the laboratory has seen before, so
+  this is not a deployment setting.
+- The design cost does not separate the batch's nuisance effect from the fact that a
+  batch-homogeneous training set covers less of the perturbation space. It isolates
+  the cost of the structural separation at a fixed training-set size and nothing more.
+- The protocol fixes one batch of one study, one cell line, one timepoint and one set
+  of engineered edits. The study's other four batches, the other gallery studies and
+  the JUMP pilot are outside it, and nothing here transfers to them without being
+  re-measured.
+- The imaging feature set is the gallery's variable-selected release of 291 features.
+  The full-feature release for the same batch was not used, and no claim is made that
+  these numbers transfer to it.
+- The map is a ridge map and not a state-of-the-art cross-modal predictor. Its penalty
+  is selected inside each training fold, but the architecture is not tuned, so the
+  numbers bound this simple map's agreement and not the agreement that is achievable.
+- No reader outcomes have been collected for this material. The committed summary
+  records what the pipeline computes, not whether anyone has learned anything from it.
+
+## Independent exercise
+
+A slide states that the transcriptome predicts the Cell Painting profile of a held-out
+perturbation at a feature correlation of 0.8256, and that the perturbation signature is
+therefore a mechanism.
+
+1. Name the two controls this lab runs that a design-blind analysis would not have, and
+   say what each one would show if the plate and batch structure, rather than the
+   perturbation, were producing the agreement.
+2. Holding out one whole batch drops the per-feature agreement to 0.6326, while a random
+   split with exactly the same training and test sizes reaches 0.7877. Compute the
+   difference, name it, and state which of the two numbers you would report as the
+   agreement of a cross-modal map.
+3. The most agreeable perturbation in the distribution is `LAP3_WT.o` at 0.9861 and the
+   least is `MDM2_p.E421Q` at -0.1525. What do those two rows establish about the
+   perturbation, and what do they not establish?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The two controls are the null that keeps the plate and batch structure and destroys only
+the pairing, and the size-matched random split. If the design were producing the
+agreement, the permuted null would sit near the apparent 0.8256 rather than at 0.0033, and
+a blocked fold would reach the value of its size-matched random twin. The model-free
+neighbourhood concordance of 0.7449 is a third, independent agreement, because it fits
+nothing and draws no split and so cannot inherit a split-specific shortcut. Its
+permuted counterpart falls to 0.0007.
+
+The difference is 0.7877 - 0.6326 = 0.1551, and the protocol calls it the design cost of
+the structural separation at a fixed training-set size. The blocked value of 0.6326 is
+the number to report, because the size-matched random split at 0.7877 is the value the
+design would have produced with the same amount of training data.
+
+The two named rows are the ends of an agreement distribution and nothing more. They say
+that under one fitted map the transcriptomic profile and the imaging profile of those
+two perturbations pointed in the same direction, or in opposite directions for the
+second one. They are not evidence about LAP3 or about MDM2, and the negative value says
+the map pointed the wrong way for that perturbation rather than that the perturbation
+does nothing.
+
+</details>
+
+## Sources and next lesson
+
+<div data-case-sources>
+
+- [ROSETTA study publication, Haghighi et al. (2022), Nature Methods](https://doi.org/10.1038/s41592-022-01667-0)
+- [ROSETTA preprint, Haghighi et al.](https://doi.org/10.1101/2021.09.08.459417)
+- [ROSETTA associated data repository](https://github.com/carpenter-singh-lab/2022_Haghighi_NatureMethods)
+- [Cell Painting Gallery publication, Weisbart et al. (2024), Nature Methods](https://doi.org/10.1038/s41592-024-02399-z)
+- [Cell Painting Gallery repository and licence terms](https://github.com/broadinstitute/cellpainting-gallery)
+- [Citing the Cell Painting Gallery and the hosting acknowledgement](https://broadinstitute.github.io/cellpainting-gallery/citing.html)
+- [ROSETTA batch data directory](https://cellpainting-gallery.s3.amazonaws.com/cpg0003-rosetta/broad/workspace/preprocessed_data/LUAD-BBBC041-Caicedo/)
+- [ROSETTA transcriptomic release](https://cellpainting-gallery.s3.amazonaws.com/cpg0003-rosetta/broad/workspace/preprocessed_data/LUAD-BBBC041-Caicedo/L1000/replicate_level_l1k.csv.gz)
+- [ROSETTA imaging release](https://cellpainting-gallery.s3.amazonaws.com/cpg0003-rosetta/broad/workspace/preprocessed_data/LUAD-BBBC041-Caicedo/CellPainting/replicate_level_cp_normalized_variable_selected.csv.gz)
+
+</div>
+
+All data in the Cell Painting Gallery is released under CC0 1.0 Universal, which removes
+the legal requirement to attribute and does not remove the scholarly expectation to
+cite the dataset. The gallery is hosted on the AWS Registry of Open Data and asks that
+this hosting be acknowledged.
+
+Run the numbers in the companion [ROSETTA cross-modality agreement
+lab](/labs/rosetta-cross-modality/), then return to [Perturbation, context, and
+generalization](/learn/mechanism-targets/perturbation-context-generalization/) for what
+a held-out structure still cannot promise, and to [Selecting target-evidence
+resources](/learn/mechanism-targets/target-resource-guide/) for the rest of the
+evidence a target claim needs.
+
+Original lesson prose is CC BY 4.0 and linked sources retain their own terms.
+Last reviewed: 2026-10-22.

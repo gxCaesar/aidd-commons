@@ -1,0 +1,67 @@
+---
+import summary from "../../../labs/chembl_egfr/locked-summary.json";
+
+const models = [
+  { key: "train_mean", label: "Train mean" },
+  { key: "descriptor_ridge", label: "Descriptor Ridge" },
+  { key: "morgan_ridge", label: "Morgan Ridge" },
+] as const;
+const evaluations = [
+  { key: "primary_test", label: "Primary scaffold test", assay: "CHEMBL5736995" },
+  { key: "assay_replication", label: "Assay replication", assay: "CHEMBL3705421" },
+] as const;
+const format = (value: number | null) => value === null ? "undefined" : value.toFixed(6);
+const download = `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(summary, null, 2))}`;
+---
+
+<section class="locked-panel" aria-labelledby="chembl-locked-title">
+  <h2 id="chembl-locked-title">Completed ChEMBL evaluations</h2>
+  <p>Both evaluations completed once; reviewed {summary.reviewed_on}.
+    Descriptor Ridge alpha={summary.selected_alphas.descriptor_ridge} and Morgan
+    Ridge alpha={summary.selected_alphas.morgan_ridge} remain the development-selected settings.</p>
+  <p><strong>Morgan has the lowest primary MAE, but the highest replication MAE.</strong>
+    Descriptor Ridge has the lowest replication MAE. Neither representation is
+    uniformly best across these two evaluations.</p>
+  {evaluations.map(({ key, label, assay }) => (
+    <section aria-labelledby={`chembl-${key}-title`}>
+      <h3 id={`chembl-${key}-title`}>{label}: {assay}</h3>
+      <p>All {summary.results[key].count} evaluation parents contribute to each metric below;
+        no evaluation parents were dropped. MAE and RMSE are in pChEMBL units.</p>
+      <div class="table-scroll" role="region" aria-label={`${label} scores`} tabindex="0">
+        <table>
+          <caption>{label}: every frozen baseline, no pooled assay score</caption>
+          <thead><tr>
+            <th scope="col">Model</th><th scope="col">MAE</th>
+            <th scope="col">RMSE</th><th scope="col">Spearman</th>
+          </tr></thead>
+          <tbody>{models.map(({ key: model, label: modelLabel }) => {
+            const score = summary.results[key].metrics[model];
+            return <tr>
+              <th scope="row">{modelLabel}</th>
+              <td title={String(score.mae)}>{format(score.mae)}</td>
+              <td title={String(score.rmse)}>{format(score.rmse)}</td>
+              <td title={score.spearman === null ? score.spearman_status : String(score.spearman)}>{format(score.spearman)}</td>
+            </tr>;
+          })}</tbody>
+        </table>
+      </div>
+    </section>
+  ))}
+  <p>Train-mean Spearman is undefined because its prediction is constant, not zero.
+    Post-run checks recomputed MAE, RMSE and tied-rank Spearman from all saved
+    target/prediction rows without refitting. The poor Morgan replication score
+    is not an aggregate arithmetic mismatch; its cause was not established by that check.</p>
+  <ul>{summary.interpretation.map(note => <li>{note}</li>)}</ul>
+  <p>Tables are rounded to six decimal places.
+    <a href={download} download="chembl-locked-summary.json">Download all ChEMBL aggregate scores (JSON)</a>
+    {" "}for full precision. Compound identities, labels and individual predictions are not distributed here.</p>
+</section>
+
+<style>
+  .locked-panel { min-width: 0; margin-block: 2rem; padding: 1rem; border: 1px solid var(--sl-color-gray-4); border-radius: .6rem; }
+  .locked-panel section { min-width: 0; margin-block: 1.5rem; }
+  .table-scroll { max-width: 100%; overflow-x: auto; }
+  table { display: table; overflow: visible; width: 100%; font-variant-numeric: tabular-nums; }
+  th, td { padding: .5rem; white-space: nowrap; }
+  caption { text-align: left; white-space: normal; }
+</style>

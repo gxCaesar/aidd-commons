@@ -1,0 +1,150 @@
+---
+title: 治疗实体构建体记录审计
+description: 阅读真实治疗实体记录，区分模态、产品特定构建体、生产宿主和预期功能。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## 准备与学习目标
+
+先阅读[构建体身份课程](/learn/biologics-design/construct-identity-and-objectives/)。本实验室考察每个治疗实体自身的记录如何陈述其分子身份。你将复现字段覆盖情况，区分天然蛋白信息与产品特定构建体，并解释为何缺少生产宿主会使来源记录无法定义该构建体。你还将区分已陈述值之间的分歧与覆盖差异。[英文原版指南](/labs/biologic-construct-audit/)提供本页的规范版本。
+
+## 运行模式与命令
+
+本实验室的模式是在冻结协议下进行全新独立计算。使用项目的 Python 3.11 环境和 CPU，无需加速器或额外依赖。若要重新联网获取，`download` 会请求协议声明的 UniProt 检索、各条目以及选定的 DailyMed 标签。它记录精确 URL、响应长度、来源版本和 UTC 获取时间，且仅在验证通过后替换嵌入的来源快照。
+
+```bash
+.venv/bin/python labs/biologic_construct_audit/run_lab.py download
+.venv/bin/python labs/biologic_construct_audit/inspect_biologic_construct_audit.py show
+.venv/bin/python labs/biologic_construct_audit/inspect_biologic_construct_audit.py check
+.venv/bin/python labs/biologic_construct_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/biologic_construct_audit -q
+```
+
+若要离线进行全新独立计算，保留已提交的来源快照，从以下命令开始。它们读取的选定段落与产生下文已提交观察结果的段落相同。
+
+```bash
+.venv/bin/python labs/biologic_construct_audit/inspect_biologic_construct_audit.py show
+.venv/bin/python labs/biologic_construct_audit/inspect_biologic_construct_audit.py check
+.venv/bin/python labs/biologic_construct_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/biologic_construct_audit -q
+```
+
+`show` 输出来源层面的审计结果和归一化字段值。`check` 重新计算不变量，失败时返回非零退出码。这两条命令均不写入文件。导出命令仅在协议与审计检查通过后覆盖精简摘要，检查失败时不写入摘要。之后的联网获取可能改变来源段落，因此下列表格描述的是已记录的快照。
+
+## 记录与四字段规则
+
+计数单位是一个具名治疗实体。同一个 UniProt 登录号可能提及多个产品，因此对每个选定产品分别读取其药用注释。DailyMed 提供协议声明的描述与作用机制段落。天然蛋白功能、靶标交叉引用和疾病适应证不能填补缺失的产品特定字段。
+
+| 字段 | 陈述规则 |
+| --- | --- |
+| 模态 | 统计标签明确陈述的产品生物分子类别。若经审阅的 UniProt 蛋白条目同时命名药用产品和蛋白，则确立宽泛的蛋白模态。 |
+| 构建体 | 统计选定段落中的产品特定组分、组装形式或序列改变。产品名称或未具体说明的糖基化差异不足以满足规则。保留段落是否区分多链实体各部分的信息。 |
+| 表达系统 | 统计明确关联到产品的具名生产宿主。天然来源物种不能确立表达宿主。 |
+| 预期功能 | 统计药用注释或作用机制章节中明确陈述的产品作用。内源蛋白功能或疾病适应证不能代替它。 |
+
+某字段只要在纳入的来源记录中有所陈述，就计入实体层面的覆盖。各来源记录保持独立。定义状态要求同一条记录同时陈述模态、产品特定构建体和生产宿主。功能仍是独立的第四个字段。单独的模态不是构建体，缺少生产宿主的构建体也不满足定义规则。
+
+## 观察到的实体覆盖
+
+已提交计算读取已记录的快照并应用上述规则。软件版本标识产生结果的计算，并非要求的最低环境版本。
+
+| 计算项目 | 观察值 |
+| --- | --- |
+| 计算日期 | 2026-10-23 |
+| 来源获取时间 | 2026-10-23T14:25:57+00:00 |
+| Python | 3.11.15 |
+| aidd-commons-labs | 0.2.0rc1 |
+| 治疗实体 | 6 |
+
+| 实体 | 模态 | 构建体 | 表达系统 | 预期功能 | 已陈述字段数 | 已在某条来源记录中定义 |
+| --- | --- | --- | --- | --- | ---: | --- |
+| adalimumab | 已陈述 | 已陈述 | 已陈述 | 已陈述 | 4 | 是，DailyMed |
+| agalsidase-beta | 已陈述 | 已陈述 | 已陈述 | 已陈述 | 4 | 是，DailyMed |
+| etanercept | 已陈述 | 已陈述 | 已陈述 | 已陈述 | 4 | 是，DailyMed |
+| human-insulin-humulin | 已陈述 | 未陈述 | 未陈述 | 未陈述 | 1 | 否 |
+| insulin-lispro | 已陈述 | 已陈述 | 未陈述 | 未陈述 | 2 | 否 |
+| reteplase | 已陈述 | 已陈述 | 未陈述 | 已陈述 | 3 | 否 |
+
+| 字段 | 已陈述 | 未陈述 |
+| --- | ---: | ---: |
+| 模态 | 6 | 0 |
+| 构建体 | 5 | 1 |
+| 表达系统 | 3 | 3 |
+| 预期功能 | 4 | 2 |
+
+| 覆盖分组 | 实体 |
+| --- | --- |
+| 全部 4 个字段 | adalimumab, agalsidase-beta, etanercept |
+| 2–3 个字段 | insulin-lispro, reteplase |
+| 1 个字段 | human-insulin-humulin |
+| 0 个字段 | 无 |
+
+## 构建体与生产宿主
+
+来源层面的审计将组装形式、多链组分是否被区分与构建体标记分别保留。未陈述的组装形式或未被区分的部分描述的是选定段落的覆盖情况。
+
+| 实体 | 来源 | 已陈述的组装形式 | 多链组分已区分 |
+| --- | --- | --- | --- |
+| adalimumab | DailyMed | 重链和轻链 | 是 |
+| agalsidase-beta | DailyMed | 同源二聚体 | 是 |
+| agalsidase-beta | UniProt | 未陈述 | 否 |
+| etanercept | DailyMed | 二聚体 | 是 |
+| etanercept | UniProt | 未陈述 | 否 |
+| human-insulin-humulin | UniProt | 未陈述 | 否 |
+| insulin-lispro | UniProt | 未陈述 | 否 |
+| reteplase | UniProt | 未陈述 | 否 |
+
+Etanercept 的 UniProt 段落命名了受体和 Fc 组分，但没有陈述其组装形式。它的 DailyMed 描述补充了二聚体组装形式和 CHO 生产宿主。选定的 Humulin 段落命名产品，却没有说明其构建体或宿主。这条记录的信息缺口不会成为药物本身的缺失。
+
+| 来源层面的缺口 | 实体 | 来源 |
+| --- | --- | --- |
+| 已陈述构建体，未陈述生产宿主 | etanercept, insulin-lispro, reteplase | UniProt |
+| 已陈述生产宿主，未陈述构建体 | agalsidase-beta | UniProt |
+
+已知错误测试将仅有模态的记录以及缺少宿主的构建体分别报告为已定义，审计会拒绝这两种情况。既没有构建体也没有宿主的记录同样不能报告为已定义。
+
+## 来源之间的差异
+
+只有两个来源都已陈述的字段才用于比较分歧。某个来源未陈述的信息仍属于覆盖差异。已提交比较没有在共同陈述的字段中发现分歧，并发现了以下覆盖差异。
+
+| 实体 | 字段 | 已陈述的来源 | 未陈述的来源 |
+| --- | --- | --- | --- |
+| agalsidase-beta | 构建体 | DailyMed | UniProt |
+| agalsidase-beta | 预期功能 | DailyMed | UniProt |
+| etanercept | 表达系统 | DailyMed | UniProt |
+
+这些观察结果针对选定的产品段落。它们不能确立完整数据库之间的一致性，也不能用于从另一个来源填补某条来源记录的缺失字段。
+
+## 独立解释练习
+
+使用 `show` 解释为何 agalsidase-beta 在 DailyMed 记录中已定义，而在 UniProt 记录中仍未定义。然后解释为何 Humulin 段落不能报告为定义了一个构建体。判断任一记录缺失的字段是否能确立药物本身具有何种性质。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+DailyMed 在同一条记录中陈述了 agalsidase-beta 的模态、同源二聚体构建体和 CHO 生产宿主。选定的 UniProt 段落陈述了宿主，但按冻结规则没有提供产品特定构建体，因此该来源记录仍未定义。它缺失的预期功能陈述单独记录。Humulin 段落只提供模态。两者的信息缺口均不表明治疗实体缺少构建体、生产宿主或生物学功能。
+
+</details>
+
+## 材料局限
+
+本审计读取每个实体自身的选定记录陈述了什么。记录没有陈述某字段，并不意味着实体缺少该字段。产品列表是一个范围有限的教学队列，选定段落不能衡量全部治疗实体或完整来源记录的覆盖情况。已陈述字段数不用于实体排序。满足定义规则的记录并不因此确立可开发性或治疗候选性。尚未观察读者学习成效。
+
+## 来源与条款
+
+以下来源段落于 2026-10-23 获取并阅读。快照保留 UniProt 的药用注释以及 DailyMed 中协议声明的描述与作用机制段落。[构建体身份课程](/learn/biologics-design/construct-identity-and-objectives/)也于同日阅读。
+
+| 来源 | 记录 | 已记录版本 |
+| --- | --- | ---: |
+| UniProt | [P00750，组织型纤溶酶原激活剂](https://rest.uniprot.org/uniprotkb/P00750.json) | 282 |
+| UniProt | [P01308，胰岛素](https://rest.uniprot.org/uniprotkb/P01308.json) | 284 |
+| UniProt | [P06280，alpha-galactosidase A](https://rest.uniprot.org/uniprotkb/P06280.json) | 253 |
+| UniProt | [P20333，TNFRSF1B](https://rest.uniprot.org/uniprotkb/P20333.json) | 247 |
+| DailyMed | [ENBREL，etanercept](https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/a002b40c-097d-47a5-957f-7a7b1807af7f.xml) | 218 |
+| DailyMed | [HUMIRA，adalimumab](https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/a06a9aec-fd5b-4c3e-a81f-eb46bb384100.xml) | 6 |
+| DailyMed | [FABRAZYME，agalsidase beta](https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/988513ab-b06f-4dd0-93f7-d2d4531dcce4.xml) | 35 |
+
+原创指南文字采用 CC BY 4.0，实验室代码采用 Apache-2.0。第三方注释沿用来源条款。协议没有赋予 DailyMed 标签文字任何复用许可。UniProt 提供其[来源条款](https://rest.uniprot.org/help/license)。最后审阅日期为 2026-10-23。

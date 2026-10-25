@@ -1,0 +1,66 @@
+---
+title: 回归、分类与它们掩盖的误差
+description: 将任务定义与回归损失、类别概率、决策阈值和有意义的误差分析连接起来。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Regression, classification and the errors they hide](/learn/qsar-properties/regression-classification-errors/)。
+
+<LessonProgress lessonId="qsar-properties/regression-classification-errors" />
+<ScrollableRegions />
+
+## 从终点出发，不从估计器出发
+
+完成[基线训练](/zh-cn/learn/machine-learning/baseline-training-validation/)后，你已经能够拟合连续响应。本课要求你定义二分类任务，解释逻辑回归如何学习概率，区分概率质量与阈值化决策，并写出不利用测试集调参的误差分析。以下所有数值例子均为构造示例。
+
+QSAR 将指定的化学表示与指定的活性或性质终点联系起来。回归可以预测水合自由能或精确的对数活性读数，分类可以预测预先规定的测定命中标签。这些目标不能互换。把连续终点转换成类别，需要有科学理由的规则、删失及模糊记录的处理方法，并在评估前确定阈值。
+
+学生沙箱的 `response` 与 `hit` 是分别编写的合成目标，不是对冻结 ChEMBL 测定重新编码。水合能也不能自动变成活性类别。
+
+## 回归：误差大小与方向
+
+定义残差 `e = prediction − target`。MAE 是 `|e|` 的均值，RMSE 是 `e²` 均值的平方根，二者保留响应的单位。[指标定义](https://scikit-learn.org/stable/modules/model_evaluation.html)明确了这些不同的聚合方式。
+
+目标 `[1, 5, 9]`、预测 `[2, 4, 12]` 对应残差 `[1, −1, 3]`，MAE 为 `5/3 ≈ 1.6667`，RMSE 为 `sqrt(11/3) ≈ 1.9149`。平均有符号误差为 1，但这不意味着每个误差大小都是 1。有符号均值可能因为正负抵消而很小；很高的秩相关也可能伴随系统偏移。
+
+真实 [FreeSolv 实验](/zh-cn/labs/freesolv-honest-baselines/)的终点是以 kcal/mol 表示的水合自由能；[ChEMBL 实验](/zh-cn/labs/chembl-egfr-representation-baselines/)的终点是指定 IC50 记录按母体聚合的 pChEMBL。不能把二者的 MAE 当作同一个科学任务比较。
+
+## 分类：从分数到概率
+
+对标准化特征 `z`，逻辑回归预测 `p = sigmoid(b + w z)`，其中 `sigmoid(a) = 1 / (1 + exp(−a))`。模型分数可以是任意实数，sigmoid 将它映射到 0 与 1 之间；仅仅有界并不能证明在新数据上校准良好。
+
+对于二元目标 `h`，单条记录的损失为 `−[h log(p) + (1−h) log(1−p)]`。记录类别的预测概率高时损失较小，自信地预测错误时损失较大。本沙箱使用平均损失加 `alpha * w² / 2`，不惩罚截距。平均损失对 `b` 的导数为 `(p−h)` 的均值，对 `w` 的导数为 `(p−h)z` 的均值；斜率导数再加 `alpha*w`。梯度下降从参数中减去学习率乘相应导数。[逻辑模型文档](https://scikit-learn.org/stable/modules/linear_model.html)给出了更一般的多分类形式及正则化约定。
+
+标签 `[0, 1]` 和概率 `[0.2, 0.8]` 中，每条记录都给实际类别分配 0.8 概率，平均 log loss 为 `−log(0.8) ≈ 0.22314355`。预测 `[0.5, 0.5]` 时约为 0.69314718。这里使用自然对数，不是百分比。
+
+## 概率不等于决策规则
+
+阈值 0.5 表示 `p ≥ 0.5` 时判为阳性。阈值是决策设置，不是上述公式学到的参数。可以在声明的成本或灵敏度要求下使用验证集选择，但不能根据测试标签重新调整。不同用途可以合理地需要不同规则。
+
+| 记录类别 | 预测阴性     | 预测阳性     |
+| -------- | ------------ | ------------ |
+| 阴性     | 真阴性（TN） | 假阳性（FP） |
+| 阳性     | 假阴性（FN） | 真阳性（TP） |
+
+Precision 为 `TP/(TP+FP)`，recall 为 `TP/(TP+FN)`。本课将零分母对应的量视为未定义，用 `null` 表示，不悄悄替换为零。仅看 accuracy 容易误导：100 条记录只有 1 条阳性时，始终预测阴性的分类器 accuracy 为 99%，recall 却为零。应与训练集阳性比例基线比较，给出类别计数，并检查相关错误。ROC AUC、precision–recall 汇总和校准回答其他问题，不能因为数值好看就临时加入或改选。
+
+## 为下一项研究提供信息的误差分析
+
+保存实体身份、目标、残差或概率，以及解释所需的环境信息。检查较大误差是否集中在某些测定、骨架、测量范围或训练域距离上。看完测试后才发现的亚组属于探索性分析，不是新确认的主要结果。不要删除不方便的记录，也不要改变评估指标。
+
+针对具体解释做少量检查：单位错误、测定含义不一致、实体重复、外推，或表示丢失信息。表现差异本身不能判断哪一种解释成立。例如，activity cliff 指具有可比性的结构相似化合物间出现明显活性变化，不是所有大预测残差的同义词。赋予这一解释前，应先检查测量和表示。
+
+## 独立练习
+
+四条记录的类别为 `[0, 1, 1, 0]`，预测概率为 `[0.2, 0.8, 0.4, 0.7]`。在阈值 0.5 时，计算 TP、TN、FP、FN、precision 和 recall。同事因为阈值 0.3 能捕获这组测试记录的两个阳性，而将阈值改为 0.3。哪些可以报告，哪些不能？
+
+<details data-worked-answer>
+<summary>参考答案 — 区分评分与回顾性调参</summary>
+
+混淆矩阵四项各为 1，声明阈值下的 accuracy、precision、recall 都是 0.5。在 0.3 时，TP 为 2、FP 为 1、TN 为 1、FN 为 0，precision 为 2/3、recall 为 1。这只能作为同一组记录上的回顾性诊断，不能成为更好决策规则的独立确认。保留原始结果。未来规则需要单独规定选择程序并进行新的评估；这四条记录不能证明临床或测定效用。
+
+</details>
+
+下一步：[运行独立学生沙箱](/zh-cn/learn/machine-learning/student-modelling-sandbox/)。真实案例解读见[指标与不确定性](/zh-cn/learn/evaluation-and-reproducibility/metrics-and-uncertainty/)。原创文字与示例：CC BY 4.0。最后审阅及译文更新：2026-09-09。

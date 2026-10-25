@@ -1,0 +1,234 @@
+{
+  "computed_on": "2026-09-12",
+  "pairs": {
+    "CHEMBL3301370_vs_CHEMBL3301371": {
+      "clean_pair_count": 359,
+      "correlation": {
+        "count": 359,
+        "pearson_r": 0.3409553979362063,
+        "spearman_p_value": 2.9181236439375e-14,
+        "spearman_rho": 0.3868354632960799
+      },
+      "divergent_examples": {
+        "primary_selective": [
+          {
+            "log_ratio": 1.3297290880448256,
+            "parent_molecule_chembl_id": "CHEMBL574059",
+            "primary_clearance": 131.83,
+            "secondary_clearance": 6.17
+          },
+          {
+            "log_ratio": 1.2304489213782739,
+            "parent_molecule_chembl_id": "CHEMBL564885",
+            "primary_clearance": 68.0,
+            "secondary_clearance": 4.0
+          },
+          {
+            "log_ratio": 1.0718820073061255,
+            "parent_molecule_chembl_id": "CHEMBL1916276",
+            "primary_clearance": 59.0,
+            "secondary_clearance": 5.0
+          }
+        ],
+        "secondary_selective": [
+          {
+            "log_ratio": -1.5579280590540245,
+            "parent_molecule_chembl_id": "CHEMBL1072",
+            "primary_clearance": 4.0,
+            "secondary_clearance": 144.54
+          },
+          {
+            "log_ratio": -1.4522976709946303,
+            "parent_molecule_chembl_id": "CHEMBL70972",
+            "primary_clearance": 3.0,
+            "secondary_clearance": 85.0
+          },
+          {
+            "log_ratio": -1.2997873782728855,
+            "parent_molecule_chembl_id": "CHEMBL1688458",
+            "primary_clearance": 4.9,
+            "secondary_clearance": 97.72
+          }
+        ]
+      },
+      "overlap_count": 359,
+      "primary_system": "CHEMBL3301370",
+      "secondary_system": "CHEMBL3301371",
+      "varies": "species and matrix both differ"
+    },
+    "CHEMBL3301370_vs_CHEMBL3301372": {
+      "clean_pair_count": 96,
+      "correlation": {
+        "count": 96,
+        "pearson_r": 0.40827229549770977,
+        "spearman_p_value": 5.040520925009409e-07,
+        "spearman_rho": 0.4864353376748756
+      },
+      "divergent_examples": {
+        "primary_selective": [
+          {
+            "log_ratio": 1.3197376052272751,
+            "parent_molecule_chembl_id": "CHEMBL2181927",
+            "primary_clearance": 97.72,
+            "secondary_clearance": 4.68
+          },
+          {
+            "log_ratio": 1.158996961867559,
+            "parent_molecule_chembl_id": "CHEMBL1916271",
+            "primary_clearance": 137.0,
+            "secondary_clearance": 9.5
+          },
+          {
+            "log_ratio": 1.0858500063596392,
+            "parent_molecule_chembl_id": "CHEMBL1947157",
+            "primary_clearance": 63.0,
+            "secondary_clearance": 5.17
+          }
+        ],
+        "secondary_selective": [
+          {
+            "log_ratio": -1.0017337128090005,
+            "parent_molecule_chembl_id": "CHEMBL271012",
+            "primary_clearance": 3.0,
+            "secondary_clearance": 30.12
+          },
+          {
+            "log_ratio": -0.6960189545991367,
+            "parent_molecule_chembl_id": "CHEMBL403313",
+            "primary_clearance": 8.86,
+            "secondary_clearance": 44.0
+          },
+          {
+            "log_ratio": -0.6868596143337642,
+            "parent_molecule_chembl_id": "CHEMBL402986",
+            "primary_clearance": 4.0,
+            "secondary_clearance": 19.45
+          }
+        ]
+      },
+      "overlap_count": 96,
+      "primary_system": "CHEMBL3301370",
+      "secondary_system": "CHEMBL3301372",
+      "varies": "matrix (microsome vs. hepatocyte), species fixed at human"
+    },
+    "CHEMBL3301372_vs_CHEMBL3301371": {
+      "clean_pair_count": 106,
+      "correlation": {
+        "count": 106,
+        "pearson_r": 0.3094982568782439,
+        "spearman_p_value": 3.022906734367888e-07,
+        "spearman_rho": 0.4731608384561121
+      },
+      "divergent_examples": {
+        "primary_selective": [
+          {
+            "log_ratio": 0.9600437756750119,
+            "parent_molecule_chembl_id": "CHEMBL361546",
+            "primary_clearance": 134.9,
+            "secondary_clearance": 14.79
+          },
+          {
+            "log_ratio": 0.6436171508232804,
+            "parent_molecule_chembl_id": "CHEMBL1835918",
+            "primary_clearance": 26.41,
+            "secondary_clearance": 6.0
+          },
+          {
+            "log_ratio": 0.5598786639058914,
+            "parent_molecule_chembl_id": "CHEMBL2062774",
+            "primary_clearance": 29.51,
+            "secondary_clearance": 8.13
+          }
+        ],
+        "secondary_selective": [
+          {
+            "log_ratio": -1.3801565687736723,
+            "parent_molecule_chembl_id": "CHEMBL1229592",
+            "primary_clearance": 3.31,
+            "secondary_clearance": 79.43
+          },
+          {
+            "log_ratio": -1.178604059596538,
+            "parent_molecule_chembl_id": "CHEMBL1947157",
+            "primary_clearance": 5.17,
+            "secondary_clearance": 78.0
+          },
+          {
+            "log_ratio": -1.0851716097368123,
+            "parent_molecule_chembl_id": "CHEMBL217899",
+            "primary_clearance": 6.0,
+            "secondary_clearance": 73.0
+          }
+        ]
+      },
+      "overlap_count": 106,
+      "primary_system": "CHEMBL3301372",
+      "secondary_system": "CHEMBL3301371",
+      "varies": "species (human vs. rat), matrix fixed at hepatocyte"
+    }
+  },
+  "protocol_id": "chembl37-az-clearance-system-v1",
+  "schema_version": "aidd-commons.az-clearance-system-summary.v1",
+  "software": {
+    "numpy": "2.4.6",
+    "python": "3.11.15",
+    "rdkit": "2025.09.6",
+    "scipy": "1.17.1"
+  },
+  "systems": {
+    "CHEMBL3301370": {
+      "admitted_parents": 743,
+      "audit": {
+        "duplicate_parent_count": 0,
+        "exclusion_counts": {
+          "censored_value": 358,
+          "not_parent_structure": 1
+        },
+        "input_rows": 1102,
+        "maximum_duplicate_range": null,
+        "median_duplicate_range": null,
+        "parent_count": 743,
+        "retained_rows": 743
+      },
+      "matrix": "microsome",
+      "name": "Human liver microsomes",
+      "species": "human"
+    },
+    "CHEMBL3301371": {
+      "admitted_parents": 592,
+      "audit": {
+        "duplicate_parent_count": 0,
+        "exclusion_counts": {
+          "censored_value": 242,
+          "not_parent_structure": 3
+        },
+        "input_rows": 837,
+        "maximum_duplicate_range": null,
+        "median_duplicate_range": null,
+        "parent_count": 592,
+        "retained_rows": 592
+      },
+      "matrix": "hepatocyte",
+      "name": "Rat hepatocytes",
+      "species": "rat"
+    },
+    "CHEMBL3301372": {
+      "admitted_parents": 288,
+      "audit": {
+        "duplicate_parent_count": 0,
+        "exclusion_counts": {
+          "censored_value": 119,
+          "not_parent_structure": 1
+        },
+        "input_rows": 408,
+        "maximum_duplicate_range": null,
+        "median_duplicate_range": null,
+        "parent_count": 288,
+        "retained_rows": 288
+      },
+      "matrix": "hepatocyte",
+      "name": "Human hepatocytes",
+      "species": "human"
+    }
+  }
+}

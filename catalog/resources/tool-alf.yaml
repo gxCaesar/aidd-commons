@@ -1,0 +1,47 @@
+id: tool-alf
+name: ALF
+kind: software
+summary: Framework for scientific active learning that separates a candidate dataset, a probabilistic surrogate, an acquisition function, a search function, an oracle and a design task, and ships the ready-made datasets, models and acquisition strategies that go with them.
+canonical_url: https://github.com/instadeepai/alf
+identifiers:
+  - scheme: paper
+    value: "ALF: An Active Learning Framework for Scientific Discovery; arXiv 2609.31197"
+    url: https://arxiv.org/abs/2609.31197
+  - scheme: code
+    value: "ALF source repository, instadeepai/alf, published as the alf-core and alf-tools packages"
+    url: https://github.com/instadeepai/alf
+stages: [design, evaluation]
+modalities: [small-molecule, protein-sequence, image]
+tasks: [active-learning, candidate-selection, surrogate-modelling, acquisition-function]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [alf-readme] }
+openness:
+  inference_code: { value: available, evidence: [alf-readme] }
+  training_code: { value: available, evidence: [alf-readme] }
+  weights: { value: unverified }
+  architecture: { value: available, evidence: [alf-readme] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [alf-readme] }
+licenses:
+  - name: "Apache-2.0"
+    scope: "The repository README states 'This project is licensed under the Apache License 2.0' and points to the LICENSE file. The grant covers the framework and the tools package. The licences of the pretrained models a user loads as a surrogate or an oracle are their own, and the framework does not distribute them."
+    evidence: [alf-readme]
+evidence:
+  - id: alf-repository
+    url: https://github.com/instadeepai/alf
+    label: ALF repository (reviewed 2026-10-23)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: alf-readme
+    url: https://raw.githubusercontent.com/instadeepai/alf/main/README.md
+    label: ALF README (reviewed 2026-10-23)
+    supports: [identifiers, caveats]
+caveats:
+  - "The repository ships no pretrained weights of its own. The surrogate and oracle models a user loads, such as ESM-2 or Chemprop, come from their own projects under their own licences, so the weights dimension is unverified for this record."
+  - "The framework names the roles of an active-learning loop and separates them in code, but it does not state what a run's result licenses. A campaign that selects a candidate with an acquisition function has not thereby established that the candidate is worth making."
+  - "The README gives no data-availability statement and no numerical benchmark results, and the documented case studies are named rather than reported, so the framework's own performance is not established here."
+  - "The documented oracle is a scorer over a held-out pool or a live scorer, and the page enumerates no concrete oracle beyond that, so a reader who wants a real laboratory in the loop must supply it."
+  - "The paper is recorded from its arXiv identifier and the repository's own README. The article's text was not opened, so the reported comparisons between acquisition strategies are not carried here."
+acknowledgements: []
+last_verified: "2026-10-23"

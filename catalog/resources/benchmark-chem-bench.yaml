@@ -1,0 +1,45 @@
+id: benchmark-chem-bench
+name: ChemBench
+kind: benchmark
+summary: A question-answering benchmark that tests language models on chemistry knowledge at several difficulty levels.
+canonical_url: https://github.com/lamalab-org/chembench
+identifiers:
+  - scheme: documentation
+    value: "ChemBench repository and task definitions"
+    url: https://github.com/lamalab-org/chembench
+stages: [evaluation]
+modalities: [scientific-text, molecule]
+tasks: [chemistry-question-answering, model-evaluation]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: open_source, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: not_applicable, evidence: [repository] }
+  weights: { value: not_applicable, evidence: [repository] }
+  architecture: { value: not_applicable, evidence: [repository] }
+  data_recipe: { value: available, evidence: [readme] }
+  training_data: { value: not_applicable, evidence: [repository] }
+  evaluation_code: { value: available, evidence: [readme] }
+licenses:
+  - name: MIT
+    scope: The benchmark questions, the grading code and the repository, per the LICENSE file.
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/lamalab-org/chembench
+    label: ChemBench repository, re-opened 2026-10-21
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/lamalab-org/chembench/main/README.md
+    label: ChemBench README, re-opened 2026-10-21
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/lamalab-org/chembench/main/LICENSE
+    label: ChemBench MIT licence file, re-opened 2026-10-21
+    supports: []
+caveats:
+  - A benchmark of model knowledge is not a benchmark of a model able to do chemistry, and the record does not establish the second.
+  - Some questions draw on published chemistry literature, so the benchmark inherits the licensing of the sources it quotes.
+acknowledgements: []
+last_verified: "2026-10-21"

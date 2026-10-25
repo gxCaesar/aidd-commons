@@ -1,0 +1,58 @@
+---
+import summary from "../../../labs/pool_budget/demo-summary.json";
+import { poolBudget } from "../lib/pool-budget.js";
+const budget = poolBudget(summary.partitions.pool.molecules);
+const curves = [{ label: "MaxMin", ...summary.maxmin }, ...summary.random_runs.map(run => ({label: `Random seed ${run.seed}`, ...run}))];
+---
+
+<section class="pool-panel" aria-labelledby="pool-demo-title">
+  <h2 id="pool-demo-title">Synthetic campaign: count before selecting</h2>
+  <p>60 authored graphs, artificial scores, no assay measurements. Initial: 6 molecules;
+    acquisition pool: 42; evaluation reserve: 12. The <a href="/labs/pool-budget-campaign/#real-campaign-title">real ChEMBL results</a> are separate.</p>
+  <label for="pool-size">Original candidate pool size</label>
+  <input id="pool-size" type="number" min="20" max="1000000" step="1" value="42" aria-describedby="budget-help" />
+  <p id="budget-help">Four rounds, each 5% of the original pool, rounded down separately.
+    This calculator changes the budget only; it does not rerun the curves below.</p>
+  <p id="budget-output" role="status" aria-live="polite">{budget.batchSize} per round · {budget.total} labels total · {(100 * budget.fraction).toFixed(2)}% of the original pool</p>
+  <div class="table-scroll" role="region" aria-label="Synthetic recovery curves" tabindex="0">
+    <table>
+      <caption>Observed synthetic top-decile recovery (5 targets); original pool = 42</caption>
+      <thead><tr><th scope="col">Policy</th>{summary.budget.checkpoints.map(count => <th scope="col">{count} labels</th>)}<th scope="col">AUC</th></tr></thead>
+      <tbody>{curves.map(curve => <tr><th scope="row">{curve.label}</th>{curve.recovery.map(value => <td>{value.toFixed(2)}</td>)}<td>{curve.normalized_auc.toFixed(3)}</td></tr>)}</tbody>
+    </table>
+  </div>
+  <p>These five seeds describe random-policy variability on one artificial library.
+    They are not five independent assays. MaxMin has no label input and no uncertainty model.</p>
+</section>
+
+<script>
+  import { poolBudget } from "../lib/pool-budget.js";
+  function initializePoolBudget() {
+    const input = document.querySelector<HTMLInputElement>("#pool-size");
+    const output = document.querySelector<HTMLElement>("#budget-output");
+    if (!input || !output || input.dataset.ready) return;
+    input.dataset.ready = "true";
+    input.addEventListener("input", () => {
+      try {
+        const value = poolBudget(input.valueAsNumber);
+        input.setAttribute("aria-invalid", "false");
+        output.textContent = `${value.batchSize} per round · ${value.total} labels total · ${(100 * value.fraction).toFixed(2)}% of the original pool`;
+      } catch (error) {
+        input.setAttribute("aria-invalid", "true");
+        output.textContent = error instanceof Error ? error.message : "Invalid pool size.";
+      }
+    });
+  }
+  initializePoolBudget();
+  document.addEventListener("astro:page-load", initializePoolBudget);
+</script>
+
+<style>
+  .pool-panel { border: 1px solid var(--sl-color-gray-4); border-radius: .6rem; padding: 1rem; margin-block: 2rem; min-width: 0; }
+  label { display: block; font-weight: 600; }
+  input { max-width: 100%; width: 12rem; padding: .5rem; color: var(--sl-color-text); background: var(--sl-color-bg); border: 1px solid var(--sl-color-gray-3); border-radius: .25rem; }
+  .table-scroll { overflow-x: auto; }
+  table { display: table; overflow: visible; width: 100%; font-variant-numeric: tabular-nums; }
+  th, td { padding: .5rem; white-space: nowrap; }
+  caption { text-align: left; white-space: normal; }
+</style>

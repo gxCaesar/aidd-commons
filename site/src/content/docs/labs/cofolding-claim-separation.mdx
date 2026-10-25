@@ -1,0 +1,158 @@
+---
+title: Five claims that arrive in one file
+description: Separate monomer prediction, complex prediction, co-folding, pose generation and experimental binding evidence across 31 registered systems, with one offline command.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="cofolding-claims" />
+
+## Before you run
+
+**Mode: runnable inspection of committed files.** The command reads a frozen
+extract of the resource registry, committed beside it, holding the 31
+registered systems that make a structural or affinity claim. It makes no network
+request, downloads no structure, imports no third-party package and predicts
+nothing. It does not evaluate any system's accuracy. It answers a question that
+comes before accuracy: what is this system's output a claim about?
+
+```bash
+python labs/cofolding_claims/inspect_claims.py show
+```
+
+A predicted monomer, a predicted complex, a co-folded protein-ligand pose, a
+docked pose and an experimental binding measurement can all reach you as a
+coordinate file with a score attached. The file format does not distinguish them
+and neither does the vocabulary. The registry does, because each record declares
+the task it performs and where its evidence stops.
+
+Membership follows the declared task and nothing else. `export_claim_records.py`
+selects every record whose tasks intersect the five class definitions, so no
+system can be hand-picked into this family or quietly left out of it, and the
+exporter refuses to overwrite the extract unless asked, naming each record that
+would change.
+
+## 1. The modality label does not name the claim
+
+The first block groups every registered system in this family by the claim its
+task licenses. Read the modality column beside it. The label
+`biomolecular-complex` appears under three different claim classes, and
+`small-molecule` under three as well.
+
+That is the first place a reader gets moved from one claim to another without
+noticing. Two systems can both be labelled for complexes while one predicts a
+structure and the other estimates an affinity, and a sentence that says "it works
+on complexes" is true of both while meaning different things.
+
+## 2. One system can make two claims at once
+
+Of the 31 systems, exactly one declares both a co-folded complex and an
+affinity estimate: `model-boltz-2`. That is not a flaw in the record. It is a
+real property of a real model, and it is precisely where the two claims are
+easiest to merge.
+
+A pose and a potency are separate outputs of the same run. One being good does
+not make the other good. They can disagree on the same compounds, and a reader
+who has seen a convincing structure figure has been given no information about
+whether the compound is active.
+
+## 3. None of these is an experimental measurement
+
+The third block prints the record kinds present in this family. They are models,
+software, model assets, benchmarks and a paper. Not one is a measurement record.
+
+Experimental binding evidence lives somewhere else entirely, in a record that
+describes an assay and its conditions. No entry in this family can be cited for
+what a compound actually does in an experiment, however good its structural
+output looks.
+
+## 4. Check what the registry can and cannot support
+
+```bash
+python labs/cofolding_claims/inspect_claims.py check
+```
+
+Ten checks run. They confirm that the extract and the inspector group by the
+same five classes, that every extracted record earned its place through a
+declared task rather than by name, that every system carries a review date, that
+no co-folding system evidences both its training data and the code behind its
+accuracy claim, that exactly one system claims both a pose and an affinity, that
+no measurement record is hiding in the family, and that at least one modality
+label spans more than one claim class.
+
+The family is not uniform on the training-data dimension, and the check says so
+rather than assuming it. One of the three publishes its preprocessed training
+data and its training code; the other two do not. None of the three publishes
+the evaluation code. What stays true across all of them is that the code which
+produced a reported number is not there to be read.
+
+One check deserves reading twice. **No co-folding system in this family
+evidences the evaluation code behind its accuracy claim.** Inference code and
+weights are often available; the code that produced the reported numbers is not.
+Two systems in the wider family do publish theirs, the DiffDock release and the
+RosettaFold all-atom release, and the check names them rather than hiding them.
+That is a statement about what has been published, not about whether the numbers
+are right, and it means an accuracy claim from a co-folding system currently has
+to be taken on trust rather than rechecked from source.
+
+## Independent exercise
+
+A colleague sends you a predicted protein-ligand complex and writes: "this model
+reached 0.8 angstroms median ligand RMSD in its paper, so the pose is reliable
+enough for us to prioritise this compound for synthesis."
+
+Name the distinct claims being chained together in that sentence, and for each
+one say whether anything in this registry can support it.
+
+<details data-worked-answer>
+<summary>Worked answer — three claims, and what the registry reaches</summary>
+
+**Claim one, the reported accuracy.** A median over a benchmark set is a property
+of that set, not of your target. Even taken at face value it says nothing about
+the hardest cases, and a median hides the tail where a pose is wrong by enough to
+change a decision. The registry can locate the system and its task, and it shows
+that the evaluation code is not evidenced for the co-folding systems, and for
+24 of the 31 systems in the family, so this number cannot be
+rechecked from published artefacts. It can be cited; it cannot
+be verified here.
+
+**Claim two, this pose is right.** A benchmark median does not transfer to one
+new complex, and the registry offers nothing about your target at all. This is
+where the modality label misleads most: the system is labelled for complexes,
+your case is a complex, and the sentence slides from one to the other without an
+argument.
+
+**Claim three, the compound is worth making.** This is a potency and tractability
+claim, and no record in this family is a measurement record. A correct pose is
+compatible with an inactive compound. The registry can show that the system also
+declares an affinity task if it does, which is a second prediction, still not a
+measurement.
+
+A complete answer notices that the three claims need three different kinds of
+evidence, and that the sentence supplied only one number for all three. The
+useful reply is not "your model is wrong" but "which of these three do you want
+to establish, and what would establish it".
+
+</details>
+
+## What this does not do
+
+This route does not run a co-folding model, evaluate one, or rank any system
+against another. It cannot tell you whether a prediction is accurate. It reads
+declarations and evidence states from a registry maintained in this repository,
+so its authority is exactly the authority of those records, and each record's own
+caveats and review date travel with it. An `unverified` openness state means the
+declared surfaces were reviewed on the recorded date and the artefact was not
+found there. It is not a claim that the artefact does not exist.
+
+For the systems themselves, see the
+[open co-folding frontier inventory](/atlas/open-cofolding-frontier/) and the
+[structure and co-folding lesson](/learn/structure-and-pockets/cofolding-frontier/).
+For pocket states and structural confidence, continue to
+[pocket states and confidence](/learn/structure-and-pockets/pocket-states-and-confidence/).
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-10-25.

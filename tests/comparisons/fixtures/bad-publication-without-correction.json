@@ -1,0 +1,8 @@
+{
+  "schema_version": "publication.v1",
+  "first_published_at": "2026-10-25T02:33:00Z",
+  "repository_url": "https://example.org/aidd-commons",
+  "site_url": "https://example.org/aidd-commons/",
+  "correction_url": null,
+  "correction_window_days": 30
+}

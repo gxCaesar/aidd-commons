@@ -1,0 +1,51 @@
+---
+title: Open co-folding frontier
+description: An asset-level inventory for co-folding-related systems; it is not a performance leaderboard.
+---
+
+## How to read this inventory
+
+The rows below distinguish a product or service from seven independently
+auditable assets: inference code, training code, weights, architecture, data
+recipe, training data, and evaluation code. `Unverified` means that the
+opened primary source used next to that cell did not establish the asset's
+availability. It does not mean the asset is absent. A repository page is not
+treated as licence evidence; licence claims link to the exact opened licence
+or an asset-specific README statement.
+
+This is an evidence inventory, not a predictive-performance ranking. The
+[structure and co-folding lesson](/learn/structure-and-pockets/cofolding-frontier/)
+explains how to match a structural output to an experimental decision.
+
+| System                         | Product or service surface                                                                                       | Inference code                | Training code                  | Weights                                              | Architecture                   | Data recipe                    | Training data                  | Evaluation code                | Evidence record                                                                                                                              |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------- | ----------------------------- | ------------------------------ | ---------------------------------------------------- | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Chai-1                         | Public repository; code and model-weight licence claims are supported by the opened sources ([licence])          | Available ([README])          | Unverified ([README])          | Available ([README])                                 | Unverified ([README])          | Unverified ([README])          | Unverified ([README])          | Unverified ([README])          | [catalog record](https://github.com/chaidiscovery/chai-lab)                                                                                  |
+| Chai-2                         | Limited academic early access is described on the product page ([product])                                       | Unverified ([product])        | Unverified ([product])         | Unverified ([product])                               | Unverified ([product])         | Unverified ([product])         | Unverified ([product])         | Unverified ([product])         | [catalog record](https://www.chaidiscovery.com/product)                                                                                      |
+| AlphaFold 3 inference pipeline | Public inference repository; parameters are governed under separate terms ([AF3 README])                         | Available ([AF3 README])      | Unverified ([AF3 README])      | Unverified; separate terms are stated ([AF3 README]) | Unverified ([AF3 README])      | Unverified ([AF3 README])      | Unverified ([AF3 README])      | Unverified ([AF3 README])      | [inference repository](https://github.com/google-deepmind/alphafold3); [primary article](https://www.nature.com/articles/s41586-024-07487-w) |
+| IsoDDE                         | Company page calls the AI and data engine proprietary ([IsoDDE])                                                 | Unverified ([IsoDDE])         | Unverified ([IsoDDE])          | Unverified ([IsoDDE])                                | Unverified ([IsoDDE])          | Unverified ([IsoDDE])          | Unverified ([IsoDDE])          | Unverified ([IsoDDE])          | [company record](https://www.isomorphiclabs.com/press/isomorphic-labs-funding)                                                               |
+| Boltz-1                        | Public repository; code-and-weights licence claim is supported by opened sources ([Boltz licence])               | Available ([Boltz README])    | Unverified ([Boltz README])    | Available ([Boltz README])                           | Unverified ([Boltz README])    | Unverified ([Boltz README])    | Unverified ([Boltz README])    | Unverified ([Boltz README])    | [catalog record](https://github.com/jwohlwend/boltz)                                                                                         |
+| Boltz-2                        | Public repository; README notes that updated training and evaluation material is coming soon ([Boltz README])    | Available ([Boltz README])    | Unverified ([Boltz README])    | Available ([Boltz README])                           | Unverified ([Boltz README])    | Unverified ([Boltz README])    | Unverified ([Boltz README])    | Unverified ([Boltz README])    | [catalog record](https://github.com/jwohlwend/boltz)                                                                                         |
+| OpenFold                       | Public repository; source-code and downloaded-parameter licence scopes are separately stated ([OpenFold README]) | Available ([OpenFold README]) | Unverified ([OpenFold README]) | Available ([OpenFold README])                        | Unverified ([OpenFold README]) | Unverified ([OpenFold README]) | Unverified ([OpenFold README]) | Unverified ([OpenFold README]) | [catalog record](https://github.com/aqlaboratory/openfold)                                                                                   |
+| Protenix                       | Public repository; source-code licence is provided ([Protenix licence])                                          | Available ([Protenix README]) | Available ([Protenix README])  | Unverified ([Protenix README])                       | Unverified ([Protenix README]) | Available ([Protenix README])  | Available ([Protenix README])  | Unverified ([Protenix README]) | [catalog record](https://github.com/bytedance/Protenix)                                                                                      |
+| OpenDDE Preview                | Public preview repository; source-code licence is provided ([OpenDDE licence])                                   | Available ([OpenDDE README])  | Unverified ([OpenDDE README])  | Available ([OpenDDE README])                         | Unverified ([OpenDDE README])  | Unverified ([OpenDDE README])  | Unverified ([OpenDDE README])  | Unverified ([OpenDDE README])  | [catalog record](https://github.com/aurekaresearch/OpenDDE)                                                                                  |
+
+The inventory intentionally does not convert `unverified` into `not available`.
+For example, a source repository can establish inference code without proving a
+complete training recipe or an evaluation protocol. Before reproducing a
+published claim, open the cited source again and identify the exact asset,
+version, licence scope, and evaluation boundary required by the decision.
+
+[README]: https://raw.githubusercontent.com/chaidiscovery/chai-lab/main/README.md
+[licence]: https://raw.githubusercontent.com/chaidiscovery/chai-lab/main/LICENSE
+[product]: https://www.chaidiscovery.com/product
+[AF3 README]: https://raw.githubusercontent.com/google-deepmind/alphafold3/main/README.md
+[IsoDDE]: https://www.isomorphiclabs.com/press/isomorphic-labs-funding
+[Boltz README]: https://raw.githubusercontent.com/jwohlwend/boltz/main/README.md
+[Boltz licence]: https://raw.githubusercontent.com/jwohlwend/boltz/main/LICENSE
+[OpenFold README]: https://raw.githubusercontent.com/aqlaboratory/openfold/main/README.md
+[Protenix README]: https://raw.githubusercontent.com/bytedance/Protenix/main/README.md
+[Protenix licence]: https://raw.githubusercontent.com/bytedance/Protenix/main/LICENSE
+[OpenDDE README]: https://raw.githubusercontent.com/aurekaresearch/OpenDDE/main/README.md
+[OpenDDE licence]: https://raw.githubusercontent.com/aurekaresearch/OpenDDE/main/LICENSE
+
+Last reviewed: 2026-09-04.

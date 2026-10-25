@@ -1,0 +1,57 @@
+id: benchmark-plabench
+name: PLABench
+kind: benchmark
+summary: Leakage-controlled benchmark for protein-ligand binding affinity prediction that runs nine sequence- and structure-based models over the same targets under the same metrics, and reports that the reported deep-learning performance does not survive the removal of the training corpora the benchmark audited.
+canonical_url: https://github.com/BioinfoMachineLearning/PLABench
+identifiers:
+  - scheme: dataset
+    value: "the benchmark inputs, structures, checkpoints and predictions, Zenodo record 22716174, published 15 September 2026"
+    url: https://doi.org/10.5281/zenodo.22716174
+  - scheme: code
+    value: "the archived v1.0.0 source snapshot of the benchmark repository, Zenodo record 22782934"
+    url: https://doi.org/10.5281/zenodo.22782934
+  - scheme: paper
+    value: "Leakage-controlled benchmarking reveals generalization limits of deep learning for protein-ligand binding affinity prediction; Wang and Cheng, 2026, manuscript in submission"
+    url: https://github.com/BioinfoMachineLearning/PLABench#citation
+stages: [evaluation]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [affinity-prediction, benchmark-evaluation]
+relations: []
+status: { value: active, evidence: [repository-readme] }
+access_level: { value: open_source, evidence: [repository-license, zenodo-record] }
+openness:
+  inference_code: { value: available, evidence: [repository-readme] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [repository-readme] }
+  architecture: { value: not_applicable, evidence: [repository-readme] }
+  data_recipe: { value: available, evidence: [zenodo-record] }
+  training_data: { value: available, evidence: [zenodo-record] }
+  evaluation_code: { value: available, evidence: [repository-readme] }
+licenses:
+  - name: MIT
+    scope: "The repository's own statement that the code is MIT licensed, in its LICENSE file, which names the copyright holder as BioinfoMachineLearning. The grant covers the benchmark's own code. The third-party model weights and the benchmark data are excluded from it and keep their own terms, which the repository records per file."
+    evidence: [repository-license]
+  - name: Other (Open)
+    scope: "The Zenodo deposit of the benchmark inputs, structures, checkpoints and predictions carries only the Zenodo licence identifier other-open, with no licence name or a rights text attached to the record, so the deposit does not itself name a standard licence. The record carries the identifier the deposit states and not a grant it does not make."
+    evidence: [zenodo-record]
+evidence:
+  - id: repository-readme
+    url: https://raw.githubusercontent.com/BioinfoMachineLearning/PLABench/main/README.md
+    label: The PLABench repository README, read on 2026-10-24, which describes the splits, the filters, the Zenodo archives and the leakage figures
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: repository-license
+    url: https://raw.githubusercontent.com/BioinfoMachineLearning/PLABench/main/LICENSE
+    label: The MIT licence file of the PLABench repository, read on 2026-10-24
+    supports: [caveats]
+  - id: zenodo-record
+    url: https://zenodo.org/api/records/22716174
+    label: The Zenodo record of the benchmark data, read on 2026-10-24, which states the licence identifier as other-open, the access rights as open and the version as v1.0.0
+    supports: [identifiers, caveats]
+caveats:
+  - "The README states that the paper, Leakage-controlled benchmarking reveals generalization limits of deep learning for protein-ligand binding affinity prediction by Wang and Cheng, is a manuscript in submission, so the record carries the repository's own citation and not a published identifier."
+  - "The README's own figures are the record's evidence here: it reports that one audited training corpus, SAIR, reaches a Tanimoto similarity of 0.85 against 32.7 percent of the unfiltered benchmark, which accounts for 2,413 removed rows, and that MixingDTA's RMSE rises from 0.462 to 0.541 on Davis and from 0.404 to 0.598 on KIBA when the evaluation moves from a warm start to a cold target. These are the benchmark's statements and not a measurement this project made."
+  - "The README describes the leakage-controlled ChEMBL35 arm as retaining 4,862 ligands across 71 targets against 7,650 ligands across 84 targets unfiltered, after dropping every test ligand within an ECFP4 Tanimoto of 0.85 of any ligand in the fourteen audited training corpora and then removing the targets left with fewer than ten ligands. The filter is the benchmark's own choice and is stated."
+  - "The benchmark runs nine models and every one of them is somebody else's work, so the repository asks that a reported number cite that model's own paper as well. The record did not run the benchmark."
+  - "The Zenodo deposit is about 1.5 GB across six archives, and the repository's own scripts fetch and check it by a pinned checksum."
+acknowledgements: []
+last_verified: "2026-10-24"

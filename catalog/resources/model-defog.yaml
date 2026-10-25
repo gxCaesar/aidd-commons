@@ -1,0 +1,50 @@
+id: model-defog
+name: DeFoG
+kind: model
+summary: "DeFoG is a PyTorch implementation of discrete flow matching for graph generation, with training and sampling scripts over standard molecule datasets and released checkpoints."
+canonical_url: https://github.com/manuelmlmadeira/DeFoG
+identifiers:
+  - scheme: paper
+    value: "DeFoG: Discrete Flow Matching for Graph Generation; arXiv 2410.04263"
+    url: https://arxiv.org/abs/2410.04263
+stages: [design]
+modalities: [small-molecule, molecular-graph]
+tasks: [molecular-generation]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [readme] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: "repository source code only, with the notice to be retained; the README states no licence or terms for the listed datasets or for the released checkpoints"
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/manuelmlmadeira/DeFoG
+    label: manuelmlmadeira/DeFoG repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: paper
+    url: https://arxiv.org/abs/2410.04263
+    label: arXiv abstract for the DeFoG paper (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: readme
+    url: https://raw.githubusercontent.com/manuelmlmadeira/DeFoG/main/README.md
+    label: DeFoG README
+    supports: [caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/manuelmlmadeira/DeFoG/main/LICENSE
+    label: DeFoG MIT LICENSE
+    supports: []
+caveats:
+  - The README states no licence or usage terms for QM9, ZINC, MOSES, GuacaMol or the other listed datasets, so training-data terms are unverified.
+  - The released checkpoints are described as retrained models hosted on a third-party drive, and no licence is stated for them.
+  - Protein and EGO datasets are listed as available on request without stated terms, so their availability cannot be established from the opened page.
+acknowledgements: []
+last_verified: "2026-10-21"

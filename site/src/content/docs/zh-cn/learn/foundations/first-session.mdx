@@ -1,0 +1,110 @@
+---
+title: 你的第一次学习
+description: 完成一个小型无标签练习，找到其输出，并解读一项已完成的预测比较。
+---
+
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Your first session](/learn/foundations/first-session/)。
+
+译文更新：2026-09-08。
+
+<ScrollableRegions />
+<LessonProgress lessonId="foundations/first-session" />
+
+系统学习请打开[核心与专题课程地图](/zh-cn/learn/foundations/curriculum-map/)，其中明确区分已提供教学与待建设单元。下方短流程仍是导读，三种背景选项不代表三门完整课程。
+
+第一条训练主线为：[记录到建模表](/zh-cn/learn/data-governance/records-to-model-table/)
+→ [基线拟合](/zh-cn/learn/machine-learning/baseline-training-validation/)
+→ [回归与分类误差](/zh-cn/learn/qsar-properties/regression-classification-errors/)
+→ [独立学生沙箱](/zh-cn/learn/machine-learning/student-modelling-sandbox/)。该可选主线使用虚构数据教授拟合，不是新的测定研究。课程导航更新：2026-09-09。
+
+动手实践请沿着 [notebook 路线](/zh-cn/labs/notebook-guide/)：无标签分子表示 → 合成数据拟合 → 实测亲脂性。
+每阶段都有自包含中英文 notebook，可上传 Colab 或用本地 Jupyter。logD notebook 已完成一次
+本地真实数据 CPU 执行，真实 Colab 执行仍未验证。这条可选路线独立于下方无需账号、无需训练的导读。
+
+## 选择一条路线
+
+本次学习需要基本的化学词汇；对于可选的命令行步骤，还需要能够打开终端并切换文件夹。
+不需要 GPU、账号、活性数据集或模型训练。
+
+- **基础：** 阅读示例关系，并解释每种分子表示保留了哪些分子差异。你完全可以在
+  浏览器中完成这一部分。
+- **研究：** 遵循同一示例，然后比较两项已完成的 ChEMBL 评估。辨认为什么主测试集的
+  获胜者不是普遍的获胜者。
+- **工程：** 还要在本地运行七个示例的检查器，并将其 JSON 输出与文档所述关系进行比较。
+
+从[表示保留和丢弃的内容](/zh-cn/learn/representations/small-molecule-representations/)开始。
+完成本次学习后，使用[18 条路径图](/)探索其他主题。
+
+## 可选的本地设置
+
+使用源代码检出或解压出的源代码包。**仓库根目录**是包含 `pyproject.toml`、
+`package.json` 和 `labs/` 的文件夹。在该文件夹中打开终端。阅读网站不需要安装网站的
+Node.js 依赖项。
+
+对于 Python 示例，使用 Python 3.11 以及
+[uv 的官方安装说明](https://docs.astral.sh/uv/getting-started/installation/)。
+检查命令可用，然后创建项目环境：
+
+```sh
+uv --version
+uv sync --python 3.11
+```
+
+首次同步会下载声明的依赖项；它不会下载科学数据集或运行模型。固定版本位于
+`pyproject.toml`。干净的源代码包可能不含锁文件，因此不保证跨安装的完整传递依赖
+身份。如果安装失败，保留错误信息并继续使用仅浏览器路线。
+
+如果找不到 `uv`，请按其官方说明安装它并打开一个新终端。如果找不到项目文件，请切换
+至仓库根目录。第一次学习时，不要运行 ChEMBL 或 rMD17 的下载、预检或评估命令。
+
+## 运行一个小型示例
+
+阅读[无标签检查器](/zh-cn/labs/molecule-representation-inspector/)了解完整输入契约和
+预期关系。最小命令为：
+
+```sh
+uv run python labs/molecule_representations/run_lab.py inspect
+```
+
+终端会打印 `Representation report written:`，随后是输出路径。在文本编辑器中打开
+`tmp/molecule-representations/report.json`。预期会看到七条分子记录，以及一个软件和表示
+契约。该输出包含计算得到的表示，而不是测得的活性标签或预测评分。此示例可以重新运行；
+它不是锁定评估。
+
+## 检查你的理解
+
+找到两条吡啶记录、两种已定义的丙氨酸对映体和醋酸钠记录。在阅读已解答案前作答：
+
+1. 不同的输入字符串是否总是表示不同的分子？
+2. 哪种已存储表示会折叠丙氨酸的立体化学差异？
+3. 盐记录会变成一个中性的单一分子吗？
+
+<details>
+  <summary>已解答案与完成标准</summary>
+
+两条吡啶字符串产生相同的 RDKit 规范异构 SMILES 和 InChIKey。两种已定义的丙氨酸
+对映体保留不同的异构 SMILES 和 InChIKey，但它们的非异构 SMILES 相同。醋酸钠保留
+两个不连通组分；检查器不选择或中和一个母体片段。
+
+一份完整答案要说明相关的输出字段和一项局限：在工具包范围内的身份一致，并不能确立
+质子化、结合构象、效力或生物学等价性。
+
+</details>
+
+## 阅读观测到的结果而不重新运行
+
+[阅读已完成的 ChEMBL 比较](/zh-cn/labs/chembl-egfr-representation-baselines/#chembl-locked-title)。
+在**两个**评估集上比较 Morgan Ridge 与描述符 Ridge。看到这些结果后，不要选择新的
+alpha 或表示。
+
+你的最终笔记应说明每个集合中的获胜者、排序反转，以及来自 T15 的较早共享标签暴露。
+这些观察结果排除了“未触及的独立确认”这一主张。使用实验的已解答案检查你的解读。
+
+如需另一个示例，请阅读[rMD17 系统级结果](/zh-cn/labs/rmd17-system-state-energy-baselines/)
+或[回顾性实验预算活动](/zh-cn/labs/pool-budget-campaign/)。它们是已完成的教学证据，
+并非本次学习的前置条件。
+
+最后审阅：2026-09-08。

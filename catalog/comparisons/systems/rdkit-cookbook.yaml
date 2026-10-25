@@ -1,0 +1,286 @@
+id: rdkit-cookbook
+name: RDKit Cookbook
+provider_class: specialist-reference
+canonical_url: https://www.rdkit.org/docs/Cookbook.html
+summary: A community-maintained collection of tested Python recipes for common cheminformatics operations using RDKit.
+audiences: [cheminformatics-practitioners, python-users]
+languages: [en]
+metadata_evidence: [cookbook]
+access:
+  content: { value: open, evidence: [cookbook] }
+  code: { value: open, evidence: [cookbook] }
+  data: { value: unverified }
+  solutions: { value: not_applicable, evidence: [cookbook] }
+licenses:
+  - name: BSD 3-Clause License
+    scope: RDKit core code; externally sourced Cookbook examples retain source-specific attribution and may require separate review
+    evidence: [rdkit-license, cookbook]
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence was encoded for omitted taxonomy topics in this dated review.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t05-small-molecule-representation
+    depth: worked
+    evidence: [cookbook]
+    reviewed_scope: Cookbook introduction and rendered molecule, substructure, stereochemistry, and representation recipes
+    note: The page provides concrete Python recipes with inputs and rendered or textual outputs for RDKit molecular objects.
+  - topic_id: t07-chemical-standardisation
+    depth: worked
+    evidence: [cookbook]
+    reviewed_scope: Neutralizing Molecules, Largest Fragment, Isomeric SMILES without isotopes, and Detect Chemistry Problems recipes with input structures and printed outputs
+    note: Charge, mixture and identifier operations are demonstrated as runnable recipes with outputs. The page does not freeze a rule set for a property dataset, which is what the topic asks for, so it is not scored deeper.
+  - topic_id: t14-atom-mapping-transformation-class
+    depth: worked
+    evidence: [cookbook]
+    reviewed_scope: Reversing Reactions, which decomposes a product into reactants using a fully atom-mapped Pictet-Spengler reaction SMARTS, and Reaction Fingerprints and Similarity
+    note: Atom maps are explicit in the reaction SMARTS and a named transformation class is worked through end to end. No dataset-level transformation taxonomy is built.
+  - topic_id: t04-entity-identity-resolution
+    depth: mentioned
+    evidence: [cookbook]
+    reviewed_scope: Molecule Hash Strings, which enumerates the MolHash functions and computes canonical hashes for one structure
+    note: Chemical identity hashing appears, but none of the protein, assay, disease or sample identifier resolution the topic names, and no retention of unmatched entities or ambiguity.
+  - topic_id: t02-therapeutic-decision-context
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t02-target-product-profile
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t02-assay-endpoint-controls
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t02-chemical-series-feedback
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t06-disease-state-definition
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t06-mechanism-hypothesis-counterevidence
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t06-causal-target-evidence
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t06-perturbation-genetic-validation
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t06-tractability-target-risk
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t08-exposure-pk-endpoint
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t08-metabolism-ddi-risk
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t08-safety-toxicity-endpoint
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t08-pkpd-translational-assumption
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t08-multiendpoint-tradeoff
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t09-target-assay-screen-unit
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t09-binding-mode-pose-hypothesis
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t09-binder-classification
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t09-affinity-ranking
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t09-screening-selection-repurposing-transfer
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t13-biologic-modality-construct
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t13-sequence-structure-function-objective
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t13-specificity-negative-selection
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t13-expression-developability-manufacturability
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t13-functional-validation
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t15-experiment-pool-budget-feasibility
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t15-acquisition-policy-uncertainty
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t15-batch-diversity-multiobjective-allocation
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t15-time-ordered-feedback-update
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t15-stopping-rule-policy-evaluation
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t16-scientific-task-action-boundary
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t16-source-retrieval-evidence-grounding
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t16-tool-input-output-contract
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t16-trace-recovery
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t16-human-review-authority-evaluation
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t17-generalization-unit
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t17-split-leakage-audit
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t17-baseline-model-selection-protocol
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t17-metric-endpoint-uncertainty
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t17-ood-transportability
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t17-reproduction-reporting-receipt
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t18-evidence-package-claim-chain
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t18-crossdomain-tradeoff-decision
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t18-counterevidence-failure-analysis
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t18-nomination-readiness-next-experiment
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+  - topic_id: t18-openness-biosecurity-governance-boundary
+    depth: absent
+    evidence: [cookbook]
+    reviewed_scope: The complete Cookbook section list reviewed on 2026-09-11, covering drawing, bonds, rings and aromaticity, stereochemistry, molecule manipulation, substructure matching, descriptors, writing molecules, reactions, error messages and miscellaneous recipes
+    note: No recipe, section or worked example on the reviewed page addresses this topic. The page is a collection of Python recipes for cheminformatics operations and carries no therapeutic, biological, evaluation or workflow material.
+evidence:
+  - id: cookbook
+    url: https://www.rdkit.org/docs/Cookbook.html
+    title: RDKit Cookbook
+    observed_scope: Purpose, community provenance, doctest maintenance, contribution route, and rendered Python recipes with example outputs.
+    access: opened
+    reviewed_on: 2026-09-11
+    version: "RDKit 2026.03.5 documentation"
+  - id: rdkit-license
+    url: https://github.com/rdkit/rdkit/blob/master/license.txt
+    title: RDKit licence
+    observed_scope: BSD 3-Clause licence text for the RDKit software repository.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats:
+  - The Cookbook compiles community and external examples; the RDKit repository licence is not generalized to every upstream excerpt, input, or third-party asset.
+  - The reviewed pages are recipes rather than a sequenced end-to-end AIDD curriculum.
+last_verified: 2026-09-11

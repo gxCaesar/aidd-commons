@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AIDD Commons">
+  <rect width="64" height="64" rx="14" fill="#13283d"/>
+  <circle cx="18" cy="18" r="7" fill="#4fc7bf"/>
+  <circle cx="46" cy="18" r="7" fill="#fc9a88"/>
+  <circle cx="32" cy="46" r="7" fill="#fbf8f1"/>
+  <path d="M23 21.5 29 40M41 21.5 35 40M25 18h14" fill="none" stroke="#fbf8f1" stroke-width="4" stroke-linecap="round"/>
+</svg>

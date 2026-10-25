@@ -1,0 +1,52 @@
+---
+title: 筛选与亲和力
+description: 围绕实际实验决策设计药物—靶点相互作用和虚拟筛选比较。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Screening and affinity](/learn/dti-screening/screening-and-affinity/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="dti-screening/screening-and-affinity" />
+
+## 基础
+
+虚拟筛选、结合亲和力预测、构象预测和再定位回答不同问题。决策单位必须包含靶点状态、
+化学输入、测定条件和预期行动。[DUD-E](https://dude.docking.org/) 和
+[LIT-PCBA](https://drugdesign.unistra.fr/LIT-PCBA/) 等基准作出了特定的基准设计选择；
+它们不是自然分布。
+
+## 实践工作流
+
+从明确的靶点和测定计划开始，再于学习型构象或亲和力系统之前采用低成本对接或相似性
+基线。记录诱饵构建、蛋白质制备、质子化和候选项预算。
+[PoseBusters](https://github.com/maabuu/posebusters) 可以检验构象合理性，不能检验
+生物活性。
+
+## 评估
+
+将结合物检测与在结合物中对亲和力排序分开。检查靶点和骨架重叠、回顾性与前瞻性评估，
+以及构象在化学上是否合理。生成的构象或评分必须随后接受实验结合和功能反馈。
+
+## 前沿与开放问题
+
+[DiffDock](https://github.com/gcorso/DiffDock)、
+[Uni-Dock](https://github.com/dptech-corp/Uni-Dock) 和
+[NeuralPLexer](https://github.com/zrqiao/NeuralPLexer) 展示了不同的资产和协议；不要将其
+报告的数值合并为一个排行榜。
+
+## v0.1 尚未教授的内容
+
+v0.1 不提供前瞻性筛选活动，也不声称具有临床或生化效力。
+
+## 核心来源路径
+
+检查 [GNINA](https://github.com/gnina/gnina)、其独立的
+[模型资产仓库](https://github.com/gnina/models)，以及 Atlas 中每项资产级证据缺口的记录。
+
+若想看筛选单元被显式写出来，以及同一靶点两个测定之间一次实测的迁移失败，可运行
+[先读冻结契约，再看模型](/zh-cn/labs/chembl-contract-inspection/)。
+
+最后审阅：2026-09-04。

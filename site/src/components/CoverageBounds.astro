@@ -1,0 +1,117 @@
+---
+import type {
+  ComparisonProvider,
+  CoverageSummary,
+} from "../data/comparison.js";
+
+interface Props {
+  providers: ComparisonProvider[];
+  summaries: CoverageSummary[];
+  totalTopics: number;
+}
+
+const { providers, summaries, totalTopics } = Astro.props;
+const selfId = "aidd-commons";
+const thresholdLabels = {
+  explained: "Explained",
+  worked: "Worked example",
+  executable: "Executable",
+  "executable-on-real-data": "Executable on real data",
+  assessed: "Assessed",
+} as const;
+const externalIds = providers
+  .filter(({ id }) => id !== selfId)
+  .map(({ id }) => id);
+const summaryFor = (providerId: string, threshold: CoverageSummary["threshold"]) =>
+  summaries.find(
+    (summary) =>
+      summary.provider_id === providerId && summary.threshold === threshold,
+  );
+const strongestExternal = (
+  threshold: CoverageSummary["threshold"],
+  edge: "lower" | "upper",
+) =>
+  Math.max(
+    0,
+    ...externalIds.map((providerId) => summaryFor(providerId, threshold)?.[edge] ?? 0),
+  );
+const thresholdRows = Object.keys(thresholdLabels).map((threshold) => {
+  const typedThreshold = threshold as CoverageSummary["threshold"];
+  const self = summaryFor(selfId, typedThreshold);
+  if (!self) {
+    throw new Error(`Missing ${typedThreshold} coverage summary for AIDD Commons`);
+  }
+  return {
+    externalLower: strongestExternal(typedThreshold, "lower"),
+    externalUpper: strongestExternal(typedThreshold, "upper"),
+    label: thresholdLabels[typedThreshold],
+    self,
+    threshold: typedThreshold,
+  };
+});
+const explained = thresholdRows.find(({ threshold }) => threshold === "explained")!;
+---
+
+<section class="coverage-bounds" aria-labelledby="coverage-bounds-title">
+  <div class="section-heading-row">
+    <div>
+      <p class="eyebrow">Interval audit</p>
+      <h2 id="coverage-bounds-title">Coverage bounds, not a leaderboard</h2>
+    </div>
+    <p class="audit-status"><span aria-hidden="true">●</span> Claim status: not established</p>
+  </div>
+
+  <p class="section-intro">
+    Unknown cells widen an interval. They do not count as present in the lower
+    bound or absent in the upper bound, so a sparse review cannot manufacture a
+    comparison win.
+  </p>
+  <p class="section-intro">
+    "Executable on real data" counts a runnable topic only when measured or
+    computed records, or a genuine simulation, docking or structure-prediction
+    run, carry it. A checker over hand-authored teaching inputs is executable but
+    not on real data.
+  </p>
+
+  <div class="bounds-overview" aria-label="AIDD Commons explained coverage interval">
+    <article class="bound-card bound-card--lower">
+      <p class="meta-label">Lower bound</p>
+      <p class="bound-card__value">{explained.self.lower}<span> / {totalTopics}</span></p>
+      <p>Topics directly confirmed at explained depth or deeper.</p>
+    </article>
+    <article class="bound-card bound-card--upper">
+      <p class="meta-label">Upper bound</p>
+      <p class="bound-card__value">{explained.self.upper}<span> / {totalTopics}</span></p>
+      <p>Confirmed topics plus unresolved cells that could still qualify.</p>
+    </article>
+  </div>
+
+  <div
+    class="bounds-table-wrap"
+    role="region"
+    aria-label="Coverage bounds by depth threshold"
+    tabindex="0"
+  >
+    <table class="bounds-table">
+      <caption>Provider-level topic counts at each depth threshold</caption>
+      <thead>
+        <tr>
+          <th scope="col">Depth threshold</th>
+          <th scope="col">AIDD Commons interval</th>
+          <th scope="col">Strongest external lower</th>
+          <th scope="col">Strongest external upper</th>
+        </tr>
+      </thead>
+      <tbody>
+        {thresholdRows.map((row) => (
+          <tr>
+            <th scope="row">{row.label}</th>
+            <td>{row.self.lower}–{row.self.upper} of {row.self.total_topics}</td>
+            <td>{row.externalLower} of {row.self.total_topics}</td>
+            <td>{row.externalUpper} of {row.self.total_topics}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>

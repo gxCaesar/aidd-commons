@@ -1,0 +1,17 @@
+version: "0.2a"
+tracks:
+  - id: foundations
+    order: 1
+    topics:
+      - id: evidence-literacy
+        order: 1
+        title: Evidence literacy
+        description: Distinguish a directly supported observation from an inference or unknown.
+        core: true
+        prerequisites: [learning-path-selection]
+      - id: learning-path-selection
+        order: 2
+        title: Learning path selection
+        description: Select a curriculum route from a scientific decision and prerequisite state.
+        core: false
+        prerequisites: []

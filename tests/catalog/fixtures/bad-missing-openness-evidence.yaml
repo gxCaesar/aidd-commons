@@ -1,0 +1,32 @@
+id: missing-openness-evidence
+name: Missing Openness Evidence
+kind: fixture
+summary: Local fixture with an unsupported openness claim.
+canonical_url: https://example.org/missing-openness-evidence
+identifiers: []
+stages: [discovery]
+modalities: [small-molecule]
+tasks: [catalog-testing]
+relations: []
+status:
+  value: unverified
+access_level:
+  value: unverified
+openness:
+  inference_code:
+    value: available
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: fixture-source
+    url: https://example.org/missing-openness-evidence/source
+    label: Local fixture source
+    supports: [name, kind, summary, stages, modalities, tasks]
+caveats: []
+acknowledgements: []
+last_verified: "2026-09-04"

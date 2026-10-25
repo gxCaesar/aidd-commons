@@ -1,0 +1,51 @@
+id: db-sabdab2
+name: SAbDab2
+kind: database
+summary: Structural Antibody Database for annotated publicly available experimentally determined antibody structures and complexes.
+canonical_url: https://sabdab.opig.stats.ox.ac.uk/
+identifiers:
+  - scheme: dataset
+    value: "SAbDab2 Machine Learning Dataset, the machine learning release of the curated structures with standardised train and test splits, version 0.3.0 published 13 October 2026"
+    url: https://doi.org/10.5281/zenodo.23343734
+  - scheme: dataset-previous-version
+    value: "the earlier deposit of the same release, which now redirects to the current version record"
+    url: https://doi.org/10.5281/zenodo.20083994
+stages: [biologics-design, data-intake, evaluation]
+modalities: [antibody, nanobody, biomolecular-complex]
+tasks: [antibody-structure-retrieval, structure-dataset-construction]
+relations: []
+status: { value: active, evidence: [homepage] }
+access_level: { value: open_source, evidence: [zenodo-record] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: available, evidence: [homepage] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC-BY-4.0
+    scope: "The Creative Commons Attribution 4.0 licence that the machine learning release states for itself and that the SAbDab2 homepage states for the database data. The grant covers the data, not a software licence."
+    evidence: [zenodo-record, homepage]
+evidence:
+  - id: homepage
+    url: https://sabdab.opig.stats.ox.ac.uk/
+    label: Rendered SAbDab2 homepage with data licence and curated training-data release
+    supports: [identifiers]
+  - id: about
+    url: https://sabdab.opig.stats.ox.ac.uk/about
+    label: SAbDab2 about and downloads page
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: zenodo-record
+    url: https://zenodo.org/records/23343734
+    label: The Zenodo record of the SAbDab2 Machine Learning Dataset, read 2026-10-24, which states the licence as cc-by-4.0 and the access rights as open, and describes the release's contents and composition
+    supports: [identifiers, caveats]
+caveats:
+  - The source warns that unprocessed search and full-structure downloads can include low-resolution structures, residue anomalies, and pathogenic antibodies.
+  - "The machine learning release states its own counts: 16,415 structures from 8,992 PDB identifiers, corresponding to 5,556 unique antibodies, of which 12,841 are paired-chain, 3,427 single-domain heavy, 63 single-domain light and 84 VNAR, and about 9.4 percent bind antigens made of more than one polymer chain. Each structure file holds one antibody, paired-chain or single-chain, cropped to the variable region, with any antigen chains. The record carries these as the release's own statements."
+  - "The release states that the structures are post-processed for machine learning applications and are accompanied by standardised train and test splits, and it is deposited under a version number, 0.3.0. The earlier Zenodo identifier 10.5281/zenodo.20083994 now redirects to this record, which is how the release's own version history is expressed."
+  - "The record did not download the release, so it carries the deposit's own statement of its contents and not a check of the files."
+  - "This record no longer supplies an affinity measurement. The live interface document for the service contained zero occurrences of affinity, delta_g or affinity_method when it was read on 2026-10-21, and the former per-entry and bulk summary addresses redirect to a single-page application shell rather than serving the tabular data, so a plan that assumes an affinity field here would be reading a field that is no longer served."
+acknowledgements: []
+last_verified: "2026-10-24"

@@ -1,0 +1,44 @@
+id: benchmark-moses
+name: MOSES
+kind: benchmark
+summary: Molecular generation benchmark suite.
+canonical_url: https://github.com/molecularsets/moses
+identifiers:
+  - scheme: paper
+    value: "Molecular Sets (MOSES)"
+    url: https://arxiv.org/abs/1811.12823
+stages: [design, evaluation]
+modalities: [small-molecule]
+tasks: [molecular-generation]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [repository, license-file] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: MOSES repository software and its distributed benchmark dataset files; does not grant rights to the upstream ZINC Clean Leads database.
+    evidence: [license-file]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/molecularsets/moses
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/molecularsets/moses
+    label: MOSES repository
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: license-file
+    url: https://raw.githubusercontent.com/molecularsets/moses/HEAD/LICENSE
+    label: Repository LICENSE file (reviewed 2026-10-23)
+    supports: []
+caveats:
+  - The repository distributes the ZINC-derived benchmark data with source and documents Git LFS checkout and get_dataset; the MIT repository grant does not relicense the upstream ZINC database.
+acknowledgements: []
+last_verified: "2026-10-23"

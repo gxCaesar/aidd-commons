@@ -1,0 +1,60 @@
+---
+title: 当前课程与资源地图
+description: 查找各教学单元登记的资源，区分参考资料、教学深度和资源完整性。
+---
+
+import CurriculumResourceMap from "../../../../../components/CurriculumResourceMap.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Current curriculum and resource map](/learn/foundations/resource-map/)。
+
+当你已经有一个科学问题，需要找到对应课程、数据来源或工具时，使用本页。
+如果希望按顺序学习，请从[课程路径](/zh-cn/learn/foundations/curriculum-map/)开始。
+
+<ScrollableRegions />
+
+## 如何理解各列
+
+单元对应学习目标。一篇正文可能讲解多个单元，活动标签描述的是这篇正文，
+不代表读者已经掌握所有目标。资源列来自正文登记的阅读资料；共享一个资源，
+不意味着该资源的所有部分都支持所关联的每个单元。轨道阅读单独列出，
+不在正文资源中重复计数。资源类别描述对象类型，不是质量排名。
+
+面对一个实际任务，先找端点定义、适合的数据源、能够实施的方法，以及协议匹配的
+评价示例。登记列表缺少某类资源，说明需要继续整理，不说明该资源不存在。
+访问方式与许可请查看 Atlas 条目；未知字段不等于获得了使用权限。
+
+## 资源选择指南
+
+- [疾病证据与靶点假设](/zh-cn/learn/mechanism-targets/target-resource-guide/)
+- [ADMET 与药代动力学问题](/zh-cn/learn/admet-pk/admet-resource-guide/)
+- [治疗模态与可开发性](/zh-cn/learn/biologics-design/modality-resource-guide/)
+- [物理建模工具与输出量](/zh-cn/learn/physics-based-modeling/physics-resource-guide/)
+- [生成工具、基准与候选计数](/zh-cn/learn/molecular-generation/generation-resource-guide/)
+- [科学智能体、证据与任务评测](/zh-cn/learn/scientific-agents/agent-resource-guide/)
+
+## 选择第一份外部教程
+
+下表给出建议的阅读练习，不表示本站已运行上游 notebook。环境和数据按各项目当期
+说明准备；不能假定这些教程具有相同的运行时间或硬件要求。
+
+| 下一项任务          | 官方教程集合                                                                              | 建议准备与第一份输出                                                                                                      |
+| ------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| 检查分子表示        | [RDKit Cookbook](https://www.rdkit.org/docs/Cookbook.html)                                | 先掌握基础 Python 和 SMILES；选一个表示或绘图 recipe，说明输入和输出。                                                    |
+| 跟随药物发现工作流  | [TeachOpenCADD](https://projects.volkamerlab.org/teachopencadd/talktorials.html)          | Python 与对应化学章节；选一个 talktorial，标出数据来源、操作和结果解释。                                                  |
+| 学习分子 ML 实现    | [DeepChem tutorials](https://github.com/deepchem/deepchem/tree/master/examples/tutorials) | Python 与 train/validation/test 概念；从入门 dataset、featurizer、model 示例开始，比较分数前先说明 split。                |
+| 检查 ADMET 建模案例 | [OpenADMET Demos](https://github.com/OpenADMET/openadmet-demos)                           | 先理解终点与测定；追踪 CYP3A4 示例的整理、训练与评价，输出终点和 split 说明，而非临床结论。                               |
+| 理解自由能计算      | [OpenFE tutorials](https://docs.openfree.energy/en/latest/tutorials/index.html)           | 先读力场、采样和自由能章节；选相对或绝对自由能教程，执行前列出体系、状态与采样假设。                                      |
+| 建立采集循环        | [BoTorch tutorials](https://botorch.org/docs/tutorials)                                   | 官方入口要求熟悉 Bayesian optimization 和 PyTorch，并引导新手先看 Ax。追踪完整循环的目标、surrogate、采集函数与候选更新。 |
+
+## 当前关联
+
+<CurriculumResourceMap chinese />
+
+## 当前交付与历史比较分开阅读
+
+这张地图随当前课程和资源库重新生成。[历史比较审计](/audit/)保留自己的来源截止日期
+和审阅范围。资源数量增加或正文补齐，不会自动更新旧的教学深度判断。
+本页不生成新的“最全面”得分。
+
+译文更新：2026-09-09。

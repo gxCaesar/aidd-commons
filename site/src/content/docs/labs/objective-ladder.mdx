@@ -1,0 +1,101 @@
+---
+title: An objective ladder for public protein records
+description: Read public records separately for sequence recovery, folding, structural plausibility, binding, catalysis, and function.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+This lab belongs to `t13-sequence-structure-function-objective` and accompanies the [lesson on construct identity and objectives](/learn/biologics-design/construct-identity-and-objectives/). Its question is which public record, if any, carries evidence for each objective. After the lab, you should be able to name the relevant record, interpret its scope, and explain why an empty cell cannot be filled by evidence from another objective. Familiarity with accessions, deposited structures, and tabular records is sufficient preparation. The [canonical English guide](/labs/objective-ladder/) is this page.
+
+Mode is fresh independent computation under the frozen protocol. The reading uses the project Python environment and CPU. The first download needs network access. Later steps read the cache and require no accelerator. The protocol fixes the examined entities, objectives, source routes, and coordinate-audit tolerances before the records are read.
+
+## Evidence at each objective
+
+### Sequence recovery
+
+The structure archive's alignment identifies the deposited polymer region and its UniProtKB reference. The lab compares their sequences position by position over that aligned region. A match fraction does not describe positions outside the alignment or establish recovery of a whole accession.
+
+### Folding
+
+A deposited experimental structure records a conformation in the state produced by the experiment. The model archive also holds a prediction for each accession. A predicted model is a computational output, not an observation of folding, and neither record establishes that the conformation applies in another state.
+
+### Structural plausibility
+
+The lab audits deposited coordinate rows using a 2.0 angstrom clash distance and a 0.45 angstrom bond-length tolerance. It audits an entry only when at least 500 coordinate rows are present. The rows include the examined entity, partners, ligands, and water. Acceptable geometry describes internal consistency of that coordinate file. It does not show that the fold depicted is correct.
+
+### Binding
+
+A SKEMPI 2.0 row supplies a measured affinity value only when its structure is linked to the examined accession by the structure archive itself. A component in a deposited structure cannot substitute for that value. Crystallisation additives and ions occur in deposited entries, so component presence alone is not a measured affinity.
+
+### Catalysis
+
+The UniProtKB accession can carry a catalytic-activity annotation with a named reaction and catalogue number. The annotation identifies what the source states. It is not a measured rate. Annotation count and distinct catalogue-number count are separate quantities.
+
+### Function
+
+The UniProtKB accession can carry a functional annotation. Its presence records an attributed statement about function, not a direct measurement of sequence recovery, folding, geometry, binding, or catalysis.
+
+## Reading of public records
+
+The committed reading was computed on 2026-10-22 from records read on 2026-10-22 with Python 3.11.15, numpy 2.4.6, and scipy 1.17.1. Sequence cells give matching and evaluated positions in the archive-aligned region. Folding cells name the experimental structure, its reference coverage, and the model entry with its global metric. All model entries are dated 2025-08-01 and remain predictions. Geometry cells give all audited rows, rows of the examined entity, bond-length outliers, and clashes in that order. The geometry counts are computed from coordinates, not copied from an archive score. Binding cells give the measured wild-type and mutant values in M and the assay method. Catalysis cells retain the named reaction as written by the archive. Function cells identify the accession's annotation without turning its wording into another measurement.
+
+| Examined entity | Sequence recovery | Folding | Structural plausibility | Binding | Catalysis | Function |
+| --- | --- | --- | --- | --- | --- | --- |
+| EGFR · P00533 · 6 records, 0 empty | 1IVO against P00533 · 1244/1244 · 1.0000 | 1IVO · X-RAY DIFFRACTION · P00533 25-646, 622 residues in two chains · AF-P00533-F1, 75.94 | 1IVO · 8892/7903 rows · 0 outliers · 0 clashes | 1YY9 · LD29P · wild type 1.31e-09 M · mutant 1.38e-09 M · SPR | P00533 · 1 annotation · 2.7.10.1 · L-tyrosyl-[protein] + ATP = O-phospho-L-tyrosyl-[protein] + ADP + H(+) | UniProtKB P00533 function annotation |
+| ERBB2 · P04626 · 6 records, 0 empty | 3MZW against P04626 · 624/624 · 1.0000 | 3MZW · X-RAY DIFFRACTION · P04626 23-646, 624 residues · AF-P04626-F1, 74.00 | 3MZW · 4882/4387 rows · 0 outliers · 0 clashes | 1N8Z · LC525A · wild type 1.31e-09 M · mutant 1.26e-09 M · SPR | P04626 · 1 annotation · 2.7.10.1 · L-tyrosyl-[protein] + ATP = O-phospho-L-tyrosyl-[protein] + ADP + H(+) | UniProtKB P04626 function annotation |
+| DHFR · P00374 · 5 records, 1 empty | 1BOZ against P00374 · 185/186 · 0.9946 · chain A position 31, deposited G, reference F | 1BOZ · X-RAY DIFFRACTION · P00374 2-187, 186 residues · AF-P00374-F1, 96.12 | 1BOZ · 1693/1495 rows · 0 outliers · 1 clash | None, `no-affinity-record` | P00374 · 1 annotation · 1.5.1.3 · (6S)-5,6,7,8-tetrahydrofolate + NADP(+) = 7,8-dihydrofolate + NADPH + H(+) | UniProtKB P00374 function annotation |
+| TP53 · P04637 · 5 records, 1 empty | 1YCS against P04637 · 199/199 · 1.0000 | 1YCS · X-RAY DIFFRACTION · P04637 94-292, 199 residues · AF-P04637-F1, 75.06 | 1YCS · 3291/1501 rows · 0 outliers · 0 clashes | 1YCS · RA273H · wild type 2.2e-06 M · mutant 1.8e-06 M · ITC | None, `no-catalysis-annotation` | UniProtKB P04637 function annotation |
+| ESR1 · P03372 · 4 records, 2 empty | 11SD against P03372 · 30/30 · 1.0000 | 11SD · X-RAY DIFFRACTION · P03372 581-595, 15 residues in two chains · AF-P03372-F1, 66.44 | 11SD · 3845/93 rows · 0 outliers · 0 clashes | None, `no-affinity-record` | None, `no-catalysis-annotation` | UniProtKB P03372 function annotation |
+| ABCD1 · P08183 · 5 records, 1 empty | 6C0V against P08183 · 1278/1280 · 0.9984 · chain A positions 556 and 1201, deposited Q, reference E | 6C0V · ELECTRON MICROSCOPY · P08183 1-1280, 1280 residues · AF-P08183-F1, 84.56 | 6C0V · 8976/8912 rows · 0 outliers · 0 clashes | None, `no-affinity-record` | P08183 · 7 annotations · 7.6.2.2 and 7.6.2.1 · ATP + H2O + xenobioticSide 1 = ADP + phosphate + xenobioticSide 2. | UniProtKB P08183 function annotation |
+
+The six entities and six objectives produce 36 cells. Records occupy 31 cells and 5 are empty. By objective, the numbers of entities with a record are sequence recovery 6, folding 6, structural plausibility 6, binding 3, catalysis 4, and function 6. The declared structure of EGFR spans two chains, as does ESR1, so the evaluated-position count can exceed the residue span of one chain. The structural audit of DHFR found one pair 1.92 angstrom apart in the NADPH cofactor, outside the examined entity. The ABCD1 accession carries 7 catalytic-activity annotations and 2 distinct catalogue numbers.
+
+## Empty cells
+
+DHFR has no binding record under `no-affinity-record`. No affinity-archive row names a structure of this target, and its declared structure 1BOZ has no bound component. ESR1 also has no measured affinity record, although 11SD carries A1DAI. ABCD1 likewise has no measured affinity record, although 6C0V carries ATP and MG. These components do not turn either empty cell into a measurement. TP53 and ESR1 have empty catalysis cells under `no-catalysis-annotation` because their accessions carry neither a catalytic-activity annotation nor an enzyme catalogue number. An empty cell describes this reading of the named sources, not a proof that no such evidence exists anywhere.
+
+## Worked interpretation and independent exercise
+
+The ESR1 audit includes 3845 coordinate rows, but only 93 belong to the examined entity. Its 0 clashes describe the audited entry under the declared threshold, including the other material in that entry. They cannot be read as a separate observation that the depicted fold is correct.
+
+Exercise. A report treats the ATP component in 6C0V as evidence that ABCD1 has a measured binding value. Identify the record required to fill the binding cell and state the cell's current status.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The binding cell requires a SKEMPI 2.0 row with a measured affinity value and a structure that the archive itself links to P08183. No such row was found in the read snapshot. The cell remains empty under `no-affinity-record`. The component in 6C0V is not a measured affinity.
+
+</details>
+
+## Reproduce the reading
+
+The download gathers the declared public records once and checks the affinity snapshot's byte length before it is read. Its cache is reused on later runs. The inspector first displays each objective and its record or absence reason, then checks a fresh reading against the committed summary. The export writes that summary after a successful reading and overwrites the existing summary. The final command checks the laboratory's contract and analysis. The affinity snapshot resides in the cache's `skempi` subdirectory. Run the commands from the repository root in this order.
+
+```bash
+.venv/bin/python labs/objective_ladder/run_lab.py download
+.venv/bin/python labs/objective_ladder/inspect_objective_ladder.py show
+.venv/bin/python labs/objective_ladder/inspect_objective_ladder.py check
+.venv/bin/python labs/objective_ladder/export_summary.py
+.venv/bin/python -m pytest labs/tests/objective_ladder -q
+```
+
+The public LiteFold mirror is 6148969 bytes and contains 7085 rows. Its byte length is checked on every run. The download needs network access once. The remaining commands read the local cache.
+
+## What the material does not show
+
+This is a dated reading of public records, not a prediction or scoring exercise. The laboratory predicts or scores no value and does not rank the examined entities. Record presence cannot stand in for evidence at another objective. No reader outcome has been observed, so runnable tests do not establish learning. The reading describes records available on 2026-10-22 and does not claim that a later archive query will return the same content.
+
+## Sources
+
+| Source | Route and material read | Licence | Read on |
+| --- | --- | --- | --- |
+| UniProtKB | `https://rest.uniprot.org/uniprotkb/{accession}.json` · sequence, catalytic-activity and function annotations | CC BY 4.0 | 2026-10-22 |
+| RCSB Protein Data Bank | `https://data.rcsb.org/rest/v1/core/entry/{entry_id}` and `https://search.rcsb.org/rcsbsearch/v2/query` · structures, components, coordinates, and reference alignment | CC0 1.0 | 2026-10-22 |
+| AlphaFold Protein Structure Database | `https://alphafold.ebi.ac.uk/api/prediction/{accession}` · model entry, date, and global metric | CC BY 4.0 | 2026-10-22 |
+| SKEMPI 2.0 | [LiteFold mirror file](https://huggingface.co/datasets/LiteFold/SKEMPI2/resolve/main/tables/labeled_skempi2_skempi_v2.csv.jsonl) of the upstream table · measured affinity rows | CC BY 4.0 under the [upstream terms](https://life.bsc.es/pid/skempi2/info/terms) | 2026-10-22 |
+
+Attribute SKEMPI 2.0 and the Barcelona Supercomputing Center when redistributing source or derived material. The AlphaFold Protein Structure Database permits academic and commercial use under CC BY 4.0 and expects attribution to EMBL-EBI. Its Atlas record is `db-alphafold-db`. Original guide prose is CC BY 4.0 and original lab code is Apache-2.0. Last reviewed: 2026-10-22.

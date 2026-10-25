@@ -1,0 +1,186 @@
+---
+import {
+  filterResources,
+  parseAtlasQuery,
+} from "../lib/atlas-state.js";
+import type { Resource } from "../data/resource.js";
+
+interface Props {
+  resources: Resource[];
+}
+
+const { resources } = Astro.props;
+const initialQuery = parseAtlasQuery(Astro.url.searchParams);
+const initialResults = filterResources(resources, initialQuery);
+const values = (items: string[]) => [...new Set(items)].sort();
+const stages = values(resources.flatMap((resource) => resource.stages));
+const kinds = values(resources.map((resource) => resource.kind));
+const accessLevels = values(resources.map((resource) => resource.access_level.value));
+const lifecycles = values(resources.map((resource) => resource.status.value));
+const label = (value: string) => value.replaceAll("-", " ").replaceAll("_", " ");
+---
+
+<resource-explorer data-resources={JSON.stringify(resources)}>
+  <form class="atlas-controls" data-atlas-controls aria-label="Filter atlas resources">
+    <label>
+      <span>Search</span>
+      <input name="q" type="search" value={initialQuery.q} placeholder="Name, summary, or identifier" />
+    </label>
+    <label>
+      <span>Stage</span>
+      <select name="stage">
+        <option value="" selected={!initialQuery.stage}>All stages</option>
+        {stages.map((stage) => <option value={stage} selected={initialQuery.stage === stage}>{label(stage)}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>Kind</span>
+      <select name="kind">
+        <option value="" selected={!initialQuery.kind}>All kinds</option>
+        {kinds.map((kind) => <option value={kind} selected={initialQuery.kind === kind}>{label(kind)}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>Access</span>
+      <select name="access">
+        <option value="" selected={!initialQuery.access}>All access levels</option>
+        {accessLevels.map((access) => <option value={access} selected={initialQuery.access === access}>{label(access)}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>Lifecycle</span>
+      <select name="lifecycle">
+        <option value="" selected={!initialQuery.lifecycle}>All lifecycle states</option>
+        {lifecycles.map((lifecycle) => <option value={lifecycle} selected={initialQuery.lifecycle === lifecycle}>{label(lifecycle)}</option>)}
+      </select>
+    </label>
+    <button type="reset">Clear filters</button>
+  </form>
+  <p class="result-count" data-result-count aria-live="polite">
+    {initialResults.length} {initialResults.length === 1 ? "resource" : "resources"}
+  </p>
+  <p class="notice" data-empty-state hidden={initialResults.length !== 0}>
+    No resources match this filter set. Remove a filter or inspect another pipeline stage.
+  </p>
+  <ul class="resource-grid" data-atlas-results hidden={initialResults.length === 0}>
+    {initialResults.map((resource) => (
+      <li>
+        <article class="resource-card">
+          <p class="meta-label">{resource.kind} · {resource.status.value}</p>
+          <h2><a href={`/atlas/${resource.id}/`}>{resource.name}</a></h2>
+          <p>{resource.summary}</p>
+          <p class="resource-card__meta">Access: {label(resource.access_level.value)}</p>
+          <a class="resource-card__visit" href={resource.canonical_url}>Visit resource</a>
+        </article>
+      </li>
+    ))}
+  </ul>
+</resource-explorer>
+
+<script>
+  import {
+    filterResources,
+    parseAtlasQuery,
+    serializeAtlasQuery,
+  } from "../lib/atlas-state";
+  import type { AtlasQuery } from "../lib/atlas-state";
+  import type { Resource } from "../data/resource";
+  import { withSiteBase } from "../lib/site-paths";
+
+  class ResourceExplorer extends HTMLElement {
+    private form?: HTMLFormElement;
+    private resources: Resource[] = [];
+    private readonly onPopState = () => this.syncFromLocation();
+
+    connectedCallback() {
+      this.form = this.querySelector<HTMLFormElement>("[data-atlas-controls]") ?? undefined;
+      this.resources = JSON.parse(this.dataset.resources ?? "[]") as Resource[];
+      if (!this.form) return;
+
+      this.form.addEventListener("input", () => this.applyFormQuery());
+      this.form.addEventListener("change", () => this.applyFormQuery());
+      this.form.addEventListener("reset", () => {
+        requestAnimationFrame(() => this.applyFormQuery());
+      });
+      window.addEventListener("popstate", this.onPopState);
+      this.syncFromLocation();
+    }
+
+    disconnectedCallback() {
+      window.removeEventListener("popstate", this.onPopState);
+    }
+
+    private applyFormQuery() {
+      if (!this.form) return;
+      const formData = new FormData(this.form);
+      const query = {
+        access: String(formData.get("access") ?? "").trim(),
+        kind: String(formData.get("kind") ?? "").trim(),
+        lifecycle: String(formData.get("lifecycle") ?? "").trim(),
+        q: String(formData.get("q") ?? "").trim(),
+        stage: String(formData.get("stage") ?? "").trim(),
+      } satisfies AtlasQuery;
+      history.replaceState({}, "", `${location.pathname}${serializeAtlasQuery(query)}`);
+      this.render(query);
+    }
+
+    private syncFromLocation() {
+      const query = parseAtlasQuery(new URLSearchParams(location.search));
+      if (this.form) {
+        for (const [key, value] of Object.entries(query)) {
+          const field = this.form.elements.namedItem(key);
+          if (field instanceof HTMLInputElement || field instanceof HTMLSelectElement) {
+            field.value = value;
+          }
+        }
+      }
+      this.render(query);
+    }
+
+    private render(query: AtlasQuery) {
+      const results = filterResources(this.resources, query);
+      const count = this.querySelector<HTMLElement>("[data-result-count]");
+      const list = this.querySelector<HTMLUListElement>("[data-atlas-results]");
+      const emptyState = this.querySelector<HTMLElement>("[data-empty-state]");
+      if (!count || !list || !emptyState) return;
+
+      count.textContent = `${results.length} ${results.length === 1 ? "resource" : "resources"}`;
+      emptyState.hidden = results.length !== 0;
+      list.hidden = results.length === 0;
+      list.replaceChildren(
+        ...results.map((resource) => this.createResourceCard(resource)),
+      );
+    }
+
+    private createResourceCard(resource: Resource) {
+      const item = document.createElement("li");
+      const card = document.createElement("article");
+      const category = document.createElement("p");
+      const heading = document.createElement("h2");
+      const link = document.createElement("a");
+      const summary = document.createElement("p");
+      const metadata = document.createElement("p");
+      const visit = document.createElement("a");
+
+      card.className = "resource-card";
+      category.className = "meta-label";
+      category.textContent = `${resource.kind} · ${resource.status.value}`;
+      link.href = withSiteBase(`/atlas/${encodeURIComponent(resource.id)}/`, import.meta.env.BASE_URL);
+      link.textContent = resource.name;
+      summary.textContent = resource.summary;
+      metadata.className = "resource-card__meta";
+      metadata.textContent = `Access: ${resource.access_level.value.replaceAll("_", " ")}`;
+      heading.append(link);
+      visit.className = "resource-card__visit";
+      visit.href = resource.canonical_url;
+      visit.textContent = "Visit resource";
+      card.append(category, heading, summary, metadata, visit);
+      item.append(card);
+      return item;
+    }
+  }
+
+  if (!customElements.get("resource-explorer")) {
+    customElements.define("resource-explorer", ResourceExplorer);
+  }
+</script>

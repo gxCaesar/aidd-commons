@@ -1,0 +1,310 @@
+version: "0.2b-candidates.v1"
+selection_rule: roadmap-v0.2-2026-09-04
+as_of: "2026-09-08"
+# Historical candidate-selection fields remain frozen. Implementation and the
+# containing record's last_verified date describe the current delivery review.
+candidates:
+  - topic_id: t05-small-molecule-representation
+    track_id: representations
+    topic_title: Small-molecule representations
+    topic_core: true
+    self_depth: explained
+    strongest_external_depth: executable
+    external_providers_at_worked_or_deeper: [rdkit-cookbook, teachopencadd]
+    prerequisite_value: 29
+    implementation:
+      status: completed
+      updated_on: "2026-09-08"
+      note: The deep lesson, label-free inspector, frozen ChEMBL engine, and paired locked output are complete. On 132 primary parents Morgan Ridge MAE was 0.41833032711934154 versus descriptor 0.4685270107977128 and mean 0.47889315075040634; on 170 separate-assay parents Morgan MAE was 3.1316760122202343 versus descriptor 0.57926487123557 and mean 0.898379755056597. T15 had already exposed shared labels, so no retuning followed and this is not independent T05 corroboration.
+    maintenance:
+      burden: 1
+      rationale: The exercise uses a versioned ChEMBL release, two stable assay identifiers, and established RDKit representations.
+    eligibility:
+      data_feasibility: true
+      cheap_baseline: true
+      independent_unit: true
+      evaluation: true
+      licence: true
+      compute: true
+      safety: true
+    data_feasibility:
+      dataset_name: ChEMBL human EGFR binding IC50 assay pair
+      dataset_version: ChEMBL 37; primary CHEMBL5736995; external CHEMBL3705421
+      source_url: https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL5736995
+      entity_unit: Standardised ChEMBL parent molecule
+      inputs:
+        - Canonical parent-molecule structure from ChEMBL
+        - Frozen RDKit scalar descriptors and Morgan fingerprint variants
+      labels:
+        - pChEMBL value for exact IC50 records with standard flag 1, no potential duplicate flag, and no data-validity comment
+      observed_entities: 902
+      evidence:
+        - chembl37-readme
+        - egfr-primary-assay
+        - egfr-primary-activities
+        - egfr-external-assay
+        - egfr-external-activities
+    cheap_baseline:
+      name: RDKit descriptor Ridge and Morgan fingerprint Ridge
+      protocol: Compare 214 frozen RDKit 2D descriptors with a binary 2,048-bit radius-2 Morgan fingerprint using chirality, bond types, and ring membership. Fit train-median descriptor imputation, train scaling, and both Ridge pipelines on training molecules only. Select alpha from [0.001, 0.01, 0.1, 1, 10, 100, 1000] using validation-scaffold MAE only, with no train-validation refit.
+    independent_unit:
+      name: chirality-aware RDKit Bemis-Murcko scaffold
+      observed_units: 238
+      note: Median aggregation yields one label per ChEMBL parent molecule. The primary assay contains 238 scaffold units across 902 parents. Whole-scaffold assignment produced 634 train, 136 validation, and 132 locked primary parents. The external assay contains 23 scaffolds and 170 parents, with zero parent-molecule overlap.
+    evaluation:
+      split: Build RDKit Bemis-Murcko keys with chirality, use canonical isomeric SMILES as the acyclic fallback, sort groups by descending molecule count and then scaffold string, and fill 70% train, 15% validation, and 15% locked primary targets without breaking groups. The realised counts are 634, 136, and 132.
+      primary_metric: Mean absolute error in pChEMBL units on the scaffold-disjoint primary evaluation partition
+      secondary_metrics:
+        - Root mean squared error in pChEMBL units
+        - Spearman rank correlation
+      independent_validation: Apply the frozen representation, preprocessing, and fitted-model protocol to CHEMBL3705421 as an assay-level replication. Its 170 parent molecules are disjoint from the primary assay.
+    licence:
+      name: Creative Commons Attribution-ShareAlike 3.0 Unported
+      scope: ChEMBL 37 database content; attribution and share-alike requirements apply, while upstream source terms remain separate.
+      evidence: [chembl37-readme, chembl37-licence]
+    compute:
+      device: cpu
+      estimated_download_mb: 5
+      estimated_memory_gb: 2
+      estimated_runtime_minutes: 15
+      basis: The frozen assay pair contains fewer than 1,100 distinct parent molecules and uses fixed RDKit features with linear models.
+    safety:
+      disposition: safe_non_operational
+      rationale: The lesson compares representations on existing public measurements and provides no synthesis, laboratory execution, or candidate-optimisation instructions.
+    evidence:
+      - id: chembl37-readme
+        url: https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README
+        title: ChEMBL 37 release README
+        observed_scope: The official release record identifies ChEMBL 37, its 2026-05-01 release date, database contents, licence, and required attribution scope.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: ChEMBL 37
+      - id: chembl37-licence
+        url: https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE
+        title: ChEMBL 37 licence
+        observed_scope: The official release licence provides the Creative Commons Attribution-ShareAlike 3.0 Unported terms for ChEMBL database content.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: ChEMBL 37
+      - id: egfr-primary-assay
+        url: https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5736995.json
+        title: ChEMBL assay CHEMBL5736995
+        observed_scope: The official record identifies a human EGFR binding assay with single-protein format, direct target relationship, confidence score 9, and document CHEMBL5728555.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: ChEMBL 37
+      - id: egfr-primary-activities
+        url: https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL5736995
+        title: ChEMBL activities for CHEMBL5736995
+        observed_scope: A dated enumeration of the official activity endpoint retained 966 exact valid IC50 rows spanning 902 standardised parent molecules and 238 Bemis-Murcko scaffolds under the declared filters.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: ChEMBL 37
+      - id: egfr-external-assay
+        url: https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3705421.json
+        title: ChEMBL assay CHEMBL3705421
+        observed_scope: The official record identifies a separate human wild-type EGFR binding assay with single-protein format, direct target relationship, confidence score 9, and document CHEMBL3638799.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: ChEMBL 37
+      - id: egfr-external-activities
+        url: https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL3705421
+        title: ChEMBL activities for CHEMBL3705421
+        observed_scope: A dated enumeration retained 173 exact valid IC50 rows spanning 170 parent molecules and 23 scaffolds; no parent molecule overlapped the primary assay after standardisation.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: ChEMBL 37
+    last_verified: "2026-09-08"
+
+  - topic_id: t11-physical-model-system-state
+    track_id: physics-based-modeling
+    topic_title: Physical model and system state
+    topic_core: true
+    self_depth: explained
+    strongest_external_depth: executable
+    external_providers_at_worked_or_deeper: [teachopencadd]
+    prerequisite_value: 4
+    implementation:
+      status: completed
+      updated_on: "2026-09-08"
+      note: The frozen energy-only protocol completed paired benzene and uracil evaluation with alpha 100. Ridge MAE was 1.6022730996053722 versus mean 2.2343735356479013 for benzene, and 3.1238744298947863 versus 3.720448133704194 for uracil. These are two within-system fits with 600/200/200 frames, not zero-shot transfer or frame-pooled inference; per-frame Ridge predictions were not retained for independent post-run recomputation.
+    maintenance:
+      burden: 1
+      rationale: rMD17 is a versioned, CC0 dataset with stable per-molecule files and a small fixed four-system tranche.
+    eligibility:
+      data_feasibility: true
+      cheap_baseline: true
+      independent_unit: true
+      evaluation: true
+      licence: true
+      compute: true
+      safety: true
+    data_feasibility:
+      dataset_name: Revised MD17 four-system state tranche
+      dataset_version: rMD17 Figshare version 4; ethanol, malonaldehyde, benzene, and uracil
+      source_url: https://doi.org/10.6084/m9.figshare.12672038.v4
+      entity_unit: Molecular conformation nested within a named molecular system
+      inputs:
+        - Nuclear charges
+        - Cartesian coordinates
+        - Stored trajectory index and molecular-system identity
+      labels:
+        - Reference total energy
+      observed_entities: 4
+      evidence: [rmd17-v4-record, rmd17-primary-paper]
+    cheap_baseline:
+      name: Per-system train-mean energy and element-pair distance Ridge
+      protocol: Fit each molecular system separately. Compare the per-system training-energy mean with a train-only StandardScaler, train-energy-centred Ridge, and a fixed lexicographic unordered element-pair distance histogram; choose one shared alpha by median validation MAE across ethanol and malonaldehyde, with exact ties choose larger alpha.
+    independent_unit:
+      name: Molecular system
+      observed_units: 2
+      note: Two molecular systems have observed development evaluation. Four named protocol systems are available, but benzene and uracil remain not_run. Trajectory frames are time-correlated and are not treated as independent samples, so frame-level confidence intervals are prohibited.
+    evaluation:
+      split: Stably sort by original index, select exactly 1,000 ranks per system, then use 600 train, 200 validation, and 200 evaluation frames. Develop on ethanol and malonaldehyde, then freeze before benzene and uracil.
+      primary_metric: Median per-system energy mean absolute error, without pooling trajectory frames across systems
+      secondary_metrics:
+        - Per-system energy root mean squared error
+        - Range of per-system mean absolute errors
+      independent_validation: Benzene and uracil are both procedural one-time locked systems and remain not_run; no locked metric, cross-system generalisation result, or frame-pooled inference is claimed.
+    licence:
+      name: CC0
+      scope: rMD17 Figshare version-4 dataset files and record metadata only; not lesson prose, software, models, or other assets.
+      evidence: [rmd17-v4-record]
+    compute:
+      device: cpu
+      estimated_download_mb: 312
+      estimated_memory_gb: 4
+      estimated_runtime_minutes: 20
+      basis: The four official files total about 312 MB, and the protocol subsamples at most 1,000 frames per molecular system for fixed low-dimensional baselines.
+    safety:
+      disposition: safe_non_operational
+      rationale: The lesson analyses stored quantum-chemistry trajectories and does not provide synthesis, experimental manipulation, or operational wet-lab instructions.
+    evidence:
+      - id: rmd17-v4-record
+        url: https://doi.org/10.6084/m9.figshare.12672038.v4
+        title: Revised MD17 dataset rMD17, Figshare version 4
+        observed_scope: The official version-4 record updated 2026-02-28 declares CC0 for its dataset files and metadata, and documents energies, forces, coordinates, nuclear charges, original indices, time-correlated frames, and 100,000 structures for each of the four selected systems.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: version 4, 2026-02-28
+      - id: rmd17-primary-paper
+        url: https://doi.org/10.1088/2632-2153/abba6f
+        title: Christensen and von Lilienfeld, On the role of gradients for machine learning of molecular energies and forces
+        observed_scope: The primary paper defines the molecular energy-and-force learning setting and explains the role of gradients for revised MD17 interpretations.
+        access: opened
+        reviewed_on: "2026-09-05"
+    last_verified: "2026-09-08"
+
+  - topic_id: t15-experiment-pool-budget-feasibility
+    track_id: active-learning
+    topic_title: Experiment pools, budgets, and feasibility
+    topic_core: true
+    self_depth: explained
+    strongest_external_depth: executable
+    external_providers_at_worked_or_deeper: [build-ai-drug-discovery-pipelines]
+    prerequisite_value: 4
+    implementation:
+      status: completed
+      updated_on: "2026-09-08"
+      note: Synthetic teaching engine, deep lesson, equal-budget simulator, and one retrospective two-assay real campaign completed. MaxMin recovery AUC was 0.05078125 in primary CHEMBL5736995 and 0 in CHEMBL3705421, below all five fixed random policy instances in both assays; the 130-parent external pool has one scaffold group, so diversity is uninformative. T15 exposed labels shared with T05 before T05 evaluation. The separate T05 and T11 evaluations have since completed without retuning; this does not make T15 independent corroboration.
+    maintenance:
+      burden: 2
+      rationale: The retrospective campaign remains CPU-small, but its pool counts, activity filters, fixed budgets, and assay-level replication must be revalidated with each ChEMBL release.
+    eligibility:
+      data_feasibility: true
+      cheap_baseline: true
+      independent_unit: true
+      evaluation: true
+      licence: true
+      compute: true
+      safety: true
+    data_feasibility:
+      dataset_name: ChEMBL human EGFR retrospective acquisition campaign
+      dataset_version: ChEMBL 37; primary CHEMBL5736995; external CHEMBL3705421
+      source_url: https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL5736995
+      entity_unit: Standardised parent molecule inside a predeclared finite assay pool
+      inputs:
+        - Canonical parent-molecule structure
+        - Morgan fingerprint for diversity and fixed uncertainty baselines
+        - Frozen acquisition round and label budget
+      labels:
+        - Retrospectively revealed pChEMBL value for exact valid IC50 records
+      observed_entities: 902
+      evidence:
+        - chembl37-readme
+        - egfr-primary-assay
+        - egfr-primary-activities
+        - egfr-external-assay
+        - egfr-external-activities
+    cheap_baseline:
+      name: Seeded random acquisition and MaxMin Morgan diversity
+      protocol: Compare a prespecified seeded random policy with deterministic MaxMin diversity at identical batch budgets. Random seeds quantify algorithmic variation only and are never counted as independent experimental units.
+    independent_unit:
+      name: Bemis-Murcko scaffold
+      observed_units: 238
+      note: Molecules sharing a scaffold remain one generalisation unit. Acquisition rounds, policies, and repeated random seeds do not create additional independent units.
+    evaluation:
+      split: Assign whole scaffold groups to a 10% initial labelled set, 70% acquisition pool, and 20% untouched evaluation set. Acquire four batches, each equal to 5% of the original pool, for a fixed total acquisition budget of 20%.
+      primary_metric: Normalised area under cumulative top-decile recovery versus labels acquired at the frozen budget checkpoints
+      secondary_metrics:
+        - Top-decile recovery at each budget checkpoint
+        - Fraction of unique scaffold units acquired
+        - Evaluation-set mean absolute error after each acquisition round
+      independent_validation: Repeat the frozen pool construction, budgets, and policies on CHEMBL3705421 as an assay-level replication. Its 170 parent molecules and 23 scaffolds are analysed separately, with zero parent-molecule overlap with the primary assay.
+    licence:
+      name: Creative Commons Attribution-ShareAlike 3.0 Unported
+      scope: ChEMBL 37 database content; attribution and share-alike requirements apply, while upstream source terms remain separate.
+      evidence: [chembl37-readme, chembl37-licence]
+    compute:
+      device: cpu
+      estimated_download_mb: 5
+      estimated_memory_gb: 2
+      estimated_runtime_minutes: 30
+      basis: The campaign uses fewer than 1,100 distinct parent molecules across two assays, fixed Morgan fingerprints, and low-capacity acquisition baselines.
+    safety:
+      disposition: safe_non_operational
+      rationale: The campaign is retrospective and uses existing public measurements. It does not recommend compounds for synthesis or provide experimental execution instructions.
+    evidence:
+      - id: chembl37-readme
+        url: https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README
+        title: ChEMBL 37 release README
+        observed_scope: The official release record identifies ChEMBL 37, its 2026-05-01 release date, database contents, licence, and required attribution scope.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: ChEMBL 37
+      - id: chembl37-licence
+        url: https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE
+        title: ChEMBL 37 licence
+        observed_scope: The official release licence provides the Creative Commons Attribution-ShareAlike 3.0 Unported terms for ChEMBL database content.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: ChEMBL 37
+      - id: egfr-primary-assay
+        url: https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5736995.json
+        title: ChEMBL assay CHEMBL5736995
+        observed_scope: The official record identifies a human EGFR binding assay with single-protein format, direct target relationship, confidence score 9, and document CHEMBL5728555.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: ChEMBL 37
+      - id: egfr-primary-activities
+        url: https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL5736995
+        title: ChEMBL activities for CHEMBL5736995
+        observed_scope: A dated enumeration of the official activity endpoint retained 966 exact valid IC50 rows spanning 902 standardised parent molecules and 238 Bemis-Murcko scaffolds under the declared filters.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: ChEMBL 37
+      - id: egfr-external-assay
+        url: https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3705421.json
+        title: ChEMBL assay CHEMBL3705421
+        observed_scope: The official record identifies a separate human wild-type EGFR binding assay with single-protein format, direct target relationship, confidence score 9, and document CHEMBL3638799.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: ChEMBL 37
+      - id: egfr-external-activities
+        url: https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL3705421
+        title: ChEMBL activities for CHEMBL3705421
+        observed_scope: A dated enumeration retained 173 exact valid IC50 rows spanning 170 parent molecules and 23 scaffolds; no parent molecule overlapped the primary assay after standardisation.
+        access: opened
+        reviewed_on: "2026-09-05"
+        version: ChEMBL 37
+    last_verified: "2026-09-08"

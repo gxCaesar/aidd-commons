@@ -1,0 +1,83 @@
+---
+title: Assemble a compound's evidence chain
+description: Trace measured and missing links from mechanism to bounded claim for selected ChEMBL parents.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+Read the [candidate nomination workbook](/learn/candidate-nomination/capstone-workbook/) and the [multi-endpoint profile guide](/labs/multi-endpoint-integration/). This laboratory asks what a single compound's evidence can support when the links from mechanism to reproducibility are kept in order. You will identify each link's source and state, find the first link outside measured evidence, and keep later measurements visible without promoting them into a nomination claim.
+
+## Fresh independent computation
+
+The mode is a fresh independent computation under a frozen ChEMBL 37 protocol. Use the pinned Python 3.11 environment and the existing cached snapshots. The commands need no network after caching and no accelerator. `download` validates those caches without writing. `show` prints each link with its measurements. `check` recomputes the chain and checks the committed summary. The export overwrites only that small summary after the audits pass.
+
+```bash
+.venv/bin/python labs/candidate_evidence_chain/run_lab.py download
+.venv/bin/python labs/candidate_evidence_chain/inspect_candidate_evidence_chain.py show
+.venv/bin/python labs/candidate_evidence_chain/inspect_candidate_evidence_chain.py check
+.venv/bin/python labs/candidate_evidence_chain/export_summary.py
+.venv/bin/python -m pytest labs/tests/candidate_evidence_chain -q
+```
+
+## Evidence states and eight links
+
+A measured link has an admitted value for this parent, its unit, assay or target, and document. An absent link has no qualifying record in a family measured elsewhere. A constructed link rests only on teaching data. A not-covered link has no compound-matched material here. Constructed teaching cases are not attached to these ChEMBL parents, so no chain below uses one as evidence.
+
+| Link in order | Rule in this laboratory | State across the 3 parents |
+| --- | --- | --- |
+| Mechanism | Requires compound-specific mechanism validation | not covered in 3 |
+| Target | Requires measured intended-target engagement or validation | not covered in 3 |
+| Activity | Admitted exact `AC50`, `EC50` or `IC50` response-potency point | measured in 1, absent in 2 |
+| Selectivity | One admitted CYP3A4 and one CYP2D6 `IC50` from the same document, each based on one activity | measured in 1, absent in 2 |
+| Exposure | Admitted intrinsic clearance in a named in vitro assay system | measured in 3 |
+| Safety | No compound-matched safety measurement | not covered in 3 |
+| Synthesis | No compound-matched experimental synthesis result | not covered in 3 |
+| Reproducibility | No independent replication of the whole compound chain | not covered in 3 |
+
+The CYP link describes only differential inhibition of CYP3A4 and CYP2D6. It does not establish selectivity against an intended therapeutic target. The clearance link reports a real in vitro measurement, but it cannot establish systemic exposure. The safety and route-recovery teaching laboratories use constructed data for other objects. Their records cannot fill either link for these parents.
+
+## Per-compound chains
+
+All values below come from admitted ChEMBL 37 records after each owning reader's selection rule. The summary preserves every admitted measurement within the selected chains. The table gives the measurements needed to recognize the different evidence patterns. The clearance records trace to document `CHEMBL3301361`.
+
+| Parent | Activity | Selectivity | Intrinsic clearance | First non-measured link |
+| --- | --- | --- | --- | --- |
+| `CHEMBL1144` | 33 response-potency points. One `EC50` is 7800 `nM` in assay `CHEMBL5234138`, document `CHEMBL5233232` | absent | 26.98 `uL.min-1.(10^6cells)-1` in rat hepatocytes, assay `CHEMBL3301371` | mechanism |
+| `CHEMBL1232461` | absent | absent. A single CYP2D6 value of 6.89 `pChEMBL` in assay `CHEMBL5701064`, document `CHEMBL5696440`, does not make a pair | 14.13 `mL.min-1.g-1` in human liver microsomes, assay `CHEMBL3301370`, and 10.23 `uL.min-1.(10^6cells)-1` in rat hepatocytes, assay `CHEMBL3301371` | mechanism |
+| `CHEMBL1963249` | absent | CYP3A4 is 5.62 `pChEMBL` in assay `CHEMBL6078958` and CYP2D6 is 4.08 `pChEMBL` in assay `CHEMBL6078959`, both in document `CHEMBL6078621` | 26.92 `uL.min-1.(10^6cells)-1` in human hepatocytes, assay `CHEMBL3301372` | mechanism |
+
+| Parent | Measured | Absent | Constructed | Not covered | Bounded claim supported |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `CHEMBL1144` | 2 | 1 | 0 | 5 | no |
+| `CHEMBL1232461` | 1 | 2 | 0 | 5 | no |
+| `CHEMBL1963249` | 2 | 1 | 0 | 5 | no |
+
+Mechanism is the first non-measured link in all 3 chains. The first-stop distribution is therefore mechanism 3, and 0 chains reach a claim. These parents differ in which later links are measured, although their formal stop is the same. The chain reaches only as far as the measurements do. Families that this repository does not measure for these compounds are named as not covered rather than filled with another compound's values.
+
+## Claim boundary and independent exercise
+
+A chain supports a claim only when every link is measured. An absent, constructed or not-covered link stops it. Even a fully measured chain could carry no claim broader than the first measured link's own scope. This laboratory does not establish a development candidate, a correct mechanism, or a route to fill the gaps. It contains no measured safety, synthesis or clinical outcome for these parents. Running the audit again is not independent experimental replication.
+
+Inspect `CHEMBL1963249`. Explain why its same-document CYP pair is a measured selectivity link with narrow scope, and why it still supports no nomination claim.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The two CYP measurements describe differential inhibition of those enzymes in one document. They do not test intended-target selectivity. The chain stops at mechanism before reaching that pair. The safety, synthesis and reproducibility links are also not covered. No claim crosses those gaps.
+
+</details>
+
+## Sources and attribution
+
+| Material | Source and licence | Snapshot read on |
+| --- | --- | --- |
+| Activity | [ChEMBL 37 release](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/) under [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-10-21 |
+| Intrinsic clearance | [AstraZeneca dataset CHEMBL3301361](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361) in ChEMBL 37 under [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+| CYP inhibition | [ChEMBL 37 release](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/) under [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+| Constructed safety and route examples | [Safety evidence](/labs/safety-evidence/) and [route recovery](/labs/retro-disconnection/), original teaching material under CC BY 4.0 | not compound snapshots |
+
+Original guide prose is CC BY 4.0 and original laboratory code is Apache-2.0. Last reviewed 2026-10-23.

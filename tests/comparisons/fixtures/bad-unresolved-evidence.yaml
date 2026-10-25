@@ -1,0 +1,24 @@
+id: bad-unresolved-evidence
+name: Unresolved evidence reference
+provider_class: benchmark-hub
+canonical_url: https://example.org/unresolved-evidence
+summary: A fixture whose metadata evidence ID does not exist.
+audiences: [researchers]
+languages: [en]
+metadata_evidence: [missing-overview]
+access:
+  content: { value: unverified }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage: []
+evidence:
+  - id: overview
+    url: https://example.org/unresolved-evidence
+    title: Benchmark hub overview
+    observed_scope: System identity.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

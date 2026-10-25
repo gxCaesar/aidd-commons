@@ -1,0 +1,56 @@
+---
+title: Generalization unit and estimand
+description: Name the population and independent unit before interpreting an evaluation number.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="evaluation-and-reproducibility/generalization-unit-and-estimand" />
+
+## Learning goals and prerequisites
+
+Read [the decision-unit lesson](/learn/foundations/decision-unit-scope/) and [splits and leakage across three labs](/learn/evaluation-and-reproducibility/split-and-leakage-cases/) first. You will state the population and independent unit that an evaluation result is meant to describe, distinguish a row count from a unit count, and identify what a leave-one-out procedure removes. The [runnable unit audit](/labs/generalization-unit-audit/) supplies the frozen protocol and complete count table.
+
+## The quantity and its independent unit
+
+An estimand is the quantity a study intends to estimate. For a prediction study, it might be expected error for future molecules under a specified endpoint and assay setting. A test statistic estimates that quantity only under a sampling and evaluation design that connects the test observations to the intended population. The unit of generalization names what must be new when the method is used again. It might be a molecule, scaffold, target, assay, time point, site or patient. The endpoint, population, unit and split rule belong in the same claim.
+
+A record is not automatically an independent draw from that population. Several records may report one measurement. Several measurements may come from one parent molecule or assay. Holding out records therefore answers a different question from holding out parent molecules. Neither choice is correct without a declared use case. A result with no unit named cannot tell a reader which future case it addresses.
+
+## Rows and unit values
+
+The ChEMBL 37 teaching cohort has 15 declared seed molecules and 10 resolved parents. Its admission rule retains 488 point rows, which collapse to 486 independent measurements after repeated parent, assay, document and endpoint keys are grouped. Only 9 parents carry an admitted point measurement. These counts have different denominators. The first counts records, the second counts independent measurement keys, and the third counts parent values represented among those measurements.
+
+| Candidate unit | Distinct values | Measurement memberships | Median per value | Values with 1 measurement |
+| --- | ---: | ---: | ---: | ---: |
+| Molecule record | 15 | 487 | 9 | 1 |
+| Parent molecule | 9 | 486 | 27 | 1 |
+| Bemis-Murcko scaffold | 10 | 486 | 18.5 | 1 |
+| Assay | 481 | 486 | 1 | 476 |
+| Target | 100 | 486 | 1 | 57 |
+| Document | 221 | 486 | 1 | 136 |
+
+Each measurement is assigned to every value present on its source rows. One repeated measurement spans two tested molecule records, so molecule membership totals 487 rather than 486. The distribution across values also matters. A leave-one-measurement-out procedure removes the only same-value observation for a value that carries exactly 1 measurement. In contrast, a leave-one-unit-out procedure removes all measurements of the chosen value and leaves no same-value training observations for that value by design. The singleton count does not measure the latter procedure.
+
+## Worked case from the counts
+
+Consider an evaluation described only as covering 486 measurements. The assay view contains 481 values, with a median of 1 measurement per assay and 476 singleton assays. The parent view contains 9 values, with a median of 27 measurements per parent and 1 singleton parent. The same measurement set can therefore contain nearly one assay per measurement but many measurements per parent. A claim about new assays needs assays held out as units. A claim about new parents needs parents held out. The count alone establishes neither claim.
+
+This is a description of the available data, not a fitted model or a performance estimate. A grouped split could be constructed later under a declared estimand, but the audit does not select one because it happens to separate the cohort well.
+
+## Independent exercise
+
+A report calls the 486 admitted measurements independent assays. It also says that leaving out 1 measurement always leaves another observation of the same target in training. Use the table to correct both statements. State which quantity would still be missing before a predictive generalization claim could be made.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The data contain 481 distinct assay values, not 486. The target view has 100 values, of which 57 carry exactly 1 measurement. Leaving out the measurement attached to any of those singleton target values leaves no same-target observation. The report would still need an explicit target population, endpoint, generalization unit, split rule and measured predictive performance. These counts alone provide none of that performance evidence.
+
+</details>
+
+## What this material does not show
+
+The seeds were selected to exercise an admission rule rather than to sample ChEMBL. The table has no measurement time point, collection site identifier or patient identifier, so those units cannot be audited here. A Bemis-Murcko scaffold is a declared structural key rather than every chemical similarity relation. The laboratory does not fit a model, score predictions or identify a uniquely right unit. Automated count checks are not evidence that readers learned the concept.
+
+The counts use [ChEMBL 37 activity records](https://www.ebi.ac.uk/chembl/api/data/activity.json) and [release status](https://www.ebi.ac.uk/chembl/api/data/status.json), captured on 2026-10-21 and recounted on 2026-10-23. ChEMBL 37 was released on 2026-05-01 under [Creative Commons Attribution-ShareAlike 3.0 Unported](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE). The [RDKit source licence](https://github.com/rdkit/rdkit/blob/master/license.txt) was recorded as BSD 3-Clause on 2026-09-09. Original prose is CC BY 4.0 and original code is Apache-2.0. Last reviewed 2026-10-23.

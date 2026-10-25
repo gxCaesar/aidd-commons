@@ -1,0 +1,31 @@
+---
+import { readFile } from "node:fs/promises";
+import ResourceExplorer from "../../components/ResourceExplorer.astro";
+import SiteShell from "../../components/SiteShell.astro";
+import type { Resource } from "../../data/resource.js";
+
+const resources = JSON.parse(
+  await readFile(
+    new URL("../../../public/data/resources.v1.json", import.meta.url),
+    "utf8",
+  ),
+) as Resource[];
+---
+
+<SiteShell
+  title="Scientific Atlas"
+  description="Filter source-grounded AIDD resources by pipeline stage, kind, access, and lifecycle."
+>
+  <section aria-labelledby="atlas-title">
+    <p class="eyebrow">Evidence-backed registry</p>
+    <h1 id="atlas-title" class="page-heading">Scientific Atlas</h1>
+    <p class="page-intro">
+      Filter resources without collapsing access, lifecycle, evidence, caveats, and
+      openness into one label. Query parameters make a filter set shareable.
+    </p>
+  </section>
+
+  <section class="section" aria-label="Atlas resource explorer">
+    <ResourceExplorer resources={resources} />
+  </section>
+</SiteShell>

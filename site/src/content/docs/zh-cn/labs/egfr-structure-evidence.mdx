@@ -1,0 +1,366 @@
+---
+title: 三份结构，读作证据
+description: 读懂三份已沉积到 PDB 的 EGFR 晶体结构能确立什么，然后看结合位点、对接盒、相互作用与位姿判定分别如何源于一个已声明的选择。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="egfr-structure-evidence" />
+
+英文原文：[Three structures, read as evidence](/labs/egfr-structure-evidence/)。
+
+## 运行之前
+
+**模式：对已提交实验结构做可运行的检查。** 仓库中有三份人类 EGFR 激酶结构域的
+已沉积晶体结构，除解压之外未做任何改动。**没有结构被准备、质子化、能量最小化或
+对接，也没有运行任何口袋预测方法。** 两个命令都只打印到终端、不写任何文件，因此
+运行它们不会覆盖任何东西。
+
+你需要 Python 3.11 或更新版本和 NumPy，不需要网络访问。在仓库根目录下：
+
+```bash
+python labs/egfr_structures/inspect_state.py show
+python labs/egfr_structures/inspect_complex.py show
+```
+
+如果你是从本页下载的文件，请把 `cif.py`、这两个命令和 `entries.json` 放在同一个
+文件夹里，并把三个 `.cif` 文件放进一个名为 `structures` 的子文件夹。每个命令的
+运行时间约为一秒。
+
+**完成之后你应该能够做到什么。**
+
+- 说清楚一份已沉积的结构文件是什么的证据，以及它的分辨率与 R-free 不能告诉你什么。
+- 只有在把残基映射到同一条参考序列之后才跨条目比较残基，并核对这个映射。
+- 把结合位点、对接盒、相互作用和位姿判定都当作已声明选择的输出，并说出每一个
+  背后的选择。
+
+**前置知识。**[蛋白质、复合物、细胞状态与知识图谱表示](/zh-cn/learn/representations/complex-cell-and-knowledge-graphs/)
+与[口袋状态、置信度与可复用结构证据](/zh-cn/learn/structure-and-pockets/pocket-states-and-confidence/)。
+[对接协议实验](/zh-cn/labs/docking-protocol/)是它的姊妹篇：那份实验把一个对接分数
+所来自的七个组件分开，而本实验提供的是这样一份协议本来会从中出发的结构。
+
+## 三份文件
+
+| 条目 | 配体 | 分辨率 | 为什么在这里 |
+| --- | --- | --- | --- |
+| 1M17 | erlotinib | 2.60 A | 每一次叠合所用的参考坐标系 |
+| 4HJO | erlotinib | 2.75 A | 同一个配体，处在其提交者称为非活性的激酶结构域中 |
+| 1XKK | lapatinib | 2.40 A | 另一种喹唑啉类抑制剂，带有更大的取代基 |
+
+它们于 2026-09-11 从 RCSB PDB 文件服务下载。PDB 归档数据文件以 CC0 1.0 发布。
+wwPDB 要求注明原作者，因此两个命令都会打印每个条目的主要引文。清单文件
+`entries.json` 记录了各文件的来源地址、字节大小、PDB 条目标识、提交日期和最新
+提交修订。两个检查命令都会先核验这些字段，再给出判定。这些检查不能证明文件
+逐字节完全一致。
+
+## A 部分：文件说了什么，以及一个位点是如何被定义的
+
+### 1. 一份文件是一次实验的模型
+
+```text
+1M17  X-RAY DIFFRACTION, 2.60 A, R-work 0.251, R-free 0.295 (gap 0.044)
+4HJO  X-RAY DIFFRACTION, 2.75 A, R-work 0.230, R-free 0.253 (gap 0.023)
+1XKK  X-RAY DIFFRACTION, 2.40 A, R-work 0.209, R-free 0.255 (gap 0.046)
+```
+
+晶体结构是针对衍射数据精修得到的一个原子模型。分辨率是所用数据里最精细的间距。
+R-work 衡量模型对精修所用反射的重现程度，R-free 在一小部分被留出、未参与精修的
+反射上做同样的度量。**R-free 就是晶体学家的验证集**，两者之间的大差距，是与训练
+误差和验证误差之间大差距相同的那种警示。
+
+这三个数字描述的都是整个模型。它们没有一个能说明某一个原子、某一个残基或某一个
+配体被确定得有多好。
+
+### 2. 被结晶的是什么，以及它是如何编号的
+
+```text
+1M17  P00533 695-1022 aligned; author number + 24 = reference number
+      hinge methionine: author 769, reference 793
+4HJO  P00533 696-1022 aligned; author number + 24 = reference number
+      hinge methionine: author 769, reference 793
+      substitutions: VAL948ARG (engineered mutation)
+1XKK  P00533 695-1022 aligned; author number +  0 = reference number
+      hinge methionine: author 793, reference 793
+```
+
+**同一个甲硫氨酸在两份文件里是 769 号残基，在第三份里是 793 号。** 24 这个偏移量
+是信号肽的长度，较旧的编号方式把它排除在外。这个激酶里最知名的耐药突变 T790M，
+在那种编号约定下写作 T766M。因此，按文件里印出的编号去比较残基，比的其实是
+不同的残基。
+
+该命令通过文件自身的比对记录，把每一个残基映射到 UniProt 参考序列 P00533，而
+检查命令确认映射之后五个地标位置都持有预期的残基：Lys745、Glu762、Thr790、
+Met793 和 Asp855。
+
+文件还记录了实际被结晶的是什么。4HJO 携带一处工程化替换 V948R。**文件记录了
+这处替换是工程改造的，但没有记录原因**，原因属于它的主要引文，不属于本实验。
+每个构建体也都缺少模型未包含的残基：1M17 缺 16 个，4HJO 缺 49 个，1XKK 缺 39
+个，其中 4HJO 缺失的部分包括整段 985 到 1022 的 C 端序列。一个缺失的环是数据
+未能确定的区域，不是蛋白质中不存在的区域。
+
+### 3. 一个状态描述符，以及是谁给出了这个标签
+
+```text
+1M17  Lys745 NZ to Glu762 CD: 3.71 A
+4HJO  Lys745 NZ to Glu762 CD: 14.41 A
+1XKK  Lys745 NZ to Glu762 CD: 13.73 A
+```
+
+在一个活性激酶中，催化赖氨酸与 C 螺旋上的一个谷氨酸配对。当这条螺旋摆出时，
+两者分开。谷氨酸的 CD 原子代表它的羧基，这样这个数字就不取决于恰好哪一个氧
+原子更近。
+
+这个距离是在这里算出来的。**4HJO 标题中"inactive"这个词是提交者给出的标签。**
+一个距离数字与这个标签相符，但它本身不构成一次状态判定：完整的判定还要读取
+激活环和 DFG 基序的构象，而本实验没有做这件事。
+
+### 4. 配体相对于其蛋白质被确定得有多好
+
+```text
+1M17  erlotinib (AQ4), 29 heavy atoms: mean B 72.8 against protein 63.0; waters modelled 20
+4HJO  erlotinib (AQ4), 29 heavy atoms: mean B 47.5 against protein 47.2; waters modelled 34
+1XKK  lapatinib (FMM), 40 heavy atoms: mean B 41.8 against protein 42.5; waters modelled 77
+```
+
+B 因子描述的是模型中一个原子的位置有多"涂抹"。在 1M17 中，配体的确定程度不如
+它周围的蛋白质，另外两份文件则不是这样。没有一份文件对氢原子建模，所以**质子化
+状态根本不在证据之中**。第 7 节展示了这会付出什么代价。
+
+### 5. 位点是一个定义
+
+| 条目 | 4 A 以内的残基 | 5 A 以内 | 6 A 以内 |
+| --- | --- | --- | --- |
+| 1M17 | 15 | 20 | 25 |
+| 4HJO | 17 | 20 | 26 |
+| 1XKK | 23 | 28 | 37 |
+
+"结合位点"是与某个选定配体距离在某个选定阈值以内的残基集合。**每一个位点都会
+随着阈值的每一步增大而变大**，所以它的大小既是蛋白质的属性，也同样是阈值的
+属性。
+
+在 4 A 处，两个 erlotinib 位点共享的 Jaccard 指数是 0.78，Glu762 在 1M17 的
+位点里，但不在 4HJO 的位点里：同一个配体，不同的受体状态，不同的位点。
+lapatinib 的位点包含八个两个 erlotinib 位点都没有触及的残基：766、775、776、
+777、799、803、856 和 858。
+
+三个配体都位于 ATP 位点。没有一份文件在别的地方携带配体，所以**这些条目无法
+定义一个别构口袋或瞬态口袋**，也没有运行任何口袋预测方法来提出这样一个口袋。
+
+### 6. 对接盒继承了它的配体和它的坐标系
+
+```text
+4HJO onto 1M17: site C-alpha RMSD 57.78 A before, 1.45 A after superposition (20 residues)
+1XKK onto 1M17: site C-alpha RMSD 40.60 A before, 1.21 A after superposition (20 residues)
+4HJO  box volume at 0 A padding: 883 A^3 in its own frame, 393 A^3 in the 1M17 frame
+1XKK ligand atoms inside the 1M17 erlotinib box: 21/40 at 0 A, 32/40 at 2 A, 36/40 at 4 A, 37/40 at 5 A
+```
+
+每一份沉积的文件都处在它自己的坐标系里，这就是为什么叠合之前位点的
+C-alpha 原子相距数十埃。大多数对接程序会在受体文件的坐标系里取一个与坐标轴
+对齐的搜索盒。**同一个位姿在另一个坐标系里会给出体积不同的盒子**，因为盒子的
+边跟随的是坐标轴，而不是分子本身。
+
+一个围绕 erlotinib 画出、留白 5 A 的盒子，仍然会把 40 个 lapatinib 原子中的 3
+个留在外面。一个搜索盒是关于配体能去哪里的一个假设，而它继承了自己是围绕
+哪个配体画出来的。
+
+## B 部分：接触、相互作用与位姿
+
+### 7. 接触是几何关系；相互作用则加上了一个假设
+
+```bash
+python labs/egfr_structures/inspect_complex.py show
+```
+
+```text
+1M17  4 polar pairs, 2 donor-acceptor compatible
+      N2   acceptor   MET793 N    donor     2.70 A  could be a hydrogen bond
+      O4   acceptor   PRO794 O    acceptor  3.21 A  not a hydrogen bond under these roles
+      O4   acceptor   GLY796 N    donor     3.24 A  could be a hydrogen bond
+      O2   acceptor   LEU718 O    acceptor  3.27 A  not a hydrogen bond under these roles
+```
+
+**接触**指的是两个原子的距离小于某个阈值，这里是氮、氧原子之间的 3.5 A。
+**氢键**在此之外还需要一方携带氢原子、另一方接受它。没有文件对氢原子建模，
+所以这些角色是在清单文件中声明的：喹唑啉环上的氮作为受体，苯胺氮作为供体，
+醚氧作为受体，蛋白质则在中性 pH 假设下处理。检查命令会先核验每一个已声明的
+配体角色是否与配体自身的成键方式相符，然后才报出任何判定。
+
+1M17 的四对里有两对配对的是两个受体，在这些角色之下无论距离多短都不能是氢键。
+每一个复合物都共有的那一对，是环氮面对 Met793 骨架 NH 的那一对，即铰链接触。
+**如果那个环氮被质子化，它就不能再充当受体，同样这对 2.70 A 的接触就会在没有
+任何原子移动的情况下不再是一个可能的氢键。** 测试套件里恰好包含这样一处改动。
+
+### 8. 水介导的接触取决于哪些水分子被建模了
+
+```text
+1M17  20 waters modelled; bridges: N3 - water - THR790 OG1
+4HJO  34 waters modelled; bridges: N3 - water - THR790 OG1; N3 - water - THR854 OG1
+1XKK  77 waters modelled; bridges: N20 - water - THR854 OG1
+```
+
+每一个复合物都至少有一座通过水分子搭起的桥，其中包括一座通向守门残基 Thr790
+的桥。被建模的水分子数目取决于分辨率与精修过程中的选择，所以**保留水分子的
+表示继承了这些选择，而丢弃它们的表示则丢掉了一个真实的接触。**
+
+### 9. 一个指纹属于一个复合物，而不属于一个配体
+
+```text
+1M17 vs 4HJO (same ligand): Tanimoto 0.650, 0.667 without water bits
+1M17 vs 1XKK (different ligands): Tanimoto 0.458, 0.500 without water bits
+4HJO vs 1XKK (different ligands): Tanimoto 0.583, 0.591 without water bits
+```
+
+每一个复合物都被转成一组残基相互作用位：极性、4 A 以内的碳-碳接触，以及水
+介导。同一个配体处于两个受体状态时，只共享 65% 的位。两个不同的配体处在两个
+C 螺旋外摆的状态、4HJO 和 1XKK 里，共享的位（0.583）反而比参考状态下的
+erlotinib 与 lapatinib 所共享的位（0.458）更多。**一个相互作用指纹编码的既是
+配体，也同样是受体状态。**
+
+### 10. 同一个配体的两个实验位姿
+
+```text
+erlotinib, 29 atoms matched by name: RMSD 1.65 A; quinazoline core 0.80 A; everything else 1.96 A
+largest single displacement 3.55 A at C14
+1M17 mean B: core 53.6, rest 82.9
+```
+
+在把两个受体按 20 个位点 C-alpha 原子叠合之后，两个 erlotinib 位姿相差 1.65
+A。按照常见的 2 A 判据，它们算作同一个位姿。核心部分的吻合度是 0.80 A，而
+一个侧链原子却移动了 3.55 A，并且在 1M17 中侧链恰恰也是配体中确定程度最低的
+部分。**单一的 RMSD 把放置精准的核心与放置松散的外围平均到了一起。**
+
+### 11. 一个位姿，三种受体状态
+
+```text
+ligand from \ receptor             1M17            4HJO            1XKK
+1M17 erlotinib       0 (2.70 A)      0 (2.86 A)      0 (2.44 A)
+4HJO erlotinib       1 (1.97 A)      0 (2.89 A)      3 (0.71 A)
+1XKK lapatinib       6 (1.21 A)      0 (2.60 A)      0 (2.96 A)
+```
+
+每一个格子都是在叠合之后把一个配体刚性地放入一个受体，并统计与蛋白质重原子
+距离小于 2.2 A 的配体重原子数目，括号中是最近距离。每一个配体都适配它自己的
+受体。**Lapatinib 在参考受体中与六个原子发生冲突，在 4HJO 状态中则一个也没有。**
+在侧链保持固定的情况下，一个受体构象会拒绝结合同一蛋白质另一构象的配体。一次
+冲突说的是这个位姿不适配那个受体状态，它没有说这个配体不能结合这个蛋白质。
+
+### 12. 判断一个位姿的三种方式，以及它们在哪里出现分歧
+
+```text
+crystal pose
+    RMSD 0.00 A (passes), hinge 2.70 A (kept), clashing atoms 0
+constructed: translated 1.5 A away from the hinge
+    RMSD 1.50 A (passes), hinge 4.20 A (lost), clashing atoms 0
+constructed: rotated 20 degrees about the hinge contact
+    RMSD 1.61 A (passes), hinge 2.70 A (kept), clashing atoms 4
+```
+
+这两个构造出来的位姿**不是预测**。它们是对 1M17 晶体位姿声明好的刚体运动，
+目的是展示三个常见判据回答的是三个不同的问题。RMSD 问的是原子移动了多远，
+铰链判据问的是那个关键接触是否保住了，冲突计数问的是这个位姿是否适配受体。
+**两个构造出来的位姿都通过了 2 A 的 RMSD 判据**，其中一个丢失了铰链接触，
+另一个与四个原子发生冲突。一个只报告 RMSD 成功率的基准会把两者都算作正确。
+
+```bash
+python labs/egfr_structures/inspect_state.py check
+python labs/egfr_structures/inspect_complex.py check
+```
+
+十六项状态检查和十五项复合物检查会重新计算上面的每一种关系。文件缺失、不是
+普通文件、字节大小不符、条目标识错误，或提交日期与修订信息不符，都会在给出
+任何判定之前让两个命令停止运行。
+
+## 独立练习一：挪动一个已声明的阈值
+
+**模式：在一个全新文件夹中进行的可编辑学生练习。** 把实验复制一份，这样
+已提交的清单文件就永远不会被编辑：
+
+```bash
+cp -R labs/egfr_structures ~/egfr-exercise
+```
+
+在 `~/egfr-exercise/entries.json` 中，把 `clash_angstrom` 从 `2.2` 改成
+`3.0`。在运行任何东西之前，先预测第 11 节表格中九个格子里哪些会不再是零，
+以及是否有任何检查会失败。然后运行：
+
+```bash
+python ~/egfr-exercise/inspect_complex.py show
+python ~/egfr-exercise/inspect_complex.py check
+```
+
+<details data-worked-answer>
+<summary>参考答案，附这处改动产生的输出</summary>
+
+每一个格子都变成了非零，包括三个对角格子——每个配体都在它自己的受体里：
+
+```text
+ligand from \ receptor             1M17            4HJO            1XKK
+1M17 erlotinib       1 (2.70 A)      2 (2.86 A)      4 (2.44 A)
+4HJO erlotinib       5 (1.97 A)      2 (2.89 A)      8 (0.71 A)
+1XKK lapatinib      12 (1.21 A)      7 (2.60 A)      1 (2.96 A)
+```
+
+有两项检查失败："每一个配体都无冲突地适配它自己的受体"，以及"晶体位姿在它
+自己的受体中通过全部三项判据"。
+
+原因就在 1M17 的对角格子里。它最近的接触是 2.70 A，而那个接触正是第 7 节里
+的铰链氢键。**3.0 A 的阈值把晶体结构自己的氢键也算成了一次冲突。** 氢键中的
+供体和受体原子之间的距离，比它们范德华半径之和更近，所以冲突阈值必须设在比
+最近的合法接触更短的地方。"晶体位姿适配它自己的受体"这项检查存在的意义，就
+是要抓住这种选择，而它也确实抓住了。
+
+最大的那个格子同样有启发性。它仍然是 lapatinib 在 1M17 中的位姿，所以最显眼
+的结果看起来没变，而它底下的每一个计数都变了。一个错误的阈值可以让头条数字
+看起来仍然合理。
+
+</details>
+
+## 独立练习二：建立在一份结构之上的筛选计划
+
+一位同事计划把一个 4-苯胺基喹唑啉化合物库对接进 1M17，使用一个围绕
+erlotinib 画出、留白 4 A 的轴对齐盒子，并按分数给这个化合物库排序。只用这
+两个命令打印出的内容，给出三个"这个排序反映的可能是设置而不是化合物"的
+理由，以及针对每一个理由的一项改动。
+
+<details data-worked-answer>
+<summary>参考答案——受体状态、盒子，以及位姿检查</summary>
+
+**受体状态。** 第 11 节显示 lapatinib 的位姿在 1M17 中与六个原子冲突，在
+4HJO 中则一个也没有。一个刚性的 1M17 受体会惩罚任何结合 C 螺旋外摆状态的
+化合物，不管它的亲和力如何。应对接进不止一个受体状态，例如 1M17 和 4HJO，
+并按状态分别报告分数，而不是给出一个汇总的排序。
+
+**盒子。** 第 6 节显示，在 4 A 留白下，40 个 lapatinib 原子里有 4 个落在
+erlotinib 盒子之外，而盒子的体积取决于坐标系。更大的取代基会被截断，或被
+迫挤进奇怪的位姿。应根据位点残基或已知配体的并集来定义盒子，报告它的坐标
+系，并检查它包住了一个参考配体的多少部分。
+
+**位姿检查。** 第 12 节展示了两个通过 2 A RMSD 判据、却丢失了铰链接触或
+发生冲突的位姿。如果协议只靠把 erlotinib 重新对接一遍并报告 RMSD 来验证，
+它就可能在化学上错误的位姿下通过验证。应该把 RMSD、铰链接触和冲突计数放在
+一起验证。
+
+第四个理由同样站得住脚。环氮的质子化状态和水分子的处理方式，会改变一个
+打分函数能够奖励哪些相互作用（第 7 节和第 8 节），所以两者都应该在协议里
+被声明，就像[对接协议实验](/zh-cn/labs/docking-protocol/)那样。
+
+</details>
+
+## 它不做什么
+
+它不准备任何结构、不质子化任何东西、不做任何能量最小化、也不对接任何东西。
+一个蛋白质的三份结构无法确立一个别构口袋或瞬态口袋，因为这里的每一个配体
+都位于 ATP 位点。第 3 节里的那个距离与一个标签相符，但并不构成一次构象状态
+的判定。一次刚性放置说不出一个配体是否结合，只能说出它是否适配某一个侧链
+固定的受体构象。**本页上的任何一个数字都不是结合亲和力。**
+
+相关的完整论证见[结构、亲和力与机制假设](/zh-cn/learn/structure-and-pockets/structure-affinity-mechanisms/)、
+[筛选普遍率、亲和力标度与迁移](/zh-cn/learn/dti-screening/screening-prevalence-and-transfer/)
+以及[共折叠主张分离实验](/zh-cn/labs/cofolding-claim-separation/)。
+
+原创文字采用 CC BY 4.0，原创教学代码采用 Apache-2.0。三份结构文件采用 CC0
+1.0，版权属于各自的提交者。最后复核：2026-09-11。

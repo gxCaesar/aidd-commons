@@ -1,0 +1,111 @@
+---
+title: 审核实验室返回记录契约
+description: 按 6 部分工具契约检查项目已提交的实验室返回记录。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## 准备与学习目标
+
+请先阅读[检索、工具与反馈](/learn/scientific-agents/retrieval-tools-feedback/)。本实验审核项目自身的实验室返回记录。你将按 6 项已声明的约束检查返回记录，找出每次拒绝对应的字段，并区分自我描述完整的产物与经过验证的测量。了解 JSON 会有所帮助。[英文原版](/labs/tool-contract-audit/)是本指南的规范版本。
+
+本实验采用冻结协议下的全新独立计算模式，读取本地已提交的返回记录。使用项目的 Python 3.11 环境和 CPU。无需网络、下载或加速器。`download` 命令只验证本地材料，不写入文件。检查命令也不写入文件。导出程序仅在检查通过后覆盖精简摘要。
+
+```bash
+.venv/bin/python labs/tool_contract_audit/run_lab.py download
+.venv/bin/python labs/tool_contract_audit/inspect_tool_contract_audit.py show
+.venv/bin/python labs/tool_contract_audit/inspect_tool_contract_audit.py check
+.venv/bin/python labs/tool_contract_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/tool_contract_audit -q
+```
+
+## 返回记录契约
+
+每个计数单位是一份实验室返回记录。本审核纳入所有具有已提交返回记录的实验室，但不纳入本审核自身。它的返回记录正是审核写出的文件，因此冻结协议将其排除在输入集合之外。协议还规定了配套文件。检查器为每份记录返回全部失败字段。字段缺失与字段存在但值为空或无效会得到不同的原因。实验室特有的结果字段可以保留。
+
+| 契约部分 | 声明的规则 |
+| --- | --- |
+| Schema | `schema_version`、`protocol_id`、`computed_on`、`software`、`environment`、`side_effects`、`outcome_status` 和 `scientific_meaning` 必须存在并符合声明的类型。前 4 项是所有已观察返回记录共有的字段。其余字段使完整的返回契约明确可查。 |
+| Version | 非空的 `schema_version` 与 `protocol_id` 标识有版本的产物。缺少任一字段时，不能把返回记录视为有版本的产物。 |
+| Environment | 必须有 `software.python`、非空的 `environment.requires` 与 `environment.unavailable`，且 `environment.can_attest_external_execution` 必须为 false。返回记录不能证明进程实际在哪个环境运行。 |
+| Side effects | `side_effects.allowed_writes` 必须是仓库相对路径列表。空列表声明不允许写入，使该声明可以用独立轨迹核查。 |
+| Error states | `outcome_status` 只能是 `complete`、`no_result` 或 `halt`。`no_result` 不许可可用结果，`halt` 还要求停止。源实验室没有统一的顶层错误字段，因此不能把状态缺失当成成功。 |
+| Scientific meaning | `scientific_meaning.licenses` 与 `scientific_meaning.does_not_license` 必须是非空文本。本审核另行计数已有的明确限制字段，不把它们当作完整的意义说明。 |
+
+## 字段完整度
+
+已提交的计算于 2026-10-23 使用 Python 3.11.15 和 aidd-commons-labs 0.2.0rc1 完成，共审核 20 份本地返回记录。下表计数契约命名的字段，包括嵌套声明，不计数各实验室特有的所有结果字段。字段存在不等于其值有效。
+
+| 契约命名的字段 | 携带该字段的记录数 |
+| --- | ---: |
+| `schema_version` | 20 |
+| `protocol_id` | 20 |
+| `computed_on` | 20 |
+| `software` | 20 |
+| `environment` | 0 |
+| `side_effects` | 0 |
+| `outcome_status` | 0 |
+| `scientific_meaning` | 0 |
+| `software.python` | 20 |
+| `environment.requires` | 0 |
+| `environment.unavailable` | 0 |
+| `environment.can_attest_external_execution` | 0 |
+| `side_effects.allowed_writes` | 0 |
+| `scientific_meaning.licenses` | 0 |
+| `scientific_meaning.does_not_license` | 0 |
+| `boundary` | 0 |
+| `does_not_do` | 1 |
+| `does_not_show` | 1 |
+| `excluded_by_design` | 2 |
+| `interpretation_limits` | 2 |
+| `limit_statement` | 1 |
+| `limits` | 1 |
+| `run_status` | 0 |
+| `status` | 0 |
+| `error` | 0 |
+| `errors` | 0 |
+
+限制声明检索了 `boundary`、`does_not_do`、`does_not_show`、`excluded_by_design`、`interpretation_limits`、`limit_statement` 和 `limits`。其中 6 份记录至少带有 1 个，14 份没有。这些字段的名称不同，也不构成统一的科学意义声明。另行检索已有的顶层错误字段时，`run_status`、`status`、`error` 和 `errors` 均未出现。字段缺失是元数据缺口，不能据此判断原实验室成功或失败。
+
+这 20 个被审核的实验室各有协议文件和 README。缺少协议的数量为 0，缺少 README 的数量为 0。没有已提交返回记录的实验室不属于本次计数单位。
+
+## 逐实验室判定
+
+完整契约通过 0 份返回记录，20 份被判为 `invalid`。判为 `no_result` 的有 0 份，判为 `halt` 的有 0 份。每份被拒绝的返回记录都缺少相同的 4 个契约字段，下表记为 `E`、`S`、`R` 和 `M`。`E` 表示 `environment`，`S` 表示 `side_effects`，`R` 表示 `outcome_status`，`M` 表示 `scientific_meaning`。每项原因都是 `missing_required_field`。全部记录都有 4 个共有的元数据字段。表中每个实验室的配套文件均存在。
+
+| 实验室 | 判定 | 失败字段 | 声明的限制字段 | 协议 | README |
+| --- | --- | --- | --- | --- | --- |
+| `applicability_domain_audit` | `invalid` | E, S, R, M | `does_not_do` | yes | yes |
+| `assay_endpoint_controls` | `invalid` | E, S, R, M | none | yes | yes |
+| `asset_openness_audit` | `invalid` | E, S, R, M | none | yes | yes |
+| `az_clearance_system` | `invalid` | E, S, R, M | none | yes | yes |
+| `claims_evidence_audit` | `invalid` | E, S, R, M | `interpretation_limits` | yes | yes |
+| `cyp_assay_system` | `invalid` | E, S, R, M | none | yes | yes |
+| `decision_unit_scope` | `invalid` | E, S, R, M | none | yes | yes |
+| `entity_glossary_audit` | `invalid` | E, S, R, M | `limits` | yes | yes |
+| `functional_validation_audit` | `invalid` | E, S, R, M | `limit_statement` | yes | yes |
+| `generalization_unit_audit` | `invalid` | E, S, R, M | none | yes | yes |
+| `l1000_perturbation_context` | `invalid` | E, S, R, M | none | yes | yes |
+| `multi_endpoint_tradeoff` | `invalid` | E, S, R, M | none | yes | yes |
+| `nomination_readiness_audit` | `invalid` | E, S, R, M | `does_not_show`, `excluded_by_design` | yes | yes |
+| `objective_ladder` | `invalid` | E, S, R, M | none | yes | yes |
+| `relational_graph_audit` | `invalid` | E, S, R, M | none | yes | yes |
+| `rosetta_cross_modality` | `invalid` | E, S, R, M | none | yes | yes |
+| `skempi_affinity` | `invalid` | E, S, R, M | none | yes | yes |
+| `source_review_scope_audit` | `invalid` | E, S, R, M | `excluded_by_design`, `interpretation_limits` | yes | yes |
+| `specificity_margin_audit` | `invalid` | E, S, R, M | none | yes | yes |
+| `split_leakage_audit` | `invalid` | E, S, R, M | none | yes | yes |
+
+## 独立检查
+
+在 `show` 中比较 `applicability_domain_audit` 与 `assay_endpoint_controls`。前者声明了 `does_not_do` 限制，后者没有检索范围内的限制字段。两者仍因缺少 E、S、R 和 M 而不满足完整契约。明确限制很有用，但不能代替执行状态或写入声明。
+
+## 材料的限制
+
+本实验审核契约，不审核测量。通过的返回记录仅说明产物能够自我描述。审核不能证明实验室测量结果真实、工具在记录所称的环境中运行，或读者能够仅凭返回记录复现结果。环境声明或允许写入列表不是独立的进程轨迹。判定结果不构成实验室排名，也不衡量其科学质量。尚未观测到读者学习成效。
+
+## 来源与条款
+
+来源是项目已提交的实验室返回记录、配套协议和 README，读取日期为 2026-10-23。本次计算未打开外部网页。原创指南文字采用 CC BY 4.0，原创实验室代码采用 Apache-2.0。最近复核日期为 2026-10-23。

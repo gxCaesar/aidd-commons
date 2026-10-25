@@ -1,0 +1,125 @@
+{
+  "schema_version": "aidd-commons.candidate-evidence-chain-protocol.v1",
+  "protocol_id": "chembl37-candidate-evidence-chain-v1",
+  "issued_on": "2026-10-23",
+  "sources": [
+    {
+      "laboratory": "decision_unit_scope",
+      "status": "measured",
+      "reader": "aidd_commons.decision_unit_scope.data.load_cached_cohort",
+      "read_route": ".cache/decision_unit_scope",
+      "snapshot": "ChEMBL_37",
+      "snapshot_byte_length": 11883104,
+      "read_on": "2026-10-21",
+      "archive": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/",
+      "licence": {
+        "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+      }
+    },
+    {
+      "laboratory": "az_clearance_system",
+      "status": "measured",
+      "reader": "aidd_commons.az_clearance_system.data.load_cached_systems",
+      "read_route": ".cache/az_clearance_system",
+      "snapshot": "ChEMBL_37",
+      "snapshot_byte_length": 1518229,
+      "read_on": "2026-09-12",
+      "archive": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/",
+      "licence": {
+        "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+      }
+    },
+    {
+      "laboratory": "cyp_assay_system",
+      "status": "measured",
+      "reader": "aidd_commons.cyp_assay_system.data.load_cached_targets",
+      "read_route": ".cache/cyp_assay_system",
+      "snapshot": "ChEMBL_37",
+      "snapshot_byte_length": 6693611,
+      "read_on": "2026-09-12",
+      "archive": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/",
+      "licence": {
+        "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+      }
+    },
+    {
+      "laboratory": "safety_evidence",
+      "status": "constructed",
+      "reader": "labs/safety_evidence/inspect_safety.py",
+      "read_route": "labs/safety_evidence/dataset.json",
+      "compound_join": false,
+      "licence": "Original teaching material, CC BY 4.0"
+    },
+    {
+      "laboratory": "retro_disconnection",
+      "status": "constructed",
+      "reader": "labs/retro_disconnection/inspect_disconnection.py",
+      "read_route": "labs/retro_disconnection/routes.json",
+      "compound_join": false,
+      "licence": "Original teaching material, CC BY 4.0"
+    }
+  ],
+  "links": [
+    {
+      "name": "mechanism",
+      "state_rule": "Not covered without a compound-specific measured mechanism validation."
+    },
+    {
+      "name": "target",
+      "state_rule": "Not covered without measured intended-target engagement or validation for this parent."
+    },
+    {
+      "name": "activity",
+      "state_rule": "Measured for admitted exact AC50, EC50 or IC50 response-potency points; otherwise absent."
+    },
+    {
+      "name": "selectivity",
+      "state_rule": "Measured only for one admitted CYP3A4 and one CYP2D6 IC50 from the same document, each based on one activity; otherwise absent. The scope is these CYP enzymes, not intended-target selectivity."
+    },
+    {
+      "name": "exposure",
+      "state_rule": "Measured only as in vitro intrinsic clearance in a named assay system; otherwise absent. It does not establish systemic exposure."
+    },
+    {
+      "name": "safety",
+      "state_rule": "Not covered for these parents. The safety teaching cases are constructed and cannot be joined to them."
+    },
+    {
+      "name": "synthesis",
+      "state_rule": "Not covered for these parents. Constructed route recovery is not a measured synthesis or feasibility result."
+    },
+    {
+      "name": "reproducibility",
+      "state_rule": "Not covered without independent replication of this compound's chain; repeated rows or a rerun of this audit do not supply it."
+    }
+  ],
+  "states": [
+    "measured",
+    "absent",
+    "constructed",
+    "not covered"
+  ],
+  "example_parent_ids": [
+    "CHEMBL1144",
+    "CHEMBL1232461",
+    "CHEMBL1963249"
+  ],
+  "counted_unit": {
+    "name": "one ChEMBL parent molecule's eight-link chain",
+    "join_rule": "Use only equal parent_molecule_chembl_id from the three validated measured readers. Constructed records have no join to these parents."
+  },
+  "rules": {
+    "claim_gate": "A chain supports a claim only when every link is measured. An absent, constructed or not covered link stops the claim, even when later links have measurements.",
+    "claim_scope": "A claim may not exceed the first measured link's own scope. A supported chain carries exactly that scope."
+  },
+  "excluded_by_design": [
+    "any claim that a chain makes a compound a development candidate",
+    "any ranking of compounds by how far their chains reach",
+    "any use of a constructed link as if it were measured",
+    "any claim of validated mechanism, intended-target engagement, systemic exposure, safety, synthesis feasibility or clinical outcome",
+    "any default, class mean or literature value substituted for an absent compound measurement"
+  ]
+}

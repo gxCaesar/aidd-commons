@@ -1,0 +1,77 @@
+id: tool-decimer-ai
+name: DECIMER.ai
+kind: software
+summary: Web application and self-hostable Docker service that converts chemical structure images into SMILES, with a built-in editor for correcting the recognised structure and an API reference.
+canonical_url: https://github.com/Steinbeck-Lab/DECIMER.ai
+identifiers:
+  - scheme: paper
+    value: "DECIMER.ai: an open platform for automated optical chemical structure identification and segmentation in scientific publications; Nature Communications 14, article 5045 (2023); DOI 10.1038/s41467-023-40782-0"
+    url: https://doi.org/10.1038/s41467-023-40782-0
+  - scheme: software-archive
+    value: "DECIMER.ai 1.1.0 software release, Zenodo record 8139383; DOI 10.5281/zenodo.8139383"
+    url: https://zenodo.org/records/8139383
+  - scheme: service
+    value: Hosted DECIMER web application
+    url: https://decimer.ai
+stages: [data-intake]
+modalities: [small-molecule, molecular-graph]
+tasks: [chemical-identity-resolution, chemical-data-processing]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [repository-tree] }
+  training_code: { value: not_available, evidence: [repository-tree, readme] }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: Application source in this repository; the LICENSE file reads "Copyright (c) 2022 Otto Brinkhaus" while the README carries "Copyright (c) 2025 Kohulan @ Steinbeck Lab" and states that the project is MIT licensed for academic and commercial use.
+    evidence: [license, readme]
+  - name: Other (Open)
+    scope: The Zenodo software archive 8139383 for DECIMER.ai 1.1.0 carries only the Zenodo licence identifier "other-open" with no licence name or URL attached, so the archived release does not itself name MIT.
+    evidence: [zenodo-api]
+evidence:
+  - id: repository
+    url: https://github.com/Steinbeck-Lab/DECIMER.ai
+    label: DECIMER.ai repository page, reviewed 2026-10-21
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER.ai/main/README.md
+    label: DECIMER.ai README, reviewed 2026-10-21
+    supports: [summary, identifiers, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER.ai/main/LICENSE
+    label: DECIMER.ai MIT licence file, reviewed 2026-10-21
+    supports: []
+  - id: repository-tree
+    url: https://api.github.com/repos/Steinbeck-Lab/DECIMER.ai/git/trees/main?recursive=1
+    label: DECIMER.ai repository file tree, reviewed 2026-10-21
+    supports: []
+  - id: zenodo-archive
+    url: https://zenodo.org/records/8139383
+    label: DECIMER.ai 1.1.0 software archive, Zenodo record 8139383, reviewed 2026-10-21
+    supports: [identifiers, caveats]
+  - id: zenodo-api
+    url: https://zenodo.org/api/records/8139383
+    label: Zenodo record metadata for 8139383, reviewed 2026-10-21
+    supports: []
+  - id: service
+    url: https://decimer.ai
+    label: Hosted DECIMER web application, reviewed 2026-10-21
+    supports: [summary, caveats]
+  - id: crossref
+    url: https://api.crossref.org/works/10.1038/s41467-023-40782-0
+    label: Crossref metadata for the DECIMER.ai paper, reviewed 2026-10-21
+    supports: [identifiers]
+caveats:
+  - The repository is a GitHub fork of OBrink/DECIMER.ai, and the Zenodo software archive 8139383 documents that upstream project under the same name.
+  - The README Zenodo badge points to https://zenodo.org/badge/latestdoi/486488537; neither that identifier nor 4864885 resolved to a live record on 2026-10-21, returning 404 and 410 respectively, so the only resolvable software archive for this project is record 8139383.
+  - The hosted service states "© 2025 DECIMER Project. All rights reserved" and links a privacy policy and an impressum; the opened page states no terms of use for the service, and the repository MIT licence does not state that it covers the hosted service.
+  - 'No training code ships in this repository: the file tree is a Laravel application with Docker files, and the README places the segmentation, transformer and classifier implementations in separate component repositories.'
+  - The container requirements pin TensorFlow and RDKit, but neither the Docker entrypoint nor any other opened page names a checkpoint file, a checkpoint version or the origin of the served model weights, so the weights are unverified.
+acknowledgements: []
+last_verified: "2026-10-21"

@@ -1,0 +1,172 @@
+---
+title: Screening prevalence, affinity scales, and transfer
+description: Interpret pose, binder, affinity, enrichment, and repurposing claims only under their target, assay, prevalence, and follow-up contracts.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="dti-screening/screening-prevalence-and-transfer" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will distinguish a pose hypothesis from a binding claim, calculate simple
+ranking quantities at declared prevalence, and assess whether a virtual-screening
+or repurposing result transfers to a new target–assay decision. Read [Screening
+and affinity](/learn/dti-screening/screening-and-affinity/) and [Regression and
+classification errors](/learn/qsar-properties/regression-classification-errors/)
+first. This is a browser/handworked reasoning lesson, not a runnable screening,
+docking procedure, activity claim, or experimental protocol.
+
+## Four outputs, four different objects
+
+A **pose** is a hypothesis for a ligand's geometry and contacts in a declared
+target state. A **binder classification** labels or ranks a compound relative to
+an assay-defined binding outcome. **Affinity regression** targets a numerical
+endpoint such as `pK = −log10(K in mol/L)` or a stated `pIC50`; these are not
+interchangeable. **Virtual screening** prioritizes a finite candidate library for
+a next action. Repurposing adds a source indication, target hypothesis,
+formulation and exposure constraints, so it is not simply screening a familiar
+compound catalogue.
+
+Every output needs its decision unit. At minimum record target identity and
+state, ligand representation and protonation assumptions when relevant, assay
+endpoint and units, selection population, and follow-up action. A chemically
+plausible pose does not prove binding. A binary label derived from a threshold
+does not provide reliable ordering among binders. A strong rank correlation
+within one assay may fail at the top of a different library. Confusing these
+objects is a direct route to favourable but unusable comparisons.
+
+## Binding modes are hypotheses, not structures in evidence clothing
+
+A docking score or generative pose can be useful when it proposes contacts that
+would distinguish a binding mode from alternatives. It is weak evidence when
+target state, protonation, water, flexibility, or assay correspondence is
+unresolved. A pose may be physically impossible even if a model score is high;
+pose plausibility checks ask a different question from affinity or activity.
+Conversely, a measured binder can have a wrong predicted pose. The right follow-up
+is dictated by the decision: a pose-sensitive structure experiment, a defined
+analogue contrast, or a binding assay may each test different links.
+
+## Prevalence makes classification precision conditional
+
+Let sensitivity `Se = P(positive call | active)`, specificity
+`Sp = P(negative call | inactive)`, and prevalence `π = P(active)` in the
+selection population. Then positive predictive value is
+
+`PPV = Se·π / (Se·π + (1 − Sp)·(1 − π))`.
+
+`PPV` is the expected fraction of true actives among positive calls under those
+assumptions, not a portable model property. Enrichment at a fixed top fraction
+also needs the library composition. If `N` compounds contain `A` actives and the
+top `k` contains `a_k` actives, then `EF_k = (a_k/k)/(A/N)`. It is undefined
+when `A = 0`; it is sensitive to the active/decoy construction and to `k`.
+
+This is why decoys are not benign negatives. DUD-E-derived comparisons can carry
+analogue and decoy bias, including results in which ligand-only information
+explains apparently structural performance [Chen et al.](https://pubmed.ncbi.nlm.nih.gov/31430292/).
+LIT-PCBA was built from processed dose-response assay data with confirmed active
+and inactive compounds and explicit design choices; it is still a benchmark,
+not a natural deployment population [Tran-Nguyen et
+al.](https://pubmed.ncbi.nlm.nih.gov/32282202/).
+
+## Worked case: a constructed shortlist
+
+All values below are **constructed for teaching**. A library has `N = 1,000`
+compounds and `A = 20` assay-defined actives, hence `π = 0.020`. A model's top
+`k = 50` contains `a_k = 8` actives. Its enrichment is
+`EF_50 = (8/50)/(20/1000) = 0.16/0.02 = 8`. This says the top 50 have eightfold
+the constructed library prevalence; it does not tell us a hit rate in a new
+library, a binding mechanism, or an in-vivo effect.
+
+Suppose a separate classifier is described by constructed `Se = 0.80`,
+`Sp = 0.90`, and the same `π = 0.020`. Then
+`PPV = (0.80×0.020)/((0.80×0.020)+(0.10×0.980)) = 0.016/0.114 = 0.140`, or
+14.0%. Even apparently good sensitivity and specificity leave most positive
+calls false under low prevalence. If the deployed library had `π = 0.10` with
+the same artificial `Se` and `Sp`, `PPV = 0.08/(0.08+0.09) = 47.1%`. The change
+comes from prevalence, not from model improvement.
+
+For transfer, imagine the score was trained on inhibitor-labelled assay records
+for target state T1 and is used to nominate agonist-like molecules for T2. The
+output has crossed target, state, phenotype, assay, and prevalence boundaries.
+The honest claim is a hypothesis for a new shortlist, with a documented library
+and predeclared follow-up—not “repurposing validation.” A known drug's prior
+human use does not establish target engagement or adequate exposure for a new
+mechanism.
+
+## Alternatives, limits, and independent exercise
+
+PR curves retain precision dependence on prevalence, whereas ROC curves summarize
+ranking across thresholds and can look stable while practical precision changes.
+Report both only when the label definition and population are shared. Scaffold or
+target-family splits test a more difficult representation shift, but cannot by
+themselves make historical assay labels causal or make a retrospective benchmark
+prospective. For pose work, report the target state and a physical plausibility
+check separately from any enrichment number.
+
+**Handworked exercise (not runnable or empirical):** A constructed library has
+`N = 500`, `A = 10`; its top `k = 25` contains `a_k = 3`. Calculate `EF_25`.
+For a classifier with `Se = 0.75`, `Sp = 0.95`, and `π = 0.020`, calculate PPV.
+Name one missing field that prevents a pose score from becoming a binding claim,
+and one requirement before calling a repurposing shortlist transferable.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+`EF_25 = (3/25)/(10/500) = 0.12/0.02 = 6`. The classifier has
+`PPV = (0.75×0.020)/((0.75×0.020)+(0.05×0.980)) = 0.015/0.064 = 23.4%`.
+A declared target state, ligand protonation assumption, assay endpoint, or
+independent binding evidence is needed before a pose score becomes a binding
+claim. Transfer requires at least a matched target–state–assay decision contract
+and a predeclared follow-up in the new selection population; historical use of a
+compound is not enough.
+
+</details>
+
+## Move the definitions and watch the benchmark change
+
+Prevalence is one of several choices that decide what a binder dataset is. The
+[binder definition lab](/labs/binder-definition/) holds twelve molecules fixed and
+moves the rest: the positive count more than doubles across a grid of cutoffs,
+four compounds are filed by an assay uncertainty they sit inside, two thirds of
+the enlarged negative class was never measured, and six positives turn out to
+occupy three scaffolds.
+
+## Check a real transport claim
+
+The [screening transport lab](/labs/screening-transport/) reads this repository's
+own completed two-assay replay and expresses both contexts in recovered targets,
+the only unit that makes them comparable. It shows that the two assays measure in
+steps 4.92 times apart, that the whole five-instance baseline spread is under two
+targets in both, and that the result which sounds most decisive is supported by
+an eighth of a single target.
+
+## Judge one pose three ways
+
+The [EGFR structure evidence lab](/labs/egfr-structure-evidence/) places each of three
+experimental ligands into each receptor state and then moves one crystal pose in two
+declared ways. Both constructed poses pass a 2 A RMSD convention, one having lost the
+hinge contact and the other clashing with 4 atoms, which is why a binding-mode
+hypothesis needs more than one criterion.
+
+## Sources and next lesson
+
+The following primary papers were opened on 2026-09-09. They support benchmark
+and interpretation boundaries, not the constructed calculations.
+
+<div data-case-sources>
+
+- [LIT-PCBA: An Unbiased Data Set for Machine Learning and Virtual Screening](https://pubmed.ncbi.nlm.nih.gov/32282202/)
+- [Hidden bias in the DUD-E dataset leads to misleading performance](https://pubmed.ncbi.nlm.nih.gov/31430292/)
+- [DUD-E: A Database of Useful (Docking) Decoys — Enhanced](https://dude.docking.org/)
+- [PoseBusters: AI-based docking methods fail to generate physically valid poses](https://pubmed.ncbi.nlm.nih.gov/38425520/)
+
+</div>
+
+Continue to [Docking, pose generation, and physical validity](/learn/dti-screening/docking-and-pose-validity/)
+to separate a pose's geometric accuracy from its physical plausibility.
+Original lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-09.

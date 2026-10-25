@@ -1,0 +1,82 @@
+---
+title: Entity kinds and identifiers
+description: Read a measurement as a relation among a tested molecule record, its parent, an assay, a target and a document.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="foundations/entity-kinds-and-identifiers" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After this lesson you should be able to name the kind of entity behind each identifier in a ChEMBL activity row, distinguish a tested molecule record from its parent, and explain what a shared target does and does not allow you to compare. Read [Source and entity literacy](/learn/foundations/source-and-entity-literacy/) and [The scope of one decision unit](/learn/foundations/decision-unit-scope/) first. The [entity glossary laboratory](/labs/entity-glossary-audit/) makes the counting rule executable.
+
+## The five named kinds
+
+An activity number is attached to several things at once. A molecule record names the tested form. Its parent identifier supplies the grouping unit declared for this count. An assay identifies the measurement system, a target identifies what the assay was directed against, and a document identifies the publication. These are different relations to a reported value. The same characters in two identifier fields would not make their meanings the same.
+
+| Entity kind | ChEMBL field | Question answered |
+| --- | --- | --- |
+| Molecule record | `molecule_chembl_id` | Which stored form was tested? |
+| Parent molecule | `parent_molecule_chembl_id` | Under which parent is this form grouped? |
+| Assay | `assay_chembl_id` | Which measurement system produced the row? |
+| Target | `target_chembl_id` | Against which recorded entity was it measured? |
+| Document | `document_chembl_id` | Where was it reported? |
+
+This distinction matters whenever someone reports a count. The number of molecule records, parent molecules, assays and documents answers four different questions. A target count answers yet another. None can stand in for an independent measurement count, which first requires an admission rule and a grouping key.
+
+## Molecule records and parents
+
+In bioactivity discussion, compound often means the entity being compared. The database still supplies a tested molecule record and a parent grouping, so a count must name which one it uses. Some parents are formulations, and the word compound alone does not resolve that ambiguity.
+
+ChEMBL may assign a salt its own molecule record and map that record to a parent. The two identifiers then represent one parent-level substance for this laboratory's grouping rule, while still recording that a different form was tested. This is a database relationship and a declared counting choice. It does not establish that formulations are chemically interchangeable or that two identifiers may be merged in another analysis.
+
+For this teaching cohort the protocol declares 15 seed molecule records resolving to 10 parents. Only 9 parents have admitted point rows. Among the admitted rows, 71 name a molecule record different from its parent. These rows involve 6 child-form identifiers. The 5 declared salt seeds account for 65 such rows. The other child identifier is left as a child form because the cached seed records do not name its chemical form.
+
+## Worked case
+
+The frozen ChEMBL 37 admission rule retains curated point rows for AC50, EC50, IC50, Kd or Ki in nM. It yields 488 admitted rows. Grouping by parent, assay, document and endpoint yields 486 independent measurements. One group contains two molecule-record identifiers. Counting one identifier per group would erase that observed disagreement. Counting row uses instead gives 488 uses of each of the five fields, or 2,440 uses altogether.
+
+| Kind over admitted rows | Distinct identifiers |
+| --- | ---: |
+| Molecule record | 15 |
+| Parent molecule | 9 |
+| Assay | 481 |
+| Target | 100 |
+| Document | 221 |
+| Sum across kinds | 826 |
+
+The 100 target identifiers include 21 with measurements for more than one molecule record. That is enough to locate candidate within-target comparisons. Before comparing values, inspect assay conditions, endpoint type, organism and relation. A shared target alone does not make two results commensurate.
+
+## Independent exercise
+
+Consider a constructed set of 3 admitted rows. Row A names molecule M, parent P, assay X, target T and document D. Row B names molecule N, the same parent P, assay X, target T and document D. Both rows have the same endpoint. Row C names molecule M, parent P, assay Y, target U and document E. Suppose N is a declared salt of P. Count the distinct identifiers of each kind, count independent measurements using the parent, assay, document and endpoint key, and identify which target supports a comparison of more than one molecule record.
+
+<details>
+<summary>Worked answer</summary>
+
+The 3 rows name 2 molecule records, 1 parent, 2 assays, 2 targets and 2 documents. They form 2 independent measurements because A and B share the full grouping key. T has rows for both M and N, while U has only M. B is the row whose molecule record differs from its parent. The shared target and grouped measurement do not prove that M and N are chemically equivalent.
+
+</details>
+
+## What this material does not show
+
+The cached activity rows carry no complex, cell-state, patient or therapeutic-candidate identifier. Each of the 488 admitted rows lacks an identifier for each of those kinds. That absence limits claims about them; it does not imply that every row ought to name one. A target identifier is not a disease label, and a document identifier is provenance rather than proof that a value is correct. The cohort was chosen to exercise a counting rule, so its proportions do not estimate ChEMBL-wide frequencies or drug effects.
+
+## Run the audit
+
+Mode is fresh independent computation over the frozen local snapshot, with no network after caching and no accelerator. Use Python 3.11. The download command validates and copies the existing cache. The inspector writes nothing, and the exporter replaces only the compact summary after checks pass.
+
+```bash
+.venv/bin/python labs/entity_glossary_audit/run_lab.py download
+.venv/bin/python labs/entity_glossary_audit/inspect_entity_glossary_audit.py show
+.venv/bin/python labs/entity_glossary_audit/inspect_entity_glossary_audit.py check
+.venv/bin/python labs/entity_glossary_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/entity_glossary_audit -q
+```
+
+## Sources and attribution
+
+The Atlas source IDs are `dataset-chembl-activity` and `db-chembl-37`. The [ChEMBL 37 release README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README), [schema documentation](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/schema_documentation.txt) and [release licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) were read for the cached source on 2026-10-21. This lesson's counts come from the laboratory's 2026-10-23 computation of that validated cache. ChEMBL data retain Creative Commons Attribution-ShareAlike 3.0 Unported terms. Original lesson prose is CC BY 4.0 and laboratory code is Apache-2.0. Last reviewed on 2026-10-23.

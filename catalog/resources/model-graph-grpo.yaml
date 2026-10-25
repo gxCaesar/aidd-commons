@@ -1,0 +1,65 @@
+id: model-graph-grpo
+name: Graph-GRPO
+kind: model
+summary: "Graph-GRPO is an online reinforcement-learning framework that aligns graph flow models with verifiable rewards, using a differentiable analytic transition probability and an iterative refinement strategy."
+canonical_url: https://github.com/Zhubaoheng/Graph-GRPO
+identifiers:
+  - scheme: paper
+    value: "Graph-GRPO: Training Graph Flow Models with Reinforcement Learning; arXiv 2603.10395"
+    url: https://arxiv.org/abs/2603.10395
+stages: [design, lead-optimization]
+modalities: [small-molecule, molecular-graph]
+tasks: [molecular-generation, goal-directed-optimization]
+relations:
+  - type: uses
+    target: model-defog
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [checkpoints-collection] }
+  architecture: { value: unverified }
+  data_recipe: { value: available, evidence: [model-graph-grpo-readme] }
+  training_data: { value: available, evidence: [model-graph-grpo-readme] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: "repository source code only, with the notice to be retained; the published checkpoint collection is covered by a separate licence"
+    evidence: [license]
+  - name: Apache-2.0
+    scope: "the pretrained and RL-finetuned task checkpoints in the Hugging Face collection; the collection page states the licence identifier only, with no additional conditions or attribution text"
+    evidence: [checkpoints-collection]
+evidence:
+  - id: repository
+    url: https://github.com/Zhubaoheng/Graph-GRPO
+    label: Zhubaoheng/Graph-GRPO repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: paper
+    url: https://arxiv.org/abs/2603.10395
+    label: arXiv abstract for the Graph-GRPO paper (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: readme
+    url: https://raw.githubusercontent.com/Zhubaoheng/Graph-GRPO/main/README.md
+    label: Graph-GRPO README
+    supports: [relations, caveats, acknowledgements]
+  - id: checkpoints-collection
+    url: https://huggingface.co/BaohengZhu/Graph-GRPO-checkpoints
+    label: Graph-GRPO Hugging Face checkpoint collection
+    supports: [caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/Zhubaoheng/Graph-GRPO/main/LICENSE
+    label: Graph-GRPO MIT LICENSE
+    supports: []
+  - id: model-graph-grpo-readme
+    url: https://raw.githubusercontent.com/Zhubaoheng/Graph-GRPO/HEAD/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The README states that the base graph model is pretrained on ZINC250k for the molecular tasks, and ZINC is a public corpus.
+  - The Hugging Face collection page lists the Apache-2.0 identifier, states no further conditions and carries an empty README, so the scope of the weight licence is only as wide as that identifier.
+  - The README states no licence or usage terms for the ZINC250k, Planar, Tree or SBM datasets.
+  - The README describes the model as a DeFoG-style discrete flow model whose released DeFoG weights can be used directly, so the two checkpoint sets are not independent artifacts.
+acknowledgements:
+  - The README acknowledges DeFoG, Flow-GRPO, mol_opt, GDPO, PyTDC and AutoDock Vina.
+last_verified: "2026-10-23"

@@ -1,0 +1,276 @@
+---
+title: 选择科学智能体资源与评测
+description: 将文献问答、化学工具和生物数据分析对应到合适资源，再区分答案正确与工作完成。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+import ResourceGuideTables from "../../../../../components/ResourceGuideTables.astro";
+
+<LessonProgress lessonId="scientific-agents/agent-resource-guide" />
+<ScrollableRegions />
+<ResourceGuideTables />
+
+英文原文：[Choosing scientific-agent resources and evaluations](/learn/scientific-agents/agent-resource-guide/)。
+
+## 学习目标与前置知识
+
+按资源实际执行的工作进行选择，保留任务和软件版本，并区分答案正确与有依据的执行
+声明。先读[检索、类型化工具与反馈环](/zh-cn/learn/scientific-agents/retrieval-tools-feedback/)。
+本页必修内容是阅读、手算与可选的配置检查，不需要 API key、模型调用、基准下载或
+实验室权限。可选 notebook 现可读取已完成的本地文档集成示例，但它不是自主智能体复现或基准评测。
+
+## 找出缺少的能力
+
+从请求的输出开始。带引用的解释需要相关文档，计算统计量需要数据与分析，湿实验结果
+需要经过授权的实验和有效对照。语言模型表达流畅，不能替代这些缺失的输入。
+
+| 所需能力 | 资源 | 要检查的输入与输出边界 |
+| --- | --- | --- |
+| 生物医学文本建模 | [BioGPT](/atlas/model-biogpt/) | 文本和模型配置 → 生成文本或任务预测；不是完整的检索或行动工作流。 |
+| 从文档中收集证据 | [PaperQA2](/atlas/agent-paperqa/) | 问题、提供的文档与配置的模型 → 检索证据和带引用的回答。 |
+| 调度化学工具 | [ChemCrow](/atlas/agent-chemcrow/) | 化学问题、模型和可用工具 → 工具观察与回答。 |
+| 生物学问答评测 | [LAB-Bench](/atlas/benchmark-lab-bench/) | 问题、选项及适用的图像 → 提交的选项与评测结果。 |
+| 计算生物学智能体评测 | [BixBench](/atlas/benchmark-bixbench/) | 与问题关联的数据 capsule 和执行设置 → 分析轨迹、notebook 及单独评分的答案。 |
+
+它们是不同类型的对象，不是同一排行榜上的竞争者。
+[BioGPT 仓库](https://github.com/microsoft/BioGPT)实现生物医学文本生成与挖掘。
+给这类模型接上工具，并不能证明检索正确、执行安全或生物学结论有效。
+
+## 选择之前先读实现边界
+
+[PaperQA2 的 README](https://github.com/Future-House/paper-qa#paperqa2-vs-paperqa)
+区分系统名称与软件包版本，包括从 2025 年 12 月开始采用日历版本号。公开的本地文档
+用法，也不同于论文实验中借助无法全部共享的访问权限和工具检索更大文献集合。
+预先提供已知相关的 PDF 会改变检索问题。应记录这种辅助，不能将其称为复现不受
+候选文档限制的文献检索。
+
+[ChemCrow 公开 README](https://github.com/ur-whitelab/chemcrow-public#%EF%B8%8F-note)
+说明 API 限制使部分论文工具无法收入公开仓库，因此不能得到相同的论文结果。
+改用任一系统前，先明确实际模型、文档集合和可调用服务。仓库许可不提供凭据、模型
+权重、论文访问权，也不授权把保密材料发往外部服务。Atlas 将源代码许可与这些资产
+分开记录。本页不声称有关服务当前可用。
+
+## 默认零 API 费用的接入路线
+
+教程默认使用本地模型；免费托管 API 是可选替代，付费服务只放在进阶比较中。
+“零 API 费用”不等于零成本：仍需要电脑内存、模型下载、磁盘、电力和运行时间，
+也不表示本地模型达到论文模型的能力。
+
+| 路线 | 教程中的位置 | 需要保留的限制 |
+| --- | --- | --- |
+| PaperQA + Ollama 本地模型 | 默认的已提供文档路线，附五题真实示例和可编辑 notebook。 | 不做互联网文献发现，也不代表复现 PaperQA2 论文智能体；五个示例不能证明通用可靠性。 |
+| 免费额度的托管 API | 电脑不能运行本地模型时的可选路线。 | 需要账户，额度和可用模型会变化；材料会离开本机，不自动启用。 |
+| BixBench、ChemCrow 或付费模型 | 进阶适配与对照，不作为入门依赖。 | 主模型、评分器和每个外部工具都要分别检查，不能只替换一个 API key。 |
+
+例如，[Groq 的官方限额页](https://console.groq.com/docs/rate-limits)区分免费方案的
+限额。免费额度不是不限量或永久免费的承诺。本教程不配置托管回退；本地模型不可用
+时应停下来报告原因，不自动切换到付费服务。
+
+### 从真实答案 notebook 开始
+
+下载<a href="/downloads/labs/paperqa_local/paperqa_local_tutorial.ipynb" download>英文 notebook</a>、
+<a href="/downloads/labs/paperqa_local/paperqa_local_tutorial.zh-CN.ipynb" download>中文 notebook</a>，或
+<a href="/downloads/labs/paperqa_local/reviewed-example.json" download>真实答案与附署名的来源文本</a>。
+两份 notebook 均可独立运行：用 Jupyter 打开，或通过 Colab 的 **File → Upload notebook** 上传。
+默认 cell 读取嵌入结果，不发网络请求、不调用模型，不需要 API key 或 GPU；学生报告写入新目录，
+不改动已有真实答案。通用执行与恢复方法见 [notebook 环境指南](/zh-cn/labs/notebook-guide/)。
+
+本地集成于 2026 年 9 月 10 日完成，采用 `paper-qa[pypdf]==2026.8.12`、Ollama 0.33.3、
+`qwen3:8b` 和 `nomic-embed-text:v1.5`。RTX A6000 上的索引与问答阶段耗时 **109.368 秒**，
+不含安装与下载；采样显存峰值为 **7.334 GB**，不是最低硬件要求。五题均产生答案；四个事实题
+的核心回答有原文支持，共同 benchmark 划分问题得到证据不足的回答。这是助手对来源的复核，
+不是人类评分的准确率。
+
+不足也保留在教学中。Open Babel 工具题正确给出两个搜索格式，却在扩写中把分子摘要生成功能归给
+它们；原文将该功能归于 report format。拒答只引用一个 Open Babel 片段，不能证明两篇全文都没有
+相关信息。Notebook 将原文、模型摘要和完整答案分开，随后要求读者纠正功能与格式的对应关系，
+而不是重新生成一个偏好的答案。
+
+索引和问答 cell 可分别编辑，但默认关闭。开启它们需要已经准备好的本地模型服务，并会生成新的
+学生输出。已观察的批处理运行来自 SDK helper；首次 CPU-only 实时尝试在首篇文档 embedding
+时触发 150 秒索引超时，没有产生新答案。随后，一个 CPU 执行副本使用四个模型线程、零 SDK
+重试和 600/2400 秒的文档/问题时限，在 **774.12 秒**内完成全部 12 个代码 cell。新答案正确
+指出 Open Babel 2.3 可互转超过 110 种格式，但扩写包含无充分支持的可靠性保证，并扩大了
+转换测试的结论范围。首次失败和未经改写的新答案均独立保留，不替换原有五个示例。这只验证了
+修改后的执行副本，不验证未修改的默认 CPU 时限，也不代表整体回答质量。
+中英文离线分支均已执行，包括把真实证据片段替换为虚构文本后应被拒绝的测试。该检查验证来源复制，
+不验证语义蕴含。已记录的 Python socket 只连接本地端点，但这不能审计原生库网络行为或独立服务进程。
+
+两个版本现在都在模式开关旁边用 `EXECUTION_PROFILE` 常量写出这份预算，让开启实时推理的读者
+主动选择上限，而不是被动继承。`as-observed` 保持已观测批次（使用 GPU）所用的上限，其中就包括
+让首次 CPU 尝试停止的 150 秒索引时限。`cpu-extended` 复述通过验收的执行副本所用的四个线程、
+零重试与 600/2400 秒时限；该副本约有 **708.61 秒**花在单个问题上，已经超过 `as-observed`
+的问题时限。配置只改变线程与超时：notebook 会去掉传输类上限后比较改动前后的设置，并拒绝任何
+会改动模型、检索或回答字段的配置。选择 CPU 配置复制的是一台机器的预算，不是它的结果；已发布
+notebook 的无人值守 CPU 运行仍未通过验收。
+
+### 先检查配置，不下载模型
+
+下载<a href="/downloads/configs/scientific-agents/paperqa-local.json" download>本地配置</a>和
+<a href="/downloads/scripts/agents/check_local_profile.py" download>配置检查脚本</a>，放在同一目录。
+使用 Python 3.11 或更新版本运行：
+
+```bash
+python3 check_local_profile.py paperqa-local.json
+```
+
+预期输出：
+
+```text
+PASS: supported local-only configuration; SDK validation and inference not run.
+```
+
+这一步只有 Python 标准库，不需要安装 PaperQA 或 Ollama，也不会发起网络请求。
+配置面向 `paper-qa==2026.8.12`，其上游源码标签为 `v2026.08.12`。
+默认回答和摘要模型为 `qwen3:8b`，嵌入模型为 `nomic-embed-text:v1.5`，全部模型
+角色指向 `http://127.0.0.1:11434`。检查器拒绝缺失角色、云端地址、额外回退项及
+未支持的配置；它不是通用 PaperQA 配置校验器。
+
+### 新运行的安装与调用边界
+
+需要真实推理时，再单独安装 [Ollama](https://docs.ollama.com/quickstart) 和
+`paper-qa[pypdf]==2026.8.12`，下载
+[Qwen3 8B](https://ollama.com/library/qwen3:8b) 与
+[Nomic embedding v1.5](https://ollama.com/library/nomic-embed-text:v1.5)。
+官方页面标示的模型文件约为 `5.2 GB` 和 `274 MB`，合计约 `5.5 GB`，不含软件、
+缓存和运行时内存；这不是最低内存需求或速度测量。两个模型各有自己的许可。
+
+按 [Ollama 官方说明](https://docs.ollama.com/faq)，本地服务进程可用
+`OLLAMA_NO_CLOUD=1 ollama serve` 禁用云端功能。该设置要用于真正运行的服务
+进程，而不只是问答客户端；已有服务需要先按其正常管理方式停止，避免启动第二份。
+不要仅凭 localhost 地址宣称系统已断网：代理、依赖包及其他工具仍需要独立检查。
+
+配置按[该版本的 Settings 源码](https://github.com/Future-House/paper-qa/blob/v2026.08.12/src/paperqa/settings.py)
+设计。它同时覆盖回答、摘要、agent、嵌入及 enrichment 模型，关闭文档元数据检索
+和多模态补全。接入 Python SDK 时，JSON 外层是教程封装，只有 `settings` 字段
+传给 `Settings`；`embedding_ndim=768` 必须显式传给嵌入对象。下面只展示对象
+接线，**不执行问答**。真实集成另加 notebook 中显式的 `ollama_chat/` 接口与有界生成设置；
+基础配置检查本身不是推理测试：
+
+```python
+from check_local_profile import load_profile
+from lmi import LiteLLMEmbeddingModel
+from paperqa import Settings
+
+profile = load_profile("paperqa-local.json")
+settings = Settings(**profile["settings"])
+embedding = LiteLLMEmbeddingModel(
+    name=settings.embedding,
+    ndim=profile["embedding_ndim"],
+    config=settings.embedding_config,
+)
+```
+
+实际文档问答应遵循[该版本的 Docs 接口](https://github.com/Future-House/paper-qa/blob/v2026.08.12/src/paperqa/docs.py)，
+在 `Docs.aadd` 与 `Docs.aquery` 两处都传入同一份 `settings` 和
+`embedding_model=embedding`。第一步只使用获准处理的本地纯文本，并在添加文档时
+显式提供正确的 `citation`、`docname`、`dockey` 和 `title`。不要照抄省略配置的
+默认示例，也不要改用 `ask`、URL 添加或默认 CLI agent，后者会改变工具与访问范围。
+固定问答流程不是对自适应规划收益的检验。
+
+BixBench 的 agent 可经模型路由层适配，但开放答案评分器也可能调用付费模型。
+改用人工评分或本地评分器必须记录为评测变体，不能声称得到相同的官方分数。
+[ChemCrow 的模型工厂](https://github.com/ur-whitelab/chemcrow-public/blob/main/chemcrow/agents/chemcrow.py)
+还限制模型名称路径；本地模型不是改一个名称就能运行，且外部化学工具的依赖不会
+随聊天模型一起消失。这两项本轮没有实施或运行。
+
+配置检查已包含将真实配置改成云端地址、遗漏模型角色和加入回退项的失败测试。
+它只验证上述配置约束，不证明 SDK 可用、机器断网、引用正确或任务完成。真实示例补充了执行结果
+与来源检查，但每次新运行仍需检查模型是否加载、是否有未预期的外部调用，以及引用是否支持原句。
+
+## 保持评测任务不变
+
+[LAB-Bench 的接口](https://github.com/Future-House/LAB-Bench#defining-an-agent)
+接收问题、选项和适用的图像，返回一个选项字母。公开部分不是作者保留的私有测试
+部分。应写清任务类别、来源访问范围、工具设置和评测部分；选对答案并不表示实际执行
+了实验室操作。
+
+[BixBench 数据卡](https://huggingface.co/datasets/futurehouse/BixBench)
+记录了 2025 年 9 月对题目的实质修订，并区分原始 `v1.0` 与修订后的 `v1.5`。
+版本变化可能改变题目是否可回答，不能合并两版分数。托管页面的 `train` 分区名是
+存储标签，不是拿评测答案训练的理由。如果例题进入教程、prompt 开发集或模型上下文，
+就必须把这种接触排除在“未见任务评测”的声明之外。
+
+其[评分入口](https://github.com/Future-House/BixBench/blob/main/grade_outputs.py)
+对选择题与开放答案采用不同路径，后者可以调用语言模型评分器。评分器配置属于结果
+定义。脚本还会把评分列写回输入 CSV，因此跟随上游操作时应保留原件，在工作副本上
+评分。[执行说明](https://github.com/Future-House/BixBench#agentic-evaluations)
+区分轨迹生成与后处理。本页不执行这些操作。
+
+## 构造案例：对同一份提交提出两个问题
+
+一次**虚构教学检查**审阅来自 `4` 个源数据 capsule 的 `12` 个分析问题，并非上述
+任一基准的结果。检查前，为每题分别定义两个判据：
+
+- **答案检查：**报告的答案是否在声明的容差内符合参考答案？
+- **执行记录检查：**提交记录是否标明所需输入和已完成的分析，提供可检查的输出，
+  且不存在未解决的执行错误？该判据本身不验证统计方法。
+
+| 答案检查 | 执行记录检查 | 题目数 |
+| --- | --- | --- |
+| 通过 | 通过 | `6` |
+| 通过 | 未通过 | `3` |
+| 未通过 | 通过 | `2` |
+| 未通过 | 未通过 | `1` |
+
+答案通过比例为 `(6 + 3) / 12 = 75%`。执行记录通过比例为
+`(6 + 2) / 12 = 66.7%`，保留一位小数。两项同时通过的比例为 `6 / 12 = 50%`。
+这些是本练习定义的描述性计数，不是 LAB-Bench 或 BixBench 的官方指标。任一边际
+比例都不能替代联合结果。
+
+例如，从答案表复制正确数字，可能通过第一项检查，却没有展示任何分析。使用错误
+样本组的完整 notebook 可能通过记录检查，却回答了错误的科学问题。即使是六个联合
+通过的题目，也仍需科学审查才能形成生物学结论。记录判据有意比方法正确性更窄。
+
+共享 capsule 的问题可能共享数据、代码和失败原因。这不是 `12` 项独立研究：材料
+仅包含 `4` 个源 capsule，且它们之间的独立性尚未确认。缺少逐 capsule 结果，因此
+这张表不能证明对新数据集的泛化。重复调用评分器不会产生新的生物学样本。
+
+## 有用的比较与低成本起步阅读
+
+把收益归因于自适应规划之前，应与使用相同模型、工具、文档、数据和权限边界的合格
+固定工作流比较。固定工作流可以包含预先声明的恢复与拒答分支。先冻结任务集、评分器
+与预算，并保留失败或拒答的任务。本课提出这种比较，不报告任一设计获胜。
+
+第一次阅读可从上表选一个资源，找出一个输入、一个可观察输出和一个尚不可用的依赖，
+再写出这些对象能支持的最窄声明。对于文献回答，检查引用段落是否支持确切的物种、
+测定与终点。对于数据分析，检查实际队列和数据转换，而不只看最终数字。这两种活动
+都不需要运行智能体。
+
+## 独立练习
+
+第二份**构造材料**包含来自 `5` 个源 capsule 的 `10` 个问题。答案通过 `7` 题，
+执行记录通过 `6` 题，两项同时通过 `5` 题。重建上表的四个格子，计算三个通过比例，
+并说明为什么五个评分器意见一致，不证明有五次独立复现。如果必需的来源文档无法
+访问，系统应报告什么？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+两项同时通过 `5` 题；仅答案通过 `7 - 5 = 2` 题；仅记录通过 `6 - 5 = 1` 题；
+两项均未通过 `10 - 5 - 2 - 1 = 2` 题。答案、记录和联合通过比例依次为
+`7 / 10 = 70%`、`6 / 10 = 60%` 和 `5 / 10 = 50%`。
+评分器检查的是相同的底层输出，没有增加源数据。即使有五个 capsule，也不自动构成
+独立的生物学研究。应报告无法访问的文档及因此尚未解决的声明，不能编造证据或悄悄
+改变允许的来源集合。拒答是可观察的结果，不是答案为假的证明。
+
+</details>
+
+## 来源与复用边界
+
+<div data-case-sources>
+
+- [PaperQA2：实现与复现限制](https://github.com/Future-House/paper-qa)
+- [ChemCrow：公开工具集合](https://github.com/ur-whitelab/chemcrow-public)
+- [LAB-Bench：官方评测接口](https://github.com/Future-House/LAB-Bench)
+- [BixBench：评测模式与执行](https://github.com/Future-House/BixBench)
+- [BixBench 数据：版本修订说明](https://huggingface.co/datasets/futurehouse/BixBench)
+
+</div>
+
+案例是原创构造示例，不是复制的基准题目。未运行上游智能体、基准、付费 API 或湿
+实验。本页未测量基准得分或读者学习效果。原创正文采用 CC BY 4.0；链接的代码、
+数据集与第三方来源保留各自条款。
+
+最后审阅：2026-09-09。

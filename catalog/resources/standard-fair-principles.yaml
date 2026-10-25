@@ -1,0 +1,37 @@
+id: standard-fair-principles
+name: FAIR Guiding Principles
+kind: paper
+summary: Primary article describing FAIR principles for scientific data stewardship.
+canonical_url: https://www.nature.com/articles/sdata201618
+identifiers: []
+stages: [data-intake, evaluation, governance]
+modalities: [scientific-data]
+tasks: [data-stewardship]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [terms-page] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC-BY-4.0
+    scope: covers the work, per the rights and permissions statement on the article page; third-party material named in a credit line is excluded from it
+    evidence: [terms-page]
+evidence:
+  - id: article
+    url: https://www.nature.com/articles/sdata201618
+    label: FAIR Guiding Principles primary article
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: terms-page
+    url: https://www.nature.com/articles/sdata201618
+    label: Nature article page, rights and permissions (reviewed 2026-10-23)
+    supports: []
+caveats:
+  - FAIR principles do not themselves grant data-use permission.
+acknowledgements: []
+last_verified: "2026-10-23"

@@ -1,0 +1,146 @@
+---
+title: 选择 ADMET、PK 与毒性资源
+description: 让科学问题对应资源实际能提供的实体、终点和证据层，而不是把所有 ADMET 信息混成一个分数。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Choosing ADMET, PK, and toxicity resources](/learn/admet-pk/admet-resource-guide/)。
+
+<LessonProgress lessonId="admet-pk/admet-resource-guide" />
+<ScrollableRegions />
+
+## 学习目标与边界
+
+请先读[ADMET 评估](/zh-cn/learn/admet-pk/admet-evaluation/)和[从清除率和暴露到
+PK/PD](/zh-cn/learn/admet-pk/exposure-clearance-pkpd/)。本页教的是资源选择与检查，
+不是运行模型、给药或毒理建议。最有用的第一问不是“哪个 ADMET 工具最好”，而是：
+**我有什么对象、什么终点、下一步要作什么决定？** 分子标识符、浓度—反应记录和
+个体浓度—时间曲线是不同实体。只连接其中一层的资源不能证明其余各层。
+
+先写一张简短请求卡：化学身份和形式；终点与测定系统；物种、给药途径、基质和
+时间；需要的输出；以及会改变决定的替代解释。“从一个 SMILES 预测安全性”没有
+终点、暴露语境和决策规则；“检索健康受试者口服 midazolam 后报告的半衰期”则是有
+明确实体和可检查输出的检索问题。
+
+## 按证据层选资源
+
+<table>
+  <thead>
+    <tr>
+      <th>问题与输入</th>
+      <th>有用输出</th>
+      <th>起点</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        能否检查一个透明的小分子 ADMET 建模例子？输入为化合物表和已命名终点。
+      </td>
+      <td>notebook 工作流、比较步骤与可检查的建模产物。</td>
+      <td>
+        <a href="/atlas/tutorial-openadmet-demos/">OpenADMET Demos</a>，再看{" "}
+        <a href="/atlas/tool-openadmet-models/">OpenADMET Models</a>。
+      </td>
+    </tr>
+    <tr>
+      <td>
+        应先检查哪一个化学身份及其关联证据？输入为名称、CAS 或结构关联标识符。
+      </td>
+      <td>Dashboard 记录及关联的化学、危害、暴露或生物活性语境。</td>
+      <td>
+        <a href="/atlas/db-comptox-chemicals-dashboard/">
+          CompTox Chemicals Dashboard
+        </a>
+        。
+      </td>
+    </tr>
+    <tr>
+      <td>某化学品和终点有哪些体外测定证据？</td>
+      <td>测定注释、由浓度—反应导出的记录及其处理语境。</td>
+      <td>
+        <a href="/atlas/dataset-toxcast/">ToxCast</a>；应检查测定本身，而非把
+        hit call 当作整体毒性。
+      </td>
+    </tr>
+    <tr>
+      <td>哪条已发表 PK 记录具有所需的研究、受试者、干预和输出实体？</td>
+      <td>可筛选的研究、组或个体、干预、输出和时间轨迹。</td>
+      <td>
+        <a href="/atlas/db-pk-db/">PK-DB</a>。
+      </td>
+    </tr>
+    <tr>
+      <td>明确的生理和化合物假设怎样产生浓度—时间模拟？</td>
+      <td>具有指定 building blocks 的 PBPK 项目和条件性的模拟曲线。</td>
+      <td>
+        <a href="/atlas/tool-pk-sim/">PK-Sim</a>。
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+第一行是**软件与教程**选择。OpenADMET Demos 用 CYP3A4 案例展示整理、训练、比较
+和对未见分子集合的应用；它不是已经发布的通用 CYP3A4 真值集。OpenADMET Models
+包含模型实现和训练程序。改用前必须检查终点定义、源记录、split 与选择规则。Atlas
+仅按页面明确文字登记源代码许可，不把它扩展为已发布权重或完整数据来源。
+
+中间各行属于**证据检索**，不是预测。CompTox 适合作为以身份为中心的入口；页面可
+整合实验和预测字段，因此要保留每个字段的来源，不能把显示的预测变成观测标签。
+ToxCast 是异质体外测定的 EPA 资源。其相关输入是化学品加测定或生物终点，输出是
+带浓度—反应处理的测定层证据；它不能回答候选物在人体暴露下是否安全。
+
+PK-DB 保留了扁平 ADMET 表常丢失的研究语境。浓度或半衰期只有与研究、个体或组、
+干预、基质或输出以及时间共同存在时才可解释。其网页和 REST 接口支持筛选与下载，
+但当前仓库的 [LICENSE](https://github.com/matthiaskoenig/pkdb/blob/develop/LICENSE)
+是 MIT，与 API 的 LGPL 标注冲突。Atlas 按源代码许可证登记，不将其扩展到导入记录。
+同样，[OpenADMET Models 的 LICENSE](https://github.com/OpenADMET/openadmet-models/blob/main/LICENSE)
+是 Apache-2.0，尽管 README 仍有 MIT 的冲突表述。
+[PK-Sim 的 GPL-2.0 许可附有 clarifying addendum](https://github.com/Open-Systems-Pharmacology/PK-Sim/blob/develop/LICENSE)。
+PK-Sim 不是数据仓库：它把个体或人群、化合物、制剂、给药方案等
+building blocks 合成 PBPK 模拟。因此曲线是输入模型的推论，不是新测得的 PK 证据。
+
+## 构造案例：先选择，后计算
+
+以下为**教学构造**。团队有一个中性小分子结构，并问“因 CYP3A4 风险低是否应优先
+推进”。没有给出测定、物种、剂量、浓度或比较对象，正确的第一输出不是排序。
+
+先用 [CompTox](/atlas/db-comptox-chemicals-dashboard/) 解析并检查化学记录，保留
+提交结构形式和每个匹配标识符。随后只用 [ToxCast](/atlas/dataset-toxcast/) 检查是否
+有相关测定与注释；缺失或阳性记录都不能决定 CYP3A4 抑制。若项目确实需要建模模板，
+再检查 [OpenADMET Demos](/atlas/tutorial-openadmet-demos/) 的 CYP3A4 示例和
+[OpenADMET Models](/atlas/tool-openadmet-models/) 实现，并在拟合前冻结数据来源和
+split。若决定改为已报告暴露，应在 [PK-DB](/atlas/db-pk-db/) 中查询匹配干预、人群、
+基质和时间轨迹或 PK 输出。只有汇齐化合物、生理与给药假设后，
+[PK-Sim](/atlas/tool-pk-sim/) 才是合适的模拟资源。
+
+这段文字只是选择计划，并未声称该分子有特定 liability、暴露或模拟结果；缺失的
+测定与暴露信息正是本案例的输出，不能用模型分数补齐。
+
+## 独立资源选择题
+
+一份报告要求：“比较健康成人口服 compound X 与大鼠 compound Y 的暴露，并评估线粒体
+毒性担忧。”应首先检查哪两项资源？哪些实体筛选条件不可丢失？为何 PK-Sim 不该是
+第一证据来源？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+先用 [PK-DB](/atlas/db-pk-db/) 找已发表 PK 记录，再用
+[ToxCast](/atlas/dataset-toxcast/) 检索体外线粒体测定。PK-DB 必须保留化合物身份、
+研究、物种、健康状态、途径、剂量、基质、采样时间或导出输出，以及记录代表个体
+还是组。不可把口服人体 AUC 与大鼠参数脱离这些限定直接比较。ToxCast 要保留化学
+身份、测定和终点注释、浓度—反应处理，以及它属于体外的事实。PK-Sim 只能在后续
+检验已声明的转化假设，不能替代观测 PK 记录或测定证据。
+
+</details>
+
+## 来源与访问说明
+
+以上 Atlas 条目于 2026-09-09 检查。它们区分源代码许可、数据访问、权重和 recipe；
+未验证字段不会因为网页可达而升级。任何资源都不能替代终点层测定审查、暴露测量或
+安全性结论。
+
+译文更新：2026-09-09。

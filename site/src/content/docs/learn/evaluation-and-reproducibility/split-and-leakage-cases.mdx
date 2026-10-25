@@ -1,0 +1,223 @@
+---
+title: Splits and leakage across three labs
+description: Work through molecule grouping, train-only fitting, correlated frames, and shared-label exposure using completed teaching cases.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="evaluation-and-reproducibility/split-and-leakage-cases" />
+
+## Before you start
+
+Read [Honest evaluation](/learn/evaluation-and-reproducibility/honest-evaluation/)
+and the distinction between records and entities in
+[Data contracts](/learn/data-governance/data-contracts/). You need only a browser
+and somewhere to write your answers. Do not download data, fit models, or
+reopen a completed evaluation for this exercise.
+
+The cases reuse the completed T05 ChEMBL comparison, T11 rMD17 energy lab and
+T15 retrospective campaign. The quoted proposals below are deliberately flawed
+teaching scenarios, not additional actions taken in those experiments.
+
+Your goal is to distinguish three things that a train/test percentage hides:
+
+- **Membership:** which entity or group must stay together?
+- **Information use:** which records may influence fitting or selection?
+- **Claim:** which new situation does this evaluation actually examine?
+
+A grouping key enforces membership. It does not, by itself, prove that groups
+are statistically independent or representative of future deployment.
+
+## Case 1: split rows or molecules?
+
+Open the ChEMBL lab's **Entity and label contract** and **Scaffold split**
+sections from the case materials below. Repeated eligible measurements are
+aggregated by parent before modelling, and whole scaffold groups are assigned
+to partitions.
+
+> “Randomly split the activity rows first. Repeated measurements add test
+> samples. Move a few parents between partitions to get exact percentages.”
+
+Write the grouping unit, the unit contributing an error to MAE, and one check
+that would reject this proposal. Explain why the realised train, validation
+and primary evaluation counts are **634, 136 and 132**, rather than the nominal
+targets **631, 135 and 136**. Then write a narrower generalization claim.
+
+<details data-worked-answer>
+<summary>Case 1 — worked answer</summary>
+
+The split assigns whole chirality-aware RDKit Bemis-Murcko scaffold groups.
+The label and prediction belong to a parent molecule; repeated assay rows are
+not extra evaluated parents. Splitting rows can put measurements of the same
+parent on both sides. Moving individual parents can also split a scaffold.
+
+- Check that each parent has one partition and that no scaffold key crosses
+  partitions. Counts alone cannot establish either property.
+- Whole groups can overshoot a nominal boundary. Both count lists sum to 902,
+  but matching that total does not justify changing membership. The realised
+  allocation preserves groups rather than exact percentages.
+- Ring-free molecules use `acyclic:<canonical isomeric SMILES>` keys here.
+  This is an explicit grouping convention, not proof that distinct acyclic
+  molecules are unrelated.
+
+A defensible statement is “evaluation on held-out scaffold keys within this
+primary assay under the declared grouping rule.” It does not imply generalization
+to all future EGFR chemistry, targets, or laboratories. Parent-level MAE is a
+descriptive aggregate; scaffold disjointness does not make every parent an
+independent replication.
+
+</details>
+
+## Case 2: what may influence a model?
+
+Read **Frozen representations** and **Completed evaluation and remaining
+boundaries** in the ChEMBL lab.
+
+> “Scaling uses no labels, so fit the imputer and scaler on all molecules.
+> Select alpha on validation, refit on train plus validation, and extend the
+> grid if the separate-assay score is disappointing.”
+
+For each proposed action, name the boundary it crosses in this lab. Distinguish
+computing a fixed fingerprint, learning preprocessing statistics, selecting a
+hyperparameter, and changing the study after evaluation.
+
+<details data-worked-answer>
+<summary>Case 2 — worked answer</summary>
+
+Descriptor imputation medians, means and scales are fitted on training parents
+only. A transform need not use labels to incorporate held-out information.
+Validation, primary evaluation and separate-assay molecules receive the same
+training-fitted transform; their feature distributions do not fit it.
+
+The fixed Morgan bit vector has no data-fitted preprocessing. Computing that
+declared representation is not the same as fitting a scaler on all molecules.
+Validation MAE selects each Ridge alpha from the frozen grid. In this specific
+protocol, the selected models remain training-only fits: no train-plus-validation
+refit is allowed. Such a refit can be specified in another study, but cannot be
+silently added to this one.
+
+Extending the grid after seeing an evaluation outcome makes that outcome part
+of development. Keep this run unchanged. A future study would need a declared
+selection plan and a new evaluation boundary, not another look at these same
+scores presented as untouched confirmation.
+
+The source parser reads records to enforce the declared entity and data
+contract. That access is distinct from using non-training records to fit a
+transform or using evaluation labels to select a model. The separate question
+of prior label exposure is addressed in Case 4. The general preprocessing rule
+is also explained in the
+[scikit-learn leakage guide](https://scikit-learn.org/stable/common_pitfalls.html#data-leakage).
+
+</details>
+
+## Case 3: ordered frames are not independent systems
+
+Read **Sampling and split**, **Feature and model contract**, and the completed
+results in the rMD17 lab.
+
+> “The indices increase across the split, so the evaluation frames are
+> independent. The same alpha works for benzene and uracil, proving that one
+> trained model transfers between molecular systems.”
+
+Describe what is shared and what is fitted separately. Does a positive index
+gap measure decorrelation time? Rewrite the claim without pooling frames into
+independent molecular-system replications.
+
+<details data-worked-answer>
+<summary>Case 3 — worked answer</summary>
+
+The procedure sorts by `old_indices`, samples declared ranks, then takes
+contiguous portions of that selected order: 600 training, 200 validation and
+200 evaluation frames per system. These are not simply the first 1,000 raw
+NPZ rows. Increasing indices and positive gaps describe ordering and spacing;
+they do not measure a decorrelation time or establish independent errors.
+
+The development-selected alpha is shared, but each system has its own
+training-fitted scaler, energy centering and Ridge coefficients. Benzene and
+uracil each contribute their own training frames. The feature channels can
+also differ with elemental composition.
+
+The supported observation is a lower energy MAE than the train-mean control
+in each of two within-system evaluations. It is not zero-shot transfer,
+force prediction, or hundreds of independent system replications. Correlation
+is an inference limitation even when membership is disjoint; it is not itself
+proof that labels entered training.
+
+The original run did not retain per-frame Ridge predictions. Its Ridge scores
+were not independently recomputed after the run. Keep that record limitation
+alongside the within-system claim; this reading exercise does not repair it.
+
+</details>
+
+## Case 4: separate files, shared evidence
+
+Read **Completed evaluation and remaining boundaries** in the ChEMBL lab and
+**Reproduction and remaining boundaries** in the pool-budget lab. Use the real
+ChEMBL campaign, not the artificial-score simulator.
+
+> “T15 has a different result file and T05 evaluates a separate assay. Both
+> therefore provide untouched independent confirmation of the representation.”
+
+Trace the direction of reused information. State what remained unchanged,
+what the exposure prevents you from claiming, and whether the two assay
+outcomes support a single winning representation.
+
+<details data-worked-answer>
+<summary>Case 4 — worked answer</summary>
+
+T15 reused the Morgan Ridge alpha chosen in T05 development. T15 then accessed
+labels shared with T05 before the completed T05 evaluation. Separate result
+files and different tasks do not erase that shared information history.
+
+T05 retained its split, grid and selected alphas without retuning after the
+exposure. That preserves the declared comparison, but does not restore an
+entirely untouched independent confirmatory evaluation. T15 is retrospective
+instructional evidence, not independent T05 corroboration or prospective
+discovery.
+
+The second ChEMBL assay has no parent-molecule overlap with the primary assay,
+but measures the same target in a separate experimental source. Parent
+disjointness is not a blanket guarantee of independence. Morgan Ridge has the
+lowest primary MAE and the highest separate-assay MAE; descriptor Ridge has
+the lowest separate-assay MAE. Keep both outcomes and all three baselines,
+including the train mean, visible. There is no uniform winner across these
+evaluations, and the scores alone do not establish the cause of failed transfer.
+
+</details>
+
+## Submit a short evaluation memo
+
+Choose one case and write four sentences: the membership unit; permitted
+information use; the observed result or documented procedure; and the narrowest
+supported claim with its main limitation. Add a link to the relevant case
+material. For each flawed proposal, distinguish a protocol violation from an
+unsupported inference: they are not interchangeable diagnoses.
+
+A complete answer explains why row disjointness is weaker than parent and
+scaffold checks, why unsupervised preprocessing can still cross a fitting
+boundary, why ordered frames do not establish independence, and why prior
+label exposure cannot be undone by renaming an output. If any point is missing,
+revisit that case before using the optional lesson-completion button. The
+button records reading progress, not assessed competence.
+
+## Case materials and limits
+
+Next, read [Metrics and uncertainty across four labs](/learn/evaluation-and-reproducibility/metrics-and-uncertainty/)
+to interpret errors, ranks, prediction intervals and recovery AUC. Navigation
+updated: 2026-09-09; the case review date below is unchanged.
+
+<div data-case-sources>
+
+- [ChEMBL entity, representation and scaffold contracts](/labs/chembl-egfr-representation-baselines/)
+- [rMD17 ordered-frame and within-system contracts](/labs/rmd17-system-state-energy-baselines/)
+- [Pool-budget retrospective campaign and shared-label limits](/labs/pool-budget-campaign/)
+
+</div>
+
+Each lab provides its existing curated protocol and summary downloads. They
+remain the authorities for numerical results. This lesson adds no new fit,
+statistic, data split, or empirical evidence. It is not a universal leakage
+checklist, and reader comprehension has not yet been measured. Original lesson
+prose is CC BY 4.0; the linked data and software retain their source terms.
+
+Last reviewed: 2026-09-08.

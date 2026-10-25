@@ -1,0 +1,72 @@
+---
+title: A mechanism hypothesis against a mismatched perturbation control
+description: Test whether a compound's cross-cell-line transcriptional response is more specific than a fixed different-compound control.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+Read [From perturbation to target validation](/learn/mechanism-targets/perturbation-to-target-validation/) and the [L1000 context laboratory](/labs/l1000-perturbation-context/) first. This laboratory makes the lesson's competing-mechanism question runnable. You will state two explanations for a transcriptional response, apply a mismatched control to each admitted compound, count evidence against the target-specific pattern, and identify cases that the contrast cannot decide.
+
+Mode is fresh independent computation under a frozen protocol. Use the project Python 3.11 environment and CPU. The source is the owning laboratory's cached snapshot. The first command verifies that cache without fetching or copying data. If the cache is absent, obtain it through the owning laboratory before running this task. Once cached, no network or accelerator is needed. Inspection leaves the committed summary unchanged. Export overwrites only that small summary after checks pass.
+
+```bash
+.venv/bin/python labs/mechanism_consistency/run_lab.py download
+.venv/bin/python labs/mechanism_consistency/inspect_mechanism_consistency.py show
+.venv/bin/python labs/mechanism_consistency/inspect_mechanism_consistency.py check
+.venv/bin/python labs/mechanism_consistency/export_summary.py
+.venv/bin/python -m pytest labs/tests/mechanism_consistency -q
+```
+
+## Competing explanations and discriminator
+
+The mediator-specific explanation says the transcriptional change follows the compound acting through its intended target. The generic-stress explanation says a perturbing compound can produce a similar change regardless of its target. For each compound admitted in both MCF7 and PC3, the owning reader supplies vehicle-corrected profiles over 978 measured landmark genes at 10.0 um and 24.0 h. The matched Spearman rho compares that compound across the two lines. The mismatched rho compares its MCF7 profile with the next compound's PC3 profile in a fixed sorted-ID rotation by 1.
+
+The declared informative threshold is matched rho 0.1. A lower matched value leaves the test undecided, even if the mismatched value is high. When the matched value reaches 0.1, a strictly higher mismatched value puts the pattern on the generic-stress side. An informative mismatched value at or below the matched value also leaves the case undecided because another compound agrees too. The mediator-specific side requires matched rho at least 0.1 and mismatched rho below 0.1. No undecided case counts as support.
+
+## Per-compound verdicts and cohort
+
+The `show` command prints each compound identifier, the two correlations, a verdict and its reason. The committed summary contains only counts. The computation on 2026-10-23 gave the following cohort.
+
+| Cohort | Compounds |
+| --- | ---: |
+| Admitted in MCF7 | 1,725 |
+| Admitted in PC3 | 1,724 |
+| Union | 1,728 |
+| Response in both lines, testable | 1,721 |
+| MCF7 only, no cross-line contrast | 4 |
+| PC3 only, no cross-line contrast | 3 |
+
+| Verdict or undecided reason | Compounds |
+| --- | ---: |
+| Mediator-specific pattern under this control | 678 |
+| Generic-stress pattern, mismatch exceeds match | 123 |
+| Undecided, matched rho below 0.1 | 614 |
+| Undecided, mismatched control also informative | 306 |
+| Total undecided among testable compounds | 920 |
+
+| Raw control comparison | Compounds |
+| --- | ---: |
+| Mismatch exceeds match, regardless of threshold | 490 |
+| Of these, matched rho below 0.1 and therefore undecided | 367 |
+
+These raw comparison rows overlap the verdict table. They retain every compound better matched by the different-compound control while keeping low-correlation cases undecided.
+
+The 7 compounds found in only one cell line cannot enter this test. Among those with both profiles, 920 remain undecided for the two distinct reasons in the table. The rule prevents either group from being counted as mediator-specific support.
+
+## Falsifying observation and independent task
+
+The checkable falsifying quantity is `generic_stress_count`. It counts compounds with matched rho at least 0.1 whose mismatched rho is strictly higher. The observed value is 123. These cases run against the mediator-specific pattern under this fixed control. They do not establish generic stress as the cause.
+
+Inspect a compound assigned `informative_mismatched_control` in the `show` output. Explain why its matched correlation alone would overstate the mechanism case. Then choose a target-proximal perturbation or rescue whose predictions would differ between the explanations. Compare that proposal with the [lesson worked case](/learn/mechanism-targets/perturbation-to-target-validation/).
+
+## Material limits and sources
+
+This comparison can challenge a target-specific response pattern against one different-compound control. It cannot identify the intended target, establish a disease mechanism, or show that a compound is worth making. The rotated control is not a matched stress-only perturbation. Disease-relevant context and an orthogonal target-proximal measurement remain necessary for a causal claim. No reader outcome has been observed.
+
+The source is [GEO series GSE70138](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70138), using its 2017-03-06 Level 2 release and matching metadata through the owning reader. The accession and [GEO data disclaimer](https://www.ncbi.nlm.nih.gov/geo/info/disclaimer.html) were reviewed on 2026-10-23. NCBI places no restrictions on GEO data use or distribution, while submitter rights may still apply. The source data retain their own terms. Original guide prose is CC BY 4.0 and original laboratory code is Apache-2.0.
+
+Last reviewed 2026-10-23.

@@ -1,0 +1,51 @@
+id: model-molclr
+name: MolCLR
+kind: model
+summary: Contrastive molecular representation learning repository.
+canonical_url: https://github.com/yuyangw/MolCLR
+identifiers:
+  - scheme: paper
+    value: "Molecular Contrastive Learning of Representations via Graph Neural Networks; DOI 10.1038/s42256-022-00447-x"
+    url: https://doi.org/10.1038/s42256-022-00447-x
+stages: [representation-learning, property-prediction]
+modalities: [small-molecule, molecular-graph]
+tasks: [molecular-representation-learning]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license-file] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: unverified }
+  architecture: { value: available, evidence: [repository] }
+  data_recipe: { value: unverified }
+  training_data: { value: available, evidence: [model-molclr-readme] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: covers the source code in the repository, per the repository's LICENSE file, which states no narrower scope
+    evidence: [license-file]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/yuyangw/MolCLR
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/yuyangw/MolCLR
+    label: MolCLR repository
+    supports: [caveats, kind, modalities, name, stages, summary, tasks]
+  - id: license-file
+    url: https://raw.githubusercontent.com/yuyangw/MolCLR/HEAD/LICENSE
+    label: Repository LICENSE file (reviewed 2026-10-23)
+    supports: []
+  - id: model-molclr-readme
+    url: https://raw.githubusercontent.com/yuyangw/MolCLR/HEAD/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The README states that the pre-training data and the benchmarks used in the paper can be downloaded from the address it names.
+  - The README states that the pre-training data and the benchmarks used in the paper can be downloaded from the address it names.
+  - The README states that the pre-training data and the benchmarks used in the paper can be downloaded from the address it names.
+  - The openness claims here rest on the repository's own file listing and README, read on 2026-10-23; the code was not run, and no claim is made that the released scripts reproduce the published numbers.
+acknowledgements: []
+last_verified: "2026-10-23"

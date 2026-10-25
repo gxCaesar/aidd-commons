@@ -1,0 +1,256 @@
+{
+  "artifacts": [
+    {
+      "byte_length": 231,
+      "path": "status.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/status.json"
+    },
+    {
+      "byte_length": 4003,
+      "path": "molecules.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/molecule/{molecule_chembl_id}.json"
+    },
+    {
+      "byte_length": 5440753,
+      "path": "activities-CHEMBL109.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL109"
+    },
+    {
+      "byte_length": 1491763,
+      "path": "activities-CHEMBL1144.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL1144"
+    },
+    {
+      "byte_length": 2030,
+      "path": "activities-CHEMBL13829.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL13829"
+    },
+    {
+      "byte_length": 116508,
+      "path": "activities-CHEMBL23393.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL23393"
+    },
+    {
+      "byte_length": 3504249,
+      "path": "activities-CHEMBL25.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL25"
+    },
+    {
+      "byte_length": 23503,
+      "path": "activities-CHEMBL275835.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL275835"
+    },
+    {
+      "byte_length": 97917,
+      "path": "activities-CHEMBL441.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL441"
+    },
+    {
+      "byte_length": 218661,
+      "path": "activities-CHEMBL588.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL588"
+    },
+    {
+      "byte_length": 730939,
+      "path": "activities-CHEMBL593.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL593"
+    },
+    {
+      "byte_length": 3616,
+      "path": "activities-CHEMBL906.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL906"
+    },
+    {
+      "byte_length": 248931,
+      "path": "assays.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/assay.json"
+    }
+  ],
+  "cohort": {
+    "resolved_parents": [
+      "CHEMBL109",
+      "CHEMBL1144",
+      "CHEMBL13829",
+      "CHEMBL23393",
+      "CHEMBL25",
+      "CHEMBL275835",
+      "CHEMBL441",
+      "CHEMBL588",
+      "CHEMBL593",
+      "CHEMBL906"
+    ],
+    "seeds": [
+      {
+        "molecule_chembl_id": "CHEMBL929",
+        "pref_name": "DELAVIRDINE MESYLATE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL593",
+        "pref_name": "DELAVIRDINE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL1026",
+        "pref_name": "FENOLDOPAM MESYLATE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL588",
+        "pref_name": "FENOLDOPAM"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL433",
+        "pref_name": "VALPROATE SODIUM"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL109",
+        "pref_name": "VALPROIC ACID"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL690",
+        "pref_name": "PRAVASTATIN SODIUM"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL1144",
+        "pref_name": "PRAVASTATIN"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL109745",
+        "pref_name": "DARBUFELONE MESYLATE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL275835",
+        "pref_name": "DARBUFELONE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL23393",
+        "pref_name": "SODIUM LAURYL SULFATE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL13829",
+        "pref_name": "MIXTURE OF MMC AND TA"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL906",
+        "pref_name": "MINOXIDIL SULFATE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL441",
+        "pref_name": "THIOPENTAL"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL25",
+        "pref_name": "ASPIRIN"
+      }
+    ]
+  },
+  "declared_question": "Which shared identities cross a random row split of independent ChEMBL measurements, and which routes remain unmeasurable from this table?",
+  "endpoint": {
+    "bound_relations": [
+      "<",
+      "<=",
+      ">",
+      ">="
+    ],
+    "exclusion_priority": [
+      "outside_endpoint_family",
+      "non_nanomolar_units",
+      "non_standard_activity",
+      "potential_duplicate",
+      "data_validity_comment",
+      "missing_value",
+      "missing_structure",
+      "missing_relation"
+    ],
+    "measurement_grouping_fields": [
+      "parent_molecule_chembl_id",
+      "assay_chembl_id",
+      "document_chembl_id",
+      "standard_type"
+    ],
+    "point_relation": "=",
+    "standard_types": [
+      "AC50",
+      "EC50",
+      "IC50",
+      "Kd",
+      "Ki"
+    ],
+    "standard_units": "nM"
+  },
+  "excluded_by_design": [
+    "A claim that a split is free of leakage beyond the routes measured here.",
+    "A performance estimate or a claim of prediction for a new compound.",
+    "Selecting a split because it improves a reported number."
+  ],
+  "issued_on": "2026-10-23",
+  "measurement_note": "An independent point measurement is the unique parent, assay, document and endpoint type key used by the decision-unit-scope laboratory. If several activity rows share a key, their route groups are combined.",
+  "protocol_id": "chembl37-split-leakage-routes-v1",
+  "rdkit_version": "2025.09.6",
+  "route_note": "Overlap counts describe test measurements sharing at least one group with training. Held-out training rows count those sharing any test group. They do not estimate predictive performance.",
+  "run_basis": "A fresh deterministic count from the ChEMBL 37 snapshot. No model is fitted, no outcome is scored, and the split is not selected by a result.",
+  "scaffold_note": "RDKit computes a chirality-aware Bemis-Murcko scaffold. A ring-free structure uses acyclic: followed by its canonical isomeric SMILES. This is a scaffold proxy for analogue overlap, not a proof that analogues are exhausted.",
+  "schema_version": "aidd-commons.split-leakage-audit-protocol.v1",
+  "source": {
+    "api_root": "https://www.ebi.ac.uk",
+    "database": "ChEMBL_37",
+    "licence": {
+      "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+    },
+    "release_date": "2026-05-01",
+    "status_url": "https://www.ebi.ac.uk/chembl/api/data/status.json"
+  },
+  "split": {
+    "group_rule": "Sort parent identifiers, shuffle with Python random.Random(seed), and assign the first floor(train_fraction * parent_count) to training.",
+    "row_rule": "Sort independent measurement keys, shuffle with Python random.Random(seed), and assign the first floor(train_fraction * count) to training.",
+    "seed": 20261023,
+    "train_fraction": 0.8
+  },
+  "tested_routes": [
+    {
+      "field": "parent_molecule_chembl_id",
+      "route": "parent"
+    },
+    {
+      "field": "Bemis-Murcko scaffold of canonical_smiles",
+      "route": "scaffold"
+    },
+    {
+      "field": "assay_chembl_id",
+      "route": "assay"
+    },
+    {
+      "field": "target_chembl_id",
+      "route": "target"
+    },
+    {
+      "field": "RDKit canonical isomeric SMILES of canonical_smiles",
+      "route": "standard_form"
+    }
+  ],
+  "untestable_routes": [
+    {
+      "reason": "The activity rows have no measurement date.",
+      "route": "temporal"
+    },
+    {
+      "reason": "The activity rows have no donor identifier.",
+      "route": "donor"
+    },
+    {
+      "reason": "The activity rows have no patient identifier.",
+      "route": "patient"
+    },
+    {
+      "reason": "The activity rows have no collection site identifier.",
+      "route": "site"
+    },
+    {
+      "route": "target-family",
+      "reason": "The activity rows carry a target identifier and not a protein family, and the snapshot carries no target-to-family mapping, so a route through a family of related targets cannot be measured here."
+    },
+    {
+      "route": "fitted-preprocessing",
+      "reason": "The table holds measurements rather than a fitted transformation, so a preprocessing step fitted on the test set cannot be observed here."
+    }
+  ]
+}

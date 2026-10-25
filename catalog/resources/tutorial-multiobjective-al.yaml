@@ -1,0 +1,87 @@
+id: tutorial-multiobjective-al
+name: Mobley Lab active-learning notebooks
+kind: tutorial
+summary: Jupyter notebooks for ligand optimisation studies that use active learning, including a multiobjective study over multi-target binding and a study bridging structure-based and data-driven affinity prediction.
+canonical_url: https://github.com/MobleyLab/active-learning-notebooks
+identifiers:
+- scheme: paper
+  value: A simple compound prioritization method for drug discovery considering multi-target binding; Digital Discovery, 2026
+  url: https://pubs.rsc.org/en/content/articlehtml/2026/dd/d5dd00464k
+- scheme: code
+  value: Active-learning notebooks, MobleyLab/active-learning-notebooks
+  url: https://github.com/MobleyLab/active-learning-notebooks
+stages:
+- lead-optimization
+- evaluation
+modalities:
+- small-molecule
+tasks:
+- multiobjective-optimisation
+- active-learning
+- compound-prioritisation
+relations: []
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - multiobjective-al-repository
+  - notebook-license
+  - notebook-data-route
+openness:
+  inference_code:
+    value: available
+    evidence:
+    - multiobjective-al-readme
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: MIT
+  scope: Repository software and associated notebook documentation; it does not grant a licence to the DOCKSTRING dataset downloaded separately from Figshare or to other third-party data retrieved by the notebooks.
+  evidence:
+  - notebook-license
+  - notebook-data-route
+evidence:
+- id: multiobjective-al-repository
+  url: https://github.com/MobleyLab/active-learning-notebooks
+  label: Mobley Lab active-learning notebooks (reviewed 2026-10-23)
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - caveats
+- id: multiobjective-al-readme
+  url: https://raw.githubusercontent.com/MobleyLab/active-learning-notebooks/main/README.md
+  label: Mobley Lab active-learning notebooks README (reviewed 2026-10-23)
+  supports:
+  - identifiers
+  - caveats
+- id: notebook-license
+  url: https://raw.githubusercontent.com/MobleyLab/active-learning-notebooks/main/LICENSE
+  label: Mobley Lab active-learning notebooks MIT licence — The public repository LICENSE grants use, modification and redistribution of the software and associated documentation under MIT terms.
+  supports: []
+- id: notebook-data-route
+  url: https://raw.githubusercontent.com/MobleyLab/active-learning-notebooks/main/MultiobjectiveAL.ipynb
+  label: Multiobjective active-learning notebook data acquisition — The notebook identifies DOCKSTRING as its input dataset and downloads dockstring-dataset.tsv separately from https://figshare.com/ndownloader/files/35948138; it does not state a licence grant for that dataset.
+  supports:
+  - caveats
+caveats:
+- The notebook source is public and MIT-licensed. Its DOCKSTRING input is downloaded separately from Figshare; the repository licence does not establish the dataset's terms, which require their own review.
+- The only documented setup is a conda environment file whose contents the README does not reproduce, and the page gives no command for running either notebook.
+- The record names the two notebooks and the publications they accompany. The papers' own text was not opened, so the reported retrieval improvements and the comparisons against a greedy acquisition are not carried here.
+- A notebook that has been read is a published procedure, not a result. Nothing in the record establishes that a compound selected by either notebook is worth making.
+acknowledgements: []
+last_verified: '2026-10-23'

@@ -1,0 +1,57 @@
+id: model-zeroshot-scfoundation
+name: Zero-shot evaluation of single-cell foundation models
+kind: benchmark
+summary: Evaluation study that measures the zero-shot cell-type clustering and batch-integration behaviour of scGPT and Geneformer against highly variable genes and scVI, using released notebooks and a released data archive.
+canonical_url: https://github.com/microsoft/zero-shot-scfoundation
+identifiers:
+  - scheme: paper
+    value: "Assessing the limits of zero-shot foundation models in single-cell biology; bioRxiv DOI 10.1101/2023.10.16.561085"
+    url: https://doi.org/10.1101/2023.10.16.561085
+  - scheme: dataset
+    value: "Evaluation data archive, Figshare, DOI 10.6084/m9.figshare.24747228"
+    url: https://doi.org/10.6084/m9.figshare.24747228
+stages: [evaluation, representation-learning]
+modalities: [single-cell-transcriptomics]
+tasks: [benchmark-evaluation, cell-context-inspection, out-of-distribution-evaluation]
+relations:
+  - type: uses
+    target: model-scgpt
+  - type: uses
+    target: model-geneformer
+status: { value: unverified }
+access_level: { value: open_source, evidence: [zeroshot-license] }
+openness:
+  inference_code: { value: available, evidence: [zeroshot-repository] }
+  training_code: { value: not_applicable, evidence: [zeroshot-repository] }
+  weights: { value: not_applicable, evidence: [zeroshot-repository] }
+  architecture: { value: not_applicable, evidence: [zeroshot-repository] }
+  data_recipe: { value: unverified }
+  training_data: { value: not_applicable, evidence: [zeroshot-repository] }
+  evaluation_code: { value: available, evidence: [zeroshot-repository] }
+licenses:
+  - name: MIT
+    scope: "Repository source code, including the evaluation notebooks. The LICENSE file reads 'MIT License' and 'Copyright (c) Microsoft Corporation.' with no year given. The README states a Microsoft Open Source Code of Conduct and a Contributor License Agreement for contributions, and states no separate terms for the Figshare data archive."
+    evidence: [zeroshot-license, zeroshot-readme]
+evidence:
+  - id: zeroshot-repository
+    url: "https://github.com/microsoft/zero-shot-scfoundation"
+    label: Microsoft zero-shot single-cell foundation model evaluation repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, relations, caveats]
+  - id: zeroshot-readme
+    url: "https://raw.githubusercontent.com/microsoft/zero-shot-scfoundation/main/README.md"
+    label: Zero-shot single-cell evaluation README (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: zeroshot-license
+    url: "https://raw.githubusercontent.com/microsoft/zero-shot-scfoundation/main/LICENSE"
+    label: Zero-shot single-cell evaluation MIT license file (reviewed 2026-10-21)
+    supports: []
+  - id: zeroshot-paper
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:%2210.1101/2023.10.16.561085%22&resultType=core&format=json"
+    label: Europe PMC record for the zero-shot evaluation preprint (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+caveats:
+  - The study evaluates models released by other projects. The weights it loads come from the scGPT and Geneformer repositories, whose own terms apply to them, and the MIT licence here covers only this repository's notebooks.
+  - The README names the tasks as cell type clustering and batch integration and the baselines as scVI and a highly variable gene heuristic, but it does not name the individual datasets inside the Figshare data.zip archive, so the composition of the evaluation set is not verifiable from the opened pages.
+  - The preprint abstract reports limited reliability in zero-shot settings and does not name baselines, datasets, splits, or metrics; the released notebooks are the only place where the baseline implementations are shown.
+acknowledgements: []
+last_verified: "2026-10-21"

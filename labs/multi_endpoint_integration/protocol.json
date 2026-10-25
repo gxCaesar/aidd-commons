@@ -1,0 +1,115 @@
+{
+  "schema_version": "aidd-commons.multi-endpoint-integration-protocol.v1",
+  "protocol_id": "chembl37-multi-endpoint-integration-v1",
+  "issued_on": "2026-10-23",
+  "source_release_date": "2026-05-01",
+  "sources": [
+    {
+      "name": "decision_unit_scope",
+      "snapshot": "ChEMBL_37",
+      "snapshot_byte_length": 11883104,
+      "archive": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/",
+      "licence": {
+        "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+      },
+      "read_route": "aidd_commons.decision_unit_scope.data.load_cached_cohort",
+      "read_on": "2026-10-21",
+      "cache_directory": ".cache/decision_unit_scope",
+      "files": {
+        "status.json": 231,
+        "molecules.json": 4003,
+        "activities-CHEMBL109.json": 5440753,
+        "activities-CHEMBL1144.json": 1491763,
+        "activities-CHEMBL13829.json": 2030,
+        "activities-CHEMBL23393.json": 116508,
+        "activities-CHEMBL25.json": 3504249,
+        "activities-CHEMBL275835.json": 23503,
+        "activities-CHEMBL441.json": 97917,
+        "activities-CHEMBL588.json": 218661,
+        "activities-CHEMBL593.json": 730939,
+        "activities-CHEMBL906.json": 3616,
+        "assays.json": 248931
+      }
+    },
+    {
+      "name": "az_clearance_system",
+      "snapshot": "ChEMBL_37",
+      "snapshot_byte_length": 1518229,
+      "archive": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/",
+      "licence": {
+        "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+      },
+      "read_route": "aidd_commons.az_clearance_system.data.load_cached_systems",
+      "read_on": "2026-09-12",
+      "cache_directory": ".cache/az_clearance_system",
+      "files": {
+        "status.json": 231,
+        "activities-CHEMBL3301370.json": 701737,
+        "activities-CHEMBL3301371.json": 549808,
+        "activities-CHEMBL3301372.json": 266453
+      }
+    },
+    {
+      "name": "cyp_assay_system",
+      "snapshot": "ChEMBL_37",
+      "snapshot_byte_length": 6693611,
+      "archive": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/",
+      "licence": {
+        "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+      },
+      "read_route": "aidd_commons.cyp_assay_system.data.load_cached_targets",
+      "read_on": "2026-09-12",
+      "cache_directory": ".cache/cyp_assay_system",
+      "files": {
+        "status.json": 231,
+        "activities-CHEMBL289.json": 2231098,
+        "activities-CHEMBL340.json": 4462282
+      }
+    }
+  ],
+  "families": {
+    "efficacy": {
+      "reader": "aidd_commons.decision_unit_scope.data.load_cached_cohort",
+      "unit": "nM",
+      "measurement_rule": "Independent exact AC50, EC50 and IC50 response-potency points, grouped by parent, assay, document and endpoint type. Kd and Ki affinity points are counted separately and do not establish efficacy."
+    },
+    "exposure": {
+      "reader": "aidd_commons.az_clearance_system.data.load_cached_systems",
+      "unit": [
+        "mL.min-1.g-1",
+        "uL.min-1.(10^6cells)-1"
+      ],
+      "measurement_rule": "Admitted intrinsic-clearance median for one parent in one named assay system, with the contributing-activity range retained."
+    },
+    "interaction": {
+      "reader": "aidd_commons.cyp_assay_system.data.load_cached_targets",
+      "unit": "pChEMBL (dimensionless)",
+      "measurement_rule": "Admitted exact IC50 median for one parent against CYP3A4 or CYP2D6, with contributing assay IDs and pChEMBL range retained."
+    },
+    "toxicity": {
+      "reader": null,
+      "unit": null,
+      "measurement_rule": "No measured toxicity snapshot exists here. labs/safety_evidence/ holds constructed teaching data and contributes no compound measurement."
+    }
+  },
+  "counted_unit": {
+    "name": "one ChEMBL parent molecule",
+    "join_rule": "Join families only by equal parent_molecule_chembl_id returned by their validated readers. Never join by structure, name, assay or row position."
+  },
+  "rules": {
+    "composite_score": "Refuse every composite, weighted sum, overall desirability value or rank across families. Report the measured axes side by side.",
+    "missing_family": "An absent family is null and remains missing. It is never filled with a no-risk, adequate-exposure or other default."
+  },
+  "excluded_by_design": [
+    "any composite score, weighted sum or combined numeric value across families",
+    "any overall desirability ranking of compounds",
+    "any claim that a compound measured in one family is free of another family's risk",
+    "any default value for a family absent from a compound",
+    "any claim that constructed safety data in labs/safety_evidence/ measure toxicity",
+    "any fold change between microsome and hepatocyte clearance with incompatible bases",
+    "any claim of therapeutic efficacy, systemic exposure or clinical drug interaction"
+  ]
+}

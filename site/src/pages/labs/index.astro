@@ -1,0 +1,1086 @@
+---
+import AtlasFigure from "../../components/AtlasFigure.astro";
+import SiteShell from "../../components/SiteShell.astro";
+---
+
+<SiteShell
+  title="Labs"
+  description="Reproducible AIDD exercises with frozen data and evaluation contracts."
+>
+  <section aria-labelledby="labs-title">
+    <p class="eyebrow">Reproducible exercises</p>
+    <h1 id="labs-title" class="page-heading">Labs</h1>
+    <p class="page-intro">
+      Each lab names its input, output, version, and limitations. Predictive labs
+      additionally freeze the split, metric, and baseline. This index does not
+      report unrun or unmatched benchmark results.
+    </p>
+    <p class="section-intro">
+      Look at the order of the sequence: the protocol is written and frozen before
+      the held-out result is seen, the test set is opened once, and a bug found
+      after that opening invalidates the protocol rather than producing a result.
+    </p>
+    <AtlasFigure id="frozen-lifecycle" />
+  </section>
+  <section class="section" aria-labelledby="notebook-route-title">
+    <article class="detail-panel">
+      <p class="meta-label">Start here · four notebook exercises</p>
+      <h2 id="notebook-route-title">From representations to properties and cited evidence</h2>
+      <p>Inspect seven molecules, learn fitting on invented data, then work through
+        measured logD and inspect saved PaperQA answers against their sources.
+        The default PaperQA lesson is offline; fresh inference is separately opt-in.
+        The guide explains Colab upload, cell order, saving results
+        and the separate role of completed evidence notebooks.</p>
+      <a class="button-secondary" href="/labs/notebook-guide/">Follow the notebook practice route</a>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="student-lab-title">
+    <article class="detail-panel">
+      <p class="meta-label">Editable student exercise · synthetic data</p>
+      <h2 id="student-lab-title">Fit, select and explain a baseline</h2>
+      <p>Open a self-contained notebook on ten invented entities. Inspect
+        training, validation and errors without touching the frozen real-data labs.
+        No dataset download, additional modelling package or GPU is needed. The
+        standard-library command-line version remains available.</p>
+      <a class="button-secondary" href="/learn/machine-learning/student-modelling-sandbox/">Open the student sandbox</a>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="lipophilicity-notebook-title">
+    <article class="detail-panel">
+      <p class="meta-label">Editable notebook-first exercise · fresh local results</p>
+      <h2 id="lipophilicity-notebook-title">Lipophilicity: split, fit, inspect</h2>
+      <p>
+        Work through a self-contained notebook on public measured logD data: inspect
+        molecules, keep scaffold groups intact, select simple baselines on validation
+        data, and interpret plots and errors. Your run creates a fresh exercise result;
+        it does not replace any frozen lab evaluation.
+      </p>
+      <p><a class="button-secondary" href="/labs/lipophilicity-notebook/">Open the notebook guide</a></p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="representation-lab-title">
+    <article class="detail-panel">
+      <p class="meta-label">Executable representation lab</p>
+      <h2 id="representation-lab-title">Label-free molecule representation inspector</h2>
+      <p>
+        Compare canonical and non-isomeric SMILES, identifiers, descriptors,
+        Morgan fingerprints, scaffolds, stereochemistry, and disconnected salts
+        without loading labels or fitting a model.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/molecule-representation-inspector/"
+          >Run the representation inspector</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="chembl-egfr-lab-title">
+    <article class="detail-panel">
+      <p class="meta-label">Completed frozen comparison</p>
+      <h2 id="chembl-egfr-lab-title">ChEMBL 37 EGFR representation baselines</h2>
+      <p>
+        Compare 214 RDKit descriptors with a chirality-aware Morgan fingerprint
+        under one parent-molecule contract and a scaffold-disjoint split.
+        Primary and assay-replication evaluations completed; the Morgan transfer
+        failure is retained alongside development evidence.
+      </p>
+      <p class="section-intro">
+        Look at the two evaluations side by side: the baseline that wins the primary
+        partition loses the assay replication, which is why the failure is kept next
+        to the result instead of behind it.
+      </p>
+      <AtlasFigure id="representation-flips" />
+      <p>
+        <a class="button-secondary" href="/labs/chembl-egfr-representation-baselines/"
+          >Study the frozen comparison</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="chembl-contract-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline inspection</p>
+      <h2 id="chembl-contract-title">Read the frozen contract before the model</h2>
+      <p>
+        Print the screening unit, the endpoint definition and the admission
+        arithmetic of that frozen lab with one command that reads only committed
+        files, then recheck that the protocol, development and locked artifacts
+        still agree. No download, no network and no training.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/chembl-contract-inspection/"
+          >Inspect the contract</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="pool-budget-contract-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline inspection</p>
+      <h2 id="pool-budget-contract-title">What a seed is not</h2>
+      <p>
+        Recompute the budget arithmetic and the reported recovery AUC from the
+        raw checkpoint series, read what each policy was allowed to see, and see
+        why five fixed seeds are not an error bar. The result that went against
+        the method is printed rather than inferred.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/pool-budget-contract-inspection/"
+          >Inspect the budget contract</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="design-space-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline enumeration</p>
+      <h2 id="design-space-title">Size does not buy reach</h2>
+      <p>
+        Enumerate three candidate spaces exactly and test four molecules against
+        them. Growing a space fourfold reached one molecule and left a target
+        differing by a single ring atom exactly as unreachable, while two spaces
+        of equal size share no member at all.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/design-space/">Enumerate the spaces</a>
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="docking-protocol-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline inspection</p>
+      <h2 id="docking-protocol-title">Same units, different scales</h2>
+      <p>
+        Separate the seven components a docking score comes out of. Two protocols
+        differing in one component report -8.2 and -10.7 on the same ligand, no
+        pair in the set may be compared, and a protocol without validation still
+        produces a full column of numbers.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/docking-protocol/">Check comparability</a>
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="egfr-structure-evidence-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline inspection of deposited structures</p>
+      <h2 id="egfr-structure-evidence-title">Three structures, read as evidence</h2>
+      <p>
+        Read three EGFR crystal structures from the PDB. The hinge methionine is
+        residue 769 in two files and 793 in the third, a lapatinib pose clashes
+        with 6 atoms in one receptor state and none in another, and two
+        constructed poses pass a 2 A RMSD convention while one loses the hinge
+        contact and the other clashes.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/egfr-structure-evidence/">Read the structures</a>
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="safety-evidence-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline inspection</p>
+      <h2 id="safety-evidence-title">An alert is not a finding</h2>
+      <p>
+        Separate structural alerts from assay outcomes, organ liabilities, dose
+        context and organism-level evidence. Seven of twelve compounds alert,
+        five of those were never measured at all, and one of twelve carries any
+        organism-level evidence.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/safety-evidence/"
+          >Separate the levels</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="binder-definition-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline demonstration</p>
+      <h2 id="binder-definition-title">One set of molecules, several datasets</h2>
+      <p>
+        Hold the molecules fixed and move the definitions. The positive count
+        more than doubles across a grid of cutoffs, four of twelve compounds are
+        filed by noise, two thirds of the enlarged negative class was never
+        measured, and six positives sit on three scaffolds.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/binder-definition/"
+          >Move the definitions</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="sar-attribution-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline demonstration</p>
+      <h2 id="sar-attribution-title">The explanation pointed at the wrong atoms</h2>
+      <p>
+        Fit a model to data whose generating rule is known, explain it, and watch
+        the credit land on a substructure that causes nothing. The confounder
+        outscores the true cause on seven of eight actives, and the matched pair
+        that breaks the correlation is ranked backwards.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/sar-attribution/"
+          >Check the attribution</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="retro-disconnection-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline comparison</p>
+      <h2 id="retro-disconnection-title">The same score, three different causes</h2>
+      <p>
+        Compare rule, retrieval and template disconnections on one constructed
+        route set. All three are perfect inside the precedent set and separate
+        completely outside it, for three different reasons, and no recovery
+        percentage says whether a route can be run.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/retro-disconnection/"
+          >Compare the families</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="screening-transport-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline inspection</p>
+      <h2 id="screening-transport-title">Repeating is not transporting</h2>
+      <p>
+        Read a completed two-assay screening replay in units of recovered
+        targets. The two contexts measure in steps 4.92 times apart, the whole
+        baseline spread is under two targets in both, and the policy that
+        recovered nothing lost by an eighth of a single target.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/screening-transport/"
+          >Check the transport</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="property-decision-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline inspection</p>
+      <h2 id="property-decision-title">The band where you cannot decide</h2>
+      <p>
+        Apply a frozen threshold rule to calibrated FreeSolv intervals and read
+        the abstention band a point estimate would have hidden. Only one of four
+        combinations reaches the coverage it was built for, it is the one with
+        the widest band, and it abstains the most.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/property-decision-threshold/"
+          >Apply the frozen threshold</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="generation-gate-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline inspection</p>
+      <h2 id="generation-gate-title">Freeze the objective, then count the denominators</h2>
+      <p>
+        Declare a design objective that can actually be applied, then screen
+        twenty candidates through six gates whose denominators chain. See why the
+        headline valid figure and the survivor count differ, why memorization is
+        the novelty gate against a narrower set, and what a synthesis proxy never
+        establishes. No generative model is run.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/generation-gate/"
+          >Apply the frozen objective</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="counterevidence-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline inspection</p>
+      <h2 id="counterevidence-title">What a clean summary would have deleted</h2>
+      <p>
+        Inventory six kinds of counterevidence preserved across the completed lab
+        artifacts, then recompute the transfer failure that reporting one
+        comparison alone would have hidden: the model with the lowest error on
+        one evaluation is several times the baseline error on the other.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/counterevidence-dossier/"
+          >Inspect the dossier</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="cofolding-claims-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline inspection</p>
+      <h2 id="cofolding-claims-title">Five claims that arrive in one file</h2>
+      <p>
+        Separate monomer prediction, complex prediction, co-folding, pose
+        generation and experimental binding evidence across twenty registered
+        systems, and see where a modality label, a dual-claim model and a missing
+        measurement record invite you to quote one as evidence for another.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/cofolding-claim-separation/"
+          >Separate the claims</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="rmd17-contract-title">
+    <article class="detail-panel">
+      <p class="meta-label">Runnable offline inspection</p>
+      <h2 id="rmd17-contract-title">What the error is an error over</h2>
+      <p>
+        Print the observable, the prohibited feature arrays, the frame sampling
+        with its measured gaps, and every error beside the range it is measured
+        over, then recheck fourteen relationships across the frozen rMD17
+        artifacts. No download, no network and no fitting.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/rmd17-contract-inspection/"
+          >Inspect the metric contract</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="rmd17-lab-title">
+    <article class="detail-panel">
+      <p class="meta-label">Completed system-state baseline</p>
+      <h2 id="rmd17-lab-title">rMD17 system-state energy baselines</h2>
+      <p>
+        Trace a frozen original-index split from molecular system state through
+        per-system pair-distance histograms and independently fit Ridge models.
+        Benzene and uracil evaluations completed; each model uses its own system's
+        training frames, with the missing per-frame Ridge prediction record disclosed.
+      </p>
+      <p>
+        <a
+          class="button-secondary"
+          href="/labs/rmd17-system-state-energy-baselines/"
+          >Study the rMD17 evidence</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="pool-budget-lab-title">
+    <article class="detail-panel">
+      <p class="meta-label">Synthetic simulator and completed assay replay</p>
+      <h2 id="pool-budget-lab-title">Pool-budget campaign simulator</h2>
+      <p>Compare label-blind MaxMin and seeded random selection at equal integer
+        budgets. The authored synthetic example is separate from the completed
+        real ChEMBL replay, including its negative results.</p>
+      <p><a class="button-secondary" href="/labs/pool-budget-campaign/">Run the pool-budget simulator</a></p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="rmd17-dynamics-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh reproduction over an existing trajectory</p>
+      <h2 id="rmd17-dynamics-title">A trajectory observable, and how much of it you need</h2>
+      <p>
+        Compute the mass-weighted radius of gyration from the same committed
+        rMD17 trajectories the energy lab already uses, for a different
+        question. A naive standard error understates ethanol's uncertainty by
+        a factor of 3.30 and malonaldehyde's by 6.26; at 10,000 frames
+        malonaldehyde's cumulative mean still sits four to nine block-standard-
+        errors from its converged value, despite matching it to two decimal
+        places.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/rmd17-dynamics-observable/"
+          >Inspect the observable</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="pool-budget-uncertainty-title">
+    <article class="detail-panel">
+      <p class="meta-label">Real ensemble-variance acquisition policy</p>
+      <h2 id="pool-budget-uncertainty-title">An acquisition policy that reads its own model's disagreement</h2>
+      <p>
+        Add a seventh policy to the completed pool-budget campaign: acquire by
+        cross-fold Ridge prediction variance instead of chemical distance or
+        chance. It leads MaxMin and all five fixed random seeds on both
+        assays, 0.1133 against MaxMin's 0.0508 on the primary assay and 0.1635
+        against 0.0000 on the separate one, from one deterministic run under
+        the same real partition and budget.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/pool-budget-uncertainty-acquisition/"
+          >Read the acquisition result</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="cyp-assay-system-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a live ChEMBL snapshot</p>
+      <h2 id="cyp-assay-system-title">Does one CYP inhibition number predict another?</h2>
+      <p>
+        Read real ChEMBL 37 IC50 records across two whole cytochrome P450
+        targets instead of two named assays: 5,251 admitted CYP3A4 parents and
+        2,781 CYP2D6, with 1,195 overlapping. Potency against one enzyme
+        predicts potency against the other only weakly, Spearman rho about
+        0.30, and quinidine alone carries 32 CYP2D6 records disagreeing by
+        more than a 10,000-fold range beside a single CYP3A4 value.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/cyp-assay-system/"
+          >Compare the two targets</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="decision-unit-scope-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a live ChEMBL snapshot</p>
+      <h2 id="decision-unit-scope-title">One reported value is one row in a context</h2>
+      <p>
+        Take fifteen declared compounds through ChEMBL 37 and count what a
+        reported value actually rests on. Thirteen thousand three hundred and
+        five activity rows reduce to one thousand and four admitted
+        measurements once the endpoint family, the unit, the standard flag, the
+        duplicate check, the data-validity comment and the relation are
+        applied, and the fifteen seeds resolve to ten distinct parents. The
+        lab then reports the assay, document, target, organism, assay type,
+        confidence score and relation that travel with each surviving
+        measurement, because that context is what makes a comparison mean
+        something.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/decision-unit-scope/"
+          >Count the measurements</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="assay-endpoint-controls-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over six archived public assays</p>
+      <h2 id="assay-endpoint-controls-title">What an assay actually contains</h2>
+      <p>
+        Read six archived PubChem BioAssay dose-response assays and report
+        what each one holds. One thousand five hundred and twenty-nine
+        admitted endpoint values spread over five endpoint labels, and of the
+        one thousand two hundred and fifty-seven that carry a stated qualifier,
+        eight hundred and thirty-two are equalities while four hundred and six
+        are bounds that state a side and not a magnitude. The confidence score
+        sits at zero for a third of the values. Each assay also reports its
+        declared replicate structure, its control regime, its reference wells
+        and its own normalisation equation, because an assay licenses a
+        conclusion only as far as its control record supports it.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/assay-endpoint-controls/"
+          >Read the assays</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="rosetta-cross-modality-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a public perturbation archive</p>
+      <h2 id="rosetta-cross-modality-title">Two readouts of one perturbation</h2>
+      <p>
+        Five hundred and twenty-eight perturbations measured in both a
+        transcriptomic and an imaging readout, across sixteen plates each,
+        look strongly correlated: feature level r 0.83 and perturbation level
+        r 0.82. Blocking the comparison on the batch drops that to 0.63 and
+        0.69, and a size-matched random control reaches 0.79 to 0.81. Most of
+        the apparent agreement is structure rather than biology, and the lab
+        measures how much of it survives.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/rosetta-cross-modality/"
+          >Compare the two readouts</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="az-clearance-system-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a live ChEMBL snapshot</p>
+      <h2 id="az-clearance-system-title">The same clearance, three ways of measuring it</h2>
+      <p>
+        Compare intrinsic clearance across human liver microsomes, rat
+        hepatocytes and human hepatocytes from one real AstraZeneca ChEMBL
+        deposition: 743, 592 and 288 admitted parents, correlating at Spearman
+        rho 0.39 to 0.49 pairwise. Microsome values are reported per gram of
+        protein and hepatocyte values per million cells, so only the rank
+        correlations, not a raw fold-change, compare validly across a matrix
+        change.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/az-clearance-system/"
+          >Compare the three assays</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="l1000-perturbation-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a real, cached LINCS L1000 snapshot</p>
+      <h2 id="l1000-perturbation-title">The correlation was real, at ten times too high</h2>
+      <p>
+        Compare compound-perturbation gene-expression signatures between MCF7
+        and PC3 across 1,721 compounds shared in one real LINCS L1000 series.
+        On raw expression, matched and mismatched compounds correlate almost
+        identically, rho 0.79 against 0.70; subtracting each profile's own
+        plate vehicle-control baseline first reveals the real signal, 0.175
+        against a null of 0.034 (p ≈ 8 × 10⁻⁸²).
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/l1000-perturbation-context/"
+          >Read the corrected signature</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="freesolv-lab-title">
+    <article class="detail-panel">
+      <p class="meta-label">Completed frozen protocol</p>
+      <h2 id="freesolv-lab-title">FreeSolv v0.52 honest baselines</h2>
+      <p>
+        One final frozen test evaluation is recorded. The scaffold-primary Ridge
+        result is MAE 1.1280482645936036 and RMSE 1.7597471244251413 kcal/mol;
+        this is an honest baseline, not a SOTA claim.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/freesolv-honest-baselines/"
+          >Read the completed lab</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="objective-ladder-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over public records</p>
+      <h2 id="objective-ladder-title">An objective ladder for public protein records</h2>
+      <p>
+        Read sequence, structure, affinity and annotation records for 6 examined
+        entities across 6 objectives. The laboratory checks which source can
+        support each cell, with a record in 31 of 36 cells, and keeps the
+        source-specific reasons for the empty cells visible.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/objective-ladder/"
+          >Read the objective ladder</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="asset-openness-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over the committed catalogue</p>
+      <h2 id="asset-openness-audit-title">Seven openness fields, audited apart</h2>
+      <p>
+        Read the resource atlas and check that every record keeps inference
+        code, training code, weights, architecture, data recipe, training data
+        and evaluation code as separate fields, each with its own evidence, and
+        that every licence says what its grant does not reach. Over the
+        examined records 52 claims are available, 26 do not apply, 88 are
+        unverified and 2 are recorded as not available, and all 191 records
+        keep the seven fields apart.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/asset-openness-audit/"
+          >Audit the openness fields</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="split-leakage-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a live ChEMBL snapshot</p>
+      <h2 id="split-leakage-audit-title">Which identities cross a row split</h2>
+      <p>
+        Take the 486 independent measurements the decision-unit laboratory
+        admits from fifteen ChEMBL seeds, split them at random, and count the
+        test measurements that share a parent, a scaffold, an assay, a target
+        or a standard form with the training set. All 98 test measurements
+        share a parent with the training set, and four routes, including
+        temporal and patient leakage, cannot be measured on this table at all.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/split-leakage-audit/"
+          >Measure the leakage routes</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="relational-graph-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over the committed catalogue</p>
+      <h2 id="relational-graph-audit-title">Typed relations and their evidence</h2>
+      <p>
+        Build the atlas as a typed graph and check what it holds and what it
+        leaves out. The 191 records declare 32 relations in seven types, each
+        evidenced by the record that declares it, and the records that declare
+        no relation at all are listed. The candidate pairs that share a task
+        without declaring a relation are counted, and a path through the
+        graph is not a mechanism.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/relational-graph-audit/"
+          >Read the resource graph</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="claims-evidence-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over the committed comparison record</p>
+      <h2 id="claims-evidence-audit-title">Four states a record can be in</h2>
+      <p>
+        Sort the cells of the comparison record into the four states a record
+        can be in: a direct observation, a bounded inference, an unsupported
+        claim and an unresolved field. Over the thirteen audited providers and
+        the four topics of one track, 14 cells are direct observations, 0 are
+        bounded inferences, 0 are unsupported claims and 38 are unresolved
+        fields, and the two disagreements with the independent reading are
+        named.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/claims-evidence-audit/"
+          >Classify the states</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="multi-endpoint-tradeoff-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a live ChEMBL snapshot</p>
+      <h2 id="multi-endpoint-tradeoff-title">Endpoint families, kept apart</h2>
+      <p>
+        Take the 486 independent measurements the decision-unit laboratory
+        admits and sort them into endpoint families, each with its own unit,
+        its own count of measurements and its own spread. For the ten parent
+        molecules of the cohort, 462 measurements are efficacy-related, 24 are
+        other affinity measurements, and no compound has a toxicity or an
+        exposure measurement at all, so those two families cannot be
+        integrated here.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/multi-endpoint-tradeoff/"
+          >Sort the endpoint families</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="functional-validation-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over two live public tables</p>
+      <h2 id="functional-validation-audit-title">A measurement, a response, an outcome</h2>
+      <p>
+        Read the ChEMBL 37 activity rows and the archived PubChem BioAssay
+        dose-response records, and sort them by the claim each record can
+        carry. The ChEMBL table holds 1,004 records, 488 point measurements
+        and 516 bounds. The PubChem table holds 1,257 records, 1,204
+        concentration-response tables, 38 bounds and 15 records that license
+        no claim. A clinical outcome is measured in neither.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/functional-validation-audit/"
+          >Read the three claims</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="source-review-scope-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over the committed catalogue</p>
+      <h2 id="source-review-scope-audit-title">What a reviewable claim is bound to</h2>
+      <p>
+        Read the atlas' own evidence entries and sort them by the parts they
+        carry: the source surface, the version, the date and the exact
+        material reviewed. Over twelve examined records none of the twelve
+        entries carries all four, and none carries a date and a surface
+        without a version, so a claim in this atlas is bound to a surface and
+        a date but not to a version.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/source-review-scope-audit/"
+          >Audit the source bindings</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="entity-glossary-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a live ChEMBL snapshot</p>
+      <h2 id="entity-glossary-audit-title">Which kinds of entity a table names</h2>
+      <p>
+        Take the admitted ChEMBL 37 activity rows and sort them by the kind
+        of entity each identifier names: the molecule record, the parent
+        molecule, the assay, the target and the document. The table names five
+        kinds and carries no identifier for a complex, a cell state, a patient
+        or a therapeutic candidate, and the laboratory reports the kinds it
+        cannot name instead of leaving them out.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/entity-glossary-audit/"
+          >Read the entity kinds</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="generalization-unit-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a live ChEMBL snapshot</p>
+      <h2 id="generalization-unit-audit-title">The unit a number generalizes over</h2>
+      <p>
+        Take the 486 admitted measurements and count them under each unit a
+        split could be drawn on: the molecule record, the parent molecule, the
+        scaffold, the assay, the target and the document. The same measurements
+        span 481 assays, 221 documents, 100 targets and 9 observed parents, so
+        "a test set of 98 rows" and "a test set of 6 unseen parents" are
+        different claims about the same table.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/generalization-unit-audit/"
+          >Count the independent units</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="applicability-domain-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over the FreeSolv release</p>
+      <h2 id="applicability-domain-audit-title">How far is a molecule from the data</h2>
+      <p>
+        Fit the cheapest baseline on the FreeSolv v0.52 hydration free
+        energies, hold out whole scaffolds, and measure how far each held-out
+        molecule is from its nearest training neighbour and how large the
+        error is. In the half with the smaller distances the median absolute
+        error is 0.59 kcal/mol and in the half with the larger distances it
+        is 0.80, which is a diagnostic and not a decision rule.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/applicability-domain-audit/"
+          >Measure the distance and the error</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="nomination-readiness-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a live ChEMBL snapshot</p>
+      <h2 id="nomination-readiness-audit-title">A rule fixed before the counts</h2>
+      <p>
+        Apply a readiness rule, written down before the cohort was counted, to
+        the ten parent molecules the decision-unit laboratory admits. The rule
+        asks for five independent measurements, three distinct assays and two
+        distinct documents. Six compounds go, two hold and two stop, and for
+        each that does not go the laboratory names the measurement it still
+        lacks.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/nomination-readiness-audit/"
+          >Apply the readiness rule</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="skempi-affinity-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a cached affinity archive</p>
+      <h2 id="skempi-affinity-title">Independent observations in an affinity table</h2>
+      <p>
+        Count the complexes, the protein groups and the complete pairs in a
+        SKEMPI 2.0 mirror, and audit the partial records the archive keeps
+        beside them. The laboratory then holds out whole complexes and
+        compares a complex-held-out baseline with a row-held-out one, which
+        is the difference between a new complex and a new row.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/skempi-affinity/"
+          >Count the independent observations</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="specificity-margin-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a cached affinity archive</p>
+      <h2 id="specificity-margin-audit-title">What a margin needs a second measurement for</h2>
+      <p>
+        Count the partners each protein is measured with in the affinity archive.
+        Of 171 protein labels, 154 are measured against exactly one partner,
+        and only 9 counted pairs have more than one observed partner on both
+        sides. The table says nothing about an alternative a protein was never
+        measured against.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/specificity-margin-audit/"
+          >Count the partners</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="tool-contract-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over this project's own records</p>
+      <h2 id="tool-contract-audit-title">Whether a tool's return describes itself</h2>
+      <p>
+        Check the 21 return records this repository's own laboratories commit
+        against a contract with six parts. All 21 carry a schema version, a
+        protocol identifier, a computation date and a software version, and 7
+        declare their own limits under 7 different names. One return declares
+        the environment, the side effects, the run status and the scientific
+        meaning the contract asks for, and the other 20 do not, which is a
+        metadata gap and not a statement about the measurements.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/tool-contract-audit/"
+          >Check the return records</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="pkpd-translation-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a cached ChEMBL snapshot</p>
+      <h2 id="pkpd-translation-audit-title">From measured clearance to an assumed effect</h2>
+      <p>
+        Trace measured intrinsic clearance through an explicit exposure,
+        engagement and effect model, over the human and rat hepatocyte
+        measurements the clearance laboratory admits. Of 1,120 distinct
+        admitted parent molecules, 106 can be carried by the paired-species
+        model and 1,014 cannot, each for a named reason. The model's
+        concentration, occupancy and effect are outputs under declared
+        unmeasured parameters, not measurements.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/pkpd-translation-audit/"
+          >Trace the model</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="multi-endpoint-integration-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over three cached ChEMBL snapshots</p>
+      <h2 id="multi-endpoint-integration-title">Which compounds carry more than one endpoint</h2>
+      <p>
+        Join the measured endpoint families a reader actually has, by parent
+        molecule and by nothing else. Of 7,908 compounds, 58 carry two families
+        and none carries three, while 1,062 carry only exposure, 6,780 only
+        interaction and 8 only efficacy. There is no measured toxicity
+        snapshot here, so that family is reported as unmeasured rather than
+        filled in.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/multi-endpoint-integration/"
+          >Join the endpoint families</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="crossdomain-tradeoff-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation of the curriculum's own nomination rule</p>
+      <h2 id="crossdomain-tradeoff-title">Which required input blocks each nomination</h2>
+      <p>
+        Execute the workbook's rule on its own teaching table and on 58 measured
+        ChEMBL parents. On the teaching table the computed answer is the
+        lesson's: N1 is blocked by its selectivity ratio, N2 by its exposure
+        ratio, N3 by its missing safety package, and none completes. On the
+        measured cohort the rule cannot be posed at all: the families held in
+        abundance are not the inputs the rule names, so every candidate is
+        blocked at the potency input and none completes a nomination.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/crossdomain-tradeoff/"
+          >Run the nomination rule</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="oracle-exploitation-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a committed split</p>
+      <h2 id="oracle-exploitation-audit-title">What a selection rule reads back</h2>
+      <p>
+        Rank a fitted model's own training molecules by its prediction and
+        compare what it predicted with what was measured. The gap reaches
+        8.06 kcal/mol on one selected molecule, while a random selection from
+        the same pool stays within 1.03. The batch it proposes for
+        independent evaluation comes from the held-out part of the split, with
+        a verification target for each member.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/oracle-exploitation-audit/"
+          >Measure the read-back</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="biologic-construct-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over this project's own catalogue</p>
+      <h2 id="biologic-construct-audit-title">Which fields a record actually states</h2>
+      <p>
+        Check what each catalogue record states about a biologic construct
+        across four fields, modality, construct type, expression system and
+        intended function. Of 46 records naming a biologic modality, 46 state
+        the modality, 4 state the construct type, and none states an
+        expression system or an intended function. A modality is not a
+        construct.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/biologic-construct-audit/"
+          >Check the stated fields</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="claim-chain-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over this project's own records</p>
+      <h2 id="claim-chain-audit-title">How strong is the weakest link</h2>
+      <p>
+        Join the topics of a nomination into a chain and check each link
+        against the evidence its own record names. Two chains of eight links
+        are audited. The weakest link of each sits at the worked level, with
+        six links of one chain and five of the other below the strongest state
+        the chain reaches, and seven links disagree with the independent
+        reading.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/claim-chain-audit/"
+          >Audit the chain</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="open-question-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over this project's own records</p>
+      <h2 id="open-question-audit-title">Whether the record still names what would settle it</h2>
+      <p>
+        Classify the state of every question the comparison record holds, and
+        check that each open one still names a falsifying observation or a
+        missing measurement. Twenty-eight questions are open, and all
+        twenty-eight name one. The audit reads what the records say, not
+        whether the measurement was made.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/open-question-audit/"
+          >Audit the open questions</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="target-product-profile-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over three cached ChEMBL snapshots</p>
+      <h2 id="target-product-profile-title">A profile a later result can contradict</h2>
+      <p>
+        Apply a profile of mandatory gates and preferences, fixed before the
+        measurements are read, to the compounds the three families share. No
+        compound satisfies the full profile. The clearance gate passes for 24
+        and fails for 5, the CYP3A4 gate passes for 19 and fails for 20, and
+        clinical response and immunogenicity have no measurement here at all.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/target-product-profile/"
+          >Apply the profile</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="agent-evaluation-taskset-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over this project's own records</p>
+      <h2 id="agent-evaluation-taskset-title">A fixed task set that does not yet pass</h2>
+      <p>
+        Check three of this repository's own laboratories as fixed
+        evaluation tasks, across source resolution, execution correctness,
+        recovery, claim accuracy and action authorisation. No task passes all
+        five. Action authorisation passes for none of the three, which is the
+        dimension the lesson says a human review belongs to.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/agent-evaluation-taskset/"
+          >Run the task set</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="candidate-evidence-chain-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over three cached ChEMBL snapshots</p>
+      <h2 id="candidate-evidence-chain-title">Where a candidate's chain stops</h2>
+      <p>
+        Join a compound's mechanism, target, activity, selectivity, exposure,
+        safety, synthesis and reproducibility into one chain, and report the
+        first link that is not measured. For three compounds with the most
+        links, five of the eight are not covered at all, and no chain reaches a
+        claim. The laboratory does not fill a missing link.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/candidate-evidence-chain/"
+          >Assemble the chain</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="mechanism-consistency-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a cached perturbation snapshot</p>
+      <h2 id="mechanism-consistency-title">A response that follows a target, or any response</h2>
+      <p>
+        Test a target-mediated explanation against a fixed different-compound
+        control, over 1,721 compounds measured in two cell lines. 678 fit the
+        mediator-specific pattern, 123 fit the generic-stress one, and 920
+        cannot be decided, 490 of them because the mismatched control agrees
+        better than the compound agrees with itself.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/mechanism-consistency/"
+          >Run the mechanism test</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="biologic-construct-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a fetched record snapshot</p>
+      <h2 id="biologic-construct-audit-title">A modality is not a construct</h2>
+      <p>
+        Check what the records of six named medicines state about modality,
+        construct, production host and intended function. All six state the
+        modality, five the construct, three the host and four the function.
+        Three give a construct without a host and one gives a host without a
+        construct, so only three define all four.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/biologic-construct-audit/"
+          >Check the stated fields</a
+        >
+      </p>
+    </article>
+  </section>
+  <section class="section" aria-labelledby="free-energy-network-audit-title">
+    <article class="detail-panel">
+      <p class="meta-label">Fresh computation over a fetched result snapshot</p>
+      <h2 id="free-energy-network-audit-title">The cycles that do not close</h2>
+      <p>
+        Pair the solvent edges with the complex edges of eight released
+        relative binding free-energy networks and test whether each cycle
+        closes. Of 92 cycles, 87 close and 5 do not, the largest by 7.87
+        kcal/mol. The laboratory keeps the failed cycles by name and size
+        rather than dropping them.
+      </p>
+      <p>
+        <a class="button-secondary" href="/labs/free-energy-network-audit/"
+          >Audit the cycles</a
+        >
+      </p>
+    </article>
+  </section>
+</SiteShell>

@@ -1,0 +1,381 @@
+---
+title: Autonomous laboratory agents
+description: Read the agents that plan experiments, the platforms that drive instruments and the benchmarks that score chemistry capability, then separate the released system from the protocol that would let another group re-run it.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="scientific-agents/autonomous-laboratory-agents" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+Read [Retrieval, typed tools, and feedback loops](/learn/scientific-agents/retrieval-tools-feedback/)
+first. That lesson separates a retrieved document from a trained parameter, a typed
+tool result from a textual promise, and a tool call from a wet experiment. This
+reading moves one step along the same boundary, to the systems that plan an
+experiment, the platforms that drive an instrument, and the benchmarks that ask
+whether a model can do chemistry at all.
+
+After this lesson you should be able to:
+
+1. state the task and the input and output contract of a planning agent, an
+   instrument platform and a capability benchmark, and tell the three apart;
+2. read the seven openness dimensions of an Atlas record and say which of them a
+   record leaves unverified;
+3. read a licence together with the scope its own record assigns to it;
+4. identify the record in this family that states no licence at all; and
+5. decide what a reader who inspects a record and nothing else may claim.
+
+The work is reading. No API key, model call, instrument, benchmark download or
+laboratory access is needed, and nothing in this lesson was executed.
+
+## Task and input-output contract
+
+Three kinds of object appear in this family, and they are not three versions of
+one thing.
+
+| Object | What it operates | Input | Output |
+| --- | --- | --- | --- |
+| Planning agent | A chemistry objective in language, plus the hardware and services it can call | An objective, a set of callable tools, an authority boundary and a budget | A plan, a sequence of typed calls, and a record of what each call returned |
+| Instrument platform | The laboratory instrument and the protocol it runs | A protocol, an instrument state and a sample | Instrument-driven experimental data under a software-controlled workflow |
+| Capability benchmark | A fixed set of questions and a grading rule | Questions, and for some items documents, figures, tables or sequences | A graded answer or a multiple-choice record |
+
+[Coscientist](https://github.com/gomesgroup/coscientist) is recorded as an
+autonomous chemistry research agent that plans and executes multi-step
+experiments with laboratory hardware and language models, across the design,
+make and analysis stages. The contract that matters to a re-runner is not the
+prose plan. It is the sequence of typed calls, each with a request, a returned
+value and a reference to the physical thing that was touched.
+
+[Robin](https://github.com/Future-House/robin) is recorded as a multi-agent
+system for automated small-molecule discovery that runs search, design and
+analysis in one loop, across the design and evaluation stages. Its output is a
+loop's worth of proposals and analysis.
+
+[Agent Laboratory](https://github.com/SamuelSchmidgall/AgentLaboratory) is
+recorded as an agent workflow that plans, executes and documents a
+machine-learning research project end to end, across the model-development and
+evaluation stages, with a notebook among its modalities. Its output is a
+documented project rather than a measurement.
+
+[AutoLabs](https://github.com/pnnl/AutoLabs) is recorded as an open autonomous
+laboratory platform for running instrument-driven experiments under a
+software-controlled workflow, across the make and analysis stages. Its input is
+a protocol and a sample, and its output is experimental data whose provenance
+runs through the instrument rather than through a language model.
+
+[Towards an AI co-scientist](https://arxiv.org/abs/2502.18864) is recorded as a
+proposal for an agent that generates, critiques and ranks research hypotheses
+alongside a human scientist. It enters this family as a paper rather than as a
+running system, and its record carries no code repository.
+
+Two benchmarks complete the family. [ChemBench](https://github.com/lamalab-org/chembench)
+tests language models on chemistry knowledge at several difficulty levels, over
+the evaluation stage. [LAB-Bench](https://github.com/Future-House/LAB-Bench)
+evaluates biology-research capability with literature, database, figure, table,
+protocol and sequence questions and a multiple-choice evaluation interface, over
+the evaluation, evidence-synthesis and analysis stages.
+
+The boundary that separates them is simple to state and easy to lose. An answer
+that is graded correctly is an answer. A plan that was written is a plan. An
+instrument that ran is an experiment. A benchmark score is a number about a
+system under a stated setting. None of the four is the next one, and no record
+in this family establishes that one of them was the other.
+
+## Representation, objective, training and inference
+
+The second question has a thin answer in this family, and the thinness is the
+finding.
+
+For the three agents and the co-scientist proposal, the records leave
+architecture, training code, weights, data recipe and training data unverified.
+A record of a system is not a record of a representation, an objective or a
+recipe. Inference code is the only dimension that three of these four records
+establish, and the co-scientist proposal establishes none of the seven. The
+lesson to carry forward is that inference availability is not a released
+training recipe.
+
+The benchmarks and the platform differ in a way that is worth reading
+carefully, because the difference shows what the openness block is measuring.
+
+| Record | Kind of artefact | Dimensions marked not applicable | Dimensions the record establishes |
+| --- | --- | --- | --- |
+| ChemBench | A benchmark that trains nothing | training code, weights, architecture, training data | inference code, data recipe, evaluation code |
+| AutoLabs | A platform that trains nothing | training code, weights, training data | inference code, evaluation code |
+| LAB-Bench | A benchmark with a hosted dataset | none | evaluation code |
+
+A dimension is marked not applicable when the artefact has no training step to
+open, and unverified when the record did not establish it. The distinction
+carries a consequence for a reader. Not applicable means the question does not
+arise for this artefact. Unverified means the question arises and the registry
+did not open the file that would answer it.
+
+## The comparison the records do not support
+
+The strongest relevant comparison under a matched protocol is not available in
+these records, and the reason is not that the systems are hard to compare. It
+is that the comparison was never specified.
+
+A matched comparison between an agent that plans and executes and a platform
+that drives instruments needs the same objective, the same instruments, the same
+services and versions, the same splits, the same metric, the same authority
+boundary, and a recorded run of both. These records contain none of that, and
+no run was performed for this reading. A ranking of the family would therefore
+be an invention rather than a finding.
+
+What the records do support is a comparison of release posture. For each
+artefact a reader can check what it is, which openness dimensions it
+establishes, which licence text it carries, and what that text excludes. That
+comparison is a comparison of records, and it is stated in the next section.
+
+Two traps sit around this. A record that cites a paper is not a record that
+carries an evaluated protocol. The co-scientist record states that a proposal
+evaluated on a closed set of tasks is a statement about those tasks. The
+Coscientist record names a published evaluation that depends on hardware the
+project operated, which is a fact about a run rather than a protocol the
+registry could re-run.
+
+## Entities, splits, metrics and resources
+
+The entities in this family are heterogeneous, and the difference matters when a
+score is reported.
+
+An agent's entity is the experiment or the proposed molecule rather than the
+molecule alone, because the record of interest is what was planned and what came
+back. A benchmark's entity is the question, and a question carries its own
+properties. ChemBench's questions sit at several difficulty levels. LAB-Bench's
+questions draw on literature, databases, figures, tables, protocols and
+sequences, so an item may carry an image or a sequence as well as text.
+
+Only one split structure is named anywhere in this family. The LAB-Bench
+repository describes a public portion and a separate private holdout used for
+contamination monitoring, and the registry record does not provide the private
+portion. The records name no split for the agents, and the records carry no
+metric attached to a matched protocol.
+
+The resources a reader can reach are the project repositories, the hosted
+LAB-Bench dataset at
+[Hugging Face](https://huggingface.co/datasets/futurehouse/lab-bench), and the
+paper records for the co-scientist proposal and for LAB-Bench. One caution
+belongs here rather than in a footnote. The LAB-Bench record states that a
+benchmark's hosted split label is not a training-data recommendation, and that
+no benchmark questions were used to train or evaluate a model in the project
+that wrote the record. A public benchmark is not a corpus for the next model.
+
+## What was inspected and what was run
+
+The Atlas is a record of opened files, so the reading itself has an audit trail.
+
+For the seven records last verified on 2026-10-21, the registry opened the
+project repository, the project README and the project licence file. For
+LAB-Bench, last verified on 2026-09-09, the registry opened the official task
+description and the public dataset licence. Every one of those openings is
+recorded as an evidence entry in the record, with the URL it came from.
+
+Nothing was run. No agent was executed, no instrument was driven, no benchmark
+was scored, and no licence was interpreted beyond the text of the file that
+states it. Every quantity in this lesson is a count of records, openness
+dimensions or licence clauses that a reader can check against the same files,
+and none of them is a measurement of a scientific system.
+
+## Openness and licence posture
+
+Three statements carry the learning point of this reading, and each of them is
+a source fact rather than a conclusion drawn here.
+
+For the agents in this family, the released artefact is the system rather than
+the protocol. The Robin record says so in its own words. The released artefact
+is the system, not a frozen evaluation with a protocol the registry can
+inspect. The Agent Laboratory record adds that the reported results depend on
+the services and the models available at the time, and that the registry does
+not establish that a reported run can be reproduced. The Coscientist record adds
+that the published evaluation depends on hardware the project operated, and
+that the record does not establish that the result can be reproduced on other
+hardware.
+
+The hardware and the services carry their own terms. The Coscientist licence
+does not cover the hardware, the chemistry services or any third-party data the
+agent calls. The Robin licence does not cover the models the agents call, the
+chemistry services, or any dataset the system consumes. The Agent Laboratory
+licence does not cover the language-model services the workflow calls. The
+AutoLabs licence does not cover the instruments, the facility or any
+consumable. The AI-Researcher benchmark runs language-model services whose
+terms that repository does not grant. A repository licence tells a reader what
+they may do with the files in the repository. It says nothing about the
+machine, the API or the chemical that the system touches.
+
+One record states no licence at all. The AI-Researcher record carries an empty
+licence list. Its access level is unverified, and its caveat records that the
+repository root carries no licence file and that the README states no licence,
+so the terms for reuse are unverified and the record does not assert a licence.
+A reader who writes that this suite is MIT-licensed, or open source, or freely
+reusable has added a term that no opened file states.
+
+| Record | Kind | Access level | Openness the record establishes | Licence and the scope the record assigns to it |
+| --- | --- | --- | --- | --- |
+| [Coscientist](/atlas/agent-coscientist/) | agent | open source | inference code | Apache-2.0 with Commons Clause v1.0, whose text states that the grant does not include the right to Sell the Software. It does not cover the hardware, the chemistry services or any third-party data the agent calls. |
+| [Robin](/atlas/agent-robin/) | agent | open source | inference code | Apache-2.0 over the repository source. It does not cover the models the agents call, the chemistry services, or any dataset the system consumes. |
+| [Agent Laboratory](/atlas/agent-agent-laboratory/) | agent | open source | inference code | MIT over the repository source. It does not cover the language-model services the workflow calls. |
+| [AI co-scientist](/atlas/agent-ai-coscientist/) | paper | unverified | none, every dimension stays unverified | CC BY 4.0 over the arXiv preprint only. No implementation licence is established, because no code repository was located. |
+| [ChemBench](/atlas/benchmark-chem-bench/) | benchmark | open source | inference code, data recipe and evaluation code. Training code, weights, architecture and training data are not applicable | MIT over the benchmark questions, the grading code and the repository. Some questions draw on published chemistry literature, so the benchmark inherits the licensing of the sources it quotes. |
+| [AI-Researcher](/atlas/benchmark-ai-researcher/) | benchmark | unverified | inference code | none. The repository root carries no licence file and the README states no licence. |
+| [AutoLabs](/atlas/tool-autolabs/) | software | open source | inference code and evaluation code. Training code, weights and training data are not applicable. Architecture and data recipe are unverified | BSD-2-Clause over the platform source, stating two redistribution conditions and no named endorsement clause. It does not cover the instruments, the facility or any consumable. |
+| [LAB-Bench](/atlas/benchmark-lab-bench/) | benchmark | source available | evaluation code. The other six dimensions are unverified | CC BY-SA 4.0 over the public dataset, and not blanket rights to every third-party source or model. |
+
+One practical detail belongs with the AutoLabs row. Its default branch is master
+rather than main, so a reader who follows a main-branch path finds no licence
+file. The licence text is reachable at the branch the project uses.
+
+Two qualifications that a table of licences alone would hide belong beside it.
+The ChemBench record states that a benchmark of model knowledge is not a
+benchmark of a model able to do chemistry, and that the record does not
+establish the second. The LAB-Bench record states that multiple-choice
+performance measures the specified questions and tool setting, not autonomous
+laboratory execution.
+
+## Worked case
+
+The following is a **constructed teaching case**. It is not an executed session,
+an experiment or a legal opinion.
+
+A university group wants to re-run the multi-step chemistry route reported in
+the Coscientist paper on its own robotic hardware, to drive those instruments
+through an open platform, and to report how the systems compare.
+
+| Decision | What the record establishes | What the group may not write |
+| --- | --- | --- |
+| May the group run the agent code? | Inference code is available, and the Coscientist record states Apache-2.0 with Commons Clause v1.0, whose text excludes the right to Sell the Software | That the grant extends to the hardware, the chemistry services, or any third-party data the agent calls |
+| Will the route run on the group's robot? | The record states that the published evaluation depends on hardware the project operated | That the published result reproduces on the group's instrument |
+| May the group drive its own instruments? | The AutoLabs record states BSD-2-Clause over the platform source, with two redistribution conditions | That the platform licence grants any right over the instruments, the facility or a consumable |
+| May the group reuse the benchmark suite? | The AI-Researcher record's licence list is empty, its access level is unverified, and its README states no licence | That the suite is MIT-licensed, open source, or reusable on the strength of this record |
+| May the group report a comparison? | The records carry no matched protocol, and no run was performed for this reading | Any ranking of the systems, or any score |
+| What may the group report at all? | The records establish the code, the licences and their scopes | A reproduced experiment, an executed benchmark, or a performance number |
+
+The group's honest paragraph is short. It states which repository, README and
+licence file were inspected, states that the inference code was obtained under a
+licence that excludes commercial reuse as a competing product and does not
+cover the hardware, the chemistry services or the third-party data the agent
+calls, states that no training recipe, no frozen evaluation protocol and no
+licence for the benchmark suite were obtained, and states that nothing was run
+and no performance claim is made.
+
+## What this material does not show
+
+This reading makes no claim about the capability of any system it names.
+
+It does not show that any of these systems can do chemistry. The records
+describe three agents, one proposal, one instrument platform and three
+benchmarks, and the Coscientist record warns that its own licence does not cover
+the chemistry services the agent calls.
+
+It does not show that any of them ran an experiment. Nothing was run here, and
+no record in this family contains an instrument log, a raw data file or a
+protocol this registry could re-run.
+
+It does not rank them. The records carry no matched protocol, and a ranking
+without one is an invention.
+
+It does not establish a reproduction of the published Coscientist evaluation,
+because the hardware dependence is stated and no run was performed.
+
+It does not establish the terms for reuse of the AI-Researcher suite, because
+no opened file states them.
+
+It does not extend any licence to the instruments, the facility, the
+consumables, the chemistry services or the language-model services.
+
+It does not show that a benchmark score transfers to laboratory execution. The
+LAB-Bench record states that multiple-choice performance measures the specified
+questions and tool setting, and the ChemBench record states that a benchmark of
+model knowledge is not a benchmark of a model able to do chemistry.
+
+It does not show that the co-scientist proposal is a released implementation,
+because its record states that no code repository was located and every openness
+dimension stays unverified.
+
+It does not show that a public benchmark split is a training set.
+
+## Independent exercise
+
+A group writes the following sentence for a workshop abstract.
+
+> We evaluated an autonomous chemistry research agent, an instrument platform and
+> a research-agent benchmark suite, and we find that the agent chemistry
+> capability is strongest.
+
+Answer the following using only the Atlas records for this family.
+
+1. Which parts of the sentence does the record support, and which parts does it
+   not? Name the record that decides each part.
+2. The group wants to re-run the agent's own evaluation protocol on its own
+   instrument. Which artefacts would it need, and what does the record say
+   about whether they are available?
+3. The group's legal reviewer asks which licence covers the benchmark suite,
+   and whether that licence reaches the instrument driver.
+4. Rewrite the claim in one sentence that the records support.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+1. No part of the comparative claim is supported. The word "evaluated" asserts
+   an execution that did not occur, since nothing was run for this reading and
+   the records carry no matched protocol. The word "strongest" asserts a
+   ranking, and a ranking requires a matched comparison that these records do
+   not contain. The Robin record decides the first part, by stating that the
+   released artefact is the system and not a frozen evaluation with a protocol
+   the registry can inspect. The Agent Laboratory record decides the second
+   part, by stating that the registry does not establish that a reported run can
+   be reproduced. The Coscientist record adds that its published evaluation
+   depends on hardware the project operated.
+
+2. The group would need the evaluation protocol, the split, the metric, the
+   model and service versions, and the hardware configuration of the original
+   run. The Coscientist record leaves training code, weights, architecture, data
+   recipe, training data and evaluation code unverified, and its caveat states
+   that the record does not establish that the result can be reproduced on other
+   hardware. The correct answer is therefore that the protocol is not
+   established to be released, not that it is released and merely hard to run.
+
+3. The benchmark suite's terms are unverified. The AI-Researcher record carries
+   an empty licence list, an unverified access level, and a caveat recording
+   that the repository root carries no licence file and that the README states
+   no licence. The instrument driver is a separate question with its own answer.
+   The AutoLabs record states BSD-2-Clause over the platform source and states
+   that this does not cover the instruments, the facility or any consumable, and
+   the record does not establish the instrument licences, the facility terms or
+   the consumable terms either.
+
+4. A supportable sentence is this. We inspected the repository, README and
+   licence file behind each of the eight records. Six of the eight establish
+   inference code, the LAB-Bench record establishes evaluation code only, the
+   co-scientist record leaves every openness dimension unverified, and the
+   AI-Researcher record states no licence at all. No training recipe, no
+   matched comparison and no reproducible evaluation is established. Nothing was
+   run, and no performance claim is made.
+
+</details>
+
+## Sources and attribution
+
+<div data-case-sources>
+
+- [Coscientist repository](https://github.com/gomesgroup/coscientist) and [Autonomous chemical research with large language models](https://doi.org/10.1038/s41586-023-06792-0)
+- [Robin repository](https://github.com/Future-House/robin)
+- [Agent Laboratory repository](https://github.com/SamuelSchmidgall/AgentLaboratory)
+- [Towards an AI co-scientist](https://arxiv.org/abs/2502.18864)
+- [ChemBench repository](https://github.com/lamalab-org/chembench)
+- [AI-Researcher repository](https://github.com/HKUDS/AI-Researcher) and its [README](https://raw.githubusercontent.com/HKUDS/AI-Researcher/main/README.md)
+- [AutoLabs repository](https://github.com/pnnl/AutoLabs) and its [licence file on the master branch](https://raw.githubusercontent.com/pnnl/AutoLabs/master/LICENSE.md)
+- [LAB-Bench repository](https://github.com/Future-House/LAB-Bench), the [hosted dataset](https://huggingface.co/datasets/futurehouse/lab-bench) and [Language Agent Biology Benchmark](https://arxiv.org/abs/2407.10362)
+
+</div>
+
+The Atlas records behind these pages were opened on 2026-10-21, with the LAB-Bench
+record last verified on 2026-09-09. The worked case and the exercise are
+constructed. This lesson makes no software-execution, autonomous-laboratory or
+experimental-result claim. Original lesson prose is CC BY 4.0, and the linked
+software and sources retain their own terms.
+
+Last reviewed: 2026-10-22.

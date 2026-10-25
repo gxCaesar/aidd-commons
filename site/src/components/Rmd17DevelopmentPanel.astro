@@ -1,0 +1,732 @@
+---
+import developmentSummary from "../../../labs/rmd17_system_state/development-summary.json";
+import { validateRmd17DevelopmentSummary } from "../lib/rmd17-development-summary.js";
+
+const summary = validateRmd17DevelopmentSummary(developmentSummary);
+const developmentSystemIds = Object.keys(summary.development_evaluation);
+const systemCards = Object.entries(summary.systems);
+const lockedSystems = Object.entries(summary.locked_evaluations);
+const partitionOrder = ["train", "validation", "evaluation"];
+const partitions = partitionOrder.map((name) => ({
+  name,
+  count: summary.split.partitions[name],
+}));
+const totalPartitionFrames = partitions.reduce(
+  (total, partition) => total + partition.count,
+  0,
+);
+const metricRows = developmentSystemIds.map((systemId) => ({
+  systemId,
+  ...summary.development_evaluation[systemId],
+}));
+const selectedValidation =
+  summary.selection.validation_grid.find(
+    (entry) => entry.alpha === summary.selection.selected_alpha,
+  );
+const ordinaryBinCount = summary.features.bins_per_channel - 1;
+const overflowBinCount = summary.features.bins_per_channel - ordinaryBinCount;
+if (selectedValidation === undefined) {
+  throw new Error("Selected rMD17 alpha is absent from the validation grid");
+}
+if (totalPartitionFrames !== summary.split.selected_frames) {
+  throw new Error("rMD17 partition counts do not match selected_frames");
+}
+const observedRidgeImprovement = metricRows.every(
+  (row) => row.ridge.mae < row.train_mean.mae,
+);
+const pretestStatus =
+  summary.artifact_type === "reviewed-development-summary"
+    ? "Development pretest passed"
+    : "Development pretest status unavailable";
+const formatMetric = (value: number) => value.toFixed(3);
+const formatGap = (value: number) => value.toLocaleString("en-US");
+const formatSystemStatus = (systemId: string, status: string) =>
+  summary.locked_evaluations[systemId] === status
+    ? status
+    : status.replaceAll("_", " ");
+const claimRows = [
+  {
+    boundary: "Observed",
+    claim: observedRidgeImprovement
+      ? "Ridge has lower within-system evaluation MAE than the train mean for both development systems."
+      : "The reviewed development summary does not support a Ridge improvement claim for every development system.",
+    scope: `Descriptive development evidence only (n=${developmentSystemIds.length}).`,
+  },
+  {
+    boundary: "Absent at development freeze",
+    claim: "The historical development summary contains no benzene or uracil metrics; their completed scores are reported in the companion lab.",
+    scope: lockedSystems
+      .map(([systemId, status]) => `${systemId}: ${status}`)
+      .join(" · "),
+  },
+  {
+    boundary: "Unsupported",
+    claim: "Cross-system generalization, a molecule-wide ranking, and a SOTA claim are not established here.",
+    scope: "The public development slice does not identify an independent external comparison.",
+  },
+];
+---
+
+<section
+  class="rmd17-panel"
+  aria-labelledby="rmd17-panel-title"
+  data-rmd17-development-panel
+>
+  <header class="rmd17-panel__header">
+    <div>
+      <p class="rmd17-panel__eyebrow">Reviewed development evidence</p>
+      <h2 id="rmd17-panel-title">rMD17 development evidence</h2>
+      <p>
+        A system-state baseline keeps molecule-specific feature spaces separate.
+        One validation rule selects a shared regularisation value; it does not
+        create a shared molecular model.
+      </p>
+    </div>
+    <ul class="rmd17-panel__status" aria-label="Status at development freeze">
+      <li class="rmd17-panel__status-item rmd17-panel__status-item--observed">
+        <span aria-hidden="true">●</span>{pretestStatus}
+      </li>
+      <li class="rmd17-panel__status-item rmd17-panel__status-item--boundary">
+        <span aria-hidden="true">●</span>{lockedSystems.length} evaluations were absent at development freeze
+      </li>
+    </ul>
+  </header>
+
+  <div class="rmd17-panel__body">
+    <section aria-labelledby="rmd17-systems-title">
+      <div class="rmd17-panel__section-heading">
+        <p>01 / System states</p>
+        <h3 id="rmd17-systems-title">Named systems across development and locked surfaces</h3>
+      </div>
+      <ul class="rmd17-panel__system-grid" aria-label="System evaluation states">
+        {
+          systemCards.map(([systemId, status]) => (
+            <li>
+              <strong>{systemId}</strong>
+              <span>{formatSystemStatus(systemId, status)}</span>
+              <p>
+                {developmentSystemIds.includes(systemId)
+                  ? "Within-system development evaluation is complete."
+                  : "Historical pre-evaluation state; completed scores are reported in the companion lab."}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section aria-labelledby="rmd17-split-title">
+      <div class="rmd17-panel__section-heading">
+        <p>02 / Ordered development split</p>
+        <h3 id="rmd17-split-title">Training, validation, then evaluation</h3>
+      </div>
+      <ol class="rmd17-panel__timeline">
+        {
+          partitions.map((partition, index) => (
+            <li style={`flex: ${partition.count}`}>
+              <span>Stage {index + 1}</span>
+              <strong>{partition.count.toLocaleString("en-US")}</strong>
+              <span>{partition.name}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="rmd17-panel__note">
+        {totalPartitionFrames.toLocaleString("en-US")} selected frames per development system are ordered by original index.
+        This preserves an ordering cue but does not remove time correlation or create independent samples.
+      </p>
+    </section>
+
+    <section aria-labelledby="rmd17-features-title">
+      <div class="rmd17-panel__section-heading">
+        <p>03 / State to pair histogram</p>
+        <h3 id="rmd17-features-title">Feature construction stays inside each system</h3>
+      </div>
+      <ol class="rmd17-panel__construction">
+        <li>
+          <span>State</span>
+          <strong>nuclear charges + coordinates</strong>
+        </li>
+        <li>
+          <span>Pairs</span>
+          <strong>{summary.features.construction}</strong>
+        </li>
+        <li>
+          <span>Histogram</span>
+          <strong>
+            {ordinaryBinCount} ordinary bins using {summary.features.distance_bin_width_angstrom} Å widths + {overflowBinCount} overflow bin
+          </strong>
+        </li>
+      </ol>
+      <ul class="rmd17-panel__feature-grid" aria-label="Per-system feature layouts">
+        {
+          Object.entries(summary.features.by_system).map(([systemId, feature]) => (
+            <li>
+              <h4>{systemId}</h4>
+              <p>
+                <strong>{feature.channel_count}</strong> pair channels · <strong>{feature.feature_dimension}</strong> features
+              </p>
+              <code>{feature.element_pair_channels.join(" · ")}</code>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section aria-labelledby="rmd17-selection-title">
+      <div class="rmd17-panel__section-heading">
+        <p>04 / Validation-selected regularisation</p>
+        <h3 id="rmd17-selection-title">Shared alpha, independently fit system models</h3>
+      </div>
+      <div class="rmd17-panel__selection-callout">
+        <span>Selected alpha</span>
+        <strong>alpha {summary.selection.selected_alpha}</strong>
+        <p>
+          Validation MAE scalars are aggregated for selection. Coefficients,
+          scalers, and feature dimensions remain system-specific.
+        </p>
+      </div>
+      <div
+        class="rmd17-panel__table-wrap"
+        role="region"
+        aria-label="Development model evaluation metrics"
+        tabindex="0"
+      >
+        <table>
+          <caption>Within-system development evaluation; lower error is better.</caption>
+          <thead>
+            <tr>
+              <th scope="col">System</th>
+              <th scope="col">Target range</th>
+              <th scope="col">Train mean MAE</th>
+              <th scope="col">Train mean RMSE</th>
+              <th scope="col">Ridge MAE</th>
+              <th scope="col">Ridge RMSE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              metricRows.map((row) => (
+                <tr>
+                  <th scope="row">{row.systemId}</th>
+                  <td>{formatMetric(row.ridge.target_range)}</td>
+                  <td>{formatMetric(row.train_mean.mae)}</td>
+                  <td>{formatMetric(row.train_mean.rmse)}</td>
+                  <td>{formatMetric(row.ridge.mae)}</td>
+                  <td>{formatMetric(row.ridge.rmse)}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <ul class="rmd17-panel__aggregate-grid" aria-label="Aggregate development MAE">
+        {
+          Object.entries(summary.aggregates).map(([modelName, aggregate]) => (
+            <li>
+              <span>{modelName.replaceAll("_", " ")}</span>
+              <strong>Median MAE {formatMetric(aggregate.median_mae)}</strong>
+              <p>MAE range {formatMetric(aggregate.mae_range)}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="rmd17-panel__note">
+        Selected-alpha validation MAE: {Object.entries(selectedValidation.per_system_validation_mae)
+          .map(([systemId, value]) => `${systemId} ${formatMetric(value)}`)
+          .join(" · ")}
+        .
+      </p>
+    </section>
+
+    <section aria-labelledby="rmd17-ordering-title">
+      <div class="rmd17-panel__section-heading">
+        <p>05 / Aggregate ordering diagnostics</p>
+        <h3 id="rmd17-ordering-title">Original-index spacing is summarized, not released as membership</h3>
+      </div>
+      <ul class="rmd17-panel__diagnostics" aria-label="Aggregate original-index gap diagnostics">
+        {
+          Object.entries(summary.split.ordering_diagnostics_by_system).map(
+            ([systemId, diagnostics]) => (
+              <li>
+                <h4>{systemId}</h4>
+                <p>
+                  <strong>{diagnostics.strictly_increasing ? "Strictly increasing" : "Ordering check failed"}</strong>
+                </p>
+                <dl>
+                  <div>
+                    <dt>Adjacent gap</dt>
+                    <dd>
+                      min {formatGap(diagnostics.adjacent_original_index_gap.minimum)} · median {formatGap(diagnostics.adjacent_original_index_gap.median)} · max {formatGap(diagnostics.adjacent_original_index_gap.maximum)}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Partition boundary gap</dt>
+                    <dd>
+                      train→validation {formatGap(diagnostics.partition_boundary_gap.train_to_validation)} · validation→evaluation {formatGap(diagnostics.partition_boundary_gap.validation_to_evaluation)}
+                    </dd>
+                  </div>
+                </dl>
+              </li>
+            ),
+          )
+        }
+      </ul>
+    </section>
+
+    <section aria-labelledby="rmd17-boundary-title">
+      <div class="rmd17-panel__section-heading">
+        <p>06 / Claim boundary</p>
+        <h3 id="rmd17-boundary-title">Development observations and limits</h3>
+      </div>
+      <div
+        class="rmd17-panel__table-wrap"
+        role="region"
+        aria-label="Claim boundary matrix"
+        tabindex="0"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Evidence state</th>
+              <th scope="col">Claim boundary</th>
+              <th scope="col">Scope</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              claimRows.map((row) => (
+                <tr>
+                  <th scope="row">{row.boundary}</th>
+                  <td>{row.claim}</td>
+                  <td>{row.scope}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <ul class="rmd17-panel__lock-list" aria-label="Locked statuses at development freeze">
+        {
+          lockedSystems.map(([systemId, status]) => (
+            <li>
+              <span>{systemId}</span>
+              <code>{status}</code>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="rmd17-panel__note">
+        These statuses belong to the preserved development snapshot.
+        <a href="/labs/rmd17-system-state-energy-baselines/#rmd17-locked-title">Both completed evaluations</a> are reported separately.
+        Public source access does not permit selective rerunning or retuning this protocol.
+      </p>
+    </section>
+  </div>
+</section>
+
+<style>
+  .rmd17-panel {
+    margin-block: 2rem 3rem;
+    overflow: hidden;
+    border: 1px solid var(--atlas-rule);
+    background:
+      radial-gradient(
+        circle at 100% 0,
+        color-mix(in srgb, var(--atlas-teal) 15%, transparent),
+        transparent 28rem
+      ),
+      var(--atlas-panel);
+    box-shadow: var(--atlas-shadow);
+  }
+
+  .rmd17-panel__header,
+  .rmd17-panel__body > section {
+    min-width: 0;
+    padding: clamp(1.1rem, 3vw, 1.75rem);
+  }
+
+  .rmd17-panel__header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.25rem;
+    align-items: start;
+    border-bottom: 1px solid var(--atlas-rule);
+  }
+
+  .rmd17-panel__header > div {
+    max-width: 48rem;
+  }
+
+  .rmd17-panel__eyebrow,
+  .rmd17-panel__section-heading > p {
+    margin: 0 0 0.35rem;
+    color: var(--atlas-teal-deep);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .rmd17-panel h2,
+  .rmd17-panel h3,
+  .rmd17-panel h4,
+  .rmd17-panel p {
+    overflow-wrap: anywhere;
+  }
+
+  .rmd17-panel h2 {
+    margin: 0;
+    color: var(--atlas-ink);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.65rem, 4vw, 2.5rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .rmd17-panel__header p:last-child,
+  .rmd17-panel__note,
+  .rmd17-panel__system-grid p,
+  .rmd17-panel__selection-callout p {
+    color: var(--atlas-muted);
+  }
+
+  .rmd17-panel__status,
+  .rmd17-panel__system-grid,
+  .rmd17-panel__feature-grid,
+  .rmd17-panel__diagnostics,
+  .rmd17-panel__aggregate-grid,
+  .rmd17-panel__lock-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rmd17-panel__status {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .rmd17-panel__status-item {
+    display: inline-flex;
+    min-height: 2.25rem;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.65rem;
+    border: 1px solid var(--atlas-rule);
+    background: color-mix(in srgb, var(--atlas-bg) 72%, transparent);
+    color: var(--atlas-ink);
+    font-size: 0.78rem;
+    font-weight: 750;
+  }
+
+  .rmd17-panel__status-item--observed span {
+    color: var(--atlas-teal-deep);
+  }
+
+  .rmd17-panel__status-item--boundary span {
+    color: var(--atlas-coral);
+  }
+
+  .rmd17-panel__body > section {
+    border-bottom: 1px solid var(--atlas-rule);
+  }
+
+  .rmd17-panel__body > section:last-child {
+    border-bottom: 0;
+  }
+
+  .rmd17-panel__section-heading h3 {
+    margin: 0;
+    color: var(--atlas-ink);
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+  }
+
+  .rmd17-panel__system-grid,
+  .rmd17-panel__feature-grid,
+  .rmd17-panel__diagnostics,
+  .rmd17-panel__aggregate-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .rmd17-panel__system-grid li,
+  .rmd17-panel__feature-grid li,
+  .rmd17-panel__diagnostics li,
+  .rmd17-panel__aggregate-grid li {
+    min-width: 0;
+    padding: 0.9rem;
+    border: 1px solid var(--atlas-rule);
+    background: color-mix(in srgb, var(--atlas-bg) 46%, transparent);
+  }
+
+  .rmd17-panel__system-grid strong,
+  .rmd17-panel__system-grid span,
+  .rmd17-panel__feature-grid h4,
+  .rmd17-panel__diagnostics h4,
+  .rmd17-panel__aggregate-grid span,
+  .rmd17-panel__aggregate-grid strong {
+    display: block;
+  }
+
+  .rmd17-panel__system-grid strong,
+  .rmd17-panel__feature-grid h4,
+  .rmd17-panel__diagnostics h4,
+  .rmd17-panel__aggregate-grid strong {
+    color: var(--atlas-ink);
+    font-size: 1rem;
+  }
+
+  .rmd17-panel__system-grid span {
+    margin-top: 0.25rem;
+    color: var(--atlas-teal-deep);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.76rem;
+  }
+
+  .rmd17-panel__aggregate-grid span {
+    color: var(--atlas-teal-deep);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .rmd17-panel__aggregate-grid strong {
+    margin-top: 0.45rem;
+  }
+
+  .rmd17-panel__system-grid p,
+  .rmd17-panel__feature-grid p,
+  .rmd17-panel__diagnostics p,
+  .rmd17-panel__aggregate-grid p {
+    margin: 0.55rem 0 0;
+    font-size: 0.86rem;
+  }
+
+  .rmd17-panel__timeline,
+  .rmd17-panel__construction {
+    display: flex;
+    gap: 0.65rem;
+    margin: 1rem 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rmd17-panel__timeline {
+    overflow: hidden;
+    border: 1px solid var(--atlas-rule);
+  }
+
+  .rmd17-panel__timeline li {
+    display: grid;
+    min-width: 0;
+    gap: 0.2rem;
+    padding: 0.75rem;
+    border-right: 1px solid var(--atlas-rule);
+    background: color-mix(in srgb, var(--atlas-teal) 15%, var(--atlas-panel));
+  }
+
+  .rmd17-panel__timeline li:nth-child(2) {
+    background: color-mix(in srgb, var(--atlas-teal) 30%, var(--atlas-panel));
+  }
+
+  .rmd17-panel__timeline li:last-child {
+    border-right: 0;
+    background: color-mix(in srgb, var(--atlas-coral) 18%, var(--atlas-panel));
+  }
+
+  .rmd17-panel__timeline span:first-child,
+  .rmd17-panel__construction span {
+    color: var(--atlas-muted);
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .rmd17-panel__timeline span:first-child {
+    color: var(--atlas-ink);
+  }
+
+  .rmd17-panel__timeline strong {
+    color: var(--atlas-ink);
+    font-size: clamp(1.15rem, 3vw, 1.55rem);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rmd17-panel__timeline span:last-child {
+    font-size: 0.78rem;
+  }
+
+  .rmd17-panel__construction {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .rmd17-panel__construction li {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 0;
+    padding: 0.85rem;
+    border: 1px solid var(--atlas-rule);
+  }
+
+  .rmd17-panel__construction strong {
+    color: var(--atlas-ink);
+    font-size: 0.9rem;
+  }
+
+  .rmd17-panel__feature-grid code {
+    display: block;
+    margin-top: 0.65rem;
+    color: var(--atlas-muted);
+    font-size: 0.7rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .rmd17-panel__selection-callout {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    gap: 0.8rem;
+    align-items: center;
+    margin: 1rem 0;
+    padding: 0.9rem;
+    border-left: 4px solid var(--atlas-teal);
+    background: color-mix(in srgb, var(--atlas-teal) 8%, transparent);
+  }
+
+  .rmd17-panel__selection-callout span {
+    color: var(--atlas-teal-deep);
+    font-size: 0.73rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .rmd17-panel__selection-callout strong {
+    color: var(--atlas-ink);
+    font-size: 1.15rem;
+    white-space: nowrap;
+  }
+
+  .rmd17-panel__selection-callout p {
+    margin: 0;
+    font-size: 0.85rem;
+  }
+
+  .rmd17-panel__table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--atlas-rule);
+  }
+
+  .rmd17-panel table {
+    width: 100%;
+    min-width: 36rem;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  .rmd17-panel caption {
+    padding: 0.75rem;
+    color: var(--atlas-muted);
+    text-align: left;
+  }
+
+  .rmd17-panel th,
+  .rmd17-panel td {
+    padding: 0.65rem;
+    border-top: 1px solid var(--atlas-rule);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .rmd17-panel thead th {
+    color: var(--atlas-teal-deep);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .rmd17-panel td {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rmd17-panel__diagnostics dl {
+    display: grid;
+    gap: 0.65rem;
+    margin: 0.8rem 0 0;
+  }
+
+  .rmd17-panel__diagnostics dt {
+    color: var(--atlas-teal-deep);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .rmd17-panel__diagnostics dd {
+    margin: 0.2rem 0 0;
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  .rmd17-panel__lock-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 0.7rem;
+    margin-top: 1rem;
+  }
+
+  .rmd17-panel__lock-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.7rem;
+    border: 1px solid var(--atlas-rule);
+  }
+
+  .rmd17-panel__lock-list code {
+    color: var(--atlas-ink);
+    font-weight: 800;
+  }
+
+  @media (max-width: 42rem) {
+    .rmd17-panel__header,
+    .rmd17-panel__selection-callout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rmd17-panel__timeline,
+    .rmd17-panel__construction {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rmd17-panel__timeline li {
+      border-right: 0;
+      border-bottom: 1px solid var(--atlas-rule);
+    }
+
+    .rmd17-panel__timeline li:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rmd17-panel,
+    .rmd17-panel * {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+</style>

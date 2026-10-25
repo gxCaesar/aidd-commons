@@ -1,0 +1,94 @@
+---
+title: 可被测量结果反驳的目标产品概况
+description: 将预先声明的硬性门槛和偏好应用于已纳入的 ChEMBL 测量，不把缺失证据当作满足要求。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+[English canonical version](/labs/target-product-profile/)
+
+## 准备与学习目标
+
+先阅读[目标产品概况课程](/learn/drug-discovery-foundations/product-profile-and-series/)和[多终点整合实验](/labs/multi-endpoint-integration/)。本任务要求先声明一个教学用产品概况，再将其应用于已纳入的测量，计数与硬性门槛相矛盾的结果，并分别保留未达到的偏好及未测量的要求。计数单位是 ChEMBL 母体分子，每个母体计一次。
+
+## 全新独立计算
+
+此模式在冻结协议下进行全新独立计算。教学用要求和阈值先于缓存测量的读取而声明。这些阈值是教学决策，并非从本队列拟合或挑选得出。使用项目的 Python 3.11 环境。来源实验室的快照缓存完毕后，所有命令均不需要网络或加速器。第一条命令只验证现有快照，不写入文件。只有审计通过后，导出命令才写入小型已提交摘要。
+
+```bash
+.venv/bin/python labs/target_product_profile/run_lab.py download
+.venv/bin/python labs/target_product_profile/inspect_target_product_profile.py show
+.venv/bin/python labs/target_product_profile/inspect_target_product_profile.py check
+.venv/bin/python labs/target_product_profile/export_summary.py
+.venv/bin/python -m pytest labs/tests/target_product_profile -q
+```
+
+`show` 命令逐一列出连接后的母体，注明通过或未通过的门槛、未达到的偏好以及未测量的要求。`check` 命令通过已验证的读取器重新计算结果。如果一个未通过门槛的母体被报告为满足产品概况，或任何其他不变量不成立，命令就以非零状态退出。
+
+## 声明的概况与要求
+
+教学场景设定为患有晚期实体瘤的成年人群，给药途径为口服。来源化合物并非为这一场景选取。门槛是硬性要求。偏好虽有价值，但未达到偏好不等于门槛失败。对于匹配的终点，所有已纳入的数值都必须达到预定阈值。没有匹配数值就属于未测量。
+
+| 要求 | 类别 | 测量类别与终点 | 声明的规则 |
+| --- | --- | --- | --- |
+| `response_ic50` | 门槛 | 有效性代理指标，精确的反应 `IC50` | 每个值至多 1000 `nM` |
+| `human_microsome_clearance` | 门槛 | 暴露代理指标，人肝微粒体 | 至多 50 `mL.min-1.g-1` |
+| `cyp3a4_inhibition` | 门槛 | 相互作用代理指标，CYP3A4 | 至多 5 `pChEMBL (dimensionless)` |
+| `rat_hepatocyte_clearance` | 偏好 | 暴露代理指标，大鼠肝细胞 | 至多 30 `uL.min-1.(10^6cells)-1` |
+| `cyp2d6_inhibition` | 偏好 | 相互作用代理指标，CYP2D6 | 至多 5 `pChEMBL (dimensionless)` |
+| `clinical_response` | 门槛 | 临床有效性，无测量 | 客观缓解率至少 30 `%` |
+| `immunogenicity` | 偏好 | 免疫原性，无测量 | 治疗期间出现的抗药抗体发生率至多 5 `%` |
+
+反应 `IC50` 规则是用于教学的跨测定筛选条件，并非针对特定靶标的有效性标准。任何硬性门槛失败的化合物均不得报告为满足产品概况。没有测量的要求不得报告为已满足。未达到偏好不会使化合物失格。
+
+## 队列与实测结果
+
+三个来源读取器分别按自身规则纳入反应效力、内在清除率和 CYP 抑制测量。现有整合连接给出 7,908 个母体的并集。本实验将产品概况应用于其中至少具有两个实测类别的 58 个母体。其余 7,850 个只有一个实测类别，不属于本任务的队列。这 58 个母体中，没有一个具有全部三个实测类别。
+
+| 硬性门槛 | 通过 | 失败 | 未测量 |
+| --- | ---: | ---: | ---: |
+| 反应 `IC50` | 0 | 1 | 57 |
+| 人肝微粒体清除率 | 24 | 5 | 29 |
+| CYP3A4 抑制 | 19 | 20 | 19 |
+| 临床缓解 | 0 | 0 | 58 |
+
+| 偏好 | 达到 | 未达到 | 未测量 |
+| --- | ---: | ---: | ---: |
+| 大鼠肝细胞清除率 | 15 | 12 | 31 |
+| CYP2D6 抑制 | 11 | 19 | 28 |
+| 免疫原性 | 0 | 0 | 58 |
+
+## 矛盾与未解决的要求
+
+2026-10-23 的缓存计算发现 21 个母体至少未通过一项已测量的硬性门槛。另有 37 个没有观察到门槛失败。CYP3A4 是失败最频繁的门槛，有 20 个母体未通过。完整标识符由 `show` 打印。`CHEMBL1276308`、`CHEMBL17157`、`CHEMBL205807`、`CHEMBL296419` 和 `CHEMBL6966` 未通过人肝微粒体门槛。`CHEMBL1144` 未通过反应 `IC50` 门槛。有些母体未通过多个门槛，因此不能把各门槛失败数相加作为矛盾母体数。
+
+没有母体满足完整产品概况，因为全部 58 个母体都缺少临床缓解门槛的测量。全部 58 个母体也缺少免疫原性偏好的测量。这两项都不是通过。12 个大鼠肝细胞和 19 个 CYP2D6 的偏好未达标分别报告，不与 21 个存在硬性矛盾的化合物混合。若所有已测量的化合物都通过每项门槛，该概况在本队列中就没有观察到能够区分化合物的失败案例，审计要求明确说明这一点。
+
+## 材料的边界
+
+产品概况应用于这些测量时，只能判断这些测量能够判断的内容。反应效力是体外代理指标，不等于临床有效性。内在清除率是体外暴露代理指标，不是实测的全身暴露。CYP 抑制不等于临床相互作用结果。所选 ChEMBL 子集不是前瞻性设计的配对面板。这里没有临床缓解或免疫原性测量，即使通过已测量的门槛，也不能认定化合物为开发候选物。本实验不按通过门槛的数量排列化合物。
+
+人肝微粒体清除率以每克蛋白计，而肝细胞清除率以每百万个细胞计。两者的物理基准不同，不能相除得到清除率倍数变化。各规则只在相应测定体系的自身单位下与阈值比较。
+
+## 独立练习
+
+在 `show` 输出中检查 `CHEMBL1232461`。指出一项已测量门槛的结果、一项偏好的结果和一项未测量的要求，并解释为何两种清除率体系不能组成一个倍数变化。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+人肝微粒体门槛通过，而 CYP2D6 偏好未达到。CYP3A4 门槛和临床缓解门槛未测量。微粒体与肝细胞清除率使用不同的物理分母，因此它们的商不是清除率倍数变化。
+
+</details>
+
+## 来源与许可
+
+| 缓存快照 | 来源与许可 | 读取日期 |
+| --- | --- | --- |
+| 反应效力 | [ChEMBL 37 版本](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/)采用 [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-10-21 |
+| 内在清除率 | ChEMBL 37 中的[AstraZeneca 数据集 CHEMBL3301361](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361)，采用 [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+| CYP 抑制 | [ChEMBL 37 版本](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/)采用 [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+
+原创指南文字采用 CC BY 4.0，原创实验代码采用 Apache-2.0。最后审阅于 2026-10-23。

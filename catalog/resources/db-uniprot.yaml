@@ -1,0 +1,58 @@
+id: db-uniprot
+name: UniProt
+kind: database
+summary: Protein knowledgebase for sequence and functional annotation.
+canonical_url: https://www.uniprot.org/
+identifiers: []
+stages:
+- data-intake
+- target-discovery
+- design
+modalities:
+- protein
+tasks:
+- protein-annotation
+relations: []
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - official-page
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses: []
+evidence:
+- id: official-page
+  url: https://www.uniprot.org/
+  label: UniProt official page
+  supports:
+  - caveats
+  - kind
+  - modalities
+  - name
+  - stages
+  - summary
+  - tasks
+- id: release-file
+  url: https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/reldate.txt
+  label: UniProt Knowledgebase release file (reviewed 2026-10-23) — release 2026_03 of 02-Sep-2026
+  supports:
+  - caveats
+caveats:
+- The knowledgebase is downloadable without an account over both the FTP tree and the REST interface, and the release file read on 2026-10-23 states that the current release is 2026_03 of 02-Sep-2026. The licence page renders in the browser and returned only the site fallback message to a static reader, so the terms the database is offered under were not established and the record carries no licence.
+acknowledgements: []
+last_verified: '2026-10-23'

@@ -1,0 +1,62 @@
+id: model-ribonannanet
+name: RibonanzaNet
+kind: model
+summary: Training and inference code for the RibonanzaNet RNA model, the network consolidated from the Ribonanza crowdsourced chemical-mapping data and fine-tuned for secondary structure, chemical mapping and RNA degradation prediction.
+canonical_url: https://github.com/Shujun-He/RibonanzaNet
+identifiers:
+  - scheme: paper
+    value: "Ribonanza: deep learning of RNA structure through dual crowdsourcing; bioRxiv DOI 10.1101/2024.02.24.581671"
+    url: https://doi.org/10.1101/2024.02.24.581671
+  - scheme: dataset
+    value: "Stanford Ribonanza RNA Folding competition data"
+    url: https://www.kaggle.com/competitions/stanford-ribonanza-rna-folding/data
+stages: [model-development, structure-prediction]
+modalities: [sequence]
+tasks: [structure-prediction]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license, repository] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: unverified }
+  architecture: { value: available, evidence: [repository] }
+  data_recipe: { value: unverified }
+  training_data: { value: available, evidence: [repository, paper-record] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: repository source code, covered by the root LICENSE file, which reads "MIT License" and "Copyright (c) 2024 Shujun-He"; the repository states no terms for the pretrained checkpoints or for the competition data it downloads
+    evidence: [license, repository]
+evidence:
+  - id: repository
+    url: https://github.com/Shujun-He/RibonanzaNet
+    label: RibonanzaNet repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/Shujun-He/RibonanzaNet/main/README.md
+    label: RibonanzaNet README (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/Shujun-He/RibonanzaNet/main/LICENSE
+    label: RibonanzaNet MIT licence file (reviewed 2026-10-21)
+    supports: []
+  - id: paper-record
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:%2210.1101/2024.02.24.581671%22&resultType=core&format=json"
+    label: Europe PMC record for the Ribonanza preprint (reviewed 2026-10-21)
+    supports: [identifiers, summary, tasks]
+  - id: unofficial-weights
+    url: https://huggingface.co/multimolecule/ribonanzanet
+    label: Third-party RibonanzaNet implementation and weights (reviewed 2026-10-21)
+    supports: [caveats]
+  - id: third-party-checkpoint
+    url: https://huggingface.co/roos23/RibonanzaNet
+    label: Third-party RibonanzaNet checkpoint upload without a licence tag (reviewed 2026-10-21)
+    supports: [caveats]
+caveats:
+  - The repository describes itself as training code and releases no weights of its own; it points to Kaggle notebooks that load pretrained checkpoints and names no Hugging Face repository, so the weights dimension stays unverified.
+  - "Two weight locations outside the official repository were found while checking: multimolecule/ribonanzanet, whose card calls itself an unofficial implementation licensed under AGPL-3.0, and roos23/RibonanzaNet, which shows no licence tag and no model card."
+  - The linked Kaggle competition page returned only its title, so no data licence or terms could be read from it, and the MIT licence above covers the repository source only.
+  - The README describes cross-validation with fold 0 of 6 and out-of-fold predictions written to a local folder, but names no separate evaluation script, so the evaluation dimension stays unverified.
+acknowledgements: []
+last_verified: "2026-10-21"

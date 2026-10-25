@@ -1,0 +1,47 @@
+{
+  "schema_version": "aidd-commons.applicability-domain-audit-summary.v1",
+  "protocol_id": "freesolv-v052-applicability-domain-v1",
+  "computed_on": "2026-10-23",
+  "software": {
+    "python": "3.11.15",
+    "rdkit": "2025.09.6",
+    "numpy": "2.4.6",
+    "scikit_learn": "1.9.0"
+  },
+  "cohort": {
+    "molecules": 642,
+    "distinct_scaffolds": 382,
+    "measured_median_kcal_mol": -3.53,
+    "measured_q1_kcal_mol": -5.7275,
+    "measured_q3_kcal_mol": -1.215,
+    "measured_iqr_kcal_mol": 4.5125
+  },
+  "split": {
+    "train_molecules": 514,
+    "test_molecules": 128,
+    "train_scaffolds": 254,
+    "test_scaffolds": 128
+  },
+  "distance_statistics": {
+    "median": 0.023539,
+    "q1": 0.000205,
+    "q3": 0.082516,
+    "iqr": 0.082312,
+    "farthest_nearest_distance": 0.43877,
+    "farthest_nearest_test_id": "mobley_9460824",
+    "nearest_train_id_for_that_test": "mobley_1849020",
+    "farthest_train_distance_for_that_test": 3.996323,
+    "farthest_train_id_for_that_test": "mobley_4587267"
+  },
+  "error_halves": {
+    "smaller_distance": {
+      "count": 64,
+      "median_absolute_error_kcal_mol": 0.586647
+    },
+    "larger_distance": {
+      "count": 64,
+      "median_absolute_error_kcal_mol": 0.800081
+    }
+  },
+  "does_not_do": "This diagnostic does not decide whether a new molecule is inside a domain, fit a better model, or turn distance in the chosen representation into a claim about chemistry."
+}

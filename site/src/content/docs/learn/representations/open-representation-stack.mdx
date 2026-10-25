@@ -1,0 +1,205 @@
+---
+title: The open representation and perturbation-data stack
+description: Trace molecular and protein resources from their inputs and objectives to usable assets, then delimit what perturbation profiles can show.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="representations/open-representation-stack" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Biological representations](/learn/representations/biological-representations/),
+[Neural representations](/learn/machine-learning/neural-representations/), and
+[Nucleic-acid and peptide models](/learn/biologics-design/nucleic-acid-and-peptide-models/),
+trace a representation from its source material through its learning objective
+and encoder to a downstream claim. Identify which assets and permissions the
+catalogue establishes, and distinguish a measured perturbation profile from a
+learned cell-state embedding. This is a reading lesson with a written exercise.
+
+## Comparison contract
+
+Specify the input entity, source collection and version, pretext task, encoder,
+downstream target, and evaluation split before comparing representations. A
+simple descriptor or the measured expression profile is a useful reference
+under the same downstream task and split. These records supply no matched
+comparison across the resources below. Source availability alone establishes
+neither an embedding's biological meaning nor its predictive advantage. The
+[split-leakage audit](/labs/split-leakage-audit/) shows why shared entities
+across a split change the question being evaluated; that laboratory uses
+ChEMBL activity records, not the datasets discussed here.
+
+## The steps of a representation
+
+A corpus determines which entities the learner sees. A pretext task determines
+which differences the learner is rewarded for retaining, and an encoder turns
+an input into a vector. GROVER and MolCLR occupy this self-supervised molecular
+representation step. MoleculeX collects assets for using and evaluating
+molecular machine learning. On the protein side, ProGen occupies a generation
+step whose output is a sequence rather than an embedding validated for a
+property. A cell-state representation needs a further measurement contract.
+LINCS L1000 supplies perturbational expression profiles, whereas the CZ
+CELLxGENE Discover Census supplies standardized single-cell RNA data for
+context queries. The Census record does not describe a controlled
+perturbation-response collection.
+
+## GROVER
+
+GROVER is a self-supervised molecular transformer repository at the
+representation-learning step. Its catalogue modalities are small molecules
+and molecular graphs, not protein graphs. The record establishes inference
+and training code in the repository. The former can be inspected for use of a
+model and the latter for fitting, but neither is evidence that a particular
+published result was reproduced. The repository's MIT licence covers its
+source code. No weight release is verified. The reconstruction and evaluation
+gaps are set out in the table below. The record does not identify a
+specific training corpus, pretext objective, or pinned snapshot from which a
+reader could reconstruct a particular embedding.
+
+## MolCLR
+
+MolCLR is a contrastive molecular-graph representation repository at the same
+step. Its pretraining concerns molecular graphs, so a learned vector cannot
+be treated as a protein or cell-state measurement. Inference and training
+code, architecture documentation, and training-data access are marked
+available. The README says that pretraining data and paper benchmarks can be
+downloaded from the address it names. The MIT licence covers repository
+source code. No weights are verified, and the record does not pin the precise
+pretraining corpus or snapshot. Available
+training data therefore does not by itself bind a result to one training run.
+
+## MoleculeX
+
+MoleculeX is a molecular machine-learning resource repository at the step
+where models become usable tools. Its record identifies a Molecule3D module
+and instructions. Inference, training, and evaluation code, weights, and
+architecture are marked available. Those entries give a reader assets to
+inspect or run for a selected component; they do not identify a common
+endpoint or verify a benchmark result. GPL-3.0 covers repository source code.
+The data recipe and training data remain unverified. A reader still needs to
+fix the component, its inputs, split, and applicable data terms before making
+a reproducible comparison.
+
+## ProGen
+
+ProGen is a protein-generation repository, with ProGen2 implementation and
+instructions identified in its record. It belongs at the generation step.
+Its inference code and architecture are marked available, while training
+code and weights are unverified. Other gaps appear in the table below.
+The BSD-3-Clause licence covers repository source code. The record does not
+establish a training corpus, a pinned corpus snapshot, or a checkpoint with
+which to reproduce a particular output. A generated protein sequence is an
+output candidate, not a measured structure or function.
+
+## LINCS L1000 and the cell census
+
+LINCS L1000 public perturbation profiles are archived expression measurements
+from public Phase I and Phase II GEO releases. The perturbation experiment,
+cell context, dose, time, data level, and metadata join determine what a
+profile means. In GSE70138, the record distinguishes directly measured
+landmark-gene Level 2 files from larger releases that also include inferred
+genes. An older Level 2 file has column labels that do not join to current
+compound, dose, and time metadata, while the checked 2017-03-06 release has
+joinable identifiers. The [L1000 laboratory](/labs/l1000-perturbation-context/)
+already reads this series under its own fixed protocol. The record establishes
+no model code, weights, or training code for this dataset. NCBI's general
+policy addresses molecular data on its site, but the record found no
+per-series licence term for these archived files. The retired CLUE service is
+not a substitute for an identified GEO release.
+
+The CZ CELLxGENE Discover Census is a hosted object and API for standardized
+single-cell RNA queries, at the cell-context step. Its documentation warns
+that duplicate cells can occur across datasets and exposes `is_primary_data`
+for filtering. Inference code, training code, and weights are not applicable
+to this data object; its data recipe and training data are unverified. The
+record found no licence statement in the text it
+could read from the canonical page, and it pins no data snapshot. A Census
+cell slice can describe sampled cell context under a declared query. Its
+record alone supplies neither a perturbation response nor reuse terms for
+every underlying dataset.
+
+## Openness by dimension
+
+The seven columns preserve the catalogue's separate dimensions. Available
+means the cited record established access or documentation, not that this
+lesson executed the asset. Unverified means the record did not establish that
+dimension. Not applicable means the model-asset field does not describe that
+data object.
+
+| Resource | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| GROVER | available | available | unverified | unverified | unverified | unverified | unverified |
+| MolCLR | available | available | unverified | available | unverified | available | unverified |
+| MoleculeX | available | available | available | available | unverified | unverified | available |
+| ProGen | available | unverified | unverified | available | unverified | unverified | unverified |
+| LINCS L1000 public perturbation profiles | unverified | unverified | unverified | unverified | unverified | unverified | unverified |
+| CZ CELLxGENE Discover Census | not applicable | not applicable | not applicable | not applicable | unverified | unverified | not applicable |
+
+## Worked case
+
+Consider a constructed claim. A reader has two L1000 perturbation profiles
+and says that their proximity in a newly learned embedding proves a shared
+biological mechanism. What can the proximity support, which step supplies
+each piece of evidence, and where does the chain stop?
+
+The profiles come from perturbation measurements and must be tied to their
+GEO release, data level, column-to-metadata join, cell context, perturbagen,
+dose, and time. The embedding comes from a separate encoder and pretext task,
+neither of which these six records specify for cell profiles. If those are
+fixed, proximity describes similarity under that representation and its
+preprocessing, not a shared target or mechanism. A MolCLR vector instead
+encodes a molecular graph under a contrastive objective and cannot fill the
+missing cell encoder. The chain stops before a biological mechanism claim;
+independent biological evidence and a defined comparison would be needed.
+This constructed case reports no observed profile similarity.
+
+## Independent exercise
+
+A colleague treats a Census cell slice as a measured drug response and reads
+its not-applicable model fields as proof of an open pretrained model. Using
+the openness table and the Census record, identify the mistaken inference,
+the `2` fields still unverified, and the field needed to address duplicated
+cells.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The Census record describes standardized single-cell RNA queries, not a
+controlled drug-response experiment. Its `5` not-applicable model-asset
+fields do not imply a released model. Data recipe and training data are the
+`2` unverified fields in its row. The documentation exposes
+`is_primary_data` because cells can occur in more than one dataset; a query
+must state the filtering decision. None of these fields turns a cell slice
+into an L1000 perturbation profile.
+
+</details>
+
+## Scope
+
+None of the six resources was run for this lesson, and no embedding was
+computed. The separate L1000 laboratory has its own measured result and
+protocol. A self-supervised embedding can distinguish what its pretext task
+makes salient, not whatever property a reader wishes to infer. A generated
+sequence is neither a structure nor a function measurement. LINCS L1000
+holds perturbational profiles and the Census holds standardized single-cell
+RNA data; treating them as one source of measured responses loses their
+different experimental contracts. Each resource retains its own licence
+scope. Unfound licences, weights, and snapshots stay unresolved, and reading
+an openness cell does not execute an asset.
+
+## Sources
+
+The catalogue records below were last verified on 2026-10-23. Their evidence,
+licence readings, and caveats set this lesson's limits.
+
+- `model-grover` — [GROVER repository](https://github.com/tencent-ailab/grover).
+- `model-molclr` — [MolCLR repository](https://github.com/yuyangw/MolCLR).
+- `tool-moleculex` — [MoleculeX repository](https://github.com/divelab/MoleculeX).
+- `model-progen` — [ProGen repository](https://github.com/salesforce/progen).
+- `dataset-connectivity-map-l1000` — [GEO GSE92742](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE92742).
+- `dataset-cellxgene-census` — [CZ CELLxGENE Discover](https://cellxgene.cziscience.com/).
+
+Original lesson prose is CC BY 4.0; linked sources retain their own terms.
+Last reviewed: 2026-10-23.

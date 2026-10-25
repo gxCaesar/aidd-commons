@@ -1,0 +1,55 @@
+---
+title: 不合成总分的多终点整合
+description: 把反应效力、毒性和暴露证据连同单位及缺失情况并排保留。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="admet-pk/multi-endpoint-integration" />
+<ScrollableRegions />
+
+英文原文：[Multi-endpoint integration without a composite score](/learn/admet-pk/multi-endpoint-integration/)。
+
+## 学习目标与前置知识
+
+学完本课，你能依据声明规则把测量归入终点家族，解释为什么数值必须附有单位和测量数，并把家族缺失与阴性观察分开。请先读[从代谢到安全性](/zh-cn/learn/admet-pk/metabolism-to-safety/)和[暴露与清除率](/zh-cn/learn/admet-pk/exposure-clearance-pkpd/)。[多终点实验](/zh-cn/labs/multi-endpoint-tradeoff/)可用于重算观察到的 ChEMBL 计数。
+
+## 终点家族与测量单位
+
+终点家族把回答同类问题的测量放在一起。反应效力关注多少化合物能引发一种测定响应。毒性关注指定体系中的指定不良响应。暴露关注指定生物情境下浓度随时间的变化。即使同一化合物出现在所有表中，这仍是不同的问题。每项测量还需要终点类型、单位、被测形式、测定及来源文献。仅因另一项测定也使用 `nM`，就把一个 `nM` 数值当成暴露或安全结果，是错误的。
+
+实验的冻结准入规则接纳单位为 `nM` 的 `AC50`、`EC50`、`IC50`、`Kd` 和 `Ki` 点值测量。类型映射把 `AC50`、`EC50`、`IC50` 当作与疗效相关的反应效力代理，把亲和力类型 `Kd`、`Ki` 放入 `other`。没有准入类型能够标识毒性或暴露。家族名称是检查覆盖情况的操作性标签，并非治疗疗效主张。完整的多终点决策还需要其他家族的真实测定和比较其语境的规则。
+
+中位数是针对一组测量的统计量，本身不是完整结果。应给出支撑它的独立测量数及其离散程度。这里一项独立测量由母体分子、测定、文献和标准类型共同确定。同一键的重复活性行只贡献一次。四分位距是用线性插值计算的第 75 与第 25 百分位之差。它描述报告值的差异，不是置信区间，也不衡量化合物总体的不确定性。
+
+## 已工作案例
+
+已声明的 15 个种子分子解析为 10 个母体。2026-10-23 的 ChEMBL 37 快照计算得到 488 条准入点值行和 486 项独立测量。家族分解为 462 项反应效力测量、0 项毒性测量、0 项暴露测量，以及 `other` 中 24 项亲和力测量。
+
+`CHEMBL593` DELAVIRDINE 有 250 项反应效力测量。汇总中位数为 761.5 `nM`，四分位距为 2440 `nM`。测量数和离散程度比孤立中位数提供更多信息，但这些测量来自不同靶点与测定。它描述的是这张表，不能当作对每个靶点都适用的效力值。`CHEMBL906` MINOXIDIL SULFATE 在所有家族中均有 0 项准入独立测量。空单元格没有报告有利的毒性或暴露结果。
+
+这里的操作性整合是一张覆盖矩阵。读取反应效力和亲和力列时保留其单位、计数与离散程度，同时保留空的毒性和暴露列。总分需要有依据的共同决策情境、归一化和权重。这里没有这些条件，所以实验不提供总分。
+
+## 独立练习
+
+查看实验已提交覆盖表中的 `CHEMBL588` FENOLDOPAM。它有 36 项反应效力测量、`other` 中 15 项亲和力测量、0 项毒性测量和 0 项暴露测量。数出有证据的具名家族，并说明亲和力记录能否填补任一缺失家族。再说明如何写一句报告中位数的话，而不只报一个孤立数值。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+FENOLDOPAM 在 3 个具名家族中有 1 个拥有证据。其 15 项亲和力测量仍属于 `other`，既不是毒性测量，也不是暴露测量。合格的中位数陈述应点名终点家族及单位，同时给出中位数、独立测量数和四分位距，并说明该值汇总了所涉及的测定。在获得相关测量之前，缺失家族仍应保持缺失。
+
+</details>
+
+## 材料未显示什么
+
+有两个实验服务本课。[终点覆盖实验](/zh-cn/labs/multi-endpoint-tradeoff/)数一数 decision-unit 队列里到底有哪些终点族。[多终点整合实验](/zh-cn/labs/multi-endpoint-integration/)按母体分子连接能连接的族，并报告多少化合物带着不止一个族、多少只带着一个族。
+
+队列是为覆盖准入规则而选，因此覆盖比例不能估计整个 ChEMBL 的覆盖情况。只看标准类型的映射不能确立治疗疗效，也不能判断测定的生物学安全含义。这里没有拟合模型，也没有性能估计。实验不合并家族，不排列化合物。尤其不能把缺失毒性或暴露数据解读为安全、无相互作用风险或具有生物利用度。删失界限值不进入点值摘要。
+
+## 来源与署名
+
+来源快照的 [ChEMBL 37 版本状态](https://www.ebi.ac.uk/chembl/api/data/status.json)和[活性记录](https://www.ebi.ac.uk/chembl/api/data/activity.json)于 2026-10-21 读取。发布日期为 2026-05-01。[许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)和 [README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README)于 2026-10-21 读取。ChEMBL 数据采用 Creative Commons Attribution-ShareAlike 3.0 Unported 许可。原创文字采用 CC BY 4.0，原创实验代码采用 Apache-2.0。
+
+最后复核于 2026-10-23。

@@ -1,0 +1,72 @@
+id: model-chgnet
+name: CHGNet
+kind: model
+summary: CHGNet is a pretrained graph neural network potential for charge-informed atomistic modelling, trained on Materials Project relaxation trajectories and used to predict energy, force, stress and magnetisation.
+canonical_url: https://github.com/CederGroupHub/chgnet
+identifiers:
+  - scheme: paper
+    value: "CHGNet as a pretrained universal neural network potential for charge-informed atomistic modelling; Nature Machine Intelligence 2023, DOI 10.1038/s42256-023-00716-3"
+    url: https://doi.org/10.1038/s42256-023-00716-3
+  - scheme: project-homepage
+    value: "CHGNet project site"
+    url: https://chgnet.lbl.gov/
+  - scheme: dataset
+    value: "Materials Project trajectory (MPtrj) dataset, figshare record 23713842"
+    url: https://figshare.com/articles/dataset/Materials_Project_Trjectory_MPtrj_Dataset/23713842
+stages: [physics-based-modelling, model-development, evaluation]
+modalities: [molecular-geometry, molecular-conformation]
+tasks: [molecular-energy-regression, force-learning, molecular-dynamics, model-training]
+relations: []
+status: { value: active, evidence: [github-api] }
+access_level: { value: open_source, evidence: [code-license] }
+openness:
+  inference_code: { value: available, evidence: [repository, readme] }
+  training_code: { value: available, evidence: [repository, readme] }
+  weights: { value: unverified, evidence: [repository, project-site] }
+  architecture: { value: available, evidence: [repository] }
+  data_recipe: { value: available, evidence: [model-chgnet-readme] }
+  training_data: { value: available, evidence: [pretrained-readme, readme, project-site] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: BSD-3-Clause
+    scope: the CHGNet source code in this repository. The copyright notice names The Regents of the University of California, through Lawrence Berkeley National Laboratory, and the University of California, Berkeley, and the third condition bars the use of those names to endorse or promote derived products. The file states no separate terms for the pretrained checkpoint shipped under chgnet/pretrained/0.3.0, and no opened page states them either.
+    evidence: [code-license]
+evidence:
+  - id: repository
+    url: https://github.com/CederGroupHub/chgnet
+    label: CHGNet repository
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: readme
+    url: https://raw.githubusercontent.com/CederGroupHub/chgnet/main/README.md
+    label: CHGNet README
+    supports: [identifiers, caveats]
+  - id: pretrained-readme
+    url: https://raw.githubusercontent.com/CederGroupHub/chgnet/main/chgnet/pretrained/0.3.0/README.md
+    label: Model card for the CHGNet 0.3.0 checkpoint
+    supports: [caveats]
+  - id: project-site
+    url: https://chgnet.lbl.gov/
+    label: CHGNet project site
+    supports: [identifiers, caveats]
+  - id: code-license
+    url: https://raw.githubusercontent.com/CederGroupHub/chgnet/main/LICENSE
+    label: CHGNet licence file
+    supports: []
+  - id: github-api
+    url: https://api.github.com/repos/CederGroupHub/chgnet
+    label: GitHub repository metadata for CederGroupHub/chgnet
+    supports: []
+  - id: model-chgnet-readme
+    url: https://raw.githubusercontent.com/CederGroupHub/chgnet/HEAD/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The README states that the model is pretrained on the GGA and GGA+U static and relaxation trajectories from Materials Project, and that the MPtrj dataset used for the pretraining is available at the address it names.
+  - No opened page states a licence for the pretrained CHGNet weights. The repository ships the 0.3.0 checkpoint next to a BSD-3-Clause file whose copyright notice covers CHGNet source, and the project site states no terms for the weights, so the weight licence stays unverified.
+  - The MPtrj training corpus is published by the Materials Project under the Materials Project terms of use rather than under the model's BSD-3-Clause licence, and the README states that users of the dataset agree to abide by those terms. The figshare page for the dataset returned HTTP 403 during this review, so the dataset's own licence text was not inspected.
+  - The 0.3.0 model card records the training corpus as the MPtrj dataset with a 9-0.5-0.5 train-validation-test split and reports mean absolute errors for energy, force, stress and magnetisation, but the opened pages give no further definition of that test split.
+  - The README describes the 0.2.0 checkpoint as deprecated and kept for compatibility with the Nature Machine Intelligence paper, and the r2scan checkpoint as transfer-learned from the MP-R2SCAN dataset, whose provenance is not described on the opened pages.
+  - The README states the pretrained dataset uses GGA+U DFT with MaterialsProject2020Compatibility corrections applied, so the pretrained labels are not directly comparable to raw MPtrj values.
+  - The publisher page for the Nature Machine Intelligence article was not opened during this review, so the citation is recorded as the README states it and not from the article itself.
+acknowledgements: []
+last_verified: "2026-10-23"

@@ -1,0 +1,41 @@
+name: Lab proposal
+description: Propose an executable lab with a frozen scientific protocol.
+title: "[Lab]: "
+labels: ["lab-proposal"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Lab question and expected artifact
+      description: State what learners will run, inspect, and conclude.
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and precedent
+      description: Link the data source, method references, and any benchmark protocol being followed.
+    validations: { required: true }
+  - type: textarea
+    id: licence_attribution
+    attributes:
+      label: Licence and attribution
+      description: State redistribution and use terms separately for data, code, weights, and figures.
+    validations: { required: true }
+  - type: textarea
+    id: audience
+    attributes:
+      label: Expected audience
+      description: State prerequisites, runtime class, and accessibility considerations.
+    validations: { required: true }
+  - type: textarea
+    id: scientific_assumptions
+    attributes:
+      label: Frozen scientific protocol
+      description: Define samples, labels, split, baseline, metric, independent unit, selection rule, and expected failure checks.
+    validations: { required: true }
+  - type: textarea
+    id: conflict_disclosure
+    attributes:
+      label: Conflict disclosure
+      description: Disclose relevant affiliations or interests, or write "None".
+    validations: { required: true }

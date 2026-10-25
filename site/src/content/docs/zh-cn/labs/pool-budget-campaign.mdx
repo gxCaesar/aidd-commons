@@ -1,0 +1,74 @@
+---
+title: 池预算实验模拟器
+description: 使用人工构造数据的模拟器学习等预算选择，并查看已完成的回顾性 ChEMBL 实验回放。
+---
+
+import PoolBudgetPanel from "../../../../components/PoolBudgetPanel.astro";
+import PoolBudgetRealPanel from "../../../../components/PoolBudgetRealPanel.astro";
+import LabDownloads from "../../../../components/LabDownloads.astro";
+
+[English canonical version](/labs/pool-budget-campaign/)。翻译日期：2026-09-08；来源复核日期沿用英文原文。
+
+<LabDownloads lab="pool-budget" />
+
+## 运行之前
+
+可修改的算术练习使用下方合成数据 CPU 模拟器；它将 JSON 打印到终端，需要声明的 Python 环境，不下载测定数据。另行阅读已完成的真实回放，不把它当作学生重跑命令。安装与模拟是不同步骤。实际拟合预测器的练习见[学生沙箱](/zh-cn/learn/machine-learning/student-modelling-sandbox/)。入口说明更新：2026-09-09，已有两类结果不变。
+
+## 范围
+
+本教学实验的模拟程序使用 60 个作者构造的分子图和人工分数，在四个等量批次上比较随机采集与标签盲 MaxMin 选择。它不下载数据、不训练代理模型、不模拟合成，也不评估 ChEMBL 活性。下文单独报告已完成的 ChEMBL 回放，不改变该模拟器。请先阅读[深度课程](/zh-cn/learn/active-learning/experiment-pools-and-budgets/)。
+
+## 从仓库根目录运行
+
+<pre aria-label="运行人工构造示例" role="region" tabIndex={0}>
+  <code>{`uv sync --frozen --group dev
+uv run python labs/pool_budget/run_lab.py
+uv run pytest labs/tests/test_pool_budget.py -q`}</code>
+</pre>
+
+命令将汇总 JSON 打印到标准输出，不读取真实实验文件。依赖版本固定于 `pyproject.toml`；不含 lockfile 的精选发布包使用 `uv sync --group dev`。这个小型实验不需要 GPU，可在笔记本 CPU 上运行。安装耗时可能超过模拟耗时。
+
+以下计算器和曲线保留规范英文标注，与英文页面使用同一份人工构造示例结果。
+
+<div lang="en">
+  <PoolBudgetPanel />
+</div>
+
+## 预期输出
+
+初始集、采集池和保留集分别包含 6、42、12 个分子。采集检查点为 0、2、4、6、8；原始池中恰好五个条目构成评分目标。MaxMin 找回率为 0、0、0、0.2、0.4，归一化 AUC 为 0.100。上方保留全部五条随机曲线，包括两个零找回运行。`labs/pool_budget/demo-summary.json` 是可复现的汇总示例。
+
+测试覆盖具体 Tanimoto 选择、确定性并列规则、不相交骨架组、可手算 AUC、非法重复选择、无效预算，以及与已交付摘要的一致性。保留集没有预测分数，因为本实验未拟合模型。
+
+## 人工构造示例的边界
+
+人工分数为 `((row_index * 17) % 61) / 10`，没有生物化学含义。无环结构的骨架单例处理是一项约定，不是独立性的证明。这是选择与评分练习，不是闭环主动学习实验，也不证明多样性能改善药物发现。
+
+## 已完成的真实实验回放
+
+单独冻结的 ChEMBL 回放于 2026-09-08 完成。两个实验均使用继承自 T05 的来源过滤与母体聚合、整骨架分区、相同整数预算和每个已声明随机种子。来源归一化后未增加排除规则。
+
+以下真实结果面板保留规范英文表格，与人工构造示例结果分开。
+
+<div lang="en">
+  <PoolBudgetRealPanel />
+</div>
+
+仅含汇总的 `labs/pool_budget/real-summary.json` 保留全部 60 个策略/检查点分数。导出操作只读取已有汇总结果，不拟合模型，也不重复实验。人工构造示例的 `demo-summary.json` 保持不变，不是真实运行的状态记录。
+
+## 复现与剩余边界
+
+仍可运行不需要数据的协议检查：
+
+<pre aria-label="验证真实实验协议" role="region" tabIndex={0}>
+  <code>
+    uv run python labs/pool_budget/run_real_campaign.py validate-protocol
+  </code>
+</pre>
+
+在全新且获得授权的工作区复现时，单独的受保护命令为 `evaluate-locked --confirm-locked-evaluation`。它不提供下载器或自定义输出目录，要求已有冻结 T05 缓存，并拒绝已启动过一次性实验的工作区。保留该保护，不要删除它来重跑已完成的作者实验。化合物级结果和执行记录留在本地，不属于公开摘要。
+
+已完成真实实验的规范位于 `labs/pool_budget/real-protocol.json`，说明见 `REAL_PROTOCOL.md`。真实引擎固定 Morgan Ridge `alpha=1`，只用初始及已采集标签训练，以计算逐轮 MAE。两个实验都在评分前确定了每个策略/轮次的全部预测向量。该设置来自 T05 开发阶段，因此这些回放不是 T05 的独立验证，也不是未见标签的发现。T15 在 T05 评估前访问了与 T05 共享的标签。分别进行的 T05 和 T11 评估此后均已完成，且没有重新调参。后续调参不得利用这次暴露后仍声称评估集未被触碰。
+
+Last reviewed: 2026-09-08.

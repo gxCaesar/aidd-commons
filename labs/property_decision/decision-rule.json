@@ -1,0 +1,39 @@
+{
+  "schema_version": "aidd-commons.property-decision-rule.v1",
+  "rule_id": "freesolv-hydration-threshold-v1",
+  "frozen_on": "2026-09-10",
+  "artifact_type": "frozen-decision-rule",
+  "evidence_source": {
+    "reviewed_results": "labs/freesolv/reviewed-results.json",
+    "protocol_metrics": "labs/freesolv/results/metrics.json",
+    "endpoint": "Experimental hydration free energy in water at 298 K",
+    "units": "kcal/mol",
+    "interval_construction": "Split-conformal, calibrated on the validation partition",
+    "nominal_coverage_field": "protocol.conformal_coverage"
+  },
+  "threshold": {
+    "value": -5.0,
+    "direction": "advance_below",
+    "meaning": "A candidate is advanced when its hydration free energy is more negative than the threshold.",
+    "how_this_value_was_chosen": "Declared for teaching before any evidence was read. It is not a scientific cut-off, and nothing in this repository establishes that -5.0 kcal/mol separates useful from useless compounds. The arithmetic below does not depend on the value."
+  },
+  "decision_rule": {
+    "advance": "the whole interval lies below the threshold: prediction + radius < threshold",
+    "reject": "the whole interval lies above the threshold: prediction - radius > threshold",
+    "abstain": "the interval straddles the threshold: absolute difference between prediction and threshold is at most the radius",
+    "abstention_band_width": "twice the conformal radius, on the prediction axis",
+    "why_abstention_is_explicit": "A point prediction always yields a decision. Requiring the interval to clear the threshold makes the undecidable region visible instead of silently resolving it in favour of whichever side the point estimate fell on."
+  },
+  "prediction_grid": {
+    "minimum": -12.0,
+    "maximum": 2.0,
+    "step": 0.5,
+    "what_this_grid_is": "A declared arithmetic grid on the prediction axis, used to count how much of a fixed decision range each model can decide. It is not a sample of compounds and no compound is represented by any point on it."
+  },
+  "selection_between_models": {
+    "point_criterion": "lowest test mean absolute error",
+    "interval_criterion": "test coverage closest to nominal from above, then narrowest band",
+    "why_both_are_declared": "A threshold decision consumes an interval, not a point estimate. Declaring both criteria before reading the numbers is what makes the disagreement between them reportable rather than a choice made after the fact."
+  },
+  "what_a_decision_here_does_not_mean": "An advance outcome means the calibrated interval cleared a declared threshold on a retrospective benchmark. It is not a prediction of experimental success, not a claim about any specific compound, and not evidence that the threshold is the right one."
+}

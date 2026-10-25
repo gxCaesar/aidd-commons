@@ -1,0 +1,153 @@
+{
+  "schema_version": "aidd-commons.crossdomain-tradeoff-protocol.v1",
+  "protocol_id": "chembl37-crossdomain-tradeoff-v1",
+  "issued_on": "2026-10-24",
+  "sources": [
+    {
+      "laboratory": "decision_unit_scope",
+      "status": "measured",
+      "reader": "aidd_commons.decision_unit_scope.data.load_cached_cohort",
+      "read_route": ".cache/decision_unit_scope",
+      "snapshot": "ChEMBL_37",
+      "snapshot_byte_length": 11883104,
+      "read_on": "2026-10-21",
+      "archive": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/",
+      "licence": {
+        "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+      }
+    },
+    {
+      "laboratory": "az_clearance_system",
+      "status": "measured",
+      "reader": "aidd_commons.az_clearance_system.data.load_cached_systems",
+      "read_route": ".cache/az_clearance_system",
+      "snapshot": "ChEMBL_37",
+      "snapshot_byte_length": 1518229,
+      "read_on": "2026-09-12",
+      "archive": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/",
+      "licence": {
+        "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+      }
+    },
+    {
+      "laboratory": "cyp_assay_system",
+      "status": "measured",
+      "reader": "aidd_commons.cyp_assay_system.data.load_cached_targets",
+      "read_route": ".cache/cyp_assay_system",
+      "snapshot": "ChEMBL_37",
+      "snapshot_byte_length": 6693611,
+      "read_on": "2026-09-12",
+      "archive": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/",
+      "licence": {
+        "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+      }
+    },
+    {
+      "laboratory": "capstone_workbook",
+      "status": "constructed",
+      "reader": "site/src/content/docs/learn/candidate-nomination/capstone-workbook.mdx",
+      "read_route": "Case 5, the cross-domain nomination with a missing requirement",
+      "compound_join": false,
+      "licence": "Original teaching material, CC BY 4.0"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "potency",
+      "state_rule": "Supplied from the admitted response-potency points in nM, and the gate is a matched potency of at most 50 nM. It is indeterminate when the admitted records mix endpoint types, because the representative value then aggregates quantities that are not the same measure. The scope is observed in vitro response potency in the named assay and document only.",
+      "threshold": {
+        "maximum_nm": 50.0
+      }
+    },
+    {
+      "name": "selectivity_ratio",
+      "state_rule": "Not covered by the measured families. The requirement is a selectivity ratio of at least 20 against an intended target, and the cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio for any target. The scope of the required input is an intended target.",
+      "threshold": {
+        "minimum": 20.0
+      }
+    },
+    {
+      "name": "exposure_ratio",
+      "state_rule": "Not covered by the measured families. The requirement is an exposure-to-effective-concentration ratio of at least 3, and the cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form the ratio without a declared effective concentration.",
+      "threshold": {
+        "minimum": 3.0
+      }
+    },
+    {
+      "name": "safety_package",
+      "state_rule": "Not covered by the measured families. The requirement is an independently reviewed safety package, and no measured safety material exists for this cohort. A review is a human decision, so no measurement can supply this input.",
+      "threshold": null
+    },
+    {
+      "name": "functional_validation",
+      "state_rule": "Not covered by the measured families. The requirement is interpretable functional validation for the compound, and the measured assay records in this repository classify assay records rather than validate a compound's function.",
+      "threshold": null
+    }
+  ],
+  "teaching_cases": [
+    {
+      "id": "N1",
+      "potency_nm": 20.0,
+      "selectivity_ratio": 8.0,
+      "exposure_ratio": 4.0,
+      "safety_package": "available for review",
+      "functional_validation": "interpretable"
+    },
+    {
+      "id": "N2",
+      "potency_nm": 40.0,
+      "selectivity_ratio": 30.0,
+      "exposure_ratio": 2.0,
+      "safety_package": "available for review",
+      "functional_validation": "interpretable"
+    },
+    {
+      "id": "N3",
+      "potency_nm": 45.0,
+      "selectivity_ratio": 25.0,
+      "exposure_ratio": 3.5,
+      "safety_package": "missing",
+      "functional_validation": "interpretable"
+    }
+  ],
+  "input_states": [
+    "supplied",
+    "absent",
+    "not covered",
+    "indeterminate"
+  ],
+  "next_decisions": [
+    "revise the candidate",
+    "close an evidence gap",
+    "change the product profile"
+  ],
+  "evidence_kinds": [
+    "single-activity point",
+    "multi-activity median",
+    "matched same-document comparison",
+    "constructed teaching row",
+    "none"
+  ],
+  "counted_unit": {
+    "name": "one candidate's cross-domain nomination decision",
+    "cohort_rule": "Every parent the validated multi-endpoint integration laboratory reads that has at least two measured endpoint families, because a cross-domain decision cannot be posed on a single measured family."
+  },
+  "rules": {
+    "composite_score": "Refuse every composite, weighted sum, overall desirability value and ordering of the candidates. A candidate is reported as the state of each required input, the input that blocks it, and the next decision the evidence points to.",
+    "missing_input": "A missing input stays missing. It is never filled with a no-risk, adequate-exposure, clean, safe or interpretable value, and an input that is not covered never passes.",
+    "review_input": "A safety package that is available for review is not a favourable review, and a review is not a measurement. The input is supplied as available for review and the decision still records that the review outcome is not established.",
+    "next_decision": "A candidate that misses a numerical threshold on a supplied input is a candidate to revise. A candidate that misses a required input that is absent or not covered is a candidate with an evidence gap to close. Changing a threshold so that a favourite passes is a change to the product requirement and is not a discovery."
+  },
+  "boundary_statement": "These decisions execute the curriculum's nomination rule. They are not a development-candidate assessment and they nominate nothing. Response potency does not validate mechanism or intended-target engagement, a comparison between two drug-metabolising enzymes is not a selectivity ratio, intrinsic clearance is not exposure, and a safety package that is available for review is not a favourable review. The thresholds are the fictional project's teaching thresholds and not pharmacological criteria.",
+  "excluded_by_design": [
+    "any composite score, weighted sum, overall desirability value or ordering of the candidates",
+    "any claim that a candidate is nominated, selected or prioritised",
+    "any use of a default, class mean or literature value for an absent input",
+    "any claim of validated mechanism, intended-target engagement, systemic exposure, safety, synthesis feasibility or clinical outcome",
+    "any reading of a favourable safety review as a safety result",
+    "any threshold changed after the measurements were read"
+  ]
+}

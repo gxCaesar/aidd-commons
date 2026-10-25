@@ -1,0 +1,20 @@
+version: "0.2a"
+tracks:
+  - id: foundations
+    order: 1
+    topics:
+      - id: repeated-topic
+        order: 1
+        title: First declaration
+        description: Establish the first declaration of a global topic ID.
+        core: true
+        prerequisites: []
+  - id: drug-discovery-foundations
+    order: 2
+    topics:
+      - id: repeated-topic
+        order: 1
+        title: Second declaration
+        description: Reuse the same topic ID in a different track.
+        core: true
+        prerequisites: []

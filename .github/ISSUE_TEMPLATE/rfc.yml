@@ -1,0 +1,41 @@
+name: Request for comments
+description: Propose a material change to project scope, schema, curriculum, governance, or evaluation policy.
+title: "[RFC]: "
+labels: ["rfc"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Decision requested
+      description: State the current constraint, proposed change, and why an RFC is needed.
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and alternatives
+      description: Link relevant precedents and compare at least one credible alternative.
+    validations: { required: true }
+  - type: textarea
+    id: licence_attribution
+    attributes:
+      label: Licence and attribution impact
+      description: State effects on contributor terms, third-party material, and downstream reuse.
+    validations: { required: true }
+  - type: textarea
+    id: audience
+    attributes:
+      label: Affected audience
+      description: Identify learners, maintainers, contributors, or downstream users affected.
+    validations: { required: true }
+  - type: textarea
+    id: scientific_assumptions
+    attributes:
+      label: Scientific assumptions and risks
+      description: State which claims, protocols, or safety boundaries would change.
+    validations: { required: true }
+  - type: textarea
+    id: conflict_disclosure
+    attributes:
+      label: Conflict disclosure
+      description: Disclose relevant affiliations or interests, or write "None".
+    validations: { required: true }

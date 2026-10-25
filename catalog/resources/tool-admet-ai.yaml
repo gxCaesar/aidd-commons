@@ -1,0 +1,69 @@
+id: tool-admet-ai
+name: ADMET-AI
+kind: software
+summary: A Python package, command-line tool and hosted web service that predicts ADME endpoints with Chemprop models trained on Therapeutics Data Commons datasets.
+canonical_url: https://github.com/swansonk14/admet_ai
+identifiers:
+  - scheme: paper
+    value: "ADMET-AI: a machine learning ADMET platform for evaluation of large-scale chemical libraries; Bioinformatics 40(7), btae416; DOI 10.1093/bioinformatics/btae416"
+    url: https://doi.org/10.1093/bioinformatics/btae416
+  - scheme: model-weights
+    value: "Data and models archive, Zenodo record 10372419, version v1.0.0"
+    url: https://zenodo.org/records/10372419
+stages: [dmpk-toxicology, property-prediction, evaluation]
+modalities: [small-molecule]
+tasks: [admet-prediction, model-training, model-evaluation]
+relations: []
+status: { value: active, evidence: [commits] }
+access_level: { value: open_source, evidence: [source-license] }
+openness:
+  inference_code: { value: available, evidence: [repository, readme] }
+  training_code: { value: available, evidence: [repository, scripts-directory] }
+  weights: { value: available, evidence: [bundled-models, zenodo-record] }
+  architecture: { value: available, evidence: [readme, zenodo-record] }
+  data_recipe: { value: available, evidence: [scripts-directory] }
+  training_data: { value: available, evidence: [readme, zenodo-record] }
+  evaluation_code: { value: available, evidence: [scripts-directory] }
+licenses:
+  - name: MIT
+    scope: The MIT licence file in the repository covers the package source code, the version 2 Chemprop checkpoints bundled under admet_ai/resources/models and the packaged CSV data files; the file states no further conditions and does not cover the data and models deposited in the Zenodo archive.
+    evidence: [source-license, bundled-models]
+  - name: CC-BY-4.0
+    scope: The licence stated on the Zenodo record for the deposited data.zip and models.zip archives, which hold the version 1 Chemprop and Chemprop-RDKit models, the TDC ADMET data and RDKit features, and the benchmark-group splits; attribution to the record creators is required and the licence does not extend to the version 2 artefacts in the repository.
+    evidence: [zenodo-record]
+evidence:
+  - id: repository
+    url: https://github.com/swansonk14/admet_ai
+    label: ADMET-AI repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/swansonk14/admet_ai/main/README.md
+    label: ADMET-AI README
+    supports: [summary, identifiers, tasks, caveats]
+  - id: scripts-directory
+    url: https://github.com/swansonk14/admet_ai/tree/main/scripts
+    label: ADMET-AI scripts directory
+    supports: [tasks, caveats]
+  - id: bundled-models
+    url: https://github.com/swansonk14/admet_ai/tree/main/admet_ai/resources/models/admet_regression
+    label: ADMET-AI bundled regression checkpoints
+    supports: [caveats]
+  - id: source-license
+    url: https://raw.githubusercontent.com/swansonk14/admet_ai/main/LICENSE.txt
+    label: ADMET-AI MIT licence file
+    supports: [caveats]
+  - id: zenodo-record
+    url: https://zenodo.org/records/10372419
+    label: ADMET-AI data and models archive on Zenodo
+    supports: [identifiers, caveats]
+  - id: commits
+    url: https://github.com/swansonk14/admet_ai/commits/main
+    label: ADMET-AI commit history
+    supports: [caveats]
+caveats:
+  - The repository states that version 2 was retrained from scratch with Chemprop v2 and without RDKit fingerprints, so its predictions do not exactly match the version 1 models in the Zenodo archive or in the published paper.
+  - The version 2 Chemprop checkpoints are bundled in the package resources and carry no licence statement beyond the repository MIT file, while the version 1 weights and the Therapeutics Data Commons data and benchmark splits in the Zenodo archive are under Creative Commons Attribution 4.0.
+  - The README names the Therapeutics Data Commons ADMET datasets as the training source and the Zenodo archive ships the TDC data, features and five-split benchmark files, but the opened pages do not document the curation, filtering or split rules used to build the released benchmark splits.
+  - The repository's most recent commit shown is dated 22 February 2026, where the package version was bumped to 2.0.1.
+acknowledgements: []
+last_verified: "2026-10-21"

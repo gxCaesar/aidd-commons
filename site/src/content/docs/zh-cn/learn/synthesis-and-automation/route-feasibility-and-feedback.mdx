@@ -1,0 +1,122 @@
+---
+title: 路线可行性、正向预测与反馈
+description: 将抽象路线图转换为有界的可行性记录，分开材料和安全门槛、模型输出及观察到的实验室反馈。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Route feasibility, forward prediction, and feedback](/learn/synthesis-and-automation/route-feasibility-and-feedback/)。
+
+<LessonProgress lessonId="synthesis-and-automation/route-feasibility-and-feedback" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将区分路线可行性与逆合成分数，使材料和安全约束可见而不提出实验室操作，并把正向预测输出与
+观察到的反馈分开。请先读[反应映射与路线搜索](/zh-cn/learn/synthesis-and-automation/reaction-mapping-and-route-search/)。
+本课为浏览器和手算规划教学，不授权采购、实验室工作、安全评估或合成程序。
+
+## 可行性是有多个门槛的契约
+
+只有在每条边与终端节点都有可行性记录后，路线图才与决策相关。材料可得性是一个字段：它包括
+已声明的身份与形式、来源或库存参考、检查日期、相关时的数量或规模要求，以及 confirmed、
+unavailable 或 not checked 等状态。搜索索引中的“可购买”不等于该材料在所述项目中、所需时间内
+可以获得。
+
+安全与操作审阅是独立的权威字段。一条路线可以有合理图和已确认材料，却因有能力的机构安全审阅
+尚未发生而仍为 `approval_required`。数据集中没有警告并不标记一项转化安全。本课刻意不列出
+操作条件、危害或缓解步骤；它只教授决策边界和记录结构。
+
+一个紧凑状态函数为
+`route_status(r) = material_gate(r) AND safety_authority(r) AND evidence_gate(r)`。
+这里每一项都是已命名状态，而不是概率或成功承诺。例如，一个 unavailable 终端可使路线不适用于
+当前活动，而 unreviewed 安全字段使其待定而非错误。将原因分开，避免搜索分数悄然覆盖真实约束。
+
+| 门槛       | 至少记录                                           | 诚实状态示例                              | 它不是什么   |
+| ---------- | -------------------------------------------------- | ----------------------------------------- | ------------ |
+| 材料       | 身份/形式、来源、日期、可得性和数量边界            | confirmed、unavailable、not checked       | 采购订单     |
+| 安全/操作  | 已声明审阅责任者、权威状态和限制说明               | approval_required、在已命名权威下 cleared | 安全操作程序 |
+| 路线逻辑   | 图版本、节点状态、边假设和未解决字段               | consistent、mismatch、unresolved          | 执行证明     |
+| 正向模型   | 输入表示、模型/版本、输出集合和不确定性/abstention | predicted、unavailable、out of scope      | 已观察产物   |
+| 实验室记录 | 实际输入、结局、测量/来源与 failed/unknown 字段    | observed、failed、inconclusive            | 模型分数     |
+
+## 正向预测与结果是不同的数据对象
+
+正向模型将已声明输入表示映射到产物提案，示意为 `X -> P_hat`。其输入契约包括分子身份、角色、
+标准化和模型所需的任一语境。其输出可以是排序集合、类概率分数或 abstention。它不说明 `P_hat`
+在任何规模下被观察到、分离、表征或获得。下一个有效行动是有范围的可行性或人类审阅，而不是
+有关路线的夸大主张。
+
+观察记录有不同形式：`X, protocol_context, measurement -> outcome`。它需要来源，并必须保留负面和
+不确定案例。Open Reaction Database schema 明确分开 reaction inputs、setup、conditions、observations、
+workups、outcomes 和 provenance
+[ORD schema documentation](https://docs.open-reaction-database.org/en/latest/schema.html)。`ord-schema`
+仓库同样描述 schema 与 validation tools，而不是保证可执行路线的数据库
+[ord-schema repository](https://github.com/open-reaction-database/ord-schema)。
+
+这一差别是诚实反馈的基础。只有保存模型版本和输入契约，模型预测才可能有助于优先化。只有保留
+输入身份、语境和结局，观察失败才可能有助于更新未来策略。不要删除失败以使模型看似经校准，也
+不要在没有声明该协议变化的情况下用留出结局训练或选择。
+
+## 反馈循环需要固定定义
+
+在反馈改变路线策略前，定义什么算作反馈单位。它可以是一条反应记录、一条路线边或一个靶标活动；
+它们不可互换。为当前批次冻结结局标签、排除原因和决策规则。然后记录后续更新是探索性、回顾性，
+还是前瞻测试。从“路线分数”变为“观察到的实验室成功”是证据类型变化，而不是同一尺度上更高的数。
+
+最小有用反馈表保留成功和失败，将每个联系到路线图版本和输入状态，并说明它能否用于更新下一
+模型。若一条记录缺少关键字段，将其标为 incomplete，而不是从相似性检索填补空白。这同时保护
+实验室学习与正向模型解释。
+
+## 已解案例：有不同阻碍的两条路线
+
+本案例的全部数值和状态均为**构造的教学数值**。路线 `R_A` 有 `2` 个终端材料，二者均在
+`2026-09-09` 标为 `confirmed`。其路线图内部一致，但安全权威为 `approval_required`；正向模型返回
+提出的结局 `P_hat_A`，不确定性字段为 `not reported`。路线 `R_B` 也有 `2` 个终端材料，但其一在
+`2026-09-09` 标为 `unavailable`；安全权威为 `not checked`。
+
+两条路线均未准备好执行。`R_A` 正等待已命名安全权威，并且在任何依赖它的决策前需要审阅正向模型
+缺失的不确定性。`R_B` 当前因材料状态不合格，并且独立地缺少安全审阅。若从 `P_hat_A` 称 `R_A`
+“已验证”，或从可得性字段称 `R_B` 化学上不可能，均具误导性。正确输出是有界状态记录及分开的
+阻碍，而不是实验室建议。
+
+假设 `R_A` 的一个后续构造反馈记录含输入身份，却将结局标为 `inconclusive`。它必须保留在表中。
+它不可被重标为成功或用于主张模型准确性；它可促使对缺失结局字段进行单独的数据质量审阅。
+
+## 局限与独立练习
+
+可得性会改变，模型有覆盖边界，实验室记录可不完整或不可比较。正向模型可以内部一致，却对未表示
+转化错误。一个安全字段可在一种权威下被 cleared，却仍不可转移至另一情境。这些是维护路线契约的
+理由，而不是将未知转为有利分数的理由。
+
+**手算练习（不可运行、非实证）：** 一条构造路线 `R_C` 有 `3` 个终端字段：两个 `confirmed`，一个
+`not checked`。其图为 `consistent`；安全权威为 `approval_required`；一个模型以分数 `0.93` 返回
+`P_hat_C`。哪些字段阻止 readiness 主张？`P_hat_C` 是否是观察到的结局？说出一个字段，在观察结果
+可用于之后反馈更新前所必需。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+`not checked` 材料字段和 `approval_required` 安全权威阻止 readiness 主张，不论 `0.93`。`P_hat_C`
+是模型提案，不是观察结局。后续反馈记录至少需要精确输入身份、路线图版本、结局/测量字段、
+来源，以及 failed 或 inconclusive 案例的明确标签。分数不能替代其中任何一个。
+
+</details>
+
+## 来源与下一课
+
+下列官方 ORD 来源于 2026-09-09 打开。它们支持 inputs、outcomes 和 provenance 之间的结构化区别，
+不支持构造路线状态或任何实验室行动。
+
+<div data-case-sources>
+
+- [Open Reaction Database Schema documentation](https://docs.open-reaction-database.org/en/latest/schema.html)
+- [Open Reaction Database ord-schema repository](https://github.com/open-reaction-database/ord-schema)
+
+</div>
+
+回到[从反应预测到实验室](/zh-cn/learn/synthesis-and-automation/reaction-to-lab/)，以将可行性记录连接到更广的实验决策边界。
+原创课程文字采用 CC BY 4.0；链接来源保留各自条款。
+
+最后审阅：2026-09-09。

@@ -1,0 +1,52 @@
+id: tool-gflownet
+name: gflownet
+kind: software
+summary: "GFNOrg/gflownet is a minimal PyTorch implementation of the GFlowNet paper for non-iterative diverse candidate generation, covering grid, active-learning and molecule experiments."
+canonical_url: https://github.com/GFNOrg/gflownet
+identifiers:
+  - scheme: paper
+    value: "Flow Network based Generative Models for Non-Iterative Diverse Candidate Generation; arXiv 2106.04399"
+    url: https://arxiv.org/abs/2106.04399
+stages: [design, hit-discovery]
+modalities: [small-molecule, molecular-graph]
+tasks: [molecular-generation, goal-directed-optimization]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: not_available, evidence: [repository] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: MIT
+    scope: "repository source code only, with the copyright notice to be retained; the bundled molecule file and any downloaded dataset carry no separate terms"
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/GFNOrg/gflownet
+    label: GFNOrg/gflownet repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/GFNOrg/gflownet/master/README.md
+    label: gflownet README
+    supports: [acknowledgements]
+  - id: paper
+    url: https://arxiv.org/abs/2106.04399
+    label: arXiv abstract for the GFlowNet paper (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/GFNOrg/gflownet/master/LICENSE
+    label: gflownet MIT LICENSE
+    supports: []
+caveats:
+  - The README calls the repository a minimum working version extracted from the internal Mila Molecule Discovery repository, so its completeness is unverified.
+  - The bundled 300,000-molecule file is described without provenance, licence or redistribution terms, so training-data availability is unverified.
+  - No pretrained checkpoint is listed, and the MIT licence covers the code rather than any downstream data.
+  - This repository is a different project from GFNOrg/torchgfn, which carries a different licence; the two are recorded as separate resources.
+acknowledgements:
+  - The README credits the code to Bengio, MJ10 and MKorablyov.
+last_verified: "2026-10-21"

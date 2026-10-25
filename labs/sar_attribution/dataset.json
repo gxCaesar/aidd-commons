@@ -1,0 +1,57 @@
+{
+  "schema_version": "aidd-commons.sar-attribution-dataset.v1",
+  "artifact_type": "constructed-sar-dataset",
+  "authored_on": "2026-09-11",
+  "provenance": "Authored by hand for teaching. No molecule here was measured, no activity value is real, and nothing is a design proposal. The labels are produced by the declared rule below and by nothing else.",
+  "true_rule": {
+    "name": "carboxylic-acid-required",
+    "smarts": "[CX3](=O)[OX2H1]",
+    "statement": "A molecule is active if and only if it contains a carboxylic acid. This is the whole generating rule, and it is known here because the set was constructed rather than measured.",
+    "why_this_matters": "Every claim the model or its explanation makes can be checked against the cause, which is never possible with real activity data."
+  },
+  "confounder": {
+    "name": "unsubstituted-furan",
+    "smarts": "c1ccoc1",
+    "statement": "In the training set every active molecule also carries an unsubstituted furan and no inactive molecule does, so the confounder is perfectly correlated with the cause.",
+    "causal_role": "none",
+    "why_it_wins": "The furan appears in an identical environment in every active, so its fingerprint bits repeat. The acid appears in a different environment each time, so its credit is spread across many distinct bits. Uniformity, not importance, is what concentrates weight."
+  },
+  "threshold": {
+    "value": 0.5,
+    "declared_before_fitting": true,
+    "statement": "Predictions at or above this value are called active. The value is declared here so that no call below is chosen after seeing a prediction."
+  },
+  "training": [
+    { "id": "t01", "smiles": "OC(=O)c1ccoc1" },
+    { "id": "t02", "smiles": "OC(=O)CCCCc1ccoc1" },
+    { "id": "t03", "smiles": "OC(=O)C(C)(C)Cc1ccoc1" },
+    { "id": "t04", "smiles": "OC(=O)C1CCC1c1ccoc1" },
+    { "id": "t05", "smiles": "OC(=O)CN(C)Cc1ccoc1" },
+    { "id": "t06", "smiles": "OC(=O)C=Cc1ccoc1" },
+    { "id": "t07", "smiles": "OC(=O)COc1ccoc1" },
+    { "id": "t08", "smiles": "OC(=O)CSc1ccoc1" },
+    { "id": "t09", "smiles": "CCCCc1ccccc1" },
+    { "id": "t10", "smiles": "CCOCc1ccccc1" },
+    { "id": "t11", "smiles": "CCN(CC)Cc1ccccc1" },
+    { "id": "t12", "smiles": "CCCCCCO" },
+    { "id": "t13", "smiles": "Cc1ccc(C)cc1" },
+    { "id": "t14", "smiles": "CCCc1ccncc1" },
+    { "id": "t15", "smiles": "CC(C)Cc1ccccc1" },
+    { "id": "t16", "smiles": "CCCCOCC" }
+  ],
+  "analogues": {
+    "what_they_are": "Molecules that break the correlation the training set imposed. They are the experiment that distinguishes the hypothesis an explanation produces from the rule that actually generated the labels.",
+    "members": [
+      { "id": "a01", "smiles": "CCCc1ccoc1", "breaks": "confounder without cause" },
+      { "id": "a02", "smiles": "OC(=O)CCc1ccccc1", "breaks": "cause without confounder" },
+      { "id": "a03", "smiles": "OC(=O)CCc1ccoc1", "breaks": "both present, a control" },
+      { "id": "a04", "smiles": "CCCCc1ccncc1", "breaks": "neither present, a control" }
+    ]
+  },
+  "model": {
+    "features": "Morgan fingerprint, radius 2, 1024 bits, with bit provenance retained so credit can be traced to atoms",
+    "estimator": "ridge regression solved by normal equations, penalty 1.0",
+    "declared_before_fitting": true,
+    "what_the_model_is_for": "To be well fitted and then explained. Nothing here argues that ridge on fingerprints is a good activity model, and its quality is not the subject."
+  }
+}

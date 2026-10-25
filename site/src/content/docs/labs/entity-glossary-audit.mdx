@@ -1,0 +1,62 @@
+---
+title: Audit entity kinds in activity measurements
+description: Count the identifiers that ChEMBL 37 activity rows carry and name the entity kinds they cannot identify.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+This laboratory serves `t01-entity-glossary`. Read [Entity kinds and identifiers](/learn/foundations/entity-kinds-and-identifiers/) and [The scope of one decision unit](/learn/foundations/decision-unit-scope/) first. You will identify the kind named by each field, count distinct identifiers over admitted point rows, and find where the tested molecule record differs from its parent. You will also state which comparisons a target identifier permits and which entity kinds the table cannot identify.
+
+## Mode and commands
+
+Mode is fresh independent computation over a frozen ChEMBL 37 snapshot. Use the project Python 3.11 environment and a CPU. The validated snapshot is already cached in this repository. The download command validates and copies it into this laboratory's cache. Once cached, the task needs no network or accelerator. The inspector writes nothing. The exporter replaces only the compact committed summary after checks pass.
+
+```bash
+.venv/bin/python labs/entity_glossary_audit/run_lab.py download
+.venv/bin/python labs/entity_glossary_audit/inspect_entity_glossary_audit.py show
+.venv/bin/python labs/entity_glossary_audit/inspect_entity_glossary_audit.py check
+.venv/bin/python labs/entity_glossary_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/entity_glossary_audit -q
+```
+
+## What the table names
+
+The protocol declares 15 seed molecule records resolving to 10 parents. The admission rule takes curated point measurements for AC50, EC50, IC50, Kd or Ki in nM. The grouping key is parent, assay, document and endpoint. The 2026-10-23 computation admitted 488 point rows and formed 486 independent measurements. Counts below are distinct field values over the 488 rows. A row supplies one identifier for each named kind. A grouped measurement can contain more than one molecule-record identifier.
+
+| Entity kind | Identifier field | Distinct identifiers | Row uses |
+| --- | --- | ---: | ---: |
+| Molecule record | `molecule_chembl_id` | 15 | 488 |
+| Parent molecule | `parent_molecule_chembl_id` | 9 | 488 |
+| Assay | `assay_chembl_id` | 481 | 488 |
+| Target | `target_chembl_id` | 100 | 488 |
+| Document | `document_chembl_id` | 221 | 488 |
+| Total across kinds | Separate fields | 826 | 2,440 |
+
+The 9 parent identifiers in the table are fewer than the 10 resolved parents in the declared cohort because a parent with no admitted point row contributes no identifier to this count. The table's molecule record names the tested form, while its parent groups that form for this laboratory's count. The assay names the measurement system, the target names what it was measured against, and the document names the publication. This is the laboratory's reading rule, not a claim that these identifiers are interchangeable.
+
+## Molecule and parent disagreement
+
+In 71 admitted rows, the molecule record differs from its parent. These rows involve 6 child-form molecule identifiers. The 5 salt seeds declared in the cohort account for 65 rows. The remaining child identifier lacks a seed molecule record in this snapshot, so the audit does not assign it a more specific chemical-form name. One independent measurement group contains two molecule-record identifiers. The 481 assays and 100 targets support comparisons within their recorded context. Among those targets, 21 have admitted measurements for more than one molecule record. A shared target alone does not make the assay conditions comparable.
+
+## Kinds the table cannot name
+
+Every one of the 488 admitted rows lacks an identifier for each kind below. The count describes absent fields. It does not assert that every activity should represent such an entity.
+
+| Entity kind | Admitted rows without its identifier | Reason |
+| --- | ---: | --- |
+| Complex | 488 | No complex identifier is carried. |
+| Cell state | 488 | No cell-state identifier is carried. |
+| Patient | 488 | No patient identifier is carried. |
+| Therapeutic candidate | 488 | No candidate designation is carried. |
+
+## Limits of the material
+
+The audit does not merge two identifiers, predict what a compound does, identify a target as a disease, or treat a document as proof that a measurement is true. It describes a purposefully selected teaching cohort rather than a population sample. The cached release and the admission rule bound every count. Bounds and excluded activity rows do not enter the table above.
+
+## Sources and terms
+
+The [ChEMBL activity record](/learn/foundations/source-and-entity-literacy/) is described by the Atlas source IDs `dataset-chembl-activity` and `db-chembl-37`. The [ChEMBL 37 release README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README), [schema documentation](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/schema_documentation.txt) and [release licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) were read for the cached source on 2026-10-21. This audit read the validated cache on 2026-10-23. ChEMBL data retain Creative Commons Attribution-ShareAlike 3.0 Unported terms. Original guide prose is CC BY 4.0 and laboratory code is Apache-2.0. Last reviewed on 2026-10-23.

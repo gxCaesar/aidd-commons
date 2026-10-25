@@ -1,0 +1,107 @@
+---
+title: Pool-budget campaign simulator
+description: Learn equal-budget selection with a synthetic simulator and inspect a completed retrospective ChEMBL campaign.
+---
+
+import PoolBudgetPanel from "../../../components/PoolBudgetPanel.astro";
+import PoolBudgetRealPanel from "../../../components/PoolBudgetRealPanel.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<LabDownloads lab="pool-budget" />
+
+## Before you run
+
+Choose the synthetic CPU simulator below for an editable arithmetic exercise; it
+prints JSON to the terminal, needs the declared Python environment and downloads
+no assay data. Read the separate completed real replay as evidence, not as a
+student rerun command. Installation and simulation are different steps. For an
+exercise that actually fits predictors, use the [student sandbox](/learn/machine-learning/student-modelling-sandbox/).
+Entry guidance updated: 2026-09-09; both prior results remain unchanged.
+
+## Scope
+
+The synthetic program in this teaching lab uses 60 authored molecular graphs and artificial
+scores. It compares random acquisition with label-blind MaxMin selection over
+four equal batches. It does not download data, train a surrogate, simulate
+synthesis, or evaluate ChEMBL activity. A separate completed ChEMBL replay is
+reported below without changing that simulator. Start with the
+[deep lesson](/learn/active-learning/experiment-pools-and-budgets/).
+
+## Run from the repository root
+
+<pre aria-label="Run the synthetic simulator" role="region" tabIndex={0}>
+  <code>{`uv sync --frozen --group dev
+uv run python labs/pool_budget/run_lab.py
+uv run pytest labs/tests/test_pool_budget.py -q`}</code>
+</pre>
+
+The command prints aggregate JSON to standard output without reading real assay
+files. Dependencies are pinned in `pyproject.toml`; a curated release without a
+lockfile uses `uv sync --group dev`. The tiny campaign requires no GPU and is
+intended for a laptop CPU. Installation can take longer than the simulation.
+
+<PoolBudgetPanel />
+
+## Expected outputs
+
+The initial, acquisition, and reserve sets contain 6, 42, and 12 molecules.
+Acquisition checkpoints are 0, 2, 4, 6, 8; exactly five original-pool entries
+form the scoring target. MaxMin recovery is 0, 0, 0, 0.2, 0.4, with normalized
+AUC 0.100. All five random curves appear above, including two zero-recovery
+runs. `labs/pool_budget/demo-summary.json` is the reproducible aggregate example.
+
+Tests cover literal Tanimoto choices, deterministic ties, disjoint scaffold
+groups, a hand-computable AUC, illegal repeated picks, invalid budgets, and
+agreement with the delivered summary. The reserve has no predictive score:
+there is no fitted model in this lab.
+
+## Synthetic scope
+
+The artificial score is `((row_index * 17) % 61) / 10`, with no biochemical
+meaning. Scaffold singleton handling for acyclic structures is a convention,
+not proof of independence. This is a selection-and-scoring exercise, not a
+closed-loop active-learning experiment or evidence that diversity improves
+drug discovery.
+
+## Completed real campaign
+
+The separate frozen ChEMBL campaign completed on 2026-09-08. Both assays used
+the inherited T05 source filters and parent aggregation, whole-scaffold
+partitions, equal integer budgets, and every declared random seed. No
+additional exclusions were introduced after source normalization.
+
+<PoolBudgetRealPanel />
+
+The aggregate-only `labs/pool_budget/real-summary.json` retains all 60
+policy/checkpoint scores. Exporting it reads existing aggregate results only;
+it neither fits a model nor repeats the campaign. The synthetic
+`demo-summary.json` remains unchanged and is not the real-run status record.
+
+## Reproduction and remaining boundaries
+
+The data-free protocol check is still available:
+
+<pre aria-label="Validate the real protocol" role="region" tabIndex={0}>
+  <code>
+    uv run python labs/pool_budget/run_real_campaign.py validate-protocol
+  </code>
+</pre>
+
+For reproduction in a fresh, authorized workspace, the separate guarded command
+is `evaluate-locked --confirm-locked-evaluation`. It has no downloader or custom
+output directory. It requires the existing frozen T05 cache and refuses a
+workspace in which the one-time campaign has already started. Keep that guard;
+do not remove it to repeat the completed author run. Compound-level results
+and execution records stay local and are not part of the public summary.
+
+The completed real-campaign specification is in
+`labs/pool_budget/real-protocol.json` with explanations in `REAL_PROTOCOL.md`.
+The real engine fixed Morgan Ridge `alpha=1`, trained only on initial and
+acquired labels for per-round MAE. Both assays finalized every policy/round
+prediction vector before scoring. The setting came from T05 development;
+these replays are not independent validation of T05 or label-unseen discovery.
+T15 accessed labels shared with T05 before T05 evaluation. The separate T05 and
+T11 evaluations have since completed without retuning. No subsequent tuning may use this exposure while claiming
+an untouched evaluation set.
+
+Last reviewed: 2026-09-08.

@@ -1,0 +1,128 @@
+---
+title: Regression, classification and the errors they hide
+description: Connect task definition to regression losses, class probabilities, decision thresholds and meaningful error analysis.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="qsar-properties/regression-classification-errors" />
+<ScrollableRegions />
+
+## Start from the endpoint, not the estimator
+
+After [baseline training](/learn/machine-learning/baseline-training-validation/),
+you can fit a continuous response. Here you will formulate a binary task, explain
+how logistic regression learns probabilities, distinguish probability quality
+from a thresholded decision, and write an error analysis that does not tune on
+the test set. All numerical examples below are constructed.
+
+QSAR connects a specified chemical representation to a specified activity or
+property endpoint. Regression might predict hydration free energy or an exact
+logarithmic activity readout. Classification might predict a prespecified assay
+hit call. Those targets are not interchangeable. Turning a continuous endpoint
+into a class requires a scientifically justified rule, treatment of censoring
+and ambiguous records, and a threshold chosen before evaluation.
+
+Our student sandbox's `response` and `hit` are separately authored synthetic
+targets, not a recoding of the frozen ChEMBL assay. A hydration-energy value
+also cannot automatically become an activity class.
+
+## Regression: size and direction of error
+
+Let residual `e = prediction − target`. MAE is the mean of `|e|`; RMSE is the
+square root of the mean of `e²`. Both have the response's units. The
+[metric definitions](https://scikit-learn.org/stable/modules/model_evaluation.html)
+make these different aggregations explicit.
+
+For targets `[1, 5, 9]` and predictions `[2, 4, 12]`, residuals are `[1, −1, 3]`,
+MAE is `5/3 ≈ 1.6667`, and RMSE is `sqrt(11/3) ≈ 1.9149`. Their mean signed
+error is 1, but that does not mean all errors have size 1. A low mean signed
+error can hide cancellation. A high rank correlation can likewise coexist with
+a systematic offset.
+
+In the real [FreeSolv lab](/labs/freesolv-honest-baselines/), the endpoint is
+hydration free energy in kcal/mol. In the [ChEMBL lab](/labs/chembl-egfr-representation-baselines/),
+the endpoint is parent-aggregated pChEMBL from the specified IC50 records. Their
+MAE values cannot be compared as if they measured the same scientific task.
+
+## Classification: from a score to a probability
+
+For a standardized feature `z`, logistic regression predicts
+`p = sigmoid(b + w z)`, where `sigmoid(a) = 1 / (1 + exp(−a))`.
+The model's score can be any real number; the sigmoid maps it between 0 and 1.
+That bounded range alone does not establish calibration on new data.
+
+For binary target `h`, the per-record loss is
+`−[h log(p) + (1−h) log(1−p)]`. It is small when the recorded class receives
+high probability and large when the model is confidently wrong. In our sandbox,
+the objective is mean loss plus `alpha * w² / 2`, and the intercept is not
+penalized. The derivatives of the mean loss are mean `(p−h)` for `b` and mean
+`(p−h)z` for `w`; add `alpha*w` to the slope derivative. Gradient descent
+subtracts a learning rate times each derivative. The
+[logistic-model documentation](https://scikit-learn.org/stable/modules/linear_model.html)
+gives the broader multiclass formulation and regularization conventions.
+
+For labels `[0, 1]` with probabilities `[0.2, 0.8]`, both records assign 0.8 to
+the recorded class. Their mean log loss is `−log(0.8) ≈ 0.22314355`.
+Predicting `[0.5, 0.5]` gives approximately 0.69314718. These are natural
+logarithms, not percentages.
+
+## A probability is not a decision rule
+
+Thresholding at 0.5 means calling positive when `p ≥ 0.5`. The threshold is a
+decision setting, not a parameter learned by the formula above. It may be
+chosen using validation under a stated cost or sensitivity requirement, but not
+retuned on test labels. Different uses can legitimately need different rules.
+
+| Recorded class | Predicted negative  | Predicted positive  |
+| -------------- | ------------------- | ------------------- |
+| Negative       | true negative (TN)  | false positive (FP) |
+| Positive       | false negative (FN) | true positive (TP)  |
+
+Precision is `TP/(TP+FP)` and recall is `TP/(TP+FN)`. A zero denominator means
+the quantity is undefined here, represented as `null`, not silently zero.
+Accuracy alone is easily misleading: with one positive among 100 records, an
+always-negative classifier is 99% accurate and has zero recall. Compare against
+the training prevalence, state class counts, and inspect the relevant errors.
+ROC AUC, precision–recall summaries and calibration answer additional questions;
+they should not be added or selected just because they produce a favorable value.
+
+## Error analysis that informs the next study
+
+Save predictions with entity identity, target, residual or probability, and the
+context needed to interpret them. Ask whether large errors cluster by assay,
+scaffold, measurement range or distance from the training domain. A subgroup
+noticed after test evaluation is exploratory, not a newly confirmed primary
+result. Do not erase inconvenient records or change the evaluation metric.
+
+Check a small number of concrete explanations: wrong units, inconsistent assay
+meaning, duplicated entities, extrapolation, or representation information loss.
+A performance difference does not itself tell you which explanation is true.
+For example, an activity cliff is a sharp activity change between structurally
+similar compounds under a meaningful comparison; it is not a synonym for any
+large prediction residual. Investigate the measurement and representation before
+assigning the label.
+
+## Independent exercise
+
+Four recorded classes are `[0, 1, 1, 0]`, and predicted probabilities are
+`[0.2, 0.8, 0.4, 0.7]`. At threshold 0.5, compute TP, TN, FP, FN, precision and
+recall. A colleague then changes the threshold to 0.3 because it catches both
+positives in these test records. What can be reported, and what cannot?
+
+<details data-worked-answer>
+<summary>Worked answer — distinguish scoring from retrospective tuning</summary>
+
+There is one of each confusion-matrix entry. Accuracy, precision and recall are
+all 0.5 at the declared threshold. At 0.3, TP becomes 2, FP 1, TN 1 and FN 0,
+so precision is 2/3 and recall 1. That is a retrospective diagnostic on the same
+records, not an independent confirmation of a better decision rule. Retain the
+original result. A future rule needs a separately specified selection procedure
+and fresh evaluation; these four records do not establish clinical or assay utility.
+
+</details>
+
+Next, [run the isolated student sandbox](/learn/machine-learning/student-modelling-sandbox/).
+For existing real-case interpretation, use [metrics and uncertainty](/learn/evaluation-and-reproducibility/metrics-and-uncertainty/).
+Original prose and examples: CC BY 4.0. Last reviewed: 2026-09-09.

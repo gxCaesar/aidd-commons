@@ -1,0 +1,183 @@
+---
+title: From perturbation to target validation
+description: Build a mechanism claim that distinguishes perturbation response, target evidence, context dependence, and tractability.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="mechanism-targets/perturbation-to-target-validation" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will formulate a mechanism hypothesis with an explicit competing model,
+describe what CRISPR and Perturb-seq observe, and separate target evidence from
+tractability and risk. Read [Disease to target](/learn/mechanism-targets/disease-to-target/)
+and [Genetics to target evidence](/learn/mechanism-targets/genetics-to-target-evidence/)
+first. This conceptual lesson provides no gene-editing conditions, guide design,
+cell culture steps, or clinical recommendation.
+
+## A mechanism claim has an object, a contrast, and a losing alternative
+
+Let `X` be a defined perturbation, `C` a cell context, `Y` a measured endpoint,
+and `H` a stated route from `X` to `Y`. A compact hypothesis is: “In context C,
+changing X changes Y through mediator M.” The required counterevidence is not
+an afterthought. Name an alternative `H_alt`, such as generic stress, altered
+cell composition, an off-target perturbation, assay interference, or a pathway
+parallel to M. Then select a contrast whose expected outputs differ under `H`
+and `H_alt`.
+
+An observed difference `Δ = mean(Y | X, C) − mean(Y | control, C)` is a
+descriptive estimand only after the comparison unit, controls, aggregation, and
+normalization are declared. It is not automatically a causal effect of the
+intended gene. Technical single cells are measurements nested within a
+perturbation, sample, and context; treating every cell as an independent
+organism or patient inflates certainty. Pooled designs additionally require a
+guide identity and assignment-quality contract.
+
+## What perturbational readouts do—and do not—validate
+
+CRISPR perturbation changes a genomic locus or its expression according to the
+chosen system; it does not itself name the molecular mediator. A bulk screen can
+report enrichment or depletion in a selected population. Perturb-seq associates
+an assigned perturbation with a high-dimensional single-cell RNA readout. It can
+make the response pattern and cell-state heterogeneity inspectable, but an RNA
+signature is neither direct protein activity nor proof that another context will
+respond. Genome-scale CRISPRi Perturb-seq has been demonstrated at over 2.5
+million cells; scale changes the evidence available, not the causal meaning of
+an untested alternative [Replogle et al.](https://pubmed.ncbi.nlm.nih.gov/35688146/).
+
+For a prespecified gene set `G`, one transparent summary is a signed module
+score `S_i = (1/|G|) Σ_{g∈G} z_{ig}`, where `z_{ig}` is a declared normalized
+expression value for gene `g` in cell `i`. `S_i` is unitless on that scale.
+Compare distributions of `S_i` across assigned perturbations, but also inspect
+guide agreement, viable-cell representation, and whether the same change occurs
+in a negative-control perturbation. A significant score is evidence about that
+score; it is not a target-validation certificate.
+
+## Tractability is a separate decision
+
+Target validity asks whether changing a biological object changes a relevant
+outcome under a defined mechanism. Tractability asks whether a modality could
+make a sufficiently selective, exposure-compatible intervention. Risk includes
+expression and pathway roles in non-target contexts, homologous proteins,
+genetic human evidence, and uncertainty that could defeat the product profile.
+Thus a target can have persuasive perturbation evidence and still be a poor
+programme choice; conversely, a tractable binder without causal disease evidence
+is not a validated target. Keep those evidence columns separate.
+
+<table>
+  <thead>
+    <tr>
+      <th>Claim</th>
+      <th>Minimum evidence object</th>
+      <th>Nearby non-equivalent claim</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Perturbation response</td>
+      <td>Assigned perturbation versus declared controls in C</td>
+      <td>Drug-like target engagement</td>
+    </tr>
+    <tr>
+      <td>Mechanism support</td>
+      <td>Contrast that challenges a named H_alt</td>
+      <td>Exhaustive proof of mechanism</td>
+    </tr>
+    <tr>
+      <td>Context transfer</td>
+      <td>New, prespecified C with matched decision endpoint</td>
+      <td>Replication of a familiar cell line</td>
+    </tr>
+    <tr>
+      <td>Tractability</td>
+      <td>Modality-specific opportunity and risk assessment</td>
+      <td>Causal disease validation</td>
+    </tr>
+  </tbody>
+</table>
+
+## Worked case: preserve the counterexample
+
+This is a **constructed** example. In a named model context C1, a gene-silencing
+perturbation `X` yields a mean pathway score of `−0.60` across three independent
+preparations; the matched non-targeting control mean is `−0.10`. Therefore
+`Δ = −0.60 − (−0.10) = −0.50` score units. Two independently specified guides
+show the same direction. This supports “X is associated with lower score in C1”;
+it does not establish that the desired target mechanism caused the score.
+
+The team predicts `H`: X lowers the score through mediator M. It registers a
+rescue comparison that restores M without changing the broader experimental
+context. The constructed rescue mean is `−0.16`, closer to the control. A
+separate generic-stress perturbation produces `−0.55`. The rescue is consistent
+with H, while the stress result keeps `H_alt` plausible. The honest next line is
+not “M is validated”: it is “the observed score may be M-linked but is not yet
+specific to M; an orthogonal, target-proximal measurement and a second relevant
+context are required.”
+
+For tractability, suppose the same constructed evidence table records an
+accessible binding pocket but high expression in a non-target tissue and no
+selectivity assessment against a homologous family. The target is **not**
+discarded or promoted from that table. It receives “opportunity present; safety
+and selectivity risks unresolved.” The missing column matters as much as the
+favourable one.
+
+## Alternatives, limitations, and independent exercise
+
+An isogenic rescue, a second perturbation modality, an orthogonal protein-level
+readout, or a different disease-relevant context may be useful because each
+changes a different link in the causal chain. None is universal. A rescue can be
+misexpressed; a second guide can share a systematic artifact; a protein readout
+may still be downstream. Causal evidence accumulates when contrasts predictably
+separate H from credible alternatives, not by accumulating correlated assays.
+
+**Handworked exercise (not runnable or empirical):** In constructed context C2,
+the control mean module score is `0.12`; perturbation Q has `−0.18`; a distinct
+guide for Q has `−0.16`; and a generic growth-slowing control has `−0.20`.
+Calculate both Q contrasts. Write one supported sentence, name the strongest
+remaining alternative, and choose one next measurement that could distinguish it
+from a Q-specific mechanism. Which of “causal target,” “tractable modality,” and
+“context-specific perturbation response” is currently supported?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The contrasts are `−0.18 − 0.12 = −0.30` and `−0.16 − 0.12 = −0.28` score
+units. A supported sentence is: “Two constructed Q guides were associated with
+lower module score in C2.” Generic growth slowing remains a strong alternative
+because its score is `−0.20`. A target-proximal readout or an isogenic rescue
+that makes different predictions under the two explanations could help. Only a
+context-specific perturbation response is supported; causal target and tractable
+modality remain unestablished.
+
+</details>
+
+## Sources and next lesson
+
+These pages were opened on 2026-09-09; they support scope and definitions, not
+the invented numbers.
+
+<div data-case-sources>
+
+- [Mapping information-rich genotype-phenotype landscapes with genome-scale Perturb-seq](https://pubmed.ncbi.nlm.nih.gov/35688146/)
+- [Massively parallel phenotyping of coding variants in cancer with Perturb-seq](https://pubmed.ncbi.nlm.nih.gov/35058622/)
+- [Genome-scale CRISPR-Cas9 knockout screening in human cells](https://pubmed.ncbi.nlm.nih.gov/24336571/)
+
+</div>
+
+The [mechanism consistency laboratory](/labs/mechanism-consistency/) tests a
+target-mediated explanation against a fixed different-compound control over
+1,721 compounds measured in two cell lines, and keeps the cases it cannot
+decide undecided.
+
+The [open-question audit](/labs/open-question-audit/) tests whether a
+comparison record still names a falsifying observation or the measurement it
+still needs, and reports the questions it leaves open.
+
+Continue to [Perturbation context generalization](/learn/mechanism-targets/perturbation-context-generalization/)
+before interpreting an in-context result as a transferable prediction. Original
+lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-09.

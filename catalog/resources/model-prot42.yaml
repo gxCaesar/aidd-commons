@@ -1,0 +1,94 @@
+id: model-prot42
+name: Prot42
+kind: model
+summary: Family of autoregressive decoder-only protein language models described for target-aware binder generation, with the Prot42-B and Prot42-L variants trained on protein sequences and fine-tuned on interaction data for contexts up to 8,192 residues.
+canonical_url: https://arxiv.org/abs/2504.04453
+identifiers:
+- scheme: paper
+  value: 'Prot42: a Novel Family of Protein Language Models for Target-aware Protein Binder Generation; arXiv 2504.04453'
+  url: https://arxiv.org/abs/2504.04453
+stages:
+- representation-learning
+- design
+modalities:
+- protein
+tasks:
+- protein-design
+- target-conditioned-generation
+relations: []
+status:
+  value: unverified
+access_level:
+  value: closed
+  evidence:
+  - paper-fulltext
+  - distribution-page
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: CC-BY-4.0
+  scope: The arXiv full-text page labels the Prot42 preprint CC BY 4.0, permitting attributed reuse of the article. This article licence does not grant access to, or establish reuse terms for, model weights, source code or training data. The distribution organisation named by the paper offers no public models or datasets on the page read.
+  evidence:
+  - paper-fulltext
+  - paper-license
+  - distribution-page
+evidence:
+- id: paper
+  url: https://arxiv.org/abs/2504.04453
+  label: Prot42 preprint abstract page (reviewed 2026-10-21)
+  supports:
+  - name
+  - kind
+  - summary
+  - identifiers
+  - stages
+  - modalities
+  - tasks
+  - caveats
+- id: paper-fulltext
+  url: https://arxiv.org/html/2504.04453
+  label: Prot42 preprint full text (reviewed 2026-10-21)
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - caveats
+- id: distribution-page
+  url: https://huggingface.co/inceptionai
+  label: Hugging Face organisation page the paper points to (reviewed 2026-10-21)
+  supports:
+  - caveats
+- id: terms-page
+  url: https://arxiv.org/abs/2504.04453
+  label: Terms page read 2026-10-23
+  supports:
+  - caveats
+- id: paper-license
+  url: https://creativecommons.org/licenses/by/4.0/
+  label: CC BY 4.0 licence linked by the Prot42 arXiv page — The linked licence permits sharing and adaptation, including commercial reuse, subject to attribution and its other conditions. The arXiv page applies it to the preprint, not a model release.
+  supports:
+  - caveats
+caveats:
+- The arXiv full-text page identifies CC BY 4.0 for the preprint. This establishes the article's terms and does not establish a model or source-code licence.
+- The abstract states that the models are publicly available and the paper body points to the Hugging Face organisation inceptionai, but that organisation page states that it "is not operational and only created to reserve the inceptionai domain/user name" and lists no public model, so no weights or code location was confirmed.
+- The paper directs readers to the inceptionai Hugging Face organisation, whose page states that it is not operational and lists no public models or datasets. The pages read therefore offer no Prot42 model material, which establishes closed access on these named distribution pages; this is not a claim that no release could exist elsewhere. No model, weight or code licence is established.
+- The paper names UniRef50 as the pretraining corpus and the STRING and PDIdb 2010 databases as fine-tuning data, but no Prot42-specific data or code release was located, so these are named corpora rather than verified availability.
+- A Hugging Face model search returned no Prot42 model and a GitHub repository search returned no Prot42 repository.
+acknowledgements: []
+last_verified: '2026-10-23'

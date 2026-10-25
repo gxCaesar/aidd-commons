@@ -1,0 +1,139 @@
+---
+title: Message passing, attention and geometric equivariance
+description: Calculate one graph update and one attention readout, then decide how molecular predictions should transform with coordinates.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="machine-learning/neural-representations" />
+<ScrollableRegions />
+
+## From a fixed descriptor to a learned representation
+
+Read [baseline fitting](/learn/machine-learning/baseline-training-validation/)
+and [molecular representations](/learn/representations/small-molecule-representations/).
+You need vectors, matrix multiplication and the idea of a derivative. By the end,
+you should be able to calculate a message-passing layer, interpret attention as a
+weighted value readout, and distinguish invariant scalar outputs from equivariant
+vector outputs. This is a handworked lesson; no network is trained here.
+
+A descriptor pipeline computes `x = φ(molecule)` before fitting a predictor.
+A neural pipeline learns some of `φ` jointly with the predictor. Both still need
+a defined target and a train-only fitting procedure. A more flexible representation
+does not create labels for a missing biological context. Consider whether the
+target is a whole-molecule quantity, an atom-level quantity or a coordinate-dependent
+quantity before choosing how the network combines its inputs.
+
+## Graph messages are local computations
+
+Let atoms be nodes `i`, bonds have features `eᵢⱼ`, and `hᵢᵗ` be a node's hidden
+vector at layer `t`. A message-passing layer has the form
+
+```text
+mᵢ = Σ over neighbours j of Mₜ(hᵢᵗ, hⱼᵗ, eᵢⱼ)
+hᵢᵗ⁺¹ = Uₜ(hᵢᵗ, mᵢ)
+ŷ = R({hᵢᵀ})
+```
+
+`M` creates messages, `U` updates nodes and `R` reads the final node states.
+The [original MPNN formulation, equations 1–3](https://proceedings.mlr.press/v70/gilmer17a/gilmer17a.pdf)
+separates these operations. The final set readout must not depend on arbitrary
+atom numbering. A sum or mean is order-independent, but they retain different
+size information. Atomwise prediction instead keeps one output per node.
+
+Use a deliberately nonchemical three-node chain `A—B—C`, initial scalar states
+`[1, 2, 4]`, `M(hᵢ,hⱼ,e)=hⱼ`, and `U(h,m)=h+m`. All nodes update from the **old**
+states simultaneously:
+
+| Node | Old state | Sum of neighbouring old states | New state |
+| ---- | --------- | ------------------------------ | --------- |
+| A    | 1         | 2                              | 3         |
+| B    | 2         | 1 + 4 = 5                      | 7         |
+| C    | 4         | 2                              | 6         |
+
+The sum readout is 16; the mean is `16/3`. Updating A and immediately using 3
+inside B's same-layer update would implement a different, order-dependent
+algorithm. A second synchronous layer gives `[10, 16, 13]`. After two layers,
+information from C can reach A through B. This illustrates a receptive field,
+not molecular potency or a trained model.
+
+In a real model, atom/bond encodings, nonlinearities and readout parameters are
+learned through a task loss. More layers also change optimization and how much
+distinct local information is mixed. Check simpler descriptor and fingerprint
+baselines under the same split before attributing a gain to graph reasoning.
+
+## Attention chooses a mixture, not a causal explanation
+
+For row-wise token features `H`, learned projections give queries `Q=HWQ`, keys
+`K=HWK` and values `V=HWV`. Scaled dot-product attention is
+
+```text
+Attention(Q,K,V) = softmax(QKᵀ / √dₖ + mask) V
+```
+
+Softmax acts across allowed keys for each query. A forbidden key receives a mask
+that excludes it from the normalization. Multi-head attention computes several
+such readouts and combines them. These mechanisms are described in
+[Attention Is All You Need, section 3.2](https://arxiv.org/html/1706.03762v7).
+Positional or structural information is an additional design choice; a bag of
+identical embeddings alone does not specify residue order or spatial geometry.
+
+For one invented query with already scaled scores `[0, ln(3)]`, softmax weights
+are `[1/4, 3/4]`. With scalar values `[2, 6]`, the readout is
+`(1/4)×2 + (3/4)×6 = 5`. If the second key is masked, the readout becomes 2.
+Keys control weighting while values supply what is combined; confusing them
+changes the calculation. The weight 3/4 is neither a binding probability nor
+evidence that an atom causes activity. A downstream readout and training
+objective determine what the combined feature predicts.
+
+## Symmetry belongs to the input–output contract
+
+Let `xᵢ` be a three-dimensional atom coordinate, `Q` an orthogonal rotation and
+`t` a translation. For a scalar energy, an appropriate symmetry is
+`E(Qx+t)=E(x)`. For forces, the vectors should rotate:
+`Fᵢ(Qx+t)=QFᵢ(x)`. Translation changes the coordinate origin, not the force.
+Atom reindexing must also permute atomwise outputs consistently.
+
+A simple vector construction is `vᵢ = Σⱼ aᵢⱼ(xᵢ−xⱼ)`, where each scalar `aᵢⱼ`
+depends only on rotation/translation-invariant information such as distances.
+All coordinate differences rotate by `Q`, so the sum does too. This is a
+hand-derived equivariance argument. The
+[EGNN paper](https://proceedings.mlr.press/v139/satorras21a/satorras21a.pdf)
+uses invariant messages and coordinate-difference updates to construct a network
+equivariant to the Euclidean group, including reflections.
+
+That last qualification matters. Mirror reflection is not always a symmetry
+of the **task** when only a ligand is reflected in a fixed chiral biological
+environment. A ligand-only distance representation cannot encode an omitted
+protein partner or distinguish mirror-related structures through distances
+alone. Adding “3D” to a model name does not repair missing stereochemistry or
+make a single conformer an equilibrium ensemble.
+
+## Independent exercises
+
+1. Relabel the chain as C, A, B without changing connectivity. What happens to
+   the node values and sum after the first synchronous layer?
+2. Use attention scores `[0,0]` and values `[2,6]`. What is the readout? Does
+   equality of weights establish equal biological importance?
+3. Rotate the vector `(1,0,0)` by 90 degrees around z. What should a force
+   predictor return for the correspondingly rotated input? What should happen
+   to a scalar energy of 7 in arbitrary units?
+
+<details data-worked-answer>
+<summary>Worked answers — track objects rather than row numbers</summary>
+
+The first-layer states are C: 6, A: 3, B: 7 in the new storage order, and their
+sum remains 16. A change to the sum would expose an indexing/order dependence.
+Equal scores yield weights 1/2 and 1/2, hence readout 4; no causal claim follows.
+The force becomes `(0,1,0)` and the scalar energy remains 7 under the stated
+symmetry. These are transformation requirements, not an accuracy assessment.
+
+</details>
+
+Continue to [probability, objectives and checkpoints](/learn/machine-learning/probability-loss-and-checkpoints/)
+to connect a learned representation to a fitted probability model. Return to
+[complex and cell representations](/learn/representations/complex-cell-and-knowledge-graphs/)
+when the object being encoded is larger than one molecule.
+
+Original constructed examples and prose: CC BY 4.0. Sources reviewed: 2026-09-09.

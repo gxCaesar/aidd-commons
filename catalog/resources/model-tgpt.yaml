@@ -1,0 +1,53 @@
+id: model-tgpt
+name: tGPT
+kind: model
+summary: Autoregressive GPT model that treats the ranking of gene expression within a cell as a generative pretraining task, producing cell-level features for single-cell and bulk-tissue analysis.
+canonical_url: https://github.com/deeplearningplus/tGPT
+identifiers:
+  - scheme: paper
+    value: "Generative pretraining from large-scale transcriptomes: Implications for single-cell deciphering and clinical translation; bioRxiv DOI 10.1101/2022.01.31.478596"
+    url: https://doi.org/10.1101/2022.01.31.478596
+  - scheme: model-weights
+    value: "Pretrained tokenizer and checkpoint in the Hugging Face model repository lixiangchun/transcriptome-gpt-1024-8-16-64"
+    url: https://huggingface.co/lixiangchun/transcriptome-gpt-1024-8-16-64
+stages: [representation-learning, model-development]
+modalities: [single-cell-transcriptomics]
+tasks: [cell-context-inspection]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [tgpt-license] }
+openness:
+  inference_code: { value: available, evidence: [tgpt-repository] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [tgpt-repository] }
+  architecture: { value: available, evidence: [tgpt-readme] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: GPL-3.0
+    scope: "Repository source code, including the tokenizer and checkpoint loader. The LICENSE file is the GNU General Public License version 3, whose conditions require that distributed modified versions stay under the licence and that corresponding source be supplied. The README has no licence section, and the Hugging Face model card for the pretrained checkpoint states no licence."
+    evidence: [tgpt-license, tgpt-readme]
+evidence:
+  - id: tgpt-repository
+    url: "https://github.com/deeplearningplus/tGPT"
+    label: tGPT repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: tgpt-readme
+    url: "https://raw.githubusercontent.com/deeplearningplus/tGPT/main/README.md"
+    label: tGPT README (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: tgpt-license
+    url: "https://raw.githubusercontent.com/deeplearningplus/tGPT/main/LICENSE"
+    label: tGPT GNU GPL v3 license file (reviewed 2026-10-21)
+    supports: []
+  - id: tgpt-paper
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:%2210.1101/2022.01.31.478596%22&resultType=core&format=json"
+    label: Europe PMC record for the tGPT preprint (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+caveats:
+  - The pretrained tokenizer and checkpoint are loaded from a Hugging Face model card that states no licence, so the terms of the released weights are not established by the GPL file in the repository and remain unverified.
+  - The README gives the pretraining scale as 22.3 million single-cell transcriptomes and the paper abstract repeats that figure, but neither names a source corpus, and the worked example uses local Muris files, so the training data is unverified.
+  - The README contains no licence section, so the GPL terms come from the repository LICENSE file alone.
+acknowledgements: []
+last_verified: "2026-10-21"

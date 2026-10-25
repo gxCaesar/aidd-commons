@@ -1,0 +1,68 @@
+id: model-geneformer
+name: Geneformer
+kind: model
+summary: Attention-based model that tokenizes a cell by ranking its genes, pretrained on a corpus of about 30 million human transcriptomes, and used for cell-state embedding, in-silico perturbation, and fine-tuning on network-biology tasks.
+canonical_url: https://github.com/jkobject/geneformer
+identifiers:
+  - scheme: paper
+    value: "Transfer learning enables predictions in network biology; Nature DOI 10.1038/s41586-023-06139-9"
+    url: https://doi.org/10.1038/s41586-023-06139-9
+  - scheme: model-weights
+    value: "Geneformer-V1-10M, V2-104M, V2-316M, and V2-104M_CLcancer checkpoints in the Hugging Face model repository ctheodoris/Geneformer"
+    url: https://huggingface.co/ctheodoris/Geneformer
+stages: [representation-learning, model-development]
+modalities: [single-cell-transcriptomics]
+tasks: [cell-context-inspection, perturbation-comparison]
+relations:
+  - type: used-by
+    target: model-zeroshot-scfoundation
+status: { value: unverified }
+access_level: { value: open_weights, evidence: [geneformer-model-card] }
+openness:
+  inference_code: { value: available, evidence: [geneformer-repository] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [geneformer-repository, geneformer-model-card] }
+  architecture: { value: available, evidence: [geneformer-paper] }
+  data_recipe: { value: available, evidence: [model-geneformer-readme] }
+  training_data: { value: available, evidence: [geneformer-model-card] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: "Hugging Face model card for the Geneformer model collection only, whose licence line reads 'License: apache-2.0'. The GitHub repository page shows no licence and the LICENSE file path returned HTTP 404, so this term is not established for the repository source code or for the checkpoints stored there."
+    evidence: [geneformer-model-card, geneformer-repository]
+evidence:
+  - id: geneformer-repository
+    url: "https://github.com/jkobject/geneformer"
+    label: Geneformer repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: geneformer-readme
+    url: "https://raw.githubusercontent.com/jkobject/geneformer/main/README.md"
+    label: Geneformer README (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: geneformer-model-files
+    url: "https://huggingface.co/ctheodoris/Geneformer/tree/main"
+    label: Geneformer Hugging Face model repository file listing (reviewed 2026-10-21)
+    supports: [caveats]
+  - id: geneformer-model-card
+    url: "https://huggingface.co/ctheodoris/Geneformer"
+    label: Geneformer Hugging Face model card (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: geneformer-paper
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=TITLE:%22Transfer%20learning%20enables%20predictions%20in%20network%20biology%22&resultType=core&format=json"
+    label: Europe PMC record for the Geneformer paper (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+  - id: zeroshot-repository
+    url: "https://github.com/microsoft/zero-shot-scfoundation"
+    label: Microsoft zero-shot single-cell foundation model evaluation repository (reviewed 2026-10-21)
+    supports: [relations]
+  - id: model-geneformer-readme
+    url: https://raw.githubusercontent.com/jkobject/geneformer/HEAD/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The README states that the model is pretrained on a corpus of about thirty million human single-cell transcriptomes, and the repository holds no corpus files.
+  - The GitHub repository displays no licence and the LICENSE file path returned HTTP 404 when opened on 2026-10-21, so the Apache-2.0 term comes from the linked Hugging Face model card and is not shown to cover the repository source code.
+  - The model card names the pretraining corpora Genecorpus-30M and Genecorpus-104M and a roughly 14 million-cell cancer continual-learning corpus, but the model repository file listing holds only model weights, code, and configuration files with no corpus files, and the card gives no per-sample provenance for those cells.
+  - The repository README links the Nature paper through a readcube copy and shows no DOI for it, so the DOI in this record comes from the Europe PMC record rather than from the project page.
+acknowledgements: []
+last_verified: "2026-10-23"

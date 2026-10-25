@@ -1,0 +1,41 @@
+name: Correction
+description: Report a factual, scientific, citation, licence, translation, or accessibility problem.
+title: "[Correction]: "
+labels: ["correction"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: What is wrong
+      description: Quote or point to the affected passage, record, result, or interface state.
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Corrective evidence
+      description: Link the primary evidence and explain precisely what it establishes.
+    validations: { required: true }
+  - type: textarea
+    id: licence_attribution
+    attributes:
+      label: Licence and attribution impact
+      description: State whether terms or credit change; write "No known impact" if none.
+    validations: { required: true }
+  - type: textarea
+    id: audience
+    attributes:
+      label: Affected audience
+      description: Identify who may be misled or unable to use the material.
+    validations: { required: true }
+  - type: textarea
+    id: scientific_assumptions
+    attributes:
+      label: Scientific assumptions
+      description: State any task, split, metric, unit, or interpretation needed to assess the correction.
+    validations: { required: true }
+  - type: textarea
+    id: conflict_disclosure
+    attributes:
+      label: Conflict disclosure
+      description: Disclose relevant affiliations or interests, or write "None".
+    validations: { required: true }

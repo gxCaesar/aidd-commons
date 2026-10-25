@@ -1,0 +1,86 @@
+---
+title: Evidence, claims and unresolved fields
+description: Decide what a recorded comparison depth permits you to say when evidence is present, bounded, broken or missing.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="foundations/evidence-claims-and-unknowns" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+Read [source and entity literacy](/learn/foundations/source-and-entity-literacy/) first. You will trace a depth judgment to the evidence declared for that topic, keep an interval open when its depth is unresolved, identify a broken claim, and avoid turning an unreviewed field into a negative finding. The [offline audit guide](/labs/claims-evidence-audit/) lets you reproduce the worked case.
+
+A comparison record is a statement about what a reviewer saw in a defined source surface. It is not itself a measurement of teaching effectiveness. The difference matters most when one provider has a detailed entry and another has no topic-specific entry.
+
+## Four ways a record can support a statement
+
+A `direct-observation` starts with an explicit depth and a resolvable evidence entry. The record identifies a reviewed source and states what that source supports. You may report the recorded depth with its scope and date. You should not extend an observation about a reviewed lesson into a claim about every material the provider might hold.
+
+A `bounded-inference` has a lower and upper depth bound rather than a single established depth. In this protocol, an explicit `unverified` cell with a resolvable reference represents that interval. A possible upper depth is not a measured lower depth. You may compare bounds when both sides are stated, but cannot declare a winner from an interval that overlaps the other side.
+
+An `unsupported-claim` is an explicit depth whose evidence is missing, refers to an entry that the record never declared, or points to a local file that is not there. The depth may be true, but the record cannot support its use. The next action is to repair and review the evidence reference before citing the depth. A link that resolves structurally still needs source-level review before its content can support a scientific claim.
+
+An `unresolved-field` has no topic-specific evidence. The comparison record supplies its declared `unverified` default. It says that this dated review did not encode a topic judgment. It does not say that the provider lacks the topic. An explicit, evidenced `absent` judgment is different because it describes the reviewed surface, although even that judgment remains limited to the surface inspected.
+
+| State | What the reader may carry forward | What remains open |
+| --- | --- | --- |
+| `direct-observation` | The recorded depth and its evidence scope | Unreviewed material and learner outcomes |
+| `bounded-inference` | The declared lower and upper bounds | The precise depth within the interval |
+| `unsupported-claim` | The fact that the evidence contract failed | The claimed depth until its support is repaired |
+| `unresolved-field` | The fact that no topic-specific review was encoded | Whether the provider covers the topic |
+
+The four states are not peculiar to the comparison matrix. The atlas's own
+records carry the same structure. The RCSB Protein Data Bank record states a
+public-domain dedication for the data it serves and names the page that says
+so, which is a direct observation with a scope. The SKEMPI record carries two
+licences and a scope that says the grant reaches the upstream dataset and not
+the mirror's own card, which is a bounded inference. The OpenMM record says
+the model-training dimensions do not apply to a classical molecular dynamics
+engine, which is a different statement from not knowing. And a record whose
+claim names an evidence entry the record does not carry is the atlas's own
+version of an unsupported claim.
+
+## Worked case
+
+The frozen foundations audit crosses 13 providers with 4 topics, yielding 52 cells. It reads the provider records and checks references without downloading anything. The committed 2026-10-23 run classifies 14 cells as direct observations, 0 as bounded inferences, 0 as unsupported claims and 38 as unresolved fields.
+
+| Record | Direct observations | Unresolved fields | Permitted reading |
+| --- | ---: | ---: | --- |
+| `aidd-commons` | 4 | 0 | Its recorded depths have resolvable entries. |
+| `agil` | 0 | 4 | Its defaults leave these topics undecided. |
+| `build-ai-drug-discovery-pipelines` | 4 | 0 | Its explicit depths are tied to reviewed entries. |
+| `teachopencadd` | 4 | 0 | Its explicit depths are tied to reviewed entries. |
+
+These rows describe evidence status, not a ranking. In particular, `agil`'s unresolved cells cannot be read as missing lessons. The project's own row is a stated floor, not a measure of what readers learn. The independent reading is deeper than that row on 2 selected topics. The published row retains its shallower depth rather than silently taking the higher score.
+
+The same discipline applies to broad public claims. The comparison record's numerical bounds satisfy both stated bound conditions, yet both statuses remain `not_established` because the public correction-window condition is `not_recorded`. A computed inequality and an established superlative are different statements.
+
+## Independent exercise
+
+Consider four constructed cells from a new audit. Cell A declares `explained` and cites a resolvable evidence entry. Cell B explicitly records `unverified` with a resolvable entry and an open depth interval. Cell C declares `worked` but its evidence entry names a local file that is missing. Cell D has no topic entry and inherits an evidence-free `unverified` default. Classify each cell and write the strongest defensible sentence about Cell D. Then state which cell needs a repaired record before its depth can be used.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Cell A is a `direct-observation`. Report its recorded `explained` depth with the reviewed source scope. Cell B is a `bounded-inference`. Preserve its interval and do not replace the possible upper bound with a point score. Cell C is an `unsupported-claim` and needs a repaired, reviewed file reference before its `worked` depth can be used. Cell D is an `unresolved-field`. A defensible sentence is that the audit has no topic-specific evidence for this provider in its recorded review. That sentence does not imply that the provider lacks the topic.
+
+</details>
+
+## What this material does not show
+
+The state labels test a record's evidence contract. They do not reopen external pages, rescore a provider, measure teaching quality or show how students perform. The selected track has no bounded or unsupported cells in the committed run, so the exercise supplies constructed instances of those states. The independent reading is a second automated interpretation of source material, not a human learning study.
+
+## Run the audit
+
+Mode is a fresh independent computation over the frozen protocol and committed local records. The project Python environment and CPU are sufficient. No network, download or accelerator is needed. This command writes nothing and prints every selected cell with the state counts. The [guide](/labs/claims-evidence-audit/) gives the check and summary export commands.
+
+```bash
+.venv/bin/python labs/claims_evidence_audit/inspect_claims_evidence_audit.py show
+```
+
+## Sources and attribution
+
+This case reads the `aidd-commons`, `agil`, `build-ai-drug-discovery-pipelines` and `teachopencadd` provider records, the independent reading `aidd-commons-blind-2026-09-11`, the topic taxonomy and the comparison export. The committed results were checked on 2026-10-23. Original prose is CC BY 4.0 and laboratory code is Apache-2.0. Linked materials retain their own terms.

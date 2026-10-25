@@ -1,0 +1,278 @@
+---
+title: From metabolism to safety decisions
+description: Connect metabolic routes, DDI roles, toxicity endpoints, and multi-parameter selection without treating any one assay as a safety verdict.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="admet-pk/metabolism-to-safety" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will identify victim and perpetrator DDI roles, distinguish a toxicity
+endpoint from transferable safety evidence, and make a transparent multi-parameter
+ADMET decision. Read [Exposure, clearance, and PK/PD](/learn/admet-pk/exposure-clearance-pkpd/)
+and [ADMET evaluation](/learn/admet-pk/admet-evaluation/) first. This is a
+conceptual, hand-calculation lesson: it supplies neither dosing advice nor a
+laboratory protocol.
+
+## Metabolism changes the exposure question
+
+Metabolism may convert a parent compound to metabolites, altering parent and
+metabolite concentration over time. Enzymes and transporters can therefore
+matter as a candidate's **victim** (another agent changes its exposure) or its
+**perpetrator** (it changes another agent's exposure). These are roles in a
+specified interaction, not inherent labels. Current ICH M12 guidance concerns
+enzyme- and transporter-mediated pharmacokinetic DDI potential and harmonizes
+in-vitro and clinical evaluation concepts [FDA M12](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/m12-drug-interaction-studies-questions-and-answers).
+
+`CL = rate of elimination / concentration` describes clearance at the stated
+moment and model; its units are volume/time. For a first-pass conceptual model,
+if bioavailability `F`, dose `D`, and clearance `CL` are fixed, exposure scales
+as `AUC ∝ F·D / CL`. This relation is a useful directional model, not a clinical
+prediction. A metabolic inhibition signal can suggest lower clearance and higher
+parent exposure, but it cannot determine the magnitude in people without the
+rest of the model, concentrations, and validation.
+
+## Worked case: does inhibiting one enzyme predict inhibiting another?
+
+"This compound inhibits CYP" is not yet a claim you can check: it names no
+enzyme, no assay, and no document. The [CYP assay-system
+lab](/labs/cyp-assay-system/) reads live ChEMBL 37 IC50 records for two
+different cytochrome P450 enzymes, CYP3A4 and CYP2D6, and asks a narrower
+question: for real compounds with an admitted record against **both**
+enzymes, does apparent potency against one predict potency against the
+other? No model is fitted; every number below is a count, a median, or a
+rank correlation over already-published measurements, computed on
+2026-09-12 against the live ChEMBL 37 release dated 2026-05-01.
+
+| | CYP3A4 (`CHEMBL340`) | CYP2D6 (`CHEMBL289`) |
+| --- | ---: | ---: |
+| Admitted parent molecules | 5,251 | 2,781 |
+
+Of those, 1,195 parents have an admitted record against both enzymes; 1,186
+of those share at least one source document across the two targets; 1,015
+are "clean" single pairs, meaning exactly one admitted activity per enzyme
+from the same document, so neither side is a cross-study median. Spearman
+rho over the full overlap is 0.2981 (p=6.08e-26); over the clean-pair
+subset, 0.3038 (p=4.10e-23). The two estimates agree with each other as a
+robustness check, and both sit far from either 0 or 1: apparent CYP3A4
+potency is a real but weak positive signal for CYP2D6 potency here, not a
+strong predictor and not independent noise either.
+
+Two named examples from the clean-pair subset show what that weak
+correlation hides. Albaconazole (`CHEMBL298817`) is markedly CYP3A4-
+selective: pIC50 7.40 against CYP3A4 versus 4.50 against CYP2D6, in the same
+document. Quinidine (`CHEMBL1294`) is not a clean pair at all, and that
+absence is itself informative: it carries exactly one admitted CYP3A4
+record (pIC50 4.55) against 32 independent CYP2D6 records spanning a pIC50
+range of 4.1, more than a 10,000-fold range in reported potency, with a
+median pIC50 of 7.37. A single number for "quinidine and CYP" would have
+to choose among 33 real measurements before it named anything.
+
+**Independent exercise:** A safety summary states "Compound Z inhibits
+CYP450, IC50 = 50 nM." Using only the assay-system distinction this case
+draws, name three fields this sentence omits that would be required before
+the claim could be checked against a ChEMBL-style record, and say what each
+omission risks.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The sentence omits which CYP enzyme was tested (CYP3A4 and CYP2D6 potency
+correlate only weakly here, so a value for one is not a value for the
+other), which assay generated the number (a single target's records here
+span many independent assays and documents, and quinidine's 32 CYP2D6
+records range over a pIC50 window of 4.1), and which document reported it
+(without a shared document, two numbers for the same compound cannot be
+treated as a same-study "clean pair" the way this lab defines one). Without
+all three, "Compound Z inhibits CYP450" cannot be located in, or checked
+against, a real record like the ones this case reads.
+
+</details>
+
+## Toxicity endpoints have a system and an inference limit
+
+A toxicity endpoint is not “safe” or “unsafe”; it is a measurement on a named
+system, exposure window, readout, and comparison. A viability change in a cell
+model may be useful for ranking within its range. It does not prove organ
+toxicity, absence of toxicity, exposure relevance, or clinical transfer. The
+right transport question is: does the new context preserve the biological
+mechanism, exposure relation, and decision endpoint needed by the claim? If not,
+report a context-specific association, not a generalized safety conclusion.
+
+Make the denominator explicit. If `S_test` and `S_vehicle` are background-corrected
+signals where high means viable cells, then `% viability = 100·S_test/S_vehicle`.
+If the system instead reports damage or a different normalization, this formula
+may be wrong. Define a constructed safety separation as `M = C_risk / C_effect`,
+where `C_effect` is the stated concentration for the desired endpoint and
+`C_risk` is the stated concentration for the risk endpoint under comparable
+conditions. `M` is dimensionless only when those threshold concentrations are
+comparable; a larger `M` means greater separation in this limited model. An
+in-vitro `M` is a prioritization ratio, not a clinical therapeutic index.
+
+## Multi-parameter optimization exposes trade-offs
+
+For each candidate, retain the raw endpoint, unit, system, date or batch,
+missingness, and the rule that maps it to a decision. A hard-gate policy is easy
+to audit: a candidate advances only when each declared minimum is met. A soft
+rank may follow among candidates meeting gates, but cannot rescue a failure with
+an attractive average. This matters because potency, solubility, clearance,
+permeability, DDI signals, and model-specific safety signals can move in opposite
+directions.
+
+<table>
+  <thead>
+    <tr>
+      <th>Evidence field</th>
+      <th>What it can support</th>
+      <th>It cannot establish alone</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Metabolic route / inhibition signal</td>
+      <td>A mechanistic DDI hypothesis</td>
+      <td>Clinical interaction magnitude</td>
+    </tr>
+    <tr>
+      <td>Clearance or exposure model</td>
+      <td>Directional exposure reasoning under assumptions</td>
+      <td>Human exposure without translation evidence</td>
+    </tr>
+    <tr>
+      <td>Cellular toxicity endpoint</td>
+      <td>Response in that assay context</td>
+      <td>Whole-organism safety</td>
+    </tr>
+    <tr>
+      <td>Multi-endpoint table</td>
+      <td>Selection under its declared gates</td>
+      <td>Candidate nomination or efficacy</td>
+    </tr>
+  </tbody>
+</table>
+
+## Worked case: a constructed Pareto decision
+
+All values below are **constructed for teaching**. Before inspection, a team
+sets four minimum gates: cellular `pIC50 ≥ 6.00`; solubility proxy `≥ 20` units;
+clearance proxy `≤ 35` units (lower is preferred); and constructed viability at
+the comparison concentration `≥ 75%`. An additional DDI flag is not a pass/fail
+number: it requires an explanation and a next action.
+
+<table>
+  <thead>
+    <tr>
+      <th>Candidate</th>
+      <th>pIC50</th>
+      <th>Solubility proxy</th>
+      <th>Clearance proxy</th>
+      <th>Viability</th>
+      <th>DDI interpretation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>R</td>
+      <td>6.30</td>
+      <td>25</td>
+      <td>31</td>
+      <td>82%</td>
+      <td>Unresolved transporter signal</td>
+    </tr>
+    <tr>
+      <td>S</td>
+      <td>6.65</td>
+      <td>18</td>
+      <td>28</td>
+      <td>88%</td>
+      <td>No signal in this constructed screen</td>
+    </tr>
+    <tr>
+      <td>T</td>
+      <td>6.10</td>
+      <td>29</td>
+      <td>39</td>
+      <td>80%</td>
+      <td>Unresolved metabolic signal</td>
+    </tr>
+  </tbody>
+</table>
+
+S fails the solubility gate and T fails the clearance gate. R meets the four
+listed gates but is not declared “safe”: it is a conditional survivor with an
+unresolved transporter hypothesis. Suppose a simplified exposure model gives R
+`AUC_R ∝ 1/31` and T `AUC_T ∝ 1/39` for equal `F·D`; the ratio is
+`AUC_R/AUC_T = 39/31 = 1.26`. This constructed 1.26-fold direction depends on
+the unrealistic equalities and says nothing about human exposure. It merely
+explains why the clearance field cannot be ignored while comparing R and T.
+
+The next decision for R is an appropriately scoped mechanistic follow-up or a
+more relevant exposure-risk model, predeclared before observing that result. It
+is not to average “good” columns against the DDI flag. A missing assay remains
+missing, rather than receiving a favourable default.
+
+## Alternatives, limitations, and independent exercise
+
+Pareto selection can preserve R and a different candidate when neither dominates
+the other; it is especially honest when weights have no defensible meaning. A
+weighted desirability function may aid resource allocation but needs fixed
+normalization and weights. Both approaches fail when endpoint systems differ,
+when concentration is not comparable to expected exposure, or when a safety
+mechanism is unknown. The FDA's DDI framework is risk-oriented; it does not turn
+an in-vitro result into a clinical label [FDA in-vitro DDI guidance](https://www.fda.gov/media/134582/download).
+
+**Handworked exercise (not runnable or empirical):** Apply the same constructed
+gates to U: `pIC50 5.95`, solubility `32`, clearance `30`, viability `91%`; and
+V: `pIC50 6.20`, solubility `22`, clearance `34`, viability `72%`. Which gate
+does each fail? If a third candidate W has `CL = 24` versus R's `31` under equal
+`F·D`, compute `AUC_W/AUC_R`. State why that ratio is not a clinical safety
+claim, and name the relevant DDI role if W changes the exposure of another drug.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+U fails the potency gate (`5.95 < 6.00`); V fails the viability gate
+(`72% < 75%`). With the stated simplifying assumptions,
+`AUC_W/AUC_R = 31/24 = 1.29`. The ratio ignores bioavailability, time course,
+metabolites, species, concentrations, and translation, so it is not a clinical
+safety claim. If W changes another drug's exposure, W is the perpetrator and the
+other drug is the victim in that specified interaction.
+
+</details>
+
+## Separate the levels yourself
+
+The [safety evidence lab](/labs/safety-evidence/) computes structural alerts from
+structures while storing only findings that required an experiment, so the two can
+never be printed as one column. Seven of twelve compounds alert and five of those
+were never measured at all, the reassuring direction fails outright with positive
+findings on compounds that alert on nothing, and one of twelve carries any
+organism-level evidence.
+
+## Sources and next lesson
+
+The regulatory sources were opened on 2026-09-09; they support mechanism and
+regulatory boundaries, not the invented table values. The ChEMBL CYP figures
+were fetched live on 2026-09-12 and are reproducible with the lab's own
+`show` command.
+
+<div data-case-sources>
+
+- [ICH M12 Drug Interaction Studies: Questions and Answers — FDA](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/m12-drug-interaction-studies-questions-and-answers)
+- [In Vitro Drug Interaction Studies — FDA final guidance](https://www.fda.gov/media/134582/download)
+- [FDA examples of drugs that interact with CYP enzymes and transporters](https://www.fda.gov/drugs/drug-interactions-labeling/healthcare-professionals-fdas-examples-drugs-interact-cyp-enzymes-and-transporter-systems)
+- [ChEMBL 37 activity records for CYP3A4 (CHEMBL340) and CYP2D6 (CHEMBL289)](https://www.ebi.ac.uk/chembl/api/data/status.json), read via the [CYP assay-system lab](/labs/cyp-assay-system/)
+
+</div>
+
+Continue to [the CYP assay-system lab](/labs/cyp-assay-system/) to run the
+overlap and correlation computation yourself, or to [Screening and
+affinity](/learn/dti-screening/screening-and-affinity/) to keep a binding or
+ranking score separate from downstream safety evidence. Original lesson prose
+is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-12.

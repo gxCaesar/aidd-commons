@@ -1,0 +1,96 @@
+---
+title: 筛选候选活性率、亲和力尺度与迁移
+description: 只在靶点、测定、候选活性率与后续验证契约下解释构象、结合体、亲和力、富集和再利用主张。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Screening prevalence, affinity scales, and transfer](/learn/dti-screening/screening-prevalence-and-transfer/)。
+
+<LessonProgress lessonId="dti-screening/screening-prevalence-and-transfer" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将区分构象假设与结合主张，计算声明候选活性率下的简单排序量，并评估虚拟筛选或再利用结果能否迁移至新靶点—测定决策。请先读[筛选与亲和力](/zh-cn/learn/dti-screening/screening-and-affinity/)和[回归与分类误差](/zh-cn/learn/qsar-properties/regression-classification-errors/)。本课是浏览器/手算推理，不是可运行筛选、对接流程、活性主张或实验方案。
+
+## 四种输出，四种对象
+
+**构象（pose）**是在声明靶点状态中配体几何与接触的假设；**结合体分类**是在测定定义的结合结局上标记或排序；**亲和力回归**针对如 `pK = −log10(K in mol/L)` 或声明 `pIC50` 的数值端点，它们不可互换；**虚拟筛选**为下一行动优先化有限候选库。再利用还加入来源适应症、靶点假设、制剂和暴露约束，因此不等于筛一个熟悉目录。
+
+每一输出均须有决策单位：至少记录靶点身份与状态、配体表示及相关时的质子化假设、测定终点与单位、选择群体和后续行动。化学上合理的 pose 不证明结合；阈值得到的二元标签不能提供结合体间可靠排序；一个测定中强相关可在另一库顶端失效。混淆这些对象会得到有利但不可用的比较。
+
+## 结合模式是假设，不是披着证据外衣的结构
+
+对接分数或生成 pose 在提出能与替代模式区分的接触时有用；若靶点状态、质子化、水、柔性或测定对应关系未解决，它是弱证据。pose 可在高分时仍物理不可能；物理合理性检查问的问题不同于亲和力或活性。反之，实测结合体可有错误预测 pose。正确后续由决策决定：对 pose 敏感的结构实验、明确类似物对比或结合测定检验因果链不同环节。
+
+## 候选活性率使分类 precision 有条件
+
+令 sensitivity `Se = P(positive call | active)`，specificity `Sp = P(negative call | inactive)`，选择群体的候选活性率 `π = P(active)`，则
+
+`PPV = Se·π / (Se·π + (1 − Sp)·(1 − π))`。
+
+`PPV` 是这些假设下阳性调用中的真活性比例，不是可移植模型属性。固定 top fraction 的富集也需库组成：若 `N` 个化合物有 `A` 个活性，top `k` 有 `a_k` 个活性，`EF_k = (a_k/k)/(A/N)`。`A = 0` 时它未定义，并受 active/decoy 构造和 `k` 影响。
+
+因此 decoy 不是无害阴性。DUD-E 衍生比较可携带 analogue 与 decoy bias，甚至 ligand-only 信息可解释表面上的结构性能 [Chen et al.](https://pubmed.ncbi.nlm.nih.gov/31430292/)。LIT-PCBA 从处理的 dose-response assay 数据构建，含确认 active/inactive 与明确设计选择；它仍是 benchmark，不是自然部署群体 [Tran-Nguyen et al.](https://pubmed.ncbi.nlm.nih.gov/32282202/)。
+
+## 已构造案例：短名单
+
+全部**为教学构造值**。一个库有 `N = 1,000` 个化合物、`A = 20` 个测定定义活性，故候选活性率 `π = 0.020`。模型 top `k = 50` 有 `a_k = 8` 个活性，`EF_50 = (8/50)/(20/1000) = 0.16/0.02 = 8`。它表示 top 50 的构造候选活性率为全库 8 倍，不说明新库 hit rate、结合机制或体内效应。
+
+另一分类器的构造 `Se = 0.80`、`Sp = 0.90`、相同 `π = 0.020`，则 `PPV = (0.80×0.020)/((0.80×0.020)+(0.10×0.980)) = 0.016/0.114 = 0.140`，即 14.0%。候选活性率低时，即使 sensitivity/specificity 看似好，多数阳性仍为假。若部署库 `π = 0.10`，同样人工 `Se/Sp` 时 `PPV = 0.08/(0.08+0.09) = 47.1%`；改变来自候选活性率，不是模型变好。
+
+迁移方面，若分数训练于 T1 状态的 inhibitor-labelled assay records，却在 T2 上提名 agonist-like 分子，输出跨越靶点、状态、表型、测定和候选活性率边界。诚实主张只是带记录库与预声明后续的新短名单假设，而不是“再利用验证”。已知药物既往人体使用也不建立新机制的靶点结合或足够暴露。
+
+## 替代方法、局限与独立练习
+
+PR curves 保留 precision 对 prevalence 的依赖；ROC curves 在阈值间概括排序，可在实践 precision 改变时看似稳定。仅当标签定义与群体共有时才报告二者。scaffold 或 target-family splits 检验更难的表示转移，但不能让历史标签成为因果，也不能令回顾性 benchmark 变为前瞻性。pose 工作要把 target state 和 physical plausibility check 与任何 enrichment number 分开报告。
+
+**手算练习（不可运行、非实证）：** 构造库有 `N = 500`、`A = 10`，top `k = 25` 有 `a_k = 3`，计算 `EF_25`。若分类器 `Se = 0.75`、`Sp = 0.95`、`π = 0.020`，计算 PPV。指出一个缺失字段，它阻止 pose score 成为 binding claim；再指出再利用短名单被称为可迁移前的一个要求。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+`EF_25 = (3/25)/(10/500) = 0.12/0.02 = 6`。`PPV = (0.75×0.020)/((0.75×0.020)+(0.05×0.980)) = 0.015/0.064 = 23.4%`。声明 target state、配体质子化假设、assay endpoint 或独立 binding evidence 之一是必要字段。迁移至少需新选择群体中匹配的 target–state–assay decision contract 和预声明 follow-up；化合物既往使用史不够。
+
+</details>
+
+## 挪动定义，看着基准发生变化
+
+候选活性率只是"决定一份结合物数据集是什么"的若干选择之一。
+[结合物定义实验](/zh-cn/labs/binder-definition/)把十二个分子固定住、只挪动其余部分：
+阳性计数在一组阈值之间变化超过一倍；有四个化合物落在测定不确定度之内却被归了类；
+被扩大的阴性类里三分之二从未被测量；而六个阳性最终只占三个骨架。
+
+## 去核一个真实的迁移主张
+
+[筛选迁移实验](/zh-cn/labs/screening-transport/)读取本仓库自己已完成的双测定回放，
+把两个语境都换算成"回收到的目标数"——唯一能让它们可比的单位。
+它显示两个测定的测量步长相差 4.92 倍、五实例基线跨度在两处都不到两个目标，
+而听起来最有决定性的那个结果只由八分之一个目标支撑。
+
+## 用三种方式判断同一个位姿
+
+[EGFR 结构证据实验](/zh-cn/labs/egfr-structure-evidence/)把三个实验配体分别放进每一种
+受体状态，再按两种已声明的方式移动一个晶体位姿。两个人工构造的位姿都通过 2 A 的 RMSD
+约定，其中一个丢了铰链接触，另一个有 4 个原子冲突。这就是为什么一个结合模式假设需要
+不止一个判据。
+
+## 来源与下一课
+
+下列原始论文于 2026-09-09 打开，支持 benchmark 与解释边界，不支持构造计算。
+
+<div data-case-sources>
+
+- [LIT-PCBA: An Unbiased Data Set for Machine Learning and Virtual Screening](https://pubmed.ncbi.nlm.nih.gov/32282202/)
+- [Hidden bias in the DUD-E dataset leads to misleading performance](https://pubmed.ncbi.nlm.nih.gov/31430292/)
+- [DUD-E: A Database of Useful (Docking) Decoys — Enhanced](https://dude.docking.org/)
+- [PoseBusters: AI-based docking methods fail to generate physically valid poses](https://pubmed.ncbi.nlm.nih.gov/38425520/)
+
+</div>
+
+继续读[对接、位姿生成与物理有效性](/zh-cn/learn/dti-screening/docking-and-pose-validity/)，
+把一个 pose 的几何准确度与它的物理合理性区分开。原始课程文字为 CC BY 4.0；链接来源保留其自身条款。
+
+译文更新：2026-09-09。

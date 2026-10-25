@@ -1,0 +1,78 @@
+id: db-biogrid
+name: BioGRID
+kind: database
+summary: Biological interaction database and search index.
+canonical_url: https://thebiogrid.org/
+identifiers:
+- scheme: dataset
+  value: BioGRID download repository
+  url: https://downloads.thebiogrid.org/BioGRID
+- scheme: documentation
+  value: BioGRID REST service
+  url: https://wiki.thebiogrid.org/doku.php/biogridrest
+stages:
+- disease-mechanism
+- target-discovery
+modalities:
+- protein-interaction
+tasks:
+- interaction-retrieval
+relations: []
+status:
+  value: unverified
+access_level:
+  value: open_source
+  evidence:
+  - official-page
+  - biogrid-download-terms
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: MIT
+  scope: BioGRID interaction datasets distributed through the download repository for academic and commercial use; this does not establish licences for third-party papers or external tools.
+  evidence:
+  - biogrid-download-terms
+evidence:
+- id: resource-links-2026-09-08
+  url: https://thebiogrid.org/
+  label: Official source for additional resource links (reviewed 2026-09-08)
+  supports:
+  - caveats
+  - identifiers
+- id: official-page
+  url: https://thebiogrid.org/
+  label: BioGRID official page
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+- id: terms-page
+  url: https://thebiogrid.org/
+  label: Terms page read 2026-10-23
+  supports:
+  - caveats
+- id: biogrid-download-terms
+  url: https://downloads.thebiogrid.org/BioGRID
+  label: BioGRID download repository terms — Downloadable BioGRID data are freely available to academic and commercial users under MIT.
+  supports:
+  - caveats
+caveats:
+- The MIT statement applies to BioGRID's distributed data; it does not establish rights in the underlying publications or separately linked tools.
+acknowledgements: []
+last_verified: '2026-10-23'

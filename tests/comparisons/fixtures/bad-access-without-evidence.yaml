@@ -1,0 +1,24 @@
+id: bad-access-without-evidence
+name: Unsupported access claim
+provider_class: tutorial-collection
+canonical_url: https://example.org/unsupported-access
+summary: A fixture with an open-content claim that has no evidence.
+audiences: [researchers]
+languages: [en]
+metadata_evidence: [overview]
+access:
+  content: { value: open }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage: []
+evidence:
+  - id: overview
+    url: https://example.org/unsupported-access
+    title: Unsupported access overview
+    observed_scope: System identity only.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

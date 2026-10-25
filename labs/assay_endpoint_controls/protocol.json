@@ -1,0 +1,378 @@
+{
+  "schema_version": "aidd-commons.assay-endpoint-controls-protocol.v1",
+  "protocol_id": "pubchem-bioassay-endpoint-controls-v1",
+  "issued_on": "2026-10-21",
+  "data_version": "PubChem BioAssay FTP, ranged container zips, read on 2026-10-21",
+  "declared_question": "For a declared set of archived PubChem BioAssay dose-response assays, what does each assay actually contain, and which conclusions does each assay's own control record license?",
+  "sources": {
+    "database": "PubChem BioAssay",
+    "access_pattern": "The per-assay result CSV and the per-assay description XML are single gzip members inside ranged container zips that hold one thousand assay identifiers each. The reader locates the container's central directory with HTTP byte-range requests and reads only the declared member, so a 1,313,522,439-byte container is never downloaded in full.",
+    "byte_length_meaning": "container_bytes is the length of the ranged container zip; compressed_bytes is the length the container's central directory records for the member's stored form; member_bytes is the length of that stored form once the container's own compression is undone, which is the length of the gzip member; bytes is the length of the archived record after the gzip layer is undone, which is the length this lab caches and re-checks on every run; crc32 is the member's CRC-32 as the container records it.",
+    "assays": {
+      "439": {
+        "data": {
+          "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Data/0000001_0001000.zip",
+          "container_bytes": 779560315,
+          "member": "0000001_0001000/439.csv.gz",
+          "compressed_bytes": 5915,
+          "bytes": 15725,
+          "crc32": 1480847838,
+          "member_bytes": 5915
+        },
+        "description": {
+          "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Description/0000001_0001000.zip",
+          "container_bytes": 2872234,
+          "member": "0000001_0001000/439.descr.xml.gz",
+          "compressed_bytes": 6827,
+          "bytes": 32180,
+          "crc32": 323608409,
+          "member_bytes": 6827
+        }
+      },
+      "464": {
+        "data": {
+          "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Data/0000001_0001000.zip",
+          "container_bytes": 779560315,
+          "member": "0000001_0001000/464.csv.gz",
+          "compressed_bytes": 43276,
+          "bytes": 126194,
+          "crc32": 1917588181,
+          "member_bytes": 43266
+        },
+        "description": {
+          "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Description/0000001_0001000.zip",
+          "container_bytes": 2872234,
+          "member": "0000001_0001000/464.descr.xml.gz",
+          "compressed_bytes": 4094,
+          "bytes": 20295,
+          "crc32": 281820707,
+          "member_bytes": 4094
+        }
+      },
+      "519": {
+        "data": {
+          "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Data/0000001_0001000.zip",
+          "container_bytes": 779560315,
+          "member": "0000001_0001000/519.csv.gz",
+          "compressed_bytes": 15482,
+          "bytes": 45668,
+          "crc32": 4146980699,
+          "member_bytes": 15482
+        },
+        "description": {
+          "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Description/0000001_0001000.zip",
+          "container_bytes": 2872234,
+          "member": "0000001_0001000/519.descr.xml.gz",
+          "compressed_bytes": 6870,
+          "bytes": 40283,
+          "crc32": 3619756491,
+          "member_bytes": 6870
+        }
+      },
+      "548": {
+        "data": {
+          "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Data/0000001_0001000.zip",
+          "container_bytes": 779560315,
+          "member": "0000001_0001000/548.csv.gz",
+          "compressed_bytes": 6880,
+          "bytes": 18331,
+          "crc32": 86429493,
+          "member_bytes": 6880
+        },
+        "description": {
+          "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Description/0000001_0001000.zip",
+          "container_bytes": 2872234,
+          "member": "0000001_0001000/548.descr.xml.gz",
+          "compressed_bytes": 4186,
+          "bytes": 22562,
+          "crc32": 2733274616,
+          "member_bytes": 4186
+        }
+      },
+      "691": {
+        "data": {
+          "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Data/0000001_0001000.zip",
+          "container_bytes": 779560315,
+          "member": "0000001_0001000/691.csv.gz",
+          "compressed_bytes": 2282,
+          "bytes": 12490,
+          "crc32": 3212126635,
+          "member_bytes": 2282
+        },
+        "description": {
+          "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Description/0000001_0001000.zip",
+          "container_bytes": 2872234,
+          "member": "0000001_0001000/691.descr.xml.gz",
+          "compressed_bytes": 3393,
+          "bytes": 22919,
+          "crc32": 2336650284,
+          "member_bytes": 3393
+        }
+      },
+      "1277": {
+        "data": {
+          "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Data/0001001_0002000.zip",
+          "container_bytes": 1313522439,
+          "member": "0001001_0002000/1277.csv.gz",
+          "compressed_bytes": 5038,
+          "bytes": 13508,
+          "crc32": 1850989069,
+          "member_bytes": 5038
+        },
+        "description": {
+          "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Description/0001001_0002000.zip",
+          "container_bytes": 4357168,
+          "member": "0001001_0002000/1277.descr.xml.gz",
+          "compressed_bytes": 7049,
+          "bytes": 37306,
+          "crc32": 3923934143,
+          "member_bytes": 7049
+        }
+      }
+    }
+  },
+  "entity_rule": {
+    "grouping_unit": "PubChem compound identifier (CID) within one assay",
+    "entity_identifier": "PUBCHEM_CID",
+    "structure": "PUBCHEM_EXT_DATASOURCE_SMILES, read from the archived row",
+    "admission_rule": [
+      "the row is a data row, not one of the per-column metadata rows the PubChem CSV format places after the header",
+      "PUBCHEM_CID is present and is a positive integer",
+      "PUBCHEM_EXT_DATASOURCE_SMILES is present and is a structure RDKit can parse into a molecule with at least one atom",
+      "PUBCHEM_ACTIVITY_OUTCOME is present and not empty",
+      "at least one declared endpoint column holds a finite number",
+      "at least five distinct concentrations are named by the row's per-concentration columns",
+      "the compound appears once in the assay"
+    ],
+    "excluded_by_design": [
+      "the per-column metadata rows RESULT_TYPE, RESULT_DESCR, RESULT_UNIT and RESULT_IS_ACTIVE_CONCENTRATION, which describe the columns rather than measure anything",
+      "any row whose compound identifier, inline structure or activity outcome is missing, because the record does not carry enough to place the measurement",
+      "any duplicated compound within one assay, because the archive does not say which of the two rows is the compound's record"
+    ]
+  },
+  "endpoint": {
+    "units": "micromolar",
+    "definition": "The archived concentration-response endpoint of the assay, with the archived relation qualifier attached. An equality is a measurement; a bound is a censored value that states a side of the number rather than the number.",
+    "per_assay": {
+      "439": {
+        "labels": [
+          "EC50"
+        ],
+        "columns": [
+          "EC50"
+        ],
+        "units": [
+          "uM"
+        ]
+      },
+      "464": {
+        "labels": [
+          "AC50"
+        ],
+        "columns": [
+          "AC50"
+        ],
+        "units": [
+          "uM"
+        ]
+      },
+      "519": {
+        "labels": [
+          "IC50",
+          "Ki"
+        ],
+        "columns": [
+          "IC50_MICROM",
+          "KI_MICROM"
+        ],
+        "units": [
+          "uM",
+          "uM"
+        ]
+      },
+      "548": {
+        "labels": [
+          "IC50"
+        ],
+        "columns": [
+          "IC50"
+        ],
+        "units": [
+          "uM"
+        ]
+      },
+      "691": {
+        "labels": [
+          "MIC"
+        ],
+        "columns": [
+          "Mean MIC"
+        ],
+        "units": [
+          "uM"
+        ]
+      },
+      "1277": {
+        "labels": [
+          "IC50"
+        ],
+        "columns": [
+          "IC50"
+        ],
+        "units": [
+          "uM"
+        ]
+      }
+    }
+  },
+  "control_contract": {
+    "keyword_lists": {
+      "control_keywords": [
+        "control",
+        "vehicle",
+        "untreated"
+      ],
+      "ambiguous_words": [
+        "blank"
+      ],
+      "reference_keywords": [
+        "positive control",
+        "negative control",
+        "high_control",
+        "low_control",
+        "maximum stimulation control",
+        "minimum stimulation control",
+        "50% stimulation control"
+      ],
+      "note": "The ambiguous list is reported for the reader and is not used to decide whether a control is declared, because the archived protocol of assay 691 uses the word 'blank' for an empty table cell rather than for a control well."
+    },
+    "regimes": {
+      "positive_and_negative_reference": "The archived protocol names a full-response reference and a no-response reference and writes the normalisation down.",
+      "single_positive_reference": "The archived protocol names one reference and says the response was normalised to it, but names no baseline and writes no equation.",
+      "none_declared": "The archived protocol names no control, blank or vehicle."
+    },
+    "per_assay": {
+      "439": {
+        "regime": "single_positive_reference",
+        "normalisation_equation": "relative_to_one_reference",
+        "references_expected": 1,
+        "archived_equation_text": "All data reported was normalized on a per-plate basis to wells that contained cells in the presence of 1 micromolar S1P (i.e. 100% activation)."
+      },
+      "464": {
+        "regime": "single_positive_reference",
+        "normalisation_equation": "relative_to_one_reference",
+        "references_expected": 1,
+        "archived_equation_text": "Percent inhibition was calculated from the median of the positive control doxorubicin at 4 micromolar final screening concentration."
+      },
+      "519": {
+        "regime": "positive_and_negative_reference",
+        "normalisation_equation": "wells_relative_to_two_references",
+        "references_expected": 2,
+        "archived_equation_text": "%Inhibition = 100 x [1 - (MFI_test - MFI_PC)/(MFI_NC - MFI_PC)], where MFI_PC is the average median fluorescence intensity of positive control wells (unlabeled receptor-blocking peptide) and MFI_NC is the average median fluorescence intensity of negative control wells (buffer)."
+      },
+      "548": {
+        "regime": "positive_and_negative_reference",
+        "normalisation_equation": "archived_pka_equation",
+        "references_expected": 2,
+        "archived_equation_text": "%inhibition = (test_compound - median_positive_control)/(median_positive_control - median_negative_control)*100, where positive control is Staurosporine and negative control is DMSO only."
+      },
+      "691": {
+        "regime": "none_declared",
+        "normalisation_equation": "not_declared",
+        "references_expected": 0,
+        "archived_equation_text": ""
+      },
+      "1277": {
+        "regime": "positive_and_negative_reference",
+        "normalisation_equation": "wells_relative_to_two_references",
+        "references_expected": 2,
+        "archived_equation_text": "Ratio = (T45 / T0); %Inhibition = [1-((Ratio Test_Compound - Median_Ratio_High_Control)/(Median_Ratio_Low_Control - Median_Ratio_High_Control))]*100, where Low_Control is wells containing DMSO, NPY and isoproterenol and High_Control is wells containing DMSO and isoproterenol."
+      }
+    }
+  },
+  "preprocessing": {
+    "fit_scope": "The only fit in this lab is a per-compound four-parameter logistic fitted to that compound's own archived per-concentration points, and it is performed only for the assays whose archived record carries the endpoint and the Hill slope but not the fitted asymptotes. No parameter is estimated from more than one compound and no fitted quantity is used to select, weight or exclude any compound.",
+    "fit_scope_uses_only_own_compound_points": true,
+    "no_other_preprocessing": "No imputation, no outlier removal, no resampling and no normalisation of the archived values. The archived per-concentration values are read as they stand."
+  },
+  "split": {
+    "rule": "sha256-seed-parity-by-compound",
+    "seed": 20261021,
+    "grouping_unit": "PubChem compound identifier (CID), across the whole declared set",
+    "purpose": "A stability check on the cheap baseline. The readout mix, the relation mix, the confidence-score distribution and the admitted-value counts are recomputed separately on the two halves, so that a reader can see whether the description of an assay depends on which compounds happened to be tested in it.",
+    "not_used_for": "No model is fitted and no predictive evaluation is run. Nothing is selected or tuned on either half, and neither half is a held-out test set in the predictive sense."
+  },
+  "seed": 20261021,
+  "baselines": [
+    "The cheap baseline comes first and is the whole of the first half of the lab: the readout mix over the declared endpoint labels, the relation mix over the archived qualifiers, the confidence-score distribution, the admitted-value count per assay and the replicate structure, all computed before any curve is looked at."
+  ],
+  "metrics": [
+    "readout_mix: the count of admitted endpoint values per endpoint label",
+    "relation_mix: the count of admitted endpoint values per relation qualifier, with the bounds counted separately from the equalities",
+    "confidence_score: count, minimum, median, maximum and the fraction at the maximum",
+    "replicate_counts: the count of admitted rows per recorded number of determinations",
+    "reference_audit: the control keywords and the named reference wells the archived protocol contains, against the declared regime",
+    "curve_check: the median, the 90th percentile and the maximum absolute deviation, in response percentage points, between the archived per-concentration values and the curve the archive describes, on each half of the compound split",
+    "endpoint_agreement: for a refitted curve, the median absolute log10 error between the fitted half-maximal concentration and the archived endpoint, and the fraction within a factor of three"
+  ],
+  "curve_tolerance_points": 5.0,
+  "run_basis": {
+    "description": "A single deterministic descriptive pass over the cached archived records. It computes counts and distributions, audits the control record of each assay, recomputes or refits the concentration-response curve, and states what each assay licenses. It writes one JSON report and nothing else.",
+    "fits_a_predictive_model": false,
+    "evaluation": "none; there is no prediction, no split used for scoring, and no metric that compares a model against a baseline",
+    "determinism": "The only ordering that is not fixed by the archive is the split, and it is fixed by the declared seed and the compound identifier."
+  },
+  "excluded_by_design": [
+    "any predictive model, any train-test evaluation and any held-out scoring: this lab is a description of what an archived assay contains, and a descriptive lab that reports an accuracy would be reporting a number about its own code",
+    "the raw instrument signal: the archived per-assay CSV carries the response after the depositor's own normalisation, so the raw signal that a control normalisation consumes is not in the archive and the normalisation equations are exercised on the reference wells rather than on a real plate",
+    "the lipophilicity, Delaney, BBBP, Tox21 and HIV datasets: they carry no assay, no control, no concentration and no series, so they cannot support any statement about an assay endpoint",
+    "any comparison of potency between two different assays, because two assays with two different control records do not share a scale",
+    "any statement about an in vivo, clinical or pharmacokinetic consequence: every declared assay here is an in vitro or cell-based measurement"
+  ],
+  "equation_scale_check": {
+    "band_points": 25.0,
+    "fraction_inside_required": 0.95,
+    "rule": "The archived normalisation equation is run at its own reference wells. The two values it produces must be 100 units apart, and the lower of them must sit at zero for the equation to describe a zero-to-hundred response scale. The archived per-concentration values must then fall inside the range the equation spans, widened by the band, for at least the declared fraction of them."
+  },
+  "replicate_structure": {
+    "note": "The archive records a per-row count whose meaning depends on the assay: most of these assays record the number of data points in the compound's curve, and assay 691 records the number of independent determinations instead. The declared replicate statement is the one the archived protocol makes.",
+    "per_assay": {
+      "439": {
+        "recorded_column": "Number of Points",
+        "recorded_kind": "data_points_per_curve",
+        "archived_declaration": "each compound dilution series was assayed in triplicate",
+        "hill_fit_mode": "recompute"
+      },
+      "464": {
+        "recorded_column": "N DataPoints",
+        "recorded_kind": "data_points_per_curve",
+        "archived_declaration": "750 of 765 compounds were serially diluted ten times at three fold-dilutions",
+        "hill_fit_mode": "recompute"
+      },
+      "519": {
+        "recorded_column": "N_POINTS",
+        "recorded_kind": "data_points_per_curve",
+        "archived_declaration": "each compound was tested in duplicate to result in 18 data points",
+        "hill_fit_mode": "fixed_range"
+      },
+      "548": {
+        "recorded_column": "Number of Datapoints",
+        "recorded_kind": "data_points_per_curve",
+        "archived_declaration": "each compound dilution was assayed in triplicate",
+        "hill_fit_mode": "recompute"
+      },
+      "691": {
+        "recorded_column": "Number of MIC determinations",
+        "recorded_kind": "independent_determinations",
+        "archived_declaration": "compounds that gave a measurable MIC were retested a second time",
+        "hill_fit_mode": "free"
+      },
+      "1277": {
+        "recorded_column": "Number of DataPoints",
+        "recorded_kind": "data_points_per_curve",
+        "archived_declaration": "test compounds were assayed in triplicate in a 10-point, 1:3 dilution series",
+        "hill_fit_mode": "free"
+      }
+    }
+  }
+}

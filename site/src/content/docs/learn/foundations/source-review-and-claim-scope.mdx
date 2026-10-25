@@ -1,0 +1,76 @@
+---
+title: Source review and claim scope
+description: Bind a claim to the source surface, version, date and exact material reviewed.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="foundations/source-review-and-claim-scope" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+A citation can name a project without identifying what was read. This lesson teaches you to record the page or repository surface, its version, the date of review and the exact material inspected before making a claim. You will also decide what a missing field leaves unresolved. The [source and entity lesson](/learn/foundations/source-and-entity-literacy/) is useful preparation. The worked data come from four committed Atlas records and the companion [audit guide](/labs/source-review-scope-audit/).
+
+## Four parts of a reviewable claim
+
+| Part | What the entry must identify | What it lets a reader check |
+| --- | --- | --- |
+| Surface | A particular page or repository URL | Where to start a source inspection |
+| Version | A release, tag or dated policy | Which revision the claim concerns |
+| Date | When that entry's source was reviewed | When the recorded inspection applied |
+| Scope | The exact section, file, table or other material reviewed | Which part of the source the claim can address |
+
+These parts answer different questions. A repository URL points to a real surface, but a moving branch at that URL may change after the review. A review date does not freeze the branch. A licence paragraph might support a claim about code terms while saying nothing about a linked dataset. The exact reviewed material belongs next to the claim so the reader can test that boundary.
+
+## A name and a source surface
+
+The name RDKit identifies a project. The [RDKit repository](https://github.com/rdkit/rdkit) identifies a surface a reader can visit. The repository URL alone does not identify a release or the file that supports a licence claim. The catalogue also names a [licence file](https://github.com/rdkit/rdkit/blob/master/license.txt), but its evidence entry has no dedicated version, review date or reviewed material field. Its label contains a date. That text is useful as a lead, yet it is not an entry-level date field.
+
+An entry without its own date does not document when that source was reviewed for the claim. It does not prove the claim is false, the page was never read, or the entry is unreliable. The record-level `last_verified` date describes the record, not every cited entry. A claim must stay bounded by what its evidence actually records.
+
+## Worked case
+
+The frozen audit reads 4 records with 12 evidence entries. It counts a part as carried only when the entry has its dedicated field. A date or document type in a label is `named-in-text`. A generic project or repository label does not name reviewed material. The `supports` list says which record fields an entry supports. It does not state the exact material reviewed on the linked page.
+
+| Record | Entries | Surfaces carried | Dates named in text | Entry dates carried | Claims with references |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `db-rcsb-pdb` | 3 | 3 | 2 | 0 | 2 |
+| `db-uniprot` | 2 | 2 | 1 | 0 | 0 |
+| `tool-rdkit` | 3 | 3 | 2 | 0 | 8 |
+| `model-boltz-2` | 4 | 4 | 4 | 0 | 5 |
+| Total | 12 | 12 | 9 | 0 | 15 |
+
+All 12 entries carry a URL. None carries a dedicated version, date or reviewed material field. 5 labels name a document type in text and 7 do not name reviewed material. The counts for all four parts carried, date and surface without version, and name only are each 0. The 4 records contain 39 structured claims. Of these, 15 have evidence references, 24 have none, and 0 have an unresolved reference. No claim cites an entry with an entry-level review date.
+
+Consider the `db-uniprot` terms entry. Its [terms-page URL](https://www.uniprot.org/help/license) identifies a surface and its label names 2026-10-23, but the entry has no `reviewed_on` field. The record also contains a caveat about a terms page that the review may not have opened. The field count cannot resolve that tension. It also cannot decide what the terms page says. The next defensible step is to open the relevant source, record the exact material and revision, and date that inspection.
+
+## Independent exercise
+
+Using the table, compare `tool-rdkit` and `db-uniprot`. State how many entries and referenced claims each has, how many labels name a date, and whether either record supplies an entry-level dated reference. Then write one sentence that could be checked after a fresh review of a linked page.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+`tool-rdkit` has 3 entries, 8 claims with references and 2 labels with a date. `db-uniprot` has 2 entries, 0 claims with references and 1 label with a date. Neither supplies an entry-level dated reference. After opening the RDKit licence file, a checkable sentence would name the inspected file, its revision, the review date and the precise clause supporting a claim about the source code. The table alone cannot supply that clause.
+
+</details>
+
+## What this material does not show
+
+The audit does not open linked pages. It cannot confirm that a page says what its entry claims, judge whether a review was thorough, recover the revision behind a moving URL, or decide what a licence permits. The 4 records are a frozen teaching selection rather than a representative estimate of the entire Atlas. The earlier independent reading scored this topic `assessed` for the material it examined, while the project's own comparison record states `worked`. This lesson does not revise either score or show a reader outcome.
+
+## Run the audit
+
+Mode is fresh independent computation over the frozen protocol and committed catalogue. Use the project Python 3.11 environment and CPU. No network, download or accelerator is needed. These commands write nothing and show the per-entry record and validation result.
+
+```bash
+.venv/bin/python labs/source_review_scope_audit/run_lab.py check
+.venv/bin/python labs/source_review_scope_audit/inspect_source_review_scope_audit.py show
+.venv/bin/python labs/source_review_scope_audit/inspect_source_review_scope_audit.py check
+```
+
+## Sources and attribution
+
+The catalogue, comparison record and independent reading were read locally on 2026-10-23. Source names and recorded review dates come from those records. The linked [RCSB usage policy](https://www.rcsb.org/pages/usage-policy), [UniProt terms page](https://www.uniprot.org/help/license), [RDKit licence file](https://github.com/rdkit/rdkit/blob/master/license.txt) and [Boltz README](https://raw.githubusercontent.com/jwohlwend/boltz/main/README.md) were not opened by this lesson's computation. Original prose is CC BY 4.0. Last reviewed on 2026-10-23.

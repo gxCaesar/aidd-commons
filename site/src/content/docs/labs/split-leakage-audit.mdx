@@ -1,0 +1,108 @@
+---
+title: Where a row split leaks
+description: Audit shared molecules, scaffolds, assays, targets and tested forms in a frozen ChEMBL 37 cohort.
+---
+
+## Preparation and learning objectives
+
+Read [splits and leakage across three labs](/learn/evaluation-and-reproducibility/split-and-leakage-cases/)
+and [the decision-unit lesson](/learn/foundations/decision-unit-scope/) first.
+This laboratory asks which identities cross a split after activity rows have
+been reduced to independent measurements. You will distinguish an observed
+overlap count from a prediction claim and identify routes the table cannot
+measure. Python 3.11.15 and RDKit 2025.09.6 are available in the pinned
+environment. No accelerator is needed.
+
+## Run mode and commands
+
+The mode is a fresh independent computation under a frozen protocol. The
+download command reuses the validated local ChEMBL 37 snapshot when available
+and places a copy in this laboratory's cache. A cold run may contact the
+ChEMBL API. After the snapshot is cached, the count and checks use no network.
+The commands do not fit a model. The summary exporter overwrites the derived
+summary only after its checks pass.
+
+```bash
+.venv/bin/python labs/split_leakage_audit/run_lab.py download
+.venv/bin/python labs/split_leakage_audit/inspect_split_leakage_audit.py show
+.venv/bin/python labs/split_leakage_audit/inspect_split_leakage_audit.py check
+.venv/bin/python labs/split_leakage_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/split_leakage_audit -q
+```
+
+## Measurement and split
+
+The declared 15 seed molecules resolve to 10 parent molecules. The source
+admission rule retains nanomolar point values in its declared potency family,
+then counts one measurement per parent, assay, document and endpoint type.
+There are 488 admitted point activity rows and 486 independent measurement
+units. Two repeated keys are collapsed before splitting. When one measurement
+has more than one source row, every tested form in those rows remains in its
+route group set.
+
+The row split sorts those measurement keys, shuffles them with seed 20261023
+and places floor(0.8 × 486) in training. The parent-grouped split shuffles
+whole parent identifiers with the same seed. These splits describe different
+questions and neither is selected by a performance number.
+
+| Split | Training measurements | Test measurements | Test measurements unseen by parent |
+| --- | ---: | ---: | ---: |
+| Random row | 388 | 98 | 0 |
+| Grouped by parent | 133 | 353 | 353 |
+
+The grouped split has uneven row counts because it holds out entire parents.
+The row split has 0 test measurements unseen by parent in this cohort.
+
+## Measured routes
+
+A test measurement is counted for a route when at least one of its group keys
+also occurs in training. Shared groups are distinct keys on both sides.
+The last column counts training measurements that would have to move out of
+training to make the fixed test set disjoint on that route.
+
+| Route | Test rows sharing training group | Shared groups | Training rows to hold out |
+| --- | ---: | ---: | ---: |
+| Parent molecule | 98 | 6 | 381 |
+| Bemis-Murcko scaffold | 98 | 6 | 379 |
+| Assay | 1 | 1 | 1 |
+| Exact target identifier | 81 | 19 | 285 |
+| Standard tested form | 98 | 11 | 379 |
+
+Across the 5 tested routes, 98 distinct test measurements share at least one
+group with training. All 5 routes contribute. Parent, scaffold and standard
+form tie at 98. The committed summary names parent as the highest overlap
+route by the protocol's declared route order.
+
+The scaffold key is a chirality-aware RDKit Bemis-Murcko scaffold, with an
+explicit acyclic key for ring-free structures. It is a proxy for analogue
+overlap, not a complete analogue definition. The target key is the exact
+ChEMBL target identifier, not a target-family annotation. The standard form
+is the RDKit canonical isomeric SMILES of the tested structure. It audits
+shared forms, not a fitted preprocessing pipeline.
+
+## Routes outside this table
+
+The activity rows have no measurement date, donor identifier, patient
+identifier or collection site identifier, and they carry a target identifier
+rather than a protein family, while the table holds measurements rather than a
+fitted transformation. The temporal, donor, patient, site, target-family and
+fitted-preprocessing routes therefore cannot be tested here. Their absence
+from this table is not evidence that those routes are safe in another
+dataset.
+
+## Material limits and sources
+
+A row split that shares a parent between training and test has only been
+shown to be a row split. It has not shown prediction for a new compound.
+Parent grouping removes parent overlap under this assignment, but does not
+prove scaffold, target, assay, form or unmeasured-route independence. There
+is no model, performance estimate or population prevalence estimate.
+
+The counts come from [ChEMBL 37 activity records](https://www.ebi.ac.uk/chembl/api/data/activity.json)
+and its [release status](https://www.ebi.ac.uk/chembl/api/data/status.json),
+read into the frozen snapshot on 2026-10-21. ChEMBL 37 was released on
+2026-05-01 under [Creative Commons Attribution-ShareAlike 3.0 Unported](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE).
+The [RDKit source licence](https://github.com/rdkit/rdkit/blob/master/license.txt)
+was recorded as BSD 3-Clause on 2026-09-09. Original lesson prose is CC BY 4.0
+and original laboratory code is Apache-2.0. The laboratory's committed
+summary contains counts rather than activity rows. Last reviewed 2026-10-23.

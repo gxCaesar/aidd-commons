@@ -1,0 +1,39 @@
+{
+  "candidate_edge_rule": "An unordered pair is a candidate when its records share at least one task or at least one stage and neither record declares a relation to the other. A candidate is not a declared relation.",
+  "degree_rule": "Total degree counts incoming and outgoing declared edge instances; candidate edges do not contribute.",
+  "edge_types": [
+    "analyses",
+    "measured-by",
+    "demonstrates",
+    "implements",
+    "reproduces",
+    "successor-to",
+    "surfaced-by",
+    "used-by",
+    "uses"
+  ],
+  "excluded_by_design": [
+    "Inference of causality or mechanism from a declared relation",
+    "A claim that two candidate edges should be merged",
+    "Prediction of a relation the catalogue does not declare"
+  ],
+  "expected_node_count": 228,
+  "isolated_node_rule": "A record is isolated when it declares no outgoing relation, even if another record points to it.",
+  "issued_on": "2026-10-23",
+  "node_types": [
+    "agent",
+    "benchmark",
+    "database",
+    "dataset",
+    "model",
+    "model-asset",
+    "paper",
+    "software",
+    "standard",
+    "tutorial"
+  ],
+  "protocol_id": "aidd-commons.relational-graph-audit-v1",
+  "provenance_rule": "A directed edge is evidenced only by evidence entries in its declaring source record whose supports list names relations. Without such an entry it is unevidenced.",
+  "schema_version": "aidd-commons.relational-graph-audit-protocol.v1",
+  "source": "catalog/resources/*.yaml"
+}

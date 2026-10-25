@@ -1,0 +1,48 @@
+---
+title: 从反应预测到实验室
+description: 将反应预测和逆合成计划转化为可检验的实验室假设。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Reaction prediction to the lab](/learn/synthesis-and-automation/reaction-to-lab/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="synthesis-and-automation/reaction-to-lab" />
+
+## 基础
+
+反应预测、原子映射、逆合成和实验室自动化提出不同的主张。一个路线建议仍必须经受
+物料可用性、保护基选择、安全性、规模、纯化和观测产率的考验。
+
+## 实践工作流
+
+定义目标分子、允许的起始材料、操作约束、路线预算以及何为实验室成功。将原子映射或
+反应模型作为一条证据流，然后请化学家检查所提出的转化。
+[RXNMapper](https://github.com/rxn4chemistry/rxnmapper) 和
+[AiZynthFinder](https://github.com/MolecularAI/aizynthfinder) 记录了这条链的不同部分。
+
+## 评估
+
+将回顾性路线恢复与前瞻性执行分开。记录反应条件、物料溯源、结果、纯化负担和失败路线。
+反应数据划分应防止基准泄漏近乎相同的转化。
+
+## 前沿与开放问题
+
+[Chemformer](https://github.com/MolecularAI/Chemformer)、
+[ASKCOS](https://github.com/ASKCOS/askcos) 和
+[RetroSim](https://github.com/connorcoley/retrosim) 提供不同的建模或检索选择。与实验室
+自动化的集成仍是实验系统问题，而不是评分优化练习。
+
+## v0.1 尚未教授的内容
+
+v0.1 不认证合成路线，不提供实验室安全程序，也不声称预测路线将在某一特定规模下奏效。
+
+## 核心来源路径
+
+阅读 [ORD 规范](https://open-reaction-database.org/)以了解反应记录如何表示，然后结合
+拟议路线和实验约束检查 [AiZynthFinder](https://github.com/MolecularAI/aizynthfinder) 和
+[ASKCOS](https://github.com/ASKCOS/askcos)。
+
+最后审阅：2026-09-04。

@@ -1,0 +1,62 @@
+id: model-zatom-1
+name: Zatom-1
+kind: model
+summary: Multimodal flow-matching model for three-dimensional molecules and materials that models discrete atom types and continuous geometry together, and is pretrained across domains so that the generative and property-prediction tasks share one model.
+canonical_url: https://github.com/Zatom-AI/zatom
+identifiers:
+  - scheme: paper
+    value: "Zatom-1: Towards a Multimodal Foundation Model for 3D Molecules and Materials; arXiv 2602.22251"
+    url: https://arxiv.org/abs/2602.22251
+  - scheme: code
+    value: "Zatom-1 source repository, Zatom-AI/zatom"
+    url: https://github.com/Zatom-AI/zatom
+  - scheme: model-weights
+    value: "Zatom-1 checkpoints, Zenodo record 19766997, including the pretraining weights in their EMA and non-EMA forms and the generated sample archives"
+    url: https://zenodo.org/records/19766997
+stages: [design, evaluation]
+modalities: [three-dimensional-structure, small-molecule, material]
+tasks: [molecular-generation, property-prediction, energy-and-force-learning]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [zatom-readme, zatom-license] }
+openness:
+  inference_code: { value: available, evidence: [zatom-readme] }
+  training_code: { value: available, evidence: [zatom-readme] }
+  weights: { value: available, evidence: [zatom-readme] }
+  architecture: { value: available, evidence: [zatom-readme] }
+  data_recipe: { value: available, evidence: [zatom-readme] }
+  training_data: { value: available, evidence: [zatom-readme] }
+  evaluation_code: { value: available, evidence: [zatom-readme] }
+licenses:
+  - name: "BSD-3-Clause"
+    scope: "The repository README states 'This project is covered under a modified BSD License' and links the full text through the repository's LICENSE file. The file itself is the three-clause BSD text, with the copyright attributed to the 2026 Regents of the University of California through Lawrence Berkeley National Laboratory, and it adds a clause that the contributors owe no obligation to provide fixes or upgrades while granting the University a licence for any enhancements it makes available. This grant covers the code."
+    evidence: [zatom-readme, zatom-license]
+  - name: "CC BY 4.0"
+    scope: "The licence the Zenodo record carrying the checkpoints and the generated sample archives states for the weights and the samples. It is a different grant from the code's modified BSD, so a reader who redistributes a checkpoint and a reader who redistributes the source are under different terms, and the licence of the training datasets is separate from both."
+    evidence: [zatom-zenodo]
+evidence:
+  - id: zatom-repository
+    url: https://github.com/Zatom-AI/zatom
+    label: Zatom-1 repository (reviewed 2026-10-23)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: zatom-readme
+    url: https://raw.githubusercontent.com/Zatom-AI/zatom/main/README.md
+    label: Zatom-1 README (reviewed 2026-10-23)
+    supports: [identifiers, caveats]
+  - id: zatom-zenodo
+    url: https://zenodo.org/api/records/19766997
+    label: Zenodo record for the Zatom-1 checkpoints and samples (reviewed 2026-10-23)
+    supports: [identifiers, caveats]
+  - id: zatom-license
+    url: https://github.com/Zatom-AI/zatom/blob/main/LICENSE
+    label: Zatom-1 licence file (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - "The README names the training and finetuning datasets, QM9, MP20, GEOM-Drugs, QMOF150, OMol25, Matbench and MPtrj, and a script that downloads them from Hugging Face, but the page states no filtering, splitting or curation procedure for any of them, so the recipe behind the named corpora is not established."
+  - "The README carries no formal data-availability paragraph. Availability is operational: the datasets come from the download script, the checkpoints from the Zenodo record, and the same record carries ten thousand generated samples as MP20 CIF files and QM9 and GEOM-Drugs PDB files."
+  - "The checkpoints are published in many variants, joint and dataset-only, at several model sizes, with and without pretraining, and for several property heads, and the README says the pretraining checkpoints carry both the EMA and the non-EMA generative weights. A reader has to choose one, and the record does not say which a downstream use should take."
+  - "The installation instructions require a pinned Triton CPU source checkout, a fork of torch-scatter on some platforms and a roughly thirty gigabyte CUDA image, so the route a reader follows is a build rather than an install."
+  - "The paper is recorded from its arXiv identifier and the repository's own README, and the Zenodo record names the venue as ICLR FM4Science 2026. The article's text was not opened, so the reported speedups and transfer results are not carried here."
+  - "The Zenodo record publishes thirty-five checkpoint files and the sample archives, and the individual checkpoints run from about four hundred megabytes to about four and a half gigabytes, so the choice of one is a large download and the record does not say which a downstream use should take."
+acknowledgements: []
+last_verified: "2026-10-23"

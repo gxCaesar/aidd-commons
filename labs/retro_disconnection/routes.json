@@ -1,0 +1,27 @@
+{
+  "schema_version": "aidd-commons.retro-routes.v1",
+  "artifact_type": "constructed-route-set",
+  "authored_on": "2026-09-11",
+  "provenance": "Authored by hand for teaching. No route was taken from a literature source, no reaction was run, and nothing here is a synthesis proposal.",
+  "recorded_route_means": "The single disconnection this teaching set records for a product. A method recovers it when one of the disconnections the method proposes matches these reactants after canonicalisation. Recovering it does not make the method right and does not make the route makeable.",
+  "laboratory_feasibility": "not_assessed",
+  "why_feasibility_is_not_assessed": "Nothing in this lab examines reagent availability, protecting groups, condition compatibility, selectivity, scale or cost. Route recovery is a statement about a graph edit. Feasibility is a statement about a laboratory, and no score below speaks to it.",
+  "precedent_set": {
+    "what_it_is": "The reactions a retrieval method is allowed to look up, and the reactions the templates were extracted from.",
+    "members": ["p01", "p02", "p04", "p05", "p07"],
+    "classes_present": ["amide-coupling", "ester-formation", "reductive-amination"],
+    "classes_absent": ["suzuki-biaryl"]
+  },
+  "routes": [
+    { "id": "p01", "transformation_class": "amide-coupling", "product": "CC(=O)Nc1ccccc1", "recorded_reactants": ["CC(=O)O", "Nc1ccccc1"] },
+    { "id": "p02", "transformation_class": "amide-coupling", "product": "CCC(=O)NCc1ccccc1", "recorded_reactants": ["CCC(=O)O", "NCc1ccccc1"] },
+    { "id": "p03", "transformation_class": "amide-coupling", "product": "O=C(Nc1ccc(Cl)cc1)c1ccccc1", "recorded_reactants": ["O=C(O)c1ccccc1", "Nc1ccc(Cl)cc1"] },
+    { "id": "p04", "transformation_class": "ester-formation", "product": "CC(=O)OCC", "recorded_reactants": ["CC(=O)O", "CCO"] },
+    { "id": "p05", "transformation_class": "ester-formation", "product": "CCC(=O)OCc1ccccc1", "recorded_reactants": ["CCC(=O)O", "OCc1ccccc1"] },
+    { "id": "p06", "transformation_class": "ester-formation", "product": "COC(=O)c1ccc(C)cc1", "recorded_reactants": ["Cc1ccc(C(=O)O)cc1", "CO"] },
+    { "id": "p07", "transformation_class": "reductive-amination", "product": "CCNCc1ccccc1", "recorded_reactants": ["CCN", "O=Cc1ccccc1"] },
+    { "id": "p08", "transformation_class": "reductive-amination", "product": "CCCNCc1ccc(F)cc1", "recorded_reactants": ["CCCN", "O=Cc1ccc(F)cc1"] },
+    { "id": "p09", "transformation_class": "suzuki-biaryl", "product": "c1ccc(-c2ccccc2)cc1", "recorded_reactants": ["Brc1ccccc1", "OB(O)c1ccccc1"] },
+    { "id": "p10", "transformation_class": "suzuki-biaryl", "product": "Cc1ccc(-c2ccccc2)cc1", "recorded_reactants": ["Cc1ccc(Br)cc1", "OB(O)c1ccccc1"] }
+  ]
+}

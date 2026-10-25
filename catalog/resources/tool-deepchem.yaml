@@ -1,0 +1,44 @@
+id: tool-deepchem
+name: DeepChem
+kind: software
+summary: Open-source scientific machine-learning toolkit for drug discovery and related domains.
+canonical_url: https://github.com/deepchem/deepchem
+identifiers:
+  - scheme: documentation
+    value: "Official documentation"
+    url: https://deepchem.readthedocs.io/en/latest/
+stages: [model-development, property-prediction, evaluation]
+modalities: [small-molecule, protein]
+tasks: [scientific-machine-learning]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [source-license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: unverified }
+  architecture: { value: available, evidence: [repository] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: MIT
+    scope: DeepChem source code covered by the repository licence; downloaded datasets and third-party assets retain their own terms
+    evidence: [source-license]
+evidence:
+  - id: source-license
+    url: https://github.com/deepchem/deepchem/blob/master/LICENSE
+    label: Repository MIT licence inspected 2026-09-09
+    supports: []
+  - id: resource-links-2026-09-08
+    url: https://github.com/deepchem/deepchem
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/deepchem/deepchem
+    label: DeepChem repository
+    supports: [caveats, kind, modalities, name, stages, summary, tasks]
+caveats:
+  - The openness claims here rest on the repository's own file listing and README, read on 2026-10-23; the code was not run, and no claim is made that the released scripts reproduce the published numbers.
+acknowledgements: []
+last_verified: "2026-10-23"

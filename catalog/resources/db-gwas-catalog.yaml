@@ -1,0 +1,52 @@
+id: db-gwas-catalog
+name: NHGRI-EBI GWAS Catalog
+kind: database
+summary: The NHGRI-EBI catalog of published human genome-wide association studies, with search, downloadable catalog records, and documentation for available summary statistics.
+canonical_url: https://www.ebi.ac.uk/gwas/
+identifiers:
+  - scheme: documentation
+    value: GWAS Catalog methods and data documentation
+    url: https://www.ebi.ac.uk/gwas/docs/methods
+stages: [disease-mechanism, target-discovery]
+modalities: [human-genetics]
+tasks: [association-retrieval, locus-evidence-inspection]
+relations: []
+status: { value: active, evidence: [catalog-home] }
+access_level: { value: source_available, evidence: [catalog-home] }
+openness:
+  inference_code: { value: not_applicable, evidence: [catalog-home] }
+  training_code: { value: not_applicable, evidence: [catalog-home] }
+  weights: { value: not_applicable, evidence: [catalog-home] }
+  architecture: { value: not_applicable, evidence: [catalog-home] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: not_applicable, evidence: [catalog-home] }
+licenses:
+  - name: EMBL-EBI Terms of Use
+    scope: The catalog records and contents. EMBL-EBI places no additional restrictions on the use or redistribution of the data available through its data resources, other than those provided by the original data owners, and expects attribution in accordance with good scientific practice. The original data may be subject to rights claimed by third parties, and a resource-specific licence or condition prevails over the general terms where it conflicts with them.
+    evidence: [embl-terms-of-use]
+  - name: CC0 1.0
+    scope: The summary statistics only, which are made available under CC0 unless otherwise stated. This entry does not cover the catalog records, and it does not cover an individual dataset whose own terms differ.
+    evidence: [catalog-about]
+evidence:
+  - id: catalog-home
+    url: https://www.ebi.ac.uk/gwas/
+    label: NHGRI-EBI GWAS Catalog home
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: methods-documentation
+    url: https://www.ebi.ac.uk/gwas/docs/methods
+    label: GWAS Catalog methods documentation
+    supports: [identifiers]
+  - id: catalog-about
+    url: https://www.ebi.ac.uk/gwas/docs/about
+    label: GWAS Catalog about page, re-opened 2026-10-21, stating that the catalog and its contents are available under the general Terms of Use for EMBL-EBI Services and that summary statistics are made available under CC0 unless otherwise stated
+    supports: [caveats]
+  - id: embl-terms-of-use
+    url: https://www.ebi.ac.uk/about/terms-of-use
+    label: EMBL-EBI terms of use, re-opened 2026-10-21
+    supports: [caveats]
+caveats:
+  - The licence is not one statement. The catalog contents, the summary statistics and each individual dataset are covered by three different terms, and a user of a specific dataset must read that dataset's own licence.
+  - The original studies may be subject to third-party rights, including patent, copyright and access-and-benefit-sharing rights, which EMBL-EBI does not grant.
+acknowledgements: []
+last_verified: "2026-10-21"

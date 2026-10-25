@@ -1,0 +1,65 @@
+---
+title: Typed relations and evidence in a resource graph
+description: Read typed nodes, directed relations, source-record provenance and missing edges without mistaking connectivity for causality.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="representations/relational-graph-evidence" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+Read [protein, complex, cell-state and knowledge-graph representations](/learn/representations/complex-cell-and-knowledge-graphs/) first. This lesson uses the resource Atlas to make a graph's type and evidence rules inspectable. You will identify node and edge types, locate an edge's source evidence, classify a missing edge under an explicit rule, and explain why a path does not establish a mechanism. The [relational graph laboratory](/labs/relational-graph-audit/) lets you recompute the case offline.
+
+## Typed nodes and directed relations
+
+A node is one resource record, identified by a stable id and assigned a kind such as `model` or `software`. A relation is a typed, directed declaration in a record. The source is the record making the declaration. Its `type` tells a reader how that record describes the target. Reversing the arrow, or replacing `uses` with `used-by`, changes the statement.
+
+The committed catalogue on 2026-10-23 yields 191 nodes across 10 kinds and 32 directed edges across 7 types. These counts come from loading every committed YAML record, resolving relation targets, and grouping the resulting nodes and edges. They are not counts of biological entities or experimental interactions. For example, `model-cgflow` declares `uses` edges to `model-rxnflow` and `model-tacogfn`. The reverse edge declared by `model-tacogfn` has its own direction and type, `used-by`.
+
+## Provenance belongs to the declaring record
+
+The source record's evidence entries identify what supports its metadata groups. For an edge, the relevant entries are precisely those whose `supports` list includes `relations`. The `model-cgflow` record assigns its `readme` entry to that group, so the inspector attaches `readme` to both of its declared edges. Evidence on the target record does not automatically support a source record's claim. Nor does an evidence identifier alone establish that the external source is correct. It makes the declaration traceable to a cited surface.
+
+Under this rule, all 32 declared edges are evidenced and 0 are unevidenced in the committed run. A changed record with a relation but no matching source evidence is reported as unevidenced and fails the export check. The calculation is structural. It checks the record's support mapping, not the scientific truth of a linked page.
+
+## Missing edges and candidate pairs
+
+No relation between two records means that this catalogue declares none. It does not mean the resources are unrelated, incompatible or experimentally disproven. The protocol marks an unordered pair as a candidate when the records share at least 1 task or at least 1 stage and neither declares a relation to the other. This rule finds 6754 candidate pairs, separate from the 32 declared edges. It is a way to locate thin catalogue coverage, not a link predictor.
+
+The rule uses task and stage labels as broad screening fields. Two resources can share `hit-discovery` without one using, implementing or succeeding the other. A decision to add a specific relation would require direct evidence and an appropriate edge type. More shared labels do not turn a candidate into a fact.
+
+## Worked case
+
+The table follows declarations in the 2026-10-23 catalogue. Its evidence column names the entry in the declaring record that supports `relations`. An empty cell means no edge is declared, rather than an unevidenced existing edge.
+
+| Pair or declaration | Shared field | Declared edge | Source evidence | Interpretation |
+| --- | --- | --- | --- | --- |
+| `model-cgflow` to `model-rxnflow` | `molecular-generation` | `uses` | `readme` | Directed relation |
+| `model-cgflow` to `model-tacogfn` | `molecular-generation` | `uses` | `readme` | Directed relation |
+| `model-boltz-2` and `model-rxnflow` | `hit-discovery` | None | None | Candidate pair |
+
+`model-cgflow` has total degree 3 when incoming and outgoing declared edge instances are counted. `model-rxnflow` declares no outgoing relation, so the protocol lists it among isolated records even though it is the target of an edge. Across the catalogue, 161 records have no outgoing declaration. Here isolation describes declaration behavior, not degree 0.
+
+## Independent exercise
+
+Use the rule above to classify `model-cgflow` with `model-rxnflow`, then `model-boltz-2` with `model-rxnflow`. State the direction and evidence for any declared edge. For a candidate, state what additional evidence would be needed before making a `uses` claim. Finally, decide whether the path from `model-tacogfn` through `model-cgflow` to `model-rxnflow` establishes a molecular mechanism.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+`model-cgflow` declares `uses` toward `model-rxnflow`. Its own `readme` evidence entry supports `relations`, so that pair is not a candidate despite a shared task. `model-boltz-2` and `model-rxnflow` share `hit-discovery` but declare no relation in either direction. They meet the candidate rule. A `uses` edge would need a source that directly supports that dependency and a declaration in the appropriate source record. The path through the 2 existing edges records catalogue statements about resources. It supplies no assay, intervention or causal identification for a molecular mechanism.
+
+</details>
+
+## What the material does not show
+
+This graph does not measure model performance, biological interaction, chemical activity or reader learning. A relation can be wrong even with a cited page, and an absent relation can be missing documentation. Candidate pairs are not relations. A path through this resource graph is not a mechanism. The audit exposes these limits while keeping the recorded edge type, direction and evidence available for inspection.
+
+## Sources and review date
+
+The catalogue and its cited entries were read for this lesson on 2026-10-23. The named records link to the [Boltz repository](https://github.com/jwohlwend/boltz), [CGFlow repository](https://github.com/tsa87/cgflow), [RxnFlow repository](https://github.com/SeonghwanSeo/RxnFlow) and [TacoGFN repository](https://github.com/tsa87/tacogfn). Their catalogue records were reviewed on 2026-10-21 and record MIT licences for repository code. The Boltz record also names weights. The linked datasets and separately hosted checkpoints do not inherit those grants by assumption. Consult the individual record scopes before reuse.
+
+Original lesson prose is CC BY 4.0 and laboratory code is Apache-2.0. Linked resources retain their own terms. Last reviewed on 2026-10-23.

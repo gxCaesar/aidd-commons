@@ -1,0 +1,35 @@
+# JavaScript
+node_modules/
+.pnpm-store/
+.astro/
+dist/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Generated artifacts
+site/public/data/
+report/build/
+public-release/
+public-release.inventory.txt
+release-hygiene-report.json
+coverage/
+playwright-report/
+test-results/
+tmp/
+
+# Local execution state (never publish)
+docs/claude-codex-workflow-log.md
+.superpowers/
+.cache/
+labs/chembl_egfr/results/
+labs/rmd17_system_state/data/
+labs/rmd17_system_state/results/
+.DS_Store
+labs/pool_budget/results/
+labs/pool_budget/uncertainty-results/

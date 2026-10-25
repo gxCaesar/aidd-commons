@@ -1,0 +1,557 @@
+{
+  "schema_version": "aidd-commons.asset-openness-audit-summary.v1",
+  "protocol_id": "asset-openness-seven-fields-v1",
+  "computed_on": "2026-10-25",
+  "software": {
+    "python": "3.11.15",
+    "pyyaml": "6.0.3"
+  },
+  "examined_record_ids": [
+    "db-alphafold-db",
+    "model-alphafold-2",
+    "model-alphafold-3-inference",
+    "model-boltz-1",
+    "model-boltz-2",
+    "model-chai-1",
+    "model-chai-2",
+    "model-protenix",
+    "model-openfold",
+    "model-rfdiffusion",
+    "model-rfdiffusion2",
+    "model-esm-c",
+    "model-esmc",
+    "model-boltzgen",
+    "model-alphaproteo",
+    "tool-bindcraft",
+    "tool-gnina",
+    "tool-smina",
+    "tool-openmm",
+    "tool-rdkit",
+    "tool-psi4",
+    "db-rcsb-pdb",
+    "db-uniprot",
+    "db-skempi"
+  ],
+  "scope_limit_rule": "Case-insensitive whole-word match for only, not, no separate terms or does not; this is a text flag, not legal interpretation.",
+  "records": [
+    {
+      "id": "db-alphafold-db",
+      "openness": {
+        "inference_code": "unverified",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "CC-BY-4.0"
+      ],
+      "access_level": "source_available",
+      "last_verified": "2026-10-22",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "model-alphafold-2",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "available",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "Apache-2.0"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "model-alphafold-3-inference",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "Apache-2.0"
+      ],
+      "access_level": "source_available",
+      "last_verified": "2026-09-04",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "model-boltz-1",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "MIT"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-21",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "model-boltz-2",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "MIT"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": true
+    },
+    {
+      "id": "model-chai-1",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "Apache-2.0"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-21",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": true
+    },
+    {
+      "id": "model-chai-2",
+      "openness": {
+        "inference_code": "unverified",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [],
+      "access_level": "gated",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "model-protenix",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "Apache-2.0",
+        "Proprietary, no open-source licence"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-21",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": true
+    },
+    {
+      "id": "model-openfold",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "Apache-2.0",
+        "CC-BY-4.0"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-09-04",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "model-rfdiffusion",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "available"
+      },
+      "license_names": [
+        "BSD-3-Clause"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "model-rfdiffusion2",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "BSD-3-Clause"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-21",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "model-esm-c",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "MIT"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": true
+    },
+    {
+      "id": "model-esmc",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "MIT"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": true
+    },
+    {
+      "id": "model-boltzgen",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "MIT"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": true
+    },
+    {
+      "id": "model-alphaproteo",
+      "openness": {
+        "inference_code": "not_available",
+        "training_code": "unverified",
+        "weights": "not_available",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "Apache-2.0",
+        "CC-BY-4.0"
+      ],
+      "access_level": "gated",
+      "last_verified": "2026-10-21",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": true
+    },
+    {
+      "id": "tool-bindcraft",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "not_applicable",
+        "architecture": "available",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "MIT"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-21",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": true
+    },
+    {
+      "id": "tool-gnina",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "Apache-2.0",
+        "GPL-2.0"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "tool-smina",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "not_applicable",
+        "weights": "not_applicable",
+        "architecture": "not_applicable",
+        "data_recipe": "not_applicable",
+        "training_data": "not_applicable",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "Apache-2.0",
+        "GPL-2.0"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "tool-openmm",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "not_applicable",
+        "weights": "not_applicable",
+        "architecture": "not_applicable",
+        "data_recipe": "not_applicable",
+        "training_data": "not_applicable",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "MIT",
+        "LGPL-2.1"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "tool-rdkit",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "not_applicable",
+        "weights": "not_applicable",
+        "architecture": "not_applicable",
+        "data_recipe": "not_applicable",
+        "training_data": "not_applicable",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "BSD-3-Clause"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": true
+    },
+    {
+      "id": "tool-psi4",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "not_applicable",
+        "weights": "not_applicable",
+        "architecture": "not_applicable",
+        "data_recipe": "not_applicable",
+        "training_data": "not_applicable",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "GPL-3.0"
+      ],
+      "access_level": "open_source",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "db-rcsb-pdb",
+      "openness": {
+        "inference_code": "unverified",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [
+        "CC0 1.0"
+      ],
+      "access_level": "source_available",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "db-uniprot",
+      "openness": {
+        "inference_code": "unverified",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      },
+      "license_names": [],
+      "access_level": "source_available",
+      "last_verified": "2026-10-23",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    },
+    {
+      "id": "db-skempi",
+      "openness": {
+        "inference_code": "not_applicable",
+        "training_code": "not_applicable",
+        "weights": "not_applicable",
+        "architecture": "not_applicable",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "not_applicable"
+      },
+      "license_names": [
+        "CC-BY-4.0"
+      ],
+      "access_level": "source_available",
+      "last_verified": "2026-10-21",
+      "seven_fields_separate": true,
+      "all_claim_evidence_resolves": true,
+      "all_licenses_scoped": true,
+      "scope_limits_grant": false
+    }
+  ],
+  "examined_counts": {
+    "available": 57,
+    "not_applicable": 26,
+    "unverified": 83,
+    "not_available": 2,
+    "records_with_license": 22,
+    "records_without_verified_access": 0,
+    "records_with_scope_limit": 9
+  },
+  "whole_catalogue": {
+    "records": 228,
+    "records_with_seven_separate_dimensions": 228
+  }
+}

@@ -1,0 +1,318 @@
+---
+title: Biologic construct identity and evaluation objectives
+description: Define the object behind an approved biologic, then distinguish sequence recovery, folding, structural plausibility, binding, catalysis, and biological function.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/construct-identity-and-objectives" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After this lesson, you should be able to complete a biologic record with its
+modality, construct, expression system, and intended function. You should also
+be able to assign evidence to each of the six objectives named below and reject
+a conclusion that substitutes one objective for another.
+
+Read [Biologics and multimodal design](/learn/biologics-design/multimodal-design/),
+[Biological representations](/learn/representations/biological-representations/),
+and [Pocket states, confidence, and reusable structural evidence](/learn/structure-and-pockets/pocket-states-and-confidence/)
+first. They introduce the biological objects and the distinction between a
+structural model and an observation.
+
+**Mode: a reading-and-reasoning lesson, with no command to run.** The objects
+are approved medicines described in public labels. The exercises produce written
+records and interpretations. Expression systems appear only as source-reported
+identity fields.
+
+## Part 1: Modality, construct, expression system, and function
+
+**Modality** names a broad kind of therapeutic object. **Construct** specifies
+which molecular form that record actually describes. A target name or a disease
+name cannot identify a construct. An **intended function** names the action
+sought from that object in a stated context. It is separate from evidence that
+the action occurs.
+
+The distinctions apply across modalities. A protein record retains the named
+protein, domain coverage, and assembly. A peptide record retains its chemical
+form. An antibody record retains its format and chain pairing, so a full
+antibody and an isolated domain are distinguishable. A nucleic-acid record
+retains the oligonucleotide class, chemical form, and source-reported molecular
+target. A multimodal record retains each component, their association, and their respective
+roles. These categories can overlap. An antibody is also a protein, and a
+peptide can carry a non-peptide component. A combined object cannot be identified
+by naming only its recognition component.
+
+For the antisense example below, record the RNA target. Other oligonucleotides
+can target a protein. The [2011 FDA MACUGEN label, section 12.1](https://www.accessdata.fda.gov/Drugsatfda_docs/Label/2011/021756s018lbl.Pdf)
+reports that pegaptanib, a pegylated modified oligonucleotide aptamer, binds
+extracellular VEGF165 under in vitro conditions. VEGF165 is an isoform of the
+protein vascular endothelial growth factor.
+
+Use the following fields to describe an existing public record. They are a
+representation of the object, not a molecular design specification.
+
+| Field                         | What belongs in it                                                                                  | Error it prevents                                                           |
+| ----------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Record identity               | Active ingredient, product name, source URL, source section, and date opened                        | Treating a product name or a target name as a complete molecular identity   |
+| Modality and construct        | Molecular class, named components, format or assembly, and relevant chemical form                   | Merging a whole medicine with one domain, precursor, or carrier             |
+| Expression system and scope   | The source-reported host, with the component to which that statement applies                        | Confusing the source of a component with the tissue where the medicine acts |
+| Intended function and context | Source-reported molecular target, partner or substrate, intended action, and the biological setting | Equating recognition with the consequence sought from it                    |
+| Evidence status               | Source-reported fact, constructed value, unverified field, or explicitly inapplicable objective     | Filling a missing field from a favourable result elsewhere                  |
+
+An expression host does not establish the final object's folding or function.
+If the selected source does not name a host, record `unverified in this source`.
+Use `not applicable` only when the field genuinely does not apply and that
+judgment has a stated basis. Missing information alone does not establish
+inapplicability.
+
+### Worked case: repair a TNF-blocker record
+
+A **constructed** catalogue row reads: “Object: TNF blocker. Modality: antibody.
+Construct: human protein. Expression system: human immune cells. Function: TNF
+binding.” The row has merged ENBREL and HUMIRA. TNF means tumour necrosis factor.
+The task is to recover the objects from their labels.
+
+**IgG1** means immunoglobulin G subclass 1, an antibody subclass. **Fc** means
+fragment crystallizable, the tail region formed from paired constant domains
+of the antibody's heavy chains. It is distinct from the variable regions that
+recognize antigen. These terms follow the [antibody-structure reference](https://www.ncbi.nlm.nih.gov/books/NBK27144/).
+
+**Public record facts.** The table reads sections 11 and 12.1 of the
+[ENBREL label](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a002b40c-097d-47a5-957f-7a7b1807af7f)
+and the
+[HUMIRA label](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a06a9aec-fd5b-4c3e-a81f-eb46bb384100).
+These entries are source-reported descriptions, not constructed measurements.
+
+| Field                                             | ENBREL                                                                                                                      | HUMIRA                                                                                                                       |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Active ingredient                                 | Etanercept                                                                                                                  | Adalimumab                                                                                                                   |
+| Modality and construct                            | Protein fusion assembled as a dimer, with the extracellular ligand-binding part of human p75 TNF receptor and human IgG1 Fc | Human IgG1 monoclonal antibody, with human-derived heavy- and light-chain variable regions                                   |
+| Expression system                                 | Chinese hamster ovary (CHO) mammalian cells                                                                                 | CHO mammalian cells                                                                                                          |
+| Intended action recorded in the mechanism section | Prevent TNF-α and TNF-β from binding cell-surface TNF receptors                                                             | Bind TNF-α and prevent its interaction with cell-surface TNF receptors. The label states no binding or inactivation of TNF-β |
+
+The repair requires separate identities. Etanercept's receptor component and Fc
+component must remain visible. Calling it an antibody because it contains Fc
+loses the recognition component. Adalimumab requires an antibody-format record.
+“Human” in these descriptions does not identify the expression host. The shared
+CHO field also does not make the constructs identical.
+
+Finally, replace the vague function “TNF binding” with the action and partner
+scope in each row. This is an interpretation of the documented constructs. It
+does not compare clinical performance or establish interchangeability. The
+label descriptions also do not supply experimental coordinates for either
+object.
+
+### Independent exercise: a peptide and an oligonucleotide
+
+Use these **public record facts** to complete the same identity, construct,
+expression-system, and intended-function fields for two different medicines.
+
+In the RNA record below, **splicing** is cellular RNA processing that removes
+segments called introns and joins retained segments called exons into mature
+messenger RNA (mRNA). **Exon inclusion** records whether a named exon remains in
+that mature RNA. This terminology follows the [NHGRI intron glossary](https://www.genome.gov/genetics-glossary/Intron).
+
+- The [VICTOZA label](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=5a9ef4ea-c76a-4d34-a604-27c5b505f5a4)
+  expands **GLP-1** as glucagon-like peptide-1. Sections 11 and 12.1 identify
+  liraglutide as an acylated analogue of this natural signalling peptide. Its
+  peptide precursor has an expression-system statement naming _Saccharomyces cerevisiae_. The final
+  molecule includes a fatty-acid component. Receptor activation promotes insulin
+  release when glucose is elevated, and that secretion subsides as glucose
+  approaches normal levels.
+- The [SPINRAZA label, sections 11 and 12.1](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=dd70cd5f-b0fc-4ba4-a5ea-89a34778bd94)
+  identifies nusinersen as a modified antisense oligonucleotide acting on the
+  transcript of **SMN2** (survival of motor neuron 2). SMN2 is a gene that can
+  encode **SMN** (survival motor neuron) protein, as described in the
+  [MedlinePlus gene summary](https://medlineplus.gov/download/genetics/gene/smn2.pdf).
+  The label reports that in vitro assays and transgenic animal models of spinal
+  muscular atrophy showed increased exon 7 inclusion and full-length SMN protein
+  production. These sections do not state an expression host for nusinersen.
+
+A **constructed** annotation calls the first medicine “unmodified GLP-1 made
+by pancreatic cells” and the second “SMN protein expressed in human neurons.”
+Write the corrected records. Identify which component the yeast statement
+describes. Explain why the increased SMN protein does not name the administered
+construct or its expression system. Retain the scope of each functional claim.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+| Field                         | Corrected VICTOZA record                                               | Corrected SPINRAZA record                                                                                                                       |
+| ----------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Identity                      | Liraglutide, VICTOZA, with the linked source sections and opening date | Nusinersen, SPINRAZA, with the linked source sections and opening date                                                                          |
+| Modality and construct        | Acylated peptide analogue with its fatty-acid component retained       | Modified antisense oligonucleotide. SMN protein is a downstream product                                                                         |
+| Expression system and scope   | _Saccharomyces cerevisiae_ applies to the peptide precursor            | `unverified in this source` for nusinersen                                                                                                      |
+| Intended function and context | GLP-1 receptor activation with glucose-dependent insulin secretion     | SMN2 splicing change and increased full-length SMN protein, with the supplied evidence limited to in vitro assays and transgenic disease models |
+
+The first record distinguishes the precursor from the final chemical form.
+Its insulin response is not described as independent of glucose. The second
+distinguishes the oligonucleotide from the protein whose abundance changes.
+Neither the affected tissue nor a downstream protein identifies a host that
+expresses the medicine. The missing host statement remains missing. These
+source summaries do not establish a clinical effect size.
+
+</details>
+
+## Part 2: Separate the objectives
+
+An **objective** names the property an evaluation is meant to assess. Its
+representation and output must match that property. Here the input is an
+identified medicine record and explicitly labelled evidence summaries. The
+output is a justified claim for each objective. No model is fitted and no
+biological candidate is selected.
+
+| Objective               | Question and appropriate output                                                                                                                             | Boundary                                                                                                            |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Sequence recovery       | How many evaluated positions exactly match a named reference? Output a match fraction with the reference and evaluated region retained                      | Reference agreement does not establish folding or activity. Unscored positions remain outside the result            |
+| Folding                 | Does the identified object adopt the specified conformation in a stated context? Retain experimental conformation evidence or a clearly labelled prediction | A prediction is not an observation of folding. Agreement with one observed conformation is limited to that state    |
+| Structural plausibility | Does a coordinate representation satisfy named geometric checks? Retain the checked model, coverage, and geometric errors                                   | Acceptable geometry can belong to the wrong fold. A plausible model need not be the conformation the object adopts  |
+| Binding                 | Does the object interact with the named partner under the reported conditions? Retain the interaction evidence or an affinity quantity with its units       | Association alone does not establish substrate conversion or a downstream response                                  |
+| Catalysis               | Does the object accelerate the named substrate-to-product transformation? Retain conversion or rate evidence, its normalization, and context                | A binding result supplies no catalytic rate. Catalysis is not an intended objective for every therapeutic mechanism |
+| Biological function     | Does the stated endpoint change in the relevant biological context? Retain the endpoint, comparison, direction, and observation unit                        | Molecular, sample-level, and patient outcomes are different endpoints                                               |
+
+For binding, an equilibrium dissociation constant `K_D` has concentration units.
+A smaller value represents tighter binding under a matched equilibrium model.
+For catalysis, a reported rate needs a unit such as amount per time and a stated
+enzyme normalization before comparison. Neither quantity is a probability of
+biological function. The existing [recognition lesson](/learn/biologics-design/antibody-peptide-design/)
+explains affinity and specificity in more detail.
+
+The folding and plausibility questions are particularly easy to merge. A
+geometrically acceptable drawing addresses internal consistency. Evidence that
+the molecule occupies that conformation addresses the state of the molecule.
+Neither result supplies a binding or functional measurement by itself.
+
+### Worked case: what the dornase alfa record supports
+
+**Public record facts.** The [PULMOZYME label, sections 11 and 12.1](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d8c78a7e-ff99-48f3-8952-643ec2ea0f86)
+identifies dornase alfa as a human **DNase I** (deoxyribonuclease I), an enzyme
+that selectively cleaves DNA, with a CHO expression-system record. It reports
+DNA hydrolysis in sputum from cystic fibrosis patients and
+reduced sputum viscoelasticity in **preclinical in vitro studies**.
+Viscoelasticity describes both viscous and elastic behaviour. The substrate
+transformation and the change in sputum properties are distinct observations.
+
+Now consider an entirely **constructed** computational summary attached to that
+reference record. It contains `M = 216` exact position matches among `N = 240`
+evaluated positions, and `A = 198` acceptable coordinate checks among `T = 200`
+checks. The summary, all its counts, and its evaluated subsets are
+**constructed**. They are not measurements of dornase alfa or a newly proposed
+molecule.
+
+Let `R = M / N` denote sequence recovery and `G = A / T` denote the fraction of
+accepted geometric checks. Both are dimensionless and range from 0 to 1.
+Higher is better only for their respective reference or check set. `G` is a
+teaching definition, not a recognised universal structural score.
+
+Work the **constructed** arithmetic separately:
+
+1. Recovery has `240 − 216 = 24` unmatched evaluated positions.
+   `R = 216 / 240 = 0.90`, and `0.90 × 100 = 90%`.
+2. Geometry has `200 − 198 = 2` failed checks.
+   `G = 198 / 200 = 0.99`, and `0.99 × 100 = 99%`.
+
+Neither denominator counts independent patients or medicines. Recovery concerns
+only the declared evaluated positions. Checks on one coordinate representation
+do not create independent molecular observations.
+
+The completed objective record combines these distinct evidence types without
+averaging them. The judgments about what remains unverified are this lesson's
+interpretation of the supplied fields.
+
+| Objective               | Entry for this worked case                                                | Supported conclusion                                                                    |
+| ----------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Sequence recovery       | **Constructed:** `R = 0.90`                                               | Reference matches on the evaluated subset only                                          |
+| Folding                 | Unverified by the supplied summaries                                      | No comparison with an observed conformation was supplied                                |
+| Structural plausibility | **Constructed:** `G = 0.99`                                               | Most of these geometric checks passed. The fold was not established                     |
+| Binding                 | No separate affinity estimate in the selected label sections              | Catalytic substrate interaction does not supply a measured `K_D`                        |
+| Catalysis               | Source-reported DNA hydrolysis in the stated preclinical in vitro setting | Evidence of the transformation, without a numerical catalytic rate in this summary      |
+| Biological function     | Source-reported reduction in sputum viscoelasticity in that setting       | A sample-level physical consequence, not a patient outcome measured by this observation |
+
+For a claim about DNA conversion, the relevant objective is catalysis. For a
+claim about sputum properties, it is biological function at the sample level.
+The constructed recovery and geometry fractions answer neither claim. Conversely,
+the reported enzyme activity does not validate the constructed coordinate
+representation. Marking its folding field unverified says what this evidence
+package lacks, not that the approved medicine fails to fold.
+
+### Independent exercise: interpret an antibody record
+
+Return to the public HUMIRA record in Part 1. An entirely **constructed**
+computational summary of its reference record contains `M = 81`, `N = 90`,
+`A = 171`, and `T = 180`, with the meanings defined above. Every count and
+evaluated subset in this summary is **constructed**. It supplies no comparison
+with an observed conformation, no affinity estimate, and no catalytic rate.
+The label remains the source for the recorded binding and receptor-blocking
+action.
+
+1. Calculate `R` and `G`, including the unmatched positions and failed checks.
+2. Complete all six objective fields. Distinguish a missing measurement from
+   an objective that is not part of the documented mechanism.
+3. A **constructed** conclusion reads: “Good geometry proves folding and
+   catalytic destruction of TNF.” Correct it. Which objective corresponds to
+   blocking TNF's receptor interaction, and why would a binding score alone
+   not establish that action?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The **constructed** recovery calculation is `90 − 81 = 9` unmatched positions,
+then `R = 81 / 90 = 0.90`, and `0.90 × 100 = 90%`. The **constructed** geometry
+calculation is `180 − 171 = 9` failed checks, then `G = 171 / 180 = 0.95`, and
+`0.95 × 100 = 95%`.
+
+| Objective               | Worked answer                                                                                                                   |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Sequence recovery       | **Constructed:** `0.90` on this evaluated subset. No functional conclusion follows                                              |
+| Folding                 | Unverified by the supplied summary. No observed-conformation comparison was given                                               |
+| Structural plausibility | **Constructed:** `0.95` of the declared checks pass. This is not proof of folding                                               |
+| Binding                 | Source-reported interaction with TNF-α. No numerical affinity is supplied here                                                  |
+| Catalysis               | Not an objective of the documented receptor-blocking mechanism. Record no catalytic-destruction claim and no inferred zero rate |
+| Biological function     | The label describes inhibition of the TNF–receptor interaction. That molecular functional action is distinct from binding alone |
+
+The corrected conclusion is that the constructed representation passes most
+of its geometric checks. The binding and inhibitory action have separate
+support in the label. Receptor blockade belongs to the biological-function
+objective here. Binding alone would establish association without showing that
+the receptor interaction is prevented. Neither the geometry score nor that
+association supplies evidence of catalytic destruction or a clinical effect
+size.
+
+</details>
+
+For the additional evidence needed beyond these objective fields, continue to
+[Developability and functional validation](/learn/biologics-design/developability-and-validation/).
+Those properties require their own records.
+
+The [biologic construct record audit](/labs/biologic-construct-audit/) applies
+these four fields to the records of six named medicines, and shows that three
+of them give a construct without a production host and one gives a host
+without a construct.
+
+## Sources
+
+<div data-case-sources>
+
+- [FDA: MACUGEN (pegaptanib), 2011 label, section 12.1](https://www.accessdata.fda.gov/Drugsatfda_docs/Label/2011/021756s018lbl.Pdf)
+- [NCBI Bookshelf: The structure of a typical antibody molecule](https://www.ncbi.nlm.nih.gov/books/NBK27144/)
+- [NHGRI glossary: Intron](https://www.genome.gov/genetics-glossary/Intron)
+- [MedlinePlus Genetics: SMN2 gene, normal function](https://medlineplus.gov/download/genetics/gene/smn2.pdf)
+- [DailyMed: ENBREL (etanercept), sections 11 and 12.1](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a002b40c-097d-47a5-957f-7a7b1807af7f)
+- [DailyMed: HUMIRA (adalimumab), sections 11 and 12.1](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a06a9aec-fd5b-4c3e-a81f-eb46bb384100)
+- [DailyMed: VICTOZA (liraglutide), label terminology and sections 11 and 12.1](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=5a9ef4ea-c76a-4d34-a604-27c5b505f5a4)
+- [DailyMed: SPINRAZA (nusinersen), sections 11 and 12.1](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=dd70cd5f-b0fc-4ba4-a5ea-89a34778bd94)
+- [DailyMed: PULMOZYME (dornase alfa), sections 11 and 12.1](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d8c78a7e-ff99-48f3-8952-643ec2ea0f86)
+
+</div>
+
+The erroneous annotations, computational summaries, evaluated subsets, counts,
+fractions, and percentages are **constructed**. Medicine descriptions and
+mechanism statements are from the linked labels. Terminology also draws on the
+linked reference and glossaries. All sources were opened on 2026-09-11.
+
+Original lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-11.

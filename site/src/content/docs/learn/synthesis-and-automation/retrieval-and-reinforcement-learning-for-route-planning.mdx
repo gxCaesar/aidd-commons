@@ -1,0 +1,225 @@
+---
+title: Retrieval and reinforcement learning for route planning
+description: Read two 2026 route-planning systems that both turn planning into a budgeted search over a memory, and read their published reward and published evaluation closely enough to see what each number is a statement about.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="synthesis-and-automation/retrieval-and-reinforcement-learning-for-route-planning" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will read two route-planning systems released in 2026 and notice that both
+move the work from proposing a route to searching a memory under a budget.
+You will read one system's published reward function, which is a set of
+constants rather than a description, and work out what those constants
+reward and what they leave unrewarded. You will read the other system's
+published metric definition and its sampling caveat, and see what its headline
+number is a statement about. Read [Reaction mapping and route
+search](/learn/synthesis-and-automation/reaction-mapping-and-route-search/)
+and [Route feasibility, forward prediction, and
+feedback](/learn/synthesis-and-automation/route-feasibility-and-feedback/)
+first. This is a reading and hand-arithmetic lesson: this project ran neither
+system, synthesised no compound and executed no route.
+
+## The mechanism: a route as a search with a budget
+
+Both systems treat route planning as search over an explicit memory rather
+than as one forward pass over a model. In RetroAgent, the memory is a
+structured AND-OR graph held by a tool server; the agent issues tool calls
+that expand the graph, and the route it returns is a path through what the
+search actually built. In Agentic-Syn-RRAG, the workflow is named
+Generate-Retrieve-Refine: a locally served fine-tuned model proposes
+candidate reactions by reaction-state beam search, RXNGraphormer embeddings
+drive a FAISS search that retrieves ten structurally similar patent
+precedents, a reranking model selects the three most relevant of them, and a
+main model then refines the proposal against that retrieved evidence into a
+structured protocol specifying reactants, reagents, solvents, quantities,
+temperature and reaction time.
+
+A budget makes the search a decision rather than a procedure, and it is the
+budget that the training and the evaluation both turn on. RetroAgent's
+released reward is worth reading as code rather than as prose, because its
+constants are the whole specification. A rollout that completes a route earns
+a base of +1, reduced by a budget penalty of 0.02 per single-step model call
+beyond twenty calls, capped at 0.3; and by a depth penalty of 0.02 per step
+beyond route depth twenty, capped at 0.3; and by 0.05 for each turn with a
+failed tool call and 0.05 for each turn with no parseable tool call. The
+total is clipped to the interval from -1 to 1. A rollout that does not
+complete a route earns -1.0, or -1.5 if it produced no valid tool call at
+all.
+
+Two consequences follow from those constants and are worth carrying. First,
+the budget penalties bind only on a completed route, so an expensive failure
+and a cheap failure receive the same flat -1.0. The reward is shaped around
+search-budget efficiency for routes that exist; it does not, as released,
+distinguish a trajectory that failed after five calls from one that failed
+after two hundred. Second, the thresholds are part of the released
+configuration and not implementation detail: a reader who changes twenty, or
+the 0.02 rate, or either cap, is no longer running the released agent, and
+the published behaviour no longer describes what the reader has in hand.
+
+## Worked case: two systems, two kinds of published evidence
+
+RetroAgent is described in a README and a BibTeX entry for a Conference on
+Language Modeling 2026 paper by Zhu, Gan, Sun, Sun, Shi, Islam, Shang, Gao,
+Coley, Sun and Wang. The README specifies the method and the training
+recipe in unusual detail: the policy is trained end to end with
+reinforcement learning using GSPO, a sequence-level clipping method, on the
+Qwen3-4B-Instruct-2507 base model, inside the slime framework with Megatron
+and SGLang, on a single eight-GPU H200 node in colocated mode, with the
+training and inference dependencies supplied by a pinned Docker image. What
+the README does not carry is a route-quality measurement, and this lesson
+therefore quotes no route accuracy for it. Its openness is also layered, and
+each layer has its own terms: the repository code is MIT, the released
+weights on Hugging Face are Apache-2.0, the weights repository labels the
+DESP-sourced data CC BY 4.0 and the SCScore data MIT, and the NOTICE file
+states that the single-step retrosynthesis model vendored under
+`external/desp/` is derived from the DESP work of Yu and colleagues
+(NeurIPS 2024) and remains subject to that project's own licence and
+attribution. So the MIT grant on the repository does not reach the vendored
+component, and "open weights" here is not the same as "the whole system is
+MIT".
+
+Agentic-Syn-RRAG, by Shan Zhu, Xin Chen, Pinqi Wang and seven further
+authors, is a ChemRxiv preprint, version 1 of 2026 under DOI
+10.26434/chemrxiv.15008409/v1, with its code in the repository
+SamSamChu/Agentic-Syn-RRAG under the MIT licence. Its README reports its own
+numbers, and they are the more interesting case because the evaluation
+protocol is stated alongside them. The evaluation set is 150 targets
+randomly sampled from the product-disjoint WIPO-2M held-out test set. On
+those 150 targets at Top-1, the README reports reactant accuracy of 48.0%
+for the full Syn-RRAG pipeline, 46.0% for the SFT Llama baseline and 14.7%
+for native Gemini-2.5-Pro, and rule checks giving validity of 100.0%,
+elemental consistency of 100.0% and structural compatibility of 99.3%. It
+separately reports the standalone SFT backbone on the whole WIPO-2M held-out
+test of about ten thousand products at Top-1/3/5/10 of 44.5%, 65.1%, 70.8%
+and 75.9%.
+
+Two features of that protocol change how the numbers should be read. The
+metric is pooled: reactant accuracy requires every reference reactant
+component to appear in the pooled predicted reactants and reagents after
+RDKit canonicalization, and the two fields are pooled because a model may
+classify a true reactant as a reagent. And the Top-k numbers are prefixes:
+the README states that Top-1, Top-3 and Top-5 taken from a completed Top-10
+run are prefixes of the final pooled ranking and need not equal independent
+runs made with a smaller sample count. A reader who compares a prefix number
+against an independent-run number is comparing two different procedures, and
+the README says so before anyone asks.
+
+The arithmetic is worth doing by hand because the percentages hide it. On
+150 targets, 48.0% is 72 targets, 46.0% is 69, and 14.7% is 22 (22 out of
+150 is 14.67%). So the full system beats its own SFT baseline by three
+targets out of one hundred and fifty, and one target is worth 0.67
+percentage points, while the native model is fifty targets behind. The
+README reports no confidence interval and no paired test for that
+three-target gap, and a gap of three targets on a single sampled set is not
+by itself a separation. The two systems are also not comparable in what they
+optimise: RetroAgent searches a graph memory under a call budget, and
+Syn-RRAG grounds a protocol in retrieved patent precedents, and a protocol
+that cites a precedent is not the same claim as a route found with fewer
+expansions.
+
+Finally, the openness of the second system has a limit that the MIT licence
+does not show. The code is open, but its default configuration drives
+reranking and protocol refinement with an external model over an
+OpenAI-compatible endpoint, with a default reranking model of
+gemini-2.5-flash and separate credentials for the main model and the
+reranking model. A reader reproducing the system needs those endpoints and
+their terms, so an open repository is not a self-contained system here.
+Reproducing the training is a further step again: the README applies a patch
+to LLaMA-Factory at a pinned commit, because the patch modifies internal
+data loading, SFT workflow and trainer files, and it recommends Python 3.12
+with CUDA 12.8 and four GPUs.
+
+## Alternatives, limits, and independent exercise
+
+What this lesson does not establish is specific. It does not establish that
+either system produces a route that is executable or correct; a route is a
+proposal, and the protocol a second system returns is a proposal with
+citations attached. It does not establish that the three targets the second
+system's README describes as wet-lab confirmed are representative, since the
+README itself describes them as a separate short demonstration rather than
+part of the 150-target evaluation set. It does not establish a comparison
+between the two systems, because they were not compared by anyone here and
+they optimise different things. And it does not establish the route-quality
+figure that RetroAgent's paper presumably reports, because the paper was not
+opened for this lesson.
+
+**Handworked exercise (not runnable or empirical):** A route-planning agent's
+released reward gives +1 for a completed route, minus a budget penalty of
+0.02 per single-step model call beyond twenty calls capped at 0.3, minus a
+depth penalty of 0.02 per step beyond depth twenty capped at 0.3, minus 0.05
+per turn with a failed tool call and 0.05 per turn with no parseable tool
+call, clipped to the interval from -1 to 1, with -1.0 for an incomplete route
+and -1.5 when no valid tool call was made at all. Separately, a
+retrieval-augmented planner reports 48.0% reactant accuracy at Top-1 on 150
+targets, 46.0% for its own fine-tuned baseline on the same 150 targets, and
+14.7% for a native general-purpose model, with its metric pooling predicted
+reactants and reagents, and with its Top-k numbers taken as prefixes of a
+completed Top-10 ranking. (a) Compute the reward for a completed route with
+45 single-step model calls, deepest route depth 35, and two failed tool
+calls. (b) Compute the reward for a completed route with 20 calls, depth 20
+and no failed tool calls, and state which term you expected to bind. (c)
+Compute the reward for an incomplete route with 200 single-step model calls
+and depth 60, and state what that says about what the released reward
+penalises. (d) Convert the three accuracies into counts out of 150, compute
+the gap between the full system and its own baseline in targets, and state
+what would have to be reported before that gap could be read as a
+separation. (e) Name one thing the pooling rule makes easier to score than
+it would be without pooling, and say what the pooling rule costs.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+(a) The budget penalty is 0.02 × (45 − 20) = 0.5, capped at 0.3. The depth
+penalty is 0.02 × (35 − 20) = 0.3, at its cap. The tool penalty is 2 × 0.05
+= 0.10. The reward is clip(−1, 1, 1.0 − 0.3 − 0.3 − 0.10) = 0.30. (b) Both
+penalties are zero because twenty calls and depth twenty are exactly the
+thresholds, and there are no failed tool calls, so the reward is clip(−1, 1,
+1.0) = 1.0. The term you might expect to bind is the one that binds earliest,
+the call penalty, and it does not bind at all at twenty calls. (c) An
+incomplete route earns −1.0 regardless of how much budget it consumed, so
+200 calls and depth 60 change nothing: the reward is −1.0. This is the
+sharpest point about the released constants: the budget penalties are applied
+to completed routes, so an expensive failure and a cheap failure are
+indistinguishable in the reward, and the "search-budget efficiency" framing
+describes the behaviour on routes that succeed. (d) 48.0% of 150 is 72
+targets, 46.0% is 69, and 14.7% is 22. The full system beats its own
+baseline by three targets out of 150, one target being 0.67 percentage
+points, and trails the native model by fifty. Before that three-target gap
+could be read as a separation, the report would have to give an interval or
+a paired test over the same sampled targets, and would have to fix the
+comparison at one sample count rather than comparing a prefix of a Top-10
+ranking against something else. (e) Pooling lets a model that puts a true
+reactant in its reagents still be scored correct, which is the chemically
+fairer treatment and inflates the score relative to a strict reactant-only
+rule; it costs the ability to distinguish a model that identifies the right
+molecule from one that misassigns its role, and it makes the number depend
+on a field convention the reader cannot see in the percentage.
+
+</details>
+
+## Sources and next lesson
+
+The following primary sources were opened on 2026-10-24. They support the
+released recipe, the released constants, the reported accuracies and the
+licence facts as each states them, not the constructed exercise and not any
+route or synthesis.
+
+<div data-case-sources>
+
+- [RetroAgent: Harnessing LLMs to Search Over Structured Memory for Agentic Retrosynthesis Planning](https://github.com/SXKDZ/RetroAgent) — Zhu, Gan, Sun, Sun, Shi, Islam, Shang, Gao, Coley, Sun and Wang, Conference on Language Modeling 2026.
+- [RetroAgent weights on Hugging Face](https://huggingface.co/SXKDZ/RetroAgent)
+- [Agentic-Syn-RRAG source repository, SamSamChu/Agentic-Syn-RRAG](https://github.com/SamSamChu/Agentic-Syn-RRAG)
+- [A retrieval-augmented agent bridges virtual screening and automated synthesis](https://doi.org/10.26434/chemrxiv.15008409/v1) — Zhu, Chen, Wang and seven further authors, ChemRxiv preprint version 1, 2026.
+
+</div>
+
+Continue to [Design-make-test-analyze loops](/learn/active-learning/dmta-loops/)
+to connect a proposed route to the loop that would test it. Original lesson
+prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-10-24.

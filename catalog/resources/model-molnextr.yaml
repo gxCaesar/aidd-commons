@@ -1,0 +1,78 @@
+id: model-molnextr
+name: MolNexTR
+kind: model
+summary: Image-to-graph model that predicts the atoms and bonds of a molecular image and converts the prediction to a MolFile and SMILES, using a ConvNext and Vision Transformer encoder.
+canonical_url: https://github.com/CYF2000127/MolNexTR
+identifiers:
+  - scheme: paper
+    value: "MolNexTR: a generalized deep learning model for molecular image recognition; Journal of Cheminformatics 16, article 141 (2024); DOI 10.1186/s13321-024-00926-w"
+    url: https://doi.org/10.1186/s13321-024-00926-w
+  - scheme: model-weights
+    value: "MolNexTR best checkpoint molnextr_best.pth, Zenodo record 13304899, version 1.0.0"
+    url: https://zenodo.org/records/13304899
+  - scheme: dataset
+    value: MolNexTR training files train_pubchem.csv and train_uspto.zip on the Hugging Face Hub
+    url: https://huggingface.co/datasets/CYF200127/MolNexTR
+stages: [data-intake, representation-learning, evaluation]
+modalities: [small-molecule, molecular-graph]
+tasks: [chemical-identity-resolution, molecular-representation-learning]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository-tree] }
+  training_code: { value: available, evidence: [repository-tree] }
+  weights: { value: available, evidence: [readme, zenodo-checkpoint] }
+  architecture: { value: available, evidence: [repository-tree] }
+  data_recipe: { value: available, evidence: [readme] }
+  training_data: { value: available, evidence: [huggingface-dataset, readme] }
+  evaluation_code: { value: available, evidence: [repository-tree] }
+licenses:
+  - name: Apache-2.0
+    scope: Repository source; the LICENSE file is the unmodified Apache License 2.0 text and its appendix still carries the unfilled placeholder "Copyright [yyyy] [name of copyright owner]", so the file records no holder and no year.
+    evidence: [license]
+  - name: CC BY 4.0
+    scope: The Zenodo artefacts, namely the molnextr_best.pth checkpoint in record 13304899 and the article PDF in record 13857412; the code licence and the artefact licences are separate and neither opened page extends CC BY 4.0 to the repository source.
+    evidence: [zenodo-checkpoint, zenodo-publication]
+evidence:
+  - id: repository
+    url: https://github.com/CYF2000127/MolNexTR
+    label: MolNexTR repository page, reviewed 2026-10-21
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/CYF2000127/MolNexTR/main/README.md
+    label: MolNexTR README, reviewed 2026-10-21
+    supports: [summary, identifiers, stages, modalities, tasks, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/CYF2000127/MolNexTR/main/LICENSE
+    label: MolNexTR Apache-2.0 licence file, reviewed 2026-10-21
+    supports: []
+  - id: repository-tree
+    url: https://api.github.com/repos/CYF2000127/MolNexTR/git/trees/main?recursive=1
+    label: MolNexTR repository file tree, reviewed 2026-10-21
+    supports: []
+  - id: huggingface-dataset
+    url: https://huggingface.co/api/datasets/CYF200127/MolNexTR
+    label: MolNexTR training file repository metadata on the Hugging Face Hub, reviewed 2026-10-21
+    supports: [identifiers, caveats]
+  - id: zenodo-checkpoint
+    url: https://zenodo.org/records/13304899
+    label: MolNexTR best model checkpoint, Zenodo record 13304899, reviewed 2026-10-21
+    supports: [identifiers, acknowledgements]
+  - id: zenodo-publication
+    url: https://zenodo.org/records/13857412
+    label: MolNexTR publication archive, Zenodo record 13857412, reviewed 2026-10-21
+    supports: [identifiers, acknowledgements]
+  - id: crossref
+    url: https://api.crossref.org/works/10.1186/s13321-024-00926-w
+    label: Crossref metadata for the MolNexTR paper, reviewed 2026-10-21
+    supports: [identifiers]
+caveats:
+  - The Hugging Face repository holding train_pubchem.csv and train_uspto.zip declares apache-2.0 but its README is empty, so the per-column provenance of the derived files and the upstream PubChem and USPTO terms are not documented. The same repository also hosts the molnextr_best.pth checkpoint and the benchmark archives under that one tag.
+  - The Zenodo checkpoint record 13304899 names no training dataset, so the link between that archive and the two training files named in the README is not stated on the record itself.
+  - The Zenodo record 13857412 is classified as a Publication and holds only the article PDF; it does not archive the code.
+  - The repository LICENSE file is the Apache 2.0 template with the copyright placeholder never filled in, so it records no holder or year for the source.
+  - The README cites the paper with the Zenodo DOI 10.5281/zenodo.13857412 in its BibTeX block rather than the journal DOI.
+acknowledgements:
+  - The Zenodo checkpoint record 13304899 lists Yufan Chen of the Hong Kong University of Science and Technology as distributor, and record 13857412 lists Chen, Leung, Huang, Sun, Chen and Gao with Chen and Gao as supervisors.
+last_verified: "2026-10-21"

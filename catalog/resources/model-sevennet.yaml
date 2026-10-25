@@ -1,0 +1,78 @@
+id: model-sevennet
+name: SevenNet
+kind: model
+summary: SevenNet is a graph neural network interatomic potential package with pretrained universal potentials and a fine-tuning interface, usable through the ASE calculator and LAMMPS.
+canonical_url: https://github.com/MDIL-SNU/SevenNet
+identifiers:
+  - scheme: documentation
+    value: "SevenNet pretrained models documentation"
+    url: https://sevennet.readthedocs.io/en/latest/user_guide/pretrained.html
+  - scheme: paper
+    value: "Scalable Parallel Algorithm for Graph Neural Network Interatomic Potentials in Molecular Dynamics Simulations; DOI 10.1021/acs.jctc.4c00190"
+    url: https://doi.org/10.1021/acs.jctc.4c00190
+  - scheme: model-weights
+    value: "SevenNet checkpoints published as GitHub release assets"
+    url: https://github.com/MDIL-SNU/SevenNet/releases
+stages: [physics-based-modelling, model-development, evaluation]
+modalities: [molecular-geometry, molecular-conformation, small-molecule]
+tasks: [molecular-energy-regression, force-learning, molecular-dynamics, model-training]
+relations:
+  - type: implements
+    target: model-nequip
+status: { value: active, evidence: [github-api] }
+access_level: { value: open_source, evidence: [code-license] }
+openness:
+  inference_code: { value: available, evidence: [repository, pretrained-doc] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: unverified, evidence: [pretrained-doc, releases-api] }
+  architecture: { value: available, evidence: [repository] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified, evidence: [pretrained-doc] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: the SevenNet source code in this repository, per LICENSE (Copyright (c) 2024 Yutack Park). Neither the repository, the documentation, nor the release notes state a licence for the published checkpoints, so this record does not extend the code licence to them.
+    evidence: [code-license]
+evidence:
+  - id: repository
+    url: https://github.com/MDIL-SNU/SevenNet
+    label: SevenNet repository
+    supports: [name, kind, summary, stages, modalities, tasks, relations]
+  - id: pretrained-doc
+    url: https://sevennet.readthedocs.io/en/latest/user_guide/pretrained.html
+    label: SevenNet pretrained models documentation
+    supports: [identifiers, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/MDIL-SNU/SevenNet/main/README.md
+    label: SevenNet README
+    supports: [caveats]
+  - id: releases-api
+    url: https://api.github.com/repos/MDIL-SNU/SevenNet/releases
+    label: SevenNet release assets
+    supports: [caveats]
+  - id: omat24-dataset
+    url: https://huggingface.co/datasets/facebook/OMat24
+    label: Meta Open Materials 2024 dataset card on the Hugging Face Hub
+    supports: [caveats]
+  - id: omat24-weights
+    url: https://huggingface.co/facebook/OMAT24
+    label: OMat24 checkpoint collection card on the Hugging Face Hub
+    supports: [caveats]
+  - id: code-license
+    url: https://raw.githubusercontent.com/MDIL-SNU/SevenNet/main/LICENSE
+    label: SevenNet licence file
+    supports: []
+  - id: github-api
+    url: https://api.github.com/repos/MDIL-SNU/SevenNet
+    label: GitHub repository metadata for MDIL-SNU/SevenNet
+    supports: []
+caveats:
+  - No opened page states a licence for the SevenNet checkpoints. They are published as GitHub release assets while the repository ships an MIT licence for the code, and both the documentation and the release notes are silent on the checkpoint terms.
+  - SevenNet-Omni and SevenNet-MF-ompa are trained on 15 open ab initio datasets that the documentation names only as task labels such as mpa, matpes_r2scan, omol25_low, oc20, oc22 and odac23. It names MPtrj, sAlex and OMat24 for the mpa, omat24 and multi-fidelity tasks, and sAlex is a subsample of Alexandria, whose redistribution terms no opened page states, so the openness of the full training corpus is unverified.
+  - Two different assets share the OMat24 name. The OMat24 dataset on the Hugging Face Hub is tagged cc-by-4.0, while the OMat24 checkpoint collection published by the same organisation is tagged other and carries a bespoke OMat24 License that incorporates the FAIR Acceptable Use Policy by reference. Neither statement covers the sAlex part of the SevenNet training corpus.
+  - The documentation states that the mpa task is trained on the combined MPtrj and sAlex datasets and is the recommended default for PBE(+U) applications, and that a different task must be selected when consistency with a specific functional, dataset or benchmark protocol is required.
+  - The SevenNet README states that the core model is based on NequIP, so results attributed to SevenNet and to NequIP are not independent of that shared architecture.
+  - The pretrained documentation reports F1 and RMSD on the WBM dataset and the SRME from phononDB, with a combined performance score, but the opened pages give neither the metric definitions nor the evaluation code behind them.
+  - The publisher page for the Journal of Chemical Theory and Computation article was not opened during this review, so the citation is recorded as the README states it and not from the article itself.
+acknowledgements: []
+last_verified: "2026-10-21"

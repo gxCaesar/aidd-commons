@@ -1,0 +1,37 @@
+id: tutorial-teachopencadd
+name: TeachOpenCADD talktorial collections
+kind: tutorial
+summary: Task-oriented learning collections covering cheminformatics, structural biology, molecular machine learning, and uncertainty.
+canonical_url: https://projects.volkamerlab.org/teachopencadd/talktorials.html
+identifiers: []
+stages: ["data-intake", "hit-discovery", "model-development"]
+modalities: ["small-molecule", "protein-ligand-complex"]
+tasks: ["cheminformatics-learning", "structure-based-learning"]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [tutorial-license, official-collection] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC-BY-4.0
+    scope: TeachOpenCADD tutorial material and notebook source as declared on its licence page; the grant does not cover third-party packages or datasets retrieved separately from ChEMBL, PDB, KLIFS and PubChem.
+    evidence: [tutorial-license]
+evidence:
+  - id: tutorial-license
+    url: https://projects.volkamerlab.org/teachopencadd/license.html
+    label: TeachOpenCADD tutorial licence statement (reviewed 2026-10-23)
+    supports: []
+  - id: official-collection
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials.html
+    label: Official tutorial collection (reviewed 2026-10-23)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+caveats:
+  - The tutorial material and notebook source are public under CC BY 4.0. The collection includes data-acquisition workflows that query ChEMBL, PDB, KLIFS and PubChem separately, whose data and service terms are not granted by the tutorial licence.
+acknowledgements: []
+last_verified: "2026-10-23"

@@ -1,0 +1,49 @@
+id: benchmark-posebench
+name: PoseBench
+kind: benchmark
+summary: Public benchmark and toolkit for apo-to-holo protein-ligand docking and co-folding, with shared inference, relaxation, alignment and scoring workflows and a documented correction to primary-ligand scoring.
+canonical_url: https://github.com/BioinfoMachineLearning/PoseBench
+identifiers:
+  - scheme: code
+    value: "the PoseBench toolkit, BioinfoMachineLearning/PoseBench"
+    url: https://github.com/BioinfoMachineLearning/PoseBench
+  - scheme: paper
+    value: "Assessing the potential of deep learning for protein-ligand docking, Nature Machine Intelligence, published 31 December 2025, DOI 10.1038/s42256-025-01160-1"
+    url: https://doi.org/10.1038/s42256-025-01160-1
+stages: [evaluation, hit-discovery]
+modalities: [protein-ligand-complex]
+tasks: [protein-complex, pose-validation, benchmark-evaluation]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: open_source, evidence: [repository, license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: not_applicable, evidence: [repository] }
+  weights: { value: not_applicable, evidence: [repository] }
+  architecture: { value: not_applicable, evidence: [repository] }
+  data_recipe: { value: available, evidence: [repository] }
+  training_data: { value: not_applicable, evidence: [repository] }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: MIT
+    scope: The MIT licence the repository carries, which covers the toolkit's code, its scoring and alignment tools and the scripts it ships. The licences of the docking engines, the models it calls and the structures it evaluates are their own.
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/BioinfoMachineLearning/PoseBench
+    label: The PoseBench repository README, re-opened on 2026-10-25, with its workflows and primary-ligand scoring notice
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: paper
+    url: https://doi.org/10.1038/s42256-025-01160-1
+    label: The Nature Machine Intelligence article, read on 2026-10-25, including its method comparisons and evaluation procedures
+    supports: [summary, identifiers, caveats]
+  - id: license
+    url: https://github.com/BioinfoMachineLearning/PoseBench/blob/main/LICENSE
+    label: The MIT licence file, read on 2026-10-25
+    supports: []
+caveats:
+  - "The repository reports a version 1.0.0 scoring bug affecting the primary-ligand datasets Astex Diverse, DockGen-E and PoseBusters Benchmark. Its corrected version 1.1.0 reports about 15 percent lower performance on average for each benchmarked method and advises rerunning affected analyses. The notice does not state a 15-percentage-point reduction or a universal change across all datasets."
+  - "The toolkit provides datasets, executable inference and relaxation scripts, alignment and scoring tools, ensemble workflows and downloadable benchmark predictions, so that a comparison can be reproduced from the released artefacts rather than taken from the figures the method authors published."
+  - "The associated paper does report method comparisons under its stated datasets and metrics. Those comparisons do not define a universal method ranking. This record did not run the toolkit, and benchmark evaluation structures are not a new model's training-data release."
+acknowledgements: []
+last_verified: "2026-10-25"

@@ -1,0 +1,36 @@
+version: "0.1"
+tracks:
+  - id: foundations
+    order: 1
+    title: Foundations
+    title_zh: 基础
+    summary: A minimal fixture track.
+    summary_zh: 最小课程图谱测试项。
+    audience: [graduate-learners]
+    learning_outcomes: [read-evidence, trace-decisions]
+    prerequisites: []
+    cross_track_prerequisites: []
+    pipeline_stages: [onboarding]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: foundations-start
+        order: 1
+        title: Start
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids: [tool-deepchem]
+        prerequisites: [missing-lesson]
+      - id: foundations-core-path
+        order: 2
+        title: Core sources
+        type: core-source-path
+        sections: []
+        source_ids: [tool-deepchem]
+        prerequisites: [foundations-start]

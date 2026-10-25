@@ -1,0 +1,127 @@
+id: agil
+name: AI-Guided Inquiry Learning for Computational Drug Discovery
+provider_class: curriculum
+canonical_url: https://github.com/dayanjan/AGIL-VIP-AI-PSCI-Public
+summary: A 20-week computational drug-discovery curriculum built around AI-assisted guided inquiry, empty student code cells, expected outputs, and documented verification.
+audiences: [educators, researchers, students]
+languages: [en]
+metadata_evidence: [project-readme, curriculum-overview]
+access:
+  content: { value: open, evidence: [project-readme, curriculum-overview] }
+  code: { value: institutional, evidence: [project-readme, educator-guide] }
+  data: { value: unverified }
+  solutions:
+    { value: institutional, evidence: [project-readme, educator-guide] }
+licenses:
+  - name: Creative Commons Attribution-NonCommercial 4.0 International
+    scope: Public repository materials; unprovided instructor and solution assets require separate terms and access review
+    evidence: [repository-license, educator-guide]
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence was encoded for omitted taxonomy topics in this dated review.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t05-small-molecule-representation
+    depth: mentioned
+    evidence: [curriculum-overview]
+    reviewed_scope: Public 20-week curriculum sequence
+    note: The curriculum names molecular representation work, while public student notebooks intentionally omit completed code.
+  - topic_id: t08-exposure-pk-endpoint
+    depth: mentioned
+    evidence: [curriculum-overview]
+    reviewed_scope: Public curriculum topic sequence
+    note: ADME-oriented work is present in the curriculum inventory, but completed public solutions were not available for deeper scoring.
+  - topic_id: t10-structure-evidence-state
+    depth: mentioned
+    evidence: [curriculum-overview]
+    reviewed_scope: Public curriculum topic sequence
+    note: Structural modelling is named in the curriculum without public completed code cells.
+  - topic_id: t11-docking-scoring-protocol
+    depth: executable
+    run_basis: real-data
+    evidence: [talktorial-notebooks]
+    reviewed_scope: The AI-PSCI-011, 015 and 016 talktorials opened in full on 2026-09-11, each a runnable notebook of ten to twelve non-empty code cells with seventeen to twenty-three markdown cells, one of them labelled a solution notebook
+    note: The AutoDock Vina talktorial is a runnable solution notebook with twelve non-empty code cells, so a docking protocol is executed rather than described. Raised from mentioned after the notebook was opened; the earlier score rested on the overview alone.
+  - topic_id: t17-metric-endpoint-uncertainty
+    depth: mentioned
+    evidence: [curriculum-overview]
+    reviewed_scope: Public curriculum verification and reporting sequence
+    note: Expected outputs and verification are part of the design; task-specific uncertainty treatment was not established.
+  - topic_id: t17-reproduction-reporting-receipt
+    depth: mentioned
+    evidence: [project-readme, curriculum-overview]
+    reviewed_scope: Public lab-notebook and reporting expectations
+    note: Students are instructed to document AI interactions, reasoning, and verification, but no public completed learner artifact was audited.
+  - topic_id: t16-human-review-authority-evaluation
+    depth: explained
+    evidence: [project-readme, curriculum-overview]
+    reviewed_scope: AI-partnered inquiry and verification framework
+    note: The public material explains that students write code with AI, check expected outputs, and document their process rather than accept model output directly.
+  - topic_id: t05-protein-sequence-structure-representation
+    depth: executable
+    run_basis: real-data
+    evidence: [talktorial-notebooks]
+    reviewed_scope: The AI-PSCI-011, 015 and 016 talktorials opened in full on 2026-09-11, each a runnable notebook of ten to twelve non-empty code cells with seventeen to twenty-three markdown cells, one of them labelled a solution notebook
+    note: AlphaFold2 and ESMFold structure prediction are separate runnable talktorials, with a variant-scoring talktorial alongside them. Sequence and predicted geometry are both handled; ensemble representation was not observed.
+  - topic_id: t09-binding-mode-pose-hypothesis
+    depth: executable
+    run_basis: real-data
+    evidence: [talktorial-notebooks]
+    reviewed_scope: The AI-PSCI-011, 015 and 016 talktorials opened in full on 2026-09-11, each a runnable notebook of ten to twelve non-empty code cells with seventeen to twenty-three markdown cells, one of them labelled a solution notebook
+    note: A runnable AI-powered docking talktorial covering DiffDock and GNINA follows a classical docking one, so a generated pose is produced and examined rather than described.
+  - topic_id: t04-data-contract
+    depth: mentioned
+    evidence: [curriculum-overview]
+    reviewed_scope: The curriculum overview reviewed on 2026-09-11, mapping all twenty talktorials to a named focus across a foundation phase and a target-specific application phase
+    note: A ChEMBL data acquisition talktorial is listed by focus. The overview names bioactivity retrieval without stating record relationships or inclusion rules, and the notebook was not opened.
+  - topic_id: t10-binding-site-pocket-definition
+    depth: mentioned
+    evidence: [curriculum-overview]
+    reviewed_scope: The curriculum overview reviewed on 2026-09-11, mapping all twenty talktorials to a named focus across a foundation phase and a target-specific application phase
+    note: A protein visualisation talktorial is listed with binding sites among its focus. The overview does not distinguish known from predicted or transient sites, and the notebook was not opened.
+  - topic_id: t06-perturbation-genetic-validation
+    depth: mentioned
+    evidence: [curriculum-overview]
+    reviewed_scope: The curriculum overview reviewed on 2026-09-11, mapping all twenty talktorials to a named focus across a foundation phase and a target-specific application phase
+    note: An ESM-1v variant scoring talktorial is listed as mutation effect prediction. That is a computational score rather than perturbational validation, and the notebook was not opened.
+  - topic_id: t16-scientific-task-action-boundary
+    depth: mentioned
+    evidence: [curriculum-overview]
+    reviewed_scope: The curriculum overview reviewed on 2026-09-11, mapping all twenty talktorials to a named focus across a foundation phase and a target-specific application phase
+    note: An AI collaboration and prompt engineering talktorial is listed with verification among its focus. The overview names the practice without stating which actions the assistant may take, and the notebook was not opened.
+evidence:
+  - id: talktorial-notebooks
+    url: https://github.com/dayanjan/AGIL-VIP-AI-PSCI-Public/tree/main/Talktorials
+    title: AGIL talktorial notebooks
+    observed_scope: The complete listing of twenty numbered talktorial notebooks plus a scaffold, with AI-PSCI-011 on AlphaFold2, AI-PSCI-015 on AutoDock Vina and AI-PSCI-016 on DiffDock and GNINA opened in full. Each carries ten to twelve non-empty code cells and seventeen to twenty-three markdown cells. The remaining seventeen notebooks were not opened.
+    access: opened
+    reviewed_on: 2026-09-11
+  - id: project-readme
+    url: https://github.com/dayanjan/AGIL-VIP-AI-PSCI-Public
+    title: AGIL public repository
+    observed_scope: Audience routes, 20 empty-cell talktorials, expected-output design, student workflow, technical requirements, solution-access boundary, and licence statement.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: curriculum-overview
+    url: https://raw.githubusercontent.com/dayanjan/AGIL-VIP-AI-PSCI-Public/main/Curriculum/CURRICULUM_OVERVIEW.md
+    title: AGIL Curriculum Overview
+    observed_scope: Twenty-week sequence, target portfolio, named topics, AI-assisted workflow, verification, and reporting expectations.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: educator-guide
+    url: https://raw.githubusercontent.com/dayanjan/AGIL-VIP-AI-PSCI-Public/main/FOR_EDUCATORS.md
+    title: AGIL For Educators
+    observed_scope: Public empty student notebooks and institutional-request route for complete solution notebooks and instructor materials.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: repository-license
+    url: https://raw.githubusercontent.com/dayanjan/AGIL-VIP-AI-PSCI-Public/main/LICENSE
+    title: AGIL public repository licence
+    observed_scope: CC BY-NC 4.0 terms for public repository material.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats:
+  - Public student notebooks intentionally contain empty code cells; completed solution notebooks and instructor materials require an institutional educator request.
+  - Public coverage is not scored as executable or assessed because the reviewed public artifacts do not contain the completed implementation or full formal assessment materials.
+last_verified: 2026-09-11

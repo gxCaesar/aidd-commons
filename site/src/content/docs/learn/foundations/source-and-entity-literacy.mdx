@@ -1,0 +1,120 @@
+---
+title: Read a source and identify its biological object
+description: Separate a source record, an experimental entity and a prediction claim before joining data or citing a result.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="foundations/source-and-entity-literacy" />
+<ScrollableRegions />
+
+## The question hidden inside a noun
+
+After [your first session](/learn/foundations/first-session/), a useful next skill
+is to ask what “compound,” “target,” “sample” or “open model” means in a particular
+source. You will distinguish identifiers from entities, map a citation to its
+actual claim and decide when a join is unresolved. No code or background in
+machine learning is required. The examples are invented learning records.
+
+“Protein P binds compound A” is incomplete. P might name a gene, canonical
+sequence, isoform, engineered construct or resolved structure. A might name a
+parent structure, salt, stereoisomer, vendor sample or batch. “Binds” might refer
+to an assay outcome, a computational score or a statement quoted from another
+article. These distinctions determine which records can answer the same question.
+
+## Three identities that should not be merged
+
+Distinguish the **source record** that stores a statement, the **physical or
+biological entity** to which it refers, and the **analysis unit** on which a
+model is trained or evaluated. One source can contain several measurements of
+one entity. Conversely, a common name can cover different constructs or chemical
+forms. Equal strings are not enough to establish either relation.
+
+For proteins, preserve the accession and the relevant sequence/isoform version,
+not just a display name. The
+[UniProt accession documentation](https://www.uniprot.org/help/accession_numbers)
+explains entry identifiers and their persistence; an accession is an entry
+reference, not a substitute for the exact experimental construct. For molecules,
+[PubChem's primary database paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC4702940/)
+distinguishes depositor-provided substance records from standardized compound
+records. Neither database identity alone describes how an assay was performed.
+
+Consider a constructed release with six records:
+
+| Record  | Object description               | Measurement context        |
+| ------- | -------------------------------- | -------------------------- |
+| r1      | compound A, lot 1                | assay X, day 1             |
+| r2      | compound A, lot 1                | assay X, day 2             |
+| r3      | opposite stereoisomer of A       | assay X, day 1             |
+| r4      | salt form of A                   | assay X, day 1             |
+| r5      | compound A, lot 1                | assay Y, different readout |
+| r1-copy | same deposited observation as r1 | mirrored export            |
+
+There are six rows but only five described observations. r1-copy adds no new
+measurement. The identity of r3 differs in a potentially meaningful way. Whether
+r4 can be aggregated with A depends on the declared endpoint and reviewed
+standardization, not a universal “remove salts” rule. r5 changes the assay, so
+it cannot silently become a replicate of X. Even r1 and r2 may share batch effects.
+This table alone does not establish five independent experimental units.
+
+## Match evidence to the sentence being written
+
+Separate a paper's method description, results section, repository implementation,
+model card and licence. A paper can demonstrate an experiment without providing
+the training data. A repository can provide inference code without a training
+recipe. An inference example is not evidence that its output is experimentally
+valid in a new setting. Source inspection should resolve one sentence at a time.
+
+Suppose an invented project page says it released inference code, while its
+paper reports a model trained on unavailable data. A defensible sentence is
+“inference code is available; training-data access was not established.” It is
+not “the method is fully reproducible.” If a result table only evaluates one
+protein family, it cannot support a sentence about all target classes.
+
+When you open a source, locate the actual method, table or asset terms, record
+its version/date and distinguish its statement from your inference. If only an
+abstract is accessible, cite only what the abstract establishes. A search
+snippet is a lead to investigate, not a substitute for the underlying evidence.
+
+## Access and permission are different questions
+
+An accessible file answers “can I obtain it?”; applicable terms answer “what
+uses are permitted?” Code, weights, data and prose can have different terms.
+An [SPDX identifier](https://spdx.dev/learn/areas-of-interest/licensing/) helps
+name a licence unambiguously but does not itself grant rights to every adjacent
+asset. The [Creative Commons FAQ](https://creativecommons.org/faq/) also explains
+that a licence may not cover rights beyond the licensor's authority. This lesson
+teaches what to inspect, not a legal determination for a real deployment.
+
+For an invented package, assume the code explicitly has licence L, weights have
+separate terms W and a dataset link has no visible terms. Record three separate
+entries. Do not copy L into the dataset entry. If the intended redistribution
+depends on unknown data rights, identify that unresolved issue before packaging;
+you can still read the scientific method and use an independently permitted example.
+
+## Independent exercise
+
+A paper reports an enzyme-construct assay. A database entry uses the parent gene
+name. Two mirrors reproduce the same table. An inference repository is visible,
+but no weight terms are found. Write four sentences: the strongest supported
+biological claim, the unresolved identity join, the number of independent
+publications represented by the mirrors, and the unresolved asset permission.
+
+<details data-worked-answer>
+<summary>Worked answer — preserve the missing information</summary>
+
+The reported outcome concerns the assayed construct under its documented
+conditions; it is not automatically evidence for every gene product in cells.
+The gene-to-construct join needs sequence/isoform and construct details. Two
+mirrors of one table are not two independent publications or experiments.
+Visible inference code does not establish permission to obtain, modify or
+redistribute weights. The missing terms remain unknown rather than negative
+evidence about scientific quality.
+
+</details>
+
+Continue to [identity, lineage and reuse](/learn/data-governance/identity-lineage-and-reuse/)
+to turn these distinctions into an inspectable join and a model-ready table.
+
+Original constructed examples and prose: CC BY 4.0. Sources reviewed: 2026-09-09.

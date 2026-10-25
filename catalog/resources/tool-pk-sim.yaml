@@ -1,0 +1,44 @@
+id: tool-pk-sim
+name: PK-Sim
+kind: software
+summary: Whole-body physiologically based pharmacokinetic modeling software in the Open Systems Pharmacology Suite.
+canonical_url: https://github.com/Open-Systems-Pharmacology/PK-Sim
+identifiers:
+  - scheme: documentation
+    value: "PK-Sim documentation"
+    url: https://docs.open-systems-pharmacology.org/working-with-pk-sim/pk-sim-documentation
+stages: [dmpk-toxicology, pk-pd-modeling]
+modalities: [small-molecule, biologic]
+tasks: [pbpk-modeling, pk-simulation]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [source-license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: GPL-2.0 with clarifying addendum
+    scope: source-code
+    evidence: [source-license]
+evidence:
+  - id: source-license
+    url: https://raw.githubusercontent.com/Open-Systems-Pharmacology/PK-Sim/develop/LICENSE
+    label: PK-Sim source licence including clarifying addendum
+    supports: []
+  - id: repository
+    url: https://github.com/Open-Systems-Pharmacology/PK-Sim
+    label: PK-Sim repository
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: documentation
+    url: https://docs.open-systems-pharmacology.org/working-with-pk-sim/pk-sim-documentation
+    label: PK-Sim documentation
+    supports: [identifiers]
+caveats:
+  - A PBPK simulation remains conditional on its compound, individual or population, administration, and observed-data assumptions.
+acknowledgements: []
+last_verified: "2026-09-09"

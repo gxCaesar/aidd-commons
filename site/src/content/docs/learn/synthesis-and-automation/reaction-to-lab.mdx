@@ -1,0 +1,54 @@
+---
+title: Reaction prediction to the lab
+description: Turn reaction predictions and retrosynthesis plans into testable laboratory hypotheses.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="synthesis-and-automation/reaction-to-lab" />
+
+## Foundations
+
+Reaction prediction, atom mapping, retrosynthesis, and laboratory automation
+make different claims. A route proposal must still survive material
+availability, protecting-group choices, safety, scale, purification, and
+observed yield.
+
+## Practical workflow
+
+Define the target molecule, allowed starting materials, operational
+constraints, route budget, and what counts as a laboratory success. Use an
+atom-mapping or reaction model as one evidence stream, then ask a chemist to
+inspect the proposed transformations. [RXNMapper](https://github.com/rxn4chemistry/rxnmapper)
+and [AiZynthFinder](https://github.com/MolecularAI/aizynthfinder) document
+different parts of that chain.
+
+## Evaluation
+
+Keep retrospective route recovery separate from prospective execution. Record
+the reaction conditions, material provenance, outcome, purification burden,
+and failed routes. A reaction data split should prevent the benchmark from
+leaking near-identical transformations.
+
+## Frontier and open questions
+
+[Chemformer](https://github.com/MolecularAI/Chemformer),
+[ASKCOS](https://github.com/ASKCOS/askcos), and
+[RetroSim](https://github.com/connorcoley/retrosim) offer distinct modelling or
+retrieval choices. Integration with laboratory automation remains an
+experimental systems problem rather than a score-optimization exercise.
+
+## What v0.1 does not yet teach
+
+v0.1 does not certify synthetic routes, provide laboratory safety procedures,
+or assert that a predicted route will work at a particular scale.
+
+## Core-source path
+
+Read the [ORD specification](https://open-reaction-database.org/) to see how
+reaction records are represented, then inspect
+[AiZynthFinder](https://github.com/MolecularAI/aizynthfinder) and
+[ASKCOS](https://github.com/ASKCOS/askcos) with the proposed route and
+experimental constraints in view.
+
+Last reviewed: 2026-09-04.

@@ -1,0 +1,63 @@
+---
+title: Asset openness and reuse
+description: Read seven separate openness claims alongside access, licence scope and evidence before planning reuse.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="structure-and-pockets/asset-openness-and-reuse" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will distinguish the 7 asset-openness dimensions, read a licence's stated scope separately from an access level, and make a bounded statement when a field is `unverified` or `not_applicable`. Read [Pocket states and confidence](/learn/structure-and-pockets/pocket-states-and-confidence/) for the provenance of structural assets. The companion [asset-openness audit](/labs/asset-openness-audit/) runs these distinctions against the committed resource catalogue.
+
+## Seven different objects
+
+A model's predictions can be easy to obtain while the training run or reported benchmark cannot be reconstructed. The catalogue therefore assigns a claim value and evidence references to each dimension separately. The objects below answer different reproduction questions.
+
+| Dimension | Object whose availability is recorded | Question a reader can ask |
+| --- | --- | --- |
+| `inference_code` | Code that turns inputs into outputs | Can I inspect the prediction procedure? |
+| `training_code` | Code for fitting or updating parameters | Can I inspect the fitting procedure? |
+| `weights` | Released parameter files | Are the trained parameters available? |
+| `architecture` | Model structure or implementable specification | Can I reconstruct the network design? |
+| `data_recipe` | Rules for assembling and processing training inputs | Can I reconstruct the input population? |
+| `training_data` | Data used for fitting | Can I obtain the fitted-on observations? |
+| `evaluation_code` | Code that produces reported evaluation outputs | Can I recompute the reported measure? |
+
+`available` means the cited evidence supports availability of the named object under the record's review. `not_available` records a supported absence on the reviewed surface. `unverified` means the catalogue has not established that claim from its recorded review. It does not say the object is absent everywhere. `not_applicable` is a supported judgement that the dimension does not describe that resource. For a classical toolkit without trained model parameters, the training and weight questions can be inapplicable; missing evidence for a model's training data is a different state.
+
+## Access and permission answer different questions
+
+An access level describes how a resource can be reached, such as `open_source`, `source_available` or `gated`. A licence names terms for a stated scope. Neither field substitutes for the other. A repository can expose inference code under a licence while its weights require separate terms. A dataset can be served publicly while its use terms remain unresolved in the record. Copying the code licence into a weights or data cell would silently enlarge the recorded grant.
+
+Read each licence's scope text before drawing even a narrow reuse conclusion. A phrase such as `only` or `does not` often marks a boundary. The laboratory flags those words as text and leaves the actual permission question to the applicable sources and intended use. The catalogue is a reading aid, not legal advice or a guarantee that an asset is suitable for a purpose.
+
+## Worked case across two inference releases
+
+The `model-boltz-2` record, reviewed on 2026-10-21, marks inference code and weights `available`, with a recorded MIT licence scope covering source code and weights. Its training code, data recipe, training data and evaluation code remain `unverified`. The same scope says named evaluation sets are not covered. An available weight file therefore does not make the reported evaluation independently reproducible from this record.
+
+The `model-alphafold-3-inference` record, reviewed on 2026-09-04, marks inference code `available` but weights `unverified`. Its Apache-2.0 scope is `inference-code`. A caveat says parameters are supplied under separate terms. The common observation is availability of inference code. The records support different statements about weights and do not justify assigning the code terms to them. Read the full evidence identifiers and caveats with the [audit guide](/labs/asset-openness-audit/).
+
+## Independent exercise
+
+Compare `tool-rdkit` and `db-uniprot` in the audit's per-record output. State what each record says about training code, then state whether its access and licence fields settle a reuse decision. Name one evidence item you would inspect next.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+`tool-rdkit` marks training code `not_applicable` because its recorded repository evidence describes a classical toolkit rather than a fitted model. Its access is `open_source`, and its BSD-3-Clause scope names the RDKit source code but excludes third-party components from that grant. `db-uniprot` leaves training code `unverified`. Its access is also `unverified`, and the record has no licence entry. Neither row by itself settles a proposed use. For RDKit, inspect the recorded licence file and any relevant component terms. For UniProt, inspect its current access and terms pages. The records were last verified on 2026-10-23, so a later change requires a new review.
+
+</details>
+
+## What the material does not show
+
+The catalogue tracks declarations and cited pages, not a tested installation or a legal determination. Its evidence references resolve within each record, but this lesson does not reopen every external page or reproduce a model's results. A scope-text flag is not a permission classifier. The [laboratory](/labs/asset-openness-audit/) checks the 24 declared records and reports counts for that set and the full catalogue without treating those counts as reader outcomes.
+
+## Sources and review date
+
+The records and their evidence entries were read locally on 2026-10-23. The worked case points to the [Boltz repository](https://github.com/jwohlwend/boltz), whose catalogue record names MIT for code and weights, and the [AlphaFold 3 inference repository](https://github.com/google-deepmind/alphafold3), whose record names Apache-2.0 for inference code. The exercise points to the [RDKit repository](https://github.com/rdkit/rdkit), whose record names BSD-3-Clause for source code, and the [UniProt site](https://www.uniprot.org/), whose record has no verified licence. These are recorded source claims with their own review dates, not a fresh audit of those sites. Original lesson prose is CC BY 4.0; linked resources retain their own terms.
+
+Last reviewed on 2026-10-23.

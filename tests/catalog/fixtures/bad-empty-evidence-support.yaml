@@ -1,0 +1,31 @@
+id: empty-evidence-support
+name: Empty Evidence Support
+kind: fixture
+summary: Local fixture that claims to support an empty metadata group.
+canonical_url: https://example.org/empty-evidence-support
+identifiers: []
+stages: [discovery]
+modalities: [small-molecule]
+tasks: [catalog-testing]
+relations: []
+status:
+  value: unverified
+access_level:
+  value: unverified
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: fixture-source
+    url: https://example.org/empty-evidence-support/source
+    label: Local fixture source
+    supports: [name, kind, summary, stages, modalities, tasks, relations]
+caveats: []
+acknowledgements: []
+last_verified: "2026-09-04"

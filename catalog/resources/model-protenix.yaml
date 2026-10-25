@@ -1,0 +1,75 @@
+id: model-protenix
+name: Protenix
+kind: software
+summary: Protenix is biomolecular structure prediction software that ships training and inference material together with an open training-data pipeline; the Protenix-v1 model parameters are open, while the Protenix-v2 parameters are proprietary.
+canonical_url: https://github.com/bytedance/Protenix
+identifiers:
+  - scheme: documentation
+    value: "Protenix training and inference instructions"
+    url: https://github.com/bytedance/Protenix/blob/main/docs/training_inference_instructions.md
+  - scheme: documentation
+    value: "Protenix supported models list"
+    url: https://github.com/bytedance/Protenix/blob/main/docs/supported_models.md
+  - scheme: paper
+    value: "Protenix-v1 technical report"
+    url: https://github.com/bytedance/Protenix/blob/main/docs/PTX_V1_Technical_Report_202602042356.pdf
+stages: [structure-prediction, evaluation]
+modalities: [biomolecular-complex]
+tasks: [structure-prediction]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [readme, license] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: available, evidence: [training-instructions] }
+  weights: { value: available, evidence: [readme, supported-models] }
+  architecture: { value: available, evidence: [readme] }
+  data_recipe: { value: available, evidence: [readme, data-pipeline] }
+  training_data: { value: available, evidence: [data-pipeline, data-download] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: covers the Protenix source code and the Protenix-v1 model parameters, protenix_base_default_v1.0.0 and protenix_base_20250630_v1.0.0, per the project README and the LICENSE file; the project statement is not version-specific and the Protenix-v2 restriction below carves the v2 parameters out of it
+    evidence: [readme, license]
+  - name: Proprietary, no open-source licence
+    scope: "covers the Protenix-v2 model parameters only: the project states they are proprietary and confidential information of the rights holder, are not released under any open-source licence, and may not be reproduced, distributed, sublicensed, disclosed or otherwise transferred to any third party without the express prior written consent of the rights holder"
+    evidence: [readme]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/bytedance/Protenix
+    label: Official source for additional resource links (reviewed 2026-09-08, re-opened 2026-10-21)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/bytedance/Protenix
+    label: Protenix repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/bytedance/Protenix/main/README.md
+    label: Protenix README (re-opened 2026-10-21)
+    supports: []
+  - id: training-instructions
+    url: https://raw.githubusercontent.com/bytedance/Protenix/main/docs/training_inference_instructions.md
+    label: Protenix training and inference instructions (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: supported-models
+    url: https://raw.githubusercontent.com/bytedance/Protenix/main/docs/supported_models.md
+    label: Protenix supported models list (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: data-pipeline
+    url: https://raw.githubusercontent.com/bytedance/Protenix/main/docs/prepare_training_data.md
+    label: Protenix training data preparation guide (reviewed 2026-10-21)
+    supports: []
+  - id: data-download
+    url: https://raw.githubusercontent.com/bytedance/Protenix/main/scripts/database/download_protenix_data.sh
+    label: Protenix training data download script (reviewed 2026-10-21)
+    supports: []
+  - id: license
+    url: https://raw.githubusercontent.com/bytedance/Protenix/main/LICENSE
+    label: Protenix Apache-2.0 licence file (re-opened 2026-10-21)
+    supports: []
+caveats:
+  - The Protenix-v2 model parameters are proprietary and confidential, are not released under any open-source licence and may not be redistributed; only the v1 parameters are distributed under Apache-2.0, even though the supported-models table still lists protenix-v2 as a supported model.
+  - The README states training-data cutoffs and an open training-data pipeline, but neither the pipeline guide nor the download script states licence terms for the underlying structures.
+  - The training-data download script pulls processed archives from a project bucket, and the per-component provenance of those archives is not documented on the opened pages.
+acknowledgements: []
+last_verified: "2026-10-21"

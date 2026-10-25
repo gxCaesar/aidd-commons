@@ -1,0 +1,338 @@
+---
+title: What an archived assay licenses
+description: Read six archived PubChem BioAssay dose-response assays and see how each assay's own control record decides which conclusions the archived numbers support.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## What the lab asks
+
+A drug-discovery table carries a potency value and stops there. The assay behind
+that value carries more. It names the endpoint that was measured, it says
+whether the recorded relation was an equality or a bound, it records how many
+replicates the curve had, it names the plate's control regime, and it writes
+down the normalisation equation that was applied to the raw readings. The
+frozen protocol declares one question about those records.
+
+> For a declared set of archived PubChem BioAssay dose-response assays, what
+> does each assay actually contain, and which conclusions does each assay's own
+> control record license?
+
+Six assays are declared and the lab opens each of them in the PubChem BioAssay
+archive. It reads the endpoint, the relation, the replicate structure, the
+control regime and the normalisation equation off the archive itself, and then
+asks the question that decides what a reader may conclude from them. Does each
+assay carry the control record that its own protocol says it has?
+
+Two rules shape every number that follows. An equality is a measurement, while
+a bound is a censored value that states a side of the number rather than the
+number, so the two can never be written the same way. The control record is
+what fixes the scale, so an assay whose protocol never names a control
+licenses much less than an assay that names two of them and writes the
+equation down.
+
+This is a descriptive read of already-published measurements. No model is
+fitted, no prediction is made, and nothing here is a comparison of compounds'
+worth.
+
+## Before you run
+
+**Mode: fresh independent reproduction of a deterministic descriptive pass over
+an archived, byte-checked snapshot.** The first command needs network access
+and the rest do not. The download re-validates every declared byte length
+against the frozen protocol on each run, so a second run against an intact cache
+downloads nothing.
+
+```bash
+.venv/bin/python labs/assay_endpoint_controls/run_lab.py download
+.venv/bin/python labs/assay_endpoint_controls/inspect_assay_endpoint_controls.py show
+.venv/bin/python labs/assay_endpoint_controls/inspect_assay_endpoint_controls.py check
+```
+
+Python 3.11 with NumPy, SciPy and RDKit is required, and the project's pinned
+environment is installed with `uv sync --group dev`. The download writes the
+archived records to `.cache/assay_endpoint_controls/` and nothing else. The
+`show` command prints the reading and the `check` command recomputes the
+invariants and exits non-zero when one is violated. Both are CPU-only and need
+no further network access once the cache is present.
+
+The committed summary is the author's run, computed on 2026-10-21 with Python
+3.11.15, numpy 2.4.6, scipy 1.17.1 and rdkit 2025.09.6. It holds counts,
+distributions and a fixed set of named examples rather than raw rows. A script
+in the same directory regenerates that summary in place from the cache, so it
+overwrites the frozen artifact and is deliberately not part of the reading
+route.
+
+## What the data is
+
+The source is the PubChem BioAssay archive on the US National Library of
+Medicine public FTP site. Each declared assay contributes a per-assay result
+CSV and a per-assay description XML. The archive was read on 2026-10-21.
+
+The access pattern matters because the containers are large and the members are
+small. Every one of these files is a single gzip member inside a ranged
+container zip that holds one thousand assay identifiers. The reader locates
+the container's central directory with HTTP byte-range requests and reads only
+the declared member, so the 1313522439-byte container that holds assay 1277 is
+never downloaded in full. The six assays together cache 407461 bytes.
+
+The frozen protocol records the container URL, the member path inside that
+container, the container's byte length, the member's compressed and
+uncompressed byte lengths and the member's CRC-32 as the archive records it.
+Every run re-checks the archived byte length before it reads anything, so the
+cache is a snapshot rather than a moving target. If the upstream archive
+changes, the check fails instead of silently measuring a different file.
+
+The grouping unit is the PubChem compound identifier within one assay. The
+entity identifier is `PUBCHEM_CID` and the structure is the archived inline
+`PUBCHEM_EXT_DATASOURCE_SMILES`. A row is admitted when it is a data row
+rather than one of the per-column metadata rows that the PubChem CSV format
+places after the header, when the compound identifier is present and is a
+positive integer, when the structure parses into a molecule with at least one
+atom, when the activity outcome is present and not empty, when at least one
+declared endpoint column holds a finite number, when at least five distinct
+concentrations are named by the row's per-concentration columns, and when the
+compound appears once in the assay.
+
+The rule excludes three things by design. The per-column metadata rows
+describe the columns rather than measure anything. A row whose compound
+identifier, structure or activity outcome is missing cannot be placed. A
+compound that appears twice in one assay has no record of its own, because the
+archive does not say which of the two rows is the compound's record.
+
+The six declared assays are these.
+
+- 439, S1P3 Agonist Dose-Response Potency Assay
+- 464, Cell Proliferation & Viability (Cytotoxicity) Dose Response Assay 60K MLSMR
+- 519, Dose Response Assay for Formylpeptide Receptor (FPR) Ligands and Dose Response Counter-Screen Assay for Formylpeptide-Like-1 (FPRL1) Ligands
+- 548, Dose-response biochemical assay for inhibitors of protein kinase A (PKA) activity
+- 691, Zebrafish Lipid Metabolism Assay - Dose-Response Confirmation.
+- 1277, Dose response cell-based screening assay for antagonists of neuropeptide Y receptor Y1 (NPY-Y1)
+
+PubChem is a resource of the US National Library of Medicine. The NCBI general
+policies page is the institutional reference for reuse terms. This lab did not
+read a terms statement specific to the archived BioAssay records, so those
+terms stay unverified rather than being asserted here.
+
+## What the reading is
+
+The cheap baseline comes first and it is the whole of the first half of the
+lab. Across the declared assays there are 1529 admitted endpoint values spread
+over five endpoint labels, and 1257 admitted rows each carrying exactly one
+relation qualifier. The confidence-score distribution, the admitted-value count
+per assay and the replicate structure are all computed before any curve is
+looked at.
+
+The second half reads each assay's own record. For every declared assay the
+lab prints the archived endpoint and its direction, the row counts before and
+after admission, the relation mix within that assay, the replicate structure
+the archived protocol declares, the control regime the protocol declares, the
+reference wells it names, and the normalisation equation in the archive's own
+words.
+
+The equation is then run at its own reference wells. The two values it
+produces have to be 100 units apart, and the lower of them has to sit at zero,
+before the equation can be called a zero-to-hundred response scale. The
+archived per-concentration values then have to fall inside the range the
+equation spans, widened by a band of 25.0 points, for at least a declared
+fraction of 0.95. Where that fails, the archive's own equation does not
+describe the archive's own scale, and the lab says so.
+
+The curve check then recomputes what the archived equation produced. The
+tolerance is fixed at 5.0 points, and the check reports, for the development
+and the held-out points separately, how many curves land within tolerance, how
+many land within a factor of three, and the median, the 90th percentile and the
+worst absolute deviation. The archive's own recorded endpoint values are the
+reference for that comparison, and the fit mode is stated for each assay.
+
+The compound split is a stability check, not an evaluation. It partitions the
+compounds by a deterministic parity of the seed 20261021 and the compound
+identifier, so the same compound always lands in the same half, and it lets a
+reader confirm that the cheap baseline does not move when the compounds are
+divided differently. The protocol says explicitly that no predictive model, no
+train-test evaluation and no held-out scoring belongs in this lab.
+
+## What the numbers are
+
+The readout mix counts every admitted endpoint value.
+
+| Endpoint label | Admitted endpoint values | Fraction of 1529 |
+| -------------- | -----------------------: | ---------------: |
+| AC50           |                      706 |        0.46174   |
+| IC50           |                      429 |        0.280576  |
+| Ki             |                      272 |        0.177894  |
+| EC50           |                       69 |        0.045128  |
+| MIC            |                       53 |        0.034663  |
+| Total          |                    1529 |                  |
+
+The relation mix counts one qualifier per admitted row.
+
+| Relation qualifier | Admitted rows | Fraction of 1257 |
+| ------------------ | -----------: | ---------------: |
+| An equality        |          832 |        0.661893  |
+| A greater-than bound |        406 |        0.322991  |
+| A less-than bound  |            4 |        0.003182  |
+| No qualifier stated |          15 |        0.011933  |
+| Total              |         1257 |                  |
+
+The two mixes do not share a denominator, and the difference is informative.
+The readout mix reaches 1529 because assay 519 records two endpoint columns,
+IC50 and Ki, on each of its 272 admitted rows. The relation mix reaches 1257
+because one qualifier is attached to a row rather than to an endpoint value.
+The two totals therefore differ by exactly the admitted rows of assay 519.
+
+The confidence score reaches its maximum of 100 for 0.002386634844868735 of
+the admitted rows and sits at zero for 0.3206046141607001 of them, with a
+median of 23 and a minimum of 0. The score is a field of the archived record,
+so it is read here as a property of that record and not as a property of the
+underlying experiment.
+
+The compound split puts 644 compounds on the development half and 613 on the
+held-out half. Recomputed on the two halves, the relation mix keeps its shape
+for every assay. The confidence-score median moves from 51.5 on the
+development half of assay 439 to 36 on the held-out half, and from 36 to 36.5
+for assay 548, so the description of an assay shifts a little with the set of
+compounds that happened to be tested in it.
+
+The control record differs across the six assays.
+
+| Assay | Archived endpoint | Admitted rows | Relation mix in the assay | Control regime | Reference wells named | Scale the equation describes |
+| ----- | ----------------- | ------------: | ------------------------- | -------------- | --------------------: | ---------------------------- |
+| 439   | EC50 in uM, activation |        69 | = 55, &gt; 14 | Single positive reference |            1 | Zero-to-hundred |
+| 464   | AC50 in uM, inhibition |       706 | = 591, &gt; 115 | Single positive reference |            1 | Zero-to-hundred |
+| 519   | IC50 and Ki in uM, inhibition |       272 | = 94, &gt; 178 | Positive and negative reference |            2 | Zero-to-hundred |
+| 548   | IC50 in uM, inhibition |        94 | = 64, &gt; 30 | Positive and negative reference |            2 | Shifted |
+| 691   | MIC in uM, categorical |        53 | &gt; 38, unstated 15 | None declared |            0 | Not declared |
+| 1277  | IC50 in uM, inhibition |        63 | &lt; 4, = 28, > 31 | Positive and negative reference |            2 | Zero-to-hundred |
+
+The equation audit separates the assays that carry a scale from the one that
+does not.
+
+| Assay | Archived values, minimum to maximum | Values above 100 | Values below 0 | Fraction inside the range the equation describes | Equation reproduces the archived scale |
+| ----- | ----------------------------------- | ---------------: | -------------: | -------------------------------------------: | ------------------------------------- |
+| 439   | -1.82 to 201.34                     |                4 |           282 |                          0.9985507246376811 | Yes |
+| 464   | -16.3 to 101.2                      |               81 |          3116 |                                        1.0 | Yes |
+| 519   | 0 to 100                            |                0 |             0 |                                        1.0 | Yes |
+| 548   | -5.5 to 111.3                       |                5 |            33 |                          0.7620064034151548 | No  |
+| 691   | Not applicable                      |                0 |             0 |                             Not applicable | Not applicable |
+| 1277  | -6.2 to 410.7                       |               14 |           146 |                          0.9841269841269841 | Yes |
+
+Assay 548 is the case that matters. Its archived protocol names both a
+positive control and a negative control, and it writes the normalisation down,
+but the equation it writes puts the positive reference at 0 and the negative
+reference at -100. Only 0.7620064034151548 of its archived values fall inside
+the range that equation describes, so the equation does not describe the scale
+the archive's own values are on. Assay 691 has the opposite problem. Its
+archived protocol names no control, blank or vehicle, so nothing sets the ends
+of its scale and no equation can be run at all.
+
+The curve check reports what the archived equation produced, on each half of
+the compound split. Assays 439, 464 and 548 are recomputed from the archived
+parameters, and assays 519 and 1277 are refitted from the archived points.
+Assay 691 has a categorical readout, so the check does not apply and neither
+half reports a curve.
+
+| Assay | Curves, development | Curves, held out | Median absolute deviation, development | Fraction within tolerance, development | Fraction within tolerance, held out |
+| ----- | -------------------: | ---------------: | ------------------------------------: | -----------------------------------: | ---------------------------------: |
+| 439   |                   22 |              33 |                0.5452848516799145 |                    0.8272727272727273 |        0.803030303030303 |
+| 464   |                  308 |             283 |                2.180002812003138 |                    0.7996747967479675 |        0.8012048192771084 |
+| 519   |                   54 |              40 |                2.6723002766804966 |                    0.6536082474226804 |        0.6218487394957983 |
+| 548   |                   31 |              33 |                2.1225744518693093 |                    0.7142857142857143 |        0.7181818181818181 |
+| 691   |                    0 |               0 |                  Not applicable |                Not applicable |     Not applicable |
+| 1277  |                   15 |              13 |                1.2815235862437362 |                             0.92 |        0.9384615384615385 |
+
+Where a curve was refitted from the archived points, the fitted half-maximal
+concentration can be compared with the archived endpoint. For assay 1277 the
+median absolute log10 error is 0.3947983848753871 on the development half and
+0.4662742466995601 on the held-out half, and the fraction within a factor of
+three is 0.6666666666666666 and 0.5384615384615384. For assay 464 the held-out
+half gives a median absolute log10 error of 0.006541582591169153 and a fraction
+within a factor of three of 1.0.
+
+## What this does not show
+
+The frozen protocol excludes five things by design, and the exclusion list is
+the machine-readable form of this section.
+
+- No predictive model, no train-test evaluation and no held-out scoring. A descriptive lab that reported an accuracy would be reporting a number about its own code.
+- The raw instrument signal. The archived per-assay CSV carries the response after the depositor's own normalisation, so the raw signal that a control normalisation consumes is not in the archive, and the normalisation equations are exercised on the reference wells rather than on a real plate.
+- The lipophilicity, Delaney, BBBP, Tox21 and HIV datasets. They carry no assay, no control, no concentration and no series, so they cannot support any statement about an assay endpoint.
+- Any comparison of potency between two different assays. Two assays with two different control records do not share a scale.
+- Any statement about an in vivo, clinical or pharmacokinetic consequence. Every declared assay here is an in vitro or cell-based measurement.
+
+Three further limits apply to the reading itself. Six assays are not a sample
+of the archive, so nothing here estimates how relation qualifiers, confidence
+scores or control regimes are distributed across PubChem BioAssay as a whole.
+The admitted values are what the declared admission rule kept, and a reader
+who changes the rule gets a different cohort. A missing control record is
+reported as a fact about the archive and not as evidence that the experiment
+was performed without controls, because the archive records what it records.
+
+The curve check is a check on the archive's internal consistency and on the
+archive's own normalisation equation. It compares a recomputed curve against
+the endpoint values the archive itself recorded, under a fixed tolerance. It
+is not an assessment of the underlying experiment, and it cannot detect an
+error that the archive made consistently in both the readings and the recorded
+endpoints.
+
+## Independent exercise
+
+Answer these three questions from the numbers the reading produces.
+
+1. How many of the admitted rows carry an equality and how many carry a bound, and what does dropping the qualifier do to a greater-than bound and to a less-than bound?
+2. Three of the six assays declare both a positive and a negative reference. Name them, name the one whose archived equation does not reproduce the scale its archived values are on, and give the number that shows it.
+3. For the assay whose archived protocol names no control, blank or vehicle, write one sentence that its own record licenses and one sentence that it does not.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+<p>The 1257 admitted rows each carry one relation qualifier. 832 of them are
+equalities, 406 are greater-than bounds, 4 are less-than bounds and 15 carry no
+qualifier at all, so the bounds are almost a third of the admitted rows. A
+greater-than bound says the true value is larger than the number written, so
+dropping the qualifier reports the boundary
+as if it were the measurement and makes the compound look more potent than the
+archive states. A less-than bound says the true value is smaller, so dropping
+the qualifier makes the compound look less potent than the archive states. A
+ranking built on those numbers inherits both errors.</p>
+
+<p>Assays 519, 548 and 1277 declare a positive and a negative reference. Assays
+439 and 464 declare a single positive reference and assay 691 declares none.
+Assay 548 is the one whose archived equation does not reproduce the archived
+scale. Its equation puts the positive reference at 0 and the negative reference
+at -100, and only 0.7620064034151548 of its archived values fall inside the
+range that equation describes, against 1.0 for assay 519 and 0.9841269841269841
+for assay 1277.</p>
+
+<p>Assay 691 licenses a statement about one compound at the stated
+concentrations, on the terms the archive itself uses, including the boundary
+of its reported threshold. The archive records compound 135415497 as INACTIVE
+and reports its MIC as greater than 100.0 micromolar. It does not license a
+ranking of compounds by potency, a statement that the response was 0 percent
+or 100 percent at any concentration, or a comparison of its thresholds with an
+assay whose scale is defined by named controls.</p>
+
+</details>
+
+## Sources and next lesson
+
+<div data-case-sources>
+
+- [PubChem BioAssay data container holding assays 439, 464, 519, 548 and 691](https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Data/0000001_0001000.zip)
+- [PubChem BioAssay description container holding assays 439, 464, 519, 548 and 691](https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Description/0000001_0001000.zip)
+- [PubChem BioAssay data container holding assay 1277](https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Data/0001001_0002000.zip)
+- [PubChem BioAssay description container holding assay 1277](https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Description/0001001_0002000.zip)
+- [PubChem official page](https://pubchem.ncbi.nlm.nih.gov/)
+- [NCBI policies and reuse terms](https://www.ncbi.nlm.nih.gov/home/about/policies/)
+
+</div>
+
+The companion lesson [What an assay actually contains](/learn/drug-discovery-foundations/assay-endpoint-controls/)
+carries the mechanism behind this reading and the worked case that goes with it.
+This page changes no split, no selected hyperparameter and no frozen result
+elsewhere in the repository.
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0.
+Last reviewed: 2026-10-22.

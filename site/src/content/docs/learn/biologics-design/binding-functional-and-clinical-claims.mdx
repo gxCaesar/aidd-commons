@@ -1,0 +1,131 @@
+---
+title: Binding, response and outcome claims in public records
+description: Use two measured tables to decide which statements their fields support and where the evidence stops.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/binding-functional-and-clinical-claims" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After this lesson, you should be able to name the record needed for an
+endpoint measurement, distinguish it from a concentration response record,
+and explain why neither establishes a clinical outcome. Read
+[developability and validation](/learn/biologics-design/developability-and-validation/)
+and [the independent unit lesson](/learn/foundations/decision-unit-scope/)
+first. The [functional validation audit](/labs/functional-validation-audit/)
+is the runnable companion. Its frozen protocol and two cached public tables
+provide the counts below.
+
+## Three claims and their records
+
+A binding measurement is a statement about a reported endpoint under a named
+assay. The audit requires a ChEMBL binding assay, a Kd or Ki type, a unit and
+an explicit relation before it licenses that statement. An equality permits a
+point value. A bound permits only a statement about which side of a threshold
+the value lies. Other ChEMBL endpoint types may be valid measurements without
+being direct binding records.
+
+A functional response statement needs a response record. In this audit, that
+means numeric readings at several concentrations together with an assay
+description that states the response definition. An endpoint number alone is
+not a response series. Conversely, a response series does not supply a direct
+binding measurement merely because its row also has an endpoint number.
+
+A clinical outcome statement would need an outcome endpoint, the population
+and observation procedure that produced it, and a record linking it to the
+claim being made. Neither of the two tables holds a clinical endpoint. The
+missing route is a property of these tables, not proof that no such record
+exists elsewhere.
+
+## The record rule
+
+The [ChEMBL 37 source lab](/labs/decision-unit-scope/) first applies its
+frozen admission rule for nanomolar endpoint rows. The
+[PubChem source lab](/labs/assay-endpoint-controls/) retains compound rows
+from the declared assays. The audit then assigns a record kind from stated
+fields. It does not choose records because they support a preferred conclusion.
+The reading was computed on 2026-10-23 from snapshots read on 2026-10-21
+with Python 3.11.15 and RDKit 2025.09.6.
+
+| Table | Point measurement | Bound | Concentration response table | No licensed claim | Total records |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| ChEMBL 37 | 488 | 516 | 0 | 0 | 1004 |
+| PubChem BioAssay | 0 | 38 | 1204 | 15 | 1257 |
+
+The ChEMBL table includes 22 binding point claims and 10 binding bound
+claims under the additional assay and endpoint rule. These are counts of
+admitted rows, not independent experiments or estimates for ChEMBL as a
+whole. A bound row is never counted as an exact binding value. None of the
+records licenses a clinical outcome.
+
+## Worked case
+
+Assay 519 has 272 retained compound rows. Each has an IC50 field and a Ki
+field, giving 544 endpoint values. It has 272 response-table records because
+one compound row remains one record. The 544 values must not be described as
+544 independent responses. The assay's numeric concentration series supports
+an observation about its stated response. Its Ki column alone does not make
+that series a direct binding measurement under this audit's rule, which
+requires a ChEMBL binding-assay record. Nothing in either count supplies a
+clinical outcome.
+
+The less complete edge case matters too. Assay 691 has 53 retained rows with
+MIC values but no numeric concentration series. Of these, 38 state a bound and
+15 state no relation. The 38 support only bound endpoint statements. The 15
+license no point or bound statement under the rule, despite carrying numbers.
+A recorded number and a supported claim are different things.
+
+## Independent exercise
+
+A report finds a ChEMBL row with assay type B, endpoint type Ki, unit nM and
+a greater-than relation. It also finds an unrelated PubChem row with a
+numeric response series. The report calls the ChEMBL number an exact binding
+value, treats the two rows as a matched functional confirmation, and states
+that a clinical outcome follows. Identify each unsupported step and name the
+record that would be needed to test it.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The ChEMBL relation licenses a binding bound, not an exact point. A point
+claim would require an equality measurement under the same declared type and
+unit. The PubChem row licenses only the response observed in its own assay.
+Testing a link from binding to response would require paired records for the
+same entity under a matched experiment, which these snapshots do not supply.
+Testing the clinical statement would require a clinical endpoint record and
+its observation procedure. Neither table contains one. The audit therefore
+marks binding-to-response transfer, response-to-clinical transfer and clinical
+outcome as unmeasurable routes.
+
+</details>
+
+## What this material does not show
+
+This is a count over declared public snapshots, not a random sample of all
+assays or patients. It does not test whether a measurement transfers between
+assays, whether a response transfers to a clinical setting, or whether any
+particular entity has a clinical effect. It fits no predictive model and
+reports no reader outcome. Measurement and response are different claims,
+and response is not outcome.
+
+## Run the audit
+
+The [laboratory guide](/labs/functional-validation-audit/) states the fresh
+independent computation mode before its commands. It gives the source-cache
+prerequisites, checks and the small committed summary.
+
+## Sources and attribution
+
+<div data-case-sources>
+
+- [ChEMBL 37 release status](https://www.ebi.ac.uk/chembl/api/data/status.json) and [release licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE), read on 2026-10-21. ChEMBL 37 data are Creative Commons Attribution-ShareAlike 3.0 Unported. The [release README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README) requests ChEMBL and version attribution.
+- [PubChem BioAssay archive](https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/) and [NCBI policies](https://www.ncbi.nlm.nih.gov/home/about/policies/), read on 2026-10-21. Terms specific to the archived assay records remain unverified.
+
+</div>
+
+Original lesson prose is CC BY 4.0 and original laboratory code is
+Apache-2.0. Last reviewed on 2026-10-23.

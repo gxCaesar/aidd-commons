@@ -1,0 +1,61 @@
+{
+  "schema_version": "aidd-commons.rmd17-system-state-v1.locked-summary.v1",
+  "artifact_type": "reviewed-locked-summary",
+  "status": "completed",
+  "protocol_id": "rmd17-system-state-v1",
+  "reviewed_on": "2026-09-08",
+  "software": {
+    "python": "3.11.15",
+    "numpy": "2.4.6",
+    "scikit_learn": "1.9.0"
+  },
+  "selected_alpha": 100.0,
+  "system_count": 2,
+  "partitions_per_system": {
+    "train": 600,
+    "validation": 200,
+    "evaluation": 200
+  },
+  "results": {
+    "benzene": {
+      "train_mean": {
+        "mae": 2.2343735356479013,
+        "rmse": 2.91123450873693,
+        "target_range": 16.804794804076664
+      },
+      "ridge": {
+        "mae": 1.6022730996053722,
+        "rmse": 2.054570317047608,
+        "target_range": 16.804794804076664
+      }
+    },
+    "uracil": {
+      "train_mean": {
+        "mae": 3.720448133704194,
+        "rmse": 4.78449816159085,
+        "target_range": 33.140174655098235
+      },
+      "ridge": {
+        "mae": 3.1238744298947863,
+        "rmse": 4.087259636498694,
+        "target_range": 33.140174655098235
+      }
+    }
+  },
+  "aggregates": {
+    "train_mean": {
+      "median_mae": 2.9774108346760477,
+      "mae_range": 1.4860745980562928
+    },
+    "ridge": {
+      "median_mae": 2.3630737647500792,
+      "mae_range": 1.521601330289414
+    }
+  },
+  "interpretation": [
+    "Each model is fitted on its own system's training frames; this is not zero-shot transfer.",
+    "The reporting units are two molecular systems; frames within each system are correlated.",
+    "No frame-pooled metrics, confidence intervals, p values, force or SOTA claims are reported.",
+    "The original evaluation did not retain per-frame Ridge predictions. Post-run checks recomputed train-mean scores and target ranges, not Ridge scores."
+  ]
+}

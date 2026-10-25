@@ -1,0 +1,74 @@
+---
+title: Three scientific-agent frameworks from 2026
+description: Read AgentD, MDCrow, and LiTENexus through their published code, external dependencies, and access limits.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="scientific-agents/agent-frontier-2026" />
+
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Scientific agents and tools](/learn/scientific-agents/agents-and-tools/) and [Choosing scientific-agent resources and evaluations](/learn/scientific-agents/agent-resource-guide/), use dated catalogue records to distinguish a published framework from a runnable workflow. Identify which parts of an agent come from its repository and which require a separate model, engine, or service. This is a reading lesson with a written exercise. It requires no credentials or execution.
+
+## Comparison contract
+
+AgentD coordinates early drug-discovery tasks, MDCrow connects language-model instructions to molecular-dynamics simulation, and LiTENexus describes a virtual drug-discovery system with a web interface. They solve different problems. Their records establish neither a shared task and evaluation protocol nor a verified access level. A source licence, an architecture description, and an executable route answer different questions. None establishes that a reader can obtain the external models or services a framework calls.
+
+## AgentD
+
+The [AgentD repository](https://github.com/hoon-ock/AgentD) presents a modular agent for early drug discovery. It pools candidate molecules with REINVENT4, iterates affinity and ADMET predictions with language-model-driven refinement, and can generate protein-ligand structures with Boltz. The [README](https://raw.githubusercontent.com/hoon-ock/AgentD/release/README.md) documents the pipeline and its inference code. It names affinity and ADMET prediction steps but does not identify the ADMET predictor, its implementation, or a checkpoint. That omission prevents a reader from tracing how the ADMET values would be computed.
+
+The repository supplies AgentD source, while REINVENT4 and optional Boltz come from their own model projects. The language-model and Serper search calls depend on external services. The example selects a proprietary hosted model, and a run needs both a commercial language-model provider key and a search-service key. Without those credentials, a reader cannot reproduce a run. The repository hosts no pretrained checkpoint or weights-download procedure. Training code and weights remain unverified in the record, as do its data recipe, training data, and evaluation code. The README states an MIT licence for AgentD source. The called models and services retain separate terms, so that source grant does not establish permission or access for the complete workflow. The record also establishes no data-availability statement or named training corpus.
+
+## MDCrow
+
+The [MDCrow repository](https://github.com/ur-whitelab/MDCrow) presents a Langchain-based agent toolset for molecular dynamics. Given a natural-language instruction, it configures and runs an OpenMM simulation and computes requested trajectory analyses. Its [README](https://raw.githubusercontent.com/ur-whitelab/MDCrow/master/README.md) documents inference code and the tool architecture. OpenMM is the separate simulation engine. The language models sit with their providers, not in the repository. The README names OpenAI, TogetherAI, Fireworks, and Anthropic as supported providers and says a provider API key is necessary. A reader without such a key cannot run MDCrow through the documented route.
+
+The repository hosts no pretrained checkpoint and gives no weights-download procedure. Training code and weights are unverified, along with a data recipe, training data, and evaluation code. The README names no dataset, data-availability statement, or repository-hosted data download. The [LICENSE file](https://raw.githubusercontent.com/ur-whitelab/MDCrow/master/LICENSE) states MIT for the repository source, but the README has no licence statement. A reader who consults only the README must inspect the separate LICENSE file to find that grant. OpenMM and the called language models have their own terms. The source licence establishes neither their availability nor a completed simulation.
+
+## LiTENexus
+
+The [LiTENexus repository](https://github.com/lingcon01/LiTENexus) describes an end-to-end virtual drug-discovery system presented as physics-informed by quantum chemical grounding. Its named modules cover operator prediction, a force field, small-model training, ADMET, and a molecular-language interface. The [README](https://raw.githubusercontent.com/lingcon01/LiTENexus/main/README.md) describes the architecture and links to a web interface. That interface is a service, while the repository gives no installation, setup, or code-execution command. Python and PyTorch version badges do not supply one. The record therefore cannot establish an executable repository route or access to the service.
+
+The README names no downloadable checkpoint, weight URL, or acquisition instruction, and it does not say that pretrained versions of the named modules are available. Inference code, training code, and weights remain unverified, as do the data recipe, training data, and evaluation code. The README states Apache-2.0 for the repository's own source. It does not settle terms for the web service or the benchmarks it names. Those benchmarks have no access links in the README, which also has no data-availability statement. Its description of future features and public services is an intention, not an available asset.
+
+## Openness by dimension
+
+The seven columns preserve the catalogue's distinct dimensions. Available means the cited record established access or documentation, not that this lesson executed the asset. Unverified means the record did not establish that dimension.
+
+| Resource | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| AgentD | available | unverified | unverified | available | unverified | unverified | unverified |
+| MDCrow | available | unverified | unverified | available | unverified | unverified | unverified |
+| LiTENexus | unverified | unverified | unverified | available | unverified | unverified | unverified |
+
+## Worked case
+
+A reader has no provider or search API key and no model checkpoint, but wants to inspect AgentD. The AgentD record establishes published inference source and architecture documentation under the MIT statement in its README. It also establishes that REINVENT4 and optional Boltz are obtained from their own projects, while language-model and Serper search calls use external services. It does not establish access to those models or services, their terms, or a checkpoint hosted by AgentD. The reader can inspect the source and documented workflow, but cannot reproduce the documented run with the stated missing credentials. To claim an executable route, the reader would have to establish access and applicable terms for each called dependency and resolve the unspecified ADMET prediction step. No such route was tested here.
+
+MDCrow shows why the location of a licence matters. AgentD's README states MIT, whereas MDCrow's README says nothing about its licence and its LICENSE file supplies the MIT grant. Reading only MDCrow's README leaves the reader without the source-licence evidence. Reading either grant still says nothing about the separate models or services.
+
+## Independent exercise
+
+A colleague treats the LiTENexus web-interface link and its Apache-2.0 statement as proof that a reader can run the named modules. Which openness fields address inference code, architecture, and weights, and what evidence is still needed for an executable-access claim?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+LiTENexus has available architecture documentation, but its inference code and weights are unverified in the catalogue table. The README gives no setup or execution command and no checkpoint acquisition route. Its web link points to a service, while Apache-2.0 covers the repository's own source. A runnable claim would need an established execution route and the relevant asset or service access and terms. Neither a module name nor a licence statement supplies those missing facts.
+
+</details>
+
+## Scope
+
+No framework was run, and no language-model or search service was called. Reported benchmark results are not carried here because the records quote framework claims rather than independent measurements. The licences and service terms of called models, engines, search services, and benchmarks remain separate from each repository's source licence. Reading an openness cell does not execute an asset, verify service access, reproduce an evaluation, or measure reader learning.
+
+## Sources
+
+The catalogue records `agent-agentd`, `agent-mdcrow`, and `agent-litenexus` were each last verified on 2026-10-23. The AgentD record cites its [repository](https://github.com/hoon-ock/AgentD) and [README](https://raw.githubusercontent.com/hoon-ock/AgentD/release/README.md). The MDCrow record cites its [repository](https://github.com/ur-whitelab/MDCrow), [README](https://raw.githubusercontent.com/ur-whitelab/MDCrow/master/README.md), and [LICENSE file](https://raw.githubusercontent.com/ur-whitelab/MDCrow/master/LICENSE). The LiTENexus record cites its [repository](https://github.com/lingcon01/LiTENexus) and [README](https://raw.githubusercontent.com/lingcon01/LiTENexus/main/README.md). Each source retains its own stated scope.
+
+Last reviewed: 2026-10-23.

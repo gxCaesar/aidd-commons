@@ -1,0 +1,63 @@
+id: agent-syn-rrag
+name: Agentic-Syn-RRAG
+kind: agent
+summary: "Retrieval-augmented framework for single-step retrosynthesis and synthesis-protocol generation that runs a Generate-Retrieve-Refine workflow: a locally served supervised-fine-tuned model proposes candidate reactions by reaction-state beam search, RXNGraphormer embeddings drive a FAISS search over patent precedents, a reranking model selects the closest records, and a main model refines the proposal against that evidence into a structured protocol."
+canonical_url: https://github.com/SamSamChu/Agentic-Syn-RRAG
+identifiers:
+  - scheme: paper
+    value: "A retrieval-augmented agent bridges virtual screening and automated synthesis; Zhu, Chen, Wang and seven further authors, ChemRxiv preprint version 1, 2026"
+    url: https://doi.org/10.26434/chemrxiv.15008409/v1
+  - scheme: code
+    value: "Agentic-Syn-RRAG source repository, SamSamChu/Agentic-Syn-RRAG"
+    url: https://github.com/SamSamChu/Agentic-Syn-RRAG
+  - scheme: model-weights
+    value: "Syn-RRAG-Checkpoints, ModelScope repository justcoins/Syn-RRAG-Checkpoints, holding the WIPO multi-task SFT checkpoint, the USPTO-50K SFT checkpoint and the RXNGraphormer weights"
+    url: https://www.modelscope.cn/models/justcoins/Syn-RRAG-Checkpoints
+  - scheme: dataset
+    value: "Syn-RRAG reaction database, FAISS index, index map and training archives, Figshare collection reached through a secret link"
+    url: https://figshare.com/s/9d568a8e2e2dcdf28925
+stages: [make, model-development]
+modalities: [reaction, small-molecule]
+tasks: [retrosynthesis-planning, reaction-prediction, retrieval-augmented-question-answering, agentic-planning]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [synrrag-license] }
+openness:
+  inference_code: { value: available, evidence: [synrrag-readme] }
+  training_code: { value: available, evidence: [synrrag-readme] }
+  weights: { value: available, evidence: [synrrag-readme] }
+  architecture: { value: available, evidence: [synrrag-readme] }
+  data_recipe: { value: available, evidence: [synrrag-readme] }
+  training_data: { value: available, evidence: [synrrag-readme] }
+  evaluation_code: { value: available, evidence: [synrrag-readme] }
+licenses:
+  - name: MIT
+    scope: "The repository carries an MIT licence file and the README states that the project is licensed under the MIT licence. The grant covers the code in this repository. The retrieval assets, the training archives and the released checkpoints are hosted outside it, and the record did not read their terms."
+    evidence: [synrrag-license, synrrag-readme]
+evidence:
+  - id: synrrag-repository
+    url: https://github.com/SamSamChu/Agentic-Syn-RRAG
+    label: Agentic-Syn-RRAG repository (reviewed 2026-10-24)
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: synrrag-readme
+    url: https://raw.githubusercontent.com/SamSamChu/Agentic-Syn-RRAG/main/README.md
+    label: Agentic-Syn-RRAG README (reviewed 2026-10-24)
+    supports: [identifiers, caveats]
+  - id: synrrag-license
+    url: https://raw.githubusercontent.com/SamSamChu/Agentic-Syn-RRAG/main/LICENSE
+    label: Agentic-Syn-RRAG MIT licence file (reviewed 2026-10-24)
+    supports: [caveats]
+  - id: synrrag-publication
+    url: https://licheng-xu-echo.github.io/publications/
+    label: The corresponding author's own publication list, which lists the ChemRxiv preprint (reviewed 2026-10-24)
+    supports: [identifiers, caveats]
+caveats:
+  - "The README reports its own measurements. On the 150 targets it reports reactant accuracy of 48.0 percent for the full Syn-RRAG pipeline, 46.0 percent for the SFT Llama baseline and 14.7 percent for native Gemini-2.5-Pro, and it reports validity of 100.0 percent, elemental consistency of 100.0 percent and structural compatibility of 99.3 percent from its rule checks at Top-1. It reports the standalone SFT backbone on the WIPO-2M held-out test of about ten thousand products at Top-1/3/5/10 of 44.5, 65.1, 70.8 and 75.9 percent. These are the repository's numbers and not a measurement this project made."
+  - "The README defines reactant accuracy as requiring every reference reactant component to appear in the pooled predicted reactants and reagents after RDKit canonicalization, and it pools the two fields because a model may classify a true reactant as a reagent. The README also warns that Top-1, Top-3 and Top-5 taken from a completed Top-10 run are prefixes of the final pooled ranking and need not equal independent runs with a smaller sample count. A reader who compares a prefix number against an independent-run number is comparing two different procedures."
+  - "The README's evaluation set is 150 targets randomly sampled from the product-disjoint WIPO-2M held-out test set, and the three wet-lab-confirmed targets in the demo file are a separate short demonstration rather than part of that set. The README states that the framework was experimentally validated by successfully synthesising three virtually screened drug candidates on an automated platform; the record did not read the paper, so it carries the README's statement and not a check of the synthesis."
+  - "The README states that the pipeline's reranking and protocol refinement are driven by an external model over an OpenAI-compatible endpoint, with a default reranking model of gemini-2.5-flash and separate credentials for the main model and the reranking model. The code is open, but the default configuration is not self-contained, and a reader who runs it needs those endpoints and their terms."
+  - "Training is reproduced by applying a patch to LLaMA-Factory at the pinned commit 2b27283ba0566eda9ec7ac335642807189c87e70, because the patch modifies internal data loading, SFT workflow and trainer files. The patch is environment-specific and has to be adapted, and the README recommends CUDA 12.8 and four GPUs."
+  - "The reaction database, FAISS index, index map and the WIPO and USPTO-50K training archives are hosted on a Figshare collection reached through a secret link, and the released checkpoints are hosted on ModelScope. The record could not open either host's terms, so the licence of those assets stays unverified and only the repository's own MIT licence is recorded."
+  - "The record establishes what the framework is, how it may be obtained and what its own authors report. It does not establish that a protocol it produces is executable, and no synthesis was run here."
+acknowledgements: []
+last_verified: "2026-10-24"

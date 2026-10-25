@@ -1,0 +1,170 @@
+---
+title: Flows and constrained molecular search
+description: Use a generative density model as one part of a frozen candidate-space and selection policy, rather than treating generated strings as discoveries.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="molecular-generation/flows-and-constrained-search" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will define the candidate space before a generator is chosen, explain what
+an invertible normalizing flow can and cannot score, and make a transparent
+multi-objective shortlist without hiding selection rules. Read [Generation and
+search](/learn/molecular-generation/generation-and-search/) and [Generative
+model mechanisms](/learn/molecular-generation/generative-model-mechanisms/)
+first. This is a browser and hand-calculation lesson, not a runnable generator,
+a synthesis plan, an activity prediction, or an experimental nomination.
+
+## A candidate space is more than a representation
+
+Let `C` be the set of candidates a process may propose. Before sampling, define
+the representation, allowed atoms/bonds, scaffold or fragment grammar, prohibited
+motifs, stereochemistry, protonation/tautomer handling, and hard constraints. A
+string, graph, conformer, and protonation state can be different `C` members, so
+deduplication must name identity. Grammar controls proposals but does not prove
+stability, use, synthesizability, or novelty. Validity needs a named checker and
+representation. A generator output is a traceable proposal, not a discovery.
+
+## What a normalizing flow models
+
+For a continuous representation with an invertible transform `z = f_theta(x)`,
+the change-of-variables rule gives
+
+`log p_X(x) = log p_Z(f_theta(x)) + log|det J_f_theta(x)|`.
+
+Here `p_Z` is a base density and `J_f_theta(x)` is the transform's Jacobian. The
+equation explains why a normalizing flow can pair sampling with an exact density
+calculation for its declared representation. It does not mean that the density
+is a probability of biological activity, clinical utility, or chemical success.
+The representation must support invertibility and a tractable determinant;
+variable-size molecular graphs, discrete tokens, stereochemical alternatives,
+and constrained grammars add design choices outside this simple equation.
+
+One **constructed 1D hand calculation** makes the Jacobian concrete. Let
+`z = x/2`. At `x = 2`, `z = 1` and `|dz/dx| = 1/2`. With a standard-normal base
+density `phi(1) = 0.24197`, the transformed density is
+`p_X(2) = 0.24197 x (1/2) = 0.120985`. This is a density at `x = 2`, not a
+probability that a molecule exists, is valid, or succeeds in an assay.
+
+**Mechanism hand exercise (not runnable or empirical):** Keep `z = x/2` and the
+standard-normal base. At `x = 0`, calculate `z`, `phi(z)`, and `p_X(0)`.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+At `x = 0`, `z = 0`; `phi(0) = 0.39894` and
+`p_X(0) = 0.39894 x (1/2) = 0.19947`. It remains a continuous density, not a
+probability assigned to a candidate or an empirical outcome.
+
+</details>
+
+Rezende and Mohamed used normalizing flows to construct richer variational
+distributions through invertible transformations
+[Variational Inference with Normalizing Flows](https://arxiv.org/abs/1505.05770).
+Related continuous-time approaches can learn a vector field, schematically
+`dx_t/dt = v_theta(x_t, t)`, along a chosen probability path
+[Flow Matching for Generative Modeling](https://arxiv.org/abs/2210.02747).
+Neither formulation makes a chemistry representation valid by itself. State
+which model supplies the candidate proposal and which independent checks operate
+after decoding it.
+
+## Search requires frozen objectives and visible gates
+
+Molecular selection usually involves incompatible objectives. A scalar objective
+such as `S(x) = w_1 a(x) + w_2 b(x) - w_3 c(x)` is only interpretable if the
+definitions, scales, weights, and hard exclusions are fixed before inspecting
+the preferred outputs. `a(x)` might be a declared model score, `b(x)` a property
+proxy, and `c(x)` a penalty. They are not measurements merely because they have
+numbers. A Pareto rule can avoid arbitrary weights: candidate `x` dominates `y`
+only if it is no worse on every stated objective and better on at least one.
+
+Declare diversity as graph, scaffold, or embedding distance, or a cap on close
+analogues. A near-duplicate batch is not independent evidence. Keep hard gates
+separate from ranking, then retain candidates, filters, score versions, and rule.
+
+| Stage        | Required record                                                              | Do not substitute              |
+| ------------ | ---------------------------------------------------------------------------- | ------------------------------ |
+| proposal     | model/version, seed policy, input grammar and decoded identity               | a display name                 |
+| validity     | checker, standardization policy and failure reason                           | an unverified string           |
+| hard triage  | predeclared exclusion or feasibility rule                                    | a compensating high score      |
+| ranking      | score definitions, calibration set if any, and frozen weights or Pareto rule | a manually preferred example   |
+| batch choice | diversity definition, duplicate rule and retained alternatives               | the count of generated samples |
+
+## Run the gates yourself
+
+The lesson argues that objectives must be frozen and gates visible. The
+[generation gate lab](/labs/generation-gate/) makes both runnable offline: it
+refuses to screen against an objective whose properties carry no bounds or whose
+motifs carry no pattern, then applies six gates whose denominators chain, so the
+headline valid figure and the survivor count can be compared directly.
+
+## Worked case: a transparent constructed shortlist
+
+All values in this case are **constructed for teaching**. A team freezes three
+rules before looking at candidates: `valid = 1`; a resource proxy must satisfy
+`h(x) >= 0.70`; and the second batch member must have diversity distance at least
+`0.20` from the first. Its declared objectives are to maximize `a(x)` and
+`b(x)`, without converting them into a single weighted score.
+
+| Candidate | `valid` | `h(x)` | `a(x)` | `b(x)` | distance from A |
+| --------- | ------: | -----: | -----: | -----: | --------------: |
+| A         |     `1` | `0.76` | `0.82` | `0.61` |          `0.00` |
+| B         |     `1` | `0.68` | `0.91` | `0.77` |          `0.45` |
+| C         |     `1` | `0.79` | `0.84` | `0.64` |          `0.08` |
+
+Candidate B fails the hard `h(x)` gate despite its attractive model scores.
+Candidate C dominates A on the two stated scores and passes `h(x)`, but it is
+not eligible as a second batch member after A because `0.08 < 0.20`. The team
+may nominate C instead of A if it writes that choice and applies the same batch
+rule from C's perspective; it may not report only A and B to suggest that a
+high score overcame a failed gate. This is a selection-policy exercise, not a
+claim about real molecules or assay outcomes.
+
+## Limits and independent exercise
+
+Density inherits training bias; checkers and property/feasibility proxies can
+fail. More candidates add selection pressure, not evidence. Retain unselected
+and failed cases so a later result can be traced to the policy.
+
+**Handworked exercise (not runnable or empirical):** A constructed batch has
+hard rule `q(x) >= 0.60` and diversity threshold `0.30`. D has `q(x) = 0.64`,
+score `0.70`; E has `q(x) = 0.58`, score `0.94`; F has `q(x) = 0.71`, score
+`0.72`, and distance `0.22` from D. Which candidates fail a hard gate, and may
+F be added after D? Name one record that prevents a later reader from mistaking
+this selection for an empirical discovery.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+E fails because `0.58 < 0.60`. F passes the hard rule but cannot be added after
+D under the stated diversity policy because `0.22 < 0.30`. Useful records
+include the exact candidate identity and standardization, model and score
+versions, the frozen gate and diversity definitions, all candidates considered,
+and the reason for each exclusion. None of the constructed scores establishes
+activity, safety, or synthesis success.
+
+</details>
+
+## Sources and next lesson
+
+The following source papers were opened on 2026-09-09. They support the
+probabilistic formulations, not the constructed search scores or a claim that a
+generated candidate is useful.
+
+<div data-case-sources>
+
+- [Variational Inference with Normalizing Flows](https://arxiv.org/abs/1505.05770)
+- [Flow Matching for Generative Modeling](https://arxiv.org/abs/2210.02747)
+
+</div>
+
+Continue to [Reaction mapping and route search](/learn/synthesis-and-automation/reaction-mapping-and-route-search/)
+to see why a molecular proposal requires a separately recorded transformation
+and route hypothesis. Original lesson prose is CC BY 4.0; linked sources retain
+their own terms.
+
+Last reviewed: 2026-09-09.

@@ -1,0 +1,157 @@
+---
+title: Repeating is not transporting
+description: Read a completed two-assay screening replay in units of recovered targets, and see why the outcome that sounds most decisive carries the least evidence.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="screening-transport" />
+
+## Before you run
+
+**Mode: runnable inspection of committed files.** The command reads the completed
+pool-budget replay and the ChEMBL development summary this repository already
+ships. Nothing is fitted, no compound is acquired, and no experiment is run.
+
+```bash
+python labs/screening_transport/inspect_transport.py show
+```
+
+A policy that loses in two assays looks twice as convincingly beaten as one that
+loses in a single assay. **That inference needs two things the headline never
+carries**, and this lab checks both.
+
+## 1. Enrichment without its denominator is unreadable
+
+Recovery is counted in targets. The two contexts hold **64** and **13** of them.
+
+One recovered target moves the score by 0.015625 in the first context and
+0.076923 in the second, so the coarser one measures recovery in steps **4.92
+times larger**. The same reported number therefore means a different amount of
+evidence in each, and neither is readable without the target count printed beside
+it.
+
+Everything below is expressed in that unit, because it is the only one that makes
+the two contexts comparable.
+
+## 2. The baseline range is about one target wide, in both
+
+Five fixed random instances span 0.096154 in one context and 0.025391 in the
+other. Converted, those are **1.25** and **1.62 recovered targets**.
+
+A range that narrow is describing the arithmetic of a small target set, not the
+variability of a population. It cannot carry an error bar — which is the same
+conclusion the [pool-budget contract inspection](/labs/pool-budget-contract-inspection/)
+reaches from the protocol's own wording, arrived at here from the measurement
+resolution instead.
+
+## 3. The most decisive-sounding outcome carries the least evidence
+
+In `CHEMBL3705421` the designed diversity policy recovered **nothing at all**. Its
+score is 0.0. That sounds total.
+
+It lost to the worst random instance by **0.12 of a single target**.
+
+In the other context, where it did not score zero, it lost by 1.62 targets — more
+than thirteen times the margin. **The outcome that reads as a rout is the one
+supported by almost nothing**, because a context with few targets produces
+large-looking scores from small counts. A reader who saw only the zero would have
+drawn the opposite conclusion about which result was stronger.
+
+## 4. Did it transport, or only repeat?
+
+```bash
+python labs/screening_transport/inspect_transport.py check
+```
+
+**What makes the repeat worth something:** the two assays share **zero** parent
+compounds. The chemistry is disjoint rather than the same molecules measured
+twice, and a check requires that.
+
+**What holds it back**, taken from the record's own disclosures rather than
+inferred: both replays are retrospective on the same target, under one frozen
+protocol, with one feature set, and with a penalty informed by an earlier lab. A
+repeat under a shared protocol tests the policy in a second chemistry, not in a
+second world.
+
+Eleven checks run, covering the derived resolution, the spread in target units,
+the losing margins, the disjoint chemistry, the five fixed instances, and the
+floored batch sizes that keep both realised budgets below their nominal fifth.
+
+## 5. What this cannot address
+
+**Off-targets.** Both replays are assays on the same target, so nothing here
+speaks to selectivity or to activity somewhere unintended. The topic definition
+names off-targets and this evidence does not reach them.
+
+**Prospective follow-up.** Both replays are retrospective on completed
+measurements.
+
+The command prints both limits rather than leaving them to be noticed, which is
+the same discipline as the
+[property decision lab](/labs/property-decision-threshold/) stating that it
+cannot populate its abstention band.
+
+## Independent exercise
+
+A colleague reports: "We tested our diversity selector against random on two
+independent assays. It lost on both. We're dropping diversity selection from the
+platform."
+
+Say what "independent" is doing in that sentence, and what you would need before
+agreeing to a platform-level decision.
+
+<details data-worked-answer>
+<summary>Worked answer — two senses of independent, and the decision scope</summary>
+
+**"Independent" is carrying two claims at once.** In one sense the assays are
+independent because they share no compounds, which is true here and is what makes
+a repeat informative at all. In the other sense they would be independent
+evidence about the selector, which they are not: one target, one frozen protocol,
+one feature set, one penalty chosen with knowledge of an earlier lab. The
+sentence borrows the credibility of the first sense to support the second.
+
+**"Lost on both" hides how much it lost by.** Converted into recovered targets,
+one loss is 1.62 and the other is 0.12. The second is an eighth of a single
+target, in a context where the entire baseline spread is 1.25 targets. Two losses
+of very different evidential weight are being counted as two.
+
+**The measurement may not resolve the effect.** With 13 targets, the smallest
+observable difference is 0.077 in score units. A selector could be meaningfully
+better or worse and this context would not see it. That is a statement about the
+assay, not about the selector.
+
+**"Platform" is the wrong scope.** The evidence covers one target family, one
+protocol and two retrospective replays. A platform decision applies to every
+future target, every future protocol and prospective use, none of which is
+represented.
+
+**What you would need.** A target where the selector is expected to help and the
+target count is large enough to resolve the claimed effect; a protocol not
+inherited from the arm being tested; and a prospective round, because both of
+these are replays of measurements that already existed. Short of that, the
+defensible decision is about this protocol on this target, which is what the
+completed record actually supports and what its own interpretation says.
+
+</details>
+
+## What this does not do
+
+This route does not run a screen, acquire a compound, or establish that any
+policy is better. It reads two completed retrospective replays and reports what
+they can and cannot support. Its authority is exactly the authority of those
+artifacts, which carry their own protocol and review date.
+
+The replay itself is the
+[pool-budget campaign](/labs/pool-budget-campaign/), and its protocol is read by
+the [pool-budget contract inspection](/labs/pool-budget-contract-inspection/).
+For the surrounding argument see
+[acquisition, delays and stopping](/learn/active-learning/acquisition-delays-and-stopping/)
+and
+[screening prevalence and transfer](/learn/dti-screening/screening-prevalence-and-transfer/).
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-11.

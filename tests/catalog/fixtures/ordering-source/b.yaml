@@ -1,0 +1,31 @@
+id: atom-2
+name: Atom Two
+kind: fixture
+summary: Local fixture for deterministic ordering.
+canonical_url: https://example.org/atom-2
+identifiers: []
+stages: [discovery]
+modalities: [small-molecule]
+tasks: [catalog-testing]
+relations: []
+status:
+  value: unverified
+access_level:
+  value: unverified
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: fixture-source
+    url: https://example.org/atom-2/source
+    label: Local fixture source
+    supports: [name, kind, summary, stages, modalities, tasks]
+caveats: []
+acknowledgements: []
+last_verified: "2026-09-04"

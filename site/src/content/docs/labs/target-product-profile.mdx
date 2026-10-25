@@ -1,0 +1,92 @@
+---
+title: A target product profile that measurements can contradict
+description: Apply declared gates and preferences to admitted ChEMBL measurements without treating missing evidence as success.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+Read the [target product profile lesson](/learn/drug-discovery-foundations/product-profile-and-series/) and the [multi-endpoint integration laboratory](/labs/multi-endpoint-integration/). This task asks you to declare an illustrative profile, apply it to admitted measurements, count mandatory contradictions, and keep preference misses and unmeasured requirements separate. The profile is judged over ChEMBL parent molecules, one parent per counted compound.
+
+## Fresh independent computation
+
+The mode is a fresh independent computation under a frozen protocol. The illustrative requirements and thresholds are declared before the cached measurements are read. They are teaching decisions, not thresholds fitted or selected from this cohort. Use the project's Python 3.11 environment. Once the owning laboratories' snapshots are cached, all commands run without network access or an accelerator. The first command validates those existing snapshots and writes nothing. Export writes the small committed summary only after the audit passes.
+
+```bash
+.venv/bin/python labs/target_product_profile/run_lab.py download
+.venv/bin/python labs/target_product_profile/inspect_target_product_profile.py show
+.venv/bin/python labs/target_product_profile/inspect_target_product_profile.py check
+.venv/bin/python labs/target_product_profile/export_summary.py
+.venv/bin/python -m pytest labs/tests/target_product_profile -q
+```
+
+The `show` command lists every joined parent with gates passed or failed, preferences missed, and requirements left unmeasured. The `check` command recomputes the outcomes from the validated readers and exits non-zero if a gate-failing parent is reported as profile-satisfying or if any other invariant fails.
+
+## Declared profile and requirements
+
+The illustrative setting is an adult advanced solid-tumour population and an oral route. The source compounds were not selected for this setting. A gate is mandatory. A preference is desirable but its miss is not a gate failure. For a matching endpoint, all admitted values must meet the declared threshold. No matching value means unmeasured.
+
+| Requirement | Class | Measurement family and endpoint | Declared rule |
+| --- | --- | --- | --- |
+| `response_ic50` | Gate | Efficacy proxy, exact response `IC50` | Every point at most 1000 `nM` |
+| `human_microsome_clearance` | Gate | Exposure proxy, human liver microsomes | At most 50 `mL.min-1.g-1` |
+| `cyp3a4_inhibition` | Gate | Interaction proxy, CYP3A4 | At most 5 `pChEMBL (dimensionless)` |
+| `rat_hepatocyte_clearance` | Preference | Exposure proxy, rat hepatocytes | At most 30 `uL.min-1.(10^6cells)-1` |
+| `cyp2d6_inhibition` | Preference | Interaction proxy, CYP2D6 | At most 5 `pChEMBL (dimensionless)` |
+| `clinical_response` | Gate | Clinical efficacy, no measurement | At least 30 `%` objective response rate |
+| `immunogenicity` | Preference | Immunogenicity, no measurement | At most 5 `%` treatment-emergent anti-drug antibody incidence |
+
+The response `IC50` rule is an assay-agnostic teaching screen, not a target-specific efficacy standard. A compound that fails any mandatory gate may not be reported as profile-satisfying. A requirement without a measurement may not be reported as satisfied. Missing a preference does not disqualify the compound.
+
+## Cohort and measured results
+
+The three owning readers admit response potency, intrinsic clearance and CYP inhibition under their own rules. The existing integration join supplies a 7,908-parent union. The laboratory applies the profile to its 58 parents with at least two measured families. The remaining 7,850 have one measured family and are outside this task's cohort. No parent in the 58 has all three measured families.
+
+| Mandatory gate | Pass | Fail | Unmeasured |
+| --- | ---: | ---: | ---: |
+| Response `IC50` | 0 | 1 | 57 |
+| Human liver microsome clearance | 24 | 5 | 29 |
+| CYP3A4 inhibition | 19 | 20 | 19 |
+| Clinical response | 0 | 0 | 58 |
+
+| Preference | Met | Missed | Unmeasured |
+| --- | ---: | ---: | ---: |
+| Rat hepatocyte clearance | 15 | 12 | 31 |
+| CYP2D6 inhibition | 11 | 19 | 28 |
+| Immunogenicity | 0 | 0 | 58 |
+
+## Contradictions and unresolved requirements
+
+The cached computation on 2026-10-23 finds 21 parents that fail at least one measured mandatory gate. Another 37 have no observed gate failure. CYP3A4 is the most frequently failed gate with 20 failing parents. The complete identifiers are printed by `show`. `CHEMBL1276308`, `CHEMBL17157`, `CHEMBL205807`, `CHEMBL296419` and `CHEMBL6966` fail the human liver microsome gate. `CHEMBL1144` fails the response `IC50` gate. Some parents fail several gates, so gate-failure counts are not summed to count contradicted parents.
+
+No parent satisfies the full profile because the clinical response gate is unmeasured for all 58. The immunogenicity preference is also unmeasured for all 58. Neither is a pass. The 12 rat-hepatocyte and 19 CYP2D6 preference misses are reported separately from the 21 compounds with mandatory contradictions. If all measured compounds passed every gate, the profile would have no observed discriminating failure in this cohort, and the audit would require that to be stated.
+
+## Limits of the material
+
+A profile applied to these measurements decides only what these measurements can decide. Response potency is an in vitro proxy, not clinical efficacy. Intrinsic clearance is an in vitro exposure proxy, not measured systemic exposure. CYP inhibition is not a clinical interaction outcome. The selected ChEMBL subsets are not a prospective matched panel. Clinical response and immunogenicity have no measurement here, and passing the measured gates would not establish that a compound is a development candidate. The laboratory does not rank compounds by how many gates they pass.
+
+Human liver microsomes report clearance per gram of protein. Hepatocytes report clearance per million cells. The physical bases differ, so the two values cannot be divided into a clearance fold change. The rules compare each assay system only with a threshold in its own unit.
+
+## Independent exercise
+
+Inspect `CHEMBL1232461` in the `show` output. Identify a measured gate outcome, a preference outcome, and a requirement that remains unmeasured. Explain why its two clearance systems cannot form one fold change.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The human liver microsome gate passes, while the CYP2D6 preference is missed. The CYP3A4 gate and clinical response gate are unmeasured. The microsome and hepatocyte clearance values use different physical denominators, so their quotient is not a clearance fold change.
+
+</details>
+
+## Sources and licences
+
+| Cached snapshot | Source and licence | Read on |
+| --- | --- | --- |
+| Response potency | [ChEMBL 37 release](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/) under [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-10-21 |
+| Intrinsic clearance | [AstraZeneca dataset CHEMBL3301361](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361) in ChEMBL 37 under [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+| CYP inhibition | [ChEMBL 37 release](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/) under [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+
+Original guide prose is CC BY 4.0 and original laboratory code is Apache-2.0. Last reviewed 2026-10-23.

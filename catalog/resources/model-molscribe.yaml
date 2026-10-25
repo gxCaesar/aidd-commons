@@ -1,0 +1,64 @@
+id: model-molscribe
+name: MolScribe
+kind: model
+summary: Image-to-graph model that predicts the atoms and bonds of a chemical structure image and returns them as SMILES, a molfile and confidence values, with training and evaluation scripts included.
+canonical_url: https://github.com/thomas0809/MolScribe
+identifiers:
+  - scheme: paper
+    value: "MolScribe: Robust Molecular Structure Recognition with Image-to-Graph Generation; Journal of Chemical Information and Modeling 63(7), 1925-1934 (2023); DOI 10.1021/acs.jcim.2c01480"
+    url: https://doi.org/10.1021/acs.jcim.2c01480
+  - scheme: model-weights
+    value: MolScribe checkpoints swin_base_char_aux_1m.pth and swin_base_char_aux_1m680k.pth on the Hugging Face Hub
+    url: https://huggingface.co/yujieq/MolScribe
+stages: [data-intake, representation-learning, evaluation]
+modalities: [small-molecule, molecular-graph]
+tasks: [chemical-identity-resolution, molecular-representation-learning]
+relations:
+  - type: uses
+    target: model-img2mol
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository-tree] }
+  training_code: { value: available, evidence: [repository-tree] }
+  weights: { value: available, evidence: [huggingface, readme] }
+  architecture: { value: available, evidence: [repository-tree] }
+  data_recipe: { value: available, evidence: [readme] }
+  training_data: { value: available, evidence: [huggingface, readme] }
+  evaluation_code: { value: available, evidence: [repository-tree] }
+licenses:
+  - name: MIT
+    scope: Repository source; the LICENSE file reads "Copyright (c) 2022 Yujie Qian". The Hugging Face repository that hosts the checkpoints and the uspto_mol.zip and pubchem.zip archives carries the same MIT label, while the README states no separate terms for the USPTO Grant Red Book and PubChem sources behind those archives.
+    evidence: [license, huggingface, readme]
+evidence:
+  - id: repository
+    url: https://github.com/thomas0809/MolScribe
+    label: MolScribe repository page, reviewed 2026-10-21
+    supports: [name, kind, summary, stages, modalities, tasks, relations, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/thomas0809/MolScribe/main/README.md
+    label: MolScribe README, reviewed 2026-10-21
+    supports: [summary, identifiers, stages, modalities, tasks, relations, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/thomas0809/MolScribe/main/LICENSE
+    label: MolScribe MIT licence file, reviewed 2026-10-21
+    supports: []
+  - id: repository-tree
+    url: https://api.github.com/repos/thomas0809/MolScribe/git/trees/main?recursive=1
+    label: MolScribe repository file tree, reviewed 2026-10-21
+    supports: []
+  - id: huggingface
+    url: https://huggingface.co/api/models/yujieq/MolScribe
+    label: MolScribe model repository metadata on the Hugging Face Hub, reviewed 2026-10-21
+    supports: [identifiers, caveats]
+  - id: crossref
+    url: https://api.crossref.org/works/10.1021/acs.jcim.2c01480
+    label: Crossref metadata for the MolScribe paper, reviewed 2026-10-21
+    supports: [identifiers]
+caveats:
+  - The training archives uspto_mol.zip and pubchem.zip are re-hosted on a model repository whose licence tag is MIT; the README gives no separate terms for the USPTO Grant Red Book and PubChem sources behind them, and the per-column provenance of the rendered images is not documented.
+  - Training renders images with a modified copy of Indigo vendored under molscribe/indigo/; the repository does not state the terms that apply to that vendored code.
+  - The checkpoints are hosted on the Hugging Face Hub and Dropbox rather than in the repository, so availability depends on those hosts. The Hub listing carries the three checkpoint files and the uspto_mol.zip, pubchem.zip, real.zip, perturb.zip and synthetic.zip archives, while the model repository's README file is empty.
+  - The perturbed benchmark is taken from the Img2Mol repository; the relation recorded here covers that benchmark data reuse and not the Img2Mol model weights.
+acknowledgements: []
+last_verified: "2026-10-21"

@@ -1,0 +1,89 @@
+{
+  "artifact_type": "reviewed-aggregate-results",
+  "reviewed_on": "2026-09-04",
+  "dataset": {
+    "raw_url": "https://raw.githubusercontent.com/MobleyLab/FreeSolv/v0.52/database.txt",
+    "release_doi": "10.5281/zenodo.1161245",
+    "tag": "v0.52"
+  },
+  "primary_split": "scaffold",
+  "units": {
+    "mae": "kcal/mol",
+    "mean_width": "kcal/mol",
+    "radius": "kcal/mol",
+    "rmse": "kcal/mol"
+  },
+  "splits": {
+    "random": {
+      "counts": {
+        "test": 64,
+        "train": 514,
+        "validation": 64
+      },
+      "interval_metrics": {
+        "morgan_random_forest": {
+          "coverage": 0.875,
+          "mean_width": 5.158025714285704,
+          "radius": 2.579012857142852
+        },
+        "morgan_ridge": {
+          "coverage": 0.734375,
+          "mean_width": 3.165296633480907,
+          "radius": 1.5826483167404535
+        }
+      },
+      "point_metrics": {
+        "morgan_random_forest": {
+          "mae": 1.367663970058587,
+          "rmse": 1.940465105055399
+        },
+        "morgan_ridge": {
+          "mae": 1.0188311172825968,
+          "rmse": 1.350762375741371
+        },
+        "train_mean": {
+          "mae": 2.767137645914397,
+          "rmse": 3.450364249313157
+        }
+      }
+    },
+    "scaffold": {
+      "counts": {
+        "test": 64,
+        "train": 514,
+        "validation": 64
+      },
+      "interval_metrics": {
+        "morgan_random_forest": {
+          "coverage": 0.90625,
+          "mean_width": 6.013026666666674,
+          "radius": 3.006513333333337
+        },
+        "morgan_ridge": {
+          "coverage": 0.875,
+          "mean_width": 5.478728133879933,
+          "radius": 2.7393640669399666
+        }
+      },
+      "point_metrics": {
+        "morgan_random_forest": {
+          "mae": 1.2568836078869037,
+          "rmse": 2.0375968699271554
+        },
+        "morgan_ridge": {
+          "mae": 1.1280482645936036,
+          "rmse": 1.7597471244251413
+        },
+        "train_mean": {
+          "mae": 2.590685189688716,
+          "rmse": 3.2880606447088776
+        }
+      }
+    }
+  },
+  "caveats": [
+    "The scaffold split is the predeclared primary result; the random split is an easier contrast.",
+    "The intervals report empirical marginal coverage, not conditional calibration.",
+    "These fixed teaching baselines do not establish state of the art or prospective drug-discovery utility."
+  ]
+}

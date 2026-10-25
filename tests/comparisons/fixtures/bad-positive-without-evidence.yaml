@@ -1,0 +1,29 @@
+id: bad-positive-without-evidence
+name: Unsupported positive coverage
+provider_class: tutorial-collection
+canonical_url: https://example.org/unsupported-positive
+summary: A fixture whose positive depth has no evidence reference.
+audiences: [researchers]
+languages: [en]
+metadata_evidence: [overview]
+access:
+  content: { value: unverified }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage:
+  - topic_id: molecular-fingerprints
+    depth: explained
+    evidence: []
+    reviewed_scope: Public tutorial page
+    note: The fixture intentionally omits evidence.
+evidence:
+  - id: overview
+    url: https://example.org/unsupported-positive
+    title: Unsupported positive overview
+    observed_scope: System identity only.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

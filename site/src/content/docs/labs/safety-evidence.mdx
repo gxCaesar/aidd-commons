@@ -1,0 +1,146 @@
+---
+title: An alert is not a finding
+description: Separate structural alerts, assay outcomes, organ liabilities, dose context and organism-level evidence, and see how much of a safety profile was never measured.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="safety-evidence" />
+
+## Before you run
+
+**Mode: runnable inspection of a constructed record.** The command reads one
+committed JSON file and matches substructures with RDKit. **No outcome here is a
+real result**, no compound was tested, and **nothing in this lab is a safety
+assessment of any substance.**
+
+```bash
+python labs/safety_evidence/inspect_safety.py show
+```
+
+A tox profile prints five different kinds of evidence in one column, and they are
+read as one gradient of badness. They are obtained five different ways and can be
+wrong about five different things.
+
+## 1. The record never stores an alert
+
+The file stores findings that **required an experiment**: an assay outcome, an
+organ liability, an organism-level observation. Alerts are computed from the
+structure every time and stored nowhere.
+
+That is the whole design decision. Storing an alert beside a measured outcome is
+the collapse this lab is about, so a check refuses a record that does it and a
+known-bad test performs it to prove the check fires.
+
+## 2. Most of the alerting compounds were never measured
+
+**7 of 12** compounds match at least one alert. **5 of those carry no measured
+finding at all.**
+
+Their entire safety record is a pattern match. Nobody ran anything. On a profile
+page that column looks exactly like the column next to it, which holds results.
+
+One compound matches **two** alerts while carrying no finding. The alert count
+rose. The evidence did not.
+
+## 3. The levels disagree, and two of the disagreements are different
+
+| situation | compounds |
+| --- | --- |
+| alert fired, a measurement said negative | `c01` |
+| alert fired, nobody measured anything | `c03` `c04` `c05` `c06` `c07` |
+| no alert, something measured positive | `c08` `c09` |
+
+The last row kills the reassuring direction: **the absence of an alert predicted
+nothing.** Two compounds with a clean structural profile carry a positive finding.
+
+The first two rows look alike on a report and are not alike at all. **An alert a
+measurement contradicted has been tested and lost. An alert nobody checked has
+not been tested.** Printing them the same way is how an alert keeps authority it
+never earned.
+
+## 4. Without a dose context none of it is a risk statement
+
+**2 of 7** assay outcomes carry no concentration, so they cannot be compared with
+the ones that do. The recorded concentrations span a factor of four.
+
+**No exposure is declared anywhere in the record**, and the file says why that
+matters rather than leaving the gap silent. A positive at 200 micromolar and a
+positive at 1 micromolar read the same on a profile page and mean entirely
+different things.
+
+## 5. The level that would settle it is the one almost nothing has
+
+**1 of 12** compounds carries any organism-level evidence.
+
+That is the ordinary shape of a safety record, not a defect in this one. Alerts
+are free, assays are cheap, organisms are expensive, and a profile page gives all
+three the same amount of space.
+
+```bash
+python labs/safety_evidence/inspect_safety.py check
+```
+
+Fourteen checks run. A record that cannot be read as five separated levels is not
+summarised at all, because a summary of a collapsed record would be the thing this
+lab warns against.
+
+## Independent exercise
+
+A candidate review slide reads: "compound shows two structural alerts and a
+positive hERG signal. Recommend deprioritising in favour of the backup series,
+which is clean."
+
+Say what each half of that sentence rests on, and name the one question that
+would change the decision.
+
+<details data-worked-answer>
+<summary>Worked answer — three different kinds of claim, and the question</summary>
+
+**"Two structural alerts" is not evidence about this compound.** It is a
+statement that two patterns are present. It required no experiment, and the count
+of two carries no more weight than one, because a molecule can match several
+patterns for a single structural feature. In the lab above, one compound matched
+two alerts while carrying no finding at all.
+
+**"A positive hERG signal" is a real finding and is being quoted without its
+number.** Positive at what concentration? A signal at 100 micromolar and a signal
+at 1 micromolar are the same word and different facts, and the decision depends
+entirely on where the intended exposure sits relative to it. Without that, the
+word "positive" is doing work the measurement did not do.
+
+**"The backup series is clean" is the weakest claim on the slide.** Clean usually
+means no alert fired and few assays were run, and those two are related: a series
+that has not been examined has nothing to report. The absence of findings is not
+the presence of safety, and the lab shows the reassuring direction failing
+outright, with positive findings on compounds that alerted on nothing.
+
+**The question that would change the decision: how many assays has the backup
+series actually been through, and at what concentrations?** If the answer is
+"fewer than the lead", the comparison is between a compound that was examined and
+one that was not, and the slide has ranked them by how much looking was done. That
+is a comparison of effort, not of safety, and it reverses as soon as the backup
+gets the same attention.
+
+</details>
+
+## What this does not do
+
+It assesses nothing. No compound here was tested, no outcome is real, and no
+statement about any substance can be taken from this file.
+
+It also does not say alerts are useless. **An alert is a cheap prompt to look, and
+looking is what the other four levels are.** The failure is printing a prompt to
+look in the same column as the result of having looked.
+
+For the surrounding argument see
+[metabolism to safety](/learn/admet-pk/metabolism-to-safety/) and
+[the ADMET resource guide](/learn/admet-pk/admet-resource-guide/). For the same
+separation applied to structural claims see
+[five claims that arrive in one file](/labs/cofolding-claim-separation/).
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-11.

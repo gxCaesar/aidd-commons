@@ -1,0 +1,39 @@
+id: tutorial-rdkit-cookbook
+name: RDKit Cookbook
+kind: tutorial
+summary: Task-specific Python recipes for molecular drawing, chemical representations, substructure operations, and related cheminformatics tasks.
+canonical_url: https://www.rdkit.org/docs/Cookbook.html
+identifiers: []
+stages: ["data-intake","representation-learning"]
+modalities: ["small-molecule"]
+tasks: ["cheminformatics-recipes"]
+relations: 
+  - type: demonstrates
+    target: tool-rdkit
+status: { value: unverified }
+access_level: { value: open_source, evidence: [terms-page] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC BY-SA 4.0
+    scope: covers the document, per the copyright and licence statement the document carries; the RDKit software itself is covered by its own terms
+    evidence: [terms-page]
+evidence:
+  - id: official-collection
+    url: https://www.rdkit.org/docs/Cookbook.html
+    label: Official tutorial collection inspected 2026-09-09
+    supports: [caveats, kind, modalities, name, relations, stages, summary, tasks]
+  - id: terms-page
+    url: https://www.rdkit.org/docs/Cookbook.html
+    label: RDKit Cookbook document licence statement (reviewed 2026-10-23)
+    supports: []
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one.
+acknowledgements: []
+last_verified: "2026-10-23"

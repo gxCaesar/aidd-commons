@@ -1,0 +1,103 @@
+---
+title: 应用预先声明的就绪规则
+description: 对 ChEMBL 37 测量计数应用冻结的 go、hold 和 stop 规则，并指出各母体仍缺少的证据。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[Apply a predeclared readiness rule](/labs/nomination-readiness-audit/)。
+
+## 准备与学习目标
+
+本实验对应 `t18-nomination-readiness-next-experiment`。你将应用在本次就绪审计运行前固定的规则，区分规则状态与对化合物的判断，并把每项未满足的条件转成明确缺少的观测。请先阅读[一个决策单元的范围](/zh-cn/learn/foundations/decision-unit-scope/)和[就绪规则与下一项实验](/zh-cn/learn/candidate-nomination/readiness-rules-and-next-experiment/)。
+
+输入是真实的 ChEMBL 活性记录。阈值及其决策含义是本实验的教学规则，不是 ChEMBL 的建议，也不是经过验证的候选物提名标准。
+
+## 运行模式与命令
+
+模式是依照冻结协议，对缓存的 ChEMBL 37 快照进行全新独立计算。使用项目的 Python 3.11 环境和 CPU，无需加速器。准备命令复用本工作副本中已验证的决策单元快照，把其产物复制到本实验自己的缓存。无缓存时准备数据可能访问 ChEMBL API。快照缓存后，查看、检查和导出均无需网络。
+
+从仓库根目录运行以下命令。`show` 输出规则、各母体的计数与状态，以及缺少的测量。`check` 重新计算不变量，遇到失败时以非零状态退出。导出程序仅在检查通过后写入已提交的精简汇总。
+
+```bash
+.venv/bin/python labs/nomination_readiness_audit/run_lab.py download
+.venv/bin/python labs/nomination_readiness_audit/inspect_nomination_readiness_audit.py show
+.venv/bin/python labs/nomination_readiness_audit/inspect_nomination_readiness_audit.py check
+.venv/bin/python labs/nomination_readiness_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/nomination_readiness_audit -q
+```
+
+| 命令 | 输出位置 | 写入行为 |
+| --- | --- | --- |
+| `download` | `.cache/nomination_readiness_audit/` | 准备已验证的快照，不写入分析结果 |
+| `show`、`check` | 终端 | 不写入文件 |
+| 导出程序 | `labs/nomination_readiness_audit/summary.json` | 检查成功后覆盖派生汇总 |
+
+这里不拟合模型、不划分数据，也不作预测。命令重新计数固定队列。链接课程中的独立练习不会覆盖作者结果。
+
+## 测量与冻结规则
+
+协议声明 15 条种子分子记录，解析后得到 10 个母体。它复用决策单元实验的准入规则和排除优先级。终点类型为 AC50、EC50、IC50、Kd 和 Ki，单位为 nM。只有关系为 `=` 的准入点值记录参与本计数。关系为 `<`、`<=`、`>` 或 `>=` 的界限记录不进入点值计数。
+
+对每个母体，一项独立测量对应一个不同的 `assay_chembl_id`、`document_chembl_id` 和 `standard_type` 元组。元组相同的重复记录只计一次。实验体系数和文献数来自这些准入测量中的不同标识符。这是已声明的分组约定。标识符不同本身不能证明生物学独立性。
+
+协议 `chembl37-nomination-readiness-v1` 发布于 2026-10-23，在计算就绪状态前固定以下条件。
+
+| 条件 | 最低数量 |
+| --- | ---: |
+| 独立测量 | 5 |
+| 不同实验体系 | 3 |
+| 不同文献 | 2 |
+
+全部条件满足时为 `go`。部分满足、部分未满足时为 `hold`。没有条件满足时为 `stop`。`hold` 或 `stop` 必须列出每项未满足条件及其差额。规则不会把缺失字段替换成有利猜测。
+
+| 未满足条件 | 能增加覆盖的观测 | 准入活性点值记录所需字段 |
+| --- | --- | --- |
+| 独立测量 | 对该母体而言，元组尚未出现过的一项测量 | `assay_chembl_id`、`document_chembl_id`、`standard_type` |
+| 不同实验体系 | 来自尚未覆盖的实验体系的一项测量 | `assay_chembl_id` |
+| 不同文献 | 报告于尚未覆盖的文献中的一项测量 | `document_chembl_id` |
+
+一项观测可以同时缩小多个差额。重复已有元组不能增加上述任何计数。新增文献标识符表示文献覆盖增加，不证明其背后的实验独立。
+
+## 逐母体结果
+
+下表读取已提交汇总，计算日期为 2026-10-23，软件为 Python 3.11.15、NumPy 2.4.6 和 RDKit 2025.09.6。10 个母体合计有 486 项独立测量。每项差额都是冻结规则要求补足的数量。
+
+| 母体 | 化合物 | 独立测量 | 不同实验体系 | 不同文献 | 状态 | 缺少的覆盖 |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| CHEMBL109 | VALPROIC ACID | 27 | 27 | 15 | `go` | 本规则下无缺项 |
+| CHEMBL1144 | PRAVASTATIN | 36 | 34 | 17 | `go` | 本规则下无缺项 |
+| CHEMBL13829 | MIXTURE OF MMC AND TA | 1 | 1 | 1 | `stop` | 4 项测量、2 个实验体系、1 篇文献 |
+| CHEMBL23393 | SODIUM LAURYL SULFATE | 4 | 4 | 3 | `hold` | 1 项测量 |
+| CHEMBL25 | ASPIRIN | 103 | 103 | 75 | `go` | 本规则下无缺项 |
+| CHEMBL275835 | DARBUFELONE | 12 | 12 | 5 | `go` | 本规则下无缺项 |
+| CHEMBL441 | THIOPENTAL | 2 | 2 | 2 | `hold` | 3 项测量、1 个实验体系 |
+| CHEMBL588 | FENOLDOPAM | 51 | 51 | 18 | `go` | 本规则下无缺项 |
+| CHEMBL593 | DELAVIRDINE | 250 | 250 | 90 | `go` | 本规则下无缺项 |
+| CHEMBL906 | MINOXIDIL SULFATE | 0 | 0 | 0 | `stop` | 5 项测量、3 个实验体系、2 篇文献 |
+
+## 状态计数与最接近 go 的非 go 母体
+
+| 状态 | 母体数量 | 成员 |
+| --- | ---: | --- |
+| `go` | 6 | CHEMBL109、CHEMBL1144、CHEMBL25、CHEMBL275835、CHEMBL588、CHEMBL593 |
+| `hold` | 2 | CHEMBL23393、CHEMBL441 |
+| `stop` | 2 | CHEMBL13829、CHEMBL906 |
+
+最接近 `go` 的非 `go` 母体是 SODIUM LAURYL SULFATE，即 CHEMBL23393。它满足实验体系和文献的最低要求，还缺少 1 项独立测量。选择规则先最小化未满足条件数，再最小化缺失数量之和，最后按母体标识符的字典序选择。它衡量的是与这些条件的距离，不是生物学前景。
+
+对该母体，一条新准入的点值记录若具有尚未出现的实验体系、文献和终点元组，就能补足计数差额。此前未出现的是元组的组合，不要求每个字段各自都是新值。[课程中的算例](/zh-cn/learn/candidate-nomination/readiness-rules-and-next-experiment/#worked-case-and-next-observation)说明如何陈述这项拟议观测，避免把它当作已获得的结果。
+
+## 材料局限
+
+计数不能说明化合物好。`go` 化合物不因此成为候选物，`stop` 化合物也不因此被证明无活性。这些条件衡量的是准入证据的数量和记录中的覆盖，不评估效应大小、一致性、靶点相关性、选择性、安全性或暴露。
+
+队列为教学而选，不是 ChEMBL 的随机样本。状态计数不估计任何总体比例。仅凭记录，分组约定和重复标记无法建立实验独立性。本实验既不检验这些阈值是否正确，也不在看到计数后改变阈值。它提出缺少的观测，不实施新的生物学实验。读者学习效果仍未观测。
+
+## 来源与条款
+
+Atlas 来源标识符为 `dataset-chembl-activity` 和 `db-chembl-37`。[ChEMBL 活性记录](https://www.ebi.ac.uk/chembl/api/data/activity.json)和[发布状态](https://www.ebi.ac.uk/chembl/api/data/status.json)于 2026-10-21 存入来源实验的快照。ChEMBL 37 发布于 2026-05-01。本审计于 2026-10-23 读取该已验证快照，不把后来实时 API 的响应视为相同输入。
+
+[发布 README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README)、[模式文档](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/schema_documentation.txt)和[发布许可证](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)均于 2026-10-23 阅读。ChEMBL 数据保留 Creative Commons Attribution-ShareAlike 3.0 Unported 条款。原创指南文字采用 CC BY 4.0，原创实验代码采用 Apache-2.0。已提交汇总包含计数，不包含活性记录。最后复核于 2026-10-23。

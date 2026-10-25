@@ -1,0 +1,74 @@
+---
+title: 2026 年的三种科学智能体框架
+description: 根据已发布代码、外部依赖和访问限制，阅读 AgentD、MDCrow 与 LiTENexus 的资源记录。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="scientific-agents/agent-frontier-2026" />
+
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+学完[科学智能体与工具](/zh-cn/learn/scientific-agents/agents-and-tools/)和[选择科学智能体资源与评估方式](/zh-cn/learn/scientific-agents/agent-resource-guide/)后，借助注明日期的目录记录，区分已发布的框架与可运行的工作流程。辨别智能体的哪些部分来自其仓库，哪些部分需要单独的模型、引擎或服务。本课是附带书面练习的阅读课，无需凭据或运行框架。[英文原版](/learn/scientific-agents/agent-frontier-2026/)是规范版本。
+
+## 比较约定
+
+AgentD 协调早期药物发现任务，MDCrow 将语言模型指令连接到分子动力学模拟，LiTENexus 则描述一个带有网页界面的虚拟药物发现系统。它们解决的问题不同。各自的记录既没有确立共同的任务和评估方案，也没有核实访问级别。源代码许可、架构说明和可执行路径回答的是不同问题。它们都不能证明读者能够取得框架所调用的外部模型或服务。
+
+## AgentD
+
+[AgentD 仓库](https://github.com/hoon-ock/AgentD)介绍了用于早期药物发现的模块化智能体。它通过 REINVENT4 汇集候选分子，借助语言模型驱动的修正迭代亲和力与 ADMET 预测，还可以使用 Boltz 生成蛋白质与配体的结构。[README](https://raw.githubusercontent.com/hoon-ock/AgentD/release/README.md)说明了流程和推断代码。它指出亲和力与 ADMET 预测步骤，却没有确定 ADMET 预测器、其实现或检查点。因此，读者无法追溯 ADMET 数值将如何计算。
+
+仓库提供 AgentD 源代码，REINVENT4 和可选的 Boltz 则来自各自的模型项目。语言模型和 Serper 搜索调用依赖外部服务。示例选择了专有的托管模型，运行时既需要商业语言模型提供商的 API key，也需要搜索服务的 API key。没有这些凭据，读者无法复现运行。仓库没有托管预训练检查点，也没有提供权重下载流程。记录中的训练代码和权重仍未核实，数据配方、训练数据和评估代码也是如此。README 声明 AgentD 源代码采用 MIT 许可。所调用的模型和服务适用各自的条款，因此这一源代码许可并不能确立完整工作流程的使用权限或访问路径。记录也没有确立数据可用性声明或具名训练语料。
+
+## MDCrow
+
+[MDCrow 仓库](https://github.com/ur-whitelab/MDCrow)介绍了一套基于 Langchain 的分子动力学智能体工具。它根据自然语言指令配置并运行 OpenMM 模拟，然后计算所要求的轨迹分析。[README](https://raw.githubusercontent.com/ur-whitelab/MDCrow/master/README.md)说明了推断代码与工具架构。OpenMM 是独立的模拟引擎。语言模型位于提供商一侧，而不是仓库中。README 列出 OpenAI、TogetherAI、Fireworks 和 Anthropic 作为支持的提供商，并说明需要提供商的 API key。没有此类密钥的读者无法通过文档所述路径运行 MDCrow。
+
+仓库没有托管预训练检查点，也没有提供权重下载流程。训练代码和权重仍未核实，数据配方、训练数据和评估代码也是如此。README 没有给出数据集、数据可用性声明或仓库托管的数据下载路径。[LICENSE 文件](https://raw.githubusercontent.com/ur-whitelab/MDCrow/master/LICENSE)指出仓库源代码采用 MIT 许可，但 README 没有许可声明。只读 README 的读者必须另行查看 LICENSE 文件，才能找到这项授权。OpenMM 与所调用的语言模型适用各自的条款。源代码许可既不能确立它们的可用性，也不能证明模拟已经完成。
+
+## LiTENexus
+
+[LiTENexus 仓库](https://github.com/lingcon01/LiTENexus)描述了一套端到端的虚拟药物发现系统，称其以量子化学为基础而具有物理信息。其具名模块涵盖算子预测、力场、小模型训练、ADMET 和分子语言界面。[README](https://raw.githubusercontent.com/lingcon01/LiTENexus/main/README.md)描述了架构，并给出网页界面链接。该界面是一项服务，而仓库没有提供安装、配置或代码执行命令。Python 与 PyTorch 的版本徽章也不能充当命令。因此，记录无法确立仓库可执行路径或服务的访问方式。
+
+README 没有给出可下载的检查点、权重网址或获取说明，也没有说具名模块的预训练版本可用。推断代码、训练代码和权重仍未核实，数据配方、训练数据和评估代码也是如此。README 声明 Apache-2.0 适用于仓库自身的源代码。这并不能确定网页服务或其所列基准的条款。README 没有提供这些基准的访问链接，也没有数据可用性声明。关于未来功能和公共服务的描述是一项意向，而不是可用资产。
+
+## 按维度记录开放状态
+
+以下七列保留目录中的不同维度。可用表示被引用的记录确立了访问或文档证据，不代表本课执行过资产。未核实表示记录没有确立该维度。
+
+| 资源 | 推断代码 | 训练代码 | 权重 | 架构 | 数据配方 | 训练数据 | 评估代码 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| AgentD | 可用 | 未核实 | 未核实 | 可用 | 未核实 | 未核实 | 未核实 |
+| MDCrow | 可用 | 未核实 | 未核实 | 可用 | 未核实 | 未核实 | 未核实 |
+| LiTENexus | 未核实 | 未核实 | 未核实 | 可用 | 未核实 | 未核实 | 未核实 |
+
+## 推演案例
+
+一位读者没有模型提供商或搜索服务的 API key，也没有模型检查点，但想核查 AgentD。AgentD 记录确立了已发布的推断源代码和架构文档，其 README 中的 MIT 声明适用于源代码。记录还指出 REINVENT4 和可选的 Boltz 来自各自的项目，语言模型与 Serper 搜索调用则使用外部服务。它没有确立这些模型或服务的访问方式与条款，也没有确立 AgentD 自行托管的检查点。读者可以查看源代码和文档中的工作流程，但在缺少所述凭据时无法复现文档中的运行。要声称存在可执行路径，读者还须确立每项被调用依赖的访问方式与适用条款，并厘清尚未说明的 ADMET 预测步骤。本课没有测试过这样的路径。
+
+MDCrow 说明了许可所在位置为何重要。AgentD 的 README 写明 MIT，而 MDCrow 的 README 没有许可声明，其 LICENSE 文件才提供 MIT 授权。只看 MDCrow README 的读者会缺少源代码许可的证据。即使读到了任一授权，也仍无法据此判断独立模型或服务的条款。
+
+## 独立练习
+
+一位同事把 LiTENexus 的网页界面链接及其 Apache-2.0 声明当作读者可以运行具名模块的证据。哪些开放状态字段涉及推断代码、架构与权重？要声称可以执行，还缺少什么证据？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+目录表中，LiTENexus 的架构文档标为可用，但推断代码和权重均未核实。README 没有提供配置或执行命令，也没有检查点获取路径。其网页链接指向一项服务，而 Apache-2.0 覆盖的是仓库自身的源代码。可运行的论断需要已确立的执行路径，以及相关资产或服务的访问方式与条款。模块名称和许可声明都不能补足这些缺失的事实。
+
+</details>
+
+## 适用范围
+
+本课没有运行任何框架，也没有调用语言模型或搜索服务。本课不转述所报告的基准结果，因为记录引用的是框架自身的声明，而非独立测量。所调用模型、引擎、搜索服务与基准的许可或服务条款，与各仓库的源代码许可相互独立。阅读开放状态字段不等于执行资产、核实服务访问、复现评估或测量读者学习成效。
+
+## 来源
+
+目录记录 `agent-agentd`、`agent-mdcrow` 和 `agent-litenexus` 均于 2026-10-23 最后核实。AgentD 记录引用了[仓库](https://github.com/hoon-ock/AgentD)和 [README](https://raw.githubusercontent.com/hoon-ock/AgentD/release/README.md)。MDCrow 记录引用了[仓库](https://github.com/ur-whitelab/MDCrow)、[README](https://raw.githubusercontent.com/ur-whitelab/MDCrow/master/README.md)和 [LICENSE 文件](https://raw.githubusercontent.com/ur-whitelab/MDCrow/master/LICENSE)。LiTENexus 记录引用了[仓库](https://github.com/lingcon01/LiTENexus)和 [README](https://raw.githubusercontent.com/lingcon01/LiTENexus/main/README.md)。各来源保留自身声明的适用范围。
+
+Last reviewed: 2026-10-23.

@@ -1,0 +1,52 @@
+id: model-chai-1
+name: Chai-1
+kind: model
+summary: Chai-1 is a multi-modal foundation model for molecular structure prediction that handles proteins, small molecules, DNA, RNA and glycosylations; its code and model weights are published under the Apache 2.0 licence.
+canonical_url: https://github.com/chaidiscovery/chai-lab
+identifiers:
+  - scheme: paper
+    value: "Chai-1 technical report; DOI 10.1101/2024.10.10.615955"
+    url: https://www.biorxiv.org/content/10.1101/2024.10.10.615955
+  - scheme: documentation
+    value: "chai_lab Python package"
+    url: https://pypi.org/project/chai-lab/
+stages: [structure-prediction, design, evaluation]
+modalities: [biomolecular-complex]
+tasks: [co-folding]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [readme] }
+  architecture: { value: available, evidence: [readme] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: covers the chai-lab source code and the Chai-1 model weights, per the repository README; the LICENSE file is the standard Apache-2.0 text with the copyright line Copyright 2024 Chai Discovery, and the licence does not extend to Chai-2
+    evidence: [license, readme]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/chaidiscovery/chai-lab
+    label: Official source for additional resource links (reviewed 2026-09-08, re-opened 2026-10-21)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/chaidiscovery/chai-lab
+    label: Chai Lab repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/chaidiscovery/chai-lab/main/README.md
+    label: Chai-1 README (re-opened 2026-10-21)
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/chaidiscovery/chai-lab/main/LICENSE
+    label: Chai Lab Apache-2.0 licence file (re-opened 2026-10-21)
+    supports: []
+caveats:
+  - The repository states licence terms for Chai-1 only and gives no code or weight terms for Chai-2.
+  - The opened pages describe no training corpus, data recipe or released evaluation assets for Chai-1.
+acknowledgements: []
+last_verified: "2026-10-21"

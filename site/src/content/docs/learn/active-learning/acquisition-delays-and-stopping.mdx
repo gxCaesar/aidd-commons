@@ -1,0 +1,161 @@
+---
+title: Acquisition functions, delayed feedback and stopping
+description: Calculate expected improvement, track which labels are actually available, and compare experiment-selection policies under matched budgets and stopping rules.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="active-learning/acquisition-delays-and-stopping" />
+<ScrollableRegions />
+
+## Select an experiment, not just a prediction
+
+Read [experiment pools and budgets](/learn/active-learning/experiment-pools-and-budgets/),
+[diversity, uncertainty and feedback](/learn/active-learning/diversity-uncertainty-feedback/)
+and [uncertainty and decisions](/learn/qsar-properties/uncertainty-to-decisions/).
+This lesson derives a simple acquisition score and follows a delayed-feedback
+timeline. Its numbers are constructed; no new campaign is run here.
+
+Pure exploitation selects the candidate with the best predicted outcome. An
+experiment-selection policy may instead pay for information that improves later
+choices. The objective might be the best feasible value found, number of confirmed
+hits, integrated utility over a budget, or information about a mechanism. These
+are different objectives. The acquisition function must match the declared one.
+
+Uncertainty sampling favors uncertain predictions. It can spend the entire
+budget on irreducibly noisy or unmeasurable objects. Diversity sampling covers
+different regions but may ignore the target endpoint. A useful comparison includes
+competent fixed policies under the same initial observations, eligible pool,
+measurement cost and stopping rule. The [existing pool-budget lab](/labs/pool-budget-campaign/)
+provides a scoped reference; its retrospective measured pool is not a prospective
+wet-lab campaign.
+
+## Expected improvement by hand
+
+Assume a **maximization** problem, a Gaussian predictive distribution
+`Y(x) ~ Normal(μ(x), σ²(x))`, and a known current best value `b`. Improvement
+is `I(x)=max(Y(x)−b,0)`. For `σ>0`, define `z=(μ−b)/σ`; then
+
+```text
+EI(x) = (μ−b) Φ(z) + σ φ(z)
+```
+
+Here `Φ` and `φ` are the standard normal cumulative distribution and density.
+At zero predictive standard deviation, EI reduces to `max(μ−b,0)`.
+The [BoTorch acquisition reference](https://botorch.readthedocs.io/en/stable/acquisition.html)
+documents analytic and Monte Carlo acquisition functions, including their
+assumptions. Noisy observations and batch selection require treatment beyond
+pretending the largest noisy observation is a known latent optimum.
+
+Construct `b=5` and candidate A with `μ=5`, `σ=1`. Because `z=0`, its first
+term is zero and `EI(A)=φ(0)=1/√(2π)≈0.3989`. Candidate B has the same mean
+but `σ=2`, giving EI about 0.7979. Candidate C is deterministic at 5.3,
+giving EI 0.3. Under this particular score, B ranks above A above C. That does
+not prove B has the largest immediate success probability or is experimentally
+feasible. Its favorable score depends on a meaningful predictive uncertainty.
+
+For a minimization endpoint, reverse the improvement direction; do not reuse the
+maximization formula with an unchanged incumbent. Upper confidence bound is a
+different score, commonly `μ+κσ` for maximization with dimensionless `κ`.
+If an implementation writes `sqrt(β)σ`, its exploration coefficient is
+`κ=sqrt(β)`, not `β`. Confusing variance with standard deviation also changes
+the units and policy. The exploration setting is part of the declared recipe.
+
+## Cost, constraints and the batch are part of the objective
+
+Under a simple immediate gain-per-cost heuristic, A costing 1 unit has
+`EI/cost≈0.3989`, while B costing 4 units has about 0.1995. This ordering favors
+A, reversing raw EI. It is a heuristic, not a general solution to a finite-horizon
+allocation problem. Very cheap redundant candidates can consume a batch without
+adding useful information. Similarly, the sum of individual EIs need not equal
+the expected improvement of a jointly selected, correlated batch.
+
+Feasibility can be a hard eligibility constraint or an explicitly modelled uncertain
+event. A candidate that cannot be synthesized or measured in the available system
+is not an experiment simply because the predictor accepts its feature vector.
+Multiplying improvement by a feasibility probability requires assumptions about
+their relationship; independence cannot be silently assumed when the same molecular
+property drives both. Keep failed synthesis, failed measurement and valid low
+activity as different outcomes.
+
+## Delayed feedback changes what the policy knows
+
+Construct a campaign with these events:
+
+| Time | Event                                          | Labels available for the next fitted predictor |
+| ---- | ---------------------------------------------- | ---------------------------------------------- |
+| t0   | Initial observations completed; select A and B | Initial set only                               |
+| t1   | A returns a valid result; B remains pending    | Initial set plus A                             |
+| t2   | Select C; B still pending                      | Initial set plus A                             |
+| t3   | B returns a valid result                       | Initial set plus A and B                       |
+| t4   | C fails measurement quality requirements       | Same valid labels; separate C failure record   |
+
+At t2, B is not a zero, a negative or an observed label. Its pending status can
+inform a batch-aware policy, but its eventual value is unavailable. Replaying
+the campaign with B's t3 label at t2 gives the policy future information.
+Record selection time, result-availability time and outcome status separately.
+A selected candidate may consume cost before its label arrives; wall-clock
+progress and completed-label count are therefore different budget axes.
+
+At t4, decide whether a retry is eligible under the already stated engineering
+and assay rules. Do not convert a failed measurement into low biological activity.
+If success or delay depends on chemistry, the completed-label subset is selected;
+a policy evaluated only on completed successes can look better by avoiding its
+own difficult outcomes. Include attempts and failures in the cost account.
+
+## Stop and evaluate the whole policy
+
+Declare a fixed attempt budget, cost ceiling, time horizon or externally defined
+success criterion before comparing policies. A stopping rule based on recent
+improvement is itself a policy component. Applying it only to a struggling
+baseline makes the comparison asymmetric. An apparently flat learning curve
+does not by itself prove that no useful candidate remains.
+
+For retrospective replay, reveal only eligible labels at their specified times.
+Use common starting pools and paired campaign instances where justified; summarize
+the difference at a fixed budget or a prespecified area under the campaign curve.
+Multiple random seeds on one fixed measured pool describe that algorithm's
+variation on that pool. They do not create independent prospective campaigns
+or establish transfer to a different assay.
+
+Keep final evaluation separate from acquisition tuning. Choosing exploration
+strength, stopping patience or cost weights after comparing final replay curves
+is development. A confirmatory policy comparison needs an untouched campaign
+set or a clearly separate prospective evaluation. Preserve a fixed policy's win
+when observed; uncertainty-based selection is a hypothesis, not a guaranteed upgrade.
+
+## Independent exercises
+
+1. With `μ=b` and `σ=0.5`, calculate EI. What does EI become for `σ=0` and
+   `μ=b−1`?
+2. With `μ=5`, `σ=2` and `κ=1.5`, calculate the upper confidence bound. What
+   value of `β` gives the same `sqrt(β)σ` coefficient?
+3. At t2, a replay table already contains B's final result. May the model use it?
+   How should C's t4 failure enter the label and cost tables?
+4. Policy P makes 10 attempts and gets 8 valid labels; Q makes 8 attempts and
+   gets 8 valid labels at equal attempt cost. Are their budgets matched?
+
+<details data-worked-answer>
+<summary>Worked answers — use the information and budget actually available</summary>
+
+EI is `0.5/√(2π)≈0.1995`. At zero variance and a mean below the incumbent it is
+zero. UCB is `5+1.5×2=8`, with `β=2.25`. B's final value is unavailable at t2
+despite existing in the retrospective file. C contributes a failed-attempt status
+and incurred cost, not an invented activity label. P and Q have equal valid-label
+counts but different attempt budgets, 10 versus 8. Match the declared budget axis
+or explicitly analyse the different cost and completion outcomes.
+
+</details>
+
+To check a budget contract that was actually run, including why five fixed
+seeds are not an error bar, run
+[what a seed is not](/labs/pool-budget-contract-inspection/). To see a policy
+that reads its own model's disagreement rather than picking by distance or by
+nothing, and beats both existing policies on the same real partition, run
+[an acquisition policy that reads its own model's
+disagreement](/labs/pool-budget-uncertainty-acquisition/).
+
+Continue to the [five-case capstone workbook](/learn/candidate-nomination/capstone-workbook/).
+
+Original examples and prose: CC BY 4.0. Sources reviewed: 2026-09-11.

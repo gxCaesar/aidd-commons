@@ -1,0 +1,53 @@
+---
+title: Multi-endpoint integration without a composite score
+description: Keep response potency, toxicity and exposure evidence side by side with their units and missingness.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="admet-pk/multi-endpoint-integration" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After this lesson, you can assign a measurement to a declared endpoint family, explain why a value needs its unit and measurement count, and keep a missing family separate from a negative observation. Read [metabolism to safety](/learn/admet-pk/metabolism-to-safety/) and [exposure and clearance](/learn/admet-pk/exposure-clearance-pkpd/) first. The [multi-endpoint laboratory](/labs/multi-endpoint-tradeoff/) lets you recompute the observed ChEMBL counts.
+
+## Endpoint families and measurement units
+
+An endpoint family groups measurements that answer a similar kind of question. Response potency concerns how much compound is needed to produce an assay response. Toxicity concerns a specified adverse response in a specified system. Exposure concerns concentration over time in a specified biological setting. These are distinct questions even when one compound appears in every table. Each measurement also needs its endpoint type, unit, tested form, assay and source document. A number in `nM` cannot be read as an exposure or safety result simply because it has the same unit as another assay.
+
+The laboratory's frozen admission rule accepts point measurements of `AC50`, `EC50`, `IC50`, `Kd` and `Ki` in `nM`. Its type map treats `AC50`, `EC50` and `IC50` as an efficacy-related response-potency proxy. It puts affinity types `Kd` and `Ki` in `other`. No admitted type identifies toxicity or exposure. The family name is an operational label for inspecting coverage, not a therapeutic efficacy claim. A full multi-endpoint decision would need actual assays for the other families and a rule for comparing their contexts.
+
+A median is a statistic over measurements, not a complete result by itself. State the number of independent measurements behind it and the spread between them. Here, one independent measurement is one parent molecule, assay, document and standard type. Repeated activity rows at that key contribute once. The interquartile range is the difference between the linear 75th and 25th percentiles. It describes variation in reported values; it is not a confidence interval and does not quantify uncertainty about a population of compounds.
+
+## Worked case
+
+The declared 15 seed molecules resolve to 10 parents. The ChEMBL 37 snapshot yielded 488 admitted point rows and 486 independent measurements on 2026-10-23. The family partition is 462 response-potency measurements, 0 toxicity measurements, 0 exposure measurements and 24 affinity measurements in `other`.
+
+`CHEMBL593` DELAVIRDINE has 250 response-potency measurements. Their pooled median is 761.5 `nM`, with an interquartile range of 2440 `nM`. This paired count and spread is more informative than the median alone, but the measurements come from different targets and assays. It is a description of this table, not a potency value transferable to every target. `CHEMBL906` MINOXIDIL SULFATE has 0 admitted independent measurements in every family. Its empty cells do not report a favorable toxicity or exposure outcome.
+
+The operational integration is a coverage matrix. Read the response-potency and affinity columns with their units, counts and spreads, then retain the empty toxicity and exposure columns. A score would require a justified common decision context, normalization and weights. Those ingredients are absent, so the laboratory does not supply one.
+
+## Independent exercise
+
+Use the laboratory's committed coverage table for `CHEMBL588` FENOLDOPAM. It has 36 response-potency measurements, 15 affinity measurements in `other`, 0 toxicity measurements and 0 exposure measurements. Count the named families with evidence and state whether its affinity records fill either missing family. Then explain how you would write a sentence about a reported median without presenting a bare number.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+FENOLDOPAM has evidence in 1 of the 3 named families. Its 15 affinity measurements remain in `other`; they are neither toxicity nor exposure measurements. A defensible median sentence names the endpoint family and unit, gives the median together with its independent measurement count and interquartile range, and states that the value pools the assays represented. A missing family remains missing until a relevant measurement is supplied.
+
+</details>
+
+## What this material does not show
+
+Two laboratories serve this lesson. The [endpoint coverage laboratory](/labs/multi-endpoint-tradeoff/) counts which endpoint families the decision-unit cohort carries at all. The [multi-endpoint integration laboratory](/labs/multi-endpoint-integration/) joins the families that can be joined, by parent molecule, and reports how many compounds carry more than one and how many carry only one.
+
+The cohort was chosen to exercise the admission rule, so its coverage proportions do not estimate coverage in all of ChEMBL. The type-only map cannot establish therapeutic efficacy or classify an assay's biological safety meaning. No model is fitted and no performance estimate is made. The laboratory does not combine families or rank compounds. In particular, missing toxicity or exposure data do not mean safe, clean or bioavailable. Censored bounds are kept outside the point-value summaries.
+
+## Sources and attribution
+
+The [ChEMBL 37 release status](https://www.ebi.ac.uk/chembl/api/data/status.json) and [activity records](https://www.ebi.ac.uk/chembl/api/data/activity.json) were read on 2026-10-21 for the source snapshot. The release date is 2026-05-01. The [licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) and [README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README) were read on 2026-10-21. ChEMBL data are licensed under Creative Commons Attribution-ShareAlike 3.0 Unported. Original prose is CC BY 4.0 and original laboratory code is Apache-2.0.
+
+Last reviewed 2026-10-23.

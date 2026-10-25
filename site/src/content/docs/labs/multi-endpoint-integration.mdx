@@ -1,0 +1,94 @@
+---
+title: Multi-endpoint profiles without a composite score
+description: Join measured response potency, intrinsic clearance and CYP inhibition by parent molecule while keeping missing families visible.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+Read the [multi-endpoint lesson](/learn/admet-pk/multi-endpoint-integration/) and the [endpoint coverage laboratory](/labs/multi-endpoint-tradeoff/) first. This laboratory asks which real parent molecules carry measurements in more than one endpoint family. You will join records by parent identifier, inspect each measurement with its assay or target and unit, describe observed spread, and leave unmeasured families empty.
+
+## Fresh independent computation
+
+The mode is a fresh independent computation under a frozen ChEMBL 37 protocol. Use the project's Python 3.11 environment. The first command validates the existing caches and writes nothing. All commands use no network once the snapshots are cached and need no accelerator. The export command overwrites the committed summary only after the contract and summary checks pass.
+
+```bash
+.venv/bin/python labs/multi_endpoint_integration/run_lab.py download
+.venv/bin/python labs/multi_endpoint_integration/inspect_multi_endpoint_integration.py show
+.venv/bin/python labs/multi_endpoint_integration/inspect_multi_endpoint_integration.py check
+.venv/bin/python labs/multi_endpoint_integration/export_summary.py
+.venv/bin/python -m pytest labs/tests/multi_endpoint_integration -q
+```
+
+## Measured families and units
+
+Each source reader applies its own frozen admission rule before this laboratory joins parent identifiers. The decision-unit reader admits 486 independent activity measurements. Its existing family map places 462 exact `AC50`, `EC50` and `IC50` points in the response-potency proxy. The remaining 24 `Kd` and `Ki` affinity points stay outside that family. Response potency does not by itself establish therapeutic efficacy.
+
+| Family | Admitted measurement | Reported unit | Meaning of the count |
+| --- | --- | --- | --- |
+| Efficacy proxy | `AC50`, `EC50` and `IC50` by parent, assay, document and type | `nM` | 462 independent points |
+| Exposure proxy | Intrinsic clearance by parent and named assay system | `mL.min-1.g-1` in human liver microsomes or `uL.min-1.(10^6cells)-1` in hepatocytes | 1,623 parent-by-assay records |
+| Interaction proxy | Exact `IC50` against CYP3A4 or CYP2D6 by parent and target | `pChEMBL (dimensionless)` | 8,032 parent-by-target records |
+| Toxicity | No measured snapshot | No unit | 0 measurements |
+
+Human liver microsomes report clearance per gram of protein. Hepatocytes report it per million cells. These bases cannot be divided into a physical fold change. The profile keeps the assay systems and their units separate. A reported range describes variation among admitted values or contributing activities. It is not a confidence interval, and a range of zero from one value does not establish measurement certainty.
+
+## Family coverage
+
+The computation takes the union of admitted ChEMBL parent identifiers from the three measured readers. It counts each parent once in the combination of families where it has a measurement. The resulting 7,908-parent cohort is an observed union of differently selected datasets, not a shared prospective compound panel.
+
+| Measured family combination | Parents |
+| --- | ---: |
+| Efficacy proxy only | 8 |
+| Intrinsic clearance only | 1,062 |
+| CYP inhibition only | 6,780 |
+| Efficacy proxy and intrinsic clearance | 1 |
+| Efficacy proxy and CYP inhibition | 0 |
+| Intrinsic clearance and CYP inhibition | 57 |
+| All three measured families | 0 |
+
+Of the 7,908 parents, 7,850 have one measured family and cannot support a trade-off across families. Another 58 have two families, and 0 have three. The response-potency proxy covers 9 parents, intrinsic clearance covers 1,120, and CYP inhibition covers 6,837. Response potency is the thinnest measured family by record count. It has 1,161 fewer records than clearance and 7,570 fewer than CYP inhibition, although those readers count different types of admitted record.
+
+Across the same union, 7,899 parents lack response-potency data, 6,788 lack intrinsic clearance, and 1,071 lack CYP inhibition, even though each of those families has measurements for other parents. All 7,908 lack measured toxicity. The committed summary lists every one-family parent by identifier and stores the complete set of 58 parallel profiles. The `show` command prints each profile with its measurements and spread.
+
+## Per-compound profiles
+
+The table selects profiles that expose three different limits of the join. Values come from the cached ChEMBL 37 records after each source reader's admission and within-parent aggregation. The full profile retains assay and document identifiers, the contributing activity count and within-assay or within-target range.
+
+| Parent | Efficacy proxy | Intrinsic clearance | CYP inhibition | Absent families |
+| --- | --- | --- | --- | --- |
+| `CHEMBL1144` pravastatin | 33 points. `EC50` has 3 values at 7800 `nM`. `IC50` has 30 values spanning 4.2–62000 `nM`. | Rat hepatocytes, 26.98 `uL.min-1.(10^6cells)-1` | Missing | Interaction and toxicity |
+| `CHEMBL1232461` | Missing | Human liver microsomes, 14.13 `mL.min-1.g-1`. Rat hepatocytes, 10.23 `uL.min-1.(10^6cells)-1` | CYP2D6, 6.89 `pChEMBL` | Efficacy proxy and toxicity |
+| `CHEMBL1294` | Missing | Rat hepatocytes, 72.44 `uL.min-1.(10^6cells)-1`. Human hepatocytes, 6.17 `uL.min-1.(10^6cells)-1`. The two-system range is 6.17–72.44 in that unit. | CYP2D6, 7.37 `pChEMBL` from 32 activities with within-target range 4.1. CYP3A4, 4.55 `pChEMBL`. The target-median range is 4.55–7.37. | Efficacy proxy and toxicity |
+
+The pravastatin profile contains response-potency and clearance records for one parent, but no CYP or toxicity result. It supports inspection of those measured axes. It cannot show whether this compound has low interaction risk. The microsome and hepatocyte numbers for `CHEMBL1232461` also cannot be turned into one clearance ratio. Their denominators refer to different biological material.
+
+## Measurement boundary
+
+This laboratory reports no composite, weighted score or overall desirability ranking. Combining response potency, in vitro intrinsic clearance and CYP inhibition into one number would hide distinct assay meanings, units, study contexts and missingness. The missing-family rule leaves an absent axis empty rather than assigning favorable exposure or risk by default. A two-family profile therefore supports a comparison of available evidence, while identifying the decision-relevant third family that still needs measurement.
+
+The [safety evidence laboratory](/labs/safety-evidence/) uses a constructed teaching dataset. It reports that its compounds were not tested. Those records cannot fill this cohort's toxicity column. Intrinsic clearance does not measure systemic exposure, CYP inhibition does not establish a clinical drug interaction, and response potency does not establish therapeutic efficacy. The selected ChEMBL subsets also have different admission rules and were not matched by study design.
+
+## Independent exercise
+
+Inspect the `CHEMBL1232461` profile. Name its measured families, identify the missing families, and explain whether 14.13 divided by 10.23 is an interpretable clearance fold change.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Intrinsic clearance and CYP inhibition are measured. The response-potency proxy and toxicity are missing. The 14.13 value is per gram of microsomal protein, while 10.23 is per million rat hepatocytes. Their quotient has incompatible physical bases and is not a clearance fold change. The CYP2D6 value of 6.89 `pChEMBL` remains a separate inhibition measurement.
+
+</details>
+
+## Sources and attribution
+
+| Snapshot | Source and licence | Snapshot read on |
+| --- | --- | --- |
+| Decision-unit activity | [ChEMBL 37 release](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/) and [CC BY-SA 3.0 licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-10-21 |
+| Intrinsic clearance | [AstraZeneca dataset CHEMBL3301361](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361) in ChEMBL 37, under the same [CC BY-SA 3.0 licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+| CYP inhibition | [ChEMBL 37 release](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/) under the same [CC BY-SA 3.0 licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+
+Original lesson prose is CC BY 4.0 and original laboratory code is Apache-2.0. Last reviewed 2026-10-23.

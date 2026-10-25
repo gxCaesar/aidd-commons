@@ -1,0 +1,62 @@
+id: dataset-geom
+name: GEOM
+kind: dataset
+summary: Molecular conformation dataset and code repository.
+canonical_url: https://github.com/learningmatter-mit/geom
+identifiers:
+- scheme: paper
+  value: 'GEOM: energy-annotated molecular conformations'
+  url: https://doi.org/10.1038/s41597-022-01288-4
+stages:
+- representation-learning
+- property-prediction
+modalities:
+- small-molecule
+- molecular-conformation
+tasks:
+- conformation-modelling
+relations: []
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - repository
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses: []
+evidence:
+- id: resource-links-2026-09-08
+  url: https://github.com/learningmatter-mit/geom
+  label: Official source for additional resource links (reviewed 2026-09-08)
+  supports:
+  - identifiers
+- id: repository
+  url: https://github.com/learningmatter-mit/geom
+  label: GEOM repository
+  supports:
+  - caveats
+  - kind
+  - modalities
+  - name
+  - stages
+  - summary
+  - tasks
+caveats:
+- The repository holds no licence file under the usual names and its front page states no licence, as read on 2026-10-23, so the terms of the release are not established by this record and the access level stays unverified.
+- The repository is public and clonable and carries no licence file, so the code it holds is obtainable while the terms under which it may be reused are unstated. The dataset the repository accompanies has its own deposit, whose terms the record does not establish.
+acknowledgements: []
+last_verified: '2026-10-23'

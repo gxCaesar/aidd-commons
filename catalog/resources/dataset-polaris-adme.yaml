@@ -1,0 +1,66 @@
+id: dataset-polaris-adme
+name: ADME-Fang-v1
+kind: dataset
+summary: A curated set of laboratory ADME measurements for 3,521 molecules, published on the Polaris Hub by Biogen from the Fang et al. industrial validation study of ADME prediction.
+canonical_url: https://polarishub.io/datasets/biogen/adme-fang-v1
+identifiers:
+  - scheme: paper
+    value: "Fang et al., Prospective Validation of Machine Learning Algorithms for ADME Prediction: An Industrial Perspective; Journal of Chemical Information and Modeling (2023); DOI 10.1021/acs.jcim.3c00160"
+    url: https://doi.org/10.1021/acs.jcim.3c00160
+  - scheme: dataset-repository
+    value: "ADME_public_set_3521.csv in molecularinformatics/Computational-ADME"
+    url: https://github.com/molecularinformatics/Computational-ADME/blob/main/ADME_public_set_3521.csv
+stages: [dmpk-toxicology, data-intake]
+modalities: [small-molecule, experimental-measurement]
+tasks: [admet-prediction, assay-data-analysis]
+relations:
+  - type: surfaced-by
+    target: tool-polaris
+status: { value: active, evidence: [dataset-page] }
+access_level: { value: open_source, evidence: [dataset-page] }
+openness:
+  inference_code: { value: not_applicable, evidence: [dataset-page] }
+  training_code: { value: not_applicable, evidence: [dataset-page] }
+  weights: { value: not_applicable, evidence: [dataset-page] }
+  architecture: { value: not_applicable, evidence: [dataset-page] }
+  data_recipe: { value: available, evidence: [curation-notebook] }
+  training_data: { value: unverified }
+  evaluation_code: { value: not_applicable, evidence: [dataset-page] }
+licenses:
+  - name: CC BY 4.0
+    scope: The data licence stated on the Polaris dataset page for biogen/adme-fang-v1, which covers the curated dataset as hosted on the Polaris Hub. It does not extend to the upstream source repository molecularinformatics/Computational-ADME, whose README states no licence, nor to any model trained on the data.
+    evidence: [dataset-page]
+evidence:
+  - id: dataset-page
+    url: https://polarishub.io/datasets/biogen/adme-fang-v1
+    label: Polaris dataset page for biogen/adme-fang-v1 (reviewed 2026-10-21)
+    supports:
+      [
+        name,
+        kind,
+        summary,
+        identifiers,
+        stages,
+        modalities,
+        tasks,
+        relations,
+        caveats,
+        acknowledgements,
+      ]
+  - id: source-repository
+    url: https://raw.githubusercontent.com/molecularinformatics/Computational-ADME/main/README.md
+    label: Computational-ADME source repository README
+    supports: [identifiers, modalities, caveats]
+  - id: curation-notebook
+    url: https://raw.githubusercontent.com/polaris-hub/polaris-recipes/main/org-Biogen/fang2023_ADME/01_polaris_adme-fang_data_curation.ipynb
+    label: Polaris ADME-Fang curation notebook
+    supports: [caveats, acknowledgements]
+caveats:
+  - The dataset page reports 3,521 datapoints in its summary field and 3,516 molecules after curation, and does not reconcile the two figures.
+  - The dataset page states no train, validation or test partition, and the published curation notebook configures molecule curation, distribution inspection, outlier detection and stereoisomer activity-shift detection without defining a benchmark split.
+  - The upstream source repository README names the six assays and the vendor libraries the compounds were selected from, but states no licence for the source CSV and does not document per-column provenance beyond the assay names.
+  - The measurements come from one laboratory group working under a consistent set of conditions over 20 months, so the values are single-laboratory measurements rather than multi-site measurements.
+  - The release is openly downloadable under the stated CC BY 4.0 licence, but no opened page declares it as a training release or a benchmark split for a specific model, so the training-data dimension stays unverified.
+acknowledgements:
+  - The dataset is published by Biogen on the Polaris Hub, the measurements come from Fang et al. (2023), and the curation was performed with the open auroris curation module.
+last_verified: "2026-10-21"

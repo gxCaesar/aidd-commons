@@ -1,0 +1,218 @@
+---
+title: Perturbation prediction across cellular contexts
+description: Define a perturbation response by its baseline context, intervention, target distribution, and generalization unit.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="mechanism-targets/perturbation-context-generalization" />
+
+<ScrollableRegions />
+
+## Learning goals
+
+After this lesson, you should be able to write the input and target for a
+context-conditioned perturbation task, compare it with a condition-mean and
+additive control, and name the cell, donor, and context units behind a
+generalization statement. You should also be able to separate transferred
+prediction from causal target validation.
+
+## Prerequisites and task boundary
+
+Read [From disease question to target hypothesis](/learn/mechanism-targets/disease-to-target/)
+and [Biological representations](/learn/representations/biological-representations/)
+first. Let `X` be an unperturbed cellular state, `A` a declared perturbation,
+`C` a context descriptor, and `Y` a post-perturbation expression profile or
+other readout. The task must state whether it predicts a full distribution
+`P(Y | X, A, C)`, a mean `E[Y | X, A, C]`, or a change relative to an appropriate
+control. Here `X` can represent an unperturbed population or condition; it does
+not imply that the same cell is measured before and after a perturbation.
+
+In a pooled single-cell experiment, cells may be observations while donor,
+cell line, tissue, time, stimulation, and culture protocol define contexts.
+The independent unit for a claim must be declared rather than inferred from a
+large cell count. The original [Perturb-seq article](https://pmc.ncbi.nlm.nih.gov/articles/PMC5181115/)
+links CRISPR perturbation identities to single-cell RNA profiles in a pooled
+setting; it does not make every observed expression association a general causal
+conclusion.
+
+## Training objective and target semantics
+
+Single-cell expression measurement is typically destructive. Baseline and
+post-perturbation cells are therefore usually unpaired populations, not paired
+before--after observations of one cell. A condition-mean target can be written
+as `Ybar(c, a)`, the mean over eligible cells from a declared condition and
+perturbation. A mean model could minimize, on training conditions only,
+`L_mean = sum_(c,a in T_train) ||mu_hat(c,a) - Ybar(c,a)||^2`.
+
+This differs from predicting a distribution. A distributional target must state
+how the observed cell population defines `P_hat(Y | c, a)` and use a declared
+likelihood or distributional distance. A model can match a condition mean while
+missing variance, multimodality, or a changing cell-state mixture. The loss,
+aggregation rule, and independent unit must therefore match the claimed target.
+
+Learned predictor/control parameters and perturbation-effect estimates are fit
+on training data only. An explicitly allowed new-context unperturbed baseline
+may be summarized at inference, never its held-out post-perturbation response.
+
+## Representation, controls, and intervention labels
+
+A useful input contract records how `X` was measured, how `A` was assigned or
+delivered, which covariates enter `C`, and the intended target. A condition-mean
+control predicts the observed mean for the matching context. A simple additive
+control writes
+`mu_hat(C, A) = mu_hat(C, control) + delta_hat(A)`.
+It assumes the perturbation shift is shared across contexts. That is a useful
+baseline precisely because a context-specific response can violate it. Its
+condition and perturbation estimates must be fitted on the training partition
+only.
+
+An intervention label records an intended manipulation, such as a specified
+guide or compound exposure. An observational label records a naturally observed
+state or association. Intervention labels are stronger evidence about what was
+assigned, but guide efficiency, off-target effects, selection, delivery, and
+measurement still need their own checks. A model trained on either type does
+not automatically establish a causal target mechanism.
+
+## Worked case: an average effect hides a sign change
+
+The following table is a **constructed teaching example**. Each number is a
+condition mean for one readout; it is not a reported biological result.
+
+| Context | Mean control | Mean after perturbation `A` | Change |
+| ------- | -----------: | --------------------------: | -----: |
+| Alpha   |           10 |                          14 |   `+4` |
+| Beta    |           10 |                           6 |   `-4` |
+
+With equal weighting, the descriptive average perturbation change across the
+displayed Alpha and Beta values is zero. It is not a legitimate held-out Beta
+prediction because it has used Beta's response. If Alpha alone were training
+data, an additive control would estimate `delta_hat(A) = +4` and, given Beta's
+allowed baseline mean of 10, predict 14 for Beta. It would fail the constructed
+Beta response of 6. The lesson is not that every perturbation has a sign change.
+It is that averaging can erase the interaction between context and perturbation,
+so a task must say which contexts are held out and which quantity is evaluated.
+
+The [2026 Virtual Cell Challenge](https://arcinstitute.org/news/virtual-cell-challenge-2026)
+describes a zero-shot task in which models predict CRISPRi responses in cell
+contexts that have not been seen perturbed. It supports the relevance of an
+unseen-context task definition. It does not supply contest outcomes, a universal
+metric, or causal validation for a predicted response.
+
+## Worked case, on real data: does context reverse a real signature?
+
+The Alpha/Beta table above is invented. The [LINCS L1000 perturbation-
+context lab](/labs/l1000-perturbation-context/) asks the same question on
+real measurements: reading GEO series
+[GSE70138](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70138)
+directly, for 1,721 real small-molecule compounds measured in two real
+cell lines, MCF7 and PC3, at a fixed dose and timepoint, how well does a
+compound's transcriptional signature in one cell line predict its
+signature in the other?
+
+Computed once on the raw measured expression values with no correction,
+matched compound pairs show a median Spearman rho of 0.79, but so do
+**mismatched** compound pairs (median rho 0.70): both cell lines' raw
+profiles share so much baseline structure that comparing absolute
+expression barely distinguishes a real signature from noise, the same
+failure mode this lesson's condition-mean control warns about in the
+abstract. Subtracting each profile's own plate-matched vehicle-control
+baseline first, exactly the kind of context variable this lesson's input
+contract asks you to record, removes that shared structure: the real,
+compound-matched median rho becomes 0.175 against a mismatched-pair null
+median of 0.034, a difference a two-sided Mann-Whitney U test finds
+significant at p = 7.9 × 10⁻⁸². About one-fifth of the 1,721 real
+compounds show a **negative** cross-cell-line correlation even after
+baseline correction: for these, cell-line context does not merely change
+the size of the transcriptional response, it reverses its direction,
+exactly the Alpha/Beta sign change above, on compounds no one invented.
+
+**Independent exercise (on the real lab's own output):** Using only what
+`show` reports, name the two design choices in this real comparison that
+correspond to the constructed table's "Beta held out" and "one shared
+`delta_hat(A)`" cautions, and explain why a raw, uncorrected correlation
+between the two cell lines would have hidden the sign-reversal finding
+entirely.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The plate-matched vehicle-control subtraction is this comparison's
+equivalent of declaring the baseline context before fitting anything, the
+same discipline "Beta held out" enforces in the constructed table: without
+it, the raw comparison's high mismatched-pair correlation (rho 0.70) shows
+that most of the apparent agreement was baseline structure common to
+every profile, not anything about the specific compound. The single fixed
+null rotation used as a background is this comparison's equivalent of a
+single shared `delta_hat(A)`: it tests whether the real, compound-matched
+correlation is different from an arbitrary, deterministic mismatch, not
+whether every compound behaves identically. A raw, uncorrected
+correlation would have reported rho near 0.79 for real matches and near
+0.70 for shuffled ones, a small, easy-to-miss gap that gives no reason to
+suspect roughly a fifth of real compounds actually reverse sign once the
+shared baseline is removed.
+
+</details>
+
+## Inference and evaluation boundary
+
+At inference, provide the baseline state and perturbation under the same input
+contract used for training. If the intended setting is a new donor or a new cell
+line, hold it out at the relevant level rather than only withholding cells from
+the same source. Report whether an error or distributional score aggregates over
+cells, donors, perturbations, contexts, or a hierarchy of those units.
+
+A transferred prediction can be useful when it is evaluated in an unseen,
+declared context. It remains a predictive statement. Causal target validation
+requires an appropriate intervention and readout, plus controls that distinguish
+the target mechanism from alternative mechanisms. Prediction transfer and causal
+validation answer related but non-interchangeable questions.
+
+## Independent exercise
+
+Add a third context, Gamma, with mean control 8 and mean after perturbation
+`A` equal to 12. State the three context-specific changes. Would an additive
+control with one shared `delta_hat(A)` represent all three changes exactly? If
+Beta is held out, may its post-perturbation mean contribute to `delta_hat(A)`?
+Name the unit you would hold out to claim generalization to a new donor.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The changes are Alpha `+4`, Beta `-4`, and Gamma `+4`. No one shared additive
+shift represents all three exactly because Beta has the opposite sign. A donor
+generalization claim should hold out donors, not merely cells sampled from the
+same donor. Beta's post-perturbation mean must not contribute to a training-only
+`delta_hat(A)`. Cell-level predictions can still be evaluated, but they do not
+turn cells from one donor into independent donor-level contexts.
+
+</details>
+
+## Failure boundaries and source path
+
+Do not call a model causal because it was trained on perturbation labels, and do
+not call a correct-looking condition mean transferable because the cell count is
+large. Record intervention identity, delivery and timing, baseline definition,
+context variables, mean or distribution target, training-only fitting boundary,
+held-out unit, and the control before interpreting an output.
+
+<div data-case-sources>
+
+- [Perturb-seq: pooled CRISPR perturbations with single-cell RNA readout](https://pmc.ncbi.nlm.nih.gov/articles/PMC5181115/)
+- [Arc Institute: 2026 Virtual Cell Challenge task description](https://arcinstitute.org/news/virtual-cell-challenge-2026)
+- [From disease question to target hypothesis](/learn/mechanism-targets/disease-to-target/)
+- [GEO series GSE70138 (LINCS L1000, Phase II)](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70138), read via the [L1000 perturbation-context lab](/labs/l1000-perturbation-context/)
+
+</div>
+
+The Alpha/Beta/Gamma table and exercise numbers are constructed; the LINCS
+L1000 case is real data, fetched live on 2026-09-12 and reproducible with
+the lab's own `show` command. This lesson adds no model run, contest
+result, or causal finding beyond what the cited lab computes directly.
+Original lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Continue to [the L1000 perturbation-context lab](/labs/l1000-perturbation-context/)
+to run this comparison yourself.
+
+Last reviewed: 2026-09-12.

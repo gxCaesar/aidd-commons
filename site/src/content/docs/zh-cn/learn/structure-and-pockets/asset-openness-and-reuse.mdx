@@ -1,0 +1,65 @@
+---
+title: 资产开放性与复用
+description: 在计划复用前，分别阅读七项开放性主张及其访问级别、许可证范围和证据。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Asset openness and reuse](/learn/structure-and-pockets/asset-openness-and-reuse/)。
+
+<LessonProgress lessonId="structure-and-pockets/asset-openness-and-reuse" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将区分资产开放性的 7 个维度，分别阅读许可证的声明范围与访问级别，并在字段为 `unverified` 或 `not_applicable` 时作出有边界的陈述。请先阅读[口袋状态与置信度](/zh-cn/learn/structure-and-pockets/pocket-states-and-confidence/)，了解结构资产的来源记录。配套的[资产开放性审计](/zh-cn/labs/asset-openness-audit/)会在已提交的资源目录上运行这些区分。
+
+## 七种不同对象
+
+模型的预测可能容易取得，但训练运行过程或报告的基准结果仍可能无法重建。因此，目录为每个维度分别填写主张值与证据引用。下列对象回答不同的复现问题。
+
+| 维度 | 所记录的可得对象 | 读者可提出的问题 |
+| --- | --- | --- |
+| `inference_code` | 将输入转成输出的代码 | 能否检查预测过程？ |
+| `training_code` | 拟合或更新参数的代码 | 能否检查拟合过程？ |
+| `weights` | 发布的参数文件 | 能否取得已训练参数？ |
+| `architecture` | 模型结构或可实现的规格 | 能否重建网络设计？ |
+| `data_recipe` | 组装与处理训练输入的规则 | 能否重建输入总体？ |
+| `training_data` | 用于拟合的数据 | 能否取得拟合所用的观测？ |
+| `evaluation_code` | 产生所报告评测输出的代码 | 能否重算报告的指标？ |
+
+`available` 表示所引证据支持该记录在复核范围内可取得所命名对象。`not_available` 记录在已审阅范围内有证据支持的不可得。`unverified` 表示目录尚未从已记录的审阅中确立此项主张，并不表示该对象在任何地方都不存在。`not_applicable` 是有证据支持的判断，认为该维度不描述此资源。对于没有训练模型参数的经典工具，训练和权重问题可以不适用；模型训练数据缺少证据则是另一种状态。
+
+## 访问与许可回答不同问题
+
+访问级别描述如何接触资源，例如 `open_source`、`source_available` 或 `gated`。许可证则为已声明的范围命名条款。两种字段不能互相替代。仓库可能以某许可证公开推理代码，但权重需要另行适用的条款。数据集可能公开提供，而记录中的使用条款仍未解决。把代码许可证复制到权重或数据字段，会悄然扩大记录中的授权范围。
+
+在作出哪怕很窄的复用判断前，也要阅读每份许可证的范围文字。`only` 或 `does not` 等短语常指出边界。实验室把这些词作为文本标记，把实际许可问题留给适用来源与具体用途。目录辅助阅读，不构成法律意见，也不保证资产适合特定用途。
+
+## 两项推理发布的已解案例
+
+`model-boltz-2` 记录复核于 2026-10-21，标记推理代码和权重为 `available`，并记录 MIT 许可证的范围涵盖源代码与权重。其训练代码、数据配方、训练数据和评测代码仍为 `unverified`。同一范围文字说明已命名的评测集不在其中。因此，即使权重可得，也不能仅凭本记录独立复现报告的评测结果。
+
+`model-alphafold-3-inference` 记录复核于 2026-09-04，标记推理代码为 `available`，权重为 `unverified`。其 Apache-2.0 范围是 `inference-code`。注意事项说明参数根据单独条款提供。两条记录共同支持推理代码可得，但对权重支持不同的陈述，也不能把代码条款赋予权重。请用[审计指南](/zh-cn/labs/asset-openness-audit/)阅读完整证据标识符与注意事项。
+
+## 独立练习
+
+比较审计逐条输出中的 `tool-rdkit` 与 `db-uniprot`。说明每条记录如何描述训练代码，再说明其访问与许可证字段是否足以决定复用。写出你下一步会查看的一项证据。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+`tool-rdkit` 把训练代码标记为 `not_applicable`，因为记录所引仓库证据描述的是经典工具，而非已拟合模型。其访问级别为 `open_source`，BSD-3-Clause 的范围指向 RDKit 源代码，但并未把第三方组件纳入此授权。`db-uniprot` 的训练代码仍为 `unverified`，访问级别也为 `unverified`，且记录没有许可证条目。任一行都不足以独自决定拟议用途。对于 RDKit，应检查记录中的许可证文件及相关组件条款。对于 UniProt，应检查现行访问页与条款页。两条记录的最后复核日期均为 2026-10-23，之后的变化需要重新审阅。
+
+</details>
+
+## 材料没有展示的内容
+
+目录追踪声明和所引页面，而非经过测试的安装过程或法律判断。证据引用在各记录内部可以解析，但本课不会重新打开每个外部页面，也不会复现模型结果。范围文字标记不是许可分类器。[实验室](/zh-cn/labs/asset-openness-audit/)检查已声明的 24 条记录，并报告该集合与完整目录的计数，不把这些计数视为读者学习结果。
+
+## 来源与复核日期
+
+本课于 2026-10-23 在本地阅读了记录及其证据条目。已解案例对应 [Boltz 仓库](https://github.com/jwohlwend/boltz)，其目录记录把 MIT 指向代码与权重；以及 [AlphaFold 3 推理仓库](https://github.com/google-deepmind/alphafold3)，其记录把 Apache-2.0 指向推理代码。练习对应 [RDKit 仓库](https://github.com/rdkit/rdkit)，其记录把 BSD-3-Clause 指向源代码；以及 [UniProt 网站](https://www.uniprot.org/)，其记录没有已核实的许可证。这些是带各自复核日期的已记录来源主张，并非对网站的全新审计。原创课程文字采用 CC BY 4.0，链接资源保留各自条款。
+
+最后复核于 2026-10-23。

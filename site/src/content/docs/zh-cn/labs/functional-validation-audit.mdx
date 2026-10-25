@@ -1,0 +1,98 @@
+---
+title: 测量记录能够支持什么
+description: 审核两个已缓存的公共数据表，区分终点数值、响应序列与结局主张。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[What a measurement record can support](/labs/functional-validation-audit/)。
+
+## 准备与学习目标
+
+先读[独立单元课程](/learn/foundations/decision-unit-scope/)和
+[归档测定能够支持什么](/labs/assay-endpoint-controls/)。本实验要求依据每条记录自身的字段判断
+它能支持哪种主张。读者将区分有明确关系的终点数值、界限值与数值响应序列，并指出数据表无法测量的
+结局路径。项目环境中的 Python 3.11.15 已足够，无需加速器。
+
+## 运行模式与命令
+
+本实验是在冻结协议下进行的全新独立计算。第一个命令把两个已经验证的本地快照复制到本实验的
+专用缓存中，不发起网络请求。开始前须通过原有实验取得源缓存。后续命令只读取本地数据。
+导出器仅在检查通过后覆盖派生摘要，不覆盖任一源快照或作者结果。
+
+```bash
+.venv/bin/python labs/functional_validation_audit/run_lab.py download
+.venv/bin/python labs/functional_validation_audit/inspect_functional_validation_audit.py show
+.venv/bin/python labs/functional_validation_audit/inspect_functional_validation_audit.py check
+.venv/bin/python labs/functional_validation_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/functional_validation_audit -q
+```
+
+## 两个数据表
+
+ChEMBL 37 数据表仅纳入[决策单元实验](/labs/decision-unit-scope/)按规则接收的行。
+该规则保留以 nM 表示、具有等号或明确界限关系的指定终点类型。这些是活性记录行，不是独立实验。
+PubChem BioAssay 数据表来自[测定终点实验](/labs/assay-endpoint-controls/)读取的六项测定，
+每个保留行代表一项测定中的一个化合物。每行可能含有一个或多个终点数值以及一组浓度读数。
+两个数据表分别计数。
+
+已提交的结果于 2026-10-23 使用 Python 3.11.15 和 RDKit 2025.09.6 计算，
+所用快照读取于 2026-10-21。总数是记录数，不能据此估计更大数据库总体的比例。
+
+| 数据表 | 记录总数 | 点测量 | 界限值 | 浓度响应表 | 不许可任何主张 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| ChEMBL 37 接收的活性行 | 1004 | 488 | 516 | 0 | 0 |
+| PubChem BioAssay 保留行 | 1257 | 0 | 38 | 1204 | 15 |
+
+## 记录类型与主张规则
+
+点测量必须有明确的终点类型、单位、数值及等号关系。界限值需要相同的字段，但关系为界限符号，
+因此不能支持精确数值主张。浓度响应表需要至少五个数值浓度读数，而且测定描述中须明确写出激活或
+抑制响应的定义。若均不满足，本审核判定该行不许可主张。直接结合主张还需要 ChEMBL 结合测定
+以及 Kd 或 Ki 类型。数值序列只支持该测定中的响应主张，不支持临床结局。
+
+在 1004 条接收的 ChEMBL 行中，各标准类型分别为 AC50 395、EC50 182、IC50 393、
+Kd 7、Ki 27。516 条界限行仅说明数值所在的一侧。即使终点标签相同，点测量和界限值仍分别统计。
+
+PubChem 数据表含有五种终点标签。终点列按数值计数，限定符行按化合物记录行计数。
+测定 519 的每行有两个终点数值，因此其 272 行贡献 544 个数值，而不是 544 条独立记录。
+
+| 测定 | AC50 | EC50 | IC50 | Ki | MIC | 有明确限定符的数值 | 等值数值 | 界限数值 | 未声明关系的数值 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 439 | 0 | 69 | 0 | 0 | 0 | 69 | 55 | 14 | 0 |
+| 464 | 706 | 0 | 0 | 0 | 0 | 706 | 591 | 115 | 0 |
+| 519 | 0 | 0 | 272 | 272 | 0 | 544 | 188 | 356 | 0 |
+| 548 | 0 | 0 | 94 | 0 | 0 | 94 | 64 | 30 | 0 |
+| 691 | 0 | 0 | 0 | 0 | 53 | 38 | 0 | 38 | 15 |
+| 1277 | 0 | 0 | 63 | 0 | 0 | 63 | 28 | 35 | 0 |
+
+测定 691 的保留行没有数值浓度序列。其中 38 个带界限的数值只支持界限主张。
+其余 15 个数值未声明关系，按本规则既不能支持点数值，也不能支持界限主张。
+其他测定提供 1204 条响应表记录。响应表还可能携带明确的终点关系，但响应主张与终点主张
+仍须分开。
+
+## 数据表以外的路径
+
+| 路径 | 无法测量的原因 |
+| --- | --- |
+| 临床结局 | 两个快照都没有临床终点或结局观察。 |
+| 结合向响应的迁移 | 快照没有在相同实体和匹配实验下配对直接结合测量与响应记录。 |
+| 响应向临床的迁移 | 两个快照均未将响应记录与临床结局记录相连。 |
+
+本审核不把测量转为响应，也不把响应转为结局。缺少临床终点的记录不能说明临床结果。
+它不对记录排名，也不预测结局。读者学习成效尚未观察。
+可继续阅读[结合、响应与结局课程](/learn/biologics-design/binding-functional-and-clinical-claims/)，
+其中有完整示例和独立练习。
+
+## 来源与署名
+
+<div data-case-sources>
+
+- [ChEMBL 37 发布状态](https://www.ebi.ac.uk/chembl/api/data/status.json)及[发布许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)，读取于 2026-10-21。数据许可为 Creative Commons Attribution-ShareAlike 3.0 Unported。[发布 README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README)要求标注 ChEMBL 和版本。
+- [PubChem BioAssay 归档](https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/)及 [NCBI 政策](https://www.ncbi.nlm.nih.gov/home/about/policies/)，读取于 2026-10-21。未读到专门适用于这些归档测定记录的条款，因此其许可状态仍为未核实。
+
+</div>
+
+原创文字采用 CC BY 4.0，原创实验代码采用 Apache-2.0。最后复核于 2026-10-23。

@@ -1,0 +1,149 @@
+---
+title: Size does not buy reach
+description: Enumerate three candidate spaces exactly and test four molecules against them, and see a space grow fourfold while reaching nothing new.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="design-space" />
+
+## Before you run
+
+**Mode: runnable enumeration over committed declarations.** The command builds
+every product of three declared spaces with RDKit and tests four targets against
+each. **No molecule here is a design proposal** and no space is a real screening
+library.
+
+```bash
+python labs/design_space/inspect_space.py show
+```
+
+Candidate spaces are quoted as sizes. **The inputs decide how much of it there is.
+The construction decides what is reachable.** Only the first is usually reported.
+
+## 1. Three constructions
+
+| space | nominal size | construction |
+| --- | --- | --- |
+| `enumeration` | 25 | one fixed core, two attachment points, short lists |
+| `enumeration_grown` | 100 | **the same core**, longer lists |
+| `scaffold_hop` | 25 | **a different core**, the original lists |
+
+Every size is recomputed as the product of its input lists rather than read from a
+stated number, and every product is built to confirm the space is not quietly
+smaller than its inputs.
+
+## 2. Growing the space fourfold reached one molecule
+
+| target | `enumeration` | `enumeration_grown` | `scaffold_hop` |
+| --- | --- | --- | --- |
+| `t1` original core, short-list substituents | yes | yes | no |
+| `t2` original core, long-list substituents | no | **yes** | no |
+| `t3` a pyridine core, one atom different | no | **no** | yes |
+| `t4` a sulfonamide linker | no | **no** | no |
+
+Going from 25 to 100 reached `t2`. It left `t3` and `t4` **exactly as unreachable
+as before.**
+
+`t3` differs from a reachable molecule by **a single atom in the ring**. It is
+unreachable in both enumeration spaces **at any list size**, because the core is
+fixed by the construction and **no amount of substituent buys a new core.**
+
+## 3. Two spaces of equal size can be disjoint
+
+`scaffold_hop` is the same nominal size as `enumeration`: 25 products from the
+same lists. It reaches `t3`, which neither enumeration space reaches at any size.
+
+It also reaches **none** of what they do. The third space and the grown space
+**share no member at all**, and a check requires that.
+
+So a difference in reach is not a difference in size, and a larger number does not
+contain a smaller one.
+
+## 4. One target is reachable nowhere
+
+`t4` changes the linker from an amide to a sulfonamide and is reachable in none of
+the three constructions.
+
+That is a statement about **these three constructions** and about nothing else. A
+fourth would reach it, and would fail to reach something these three cover. There
+is no space here that stands for chemistry.
+
+```bash
+python labs/design_space/inspect_space.py check
+```
+
+Thirteen checks run, including that each nominal size is the product of its input
+lists, that the grown space shares the core so only its inputs changed, and that
+the third space differs in construction rather than in size.
+
+## 5. What reachability is not
+
+**Reachable means the construction can write the molecule down.** It says nothing
+about whether the molecule can be made, whether it would be stable, or whether it
+is worth making.
+
+**A space is a generator, not a plan.** The
+[generation gate](/labs/generation-gate/) records the same boundary from the other
+side when it keeps route feasibility unassessed, and the
+[disconnection comparison](/labs/retro-disconnection/) shows what recovering a
+route does and does not establish.
+
+## Independent exercise
+
+A platform pitch says: "our combinatorial library covers 10 billion synthesisable
+compounds, orders of magnitude beyond any screening collection."
+
+Name what that number does and does not tell you, and give the one question that
+would make it informative.
+
+<details data-worked-answer>
+<summary>Worked answer — what a size is, and the question that gives it meaning</summary>
+
+**The number is a property of the inputs, and it is cheap to increase.** A
+combinatorial library's size is the product of its reagent lists. Adding one
+reagent to each of three positions multiplies the total, and does so without
+reaching any chemistry the construction could not already reach. Ten billion tells
+you the lists are long. It does not tell you the space is broad.
+
+**"Synthesisable" is doing a lot of work and usually means "the reaction is
+expected to run".** That is a claim about a transformation class, not about each
+of ten billion products, and it does not cover selectivity, purification, or
+whether the specific combination behaves. It is a generator's claim, not a plan's.
+
+**Comparison to a screening collection is a category error.** A screening
+collection is a set of compounds that exist in vials. A combinatorial space is a
+set of molecules a construction can write down. **Orders of magnitude larger** is
+comparing a description to an inventory.
+
+**What the size cannot tell you is the part that decides everything: the number of
+distinct cores.** A ten-billion-member space built on three scaffolds reaches
+exactly three regions of chemistry, however densely. In this lab, growing a space
+fourfold reached one extra molecule and left a target that differs by one ring
+atom exactly as unreachable as before.
+
+**The question: how many distinct scaffolds does the library contain, and what
+does the size become when counted per scaffold?** It converts a number about
+inputs into a number about reach. If the answer is a handful, the honest
+description is a deep exploration of a few cores, which may be exactly what is
+wanted, and is a different claim from the one on the slide.
+
+</details>
+
+## What this does not do
+
+It enumerates declared constructions and reports what each reaches. It does not
+establish that any molecule can be made, that any space is worth searching, or
+that these three constructions represent the ways a space can be built.
+
+The molecules and lists were authored for teaching. For the surrounding argument
+see
+[flows and constrained search](/learn/molecular-generation/flows-and-constrained-search/)
+and the
+[generation resource guide](/learn/molecular-generation/generation-resource-guide/).
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-11.

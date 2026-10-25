@@ -1,0 +1,41 @@
+name: Lesson proposal
+description: Propose or substantially revise a graduate-level AIDD lesson.
+title: "[Lesson]: "
+labels: ["lesson-proposal"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Lesson question and scope
+      description: State the decision or scientific question the lesson will teach learners to answer.
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence set
+      description: List primary sources for the central claims and note contested or unverified points.
+    validations: { required: true }
+  - type: textarea
+    id: licence_attribution
+    attributes:
+      label: Licence and attribution
+      description: Identify third-party figures, data, code, or prose and their reuse terms.
+    validations: { required: true }
+  - type: textarea
+    id: audience
+    attributes:
+      label: Expected audience
+      description: Give prerequisites, learning outcomes, and the intended track position.
+    validations: { required: true }
+  - type: textarea
+    id: scientific_assumptions
+    attributes:
+      label: Scientific assumptions
+      description: Define the data contract, baseline, evaluation unit, and principal failure modes.
+    validations: { required: true }
+  - type: textarea
+    id: conflict_disclosure
+    attributes:
+      label: Conflict disclosure
+      description: Disclose relevant affiliations or interests, or write "None".
+    validations: { required: true }

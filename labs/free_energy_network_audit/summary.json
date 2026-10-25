@@ -1,0 +1,1046 @@
+{
+  "schema_version": "aidd-commons.free-energy-network-summary.v1",
+  "protocol_id": "openfe-jacs-relative-network-v1",
+  "computed_on": "2026-10-23",
+  "software": {
+    "python": "3.11.15",
+    "aidd_commons_labs": "0.2.0rc1"
+  },
+  "endpoint_kind": "relative binding free energy",
+  "boundary_statement": "This is a relative binding free-energy network consistency audit, not an absolute binding free energy or an experimental affinity. A closed cycle does not establish that any edge estimate is correct or converged.",
+  "enforced_rules": {
+    "endpoint": "Pair the complex and solvent transformations for the same ordered ligand mapping. DeltaDeltaG_bind(A to B) = DeltaG_complex(A to B) - DeltaG_solvent(A to B).",
+    "cycle_tolerance": "Two times the quadrature sum of the included edge standard errors, in kilocalorie per mole. This tolerance is fixed before examining cycle residuals.",
+    "closure": "A cycle closes only if the absolute signed sum is at most its tolerance. Every inconsistent cycle is failed and retains its name and discrepancy."
+  },
+  "totals": {
+    "systems": 8,
+    "edges": 566,
+    "estimates": 1698,
+    "unestimated_unit_records": 29,
+    "cycles": 92,
+    "closed_cycles": 87,
+    "failed_cycles": 5
+  },
+  "systems": [
+    {
+      "system": "jnk1",
+      "edge_count": 54,
+      "solvent_edges": 27,
+      "complex_edges": 27,
+      "binding_edges": 27,
+      "estimate_count": 162,
+      "solvent_estimates": 81,
+      "complex_estimates": 81,
+      "estimates_per_edge": {
+        "3": 54
+      },
+      "selected_repeat_estimates": 162,
+      "unestimated_unit_records": 0,
+      "cycle_count": 7,
+      "closed_cycle_count": 7,
+      "failed_cycle_count": 0,
+      "cycles": [
+        {
+          "name": "18629-1 -> 18624-1 -> 18626-1 -> 18629-1",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.175722,
+          "standard_error_kcal_mol": 0.169271,
+          "tolerance_kcal_mol": 0.338542,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.175722
+        },
+        {
+          "name": "18631-1 -> 18625-1 -> 18628-1_flip -> 18627-1 -> 18633-1 -> 18630-1 -> 18624-1 -> 18631-1",
+          "edge_count": 7,
+          "signed_sum_kcal_mol": 0.2933,
+          "standard_error_kcal_mol": 0.723408,
+          "tolerance_kcal_mol": 1.446816,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.2933
+        },
+        {
+          "name": "18632-1 -> 18624-1 -> 18630-1 -> 18632-1",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.097259,
+          "standard_error_kcal_mol": 0.301725,
+          "tolerance_kcal_mol": 0.603449,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.097259
+        },
+        {
+          "name": "18636-1 -> 18635-1 -> 18625-1 -> 18636-1",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.080991,
+          "standard_error_kcal_mol": 0.521607,
+          "tolerance_kcal_mol": 1.043214,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.080991
+        },
+        {
+          "name": "18638-1 -> 18652-1 -> 18634-1 -> 18638-1",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.787524,
+          "standard_error_kcal_mol": 0.968885,
+          "tolerance_kcal_mol": 1.937771,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.787524
+        },
+        {
+          "name": "18639-1 -> 18637-1 -> 17124-1 -> 18634-1 -> 18639-1",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.142015,
+          "standard_error_kcal_mol": 1.256992,
+          "tolerance_kcal_mol": 2.513984,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.142015
+        },
+        {
+          "name": "18659-1 -> 18658-1 -> 18631-1 -> 18634-1 -> 18659-1",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.48462,
+          "standard_error_kcal_mol": 1.075538,
+          "tolerance_kcal_mol": 2.151076,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.48462
+        }
+      ],
+      "failed_cycles": []
+    },
+    {
+      "system": "bace",
+      "edge_count": 98,
+      "solvent_edges": 49,
+      "complex_edges": 49,
+      "binding_edges": 49,
+      "estimate_count": 294,
+      "solvent_estimates": 147,
+      "complex_estimates": 147,
+      "estimates_per_edge": {
+        "3": 98
+      },
+      "selected_repeat_estimates": 294,
+      "unestimated_unit_records": 1,
+      "cycle_count": 14,
+      "closed_cycle_count": 12,
+      "failed_cycle_count": 2,
+      "cycles": [
+        {
+          "name": "CAT-13b -> CAT-13c -> CAT-13a -> CAT-13b",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 2.427387,
+          "standard_error_kcal_mol": 0.680921,
+          "tolerance_kcal_mol": 1.361843,
+          "closed": false,
+          "discrepancy_size_kcal_mol": 2.427387
+        },
+        {
+          "name": "CAT-13d -> CAT-17h -> CAT-13a -> CAT-13d",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 1.195884,
+          "standard_error_kcal_mol": 0.354348,
+          "tolerance_kcal_mol": 0.708696,
+          "closed": false,
+          "discrepancy_size_kcal_mol": 1.195884
+        },
+        {
+          "name": "CAT-13e -> CAT-13b -> CAT-13a -> CAT-13e",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -1.599781,
+          "standard_error_kcal_mol": 0.893872,
+          "tolerance_kcal_mol": 1.787744,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 1.599781
+        },
+        {
+          "name": "CAT-13g -> CAT-4p -> CAT-13a -> CAT-13g",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.618044,
+          "standard_error_kcal_mol": 0.89961,
+          "tolerance_kcal_mol": 1.799221,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.618044
+        },
+        {
+          "name": "CAT-13n -> CAT-4p -> CAT-13a -> CAT-13g -> CAT-13j -> CAT-13n",
+          "edge_count": 5,
+          "signed_sum_kcal_mol": -0.607185,
+          "standard_error_kcal_mol": 0.904715,
+          "tolerance_kcal_mol": 1.80943,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.607185
+        },
+        {
+          "name": "CAT-13o -> CAT-13f -> CAT-13a -> CAT-13o",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.239513,
+          "standard_error_kcal_mol": 0.942596,
+          "tolerance_kcal_mol": 1.885192,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.239513
+        },
+        {
+          "name": "CAT-17i -> CAT-17h -> CAT-13a -> CAT-13d -> CAT-17a -> CAT-13h -> CAT-17b -> CAT-17e -> CAT-17g -> CAT-17i",
+          "edge_count": 9,
+          "signed_sum_kcal_mol": 0.781756,
+          "standard_error_kcal_mol": 0.723546,
+          "tolerance_kcal_mol": 1.447092,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.781756
+        },
+        {
+          "name": "CAT-24 -> CAT-17i -> CAT-17c -> CAT-17f -> CAT-17d -> CAT-24",
+          "edge_count": 5,
+          "signed_sum_kcal_mol": -0.687912,
+          "standard_error_kcal_mol": 0.54958,
+          "tolerance_kcal_mol": 1.09916,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.687912
+        },
+        {
+          "name": "CAT-4b -> CAT-4d -> CAT-13k -> CAT-4b",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.154791,
+          "standard_error_kcal_mol": 0.709844,
+          "tolerance_kcal_mol": 1.419689,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.154791
+        },
+        {
+          "name": "CAT-4l -> CAT-4j -> CAT-4k -> CAT-4a -> CAT-4l",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.577479,
+          "standard_error_kcal_mol": 0.505594,
+          "tolerance_kcal_mol": 1.011188,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.577479
+        },
+        {
+          "name": "CAT-4m -> CAT-4j -> CAT-4o -> CAT-13k -> CAT-4m",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.342612,
+          "standard_error_kcal_mol": 0.495405,
+          "tolerance_kcal_mol": 0.99081,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.342612
+        },
+        {
+          "name": "CAT-4n -> CAT-4p -> CAT-13a -> CAT-13g -> CAT-13j -> CAT-4i -> CAT-4n",
+          "edge_count": 6,
+          "signed_sum_kcal_mol": 0.028315,
+          "standard_error_kcal_mol": 1.088547,
+          "tolerance_kcal_mol": 2.177094,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.028315
+        },
+        {
+          "name": "CAT-4p -> CAT-13m -> CAT-13j -> CAT-13g -> CAT-13a -> CAT-4p",
+          "edge_count": 5,
+          "signed_sum_kcal_mol": 0.032702,
+          "standard_error_kcal_mol": 0.904415,
+          "tolerance_kcal_mol": 1.80883,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.032702
+        },
+        {
+          "name": "CAT-4p -> CAT-4o -> CAT-13k -> CAT-4m -> CAT-4p",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.1499,
+          "standard_error_kcal_mol": 0.736713,
+          "tolerance_kcal_mol": 1.473425,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.1499
+        }
+      ],
+      "failed_cycles": [
+        {
+          "name": "CAT-13b -> CAT-13c -> CAT-13a -> CAT-13b",
+          "discrepancy_size_kcal_mol": 2.427387
+        },
+        {
+          "name": "CAT-13d -> CAT-17h -> CAT-13a -> CAT-13d",
+          "discrepancy_size_kcal_mol": 1.195884
+        }
+      ]
+    },
+    {
+      "system": "tyk2",
+      "edge_count": 44,
+      "solvent_edges": 22,
+      "complex_edges": 22,
+      "binding_edges": 22,
+      "estimate_count": 132,
+      "solvent_estimates": 66,
+      "complex_estimates": 66,
+      "estimates_per_edge": {
+        "3": 44
+      },
+      "selected_repeat_estimates": 132,
+      "unestimated_unit_records": 0,
+      "cycle_count": 7,
+      "closed_cycle_count": 7,
+      "failed_cycle_count": 0,
+      "cycles": [
+        {
+          "name": "ejm_44 -> ejm_43 -> ejm_42 -> ejm_31 -> ejm_44",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.923533,
+          "standard_error_kcal_mol": 0.510481,
+          "tolerance_kcal_mol": 1.020962,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.923533
+        },
+        {
+          "name": "ejm_49 -> ejm_50 -> ejm_47 -> ejm_31 -> ejm_49",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.093919,
+          "standard_error_kcal_mol": 0.986203,
+          "tolerance_kcal_mol": 1.972406,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.093919
+        },
+        {
+          "name": "ejm_50 -> ejm_42 -> ejm_31 -> ejm_47 -> ejm_50",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.8351,
+          "standard_error_kcal_mol": 0.560542,
+          "tolerance_kcal_mol": 1.121083,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.8351
+        },
+        {
+          "name": "ejm_50 -> ejm_48 -> ejm_31 -> ejm_47 -> ejm_50",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.319452,
+          "standard_error_kcal_mol": 0.891829,
+          "tolerance_kcal_mol": 1.783658,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.319452
+        },
+        {
+          "name": "ejm_55 -> ejm_54 -> ejm_42 -> ejm_31 -> ejm_47 -> ejm_50 -> ejm_55",
+          "edge_count": 6,
+          "signed_sum_kcal_mol": -1.147039,
+          "standard_error_kcal_mol": 0.713462,
+          "tolerance_kcal_mol": 1.426923,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 1.147039
+        },
+        {
+          "name": "jmc_27 -> ejm_46 -> ejm_31 -> jmc_23 -> jmc_27",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.115252,
+          "standard_error_kcal_mol": 0.394211,
+          "tolerance_kcal_mol": 0.788421,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.115252
+        },
+        {
+          "name": "jmc_30 -> ejm_46 -> ejm_31 -> jmc_23 -> jmc_28 -> jmc_30",
+          "edge_count": 5,
+          "signed_sum_kcal_mol": -0.00281,
+          "standard_error_kcal_mol": 0.338968,
+          "tolerance_kcal_mol": 0.677936,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.00281
+        }
+      ],
+      "failed_cycles": []
+    },
+    {
+      "system": "thrombin",
+      "edge_count": 28,
+      "solvent_edges": 14,
+      "complex_edges": 14,
+      "binding_edges": 14,
+      "estimate_count": 84,
+      "solvent_estimates": 42,
+      "complex_estimates": 42,
+      "estimates_per_edge": {
+        "3": 28
+      },
+      "selected_repeat_estimates": 84,
+      "unestimated_unit_records": 0,
+      "cycle_count": 4,
+      "closed_cycle_count": 4,
+      "failed_cycle_count": 0,
+      "cycles": [
+        {
+          "name": "1d -> 1c -> 1a -> 1b -> 1d",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.026826,
+          "standard_error_kcal_mol": 0.199527,
+          "tolerance_kcal_mol": 0.399054,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.026826
+        },
+        {
+          "name": "3a -> 5 -> 1a -> 3b -> 3a",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.051693,
+          "standard_error_kcal_mol": 0.229026,
+          "tolerance_kcal_mol": 0.458052,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.051693
+        },
+        {
+          "name": "6e -> 1b -> 6b -> 6a -> 6e",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.012423,
+          "standard_error_kcal_mol": 0.34371,
+          "tolerance_kcal_mol": 0.68742,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.012423
+        },
+        {
+          "name": "6e -> 7a -> 6b -> 6a -> 6e",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.124485,
+          "standard_error_kcal_mol": 0.432602,
+          "tolerance_kcal_mol": 0.865204,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.124485
+        }
+      ],
+      "failed_cycles": []
+    },
+    {
+      "system": "mcl1",
+      "edge_count": 124,
+      "solvent_edges": 62,
+      "complex_edges": 62,
+      "binding_edges": 62,
+      "estimate_count": 372,
+      "solvent_estimates": 186,
+      "complex_estimates": 186,
+      "estimates_per_edge": {
+        "3": 124
+      },
+      "selected_repeat_estimates": 372,
+      "unestimated_unit_records": 0,
+      "cycle_count": 21,
+      "closed_cycle_count": 20,
+      "failed_cycle_count": 1,
+      "cycles": [
+        {
+          "name": "28 -> 38 flip -> 27 -> 28",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -1.795351,
+          "standard_error_kcal_mol": 1.472203,
+          "tolerance_kcal_mol": 2.944407,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 1.795351
+        },
+        {
+          "name": "28 -> 39 -> 27 -> 28",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 2.322782,
+          "standard_error_kcal_mol": 0.757642,
+          "tolerance_kcal_mol": 1.515285,
+          "closed": false,
+          "discrepancy_size_kcal_mol": 2.322782
+        },
+        {
+          "name": "28 -> 46 flip -> 27 -> 28",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 1.00434,
+          "standard_error_kcal_mol": 0.528286,
+          "tolerance_kcal_mol": 1.056573,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 1.00434
+        },
+        {
+          "name": "30 flip -> 40 flip -> 27 -> 30 flip",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.095935,
+          "standard_error_kcal_mol": 0.841439,
+          "tolerance_kcal_mol": 1.682877,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.095935
+        },
+        {
+          "name": "33 -> 34 -> 32 -> 33",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.170289,
+          "standard_error_kcal_mol": 0.302719,
+          "tolerance_kcal_mol": 0.605438,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.170289
+        },
+        {
+          "name": "33 -> 41 flip -> 32 -> 33",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.881202,
+          "standard_error_kcal_mol": 0.838009,
+          "tolerance_kcal_mol": 1.676017,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.881202
+        },
+        {
+          "name": "33 -> 45 -> 27 -> 31 -> 35 -> 33",
+          "edge_count": 5,
+          "signed_sum_kcal_mol": -0.043898,
+          "standard_error_kcal_mol": 0.815986,
+          "tolerance_kcal_mol": 1.631972,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.043898
+        },
+        {
+          "name": "33 -> 48 flip -> 27 -> 31 -> 35 -> 33",
+          "edge_count": 5,
+          "signed_sum_kcal_mol": 0.128175,
+          "standard_error_kcal_mol": 0.791474,
+          "tolerance_kcal_mol": 1.582948,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.128175
+        },
+        {
+          "name": "35 -> 37 -> 30 flip -> 27 -> 31 -> 35",
+          "edge_count": 5,
+          "signed_sum_kcal_mol": 0.044741,
+          "standard_error_kcal_mol": 0.406136,
+          "tolerance_kcal_mol": 0.812272,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.044741
+        },
+        {
+          "name": "42 -> 44 -> 26 -> 27 -> 42",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.889191,
+          "standard_error_kcal_mol": 0.603448,
+          "tolerance_kcal_mol": 1.206895,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.889191
+        },
+        {
+          "name": "42 -> 57 -> 26 -> 27 -> 42",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.718389,
+          "standard_error_kcal_mol": 0.641996,
+          "tolerance_kcal_mol": 1.283993,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.718389
+        },
+        {
+          "name": "42 -> 66 -> 23 -> 42",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.101483,
+          "standard_error_kcal_mol": 0.988588,
+          "tolerance_kcal_mol": 1.977177,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.101483
+        },
+        {
+          "name": "42 -> 68 -> 26 -> 27 -> 42",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.363191,
+          "standard_error_kcal_mol": 0.621767,
+          "tolerance_kcal_mol": 1.243533,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.363191
+        },
+        {
+          "name": "43 flip -> 47 flip -> 27 -> 43 flip",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.06157,
+          "standard_error_kcal_mol": 0.36793,
+          "tolerance_kcal_mol": 0.735861,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.06157
+        },
+        {
+          "name": "51 -> 62 -> 42 -> 51",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.563523,
+          "standard_error_kcal_mol": 1.059375,
+          "tolerance_kcal_mol": 2.118749,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.563523
+        },
+        {
+          "name": "52 -> 53 -> 37 -> 30 flip -> 27 -> 31 -> 35 -> 36 -> 52",
+          "edge_count": 8,
+          "signed_sum_kcal_mol": -0.393843,
+          "standard_error_kcal_mol": 0.477089,
+          "tolerance_kcal_mol": 0.954177,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.393843
+        },
+        {
+          "name": "54 -> 64 -> 42 -> 54",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.023041,
+          "standard_error_kcal_mol": 0.992566,
+          "tolerance_kcal_mol": 1.985133,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.023041
+        },
+        {
+          "name": "56 -> 58 -> 53 -> 37 -> 56",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.039398,
+          "standard_error_kcal_mol": 0.399713,
+          "tolerance_kcal_mol": 0.799426,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.039398
+        },
+        {
+          "name": "60 -> 61 -> 50 -> 49 -> 35 -> 31 -> 27 -> 30 flip -> 37 -> 60",
+          "edge_count": 9,
+          "signed_sum_kcal_mol": -0.137133,
+          "standard_error_kcal_mol": 1.122363,
+          "tolerance_kcal_mol": 2.244726,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.137133
+        },
+        {
+          "name": "60 -> 63 -> 53 -> 37 -> 60",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.276053,
+          "standard_error_kcal_mol": 0.984002,
+          "tolerance_kcal_mol": 1.968004,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.276053
+        },
+        {
+          "name": "65 -> 67 -> 60 -> 65",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.179351,
+          "standard_error_kcal_mol": 0.782249,
+          "tolerance_kcal_mol": 1.564499,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.179351
+        }
+      ],
+      "failed_cycles": [
+        {
+          "name": "28 -> 39 -> 27 -> 28",
+          "discrepancy_size_kcal_mol": 2.322782
+        }
+      ]
+    },
+    {
+      "system": "ptp1b",
+      "edge_count": 68,
+      "solvent_edges": 34,
+      "complex_edges": 34,
+      "binding_edges": 34,
+      "estimate_count": 204,
+      "solvent_estimates": 102,
+      "complex_estimates": 102,
+      "estimates_per_edge": {
+        "3": 68
+      },
+      "selected_repeat_estimates": 204,
+      "unestimated_unit_records": 2,
+      "cycle_count": 12,
+      "closed_cycle_count": 12,
+      "failed_cycle_count": 0,
+      "cycles": [
+        {
+          "name": "23467 -> 23466 -> 20669 -> 23467",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.079527,
+          "standard_error_kcal_mol": 1.032418,
+          "tolerance_kcal_mol": 2.064836,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.079527
+        },
+        {
+          "name": "23471 -> 23468 -> 23467 -> 20669 -> 23466 -> 23471",
+          "edge_count": 5,
+          "signed_sum_kcal_mol": -0.01216,
+          "standard_error_kcal_mol": 1.242748,
+          "tolerance_kcal_mol": 2.485497,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.01216
+        },
+        {
+          "name": "23471 -> 23472 -> 23466 -> 23471",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.284644,
+          "standard_error_kcal_mol": 1.289542,
+          "tolerance_kcal_mol": 2.579084,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.284644
+        },
+        {
+          "name": "23473 -> 23466 -> 20669 -> 23467 -> 23473",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.167005,
+          "standard_error_kcal_mol": 1.465577,
+          "tolerance_kcal_mol": 2.931154,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.167005
+        },
+        {
+          "name": "23474 -> 23466 -> 20669 -> 23467 -> 23474",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.176607,
+          "standard_error_kcal_mol": 1.531057,
+          "tolerance_kcal_mol": 3.062115,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.176607
+        },
+        {
+          "name": "23476 -> 23466 -> 20669 -> 23467 -> 23476",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.46657,
+          "standard_error_kcal_mol": 1.50113,
+          "tolerance_kcal_mol": 3.00226,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.46657
+        },
+        {
+          "name": "23477 -> 23330 -> 23466 -> 20670 -> 23477",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.540801,
+          "standard_error_kcal_mol": 1.610766,
+          "tolerance_kcal_mol": 3.221532,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.540801
+        },
+        {
+          "name": "23477 -> 23466 -> 20670 -> 23477",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.059862,
+          "standard_error_kcal_mol": 0.975192,
+          "tolerance_kcal_mol": 1.950385,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.059862
+        },
+        {
+          "name": "23480 -> 23479 -> 23477 -> 20670 -> 23480",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.393931,
+          "standard_error_kcal_mol": 0.873475,
+          "tolerance_kcal_mol": 1.746951,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.393931
+        },
+        {
+          "name": "23482 -> 23486 -> 20667 -> 23482",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.180727,
+          "standard_error_kcal_mol": 0.811103,
+          "tolerance_kcal_mol": 1.622207,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.180727
+        },
+        {
+          "name": "23483 -> 23480 -> 20670 -> 23477 -> 23479 -> 23483",
+          "edge_count": 5,
+          "signed_sum_kcal_mol": -0.369056,
+          "standard_error_kcal_mol": 1.816798,
+          "tolerance_kcal_mol": 3.633595,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.369056
+        },
+        {
+          "name": "23484 -> 23486 -> 20667 -> 23485 -> 23484",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.673792,
+          "standard_error_kcal_mol": 0.797249,
+          "tolerance_kcal_mol": 1.594497,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.673792
+        }
+      ],
+      "failed_cycles": []
+    },
+    {
+      "system": "cdk2",
+      "edge_count": 48,
+      "solvent_edges": 24,
+      "complex_edges": 24,
+      "binding_edges": 24,
+      "estimate_count": 144,
+      "solvent_estimates": 72,
+      "complex_estimates": 72,
+      "estimates_per_edge": {
+        "3": 48
+      },
+      "selected_repeat_estimates": 144,
+      "unestimated_unit_records": 26,
+      "cycle_count": 9,
+      "closed_cycle_count": 9,
+      "failed_cycle_count": 0,
+      "cycles": [
+        {
+          "name": "1h1r -> 1h1q -> 17 -> 1h1r",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.100688,
+          "standard_error_kcal_mol": 0.133603,
+          "tolerance_kcal_mol": 0.267206,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.100688
+        },
+        {
+          "name": "1oiu -> 1h1q -> 17 -> 1oiu",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.180063,
+          "standard_error_kcal_mol": 0.821225,
+          "tolerance_kcal_mol": 1.64245,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.180063
+        },
+        {
+          "name": "21 -> 20 -> 1h1q -> 21",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.254514,
+          "standard_error_kcal_mol": 0.617648,
+          "tolerance_kcal_mol": 1.235297,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.254514
+        },
+        {
+          "name": "22 -> 1oi9 -> 1oiy -> 1h1q -> 22",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.84187,
+          "standard_error_kcal_mol": 0.728764,
+          "tolerance_kcal_mol": 1.457529,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.84187
+        },
+        {
+          "name": "26 -> 1oi9 -> 1oiy -> 1h1q -> 26",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.86257,
+          "standard_error_kcal_mol": 0.685083,
+          "tolerance_kcal_mol": 1.370166,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.86257
+        },
+        {
+          "name": "28 -> 32 -> 1h1s -> 28",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.458953,
+          "standard_error_kcal_mol": 1.00833,
+          "tolerance_kcal_mol": 2.01666,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.458953
+        },
+        {
+          "name": "30 -> 31 -> 1h1s -> 30",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.287693,
+          "standard_error_kcal_mol": 0.682165,
+          "tolerance_kcal_mol": 1.36433,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.287693
+        },
+        {
+          "name": "31 -> 1oi9 -> 1oiy -> 1h1q -> 31",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.712585,
+          "standard_error_kcal_mol": 0.932827,
+          "tolerance_kcal_mol": 1.865653,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.712585
+        },
+        {
+          "name": "31 -> 29 -> 30 -> 1h1s -> 31",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 1.667156,
+          "standard_error_kcal_mol": 1.790788,
+          "tolerance_kcal_mol": 3.581575,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 1.667156
+        }
+      ],
+      "failed_cycles": []
+    },
+    {
+      "system": "p38",
+      "edge_count": 102,
+      "solvent_edges": 51,
+      "complex_edges": 51,
+      "binding_edges": 51,
+      "estimate_count": 306,
+      "solvent_estimates": 153,
+      "complex_estimates": 153,
+      "estimates_per_edge": {
+        "3": 102
+      },
+      "selected_repeat_estimates": 306,
+      "unestimated_unit_records": 0,
+      "cycle_count": 18,
+      "closed_cycle_count": 16,
+      "failed_cycle_count": 2,
+      "cycles": [
+        {
+          "name": "2g -> 3flz -> 2c -> 2g",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.536031,
+          "standard_error_kcal_mol": 1.217812,
+          "tolerance_kcal_mol": 2.435625,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.536031
+        },
+        {
+          "name": "2h -> 2i -> 2g -> 2h",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.340344,
+          "standard_error_kcal_mol": 0.602761,
+          "tolerance_kcal_mol": 1.205522,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.340344
+        },
+        {
+          "name": "2j -> 2ff -> 3fln -> 2ee -> 2j",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.078164,
+          "standard_error_kcal_mol": 1.00906,
+          "tolerance_kcal_mol": 2.018119,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.078164
+        },
+        {
+          "name": "2j -> 2gg -> 3fln -> 2ee -> 2j",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.697228,
+          "standard_error_kcal_mol": 1.436509,
+          "tolerance_kcal_mol": 2.873017,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.697228
+        },
+        {
+          "name": "2k -> 3fln -> 2ee -> 2j -> 2k",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.26815,
+          "standard_error_kcal_mol": 0.869963,
+          "tolerance_kcal_mol": 1.739926,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.26815
+        },
+        {
+          "name": "2l -> 3fln -> 2ee -> 2j -> 2l",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.134983,
+          "standard_error_kcal_mol": 0.820054,
+          "tolerance_kcal_mol": 1.640109,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.134983
+        },
+        {
+          "name": "2o -> 3fln -> 2n -> 2o",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 2.543487,
+          "standard_error_kcal_mol": 0.827238,
+          "tolerance_kcal_mol": 1.654476,
+          "closed": false,
+          "discrepancy_size_kcal_mol": 2.543487
+        },
+        {
+          "name": "2p -> 3fln -> 2ee -> 2j -> 2p",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 0.605976,
+          "standard_error_kcal_mol": 1.212017,
+          "tolerance_kcal_mol": 2.424034,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.605976
+        },
+        {
+          "name": "2q -> 2k -> 2j -> 2ee -> 2q",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -1.469778,
+          "standard_error_kcal_mol": 1.411473,
+          "tolerance_kcal_mol": 2.822945,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 1.469778
+        },
+        {
+          "name": "2s -> 2r -> 2n -> 2s",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.944567,
+          "standard_error_kcal_mol": 0.869072,
+          "tolerance_kcal_mol": 1.738144,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.944567
+        },
+        {
+          "name": "2t -> 3fln -> 2ee -> 2j -> 2t",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.074262,
+          "standard_error_kcal_mol": 0.830167,
+          "tolerance_kcal_mol": 1.660335,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.074262
+        },
+        {
+          "name": "2u -> 3fln -> 2ee -> 2j -> 2k -> 2u",
+          "edge_count": 5,
+          "signed_sum_kcal_mol": 0.73619,
+          "standard_error_kcal_mol": 1.428308,
+          "tolerance_kcal_mol": 2.856617,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.73619
+        },
+        {
+          "name": "2x -> 3fly -> 2v -> 2x",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 0.30329,
+          "standard_error_kcal_mol": 0.476328,
+          "tolerance_kcal_mol": 0.952655,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.30329
+        },
+        {
+          "name": "2z -> 3fly -> 2v -> 2z",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": -0.47319,
+          "standard_error_kcal_mol": 0.757651,
+          "tolerance_kcal_mol": 1.515302,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.47319
+        },
+        {
+          "name": "3fln -> 2e -> 2f -> 3flz -> 2c -> 2g -> 3fln",
+          "edge_count": 6,
+          "signed_sum_kcal_mol": -0.50913,
+          "standard_error_kcal_mol": 1.219289,
+          "tolerance_kcal_mol": 2.438578,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.50913
+        },
+        {
+          "name": "3fln -> 2v -> 2j -> 2ee -> 3fln",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": -0.280434,
+          "standard_error_kcal_mol": 1.117725,
+          "tolerance_kcal_mol": 2.235451,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 0.280434
+        },
+        {
+          "name": "3flq -> 2v -> 3fly -> 2aa -> 3flq",
+          "edge_count": 4,
+          "signed_sum_kcal_mol": 7.866367,
+          "standard_error_kcal_mol": 1.537618,
+          "tolerance_kcal_mol": 3.075237,
+          "closed": false,
+          "discrepancy_size_kcal_mol": 7.866367
+        },
+        {
+          "name": "3flw -> 3fly -> 2aa -> 3flw",
+          "edge_count": 3,
+          "signed_sum_kcal_mol": 1.238641,
+          "standard_error_kcal_mol": 1.369662,
+          "tolerance_kcal_mol": 2.739323,
+          "closed": true,
+          "discrepancy_size_kcal_mol": 1.238641
+        }
+      ],
+      "failed_cycles": [
+        {
+          "name": "2o -> 3fln -> 2n -> 2o",
+          "discrepancy_size_kcal_mol": 2.543487
+        },
+        {
+          "name": "3flq -> 2v -> 3fly -> 2aa -> 3flq",
+          "discrepancy_size_kcal_mol": 7.866367
+        }
+      ]
+    }
+  ]
+}

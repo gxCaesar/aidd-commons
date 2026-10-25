@@ -1,0 +1,1062 @@
+{
+  "archive_counts": {
+    "counted_pair_rows": 2487,
+    "parsed_rows_without_pair_labels": 57,
+    "protein_pairs": 102,
+    "proteins": 171,
+    "rows": 7085,
+    "rows_with_parsed_measurement": 2544
+  },
+  "comparable_pair_count": 9,
+  "computed_on": "2026-10-23",
+  "partner_distribution": {
+    "exactly_one_partner": 154,
+    "iqr": {
+      "q1": 1.0,
+      "q3": 1.0
+    },
+    "median": 1,
+    "proteins_by_distinct_partner_count": {
+      "1": 154,
+      "2": 9,
+      "3": 3,
+      "4": 3,
+      "5": 1,
+      "6": 1
+    }
+  },
+  "per_protein": [
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 12,
+      "protein": "11K2 scFv"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 9,
+      "protein": "1968 Hemagglutinin"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 19,
+      "protein": "1G2 fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 6,
+      "protein": "3E2 fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "53BP2"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 9,
+      "protein": "ACTR"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 92,
+      "protein": "AQC2 fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 49,
+      "protein": "AR2 mab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 7,
+      "protein": "Alpha-amylase/subtilisin inhibitor"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 2,
+      "protein": "Antibody 1F1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 2,
+      "protein": "Antibody 2D1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 44,
+      "protein": "Antibody Jel42"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 8,
+      "protein": "Antibody NC10"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "Antibody NC41 scFv"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 8,
+      "protein": "Arc1p"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 5,
+      "protein": "Ataxin-1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "B. subtilis endoxylanase"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 4,
+      "measurement_count": 117,
+      "protein": "BPTI"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "BTLA"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "Bacterioferritin"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "Bacterioferritin-associated ferredoxin"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 49,
+      "protein": "BoNT/A1"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 6,
+      "measurement_count": 246,
+      "protein": "Bovine alpha-chymotrypsin"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "Bovine beta-actin"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "Bovine profilin"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 2,
+      "measurement_count": 46,
+      "protein": "Bovine trypsin"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 7,
+      "protein": "C. thermocellum CipB dockerin"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 7,
+      "protein": "C. thermocellum ScaC2 cohesin 2"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 12,
+      "protein": "CD200"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 12,
+      "protein": "CD200R"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 9,
+      "protein": "CR8043 fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 9,
+      "protein": "CREB NCBD"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "CSL311 fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 10,
+      "protein": "Caf1An"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 10,
+      "protein": "Caf1M:Caf1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 5,
+      "protein": "Capicua peptide"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 16,
+      "protein": "Cetuximab fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 19,
+      "protein": "Chemotaxis protein CheA"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 19,
+      "protein": "Chemotaxis protein CheY"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 35,
+      "protein": "Chymotrypsin inhibitor 2"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "Cytokine receptor common subunit beta"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 11,
+      "protein": "D44.1 fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 11,
+      "protein": "DNA repair protein recO"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 1,
+      "protein": "DhaK"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 1,
+      "protein": "DhaR(N)"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 6,
+      "protein": "E. hirae V1-ATPase A3B3 complex"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 6,
+      "protein": "E. hirae V1-ATPase DF complex"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 34,
+      "protein": "E5.2 Fv"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 48,
+      "protein": "E6AP"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "Ecotin"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 3,
+      "measurement_count": 14,
+      "protein": "Eglin c"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 5,
+      "protein": "Ephrin type-A receptor 2 SAM"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 4,
+      "measurement_count": 21,
+      "protein": "Epidermal growth factor receptor"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 6,
+      "protein": "FLRT3 LRR domain"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 11,
+      "protein": "Fab-12"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 101,
+      "protein": "Factor VIIa"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 6,
+      "protein": "Fc gamma receptor 1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 8,
+      "protein": "FcRn"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "Flu virus hemagglutinin"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 12,
+      "protein": "FtsZ fragment"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 2,
+      "measurement_count": 4,
+      "protein": "G(q) alpha"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 25,
+      "protein": "GET3"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 25,
+      "protein": "GET4"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 8,
+      "protein": "GluRS"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 13,
+      "protein": "H3 tail"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 19,
+      "protein": "HCMV glycoprotein B"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 5,
+      "measurement_count": 216,
+      "protein": "HEW Lysozyme"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 2,
+      "protein": "HLA-A2 plus telomerase peptide"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "HVEM"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 2,
+      "measurement_count": 4,
+      "protein": "Hemagglutinin HA2"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 12,
+      "protein": "Herceptin"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 44,
+      "protein": "Histadine-containing protein HPr"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "Human Angiotensin-converting enzyme 2"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 8,
+      "protein": "Human Serum Albumin"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 190,
+      "protein": "Human leukocyte elastase"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 21,
+      "protein": "Human metHaemoglobin"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 96,
+      "protein": "HyHEL-10"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 46,
+      "protein": "HyHEL-63 fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "IGF-1R"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 2,
+      "measurement_count": 8,
+      "protein": "IGF-I"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "IGFBP1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 2,
+      "protein": "ILA1 TCR"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 6,
+      "protein": "IgG1 Fc"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "IgG1 lambda fab"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 2,
+      "measurement_count": 95,
+      "protein": "IgG1-kappa D1.3 Fv"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 9,
+      "protein": "Immunoglobulin fab 5G9"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 92,
+      "protein": "Integrin alpha-1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 62,
+      "protein": "Interferon gamma receptor"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 24,
+      "protein": "Interleukin-13"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "Interleukin-17 receptor A"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "Interleukin-17a"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 40,
+      "protein": "Interleukin-4"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 40,
+      "protein": "Interleukin-4 receptor"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 1,
+      "protein": "Invasin ipaA"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 21,
+      "protein": "Iron-regulated surface determinant protein H"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 6,
+      "protein": "Latrophilin-3 OLF domain"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 24,
+      "protein": "Lebrikizumab fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 8,
+      "protein": "Limit dextrinase"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 8,
+      "protein": "Limit dextrinase inhibitor"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "LysW"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "LysZ"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "M12B9 fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 12,
+      "protein": "MCP-1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "MERS-27 fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "MERS-CoV envolope protein S"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 16,
+      "protein": "MMP1 Interstitial collagenase"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 27,
+      "protein": "Membrane-type serine protease 1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 16,
+      "protein": "Metalloproteinase inhibitor 1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 2,
+      "protein": "Mlc transcription regulator"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 6,
+      "protein": "Munc18a"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 5,
+      "protein": "Mung bean inhibitor peptide"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "Mutant trypsinogen"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 1,
+      "protein": "N-terminal fragment of Cullin5"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 2,
+      "protein": "Nanobody 7D12"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 1,
+      "protein": "Nanobody 9G8"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 2,
+      "protein": "Nanobody EgA1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 7,
+      "protein": "NucA nuclease"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 7,
+      "protein": "NuiA nuclease inhibitor"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 7,
+      "protein": "PDZ-RhoGEF"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "PLC beta 3"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 1,
+      "protein": "PMP-C insect inhibitor"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 1,
+      "protein": "PMP-D2v insect inhibitor"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 6,
+      "protein": "PTP delta"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 2,
+      "protein": "PTS glucose-specific enzyme EIICB"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 7,
+      "protein": "PlexinB2"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 10,
+      "protein": "Protein A/Z"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 1,
+      "protein": "RGS2"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 4,
+      "protein": "SARS spike protein receptor binding domain"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 7,
+      "protein": "SARS-CoV RBD"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 5,
+      "protein": "SHIP2 SAM"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 1,
+      "protein": "SOCS2-Elongin BC complex"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 11,
+      "protein": "SYG-1 D1-D2"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 11,
+      "protein": "SYG-2 D1-D4"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 11,
+      "protein": "Single-stranded DNA-binding protein"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 6,
+      "protein": "Slitrk2 LRR1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 2,
+      "protein": "Smad3"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 2,
+      "protein": "Smad4"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 14,
+      "protein": "Sperm-egg fusion protein Izumo"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 14,
+      "protein": "Sperm-egg fusion protein Juno"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 6,
+      "protein": "Staphylococcal enterotoxin B"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 206,
+      "protein": "Streptomyces griseus proteinase B"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 10,
+      "protein": "Streptomyces subtilisin inhibitor"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 3,
+      "measurement_count": 47,
+      "protein": "Subtilisin BPN"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 2,
+      "measurement_count": 196,
+      "protein": "Subtilisin Carlsberg"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 7,
+      "protein": "Subtilisin Savinase"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 2,
+      "measurement_count": 12,
+      "protein": "Subtype N9 neuraminidase"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 6,
+      "protein": "Syntaxin-1A"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "TAXI-I"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 8,
+      "protein": "Tae4"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 8,
+      "protein": "Tai4"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 2,
+      "measurement_count": 110,
+      "protein": "Tissue factor"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 4,
+      "measurement_count": 776,
+      "protein": "Turkey ovomucoid third domain"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 2,
+      "protein": "Type II IgNAR"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 48,
+      "protein": "UBCH7"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 245,
+      "protein": "Urokinase plasminogen activator surface receptor"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 245,
+      "protein": "Urokinase-type plasminogen activator"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 11,
+      "protein": "VEGF"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 25,
+      "protein": "VRC-PG04"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 2,
+      "measurement_count": 50,
+      "protein": "VRC01 fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 28,
+      "protein": "VRC03 Fab"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "Vaccinia L1"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 1,
+      "protein": "Vinculin"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 10,
+      "protein": "Z-dependent protease inhibitor"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 12,
+      "protein": "ZipA"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 13,
+      "protein": "dHP1 Chromodomain"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 9,
+      "protein": "eOD-GT6"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 12,
+      "protein": "erbB-2"
+    },
+    {
+      "beyond_one_partner": true,
+      "distinct_partners": 3,
+      "measurement_count": 94,
+      "protein": "gp120"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 7,
+      "protein": "hACE3"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 62,
+      "protein": "mAbs A6"
+    },
+    {
+      "beyond_one_partner": false,
+      "distinct_partners": 1,
+      "measurement_count": 3,
+      "protein": "p53 core domain"
+    }
+  ],
+  "protocol_id": "skempi2-specificity-margin-v1",
+  "schema_version": "aidd-commons.specificity-margin-audit-summary.v1",
+  "software": {
+    "aidd_commons_labs": "0.2.0rc1",
+    "python": "3.11.15"
+  }
+}

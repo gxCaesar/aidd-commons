@@ -1,0 +1,57 @@
+---
+title: FreeSolv v0.52 诚实基线
+description: 一份已完成的冻结 FreeSolv 协议，包含一次记录在案的骨架主测试评估。
+---
+
+import LabDownloads from "../../../../components/LabDownloads.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+英文原文：[FreeSolv v0.52 honest baselines](/labs/freesolv-honest-baselines/)。
+
+译文更新：2026-09-08。
+
+<LabDownloads lab="freesolv" />
+
+<ScrollableRegions />
+
+## 运行之前
+
+默认入口是阅读已完成结果及读取汇总的 notebook，不需要重新训练或下载数据。独立复现应遵循文档协议，在读者的另一份源码副本中进行，不能写入作者结果目录。读完下方测试值后不要重新调参。可修改的拟合练习见[合成数据学生沙箱](/zh-cn/learn/machine-learning/student-modelling-sandbox/)。入口说明新增于 2026-09-09，冻结结果不变。
+
+## 状态与范围
+
+这项已完成的实验记录了一次冻结协议的最终测试评估。它不作 SOTA 主张。固定的数据集是
+FreeSolv `v0.52`；预测目标是第四个以分号分隔字段中的实验水合自由能，单位为 kcal/mol。
+分子以 RDKit 规范异构 SMILES 为键，同时保留原始 `mobley_*` 来源 ID 以供追溯。
+
+协议固定了种子 `20260904`、80/10/10 随机和 Bemis–Murcko 骨架划分、仅训练集拟合、
+Morgan 指纹（半径 2、2,048 位、启用手性）、训练集均值、Ridge（`alpha=1.0`）和 500
+棵树的随机森林。骨架划分是预先声明的主要结果；随机划分是一个更容易的对照。
+
+## 骨架主结果
+
+以下数值来自一次记录在案的测试工件。MAE、RMSE 和区间宽度的单位为 kcal/mol。Ridge 和
+随机森林区间使用仅验证集的划分共形半径。
+
+| 模型                   |                MAE |               RMSE | 90% 经验覆盖率 |      平均区间宽度 |
+| ---------------------- | -----------------: | -----------------: | -------------: | ----------------: |
+| 训练集均值             |  2.590685189688716 | 3.2880606447088776 |              — |                 — |
+| Morgan + Ridge         | 1.1280482645936036 | 1.7597471244251413 |          0.875 | 5.478728133879933 |
+| Morgan + Random Forest | 1.2568836078869037 | 2.0375968699271554 |        0.90625 | 6.013026666666674 |
+
+配套的随机划分对照保留在结果工件和配对笔记本中。它不是标题结果。
+
+## 安全地阅读工件
+
+配对的源笔记本 `labs/freesolv/freesolv_honest_baselines.ipynb` 读取
+`reviewed-results.json`，即从冻结结果导出的仅聚合公开摘要。它不拟合模型、不改变划分，
+也不调用另一项测试评估。公开参考环境记录在 `labs/freesolv/environment.txt`；
+`pyproject.toml` 固定了支持的直接依赖项，`uv` 解析实验命令所用的运行时。
+
+经验区间覆盖率是边际覆盖率，而不是条件校准。固定的模型和表示是教学对照，而不是最佳
+预测器的证据。
+
+## 许可不确定性
+
+v0.52 发行元数据没有声明许可条款。当前仓库 README 和分支许可文件不是这份历史发行版的
+版本绑定证据，因此本实验不会将这些当前分支许可主张转移给 v0.52。

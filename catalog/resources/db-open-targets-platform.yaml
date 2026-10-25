@@ -1,0 +1,46 @@
+id: db-open-targets-platform
+name: Open Targets Platform
+kind: database
+summary: A platform that integrates public data to build and score target-disease associations for target identification and prioritisation.
+canonical_url: https://platform.opentargets.org/
+identifiers:
+  - scheme: documentation
+    value: Data and code access
+    url: https://platform-docs.opentargets.org/data-access
+stages: [disease-mechanism, target-discovery]
+modalities: [target-disease-association, human-genetics]
+tasks: [target-prioritization, evidence-inspection]
+relations: []
+status: { value: active, evidence: [platform-documentation] }
+access_level: { value: open_source, evidence: [platform-license] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: not_applicable, evidence: [platform-documentation] }
+  architecture: { value: not_applicable, evidence: [platform-documentation] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC0-1.0
+    scope: Open Targets Platform data as distributed by the Platform
+    evidence: [platform-license]
+  - name: Apache-2.0
+    scope: Platform pipelines, GraphQL API and React UI codebases
+    evidence: [platform-license]
+evidence:
+  - id: platform-license
+    url: https://platform-docs.opentargets.org/licence
+    label: Open Targets Platform data and codebase licence statements
+    supports: []
+  - id: platform-documentation
+    url: https://platform-docs.opentargets.org/
+    label: Open Targets Platform documentation
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: data-code-access
+    url: https://platform-docs.opentargets.org/data-access
+    label: Open Targets data and code access documentation
+    supports: [identifiers]
+caveats: []
+acknowledgements: []
+last_verified: "2026-09-09"

@@ -1,0 +1,118 @@
+---
+title: An acquisition policy that reads its own model's disagreement
+description: Run a real, deterministic ensemble-variance acquisition policy on the completed pool-budget partitions and compare it against MaxMin and five fixed random seeds.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Before you run
+
+**Mode: reading existing results.** The command below reads the already-completed
+run this page reports on; it does not repeat it. The real campaign that produced
+the six existing policies here (MaxMin, five fixed random seeds) already ran
+once, under its own guard, and stays exactly as it was. This page adds a seventh
+policy under the same real partition and budget, run once under a separate
+one-time guard that writes to its own directory.
+
+```bash
+python labs/pool_budget/run_uncertainty_campaign.py validate-protocol
+python labs/pool_budget/export_uncertainty_summary.py
+```
+
+`validate-protocol` opens no assay data. `export_uncertainty_summary.py` verifies
+the committed aggregate below against the local completed run; it executes
+nothing. A fresh authorized workspace would instead run
+`run_uncertainty_campaign.py evaluate-locked --confirm-locked-evaluation` once.
+
+## A policy that is not label-blind, on purpose
+
+The [existing pool-budget contract](/labs/pool-budget-contract-inspection/) reads
+two policies that never see a label before scoring: MaxMin picks by chemical
+distance alone, and five random seeds pick by nothing at all. Neither connects a
+choice to what a model actually believes about the candidates.
+
+This policy does. At each of four rounds it fits five Ridge models, one per
+stable, non-random fold of the current training set (initial parents, plus
+everything this run has acquired in an earlier round), predicts every remaining
+candidate with all five, and acquires the batch with the largest cross-fold
+prediction variance. It never reads a pool label before this run has acquired
+it, and it never reads an evaluation label at all before every round is
+finalized. That access rule is enforced in code, by `AcquiredLabelLedger` in
+`pool_budget_uncertainty.py`, not only stated here.
+
+**This is a ranking signal, not a checked calibrated interval.** Cross-fold
+variance orders candidates; nothing here checks whether it is a calibrated
+predictive interval, for example by interval coverage on held-out labels.
+
+## Observed result
+
+Computed on 2026-09-11 on an Apple arm64 machine with Python 3.11.15, NumPy
+2.4.6, RDKit 2025.9.6 and scikit-learn 1.9.0, reusing the exact real partition
+and budget the completed campaign already fixed:
+
+| Assay                    | Uncertainty AUC | MaxMin AUC | Best of 5 random | Worst of 5 random |
+| ------------------------ | --------------: | ---------: | ---------------: | ----------------: |
+| CHEMBL5736995 (primary)  |          0.1133 |     0.0508 |           0.1016 |            0.0762 |
+| CHEMBL3705421 (separate) |          0.1635 |     0.0000 |           0.1058 |            0.0096 |
+
+Uncertainty led every existing policy on both assays in this one deterministic
+run. This is a single replay under one declared fold count; a different fold
+count was not tried and compared, and this is not a claim that it always wins.
+
+## What this does not show
+
+This is one deterministic run of one new policy under one fold count and one
+ensemble size, not a sweep. It reuses the same Ridge penalty already declared
+in the frozen contract rather than tuning one for this policy specifically, so
+a win here does not certify that penalty as calibrated. As the completed
+campaign's own contract already discloses, this pool-budget material accessed
+labels shared with the separate representation study before that study's own
+evaluation ran; this run inherits that same disclosed exposure and remains
+retrospective teaching, not label-unseen discovery or a prospective claim.
+
+## Independent exercise
+
+A colleague proposes reporting only the primary assay's 0.1133 AUC as "the"
+result for this policy, since it is the larger of the two assays.
+
+1. Name one thing the separate assay's scaffold-diversity column
+   (`1.0` at every checkpoint after round one) tells you that the primary
+   assay's column does not.
+2. Why does reporting one assay's number as "the" result understate what a
+   reader needs to judge this policy?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The separate assay's pool has only one scaffold group, so its scaffold-fraction
+column being `1.0` from round one onward is a fact about that pool's structure,
+not evidence that the policy sought diversity; a diversity-blind policy would
+show the same column there. Reporting a single number hides that the two assays
+differ enormously in what a "recovered target" or "diverse pick" even means:
+different pool sizes, different scaffold counts, and, as the sibling protocol
+already states, different reliability of pchembl_value as an activity measure.
+Two assays are two units, and a policy that leads on both is stronger evidence
+than a policy that leads on the one you chose to report.
+
+</details>
+
+## Sources and next lesson
+
+<div data-case-sources>
+
+- [Frozen T05 source contract](/labs/chembl-contract-inspection/)
+- [What a seed is not](/labs/pool-budget-contract-inspection/)
+
+</div>
+
+This page is an inspection route into a completed run that shares its real
+partition and budget with, but writes to none of the files of, the
+[pool-budget contract inspection](/labs/pool-budget-contract-inspection/) lab.
+Continue to [Acquisition functions, delayed feedback and
+stopping](/learn/active-learning/acquisition-delays-and-stopping/) for the
+concepts this policy is one instance of.
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-11.

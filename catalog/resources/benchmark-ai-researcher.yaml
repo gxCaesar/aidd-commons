@@ -1,0 +1,42 @@
+id: benchmark-ai-researcher
+name: AI-Researcher
+kind: benchmark
+summary: A research-agent system and its benchmark suite for running automated machine-learning research projects.
+canonical_url: https://github.com/HKUDS/AI-Researcher
+identifiers:
+  - scheme: documentation
+    value: "AI-Researcher repository and benchmark description"
+    url: https://github.com/HKUDS/AI-Researcher
+stages: [model-development, evaluation]
+modalities: [scientific-text, notebook]
+tasks: [tool-using-agent, model-evaluation]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: source_available, evidence: [access-review] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: repository
+    url: https://github.com/HKUDS/AI-Researcher
+    label: AI-Researcher repository, re-opened 2026-10-21
+    supports: [caveats, identifiers, kind, modalities, name, stages, summary, tasks]
+  - id: readme
+    url: https://raw.githubusercontent.com/HKUDS/AI-Researcher/main/README.md
+    label: AI-Researcher README, re-opened 2026-10-21
+    supports: [identifiers]
+  - id: access-review
+    url: https://github.com/HKUDS/AI-Researcher
+    label: "Reviewed 2026-10-23: public source and benchmark data folders; no repository licence or reuse grant stated"
+    supports: [caveats]
+caveats:
+  - The repository root carries no licence file and its README states no licence, so the terms for reuse are unverified and the record does not assert a licence.
+  - The benchmark runs language-model services whose terms this repository does not grant.
+acknowledgements: []
+last_verified: "2026-10-23"

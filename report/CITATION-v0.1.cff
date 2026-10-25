@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use AIDD Commons, cite this software and the primary sources for the resources or results you reuse."
+title: "AIDD Commons"
+type: software
+version: 0.1.0
+date-released: 2026-09-04
+authors:
+  - name: "AIDD Commons contributors"
+license: Apache-2.0
+preferred-citation:
+  type: report
+  title: "Open Development of AI Drug Discovery: A Living Map of Methods, Models, Data, Benchmarks, and Process Knowledge"
+  authors:
+    - name: "AIDD Commons contributors"
+  year: 2026
+  version: 0.1.0

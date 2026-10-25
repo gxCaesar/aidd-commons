@@ -1,0 +1,24 @@
+id: zeta-system
+name: Zeta comparison system
+provider_class: specialist-reference
+canonical_url: https://example.org/zeta-system
+summary: A valid comparison fixture whose filename sorts before its stable ID.
+audiences: [engineers]
+languages: [en]
+metadata_evidence: [overview]
+access:
+  content: { value: open, evidence: [overview] }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage: []
+evidence:
+  - id: overview
+    url: https://example.org/zeta-system
+    title: Zeta system overview
+    observed_scope: System identity and content access.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

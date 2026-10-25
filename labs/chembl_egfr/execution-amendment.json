@@ -1,0 +1,10 @@
+{
+  "id": "chembl37-egfr-execution-v1.1",
+  "issued_on": "2026-09-08",
+  "base_protocol": "chembl37-egfr-representation-v1",
+  "supersedes": "locked_evaluation.execution wording only",
+  "execution": "Reconstruct the original train-only models once by replaying the frozen development grid. Require exact equality with the complete stored pretest, including selected alphas, validation predictions, memberships and software. Reuse those same reconstructed models for the paired locked evaluation.",
+  "selection_boundary": "No new hyperparameter search space, model selection freedom, train-validation refit, split change, or use of locked outcomes in reconstruction.",
+  "historical_evidence": "Original protocol and development artifacts are not rewritten.",
+  "authorization": "Reject missing explicit confirmation before loading any assay cache."
+}

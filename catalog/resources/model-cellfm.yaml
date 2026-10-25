@@ -1,0 +1,72 @@
+id: model-cellfm
+name: CellFM
+kind: model
+summary: RetNet-based foundation model pretrained on transcriptomics from about 100 million human cells, applied to cell annotation, perturbation prediction, gene-function prediction, batch correction, and cell-type-specific lncRNA identification.
+canonical_url: https://github.com/biomed-AI/CellFM
+identifiers:
+  - scheme: paper
+    value: "CellFM: a large-scale foundation model pre-trained on transcriptomics of 100 million human cells; Nature Communications 16:4679 (2025), DOI 10.1038/s41467-025-59926-5"
+    url: https://doi.org/10.1038/s41467-025-59926-5
+  - scheme: dataset
+    value: "Datasets used in CellFM, Zenodo record 15138665, DOI 10.5281/zenodo.15138665"
+    url: https://zenodo.org/records/15138665
+  - scheme: model-weights
+    value: "Pre-trained model checkpoints in the Hugging Face model repository ShangguanNingyuan/CellFM"
+    url: https://huggingface.co/ShangguanNingyuan/CellFM/tree/main
+stages: [representation-learning, model-development, property-prediction]
+modalities: [single-cell-transcriptomics, perturbational-transcriptomics]
+tasks: [cell-context-inspection, perturbation-comparison]
+relations: []
+status: { value: unverified }
+access_level: { value: research_only, evidence: [cellfm-license, cellfm-model-card] }
+openness:
+  inference_code: { value: available, evidence: [cellfm-repository] }
+  training_code: { value: available, evidence: [cellfm-readme] }
+  weights: { value: available, evidence: [cellfm-model-card] }
+  architecture: { value: available, evidence: [cellfm-model-card, cellfm-paper] }
+  data_recipe: { value: available, evidence: [model-cellfm-readme] }
+  training_data: { value: available, evidence: [cellfm-zenodo-record] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC-BY-NC-ND-4.0
+    scope: "Repository source code and the model card's licence line. The grant is worldwide, royalty-free, non-sublicensable, and irrevocable for non-commercial purposes only; adapted material may be produced and reproduced for non-commercial purposes but may not be shared; attribution, the licence text or a link, and a practicable source link are required on sharing, and downstream restrictions or technological measures that limit the granted rights are not allowed."
+    evidence: [cellfm-license, cellfm-model-card]
+  - name: CC-BY-4.0
+    scope: "Zenodo record 15138665 only, which holds the CellFM_data.zip archive of the datasets used in CellFM. This attribution licence does not extend to the source code or the checkpoints, which stay under the non-commercial, no-derivatives terms."
+    evidence: [cellfm-zenodo-record]
+evidence:
+  - id: cellfm-repository
+    url: "https://github.com/biomed-AI/CellFM"
+    label: CellFM repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: cellfm-readme
+    url: "https://raw.githubusercontent.com/biomed-AI/CellFM/main/readme.md"
+    label: CellFM readme.md (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: cellfm-license
+    url: "https://raw.githubusercontent.com/biomed-AI/CellFM/main/LICENSE-cc-by-nc-nd-4.0"
+    label: CellFM CC BY-NC-ND 4.0 license file (reviewed 2026-10-21)
+    supports: []
+  - id: cellfm-model-card
+    url: "https://huggingface.co/ShangguanNingyuan/CellFM"
+    label: CellFM model card (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: cellfm-zenodo-record
+    url: "https://zenodo.org/records/15138665"
+    label: Zenodo record 15138665 for the CellFM datasets (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: cellfm-paper
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=TITLE:%22CellFM%3A%20a%20large-scale%20foundation%20model%20pre-trained%20on%20transcriptomics%20of%20100%20million%20human%20cells%22&resultType=core&format=json"
+    label: Europe PMC record for the CellFM paper (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+  - id: model-cellfm-readme
+    url: https://raw.githubusercontent.com/biomed-AI/CellFM/HEAD/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The README describes the model as pretrained on the transcriptomics of one hundred million human cells and provides the script for fine-tuning or training on new data.
+  - The source code and the checkpoints are under a non-commercial, no-derivatives licence, so a fine-tuned derivative may not be shared, while the Zenodo training-data archive is separately under CC BY 4.0. The data terms and the model terms do not match.
+  - The Zenodo record describes the archive as the datasets used in CellFM and the model card reports 19,914 samples holding 102,304,686 human cells, but neither enumerates the source atlases or the per-sample provenance, and the archive itself is 5.3 GB.
+  - The repository README file is named readme.md and carries no licence section; the licence file in the repository root is named LICENSE-cc-by-nc-nd-4.0, which is why the repository page shows a generic licence label.
+acknowledgements: []
+last_verified: "2026-10-23"

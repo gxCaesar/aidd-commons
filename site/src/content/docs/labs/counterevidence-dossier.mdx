@@ -1,0 +1,161 @@
+---
+title: What a clean summary would have deleted
+description: Inventory the six kinds of counterevidence preserved across this repository's completed lab artifacts, and recompute the transfer failure that reporting one comparison alone would have hidden.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="counterevidence-dossier" />
+
+## Before you run
+
+**Mode: runnable inspection of committed files.** The command reads the eight
+completed lab artifacts this repository already ships. It makes no network
+request, fits nothing, and reruns no experiment. It cannot tell you whether any
+result is correct. It answers a different question: **what did this project keep
+that it would have looked better without?**
+
+```bash
+python labs/counterevidence/inspect_dossier.py show
+```
+
+A nomination dossier is judged by what it kept. Six kinds of counterevidence get
+collapsed into one "limitations" paragraph and then quietly dropped, so the
+command separates them: an evaluation declared and deliberately not run, a method
+that ran and lost to its own baseline, a metric refused rather than filled in, a
+disclosure that narrows a claim, an admitted gap in one's own records, and
+measurement spread retained instead of averaged away.
+
+Every one of them is a different repair. Confusing them is how a dossier ends up
+saying "some limitations apply" and meaning nothing.
+
+## 1. The winner that fails on transfer
+
+This is the sharpest artifact in the repository and it survives only because both
+comparisons were reported.
+
+On the primary scaffold-disjoint test, over 132 parent compounds, the Morgan
+fingerprint ridge model has the lowest error of the three:
+0.41833032711934154 against the train-mean baseline's 0.47889315075040634.
+On the assay replication, over 170 parents, the same model is the **worst** of
+the three: 3.1316760122202343 against the baseline's 0.898379755056597. Its rank
+correlation goes from positive on the primary test to negative on replication,
+at -0.04095526286121213.
+
+The command recomputes the ratio rather than quoting it: on replication the
+winning model carries 3.49 times the baseline's error. **Reporting the primary
+test alone would have been true and misleading**, which is the only combination
+that matters. The artifact says so in words as well, and a check confirms the
+sentence is still there.
+
+## 2. The disclosure that appears on both sides
+
+One lab accessed labels shared with another before that other lab's evaluation
+ran. The exposure is recorded in **two** artifacts: the lab that was exposed and
+the lab that did the exposing.
+
+That is the part that is easy to get wrong while still being honest. A one-sided
+disclosure — noted only by the lab whose result is weakened — leaves the second
+lab looking independent when it is not. The check requires both.
+
+## 3. The metric that was refused rather than filled in
+
+Three baseline correlations are stored as `null` with the status
+`undefined_constant_prediction`. A constant prediction has no rank correlation,
+so there is no number to report.
+
+Writing `0` there would have been the tempting move, and it would have invented a
+comparison the baseline cannot enter — a reader would see a model "beating" a
+baseline on a metric the baseline never had. Two separate checks cover this: one
+that the status is still undefined, and one that the stored value is still
+`null` so no later arithmetic can consume it.
+
+## 4. Check that the counterevidence is still there
+
+```bash
+python labs/counterevidence/inspect_dossier.py check
+```
+
+Thirteen checks run. They confirm that all eight artifacts parse, that six of
+them carry at least one disclosure line, that the transfer failure still
+recomputes in the same direction and at the same magnitude, that seven declared
+evaluations are still recorded as not run rather than omitted, that the designed
+acquisition policy still sits below every random instance in both replays with
+one recovering nothing at all, and that every line naming p values or confidence
+intervals refuses them outright rather than reporting them.
+
+These checks verify that the counterevidence is still present and still says what
+the lessons quote. They do not verify that any result is correct, and no check
+here can.
+
+## Independent exercise
+
+You inherit a dossier for a candidate. Its summary says: "Model performance was
+validated on a held-out test set (MAE 0.42). Some limitations apply, and further
+work is needed."
+
+Using the six classes above, say what that sentence cannot distinguish, and name
+the one question you would ask first.
+
+<details data-worked-answer>
+<summary>Worked answer — six collapses in one sentence, and the first question</summary>
+
+**"Validated" hides the not-run class.** A protocol usually declares several
+evaluations. This sentence names one. It cannot tell you whether the others ran
+and are being withheld, ran and lost, or were declared and never executed. Those
+are three different dossiers and only the third is defensible without further
+explanation.
+
+**A single MAE hides the negative-result class.** You are given the number for
+one comparison. If a second comparison exists and the model lost it, that fact
+lives exactly where this sentence has nothing. The repository's own artifact is
+the case in point: 0.41833032711934154 on one comparison and
+3.1316760122202343 on the other, from the same model.
+
+**"Held-out test set" hides the refused-metric class.** It says nothing about
+which metrics were computable. A metric that came back undefined and was filled
+in with a plausible zero looks identical, from outside, to one that was measured.
+
+**"Some limitations apply" is the scope-limit class with its content removed.**
+A scope limit is only useful when it names what the result may not be used for.
+Without that, it transfers no information and functions as a liability disclaimer.
+
+**Nothing here is the missing-record class.** An admitted gap in one's own
+records — predictions that were not retained, a run whose log was lost — cannot
+be inferred from a summary. It has to be volunteered, and it almost never is.
+
+**Nothing here is the retained-noise class either.** If repeated measurements of
+the same compound disagreed, the aggregation rule decides how much of that
+disagreement survives into the number you were given.
+
+**The first question.** Not "how was it validated" — that invites a longer
+version of the same sentence. Ask: **"which evaluations did the protocol declare,
+and what is the state of each one?"** It is answerable from records that either
+exist or do not, it separates not-run from lost-and-withheld in one step, and a
+dossier that cannot answer it has told you what you needed to know.
+
+</details>
+
+## What this does not do
+
+This route does not rerun, retune or re-sample any completed evaluation, and it
+does not check that a result is right. It reads reviewed summaries and recomputes
+the relationships between the numbers they already contain. Its authority is
+exactly the authority of those artifacts, and each one carries its own protocol
+and review date.
+
+The artifacts themselves are the labs:
+[ChEMBL EGFR baselines](/labs/chembl-egfr-representation-baselines/),
+[rMD17 energy baselines](/labs/rmd17-system-state-energy-baselines/),
+[the pool-budget campaign](/labs/pool-budget-campaign/) and
+[FreeSolv honest baselines](/labs/freesolv-honest-baselines/).
+For the contracts behind them, see the
+[ChEMBL contract inspection](/labs/chembl-contract-inspection/).
+For the wider argument, read
+[counterevidence and failure analysis](/learn/candidate-nomination/evidence-to-validation/).
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-10.

@@ -1,0 +1,64 @@
+---
+title: 审核活性测量中的实体类别
+description: 计数 ChEMBL 37 活性行所携带的标识符，并指出其无法识别的实体类别。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[Audit entity kinds in activity measurements](/labs/entity-glossary-audit/)。
+
+## 准备与学习目标
+
+本实验对应 `t01-entity-glossary`。先阅读[实体类别与标识符](/zh-cn/learn/foundations/entity-kinds-and-identifiers/)和[一个决策单元的尺度](/zh-cn/learn/foundations/decision-unit-scope/)。你将辨认各字段命名的实体类别，计数被准入点测量行中的不同标识符，并找出受测分子记录与其母体不同的地方。你还将说明靶点标识符允许哪些比较，以及表格无法识别哪些实体类别。
+
+## 模式与命令
+
+模式是基于冻结的 ChEMBL 37 快照进行全新独立计算。使用项目的 Python 3.11 环境和 CPU。经过验证的快照已缓存在本仓库。下载命令会验证并复制它到本实验的缓存。快照就位后，任务不需要网络或加速器。检查器不写入文件。导出器仅在检查通过后替换已提交的精简汇总。
+
+```bash
+.venv/bin/python labs/entity_glossary_audit/run_lab.py download
+.venv/bin/python labs/entity_glossary_audit/inspect_entity_glossary_audit.py show
+.venv/bin/python labs/entity_glossary_audit/inspect_entity_glossary_audit.py check
+.venv/bin/python labs/entity_glossary_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/entity_glossary_audit -q
+```
+
+## 表格能命名的实体
+
+协议声明了 15 个种子分子记录，它们解析为 10 个母体。准入规则选取经整理的 AC50、EC50、IC50、Kd 或 Ki 点测量，单位为 nM。分组键由母体、检测、文献和终点构成。2026-10-23 的计算准入了 488 行点测量，并组成 486 次独立测量。下表计数 488 行中各字段的不同取值。每行对每个可命名类别提供一个标识符。同一测量组可以包含多个分子记录标识符。
+
+| 实体类别 | 标识符字段 | 不同标识符 | 行中的使用次数 |
+| --- | --- | ---: | ---: |
+| 分子记录 | `molecule_chembl_id` | 15 | 488 |
+| 母体分子 | `parent_molecule_chembl_id` | 9 | 488 |
+| 检测 | `assay_chembl_id` | 481 | 488 |
+| 靶点 | `target_chembl_id` | 100 | 488 |
+| 文献 | `document_chembl_id` | 221 | 488 |
+| 各类别合计 | 分开的字段 | 826 | 2,440 |
+
+表中 9 个母体标识符少于声明队列中解析出的 10 个母体，因为没有被准入点测量行的母体不会进入此计数。表格中的分子记录命名受测形式，母体则供本实验对该形式分组。检测命名测量系统，靶点命名被测对象，文献命名发表来源。这是本实验的字段读取规则，并不主张这些标识符可以互换。
+
+## 分子与母体不一致
+
+在 71 条被准入行中，分子记录与母体不同。这些行涉及 6 个子形式分子标识符。队列中声明的 5 个盐型种子贡献了其中 65 行。剩余的子形式标识符在该快照中没有种子分子记录，因此本审核不给它指定更具体的化学形式名称。一个独立测量组包含两个分子记录标识符。481 个检测和 100 个靶点支持在其记录语境内进行比较。其中 21 个靶点具有来自多个分子记录的被准入测量。共享靶点本身不能使检测条件变得可比。
+
+## 表格无法命名的实体
+
+下面每一类在全部 488 条被准入行中都没有标识符。该计数描述缺少的字段，并不意味着每条活性都应代表这类实体。
+
+| 实体类别 | 缺少该标识符的被准入行 | 原因 |
+| --- | ---: | --- |
+| 复合物 | 488 | 没有复合物标识符。 |
+| 细胞状态 | 488 | 没有细胞状态标识符。 |
+| 患者 | 488 | 没有患者标识符。 |
+| 治疗候选项 | 488 | 没有候选项指定。 |
+
+## 材料局限
+
+本审核不合并两个标识符，不预测化合物作用，不把靶点认作疾病，也不把文献当作测量真实无误的证明。它描述有目的挑选的教学队列，而不是总体样本。缓存的发行版和准入规则限定所有计数。界值测量和被排除的活性行都不进入上表。
+
+## 来源与条款
+
+[ChEMBL 活性记录](/zh-cn/learn/foundations/source-and-entity-literacy/)对应 Atlas 来源 ID `dataset-chembl-activity` 和 `db-chembl-37`。为取得缓存来源，曾在 2026-10-21 阅读 [ChEMBL 37 发行版 README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README)、[模式文档](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/schema_documentation.txt)和[发行版许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)。本审核于 2026-10-23 读取经过验证的缓存。ChEMBL 数据保留 Creative Commons Attribution-ShareAlike 3.0 Unported 条款。原创指南文字采用 CC BY 4.0，实验代码采用 Apache-2.0。最后复核于 2026-10-23。

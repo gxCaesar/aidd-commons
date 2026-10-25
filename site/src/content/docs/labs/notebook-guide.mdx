@@ -1,0 +1,174 @@
+---
+title: Notebook practice route
+description: Practise molecular representations, synthetic fitting, measured logD and PaperQA source inspection, with explicit execution and saving boundaries.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import NotebookGuideTables from "../../../components/NotebookGuideTables.astro";
+
+<ScrollableRegions />
+<NotebookGuideTables />
+
+This is the practice route through the existing tutorial, not a replacement for
+the [core and specialist curriculum](/learn/foundations/curriculum-map/).
+Start with the scientific question in each lesson, then use its notebook to
+inspect the mechanism. You do not need a GPU, API key or repository clone for
+the four default exercises below. PaperQA's optional live-inference mode has
+separate model-server requirements. Choose English or Chinese; each pair runs
+the same code. A completed notebook is a working record, not proof of learning.
+
+## Choose the next exercise
+
+| Order and notebook                                                                   | What you learn                                                                     | Input and dependencies                                                                         | Save and explain                                                                          |
+| ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| 1. [Molecule representation inspector](/labs/molecule-representation-inspector/)     | Which distinctions do strings, identifiers, descriptors and fingerprints preserve? | Seven embedded authored structures; RDKit; no labels, download or fitting                      | Inspection JSON; identify an alias, a lost stereochemical distinction and a retained salt |
+| 2. [Synthetic modelling sandbox](/learn/machine-learning/student-modelling-sandbox/) | How do fitting, validation selection and test errors connect?                      | Ten invented entities; Python standard library and the notebook interface; no dataset download | Model report and plots; explain why the fitted model can lose to a constant               |
+| 3. [Lipophilicity training](/labs/lipophilicity-notebook/)                           | How does the same information flow work with molecules and measured logD?          | Public 4,200-row CSV, about 0.283 MB; pinned scientific Python packages                        | Summary, split membership, predictions and plot; compare models under this one protocol   |
+| 4. [PaperQA source inspection](/learn/scientific-agents/agent-resource-guide/) | Does the cited passage support the answer, including its qualifiers? | Two attributed articles and five saved answers embedded in the notebook; default offline Python, no model or API | Student report; distinguish a source copy from a supported claim and a refusal from proof of absence |
+
+The first two are deliberately small teaching examples, not empirical studies.
+The third has a completed local CPU run; the author did not retune its
+worse-than-constant Morgan result. The fourth reads real saved answers, preserves
+an extra-prose citation-support error and exposes limited refusal evidence. Both
+PaperQA offline editions executed locally. Its batch integration ran separately;
+the first CPU-only live attempt timed out without an answer. A later execution
+copy with four model threads and longer timeouts completed one question, but
+this does not validate the unchanged default CPU limits or overall answer quality.
+None of these notebook pairs has been verified
+in a live Colab runtime. Local execution and successful cloud execution are
+different checks.
+
+## Open your own copy
+
+Download an `.ipynb` from the chosen exercise page. In
+[Google Colab](https://colab.research.google.com/), sign in, choose
+**File → Upload notebook**, and save your own copy. Use a CPU runtime; these
+default exercises do not need an accelerator. Keep PaperQA's
+`ENABLE_LOCAL_INFERENCE = False`; a Colab runtime cannot reach an Ollama server
+on your own computer through `127.0.0.1`. No Drive mount is needed. Colab resources
+are variable rather than guaranteed, and its virtual machine is temporary.
+Save output files separately before disconnecting. Sharing the notebook shares
+its saved text, code and outputs, not the runtime's other files or installed
+libraries. See the [official Colab FAQ](https://research.google.com/colaboratory/faq.html).
+
+For local use, open the downloaded notebook in Jupyter with Python 3.11 or later
+and a dedicated kernel. The synthetic exercise needs no additional modelling
+packages; neither does PaperQA's default source-inspection mode. The two molecular exercises explain their pinned dependencies in
+their setup cells; read those cells before allowing installation. A local
+Jupyter application itself must already be installed. In a source checkout with
+the project environment available, an example is:
+
+```sh
+uv run jupyter lab labs/student_modelling/student_modelling_tutorial.ipynb
+```
+
+The [Jupyter running guide](https://docs.jupyter.org/en/latest/running.html)
+describes the local server and notebook interface. Website Node.js dependencies
+are not needed to run a notebook. A browser-only reader can instead use each
+lesson's worked examples and answers without an account or installation.
+
+## Run in order and understand the state
+
+Read a Markdown cell, predict the next result, then execute the code beneath it.
+A notebook kernel retains variables between executions; the visible page order
+does not guarantee the execution order. Restarting the kernel clears that state.
+See the [Jupyter notebook documentation](https://jupyter-notebook.readthedocs.io/en/stable/notebook.html).
+
+Try this tiny example in a **new scratch notebook**, not inside a frozen result.
+Run cell A, then cell B:
+
+```python
+# Cell A
+scale = 2
+```
+
+```python
+# Cell B
+prediction = 3 * scale
+print(prediction)
+```
+
+The output is `6`. Now change cell A to `scale = 4` **without executing it**.
+What will cell B print? It still prints `6`: the kernel still holds `scale = 2`.
+After running A and then B, it prints `12`. Editing text did not update the
+variable. This constructed example explains stale state, not a molecular model.
+
+After editing an exercise, restart its kernel and run from the top to check that
+your result does not depend on hidden state. A setup cell may explicitly ask for
+a restart after replacing a loaded dependency. Follow that instruction before
+continuing. Do not transfer this advice to a one-time author evaluation command.
+
+## Save an interpretable result
+
+Each editable notebook creates its own fresh temporary output directory and
+prints the destination. The notebook's `.ipynb` and the files exported by its
+code are different objects. Download both before ending a temporary session.
+Keep the input choice and any edits alongside the outputs. Do not assume a
+saved plot can reconstruct the model selection or the underlying predictions.
+
+Use these filenames to check what you retained:
+
+- Representation inspector: `representation-report.json`.
+- Synthetic sandbox: `student_report.json` and `fitted_models.svg`.
+- Measured logD: `summary.json`, `split-membership.csv`, `test-predictions.csv`
+  and `prediction-errors.png`.
+- PaperQA offline: `student_report.json`. Optional live inference also exports
+  `student_local_answers.json`, `student_network_events.json` and
+  `student_execution.json`; these are fresh outputs, not the saved author answers.
+
+The inspector, synthetic sandbox and PaperQA create their output folders under the
+current working directory. The logD notebook uses the system temporary directory,
+which may be outside Jupyter's file-browser root. For local Jupyter, open the
+printed absolute path in your operating system's file manager and copy the files
+to a folder you intend to keep. For Colab, locate that path in the Files sidebar
+and download the files to your computer. Downloading a `.ipynb` is a separate
+action. Open the retained JSON and image files to check that saving succeeded;
+do not delete a runtime or rerun training just to test retention.
+
+Your short lab note should answer:
+
+1. What was the input, representation and target, if there was a target?
+2. Which records affected fitting, selection and final scoring?
+3. Which observed comparison supports your conclusion, and what cannot it show?
+
+For the label-free notebook, answer “no target, fitting or selection” rather
+than inventing a prediction task. In the synthetic notebook, label the numbers
+as invented. In the logD notebook, keep the constant baseline and negative
+results. For PaperQA, name the question, the retrieved source and what its wording
+actually supports; no predictor is fitted or benchmark score computed in the
+offline lesson. Changing a test label is a permitted synthetic debugging exercise, not
+a way to improve the reported performance of the real-data notebook.
+
+## When a cell fails
+
+| Symptom                                                 | First useful check                                          | Next safe action                                                                                                                                                      |
+| ------------------------------------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NameError` or a result that contradicts an edited cell | Was the defining cell executed in this kernel?              | Restart and run the editable exercise from the top                                                                                                                    |
+| `ModuleNotFoundError`                                   | Did setup run in the selected kernel?                       | Read its dependency message; do not install a different package with a similar name                                                                                   |
+| Setup requests a restart                                | Was a library already imported before its version changed?  | Restart, then rerun setup and subsequent cells                                                                                                                        |
+| Public CSV download fails                               | Did the request fail, or is the expected local file absent? | Keep the error, retry when access returns or use the documented CSV locally; do not substitute another dataset                                                        |
+| A file disappears after disconnecting                   | Was it downloaded from the temporary runtime?               | Check your saved copy; avoid treating notebook autosave as a backup of exported files                                                                                 |
+| Repeating an export cell raises `FileExistsError`       | Did this cell already create its JSON or SVG?               | Keep the existing output; for a new synthetic attempt, rerun from the top to create a new folder. Do not delete an earlier result or change the exclusive-create mode |
+| The fitted model is worse than the constant             | Does the exported comparison use the same test rows?        | Report the failure and inspect the stated diagnostics; do not tune on that test                                                                                       |
+| PaperQA produces no new model answer | Is `ENABLE_LOCAL_INFERENCE` still `False`? | This is the intended offline lesson. Read the saved answers; enable live inference only after separately preparing the documented local server |
+| PaperQA live inference stops at an indexing or question timeout | Which `EXECUTION_PROFILE` is selected, and does the machine have a GPU? | `as-observed` carries the limits of a GPU run and stopped the first CPU attempt at 150 seconds. Read the profile table in the notebook, then decide whether `cpu-extended` fits your machine. Keep the timeout record; neither profile is a validated default and no profile changes the model, question or retrieval settings |
+
+If a Colab runtime is unavailable, the local Jupyter path or browser worked
+answers remain usable. Neither a paid subscription nor a GPU is required by
+the default teaching route. PaperQA live inference is a separate opt-in workflow,
+not an automatic setup step or a verified Colab path.
+
+## Continue by reading completed evidence
+
+| Existing material                                          | Correct activity                                                          | Important boundary                                                                                          |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [FreeSolv](/labs/freesolv-honest-baselines/)               | Read the results notebook and reviewed aggregate file                     | This is not the editable logD training notebook; it has its own hydration-free-energy endpoint              |
+| [ChEMBL EGFR](/labs/chembl-egfr-representation-baselines/) | Explain the representation ranking reversal across assays                 | Shared-label exposure prevents an untouched independent-confirmation claim                                  |
+| [rMD17](/labs/rmd17-system-state-energy-baselines/)        | Compare within-system energy fits                                         | Do not pool frames as independent systems or claim zero-shot transfer                                       |
+| [Experiment budgets](/labs/pool-budget-campaign/)          | Separate the editable synthetic simulator from the completed assay replay | Retrospective selection is not prospective discovery; the real replay is not a notebook-first student refit |
+
+These are distinct modes, not interchangeable training buttons. Follow a
+lab's separate reproduction instructions only when you intend to reproduce that
+protocol in a new location. Do not overwrite its reference results.
+
+Route update: 2026-09-10. Reader comprehension has not yet been measured.

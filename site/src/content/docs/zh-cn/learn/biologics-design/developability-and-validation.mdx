@@ -1,0 +1,134 @@
+---
+title: 可开发性与功能验证
+description: 把表达、物理行为、特异性和功能作为推进生物大分子设计所需的不同证据。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Developability and functional validation](/learn/biologics-design/developability-and-validation/)。
+
+<LessonProgress lessonId="biologics-design/developability-and-validation" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将把可开发性定义为多字段证据问题，设计功能验证对比，并在不把缺失字段压成有利分数的情况下选择候选项。请先读[抗体与多肽设计及负向选择](/zh-cn/learn/biologics-design/antibody-peptide-design/)。本课为概念和手算教学，不是制造工艺、表达方法或临床开发方案。
+
+## 可开发性不是效力的同义词
+
+可开发性问一个明确构建能否以符合预期用途的性质制备、处理和研究。随模态不同，字段可包括表达产量、身份和完整性、聚集或自相互作用、溶解度、已声明条件下稳定性、非特异相互作用及与制剂相关的行为。好的结合或功能信号不能填补这些字段；好的物理行为也不证明靶点特异功能。
+
+相关证据单位包括构建身份、生产语境、测量条件、输出单位和汇总规则。分布型指标要保留分布并预先声明摘要。互补可开发性测定会不一致，因为它们询问不同相互作用；工程抗体研究会比较 self-interaction、light scattering 与 solubility，而非将一个测定当作通用 oracle [Shan et al.](https://pubmed.ncbi.nlm.nih.gov/30395473/)。
+
+## 功能验证询问因果对比
+
+把功能主张写成：“构建 K 在语境 C 中通过提出的 target-dependent 路径产生终点 Y。”验证面板须有正条件、匹配负语境或构建和足以暴露替代解释的近端读数。target-negative 细胞语境检验靶点存在依赖；binding-deficient 或 non-targeting 构建检验构建特异替代解释；正交读数检验检测器依赖，三者不能互换。
+
+令 `Y_K,C` 为已声明独立制备的汇总。主对比可为 `Δ_func = mean(Y_K,C+) − mean(Y_control,C+)`，并配 `Δ_neg = mean(Y_K,C−) − mean(Y_control,C−)`。预期模式可为大的 `Δ_func` 和小的 `Δ_neg`，但真实决策阈值须预先登记。若未测通路也能产生同一终点，这些对比仍不证明直接分子机制。
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>问题</th>
+      <th>常见无效升级</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>物理行为</td>
+      <td>构建在声明条件下是否表现良好？</td>
+      <td>“它一定能制造成功。”</td>
+    </tr>
+    <tr>
+      <td>特异性面板</td>
+      <td>哪些已知替代项未被检出？</td>
+      <td>“不存在脱靶。”</td>
+    </tr>
+    <tr>
+      <td>功能对比</td>
+      <td>相对对照，Y 是否在 C 改变？</td>
+      <td>“提出的分子路线已证明。”</td>
+    </tr>
+    <tr>
+      <td>独立验证</td>
+      <td>模式是否在第二适当单位保留？</td>
+      <td>“技术重复建立泛化。”</td>
+    </tr>
+  </tbody>
+</table>
+
+## 已构造案例：推进表
+
+全部为**教学构造**。团队预先声明：指定筛中 apparent soluble fraction 至少 0.80；负面板信号不超过 20 units；预期语境功能对比至少 30 units，target-negative 对比不超过 10 units。这些不是平台标准。
+
+<table>
+  <thead>
+    <tr>
+      <th>构建</th>
+      <th>Soluble fraction</th>
+      <th>负信号</th>
+      <th>C+ 中 Δ_func</th>
+      <th>C− 中 Δ_neg</th>
+      <th>决定</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>J</td>
+      <td>0.86</td>
+      <td>14</td>
+      <td>41</td>
+      <td>8</td>
+      <td>通过此构造筛。</td>
+    </tr>
+    <tr>
+      <td>K</td>
+      <td>0.62</td>
+      <td>11</td>
+      <td>45</td>
+      <td>7</td>
+      <td>失败于可开发性门槛。</td>
+    </tr>
+    <tr>
+      <td>L</td>
+      <td>0.89</td>
+      <td>27</td>
+      <td>38</td>
+      <td>9</td>
+      <td>失败于负向选择门槛。</td>
+    </tr>
+  </tbody>
+</table>
+
+J 是唯一条件性幸存者，绝非“可制造”或“已验证”：soluble fraction 来自一个指定筛，功能对比仍可反映未测替代解释。下一步是预先声明的独立生产或语境比较，加上正交功能测量。K 不能因更大 `Δ_func` 而推进，除非修改声明规则；L 也不能以平均其 27 和其他好看列获救。
+
+## 替代方法、局限与独立练习
+
+当门槛未决定时，Pareto front 可保留数个候选项等待更多证据；加权分数只在单位、方向、权重和缺失规则固定后才合理。设计模型置信度可优先化小面板，却不能代替实测表达或功能。已发表 physicochemical rules 是特定抗体数据集中的相对风险模式，不是通用准入规则 [Zhang et al.](https://pubmed.ncbi.nlm.nih.gov/32453957/)。
+
+**手算练习（不可运行、非实证）：** 同一构造门槛下，M：soluble fraction `0.83`、负信号 `18`、`Δ_func = 29`、`Δ_neg = 6`；N：`0.81`、`16`、`34`、`13`。各失败什么门槛？对 J，给出一个独立单位和一个正交读数；为何二者不是两个技术孔？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+M 因 `29 < 30` 未过预期语境功能门槛；N 因 `13 > 10` 未过 target-negative 对比门槛。对 J，独立制备的构建批次或独立来源的相关细胞制备可作独立单位；功能终点的第二检测原理为正交读数。技术孔重复同一制备，既不产生新生产变异也不产生新生物变异。
+
+</details>
+
+## 来源与下一课
+
+以下来源于 2026-09-09 打开，支持上述区分；所有表格值为虚构。
+
+<div data-case-sources>
+
+- [Developability assessment of engineered monoclonal antibody variants](https://pubmed.ncbi.nlm.nih.gov/30395473/)
+- [Physicochemical rules for identifying monoclonal antibodies with drug-like specificity](https://pubmed.ncbi.nlm.nih.gov/32453957/)
+- [Basic Guidelines for Reporting Non-Clinical Data — NCBI Assay Guidance Manual](https://www.ncbi.nlm.nih.gov/books/NBK550206/)
+
+</div>
+
+下一步[候选提名](/zh-cn/learn/candidate-nomination/evidence-to-validation/)将整合这些未解决字段，而不是把单一有利终点当作候选主张。原始课程文字为 CC BY 4.0；链接来源保留其自身条款。
+
+译文更新：2026-09-09。

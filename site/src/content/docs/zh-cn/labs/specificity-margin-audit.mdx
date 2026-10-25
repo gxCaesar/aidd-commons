@@ -1,0 +1,231 @@
+---
+title: 特异性边际审计中的伙伴覆盖度
+description: 在已验证的亲和力档案中统计测量伙伴，并识别无法读出边际的情况。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## 准备与学习目标
+
+本实验对应 `t13-specificity-negative-selection`，检验亲和力档案是否包含针对其他伙伴的观测。完成后，你应能区分来源行与计入统计的蛋白配对，复现伙伴分布，并说明为什么只有一个已观测伙伴不能提供边际。请先阅读[独立单元课程](/learn/biologics-design/affinity-table-independent-unit/)。[特异性课程](/learn/biologics-design/specificity-and-negative-selection/)解释结果的含义。[英文原版指南](/labs/specificity-margin-audit/)是规范版本。
+
+模式为按冻结协议进行全新独立计算。使用项目的 Python 3.11 环境和 CPU。快照缓存后，以下命令不需要网络或加速器。下载步骤使用单独的缓存副本。检查命令不改动已提交的汇总。导出命令只在检查通过后覆盖小型汇总。
+
+```bash
+.venv/bin/python labs/specificity_margin_audit/run_lab.py download
+.venv/bin/python labs/specificity_margin_audit/inspect_specificity_margin_audit.py show
+.venv/bin/python labs/specificity_margin_audit/inspect_specificity_margin_audit.py check
+.venv/bin/python labs/specificity_margin_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/specificity_margin_audit -q
+```
+
+## 实验读取的材料
+
+[LiteFold 镜像](https://huggingface.co/datasets/LiteFold/SKEMPI2)以宽度不齐的 JSONL 表示 SKEMPI 2.0 档案。本实验复用已有的[亲和力读取器](/labs/skempi-affinity/)，验证行顺序、按位置对齐及解析后的数值，然后从已验证的主值读取 `Protein 1` 和 `Protein 2` 标签。它只去除标签首尾空白，不合并别名，也不从溢出片段重建字段。只有两个标签齐全且至少有一个解析后的亲和力值时，该行才计入配对。配对的先后顺序不改变其身份。
+
+2026-10-23 的本地计算读取了 7085 行，其中 2544 行至少有一个解析后的测量值。在这些行中，2487 行包含两个蛋白标签，构成 102 个不同的无序配对和 171 个不同的蛋白标签。其余 57 个有测量值的行在读取器的主值中缺少完整的配对标签，因此保留在档案行数中，却不能分配伙伴。汇总记录了这些计数和完整的逐蛋白表。镜像中解析字段缺失不能证明上游 CSV 缺少该值。
+
+## 伙伴分布
+
+每个计入统计的配对中，对面的标签就是伙伴。同一配对的重复测量增加测量行数，但不增加不同伙伴数。观测分布如下。
+
+| 不同伙伴数 | 蛋白数 |
+| ---: | ---: |
+| 1 | 154 |
+| 2 | 9 |
+| 3 | 3 |
+| 4 | 3 |
+| 5 | 1 |
+| 6 | 1 |
+
+不同伙伴数的中位数为 1。按含端点四分位数定义，四分位区间从 1 到 1。恰有 154 个蛋白只有一个已测量伙伴。仅有 9 个计入统计的配对，其两侧蛋白都各有超过一个已观测伙伴。这是覆盖度条件，不能证明任何配对具有可用的定量边际。
+
+## 逐蛋白表
+
+下表保留统计时使用的来源标签，列出每个标签的测量行数、不同伙伴数，以及档案是否提供了超过一个伙伴的信息。标志仅表示数据覆盖度，不是特异性结论。`show` 命令以制表文本打印这张完整表。
+
+| 蛋白标签 | 测量行数 | 不同伙伴数 | 超过一个伙伴 |
+| --- | ---: | ---: | :---: |
+| 11K2 scFv | 12 | 1 | 否 |
+| 1968 Hemagglutinin | 9 | 1 | 否 |
+| 1G2 fab | 19 | 1 | 否 |
+| 3E2 fab | 6 | 1 | 否 |
+| 53BP2 | 3 | 1 | 否 |
+| ACTR | 9 | 1 | 否 |
+| AQC2 fab | 92 | 1 | 否 |
+| AR2 mab | 49 | 1 | 否 |
+| Alpha-amylase/subtilisin inhibitor | 7 | 1 | 否 |
+| Antibody 1F1 | 2 | 1 | 否 |
+| Antibody 2D1 | 2 | 1 | 否 |
+| Antibody Jel42 | 44 | 1 | 否 |
+| Antibody NC10 | 8 | 1 | 否 |
+| Antibody NC41 scFv | 4 | 1 | 否 |
+| Arc1p | 8 | 1 | 否 |
+| Ataxin-1 | 5 | 1 | 否 |
+| B. subtilis endoxylanase | 3 | 1 | 否 |
+| BPTI | 117 | 4 | 是 |
+| BTLA | 3 | 1 | 否 |
+| Bacterioferritin | 3 | 1 | 否 |
+| Bacterioferritin-associated ferredoxin | 3 | 1 | 否 |
+| BoNT/A1 | 49 | 1 | 否 |
+| Bovine alpha-chymotrypsin | 246 | 6 | 是 |
+| Bovine beta-actin | 4 | 1 | 否 |
+| Bovine profilin | 4 | 1 | 否 |
+| Bovine trypsin | 46 | 2 | 是 |
+| C. thermocellum CipB dockerin | 7 | 1 | 否 |
+| C. thermocellum ScaC2 cohesin 2 | 7 | 1 | 否 |
+| CD200 | 12 | 1 | 否 |
+| CD200R | 12 | 1 | 否 |
+| CR8043 fab | 9 | 1 | 否 |
+| CREB NCBD | 9 | 1 | 否 |
+| CSL311 fab | 4 | 1 | 否 |
+| Caf1An | 10 | 1 | 否 |
+| Caf1M:Caf1 | 10 | 1 | 否 |
+| Capicua peptide | 5 | 1 | 否 |
+| Cetuximab fab | 16 | 1 | 否 |
+| Chemotaxis protein CheA | 19 | 1 | 否 |
+| Chemotaxis protein CheY | 19 | 1 | 否 |
+| Chymotrypsin inhibitor 2 | 35 | 1 | 否 |
+| Cytokine receptor common subunit beta | 4 | 1 | 否 |
+| D44.1 fab | 11 | 1 | 否 |
+| DNA repair protein recO | 11 | 1 | 否 |
+| DhaK | 1 | 1 | 否 |
+| DhaR(N) | 1 | 1 | 否 |
+| E. hirae V1-ATPase A3B3 complex | 6 | 1 | 否 |
+| E. hirae V1-ATPase DF complex | 6 | 1 | 否 |
+| E5.2 Fv | 34 | 1 | 否 |
+| E6AP | 48 | 1 | 否 |
+| Ecotin | 3 | 1 | 否 |
+| Eglin c | 14 | 3 | 是 |
+| Ephrin type-A receptor 2 SAM | 5 | 1 | 否 |
+| Epidermal growth factor receptor | 21 | 4 | 是 |
+| FLRT3 LRR domain | 6 | 1 | 否 |
+| Fab-12 | 11 | 1 | 否 |
+| Factor VIIa | 101 | 1 | 否 |
+| Fc gamma receptor 1 | 6 | 1 | 否 |
+| FcRn | 8 | 1 | 否 |
+| Flu virus hemagglutinin | 3 | 1 | 否 |
+| FtsZ fragment | 12 | 1 | 否 |
+| G(q) alpha | 4 | 2 | 是 |
+| GET3 | 25 | 1 | 否 |
+| GET4 | 25 | 1 | 否 |
+| GluRS | 8 | 1 | 否 |
+| H3 tail | 13 | 1 | 否 |
+| HCMV glycoprotein B | 19 | 1 | 否 |
+| HEW Lysozyme | 216 | 5 | 是 |
+| HLA-A2 plus telomerase peptide | 2 | 1 | 否 |
+| HVEM | 3 | 1 | 否 |
+| Hemagglutinin HA2 | 4 | 2 | 是 |
+| Herceptin | 12 | 1 | 否 |
+| Histadine-containing protein HPr | 44 | 1 | 否 |
+| Human Angiotensin-converting enzyme 2 | 4 | 1 | 否 |
+| Human Serum Albumin | 8 | 1 | 否 |
+| Human leukocyte elastase | 190 | 1 | 否 |
+| Human metHaemoglobin | 21 | 1 | 否 |
+| HyHEL-10 | 96 | 1 | 否 |
+| HyHEL-63 fab | 46 | 1 | 否 |
+| IGF-1R | 4 | 1 | 否 |
+| IGF-I | 8 | 2 | 是 |
+| IGFBP1 | 4 | 1 | 否 |
+| ILA1 TCR | 2 | 1 | 否 |
+| IgG1 Fc | 6 | 1 | 否 |
+| IgG1 lambda fab | 3 | 1 | 否 |
+| IgG1-kappa D1.3 Fv | 95 | 2 | 是 |
+| Immunoglobulin fab 5G9 | 9 | 1 | 否 |
+| Integrin alpha-1 | 92 | 1 | 否 |
+| Interferon gamma receptor | 62 | 1 | 否 |
+| Interleukin-13 | 24 | 1 | 否 |
+| Interleukin-17 receptor A | 4 | 1 | 否 |
+| Interleukin-17a | 4 | 1 | 否 |
+| Interleukin-4 | 40 | 1 | 否 |
+| Interleukin-4 receptor | 40 | 1 | 否 |
+| Invasin ipaA | 1 | 1 | 否 |
+| Iron-regulated surface determinant protein H | 21 | 1 | 否 |
+| Latrophilin-3 OLF domain | 6 | 1 | 否 |
+| Lebrikizumab fab | 24 | 1 | 否 |
+| Limit dextrinase | 8 | 1 | 否 |
+| Limit dextrinase inhibitor | 8 | 1 | 否 |
+| LysW | 3 | 1 | 否 |
+| LysZ | 3 | 1 | 否 |
+| M12B9 fab | 3 | 1 | 否 |
+| MCP-1 | 12 | 1 | 否 |
+| MERS-27 fab | 4 | 1 | 否 |
+| MERS-CoV envolope protein S | 4 | 1 | 否 |
+| MMP1 Interstitial collagenase | 16 | 1 | 否 |
+| Membrane-type serine protease 1 | 27 | 1 | 否 |
+| Metalloproteinase inhibitor 1 | 16 | 1 | 否 |
+| Mlc transcription regulator | 2 | 1 | 否 |
+| Munc18a | 6 | 1 | 否 |
+| Mung bean inhibitor peptide | 5 | 1 | 否 |
+| Mutant trypsinogen | 4 | 1 | 否 |
+| N-terminal fragment of Cullin5 | 1 | 1 | 否 |
+| Nanobody 7D12 | 2 | 1 | 否 |
+| Nanobody 9G8 | 1 | 1 | 否 |
+| Nanobody EgA1 | 2 | 1 | 否 |
+| NucA nuclease | 7 | 1 | 否 |
+| NuiA nuclease inhibitor | 7 | 1 | 否 |
+| PDZ-RhoGEF | 7 | 1 | 否 |
+| PLC beta 3 | 3 | 1 | 否 |
+| PMP-C insect inhibitor | 1 | 1 | 否 |
+| PMP-D2v insect inhibitor | 1 | 1 | 否 |
+| PTP delta | 6 | 1 | 否 |
+| PTS glucose-specific enzyme EIICB | 2 | 1 | 否 |
+| PlexinB2 | 7 | 1 | 否 |
+| Protein A/Z | 10 | 1 | 否 |
+| RGS2 | 1 | 1 | 否 |
+| SARS spike protein receptor binding domain | 4 | 1 | 否 |
+| SARS-CoV RBD | 7 | 1 | 否 |
+| SHIP2 SAM | 5 | 1 | 否 |
+| SOCS2-Elongin BC complex | 1 | 1 | 否 |
+| SYG-1 D1-D2 | 11 | 1 | 否 |
+| SYG-2 D1-D4 | 11 | 1 | 否 |
+| Single-stranded DNA-binding protein | 11 | 1 | 否 |
+| Slitrk2 LRR1 | 6 | 1 | 否 |
+| Smad3 | 2 | 1 | 否 |
+| Smad4 | 2 | 1 | 否 |
+| Sperm-egg fusion protein Izumo | 14 | 1 | 否 |
+| Sperm-egg fusion protein Juno | 14 | 1 | 否 |
+| Staphylococcal enterotoxin B | 6 | 1 | 否 |
+| Streptomyces griseus proteinase B | 206 | 1 | 否 |
+| Streptomyces subtilisin inhibitor | 10 | 1 | 否 |
+| Subtilisin BPN | 47 | 3 | 是 |
+| Subtilisin Carlsberg | 196 | 2 | 是 |
+| Subtilisin Savinase | 7 | 1 | 否 |
+| Subtype N9 neuraminidase | 12 | 2 | 是 |
+| Syntaxin-1A | 6 | 1 | 否 |
+| TAXI-I | 3 | 1 | 否 |
+| Tae4 | 8 | 1 | 否 |
+| Tai4 | 8 | 1 | 否 |
+| Tissue factor | 110 | 2 | 是 |
+| Turkey ovomucoid third domain | 776 | 4 | 是 |
+| Type II IgNAR | 2 | 1 | 否 |
+| UBCH7 | 48 | 1 | 否 |
+| Urokinase plasminogen activator surface receptor | 245 | 1 | 否 |
+| Urokinase-type plasminogen activator | 245 | 1 | 否 |
+| VEGF | 11 | 1 | 否 |
+| VRC-PG04 | 25 | 1 | 否 |
+| VRC01 fab | 50 | 2 | 是 |
+| VRC03 Fab | 28 | 1 | 否 |
+| Vaccinia L1 | 3 | 1 | 否 |
+| Vinculin | 1 | 1 | 否 |
+| Z-dependent protease inhibitor | 10 | 1 | 否 |
+| ZipA | 12 | 1 | 否 |
+| dHP1 Chromodomain | 13 | 1 | 否 |
+| eOD-GT6 | 9 | 1 | 否 |
+| erbB-2 | 12 | 1 | 否 |
+| gp120 | 94 | 3 | 是 |
+| hACE3 | 7 | 1 | 否 |
+| mAbs A6 | 62 | 1 | 否 |
+| p53 core domain | 3 | 1 | 否 |
+
+## 材料的限制
+
+这项清点不估计特异性边际，不断言某个蛋白具有特异性，也不把只有一个已观测伙伴的蛋白视作已经对其他伙伴测量。它不预测未测量蛋白，也不按行数或伙伴数排名。标签未经实体归一化，不同写法的别名可能改变计数。缺少两个标签的 57 个有测量值的行不能消除这一限制。尚未观测到读者学习成效。
+
+## 来源与署名
+
+[SKEMPI 上游条款](https://life.bsc.es/pid/skempi2/info/terms)声明源数据采用 CC BY 4.0。[LiteFold 镜像资料卡](https://huggingface.co/datasets/LiteFold/SKEMPI2)将许可标为 `other`。这里将差异保留为来源事实。上游门户与镜像资料卡的读取日期是 2026-10-23。原创指南文字采用 CC BY 4.0，原创实验代码采用 Apache-2.0。
+
+最近复核日期：2026-10-23。

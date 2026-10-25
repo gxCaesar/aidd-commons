@@ -1,0 +1,154 @@
+{
+  "schema_version": "aidd-commons.pool-budget-real-protocol.v1",
+  "protocol_id": "chembl37-egfr-pool-budget-v1",
+  "issued_on": "2026-09-08",
+  "protocol_role": "versioned retrospective teaching specification; it contains no real assay rows, labels, predictions, selections, or results",
+  "status": {
+    "real_execution_engine": "implemented_real_campaign_completed",
+    "real_campaign": "completed",
+    "synthetic_program": "separate existing pool-budget-synthetic-v1 teaching simulator"
+  },
+  "frozen_t05_reference": {
+    "path": "labs/chembl_egfr/protocol.json",
+    "protocol_version": "chembl37-egfr-representation-v1",
+    "inheritance_rule": "Use the referenced frozen endpoint, parent-record, median-aggregation, and filter contracts exactly. This protocol does not redefine their source query or relax any filter.",
+    "entity_contract": {
+      "child_parent_rule": "molecule_chembl_id must equal parent_molecule_chembl_id",
+      "structure": "RDKit canonical isomeric SMILES from the ChEMBL parent record",
+      "unit": "ChEMBL parent molecule"
+    },
+    "label_contract": {
+      "endpoint": "IC50",
+      "target": "pchembl_value",
+      "parent_aggregation": "median",
+      "filters": {
+        "data_validity_comment": null,
+        "potential_duplicate": 0,
+        "standard_flag": 1,
+        "standard_relation": "=",
+        "standard_units": "nM",
+        "pchembl_consistency_tolerance": 0.011
+      }
+    },
+    "assay_replays": {
+      "CHEMBL5736995": {
+        "role": "primary",
+        "expected_parent_count": 902,
+        "disclosure": "T05 development exposure exists; this replay is not independent corroboration of T05 and is not label-unseen discovery."
+      },
+      "CHEMBL3705421": {
+        "role": "independent_assay_replay",
+        "expected_parent_count": 170,
+        "disclosure": "Run separately under the same rules; do not pool records or train across assays."
+      }
+    },
+    "boundary": "Source labels are public. A separate ingestion/scoring component may parse them to enforce the frozen source filters, but must keep them outside selectors and predictors. Only initial and acquired labels may be revealed to predictors; evaluation labels cannot be scored until all predictions are finalized."
+  },
+  "input_contract": {
+    "assay_scope": "Process each listed assay independently after applying the frozen T05 reference contract.",
+    "parent_id_order": "Require unique parent_molecule_chembl_id values and establish the global row index by ascending lexical ID order once. Retain the order emitted by each acquisition policy when taking budget prefixes.",
+    "software": "Use Python 3.11 and the exact NumPy, RDKit, and scikit-learn versions pinned in the repository pyproject.toml; record runtime versions with any future result.",
+    "missing_or_nonfinite": "Apply the inherited source normalization and filters first. Any remaining missing, invalid, or nonfinite required identifier, structure, scaffold key, fingerprint, target, prediction, or metric input is a contract failure. Do not add exclusions, impute targets, repair invalid values, or replace values.",
+    "no_cross_assay_training": true,
+    "no_real_data_or_results_in_this_file": true
+  },
+  "partition_contract": {
+    "partition_names": ["initial", "pool", "evaluation"],
+    "real_target_capacities": {
+      "initial": "0.10 * N",
+      "pool": "0.70 * N",
+      "evaluation": "0.20 * N"
+    },
+    "scaffold_key": {
+      "function": "existing chirality-aware aidd_commons.chembl_egfr.splits.scaffold_group_key",
+      "acyclic_rule": "canonical isomeric-SMILES singleton group",
+      "implementation_constraint": "Use the existing function rather than reimplementing or substituting a scaffold definition."
+    },
+    "group_assignment": [
+      "Form whole scaffold groups from the lexically sorted parent records; no group may be split.",
+      "Sort groups by descending group size and then ascending scaffold key.",
+      "For each group, compute each partition's remaining real target capacity as target capacity minus its current assigned parent count.",
+      "Assign the whole group to the partition with the largest remaining real target capacity.",
+      "Break an exact remaining-capacity tie by initial, then pool, then evaluation.",
+      "Do not move molecules after assignment, relax scaffold groups, or fabricate realized partition counts."
+    ],
+    "failure_conditions": [
+      "Reject the assay if any of initial, pool, or evaluation is empty.",
+      "Reject the assay if the original pool contains fewer than 20 parents.",
+      "Never repair either failure by splitting, merging, dropping, or reassigning scaffold groups."
+    ],
+    "policy_sharing": "Every policy and every random seed uses the identical frozen initial, pool, and evaluation partitions."
+  },
+  "acquisition_contract": {
+    "original_pool_definition": "The pool immediately after the frozen scaffold-group partition, before any acquisition.",
+    "batch_size": "q = floor(original_pool_parent_count / 20)",
+    "round_count": 4,
+    "checkpoint_acquired_counts": "0, q, 2q, 3q, 4q",
+    "budget_reporting": "The original 20% budget is a nominal target clarified by floor rounding. Report q, 4q, original_pool_parent_count, and actual_budget_fraction = 4q / original_pool_parent_count. Do not silently call the realized fraction exactly 20%.",
+    "cost_accounting": "Each selected parent molecule costs one attempt. This protocol makes no synthesis, assay-success, or acquisition-failure claim.",
+    "policies": {
+      "random": {
+        "seeds": [0, 1, 2, 3, 4],
+        "selection": "For each seed, use numpy.default_rng(seed) to make one permutation of the original pool without replacement; acquire its first 4q parent IDs in that order.",
+        "interpretation": "Seeds are fixed policy instances, not independent assays or samples for confidence intervals or significance tests."
+      },
+      "maxmin": {
+        "fingerprint_reference": {
+          "source": "frozen T05 morgan_ridge representation",
+          "bits": 2048,
+          "radius": 2,
+          "form": "binary ExplicitBitVect",
+          "include_chirality": true,
+          "use_bond_types": true,
+          "include_ring_membership": true,
+          "count_simulation": false
+        },
+        "selection": "At each sequential pick, maximize the candidate's minimum Tanimoto distance to every initial parent and every earlier acquired parent, including earlier picks in the current batch. Tanimoto distance is one minus intersection divided by union; two empty bit vectors have distance zero. Break an exact tie with the smallest sorted global parent index.",
+        "label_access": "The selector is label-blind and must not receive initial, pool, or evaluation pChEMBL values."
+      }
+    },
+    "integrity_rules": [
+      "Selections are without replacement.",
+      "Use only the listed random seeds once; do not add, remove, rank, or select seeds after observing outcomes.",
+      "No policy may alter partitions, initial members, batch size, feature settings, or ordering after outcomes are scored."
+    ]
+  },
+  "target_and_recovery_contract": {
+    "target_universe": "The original pool only; exclude all initial and evaluation parents.",
+    "target_count": "ceil(original_pool_parent_count / 10)",
+    "target_ranking": "Higher pChEMBL is better; break equal pChEMBL values by ascending lexical parent_molecule_chembl_id from the stable parent order.",
+    "recovery_at_checkpoint": "number of acquired target parents divided by target_count",
+    "recovery_auc": "Use the trapezoidal integral of recovery over the declared acquired-count checkpoints, then divide by final acquired count (4q).",
+    "scaffold_diversity_at_checkpoint": "number of unique scaffold groups among acquired parents divided by the number of scaffold groups in the original pool."
+  },
+  "prediction_contract": {
+    "purpose": "Report a fixed, retrospective per-round evaluation MAE without allowing evaluation outcomes to change any policy.",
+    "representation": "Use the frozen T05 Morgan representation specified for MaxMin, converted to float64 without scaling.",
+    "model": {
+      "family": "Ridge",
+      "alpha": 1.0,
+      "fit_intercept": true,
+      "solver": "lsqr",
+      "tol": 1e-8,
+      "max_iter": 10000,
+      "scaling": "none",
+      "tuning": "forbidden"
+    },
+    "fit_and_lock_sequence": [
+      "At checkpoint 0, fit only on initial parents and lock the complete evaluation prediction vector before evaluation labels are scored. At every fit, order training rows by the stable global parent index; evaluation predictions use that same stable index order.",
+      "At each later checkpoint, fit only on initial parents plus all parents acquired through that checkpoint; never fit on evaluation parents.",
+      "Finalize every label-blind acquisition order and lock every corresponding evaluation prediction vector before the isolated scorer accesses any evaluation label. Source filtering is an ingestion responsibility, not label access granted to predictors or selectors.",
+      "After prediction locking, score MAE on the fixed evaluation partition. Evaluation outcomes cannot change a policy, seed, partition, feature, alpha, batch, or future prediction vector."
+    ],
+    "reporting": "Report per-checkpoint MAE by assay and policy instance. Do not report confidence intervals, p values, or seed-as-sample inferential summaries."
+  },
+  "interpretation_and_scope": {
+    "retrospective_teaching_only": "This is a retrospective teaching specification, not label-unseen discovery and not an independent empirical corroboration of T05.",
+    "t05_dependency": "The fixed Ridge alpha=1.0 setting was informed by T05 development. It is retained as a declared selection snapshot rather than newly tuned here.",
+    "prohibited_claims": [
+      "Do not claim prospective synthesis, assay completion, hit confirmation, or acquisition failures.",
+      "Do not claim a new biological discovery, independent validation of T05, or population inference from random seeds.",
+      "Do not report unrun real-campaign results."
+    ]
+  }
+}

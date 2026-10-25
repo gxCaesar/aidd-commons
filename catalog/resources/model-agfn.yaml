@@ -1,0 +1,55 @@
+id: model-agfn
+name: AGFN
+kind: model
+summary: "AGFN (Atomic GFlowNets) pretrains and fine-tunes atom-level GFlowNets for molecular graph generation with inexpensive rewards, using trajectory balance and relative trajectory balance objectives."
+canonical_url: https://github.com/diamondspark/AGFN
+identifiers:
+  - scheme: paper
+    value: "Pretraining Generative Flow Networks with Inexpensive Rewards for Molecular Graph Generation; arXiv 2503.06337"
+    url: https://arxiv.org/abs/2503.06337
+stages: [design, lead-optimization]
+modalities: [small-molecule, molecular-graph]
+tasks: [molecular-generation, goal-directed-optimization]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [readme] }
+  architecture: { value: unverified }
+  data_recipe: { value: available, evidence: [model-agfn-readme] }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: "repository source code only, with the notice to be retained; the README does not extend this licence to the Enamine training compounds or to the pretrained checkpoint"
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/diamondspark/AGFN
+    label: diamondspark/AGFN repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: paper
+    url: https://arxiv.org/abs/2503.06337
+    label: arXiv abstract for the AGFN paper (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: readme
+    url: https://raw.githubusercontent.com/diamondspark/AGFN/main/README.md
+    label: AGFN README
+    supports: [caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/diamondspark/AGFN/main/LICENSE
+    label: AGFN MIT LICENSE
+    supports: []
+  - id: model-agfn-readme
+    url: https://raw.githubusercontent.com/diamondspark/AGFN/HEAD/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The README states that the model was trained on 6.75 million Enamine compounds, which is the catalogue the corpus was drawn from and how large it was.
+  - The AGFN-large checkpoint is trained on 6.75 million Enamine compounds, and the README gives no provenance, licence or usage terms for that set.
+  - Only the AGFN-large checkpoint is released; the README states that weights for the smaller AGFN models are still to come.
+  - The repository-level MIT licence covers the code and is not stated to cover the pretrained checkpoint or the Enamine compounds.
+acknowledgements: []
+last_verified: "2026-10-23"

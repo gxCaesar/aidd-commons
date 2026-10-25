@@ -1,0 +1,247 @@
+{
+  "admitted_measurement_count": 486,
+  "closest_to_go": {
+    "failed_conditions": [
+      {
+        "additional_count_needed": 1,
+        "condition": "independent_measurements",
+        "fields": [
+          "assay_chembl_id",
+          "document_chembl_id",
+          "standard_type"
+        ],
+        "record_kind": "admitted ChEMBL activity point record"
+      }
+    ],
+    "parent_molecule_chembl_id": "CHEMBL23393",
+    "pref_name": "SODIUM LAURYL SULFATE"
+  },
+  "cohort_size": 10,
+  "computed_on": "2026-10-23",
+  "does_not_show": [
+    "A measurement count does not say a compound is good.",
+    "A go compound is not thereby a candidate.",
+    "A stop compound is not thereby inactive."
+  ],
+  "excluded_by_design": [
+    "Any prediction of activity, safety or exposure for a compound.",
+    "Any claim that this readiness rule is the right rule for candidate nomination.",
+    "Any change of the thresholds after cohort counts are seen.",
+    "Any claim that go means candidate, or stop means inactive."
+  ],
+  "parents": [
+    {
+      "distinct_assays": 27,
+      "distinct_documents": 15,
+      "independent_measurements": 27,
+      "missing_measurements": [],
+      "parent_molecule_chembl_id": "CHEMBL109",
+      "pref_name": "VALPROIC ACID",
+      "state": "go"
+    },
+    {
+      "distinct_assays": 34,
+      "distinct_documents": 17,
+      "independent_measurements": 36,
+      "missing_measurements": [],
+      "parent_molecule_chembl_id": "CHEMBL1144",
+      "pref_name": "PRAVASTATIN",
+      "state": "go"
+    },
+    {
+      "distinct_assays": 1,
+      "distinct_documents": 1,
+      "independent_measurements": 1,
+      "missing_measurements": [
+        {
+          "additional_count_needed": 4,
+          "condition": "independent_measurements",
+          "fields": [
+            "assay_chembl_id",
+            "document_chembl_id",
+            "standard_type"
+          ],
+          "record_kind": "admitted ChEMBL activity point record"
+        },
+        {
+          "additional_count_needed": 2,
+          "condition": "distinct_assays",
+          "fields": [
+            "assay_chembl_id"
+          ],
+          "record_kind": "admitted ChEMBL activity point record"
+        },
+        {
+          "additional_count_needed": 1,
+          "condition": "distinct_documents",
+          "fields": [
+            "document_chembl_id"
+          ],
+          "record_kind": "admitted ChEMBL activity point record"
+        }
+      ],
+      "parent_molecule_chembl_id": "CHEMBL13829",
+      "pref_name": "MIXTURE OF MMC AND TA",
+      "state": "stop"
+    },
+    {
+      "distinct_assays": 4,
+      "distinct_documents": 3,
+      "independent_measurements": 4,
+      "missing_measurements": [
+        {
+          "additional_count_needed": 1,
+          "condition": "independent_measurements",
+          "fields": [
+            "assay_chembl_id",
+            "document_chembl_id",
+            "standard_type"
+          ],
+          "record_kind": "admitted ChEMBL activity point record"
+        }
+      ],
+      "parent_molecule_chembl_id": "CHEMBL23393",
+      "pref_name": "SODIUM LAURYL SULFATE",
+      "state": "hold"
+    },
+    {
+      "distinct_assays": 103,
+      "distinct_documents": 75,
+      "independent_measurements": 103,
+      "missing_measurements": [],
+      "parent_molecule_chembl_id": "CHEMBL25",
+      "pref_name": "ASPIRIN",
+      "state": "go"
+    },
+    {
+      "distinct_assays": 12,
+      "distinct_documents": 5,
+      "independent_measurements": 12,
+      "missing_measurements": [],
+      "parent_molecule_chembl_id": "CHEMBL275835",
+      "pref_name": "DARBUFELONE",
+      "state": "go"
+    },
+    {
+      "distinct_assays": 2,
+      "distinct_documents": 2,
+      "independent_measurements": 2,
+      "missing_measurements": [
+        {
+          "additional_count_needed": 3,
+          "condition": "independent_measurements",
+          "fields": [
+            "assay_chembl_id",
+            "document_chembl_id",
+            "standard_type"
+          ],
+          "record_kind": "admitted ChEMBL activity point record"
+        },
+        {
+          "additional_count_needed": 1,
+          "condition": "distinct_assays",
+          "fields": [
+            "assay_chembl_id"
+          ],
+          "record_kind": "admitted ChEMBL activity point record"
+        }
+      ],
+      "parent_molecule_chembl_id": "CHEMBL441",
+      "pref_name": "THIOPENTAL",
+      "state": "hold"
+    },
+    {
+      "distinct_assays": 51,
+      "distinct_documents": 18,
+      "independent_measurements": 51,
+      "missing_measurements": [],
+      "parent_molecule_chembl_id": "CHEMBL588",
+      "pref_name": "FENOLDOPAM",
+      "state": "go"
+    },
+    {
+      "distinct_assays": 250,
+      "distinct_documents": 90,
+      "independent_measurements": 250,
+      "missing_measurements": [],
+      "parent_molecule_chembl_id": "CHEMBL593",
+      "pref_name": "DELAVIRDINE",
+      "state": "go"
+    },
+    {
+      "distinct_assays": 0,
+      "distinct_documents": 0,
+      "independent_measurements": 0,
+      "missing_measurements": [
+        {
+          "additional_count_needed": 5,
+          "condition": "independent_measurements",
+          "fields": [
+            "assay_chembl_id",
+            "document_chembl_id",
+            "standard_type"
+          ],
+          "record_kind": "admitted ChEMBL activity point record"
+        },
+        {
+          "additional_count_needed": 3,
+          "condition": "distinct_assays",
+          "fields": [
+            "assay_chembl_id"
+          ],
+          "record_kind": "admitted ChEMBL activity point record"
+        },
+        {
+          "additional_count_needed": 2,
+          "condition": "distinct_documents",
+          "fields": [
+            "document_chembl_id"
+          ],
+          "record_kind": "admitted ChEMBL activity point record"
+        }
+      ],
+      "parent_molecule_chembl_id": "CHEMBL906",
+      "pref_name": "MINOXIDIL SULFATE",
+      "state": "stop"
+    }
+  ],
+  "protocol_id": "chembl37-nomination-readiness-v1",
+  "schema_version": "aidd-commons.nomination-readiness-audit-summary.v1",
+  "software": {
+    "numpy": "2.4.6",
+    "python": "3.11.15",
+    "rdkit": "2025.09.6"
+  },
+  "source": {
+    "database": "ChEMBL_37",
+    "release_date": "2026-05-01"
+  },
+  "state_counts": {
+    "go": 6,
+    "hold": 2,
+    "stop": 2
+  },
+  "state_members": {
+    "go": [
+      "CHEMBL109",
+      "CHEMBL1144",
+      "CHEMBL25",
+      "CHEMBL275835",
+      "CHEMBL588",
+      "CHEMBL593"
+    ],
+    "hold": [
+      "CHEMBL23393",
+      "CHEMBL441"
+    ],
+    "stop": [
+      "CHEMBL13829",
+      "CHEMBL906"
+    ]
+  },
+  "thresholds": {
+    "distinct_assays": 3,
+    "distinct_documents": 2,
+    "independent_measurements": 5
+  }
+}

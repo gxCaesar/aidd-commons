@@ -1,0 +1,94 @@
+---
+title: 用 PK/PD 模型追踪内在清除率
+description: 基于人和大鼠肝细胞的成对测量，运行显式的暴露、靶点占有和效应模型，并检查其假设。
+---
+
+英文原文：[Tracing intrinsic clearance through a PK/PD model](/labs/pkpd-translation-audit/)。
+
+## 准备与学习目标
+
+请先阅读[从清除率和暴露到 PK/PD](/learn/admet-pk/exposure-clearance-pkpd/)和[清除率检测体系实验](/labs/az-clearance-system/)。本实验要求把一项实测量送入带假设的 PK/PD 模型，并指出证据在哪里止步。你将区分实测清除率与模型计算的浓度、靶点占有和效应，同时检验大鼠到人的转换是否能用单一因子表示。
+
+## 模式与命令
+
+运行模式是依据冻结协议进行的全新独立 CPU 计算。实验读取已有的、经过验证的 ChEMBL 37 缓存。缓存存在后无需网络或加速器。`download` 检查并复用该缓存，不写入文件。`show` 和 `check` 也不写入文件。`export_summary.py` 仅在检查通过后替换已提交的小型摘要。
+
+```bash
+.venv/bin/python labs/pkpd_translation_audit/run_lab.py download
+.venv/bin/python labs/pkpd_translation_audit/inspect_pkpd_translation_audit.py show
+.venv/bin/python labs/pkpd_translation_audit/inspect_pkpd_translation_audit.py check
+.venv/bin/python labs/pkpd_translation_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/pkpd_translation_audit -q
+```
+
+需要 Python 3.11 和本项目固定版本的实验环境。
+
+## 测量材料与队列
+
+[AstraZeneca 的 ChEMBL 数据集存档](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361)提供三个检测体系的内在清除率测量。已有的清除率读取器纳入母体分子的精确、未截尾活性记录。如果同一母体分子有重复纳入的活性记录，就取中位数。本实验不重新解释活性记录，也不获取另一份快照。缓存中的状态响应和活性响应合计 1,518,229 字节，获取日期为 2026-09-12。
+
+| 检测 | 物种与材料 | 输入行 | 纳入母体分子 | 报告的清除率基准 |
+| --- | --- | ---: | ---: | --- |
+| `CHEMBL3301370` | 人肝微粒体 | 1102 | 743 | mL/min/g protein |
+| `CHEMBL3301371` | 大鼠肝细胞 | 837 | 592 | µL/min/10^6 cells |
+| `CHEMBL3301372` | 人肝细胞 | 408 | 288 | µL/min/10^6 cells |
+
+计数单位是一个被纳入的 ChEMBL 母体分子。共有 1120 个不同的母体分子。模型只处理在两种肝细胞检测中均有测量的 106 个母体分子，不把每克蛋白的微粒体清除率换算成每百万细胞的肝细胞清除率。
+
+## 暴露、占有与效应模型
+
+对于每个成对的母体分子，大鼠测量值提供清除率输入。物种因子取其余 105 个成对母体分子的人与大鼠肝细胞清除率比值的中位数。该分子自身的人肝细胞测量值不参与其因子的估计。因子的 0.1 和 0.9 经验分位数给出队列内变异范围，而非经验证的预测区间。
+
+```text
+CL_h,model = CL_r × species factor × effective cells × 60 / 10^12 L/h
+C_total(t) = (D/V) exp[−CL_h,model t/V]
+C_free(t) = f_u C_total(t)
+occupancy(t) = C_free(t)/(K_d + C_free(t))
+effect(t) = Emax × occupancy(t) × (1 + EC50_occupancy)
+            / (EC50_occupancy + occupancy(t))
+```
+
+这里的效应是分数形式的效应增量。模型经过归一化，使完全占有时的效应等于 Emax。靶点占有由游离浓度和假设的结合常数计算，绝不等同于浓度本身。
+检查命令在 0、12 和 24 h 对每条浓度曲线取样，然后报告 24 h 时的游离浓度、占有率和效应。
+
+| 参数 | 数值或范围 | 单位 | 来源 |
+| --- | --- | --- | --- |
+| 输入量 `D` | 1 | µmol | 项目假设，瞬时输入 |
+| 表观分布容积 `V` | 1 | L | 项目假设 |
+| 计算间隔 `t` | 24 | h | 项目假设 |
+| 有效细胞数 | 100000000 | cells | 项目假设，不是生理肝细胞总数 |
+| 大鼠清除率相对误差 | 0.2 | fraction | 项目假设，检测没有提供误差估计 |
+| 物种因子分位数 | 0.1 和 0.9 | fraction | 将项目决定应用于其他成对比值 |
+| 游离分数 `f_u` | 0.1，范围 0.05 至 0.2 | fraction | 项目假设，而非实测结合 |
+| 结合常数 `K_d` | 0.2，范围 0.1 至 0.4 | µmol/L | 项目假设，而非实测靶点结合 |
+| `Emax` | 1，范围 0.5 至 1 | fractional effect increment | 项目假设，而非实测效应 |
+| 占有 `EC50` | 0.5，范围 0.25 至 0.75 | occupied fraction | 项目假设，而非实测反应耦合 |
+
+区间沿每个方程传播。计算先考虑大鼠检测误差，再依次加入物种因子范围、游离分数、结合常数、Emax 和占有 EC50。加入新的不确定输入后，区间宽度不能缩小。结果是在这些假设下的敏感性范围，而不是置信区间。
+
+## 队列结果与证据边界
+
+| 结果 | 母体分子数 |
+| --- | ---: |
+| 人和大鼠肝细胞均有测量并进入模型 | 106 |
+| 有人肝细胞记录但无大鼠肝细胞记录 | 182 |
+| 有大鼠肝细胞记录但无人肝细胞记录 | 486 |
+| 仅有微粒体记录，没有肝细胞记录 | 346 |
+| 无法进行成对物种转换 | 1014 |
+| 成对测量至少相差三倍 | 37 |
+
+两个实测化合物说明物种转换为何重要。清除率列都采用 µL/min/10^6 cells 这一肝细胞单位。效应列是上述假设下 24 h 时的模型输出。
+
+| 母体分子 | 人清除率 | 大鼠清除率 | 模型效应 | 敏感性范围 |
+| --- | ---: | ---: | ---: | ---: |
+| `CHEMBL1229592` | 3.31 | 79.43 | 0.00268317 | 4.60433e-11 至 0.714601 |
+| `CHEMBL361546` | 134.9 | 14.79 | 0.31742 | 0.00262104 至 0.886112 |
+
+本实验把实测内在清除率与示意性的暴露曲线、模型计算的靶点占有和效应连接起来。它用留一规则表示物种差异，并将已声明的不确定性沿每一步传播。材料没有实测血浆或靶点部位暴露、化合物特异的结合常数、实测占有、实测效应或经验证的物种转换。模型假设靶点部位浓度等于游离的区室浓度，结合立即达到平衡，效应没有延迟。预测的反应不是实测反应。这些输出不能预测临床获益，也不能用于按预测效应排序化合物。
+
+## 来源与许可
+
+- [ChEMBL 37 数据集 CHEMBL3301361](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361)，快照获取于 2026-09-12。
+- [ChEMBL 37 版本许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)，查阅于 2026-10-21。ChEMBL 数据记录采用 Creative Commons Attribution-ShareAlike 3.0 Unported。个别存档文献仍保留其原权利人的权利。
+
+原创文字采用 CC BY 4.0，原创实验代码采用 Apache-2.0。计算日期为 2026-10-23。

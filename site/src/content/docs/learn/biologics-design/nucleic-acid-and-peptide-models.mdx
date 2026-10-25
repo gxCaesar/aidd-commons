@@ -1,0 +1,86 @@
+---
+title: Open models for nucleic-acid and peptide design
+description: Read five dated resource records through task contracts, evaluation evidence, asset availability, and licence scope.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/nucleic-acid-and-peptide-models" />
+
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Nucleic acids, conjugates, and degraders](/learn/biologics-design/nucleic-acids-conjugates-degraders/), use this dated reading to decide what five public resource records actually establish. For each, identify its input and output, computational objective, comparison evidence, evaluated entities, inspected assets, and limiting condition. This is a source reading with a written exercise. None of these methods was run or reproduced for this lesson.
+
+## Comparison contract
+
+A low-cost predictive baseline would fit a constant output on training entities, then use the same held-out entities and metric as the proposed model. A data-preparation tool instead needs a fixed input collection and split recipe before outputs can be compared. The five records below do not supply a shared task, split, metric, or compute budget. No cross-method ranking follows from them. A stated asset is not an executed benchmark. The [related resource guide](/learn/biologics-design/modality-resource-guide/) helps frame the resource choice, while the source-specific evidence below controls each claim.
+
+## RNA-FM
+
+The [RNA-FM repository](https://github.com/ml4bio/RNA-FM) describes a sequence encoder. Input is an RNA sequence and output is an embedding for downstream structure or function tasks. Its representation is nucleotide tokens. The [README](https://raw.githubusercontent.com/ml4bio/RNA-FM/main/README.md) names masked-token pretraining, RNAcentral100 as a corpus, and inference scripts. It does not pin the corpus snapshot or name a training script. The record provides no matched baseline, split, metric, evaluated-entity list, or compute budget that this reading can audit. The repository and checkpoint-host pages were inspected as source evidence, while no code, data, or weights were executed here.
+
+The record marks inference code, weights, architecture, data recipe, and training data available. Training code and evaluation code remain unverified. The repository source is MIT. The [download checkpoint host](https://huggingface.co/cuhkaih/rnafm) declares Apache-2.0 for that copy, while the README also labels the model MIT without a clear weight scope. A separate weights-link card could not be authenticated in the record. The exact training set and licence of every weight copy remain unresolved, so an embedding demo would not establish a reproducible downstream comparison. [RNA-FM source record](https://github.com/ml4bio/RNA-FM).
+
+## RibonanzaNet
+
+The [RibonanzaNet repository](https://github.com/Shujun-He/RibonanzaNet) describes an RNA model with sequence input and outputs for chemical mapping, secondary structure, or degradation tasks. Its README identifies a network trained on Ribonanza mapping data and later task-specific fitting. The record reports cross-validation using fold 0 of 6 and out-of-fold predictions, but gives no matched comparator, metric table, independent test-entity definition, or compute budget for this reading to verify. Its linked competition page did not expose readable data terms in the record. The repository and linked evidence pages were inspected, with no training or inference run here. [README](https://raw.githubusercontent.com/Shujun-He/RibonanzaNet/main/README.md).
+
+Inference code, training code, architecture, and training data are marked available. Weights, data recipe, and evaluation code remain unverified. The repository's MIT licence covers source code, not the downloaded competition data or checkpoints. The official repository releases no weights of its own. A third-party [implementation and weights](https://huggingface.co/multimolecule/ribonanzanet) declare AGPL-3.0, which does not resolve the official weight status or the competition-data terms. These boundaries prevent a claim of independently reproduced evaluation. [RibonanzaNet source record](https://github.com/Shujun-He/RibonanzaNet).
+
+## PepHAR
+
+The [PepHAR repository](https://github.com/Ced3-han/PepHAR) presents a target-conditioned generator. Its input contract includes a target context and its output is a sampled peptide candidate representation. The recorded computational workflow samples an initial fragment with an energy-based model and extends it autoregressively. The [README](https://raw.githubusercontent.com/Ced3-han/PepHAR/main/README.md) links training and inference code, checkpoints, and an evaluation-code tree. It also says the models overfit their training set and early checkpoints were selected for evaluation. The record does not identify a reconstructable training corpus, a documented evaluation command, a matched baseline result, a split, a metric table, or compute resources for an independent comparison. Those limitations are source-record observations, not a new model assessment. No code, data, or weights were run here.
+
+Inference code, training code, weights, architecture, and evaluation code are marked available. Data recipe and training data remain unverified. MIT covers the repository source only. The linked [checkpoint and data folder](https://drive.google.com/drive/folders/1jJFPZbczI7Nxai-9X5UcNsv5U8rcBUEY) states no terms for its distributed files. An available checkpoint therefore does not establish data reuse permission or a reproduced result. [PepHAR source record](https://github.com/Ced3-han/PepHAR).
+
+## HELM-BERT
+
+The [HELM-BERT repository](https://github.com/clinfo/HELM-BERT) describes an encoder for peptide text in HELM notation. Its output can be a representation or a fitted property or interaction prediction. The [README](https://raw.githubusercontent.com/clinfo/HELM-BERT/main/README.md) names masked-language pretraining and later task fitting. For its interaction task, the record notes an additional protein encoder, so those results cannot be attributed to HELM-BERT alone. The README reports metrics and random, scaffold, and aCSM split files, but names no separate evaluation script or matched comparator that this reading can verify. Its entity definitions and compute budget are not established here. The repository and [weights host](https://huggingface.co/Flansma/helm-bert) were inspected as source pages. Nothing was run.
+
+Inference code, training code, weights, architecture, data recipe, and training data are marked available. Evaluation code remains unverified. MIT covers the repository source and hosted weights. Corpus provenance is still ambiguous. The README describes about 75,000 peptides, while the linked preprint reports 39,079, and the hosted weights do not identify which corpus produced them. The README also describes a changed paper-revision training recipe without naming all its databases. These gaps prevent exact weight-to-corpus or result-to-recipe attribution. [HELM-BERT source record](https://github.com/clinfo/HELM-BERT).
+
+## ProteinFlow
+
+[ProteinFlow](https://github.com/adaptyvbio/ProteinFlow) is a data-preparation pipeline, not a predictive model. It takes source structure records and produces annotated, clustered train, validation, and test datasets. It has no model-training objective, weights, or inference prediction in this record. The [documentation](https://adaptyvbio.github.io/ProteinFlow/) supplies a data recipe, but its API default test proportion is 0.05 while its worked example passes 0.5. A reproduced split must use the selected setting and source snapshot. The record identifies neither a matched downstream model comparison nor a verified metric entry point. Its precomputed releases are dated through 2023-12-21. Documentation and repository pages were inspected, with no data-processing run here.
+
+The catalogue marks the pipeline's inference or use code, data recipe, and training data available. Training code, weights, and architecture are not applicable. Evaluation code remains unverified. The repository README says BSD-3-Clause covers its package and released data, while the root licence file has no separate data clause. Terms of upstream PDB and SAbDab records are not restated. The package statement cannot silently grant terms for every upstream input. [ProteinFlow source record](https://github.com/adaptyvbio/ProteinFlow).
+
+## Openness by dimension
+
+The seven columns preserve the catalogue's distinct dimensions. Available means the cited record established access or documentation, not that this lesson executed the asset. Unverified means the record did not establish that dimension. Not applicable means the resource is not a trained model in that dimension.
+
+| Resource | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| RNA-FM | available | unverified | available | available | available | available | unverified |
+| RibonanzaNet | available | available | unverified | available | unverified | available | unverified |
+| PepHAR | available | available | available | available | unverified | unverified | available |
+| HELM-BERT | available | available | available | available | available | available | unverified |
+| ProteinFlow | available | not applicable | not applicable | not applicable | available | available | unverified |
+
+## Worked case
+
+A reader proposes a common benchmark from the RibonanzaNet and HELM-BERT records because both list training code. The first record leaves its official weights and data recipe unverified. The second identifies available weights but cannot bind them to one of the two reported corpora. Their tasks and outputs also differ. A defensible comparison sheet would first fix a common endpoint, entity unit, held-out split, metric, baseline, asset versions, and permission for each input. Until those fields exist, the records support two scoped resource descriptions rather than a performance ranking. [RibonanzaNet repository](https://github.com/Shujun-He/RibonanzaNet), [HELM-BERT repository](https://github.com/clinfo/HELM-BERT).
+
+## Independent exercise
+
+A colleague downloads a ProteinFlow precomputed release and calls its split reproducible from the documentation alone. They also apply the package licence to every upstream input. Identify the two missing checks and name the evidence needed before a downstream score can be compared.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The split setting must be fixed because the documentation gives both 0.05 and 0.5 in different contexts. The source snapshot must also be fixed because precomputed releases are dated through 2023-12-21. The package README's BSD-3-Clause statement does not restate PDB or SAbDab input terms, which require separate checking. For a score comparison, record the same source entities, split, metric, cheap baseline, and downstream model procedure. No such comparison was run in this reading. [ProteinFlow documentation](https://adaptyvbio.github.io/ProteinFlow/), [repository](https://github.com/adaptyvbio/ProteinFlow).
+
+</details>
+
+## Scope
+
+These records establish selected asset and licence statements as reviewed on 2026-10-21. They do not establish an executable common benchmark, a reproduced model, unrestricted reuse of every linked asset, or measured reader learning.
+
+## Sources
+
+The source pages are the [RNA-FM README](https://raw.githubusercontent.com/ml4bio/RNA-FM/main/README.md), [RibonanzaNet README](https://raw.githubusercontent.com/Shujun-He/RibonanzaNet/main/README.md), [PepHAR README](https://raw.githubusercontent.com/Ced3-han/PepHAR/main/README.md), [HELM-BERT README](https://raw.githubusercontent.com/clinfo/HELM-BERT/main/README.md), and [ProteinFlow documentation](https://adaptyvbio.github.io/ProteinFlow/). Each linked source retains its own licence and scope.
+
+Last reviewed: 2026-10-21.

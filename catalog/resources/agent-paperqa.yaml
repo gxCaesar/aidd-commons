@@ -1,0 +1,46 @@
+id: agent-paperqa
+name: PaperQA2
+kind: agent
+summary: Scientific-document retrieval and question-answering software that combines language models with evidence gathering and cited answers.
+canonical_url: https://github.com/Future-House/paper-qa
+identifiers:
+  - scheme: documentation
+    value: PaperQA2 usage, version terminology and reproduction limitations
+    url: https://github.com/Future-House/paper-qa/blob/main/README.md
+  - scheme: paper
+    value: PaperQA2 paper; not a particular current package snapshot
+    url: https://arxiv.org/abs/2409.13740
+stages: [evidence-synthesis, analysis]
+modalities: [scientific-text, document]
+tasks: [retrieval-augmented-question-answering, evidence-gathering]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [source-license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: Repository source code, not external models, papers or metadata services
+    evidence: [source-license]
+evidence:
+  - id: repository
+    url: https://raw.githubusercontent.com/Future-House/paper-qa/main/README.md
+    label: Official README, including version and reproduction sections; reviewed 2026-09-09
+    supports:
+      [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: source-license
+    url: https://raw.githubusercontent.com/Future-House/paper-qa/main/LICENSE
+    label: PaperQA repository LICENSE
+    supports: []
+caveats:
+  - PaperQA2 names a system family, not a pinned package; the repository moved to calendar versioning in December 2025.
+  - The local-document workflow requires supplied documents and configured language/embedding models. Default services may require API credentials and payment; no service was invoked here.
+  - The README distinguishes public local-document use from research-paper searches using tools and licensed access that cannot all be shared. Cited answers are not independently validated scientific findings.
+acknowledgements: []
+last_verified: "2026-09-09"

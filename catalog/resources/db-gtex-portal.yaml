@@ -1,0 +1,62 @@
+id: db-gtex-portal
+name: GTEx Portal
+kind: database
+summary: Portal for tissue-specific expression and regulation data, with open-access downloads and APIs; raw DNA/RNA sequences and full donor metadata require separate protected access.
+canonical_url: https://gtexportal.org/
+identifiers:
+  - scheme: api
+    value: GTEx Portal V2 API
+    url: https://gtexportal.org/api/v2/
+  - scheme: documentation
+    value: GTEx Portal API documentation
+    url: https://gtexportal.org/api/v2/docs
+  - scheme: documentation
+    value: Adult GTEx downloads and access overview
+    url: https://gtexportal.org/home/downloads/adult-gtex/overview
+stages: [disease-mechanism, target-discovery]
+modalities: [tissue-expression, molecular-qtl]
+tasks: [expression-lookup, qtl-evidence-inspection]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [license-page] }
+openness:
+  inference_code: { value: not_applicable, evidence: [api-root] }
+  training_code: { value: not_applicable, evidence: [api-root] }
+  weights: { value: not_applicable, evidence: [api-root] }
+  architecture: { value: not_applicable, evidence: [api-root] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: not_applicable, evidence: [api-root] }
+licenses:
+  - name: GTEx Portal Data License
+    scope: "The portal's own data licence, published on its licence page and read on 2026-10-24. It charges no fees or royalties, requires the user to acknowledge the GTEx Portal as the source with a stated phrase naming the portal and the dbGaP accession, requires a user who republishes or redistributes the data either to keep the most current version or to make known that the product does not reflect the most current data, disclaims any warranty of merchantability or fitness for purpose, and reserves the right to change the type and format of the machine-readable data. It restricts no use, so the data are freely usable, and it is not a standard open licence."
+    evidence: [license-page]
+evidence:
+  - id: download-overview
+    url: https://gtexportal.org/home/downloads/adult-gtex/overview
+    label: Rendered Adult GTEx overview distinguishing open and protected data
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: api-root
+    url: https://gtexportal.org/api/v2/
+    label: GTEx Portal V2 API service description
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: api-documentation
+    url: https://gtexportal.org/api/v2/docs
+    label: GTEx Portal API documentation
+    supports: [identifiers]
+  - id: terms-page
+    url: https://gtexportal.org/home/termsPage
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+  - id: license-page
+    url: https://gtexportal.org/home/license
+    label: The GTEx Portal Data License, read 2026-10-24 from the portal's own licence route, whose text is carried in the portal's application bundle
+    supports: [caveats]
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one.
+  - Only open-access files are offered through the portal downloads. Raw DNA/RNA sequences and full donor metadata are protected-access data housed in AnVIL and require a separate application.
+  - "No terms statement for the GTEx data could be read on 2026-10-21. The portal pages render their content in the browser and returned no licence text to an automated fetch, so the licence and the redistribution terms stay unverified here rather than being asserted from a summary."
+  - "The portal's licence route renders in the browser, and its text is carried inside the portal's own application bundle, which is where the licence was read on 2026-10-24. The record therefore quotes the portal's own wording rather than a third party's summary of it."
+  - "The portal names the GTEx analysis releases by their dbGaP accession, from the pilot through the later releases, and states that protected data are available in the AnVIL repository. The open tier and the protected tier are separate resources with separate conditions, and this record describes the portal."
+acknowledgements: []
+last_verified: "2026-10-24"

@@ -1,0 +1,57 @@
+id: model-esmc
+name: ESMC
+kind: model
+summary: ESMC is a protein language model released by the Biohub ESM project as a Hugging Face checkpoint; the model card describes a six-billion-parameter model trained on protein sequences and lists representation uses such as therapeutic protein engineering and understanding protein biology.
+canonical_url: https://huggingface.co/biohub/ESMC-6B
+identifiers:
+  - scheme: model-weights
+    value: "biohub/ESMC-6B checkpoint and model card"
+    url: https://huggingface.co/biohub/ESMC-6B
+  - scheme: source-code
+    value: "Biohub ESM repository, source code and weights release"
+    url: https://github.com/Biohub/esm
+  - scheme: paper
+    value: "Language Modeling Materializes a World Model of Protein Biology; DOI 10.64898/2026.06.03.729735"
+    url: https://www.biorxiv.org/content/10.64898/2026.06.03.729735
+stages: [representation-learning]
+modalities: [protein, sequence]
+tasks: [protein-representation-learning]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [model-card, readme, license] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [model-card] }
+  architecture: { value: available, evidence: [readme] }
+  data_recipe: { value: available, evidence: [model-esmc-readme] }
+  training_data: { value: available, evidence: [model-card] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: covers the source code and the model weights released by the ESM project, per the project README and the LICENSE.md file; the ESMC 6B model card additionally lists an Acceptable Use Policy and shows a second licence label, other, that the card does not explain
+    evidence: [readme, license, model-card]
+evidence:
+  - id: model-card
+    url: https://huggingface.co/biohub/ESMC-6B
+    label: ESMC 6B model card (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/Biohub/esm/main/README.md
+    label: Biohub ESM README (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/Biohub/esm/main/LICENSE.md
+    label: Biohub ESM MIT licence file (reviewed 2026-10-21)
+    supports: []
+  - id: model-esmc-readme
+    url: https://huggingface.co/biohub/ESMC-6B/raw/main/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The model card states that the model was trained on protein sequences from UniRef, MGnify and the Joint Genome Institute, that the sequences were clustered at seventy per cent identity into 83M, 372M and 2B clusters, and that the training ran in two stages, the first of a million steps with a context length of 512 and metagenomic data at sixty-four per cent of the mixture.
+  - The model card names the training sequence sources as UniRef, MGnify and the Joint Genome Institute but states no licence or usage terms for them.
+  - The model card lists two licence labels, mit and other, and links an Acceptable Use Policy without saying what the second label covers.
+  - The project README states that source code and model weights are released for ESMC 6B, ESMFold2 and the ESMC sparse autoencoders, and does not say whether training code is included.
+acknowledgements: []
+last_verified: "2026-10-23"

@@ -1,0 +1,47 @@
+id: model-byteff
+name: ByteFF
+kind: model
+summary: Data-driven molecular-mechanics force field that infers force-field parameters for a molecule and writes them as GROMACS-compatible ITP files, trained in three phases on partial Hessian, torsion, and energy-force data.
+canonical_url: https://github.com/bytedance/byteff
+identifiers:
+  - scheme: code
+    value: "ByteFF source repository, bytedance/byteff"
+    url: https://github.com/bytedance/byteff
+stages: [design, evaluation]
+modalities: [small-molecule]
+tasks: [force-field-parameterisation, absolute-binding-free-energy]
+relations:
+  - type: successor-to
+    target: model-byteff2
+status: { value: unverified }
+access_level: { value: gated, evidence: [byteff-readme] }
+openness:
+  inference_code: { value: available, evidence: [byteff-readme] }
+  training_code: { value: available, evidence: [byteff-readme] }
+  weights: { value: unverified }
+  architecture: { value: available, evidence: [byteff-readme] }
+  data_recipe: { value: available, evidence: [byteff-readme] }
+  training_data: { value: available, evidence: [byteff-readme] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: "Apache-2.0"
+    scope: "The repository README states 'This project is licensed under the Apache License, Version 2.0.' The grant covers the source code and the benchmark data the repository ships. The paper's own terms are separate, and the hosted API trial is offered under its own terms rather than under this licence."
+    evidence: [byteff-readme]
+evidence:
+  - id: byteff-repository
+    url: https://github.com/bytedance/byteff
+    label: ByteFF repository (reviewed 2026-10-23)
+    supports: [name, kind, summary, stages, modalities, tasks, relations, caveats]
+  - id: byteff-readme
+    url: https://raw.githubusercontent.com/bytedance/byteff/master/README.md
+    label: ByteFF README (reviewed 2026-10-23)
+    supports: [identifiers, caveats]
+caveats:
+  - "The public repository and bundled BDTorsion data are downloadable under Apache-2.0, but the README offers use of the ByteFF model through a free API trial and asks readers to contact the authors by email. This request route establishes gated model access; it does not establish downloadable pretrained weights or grant the API service under the code licence."
+  - "The repository is archived and no longer maintained, and the README directs readers to ByteFF2 for current models, code and documentation. A reader who wants the maintained artefact should use that record."
+  - "The README lists no downloadable pretrained checkpoint and gives no checkpoint URL. Hosted access is offered through a free API trial, which is a service under its own terms and not a set of weights a reader can run."
+  - "The three training phases are stated as pretraining on partial Hessian data, training on partial Hessian and torsion data, and finetuning on energy-force data, and the page names the contents of each kind, but it gives no molecule count and no chemical-space inventory, so the size of the parameterisation corpus is not established."
+  - "The repository provides no installation command, dependency list or runnable example, and delegates preparation and training to two README files under its scripts directory that the page did not reproduce."
+  - "The benchmark data the repository ships is the BDTorsion benchmark, and the page asks a user to follow the Apache 2.0 licence and cite the paper when using it."
+acknowledgements: []
+last_verified: "2026-10-23"

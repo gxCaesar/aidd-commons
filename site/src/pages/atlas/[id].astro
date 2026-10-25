@@ -1,0 +1,252 @@
+---
+import { readFile } from "node:fs/promises";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import ClaimEvidence from "../../components/ClaimEvidence.astro";
+import OpennessMatrix from "../../components/OpennessMatrix.astro";
+import ResourceLearningLinks from "../../components/ResourceLearningLinks.astro";
+import type { Resource } from "../../data/resource.js";
+
+export async function getStaticPaths() {
+  const resources = JSON.parse(
+    await readFile(
+      new URL("../../../public/data/resources.v1.json", import.meta.url),
+      "utf8",
+    ),
+  ) as Resource[];
+
+  return resources.map((resource) => ({
+    params: { id: resource.id },
+    props: { resource },
+  }));
+}
+
+interface Props {
+  resource: Resource;
+}
+
+const { resource } = Astro.props;
+const resourceLinks = [
+  { url: resource.canonical_url, label: "Primary resource page" },
+  ...resource.identifiers.flatMap((identifier) => identifier.url
+    ? [{ url: identifier.url, label: `${identifier.scheme}: ${identifier.value}` }]
+    : []),
+  ...resource.evidence.map((evidence) => ({ url: evidence.url, label: evidence.label })),
+].filter((link, index, links) => links.findIndex((other) => other.url === link.url) === index);
+---
+
+<StarlightPage frontmatter={{ title: resource.name, description: resource.summary }}>
+  <article class="resource-detail">
+    <ResourceLearningLinks resourceId={resource.id} />
+    <section class="detail-panel" aria-labelledby="resource-links-title">
+      <h2 id="resource-links-title">Resource links</h2>
+      <ul>
+        {resourceLinks.map((link) => <li><a href={link.url}>{link.label}</a></li>)}
+      </ul>
+      <p>Links are entry points, not a claim of open access or permission to use every asset. Check the access, licence and openness notes below.</p>
+    </section>
+    <section class="detail-panel" aria-labelledby="identity-title">
+      <h2 id="identity-title">Identity and summary</h2>
+      <p>
+        <a href={resource.canonical_url}>Canonical resource page</a><br />
+        <ClaimEvidence
+          evidence={resource.evidence}
+          support="name"
+          emptyMessage="Unknown — no name evidence is recorded."
+        />
+      </p>
+      <p>
+        {resource.summary}<br />
+        <ClaimEvidence
+          evidence={resource.evidence}
+          support="summary"
+          emptyMessage="Unknown — no summary evidence is recorded."
+        />
+      </p>
+      <p>
+        <strong>Kind:</strong> {resource.kind}<br />
+        <ClaimEvidence
+          evidence={resource.evidence}
+          support="kind"
+          emptyMessage="Unknown — no kind evidence is recorded."
+        />
+      </p>
+    </section>
+
+    <section class="detail-panel" aria-labelledby="claim-context-title">
+      <h2 id="claim-context-title">Claim context</h2>
+      <dl class="detail-list">
+        <div><dt>Kind</dt><dd>{resource.kind}</dd></div>
+        <div>
+          <dt>Lifecycle</dt>
+          <dd>
+            {resource.status.value}<br />
+            <ClaimEvidence
+              evidence={resource.evidence}
+              ids={resource.status.evidence}
+              emptyMessage="Unknown — no direct lifecycle evidence is recorded."
+            />
+          </dd>
+        </div>
+        <div>
+          <dt>Access</dt>
+          <dd>
+            {resource.access_level.value}<br />
+            <ClaimEvidence
+              evidence={resource.evidence}
+              ids={resource.access_level.evidence}
+              emptyMessage="Unknown — no direct access evidence is recorded."
+            />
+          </dd>
+        </div>
+        <div><dt>Last verified</dt><dd>Last verified: {resource.last_verified}</dd></div>
+      </dl>
+    </section>
+
+    {resource.identifiers.length > 0 && (
+      <section aria-labelledby="identifiers-title">
+        <h2 id="identifiers-title">Identifiers</h2>
+        <ul>
+          {resource.identifiers.map((identifier) => (
+            <li>
+              {identifier.scheme}: {identifier.url ? <a href={identifier.url}>{identifier.value}</a> : identifier.value}
+            </li>
+          ))}
+        </ul>
+        <ClaimEvidence
+          evidence={resource.evidence}
+          support="identifiers"
+          emptyMessage="Unknown — no identifier evidence is recorded."
+        />
+      </section>
+    )}
+
+    {resource.stages.length > 0 && (
+      <section aria-labelledby="stages-title">
+        <h2 id="stages-title">Pipeline stages</h2>
+        <ul>{resource.stages.map((stage) => <li>{stage}</li>)}</ul>
+        <ClaimEvidence
+          evidence={resource.evidence}
+          support="stages"
+          emptyMessage="Unknown — no stage evidence is recorded."
+        />
+      </section>
+    )}
+
+    {resource.modalities.length > 0 && (
+      <section aria-labelledby="modalities-title">
+        <h2 id="modalities-title">Modalities</h2>
+        <ul>{resource.modalities.map((modality) => <li>{modality}</li>)}</ul>
+        <ClaimEvidence
+          evidence={resource.evidence}
+          support="modalities"
+          emptyMessage="Unknown — no modality evidence is recorded."
+        />
+      </section>
+    )}
+
+    {resource.tasks.length > 0 && (
+      <section aria-labelledby="tasks-title">
+        <h2 id="tasks-title">Tasks</h2>
+        <ul>{resource.tasks.map((task) => <li>{task}</li>)}</ul>
+        <ClaimEvidence
+          evidence={resource.evidence}
+          support="tasks"
+          emptyMessage="Unknown — no task evidence is recorded."
+        />
+      </section>
+    )}
+
+    {resource.relations.length > 0 && (
+      <section aria-labelledby="relations-title">
+        <h2 id="relations-title">Relations</h2>
+        <ul>
+          {resource.relations.map((relation) => (
+            <li>{relation.type}: <a href={`/atlas/${relation.target}/`}>{relation.target}</a></li>
+          ))}
+        </ul>
+        <ClaimEvidence
+          evidence={resource.evidence}
+          support="relations"
+          emptyMessage="Unknown — no relation evidence is recorded."
+        />
+      </section>
+    )}
+
+    <section aria-labelledby="evidence-title">
+      <h2 id="evidence-title">Evidence</h2>
+      <ul>
+        {resource.evidence.map((evidence) => (
+          <li>
+            <a href={evidence.url}>{evidence.label}</a>
+            {evidence.supports.length > 0 && ` — supports ${evidence.supports.join(", ")}.`}
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="caveats-title">
+      <h2 id="caveats-title">Caveats</h2>
+      {resource.caveats.length > 0 ? (
+        <ul>
+          {resource.caveats.map((caveat) => (
+            <li>
+              {caveat}<br />
+              <ClaimEvidence
+                evidence={resource.evidence}
+                support="caveats"
+                emptyMessage="Unknown — no caveat evidence is recorded."
+              />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No caveats recorded.</p>
+      )}
+    </section>
+
+    <section aria-labelledby="licences-title">
+      <h2 id="licences-title">Licences</h2>
+      {resource.licenses.length > 0 ? (
+        <ul>
+          {resource.licenses.map((license) => (
+            <li>
+              {license.name} ({license.scope})<br />
+              <ClaimEvidence
+                evidence={resource.evidence}
+                ids={license.evidence}
+                emptyMessage="Unknown — no direct licence evidence is recorded."
+              />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No licence claim is currently verified.</p>
+      )}
+    </section>
+
+    <section aria-labelledby="acknowledgements-title">
+      <h2 id="acknowledgements-title">Acknowledgements</h2>
+      {resource.acknowledgements.length > 0 ? (
+        <ul>
+          {resource.acknowledgements.map((acknowledgement) => (
+            <li>
+              {acknowledgement}<br />
+              <ClaimEvidence
+                evidence={resource.evidence}
+                support="acknowledgements"
+                emptyMessage="Unknown — no acknowledgement evidence is recorded."
+              />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No acknowledgements recorded.</p>
+      )}
+    </section>
+
+    <section aria-labelledby="openness-title">
+      <h2 id="openness-title">Openness matrix</h2>
+      <OpennessMatrix resource={resource} />
+    </section>
+  </article>
+</StarlightPage>

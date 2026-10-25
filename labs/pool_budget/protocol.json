@@ -1,0 +1,14 @@
+{
+  "name": "pool-budget-synthetic-v1",
+  "data": "60 authored graphs; score=((row_index*17)%61)/10; no assay interpretation",
+  "partitions": "10/70/20 target percentages; whole scaffolds by size descending then key; greatest remaining target capacity; ties initial,pool,evaluation",
+  "acyclic_groups": "canonical structure singleton",
+  "features": "Morgan radius 2; 2048 binary bits; chirality enabled",
+  "budget": "4 rounds of floor(0.05*original_pool_size); no replacement",
+  "maxmin": "maximise minimum Tanimoto distance to initial and all prior picks; ties smallest original index; no labels",
+  "random_seeds": [0, 1, 2, 3, 4],
+  "metric": "exact ceil(0.10*original_pool_size) highest scores; ties smallest original index; cumulative recovery; trapezoidal AUC across round checkpoints including zero, divided by final acquired count",
+  "inference": "no significance test; random seeds are not independent assays",
+  "evaluation": "reserved and not scored; no predictive model",
+  "real_campaign": "not_run; separate frozen ChEMBL proposal not changed"
+}

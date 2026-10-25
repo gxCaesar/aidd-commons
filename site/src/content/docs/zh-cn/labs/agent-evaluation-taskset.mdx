@@ -1,0 +1,83 @@
+---
+title: 核查固定的智能体评估任务集
+description: 在三个已提交的实验记录中分别核查来源、执行、失败保留、主张和行动授权。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[Audit a fixed agent-evaluation task set](/labs/agent-evaluation-taskset/)。
+
+## 准备与学习目标
+
+请先阅读[检索、类型化工具与反馈循环](/learn/scientific-agents/retrieval-tools-feedback/)。你将识别实验实际使用的来源，核查保留的拒答，将主张与冻结的计数比较，并找出记录无法自行授权的决定。了解 JSON 和本地 Python 测试即可，无须运行模型推断。
+
+## 模式与命令
+
+模式是在冻结协议下，依据仓库中已提交的记录进行全新独立计算。使用 Python 3.11.15 和 CPU。无须网络、下载、模型服务或加速器。请从仓库根目录运行。前三条命令不写文件。所有检查通过后，导出程序才覆盖本实验的精简汇总。测试命令使用临时文件，不重新运行已记录的模型或锁定评估。
+
+```bash
+.venv/bin/python labs/agent_evaluation_taskset/run_lab.py download
+.venv/bin/python labs/agent_evaluation_taskset/inspect_agent_evaluation_taskset.py show
+.venv/bin/python labs/agent_evaluation_taskset/inspect_agent_evaluation_taskset.py check
+.venv/bin/python labs/agent_evaluation_taskset/export_summary.py
+.venv/bin/python -m pytest labs/tests/agent_evaluation_taskset -q
+```
+
+## 任务集与判定规则
+
+冻结选择包含 3 个任务，每个任务来自 1 个实验。每项任务都声明本地证据文件和检查命令。来源解析将声明的来源与原实验协议指定的文件，或其检查程序、笔记本构建程序实际读取的文件比较。多报一个未使用的来源就会失败。执行正确性同时要求本地检查通过和已提交结果能够完整重算。失败恢复要求保留失败产物或拒答。主张准确性比较声明的数字，并维持原记录的适用范围。保留的审核若指出回答中有无依据的文字，这一维度就会失败。行动授权要求有记录表明需要由人作出的决定没有交给工具。仅有确认关卡，不能证明是谁授权了已完成的行动。
+
+任何一个维度失败或不完整，任务都不计为通过。本任务集核查的是记录。它不评估工具实际执行任务的能力，也不证明科学结果正确。
+
+| 任务 | 核查的证据 | 保留的负面结果或边界 |
+| --- | --- | --- |
+| 主张链记录 | 已提交的比较输入与汇总 | 保留与独立阅读之间的差异。 |
+| PaperQA 审核记录 | 本地问题集与保留的回答 | 保留检索范围有限时的拒答和额外文字错误。 |
+| EGFR 锁定记录 | 冻结协议、开发与锁定汇总、执行修订 | 锁定行动要求明确确认，但整理后的记录没有人的授权凭据。 |
+
+## 逐项结果
+
+计算日期为 2026-10-23，使用 Python 3.11.15 和 aidd-commons-labs 0.2.0rc1。各项来源检查和原实验的指定检查命令均返回退出码 0。下表将这一观察与完整结果区分开来。
+
+| 任务 | 来源 | 执行 | 恢复 | 主张 | 授权 | 整项通过 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 主张链记录 | pass | pass | incomplete | pass | incomplete | no |
+| PaperQA 审核记录 | pass | incomplete | pass | fail | incomplete | no |
+| EGFR 锁定记录 | pass | incomplete | incomplete | pass | incomplete | no |
+
+| 核查的量 | 已提交的值 |
+| --- | ---: |
+| 主张链 | 2 |
+| 主张链链接 | 16 |
+| 与独立阅读不同的链接 | 7 |
+| PaperQA 文献 | 2 |
+| PaperQA 问题、回答和审核 | 各 5 |
+| PaperQA 因检索范围有限而拒答 | 1 |
+| PaperQA 审核出的额外文字错误 | 1 |
+| EGFR 主队列与复核队列的亲本分子 | 902 和 170 |
+| EGFR 锁定测试与复核的亲本分子 | 132 和 170 |
+
+| 维度 | 通过任务数 |
+| --- | ---: |
+| 来源解析 | 3 |
+| 执行正确性 | 1 |
+| 失败恢复 | 1 |
+| 主张准确性 | 2 |
+| 行动授权 | 0 |
+| 五个维度全部通过 | 0 |
+
+主张链任务的恢复与授权维度不完整。它保留了不同阅读之间的差异，但差异不是失败产物。PaperQA 任务的主张准确性失败，执行与授权维度不完整。EGFR 任务的执行、恢复和授权维度不完整。EGFR 记录写明了确认边界，另 2 份记录没有说明行动授权决定。
+
+## 独立核查
+
+先预测在构造的任务中多声明一个原实验没有读取的来源会发生什么。已知缺陷测试会报告来源解析失败，将该任务排除在通过集合之外，并拒绝导出。另一项测试把失败任务的通过标记改为 true，核查程序会拒绝该汇总。
+
+## 材料局限
+
+PaperQA 测试不重新生成模型回答或来源审核。EGFR 检查程序不重算全部锁定指标。本任务集中没有完整通过的任务，也不能说明智能体如何应对新任务、一个人如何作出历史上的锁定行动决定，或基础科学结论是否正确。通过维度的数量不是实验排名。读者学习结果没有测量。
+
+## 来源与条款
+
+[检索与工具课程](/learn/scientific-agents/retrieval-tools-feedback/)、[主张链指南](/labs/claim-chain-audit/)和[EGFR 协议指南](/labs/chembl-contract-inspection/)提供教学背景。已提交的主张链、PaperQA 和 EGFR 记录于 2026-10-23 在本地读取。原创指南文字采用 CC BY 4.0，实验代码采用 Apache-2.0。引用材料保留各自的条款。

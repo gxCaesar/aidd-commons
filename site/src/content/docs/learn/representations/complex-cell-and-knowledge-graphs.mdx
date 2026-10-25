@@ -1,0 +1,197 @@
+---
+title: Protein, complex, cell-state and knowledge-graph representations
+description: Work through sequence pooling, contact graphs, normalized cell states and evidence-bearing relations, then identify what each representation loses.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="representations/complex-cell-and-knowledge-graphs" />
+<ScrollableRegions />
+
+## Features are not the experimental object
+
+Read [biological representations](/learn/representations/biological-representations/),
+[neural representations](/learn/machine-learning/neural-representations/) and
+[entity resolution](/learn/data-governance/identity-lineage-and-reuse/).
+This lesson teaches four encodings by hand. You will track their dimensions,
+identify which transformations should preserve a prediction, and find information
+that the encoding cannot recover. Numerical examples are constructed, not model outputs.
+
+A useful representation makes relevant variation available while suppressing
+irrelevant variation. That choice is task-dependent. Translating an isolated
+complex should not change its predicted binding energy. Removing the ligand's
+orientation relative to the pocket destroys potentially relevant information.
+Collapsing every cell from a donor to one vector can stabilize a population
+summary while erasing rare cell states. No embedding is sufficient for every task.
+
+## Protein sequences — token, residue and pooled feature
+
+For a protein of length `L`, a residue encoder can return an `L×d` matrix of
+context-dependent features. A sequence-level model may pool this to one
+`d`-dimensional vector; a residue-level model must preserve the relevant positions.
+The [original ESM repository](https://github.com/facebookresearch/esm) illustrates
+per-residue extraction and sequence averaging that excludes special tokens.
+Its example is a concrete API pattern, not a claim that mean pooling is universally
+optimal or that this archived repository is the newest model.
+
+Construct residue features for a three-residue sequence:
+
+```text
+residue 1: [1, 0]
+residue 2: [0, 2]
+residue 3: [2, 1]
+padding:   [0, 0]
+```
+
+The masked residue mean is `[1,1]`. Averaging over the padded four-row tensor
+instead gives `[0.75,0.75]`, making the feature depend on batch padding. Special
+start/end tokens also need the encoder's explicit treatment; they are not residues.
+If position 2 is a catalytic site, the mean alone does not retain a labelled
+feature for that site. Preserve per-residue features or a justified site-specific
+pool when the prediction depends on position.
+
+Tokenization is a mapping from the submitted sequence to model inputs, not
+biological identity resolution. Verify chain boundaries, unknown residues,
+truncation and numbering. A mutation in a full-length reference must be mapped
+to the assayed construct before selecting a residue embedding. A pooled vector
+for the full protein cannot silently stand in for every isoform, cleavage product
+or post-translational state. Likewise, a pretrained embedding is a feature;
+its large dimension does not create more independent training proteins.
+
+Alignment changes position correspondence, not just sequence length. In the toy
+alignment `AC-D` against `ACED`, the first sequence's residue 3 (D) corresponds
+to alignment column 4; column 3 is a gap, not a measured residue. A surface-point
+encoding instead samples an accessible boundary under a chosen geometric rule,
+while an ensemble encoding represents several states with an explicit weighting
+assumption. A surface is not a sequence alignment, and ten model-generated
+conformers are not ten experimentally measured state populations. Preserve the
+mapping between these objects whenever features are joined.
+
+## Complex graphs — covalent edges and spatial contacts
+
+A ligand–protein graph can contain atoms or residues as nodes. Covalent edges
+encode bonds; spatial edges encode proximity in a specified pose. Keep their
+types distinct. A distance edge does not establish a hydrogen bond, favorable
+interaction or experimentally supported binding event. Protonation, geometry,
+solvent and competing states can matter beyond proximity.
+
+Consider two ligand atoms L1 and L2 and two pocket nodes P1 and P2. Their invented
+cross-distances in ångströms are:
+
+| Distance, Å | P1  | P2  |
+| ----------- | --- | --- |
+| L1          | 3.0 | 6.0 |
+| L2          | 4.5 | 5.5 |
+
+Define a contact as distance **at most 5.0 Å**. The ligand-to-pocket adjacency
+matrix is `[[1,0],[1,0]]`. At a 6.0 Å cutoff it becomes `[[1,1],[1,1]]`.
+The model did not discover new interactions; the representation rule changed.
+Continuous radial features can avoid this particular hard discontinuity, but
+they still need a distance range, scale and neighborhood convention.
+
+Rotating both ligand and protein together preserves these distances. Rotating
+only the ligand can change them and represents a different pose. A model using
+only pairwise distances also cannot distinguish a configuration from its full
+mirror image. That may be inappropriate where chirality matters; choose features
+and symmetry assumptions consistent with the intended chemical task. A graph
+without water or a required cofactor cannot learn that omitted object's position
+from the graph alone, although it may exploit correlations in its training set.
+
+## Cell states — a matrix with biological context
+
+An expression representation often starts as cells by genes. The
+[AnnData documentation](https://anndata.readthedocs.io/en/stable/) describes an
+annotated matrix container: observations and variables need aligned annotations,
+and additional representations can be stored separately. The container does not
+decide whether a row is an independent biological replicate.
+
+A cell-state prediction input should distinguish pre-perturbation context from
+the intervention: cell type or state, donor, condition, perturbation identity,
+dose and observation time when available. Encoding the perturbation as a token
+is useful only if its meaning and availability are defined. A random integer
+assigned to each gene should not imply that gene 20 is twice gene 10. Categorical
+embeddings learn relationships; sequence or pathway features add a different prior.
+
+Construct two cells with gene G count 100 in each, but total counts 1,000 and
+2,000. Total-count normalization to 10,000 yields G values 1,000 and 500.
+The normalized value halves even though the recorded count of G is unchanged.
+This calculation demonstrates dependence on the denominator, not evidence that
+G's absolute biological expression halved. Capture efficiency and composition
+also affect interpretation. [Scanpy's normalization documentation](https://scanpy.readthedocs.io/en/stable/generated/scanpy.pp.normalize_total.html)
+defines this rescaling and options affecting the size factor.
+
+A gene order mismatch is equally consequential: vectors `[G1,G2]` and `[G2,G1]`
+cannot be compared positionwise without reindexing. Keep raw counts, transformed
+values and learned latent features distinguishable. Fitting feature selection
+or a supervised state encoder using held-out responses exposes evaluation
+information even when the final predictor never sees those response columns.
+
+For an unseen-donor claim, thousands of cells from two donors still supply only
+two donor units. For an unseen-perturbation claim, holdout identity and context
+must be specified together. A control-mean or context-only predictor is a useful
+test of how much the endpoint can be predicted without intervention identity;
+it is not a universal null for every biological hypothesis.
+
+## Knowledge graphs — relations with evidence
+
+[RDF 1.1](https://www.w3.org/TR/rdf11-concepts/) represents statements as
+subject–predicate–object triples. For a scientific graph, the predicate must
+retain its meaning. `compound inhibits protein`, `gene associated_with disease`
+and `paper mentions gene` are different relations, even when each becomes an edge.
+
+Construct a record: compound C inhibits protein P in assay A at context X, reported
+by source S. A bare `(C, inhibits, P)` triple loses assay and context. An explicit
+evidence node or qualified relation can retain the endpoint, source, direction,
+date and uncertainty. The [PROV-O vocabulary](https://www.w3.org/TR/prov-o/) is
+one way to describe derivation; the graph format alone does not make the claim true.
+
+Suppose two websites repeat the same assay publication. Two edges are not two
+independent experiments. Suppose a held-out edge `(C, inhibits, P)` has its exact
+inverse `(P, inhibited_by, C)` in the training graph. Predicting the former can
+be a reconstruction shortcut, not discovery. Group reciprocal and duplicated
+evidence before splitting. Also freeze temporal availability: a graph assembled
+after the claimed discovery date can encode the answer through later literature.
+
+An absent edge is usually unknown, not an experimentally confirmed negative.
+Sampling absent pairs for link-prediction training is a modelling convention.
+Report that convention and evaluate whether its easy examples resemble the real
+candidate population. Evidence edges, entity features and training targets should
+have separate roles so the answer is not accidentally supplied as an input.
+
+## Build them from deposited complexes
+
+The [EGFR structure evidence lab](/labs/egfr-structure-evidence/) builds contact,
+interaction and fingerprint representations from three deposited complexes. A 3.5 A
+polar contact becomes a possible hydrogen bond only under declared protonation roles,
+and the same ligand in two receptor states shares 65 percent of its
+residue-interaction bits.
+
+## Independent exercises
+
+1. Pool residue vectors `[2,0]` and `[0,4]` with two padding rows. Calculate the
+   correct masked mean and the incorrect unmasked mean.
+2. Using the distance table, how many ligand–pocket contacts exist at an inclusive
+   4.5 Å threshold? Is a joint translation a new pose?
+3. Gene G has count 50 of total 500 in one cell and 100 of total 1,000 in another.
+   What are the values after normalization to 10,000? Does equality prove equal
+   absolute expression?
+4. A test association appears in training under another database identifier
+   for the same entity pair. Which operation must precede the split?
+
+<details data-worked-answer>
+<summary>Worked answers — account for masks, context and lost information</summary>
+
+The masked mean is `[1,2]`; averaging all four rows gives `[0.5,1]`. There are
+two contacts, L1–P1 and L2–P1. Translating the entire complex together does not
+change its relative pose. Both normalized gene values are 1,000, but equality
+of relative values does not establish absolute expression. Resolve entity
+identities and group duplicate or reciprocal evidence before splitting; changing
+the label string does not create a new independent relation.
+
+</details>
+
+Continue to [chemical series and applicability domains](/learn/qsar-properties/chemical-series-and-domains/)
+or [perturbation context and generalization](/learn/mechanism-targets/perturbation-context-generalization/).
+
+Original examples and prose: CC BY 4.0. Sources reviewed: 2026-09-09.

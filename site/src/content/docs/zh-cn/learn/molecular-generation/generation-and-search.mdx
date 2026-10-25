@@ -1,0 +1,55 @@
+---
+title: 生成与搜索
+description: 将分子生成视为受约束搜索，之后再由实验提供证据。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Generation and search](/learn/molecular-generation/generation-and-search/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="molecular-generation/generation-and-search" />
+
+## 基础
+
+生成的结构是一项候选建议，而不是发现结果。在选择生成器或优化器之前，定义化学系列、
+必需性质、禁用基序、合成约束、靶点证据和提名决策。
+
+## 实践工作流
+
+写出冻结的多目标规范，并保留简单的枚举或相似性基线。只有在明确每个分数代表什么、
+以及哪项实验室结果将更新下一轮之后，才使用
+[REINVENT](https://github.com/MolecularAI/REINVENT4) 或其他搜索系统。保持新颖性、
+有效性和合成可及性彼此区分。
+
+## 评估
+
+使用仅训练集基线和能够防止简单骨架或近重复恢复的划分。
+[MOSES](https://github.com/molecularsets/moses) 和
+[GuacaMol](https://github.com/BenevolentAI/guacamol) 定义基准任务；它们不确立前瞻性活性
+或可开发性。
+
+## 前沿与开放问题
+
+[Pocket2Mol](https://github.com/pengxingang/Pocket2Mol) 和
+[TargetDiff](https://github.com/guanjq/targetdiff) 等结构条件化系统引出了靶点状态不确定性、
+构象不确定性和实验反馈的问题。在比较生成列表之前，应报告这些问题。
+
+## 分开选择生成器与评价器
+
+[生成资源指南](/zh-cn/learn/molecular-generation/generation-resource-guide/)
+区分 REINVENT 4 与已归档的 3.2 实现、分布学习与目标驱动任务，并通过手算说明
+候选有效率、唯一性和新颖性的分母。
+
+## v0.1 尚未教授的内容
+
+v0.1 不对生成器排序，不声称基准新颖性可预测效用，也不提供湿实验验证活动。
+
+## 核心来源路径
+
+在选择评估之前，阅读 [REINVENT 文档](https://github.com/MolecularAI/REINVENT4)，然后阅读
+[MOSES](https://github.com/molecularsets/moses) 和
+[GuacaMol](https://github.com/BenevolentAI/guacamol) 的任务定义。
+
+最后审阅：2026-09-04。

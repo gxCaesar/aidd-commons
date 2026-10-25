@@ -1,0 +1,121 @@
+---
+title: "Resource guide: from disease evidence to target hypotheses"
+description: Select, inspect, and connect disease, genetic, cellular-context, perturbational, protein, and response resources without turning any one table into a target verdict.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="mechanism-targets/target-resource-guide" />
+<ScrollableRegions />
+
+## Learning goals
+
+After this guide, you should be able to define a target-hypothesis evidence
+object, choose a resource for the next missing object, and preserve a link to
+the source, version, and limitation.
+
+## Prerequisites and scope
+
+Read [From disease mechanism to target](/learn/mechanism-targets/disease-to-target/)
+and [From genetic evidence to a target hypothesis](/learn/mechanism-targets/genetics-to-target-evidence/)
+first. This is a resource-selection reading guide. It does not perform an
+analysis, nominate a target, define a biological protocol, or give clinical
+advice.
+
+## Start with an evidence object, not a gene search
+
+Before opening a portal, write the smallest object that another reader could
+inspect. A useful target-hypothesis object is:
+
+```text
+{
+  disease: {ontology_id, phenotype_definition, population_or_model},
+  candidate: {HGNC_symbol, Ensembl_or_UniProt_id, molecular_action_unknown},
+  genetic_or_disease_evidence: [{study_id, build, allele, effect, cohort}],
+  context: {tissue, cell_type_or_model, state, species},
+  perturbation_or_response: {agent_or_genetic_reagent, dose_or_duration, readout},
+  provenance: {resource, release_or_date, URL, access_terms, exclusions}
+}
+```
+
+Fields may be `unknown`; they must not be silently filled from a nearby row.
+In particular, `candidate` is not a causal gene merely because it is near a
+GWAS signal, and `molecular_action_unknown` is not permission to call a target
+activatable or inhibitable. The question after every lookup is: _which field is
+still missing, and which resource can expose that field?_
+
+## A purposeful resource chain
+
+| Missing object               | Inspect or obtain                                                                                                                                                                                  | Then connect to                                                          | Important limit                                                                                                                                  |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Disease--target evidence     | [Open Targets](/atlas/db-open-targets-platform/) ([source](https://platform.opentargets.org/)): association evidence types, web/API/download routes.                                               | [GWAS Catalog](/atlas/db-gwas-catalog/) locus/study record.              | An integrated score is not causal mechanism or intervention direction.                                                                           |
+| Published association        | [GWAS Catalog](/atlas/db-gwas-catalog/) ([source](https://www.ebi.ac.uk/gwas/)): study, variant, trait, and catalog records.                                                                       | [GTEx Portal](/atlas/db-gtex-portal/) tissue/QTL context.                | Not a fine-mapped variant, effector gene, or drug effect.                                                                                        |
+| Tissue or QTL context        | [GTEx Portal](/atlas/db-gtex-portal/) ([download overview](https://gtexportal.org/home/downloads/adult-gtex/overview)): open expression and QTL files.                                             | [CELLxGENE Census](/atlas/dataset-cellxgene-census/) cell slice.         | Raw DNA/RNA sequences and full donor metadata are protected; AnVIL access requires a separate application.                                       |
+| Cell context                 | [CELLxGENE Census](/atlas/dataset-cellxgene-census/) ([source](https://chanzuckerberg.github.io/cellxgene-census/)): defined standardized RNA slice.                                               | Perturbation signature or morphology.                                    | Datasets can duplicate cells; record the `is_primary_data` decision.                                                                             |
+| Transcriptional response     | [LINCS L1000 archives](/atlas/dataset-connectivity-map-l1000/) ([GEO guide](https://clue.io/connectopedia/guide_to_geo_l1000_data)): Phase I GSE92742 and Phase II GSE70138 profiles and metadata. | [JUMP](/atlas/dataset-jump-cell-painting/) phenotype or PRISM viability. | CLUE tools retired on 2026-01-31; archived profiles are not a working Touchstone query service. Similarity does not establish target engagement. |
+| Morphological response       | [JUMP Cell Painting](/atlas/dataset-jump-cell-painting/) ([source](https://broadinstitute.github.io/jump_hub/)): image/profile, metadata, and retrieval guides.                                    | Protein or response evidence.                                            | A morphology match is not molecular mechanism; retain assay, plate, cell, processing.                                                            |
+| Protein/localisation context | [Human Protein Atlas](/atlas/db-human-protein-atlas/) ([source](https://www.proteinatlas.org/about/download)): downloadable expression/localisation.                                               | Suitable cell-line response resource.                                    | CC BY 4.0 covers copyrightable database parts; third-party constraints can remain.                                                               |
+| Cancer cell-line response    | [PRISM](/atlas/dataset-prism-repurposing/) ([source](https://depmap.org/repurposing/)): pooled viability files and metadata.                                                                       | Separately designed validation.                                          | Not clinical effect, target engagement, or general disease mechanism.                                                                            |
+
+Do not collapse these into one “evidence score.” The third column requests a
+_new_ object, not permission to merge incomparable producer populations.
+
+## Worked selection case
+
+This is a **constructed selection case**, not an empirical result. A reader has
+`disease = D-EXAMPLE`, a candidate `GENE-Q`, and an association row carrying a
+study identifier but no trusted effector-gene mapping, tissue, cell state, or
+intervention direction. The next resource is the GWAS Catalog record, because
+the missing object is study/variant/trait provenance, not a cell-line score.
+After recording build, alleles, population, phenotype definition, and summary-
+statistics availability, the reader moves to GTEx only to inspect an
+expression/QTL context. The output remains
+“context evidence located or not located,” never “GENE-Q is causal.”
+
+If tissue is too broad, a Census slice can narrow the _cell-context question_:
+specify organism, tissue, annotation, disease/healthy status, and
+`is_primary_data`. Expression differences still do not establish a mechanism:
+datasets, donors, processing, and cell-state composition can differ. L1000 or
+JUMP needs perturbation identity, cell model, dose, duration, and processing;
+PRISM is only for its stated cancer cell-line viability scope. Missing fields
+stay missing rather than being inferred from visual agreement.
+
+## Independent question
+
+A colleague sends: “A portal ranks `GENE-R` for a phenotype. It is expressed in
+a tissue view and has a similar JUMP morphology to a compound. Please call it a
+validated target.” What is the smallest defensible next evidence object, and
+which two source limitations must appear in the note?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+First request the portal association's evidence-type rows plus the underlying
+study/locus identifiers, phenotype definition, population, and release date.
+That object determines whether a GWAS Catalog record or a different source is
+the next inspection. The note must say that an integrated target--disease rank
+does not establish causal gene or intervention direction, and that expression
+or morphological similarity does not demonstrate target engagement or a
+disease mechanism. If using JUMP, add the cell model and image/profile
+processing context; if using GTEx or Census, add the tissue/cell definition and
+current access terms rather than assuming them.
+
+</details>
+
+## Source path and reuse boundary
+
+The Atlas records link the reviewed resource pages; use the primary site for
+the live release and terms before downloading or redistributing anything. The
+Open Targets [licence page](https://platform-docs.opentargets.org/licence)
+states CC0 for Platform data and Apache-2.0 for its code; inspect the listed
+upstream terms as well. Human Protein Atlas states CC BY 4.0 for copyrightable
+database parts. The other records deliberately retain
+`unverified` access or licence fields where this review did not establish the
+scope. All examples above are constructed and add no target finding, biological
+protocol, clinical interpretation, or validation result. The
+[CLUE retirement notice](https://assets.clue.io/resources/CLUE_Software_License_T_and_C.pdf)
+directs readers to public data on GEO; this guide does not claim that archive
+files were downloaded or that the retired query tools were executed.
+
+Last reviewed: 2026-09-09.

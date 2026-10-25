@@ -1,0 +1,40 @@
+{
+  "schema_version": "aidd-commons.design-space.v1",
+  "artifact_type": "declared-design-spaces",
+  "authored_on": "2026-09-11",
+  "provenance": "Authored by hand for teaching. No molecule here is a design proposal and no space is a real screening library.",
+  "what_a_space_is": "A construction plus its inputs. The construction decides what is reachable, and the inputs decide how much of it there is. Quoting a size without the construction says nothing about what can be made.",
+  "spaces": {
+    "enumeration": {
+      "construction": "one fixed core with two attachment points, each filled from a list",
+      "core": "O=C(N[*:1])c1ccc([*:2])cc1",
+      "r1": ["C", "CC", "CCC", "c1ccccc1", "CC(C)C"],
+      "r2": ["C", "Cl", "F", "OC", "N"],
+      "size_is": "the product of the list lengths, before duplicates are removed",
+      "cannot_reach": "anything whose core differs, at any list size"
+    },
+    "enumeration_grown": {
+      "construction": "the same core and the same two attachment points, with longer lists",
+      "core": "O=C(N[*:1])c1ccc([*:2])cc1",
+      "r1": ["C", "CC", "CCC", "c1ccccc1", "CC(C)C", "CCCCCCCC", "CCCC", "CCCCC", "C1CCCCC1", "Cc1ccccc1"],
+      "r2": ["C", "Cl", "F", "OC", "N", "Br", "I", "CC", "OCC", "C#N"],
+      "size_is": "the product of the longer list lengths",
+      "cannot_reach": "the same things the smaller version cannot reach, because the core did not change"
+    },
+    "scaffold_hop": {
+      "construction": "a different fixed core with the same two attachment points, filled from the original lists",
+      "core": "O=C(N[*:1])c1ccc([*:2])nc1",
+      "r1": ["C", "CC", "CCC", "c1ccccc1", "CC(C)C"],
+      "r2": ["C", "Cl", "F", "OC", "N"],
+      "size_is": "the product of the original list lengths",
+      "cannot_reach": "anything on the original core, which is the point of listing it beside them"
+    }
+  },
+  "targets": [
+    { "id": "t1", "smiles": "CCNC(=O)c1ccc(Cl)cc1", "description": "original core, both substituents in the short lists" },
+    { "id": "t2", "smiles": "CCCCCCCCNC(=O)c1ccc(Br)cc1", "description": "original core, substituents only in the long lists" },
+    { "id": "t3", "smiles": "CCNC(=O)c1ccc(Cl)nc1", "description": "a pyridine core, one atom different" },
+    { "id": "t4", "smiles": "CCNS(=O)(=O)c1ccc(Cl)cc1", "description": "a sulfonamide linker instead of an amide" }
+  ],
+  "what_reachability_is_not": "Reachable means the construction can write the molecule down. It says nothing about whether the molecule can be made, whether it would be stable, or whether it is worth making. A space is a generator, not a plan."
+}

@@ -1,0 +1,62 @@
+---
+title: Biological representations
+description: Compare molecular, protein, complex, omics, and graph representations by the information they preserve.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="representations/biological-representations" />
+
+## Foundations
+
+SMILES, molecular graphs, conformers, sequences, structures, and interaction
+graphs encode different objects and discard different information. The
+[PCQM4Mv2](https://github.com/snap-stanford/ogb) and
+[GEOM](https://github.com/learningmatter-mit/geom) records illustrate why a
+property target and a conformational ensemble are not interchangeable inputs.
+
+## Practical workflow
+
+Start by asking what the measurement can depend on. Generate a simple 2D
+fingerprint or descriptor baseline, then compare it with a 3D or sequence model
+under unchanged data and split rules. Preserve conformer-generation and
+protonation choices as part of the input contract.
+
+Continue with the dedicated
+[small-molecule representations](/learn/representations/small-molecule-representations/)
+chapter for a decision matrix, frozen data contract, and label-free executable
+inspector.
+
+Then work through [protein, complex, cell-state and knowledge-graph representations](/learn/representations/complex-cell-and-knowledge-graphs/)
+for masked sequence pooling, pose-dependent contact graphs, count normalization,
+and evidence-bearing graph relations. It contains complete constructed examples
+and independent exercises; it is not a new representation benchmark.
+
+## Evaluation
+
+Inspect whether a representation accidentally carries target, scaffold, or
+time information across the split. A representation's dimensionality or
+pretraining scale is not an independent evaluation unit.
+
+## Frontier and open questions
+
+Protein language models such as [ESM](https://github.com/facebookresearch/esm),
+[ESM3](https://github.com/Biohub/esm), and
+[ProtTrans](https://github.com/agemagician/ProtTrans) create useful transfer
+questions, but public repository visibility does not settle weight or training
+data terms.
+
+## What this introduction does not yet teach
+
+This overview does not benchmark every representation under one matched task
+protocol. The dedicated small-molecule chapter defines the first v0.2b depth
+tranche without claiming an unrun performance result.
+
+## Core-source path
+
+Inspect [Datamol](https://github.com/datamol-io/datamol),
+[MolFeat](https://github.com/datamol-io/molfeat),
+[Uni-Mol](https://github.com/deepmodeling/Uni-Mol), and
+[Foldseek](https://github.com/steineggerlab/foldseek) as complementary tools.
+
+Last reviewed: 2026-09-05.

@@ -1,0 +1,93 @@
+---
+import AtlasFigure from "../components/AtlasFigure.astro";
+import LearningPathMap from "../components/LearningPathMap.astro";
+import PipelineMap from "../components/PipelineMap.astro";
+import SiteShell from "../components/SiteShell.astro";
+---
+
+<SiteShell
+  title="Scientific Atlas"
+  description="AIDD Commons connects learning, evidence, labs, and a living report."
+>
+  <section class="hero" aria-labelledby="home-title">
+    <p class="eyebrow">Scientific Atlas for AI drug discovery</p>
+    <h1 id="home-title">A shared route from evidence to candidate nomination.</h1>
+    <p class="hero__lede">
+      AIDD Commons is building the most comprehensive open AIDD learning system.
+      It connects a graduate-level curriculum, a claim-qualified atlas, reproducible
+      labs, and a living technical report.
+    </p>
+    <div class="action-row">
+      <a class="button-link" href="/learn/foundations/getting-started/">Choose a pathway</a>
+      <a class="button-secondary" href="/atlas/">Explore the atlas</a>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="artifacts-title">
+    <div class="section__header">
+      <div>
+        <p class="eyebrow">Four connected artifacts</p>
+        <h2 id="artifacts-title">Learn, inspect, reproduce, and contribute.</h2>
+      </div>
+    </div>
+    <div class="artifact-grid">
+      <article class="artifact-card">
+        <p class="meta-label">Learn</p>
+        <h3>18 connected tracks</h3>
+        <p>Follow foundations, research, or engineering entry routes through the same graph.</p>
+      </article>
+      <article class="artifact-card">
+        <p class="meta-label">Atlas</p>
+        <h3>Claim-qualified resources</h3>
+        <p>Inspect evidence, caveats, licences, acknowledgements, and verification dates.</p>
+      </article>
+      <article class="artifact-card">
+        <p class="meta-label">Labs</p>
+        <h3>Frozen evaluation contracts</h3>
+        <p>Work from a named dataset, split, metric, and baseline rather than an implied result.</p>
+      </article>
+      <article class="artifact-card">
+        <p class="meta-label">Report</p>
+        <h3>Living technical context</h3>
+        <p>Keep method choices, openness dimensions, and failure modes inspectable.</p>
+      </article>
+    </div>
+    <p class="section-intro">
+      Look at the rail under the four: a correction recorded once on the shared
+      identifier reaches the lesson, the catalogue record, the lab and the report,
+      which is the coupling the four surfaces depend on.
+    </p>
+    <AtlasFigure id="artifacts" />
+  </section>
+
+  <section class="section" aria-labelledby="pipeline-title">
+    <div class="section__header">
+      <div>
+        <p class="eyebrow">Pipeline map</p>
+        <h2 id="pipeline-title">Move through the discovery pipeline with evidence visible.</h2>
+      </div>
+    </div>
+    <PipelineMap />
+    <p class="section-intro">
+      Look at the branch that leaves each taper: the pipeline records where
+      candidates are lost, not only how many are left.
+    </p>
+    <AtlasFigure id="decision-pipeline" />
+  </section>
+
+  <section class="section" aria-labelledby="paths-title">
+    <div class="section__header">
+      <div>
+        <p class="eyebrow">Pathways</p>
+        <h2 id="paths-title">One 18-track graph, three entry routes.</h2>
+      </div>
+    </div>
+    <LearningPathMap />
+    <p class="section-intro">
+      Look at the badge on each lesson: a lesson that several routes require at once
+      is the shared core of the curriculum, so the specialist routes are not
+      independent of one another.
+    </p>
+    <AtlasFigure id="prerequisite-graph" />
+  </section>
+</SiteShell>

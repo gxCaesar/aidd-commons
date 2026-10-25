@@ -1,0 +1,92 @@
+---
+title: Tracing intrinsic clearance through a PK/PD model
+description: Run an explicit exposure, engagement and effect model over paired human and rat hepatocyte measurements, then inspect its assumptions.
+---
+
+## Preparation and learning objectives
+
+Read [From clearance and exposure to PK/PD](/learn/admet-pk/exposure-clearance-pkpd/) and the [clearance-system lab](/labs/az-clearance-system/) first. This lab asks you to trace one measured quantity through an assumed PK/PD model and to identify where the evidence stops. You will distinguish a measured clearance from modeled concentration, engagement and response. You will also test whether a rat-to-human step can be represented by one factor.
+
+## Mode and commands
+
+The mode is a fresh independent CPU computation over a frozen protocol. It reads an existing validated ChEMBL 37 cache. No network or accelerator is needed once the cache is present. The `download` command checks and reuses that cache without writing it. `show` and `check` write nothing. `export_summary.py` replaces only the small committed summary after checks pass.
+
+```bash
+.venv/bin/python labs/pkpd_translation_audit/run_lab.py download
+.venv/bin/python labs/pkpd_translation_audit/inspect_pkpd_translation_audit.py show
+.venv/bin/python labs/pkpd_translation_audit/inspect_pkpd_translation_audit.py check
+.venv/bin/python labs/pkpd_translation_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/pkpd_translation_audit -q
+```
+
+Python 3.11 and the pinned lab environment are required.
+
+## Measured material and cohort
+
+The [AstraZeneca ChEMBL deposition](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361) supplies intrinsic-clearance measurements in three assay systems. The existing clearance reader admits exact, uncensored activities for parent molecules and uses their median if a parent has repeated admitted activities. This lab does not reinterpret an activity or fetch another snapshot. The cached status and activity responses total 1,518,229 bytes. They were fetched on 2026-09-12.
+
+| Assay | Species and matrix | Input rows | Admitted parents | Reported clearance basis |
+| --- | --- | ---: | ---: | --- |
+| `CHEMBL3301370` | Human liver microsomes | 1102 | 743 | mL/min/g protein |
+| `CHEMBL3301371` | Rat hepatocytes | 837 | 592 | µL/min/10^6 cells |
+| `CHEMBL3301372` | Human hepatocytes | 408 | 288 | µL/min/10^6 cells |
+
+The counted unit is one admitted parent molecule. There are 1120 distinct parents. The model carries the 106 parents measured in both hepatocyte assays. It does not turn microsome clearance per gram of protein into hepatocyte clearance per million cells.
+
+## Exposure, engagement and response model
+
+For each paired parent, the rat measurement supplies the clearance input. The species factor is the median human-to-rat hepatocyte clearance ratio among the other 105 paired parents. The parent's own human measurement is held out of its factor. The factor's 0.1 and 0.9 empirical quantiles provide a within-cohort variability range, not a validated prediction interval.
+
+```text
+CL_h,model = CL_r × species factor × effective cells × 60 / 10^12 L/h
+C_total(t) = (D/V) exp[−CL_h,model t/V]
+C_free(t) = f_u C_total(t)
+occupancy(t) = C_free(t)/(K_d + C_free(t))
+effect(t) = Emax × occupancy(t) × (1 + EC50_occupancy)
+            / (EC50_occupancy + occupancy(t))
+```
+
+The response is a fractional effect increment normalized so full occupancy maps to Emax. Occupancy is calculated from free concentration and an assumed binding constant. It is never identified with concentration itself.
+The inspect output samples each concentration curve at 0, 12 and 24 h, then reports free concentration, occupancy and effect at 24 h.
+
+| Parameter | Value or range | Unit | Source |
+| --- | --- | --- | --- |
+| Input amount `D` | 1 | µmol | Project assumption, instantaneous input |
+| Apparent volume `V` | 1 | L | Project assumption |
+| Evaluation interval `t` | 24 | h | Project assumption |
+| Effective cells | 100000000 | cells | Project assumption, not a physiological liver count |
+| Rat clearance relative error | 0.2 | fraction | Project assumption because the assay supplies no error estimate |
+| Species-factor quantiles | 0.1 and 0.9 | fraction | Project decision applied to the other paired ratios |
+| Unbound fraction `f_u` | 0.1, range 0.05 to 0.2 | fraction | Project assumption, not measured binding |
+| Binding constant `K_d` | 0.2, range 0.1 to 0.4 | µmol/L | Project assumption, not measured target binding |
+| `Emax` | 1, range 0.5 to 1 | fractional effect increment | Project assumption, not a measured effect |
+| Engagement `EC50` | 0.5, range 0.25 to 0.75 | occupied fraction | Project assumption, not measured response coupling |
+
+The interval is propagated through each equation. Starting with rat assay uncertainty, the computation adds the species-factor range, unbound fraction, binding constant, Emax and engagement EC50. Its width cannot decrease when another uncertain input is admitted. The result is a sensitivity envelope under these assumptions, not a confidence interval.
+
+## Cohort results and evidence boundary
+
+| Outcome | Parent molecules |
+| --- | ---: |
+| Measured in both human and rat hepatocytes and modeled | 106 |
+| Human hepatocyte record without a rat hepatocyte record | 182 |
+| Rat hepatocyte record without a human hepatocyte record | 486 |
+| Microsome record without either hepatocyte record | 346 |
+| Cannot carry a paired species step | 1014 |
+| Paired measurements differing by at least threefold | 37 |
+
+Two measured compounds show why the species step matters. The clearance columns share the hepatocyte unit of µL/min/10^6 cells. The effects are model outputs at 24 h under the declared assumptions.
+
+| Parent | Human clearance | Rat clearance | Modeled effect | Sensitivity envelope |
+| --- | ---: | ---: | ---: | ---: |
+| `CHEMBL1229592` | 3.31 | 79.43 | 0.00268317 | 4.60433e-11 to 0.714601 |
+| `CHEMBL361546` | 134.9 | 14.79 | 0.31742 | 0.00262104 to 0.886112 |
+
+This lab connects measured intrinsic clearance to an illustrative exposure curve, modeled target engagement and modeled response. It represents species differences with a leave-one-out rule and propagates declared uncertainty through each step. It cannot supply measured plasma or target-site exposure, a compound-specific binding constant, measured engagement, response or validated species translation. Target-site concentration is assumed equal to free compartment concentration, binding is instantaneous, and the effect has no delay. A predicted response is not a measured one. These outputs do not predict clinical benefit and do not rank compounds.
+
+## Sources and licences
+
+- [ChEMBL 37 dataset CHEMBL3301361](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361), snapshot fetched on 2026-09-12.
+- [ChEMBL 37 release licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE), read on 2026-10-21. ChEMBL data records carry Creative Commons Attribution-ShareAlike 3.0 Unported. Individual deposited documents retain their owners' rights.
+
+Original prose is CC BY 4.0 and original lab code is Apache-2.0. Computed on 2026-10-23.

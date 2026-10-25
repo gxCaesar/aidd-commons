@@ -1,0 +1,88 @@
+id: model-nise
+name: NISE
+kind: model
+summary: Iterative selection-expansion protocol that jointly optimises a protein sequence and structure around a protein-ligand pose, pairing a ligand-conditioned sequence network with a structure and binding predictor in a closed loop.
+canonical_url: https://github.com/polizzilab/NISE
+identifiers:
+- scheme: paper
+  value: Zero-shot design of drug-binding proteins via neural iterative selection-expansion; Nature 656(8126):237-249, DOI 10.1038/s41586-026-10670-w
+  url: https://doi.org/10.1038/s41586-026-10670-w
+- scheme: code
+  value: NISE source repository, polizzilab/NISE
+  url: https://github.com/polizzilab/NISE
+- scheme: documentation
+  value: NISE execution container image, nise.sif, published in the project Hugging Face repository
+  url: https://huggingface.co/polizzilab
+stages:
+- design
+- hit-discovery
+modalities:
+- biomolecular-complex
+tasks:
+- binder-design
+- pose-conditioned-sequence-design
+relations: []
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - nise-repository
+  - nise-readme
+  - nise-license
+openness:
+  inference_code:
+    value: available
+    evidence:
+    - nise-readme
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: available
+    evidence:
+    - nise-readme
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: MIT
+  scope: The repository LICENSE grants use, modification, redistribution and sale of NISE software and associated documentation with preservation of its notices. It does not grant rights to upstream LigandMPNN, LASErMPNN or Boltz parameters, their training data, or the separately distributed execution container. The README requires the LigandMPNN get_model_params.sh route and a Boltz installation, or a separate Hugging Face container download, for the model runtime.
+  evidence:
+  - nise-license
+  - nise-readme
+evidence:
+- id: nise-repository
+  url: https://github.com/polizzilab/NISE
+  label: NISE repository (reviewed 2026-10-23)
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - caveats
+- id: nise-readme
+  url: https://raw.githubusercontent.com/polizzilab/NISE/main/README.md
+  label: NISE README (reviewed 2026-10-23)
+  supports:
+  - identifiers
+  - caveats
+- id: nise-license
+  url: https://raw.githubusercontent.com/polizzilab/NISE/main/LICENSE
+  label: NISE MIT licence — MIT grant for the NISE software and associated documentation. The grant does not name separately distributed dependency parameters, training datasets or container assets.
+  supports:
+  - caveats
+caveats:
+- The source and examples are public under the repository's MIT software grant, but the usable model runtime depends on separately acquired assets. The README instructs readers to run LigandMPNN get_model_params.sh and install Boltz, or download nise.sif from a separate Hugging Face repository. The NISE licence does not establish the terms of those upstream parameters, training data or container assets.
+- The README carries no data-availability statement and names no training corpus, sample date, filtering procedure or split, so the data recipe and the training data both stay unverified.
+- The README enumerates no individual checkpoint, weight file or download URL for LASErMPNN, LigandMPNN or Boltz. It documents model access through the LigandMPNN get_model_params.sh script and through a prebuilt execution container, which is an environment rather than a stated checkpoint.
+- The protocol depends on LASErMPNN or LigandMPNN for sequence design and on Boltz-1x or Boltz-2x for structure and binding evaluation, and it names only the 1x and 2x variants. No dated upstream release is stated for any of them.
+- The paper is recorded from the DOI and the repository's own README. The article's text was not opened, so the reported hit rates and the measured affinities are not carried here.
+acknowledgements: []
+last_verified: '2026-10-23'

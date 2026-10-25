@@ -1,0 +1,175 @@
+---
+title: Assay controls and dose response
+description: Match an assay readout to its biological question, normalize it with declared controls, and interpret a concentration-response curve without mistaking it for mechanism or efficacy.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="drug-discovery-foundations/assay-controls-dose-response" />
+<ScrollableRegions />
+
+## Learning goals
+
+Distinguish biochemical or target-binding, cellular-phenotype, and reporter
+readouts; name each control in a normalization; and read a concentration-response
+curve. Explain why a tidy curve alone is not evidence of target engagement,
+mechanism, organismal efficacy, or clinical benefit.
+
+## Prerequisite and decision boundary
+
+Read [Drug discovery context](/learn/drug-discovery-foundations/discovery-context/)
+first. An assay maps a named biological object to a signal and a decision. Before
+comparison, declare the system, readout, controls, normalization direction,
+endpoint, and an alternative explanation not excluded. This is a reading and
+hand-calculation lesson, not an operating protocol.
+
+## Which question reaches the readout?
+
+| Assay kind                    | Object and readout                                         | A conclusion it can support                     | What it does not establish alone                                            |
+| ----------------------------- | ---------------------------------------------------------- | ----------------------------------------------- | --------------------------------------------------------------------------- |
+| Biochemical or target-binding | Defined molecular component; binding or enzymatic product  | Target-proximal response under named conditions | Cell entry, metabolism, phenotype, selectivity, or efficacy                 |
+| Cellular phenotype            | Intact cells and a named marker, morphology, or cell count | Response in that cell context                   | Causal molecular target or transfer to another context                      |
+| Reporter                      | Reporter enzyme, fluorescent protein, or similar construct | Change in reporter signal under stated logic    | That pathway, target, or phenotype changed rather than reporter or detector |
+
+A reporter can be cell-based but remains a measurement layer: a compound can
+affect biology, reporter, or optics. Do not upgrade a target-binding measurement
+to a cellular claim, or a reporter change to target mechanism, merely because
+all quantities are called “activity.”
+
+## Controls set both the baseline and the sign
+
+Controls label expected assay states. A **blank** `B` estimates instrument or
+reagent background without the relevant biological signal. A **vehicle** `V`
+contains carrier without test compound and sets the baseline. A **negative
+control** `N` is expected not to produce the effect; it coincides with `V` only
+when declared. A **positive control** `P` is a reference that produces the
+defined effect. In inhibition, `P` can have lower raw signal than `V`: “positive”
+means the intended effect, not a high number.
+
+When high raw signal means residual activity, background-correct as `R_b = R - B`,
+`V_b = V - B`, and `P_b = P - B`. With `V` at 0% inhibition and `P` at 100%,
+use `% inhibition = 100 * (V_b - R_b) / (V_b - P_b)`: it gives 0% when `R = V`
+and 100% when `R = P`. For stimulation, use ` % stimulation = 100 *
+(R_b - V_b) / (P_b - V_b)`. Declare direction and controls before fitting.
+The 100% label is an assay scaling reference, not proof of complete biological
+inhibition. If `V_b = P_b`, the denominator is zero and normalization is undefined; a small control window
+amplifies noise.
+[Data Standardization for Results Management](https://www.ncbi.nlm.nih.gov/books/NBK91993/)
+discusses directional normalized endpoints and three- or four-parameter fits.
+
+### Technical wells and independent repeats answer different questions
+
+Technical wells repeat one sample or preparation within a run; they quantify
+within-run variation but are dependent observations. Independent repeats use
+distinct preparations at the declared source of variation, such as cell
+populations, target lots, or sample batches. A same-source run on another day
+may be inter-run instead. Report source, plate, run, and aggregation rule, not
+only “n = 6”; six technical wells are not six independent preparations.
+[Basic Guidelines for Reporting Non-Clinical Data](https://www.ncbi.nlm.nih.gov/books/NBK550206/)
+distinguishes technical, independent, and inter-run repeat labels.
+
+## Concentration-response curves locate a response within an assay
+
+For a rising response, use horizontal `log10(x in mol/L)`, where `x` is
+concentration, and vertical normalized response `y`, for example % stimulation:
+
+`y(x) = Bottom + (Top - Bottom) / (1 + (EC50 / x)^Hill)`.
+
+For these stated rising and falling signs, take `x > 0`, `Hill > 0`, and `Top > Bottom`.
+
+`Bottom` and `Top` are the fitted lower and upper response asymptotes. `Hill` is
+dimensionless steepness; `EC50` is `x` at `(Top + Bottom) / 2`. To plot an inhibition
+experiment as a falling curve, define `y = % residual activity = 100 - % inhibition`,
+then use `y(x) = Bottom + (Top - Bottom) / (1 + (x / IC50)^Hill)`. As `x`
+increases, this `y` falls while `% inhibition` rises. At `IC50`, `y` is the
+fitted midpoint, and `% inhibition` is `100 - y`; it is 50% only when that
+midpoint is 50%. This is a relative `IC50` (half the fitted range), not
+necessarily an absolute 50%-of-control inhibition when fitted asymptotes differ
+from the control-defined 0% and 100% endpoints. The constructed examples below
+use symmetric endpoints and therefore hide that distinction. Do not silently fix
+fitted asymptotes or `Hill`.
+
+`EC50` and `IC50` are curve locations under these conditions, not `Kd`, `Ki`,
+or efficacy. `Top - Bottom` is the fitted assay range, not organismal or
+clinical efficacy. `Hill` describes shape, not binding stoichiometry or a single
+mechanism.
+
+## Worked case: normalize before interpreting
+
+This entire case is **constructed for teaching**; it reports no assay, compound,
+target, or dose. Invented raw signals `B = 10`, `V = 110`, `P = 30`, and
+`R = 70` give `R_b = 60`, `V_b = 100`, `P_b = 20`, and
+`% inhibition = 100 * (100 - 60) / (100 - 20) = 50%`: the test well is midway
+between these declared controls.
+
+An invented falling fit uses `y` as residual activity with `Top = 98%`,
+`Bottom = 2%`, `IC50 = 0.40 µM`, and `Hill = 1.2`. At `0.40 µM`,
+`y = (98 + 2) / 2 = 50%` residual activity and inhibition is 50%. At the
+invented nonmidpoint `x = 0.80 µM`,
+`y = 2 + (98 - 2) / (1 + (0.80 / 0.40)^1.2) = 31.1%` residual activity, so
+`% inhibition = 68.9%`. Increasing `x` lowered residual activity and raised
+inhibition. The range is `98 - 2 = 96` percentage points. These invented values
+are neither `Ki` nor `Kd`, and do not demonstrate efficacy.
+
+## Interference, counterscreens, and orthogonal evidence
+
+An apparent signal can reflect biology, reporter-enzyme inhibition, optical
+effects, aggregation, or another measurement interaction. A counterscreen tests
+a named alternative such as detector or reporter interference; a negative result
+does not support that alternative, but does not prove biology. An orthogonal
+assay retains relevant biology while changing detection. Concordance supports
+detection independence, not a molecular-mechanism claim by itself.
+[Interferences with Luciferase Reporter Enzymes](https://www.ncbi.nlm.nih.gov/books/NBK374281/)
+explains why counterscreens deselect interference while orthogonal results do
+not alone prove mechanism.
+
+## Independent exercise
+
+On an unseen **constructed** inhibition plate, `B = 8`, `V = 108`, `P = 28`,
+and `R = 68`; a falling curve has `Top = 96%`, `Bottom = 4%`, `IC50 = 0.80 µM`,
+and `Hill = 0.9`, with `y` defined as residual activity. Calculate normalized
+inhibition, then `y` and `% inhibition` at `IC50` and at `x = 1.60 µM`. State
+which quantity rises as `x` rises, name one thing `IC50` cannot establish, then
+interpret a hit active in a direct reporter counterscreen. What would an
+orthogonal assay add?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+`R_b = 60`, `V_b = 100`, and `P_b = 20`, so `% inhibition = 100 *
+(100 - 60) / (100 - 20) = 50%`. At `IC50`, `y = (96 + 4) / 2 = 50%` residual
+activity and inhibition is 50%. At `1.60 µM`,
+`y = 4 + (96 - 4) / (1 + (1.60 / 0.80)^0.9) = 36.1%` residual activity, so
+inhibition is 63.9%. Thus increasing `x` lowers `y` and raises inhibition.
+`IC50` does not establish `Kd`, `Ki`, target engagement, or efficacy. Activity
+in the direct reporter counterscreen supports reporter/detection interference,
+not a target-mechanism claim, but does not prove absent biology. An orthogonal
+assay tests whether the signal persists when detection changes.
+
+</details>
+
+## Sources, limits, and next step
+
+These author chapters were opened and reviewed on 2026-09-09. They support
+definitions and cautions, not the invented values.
+
+<div data-case-sources>
+
+- [Data Standardization for Results Management — Assay Guidance Manual, NCBI Bookshelf](https://www.ncbi.nlm.nih.gov/books/NBK91993/)
+- [Basic Guidelines for Reporting Non-Clinical Data — Assay Guidance Manual, NCBI Bookshelf](https://www.ncbi.nlm.nih.gov/books/NBK550206/)
+- [Interferences with Luciferase Reporter Enzymes — Assay Guidance Manual, NCBI Bookshelf](https://www.ncbi.nlm.nih.gov/books/NBK374281/)
+
+</div>
+
+All raw values, fitted parameters, and exercise answers in this lesson are
+invented teaching values. This page supplies no wet-lab recipe, dosing
+instruction, real assay data, trial result, or measured learning claim. Continue
+to [From assay records to a modelling table](/learn/data-governance/records-to-model-table/)
+to preserve the endpoint, units, repeats, and exclusions in a modelling task.
+[From clearance and exposure to PK/PD](/learn/admet-pk/exposure-clearance-pkpd/)
+adds an exposure context; it remains outside this lesson's scope.
+
+Original lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-09.

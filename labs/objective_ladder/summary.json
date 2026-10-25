@@ -1,0 +1,347 @@
+{
+  "schema_version": "aidd-commons.objective-ladder-summary.v1",
+  "protocol_id": "objective-ladder-six-objectives-v1",
+  "computed_on": "2026-10-22",
+  "software": {
+    "python": "3.11.15",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1"
+  },
+  "objectives": [
+    "sequence-recovery",
+    "folding",
+    "structural-plausibility",
+    "binding",
+    "catalysis",
+    "function"
+  ],
+  "targets": [
+    {
+      "accession": "P00533",
+      "symbol": "EGFR",
+      "name": "Epidermal growth factor receptor",
+      "structure_id": "1IVO",
+      "evidenced_objectives": 6,
+      "empty_objectives": 0,
+      "outcomes": [
+        {
+          "objective": "sequence-recovery",
+          "found": true,
+          "record": "1IVO against P00533, 1244 of 1244 evaluated positions match (1.0000)",
+          "detail": "the fraction is counted position by position over the region the archive's alignment record covers, and the positions outside that region are not scored; chain A, entity 1-622, reference P00533 25-646; chain B, entity 1-622, reference P00533 25-646",
+          "absence_reason": ""
+        },
+        {
+          "objective": "folding",
+          "found": true,
+          "record": "1IVO, X-RAY DIFFRACTION, covering 622 residues of P00533 (25-646) in chains A, B; the model archive holds AF-P00533-F1, dated 2025-08-01, with a global metric of 75.94, which is a prediction and not an observation",
+          "detail": "the deposited structure is an experimental observation of a conformation in the state the experiment produced, and it is limited to that state; a prediction is not an observation of folding, and neither record supplies a binding or functional measurement",
+          "absence_reason": ""
+        },
+        {
+          "objective": "structural-plausibility",
+          "found": true,
+          "record": "1IVO, 8892 coordinate rows audited, of which 7903 belong to the examined entity, 0 bond-length outliers and 0 clashes",
+          "detail": "the plausibility figures are computed here from the deposited coordinates, not quoted from a score the archive reports, and they describe the internal consistency of the coordinate file rather than the fold it depicts",
+          "absence_reason": ""
+        },
+        {
+          "objective": "binding",
+          "found": true,
+          "record": "1YY9, mutation LD29P, wild type 1.31e-09 M, mutant 1.38e-09 M, method SPR",
+          "detail": "the row names a deposited structure of P00533 that the archive itself lists as referencing it; the row carries both sides of a measured change, with its unit and the method that produced it",
+          "absence_reason": ""
+        },
+        {
+          "objective": "catalysis",
+          "found": true,
+          "record": "P00533, 1 catalytic-activity annotation, catalogue 2.7.10.1, reaction L-tyrosyl-[protein] + ATP = O-phospho-L-tyrosyl-[protein] + ADP + H(+)",
+          "detail": "the accession carries a catalytic-activity annotation with a named reaction, which is a statement about the transformation and not a measured rate",
+          "absence_reason": ""
+        },
+        {
+          "objective": "function",
+          "found": true,
+          "record": "P00533, Receptor tyrosine kinase binding ligands of the EGF family and activating several signaling cascades to convert extracellular cues into appropriate cellular responses (PubMed:10805725, PubMed:12297050, PubMed:12620237,...",
+          "detail": "the accession carries a functional annotation, which is a statement about what the entity does and not a measurement of any of the other objectives",
+          "absence_reason": ""
+        }
+      ]
+    },
+    {
+      "accession": "P04626",
+      "symbol": "ERBB2",
+      "name": "Receptor protein-tyrosine kinase erbB-2",
+      "structure_id": "3MZW",
+      "evidenced_objectives": 6,
+      "empty_objectives": 0,
+      "outcomes": [
+        {
+          "objective": "sequence-recovery",
+          "found": true,
+          "record": "3MZW against P04626, 624 of 624 evaluated positions match (1.0000)",
+          "detail": "the fraction is counted position by position over the region the archive's alignment record covers, and the positions outside that region are not scored; chain A, entity 1-624, reference P04626 23-646",
+          "absence_reason": ""
+        },
+        {
+          "objective": "folding",
+          "found": true,
+          "record": "3MZW, X-RAY DIFFRACTION, covering 624 residues of P04626 (23-646) in chain A; the model archive holds AF-P04626-F1, dated 2025-08-01, with a global metric of 74.00, which is a prediction and not an observation",
+          "detail": "the deposited structure is an experimental observation of a conformation in the state the experiment produced, and it is limited to that state; a prediction is not an observation of folding, and neither record supplies a binding or functional measurement",
+          "absence_reason": ""
+        },
+        {
+          "objective": "structural-plausibility",
+          "found": true,
+          "record": "3MZW, 4882 coordinate rows audited, of which 4387 belong to the examined entity, 0 bond-length outliers and 0 clashes",
+          "detail": "the plausibility figures are computed here from the deposited coordinates, not quoted from a score the archive reports, and they describe the internal consistency of the coordinate file rather than the fold it depicts",
+          "absence_reason": ""
+        },
+        {
+          "objective": "binding",
+          "found": true,
+          "record": "1N8Z, mutation LC525A, wild type 1.31e-09 M, mutant 1.26e-09 M, method SPR",
+          "detail": "the row names a deposited structure of P04626 that the archive itself lists as referencing it; the row carries both sides of a measured change, with its unit and the method that produced it",
+          "absence_reason": ""
+        },
+        {
+          "objective": "catalysis",
+          "found": true,
+          "record": "P04626, 1 catalytic-activity annotation, catalogue 2.7.10.1, reaction L-tyrosyl-[protein] + ATP = O-phospho-L-tyrosyl-[protein] + ADP + H(+)",
+          "detail": "the accession carries a catalytic-activity annotation with a named reaction, which is a statement about the transformation and not a measured rate",
+          "absence_reason": ""
+        },
+        {
+          "objective": "function",
+          "found": true,
+          "record": "P04626, Protein tyrosine kinase that is part of several cell surface receptor complexes, but that apparently needs a coreceptor for ligand binding.",
+          "detail": "the accession carries a functional annotation, which is a statement about what the entity does and not a measurement of any of the other objectives",
+          "absence_reason": ""
+        }
+      ]
+    },
+    {
+      "accession": "P00374",
+      "symbol": "DHFR",
+      "name": "Dihydrofolate reductase",
+      "structure_id": "1BOZ",
+      "evidenced_objectives": 5,
+      "empty_objectives": 1,
+      "outcomes": [
+        {
+          "objective": "sequence-recovery",
+          "found": true,
+          "record": "1BOZ against P00374, 185 of 186 evaluated positions match (0.9946)",
+          "detail": "the fraction is counted position by position over the region the archive's alignment record covers, and the positions outside that region are not scored; chain A, entity 1-186, reference P00374 2-187; the positions that differ are chain A position 31: deposited G, reference F",
+          "absence_reason": ""
+        },
+        {
+          "objective": "folding",
+          "found": true,
+          "record": "1BOZ, X-RAY DIFFRACTION, covering 186 residues of P00374 (2-187) in chain A; the model archive holds AF-P00374-F1, dated 2025-08-01, with a global metric of 96.12, which is a prediction and not an observation",
+          "detail": "the deposited structure is an experimental observation of a conformation in the state the experiment produced, and it is limited to that state; a prediction is not an observation of folding, and neither record supplies a binding or functional measurement",
+          "absence_reason": ""
+        },
+        {
+          "objective": "structural-plausibility",
+          "found": true,
+          "record": "1BOZ, 1693 coordinate rows audited, of which 1495 belong to the examined entity, 0 bond-length outliers and 1 clashes, the closest non-bonded pair at 1.92 angstrom, both atoms in NADPH DIHYDRO-NICOTINAMIDE-ADENINE-DINUCLEOTIDE PHOSPHATE",
+          "detail": "the plausibility figures are computed here from the deposited coordinates, not quoted from a score the archive reports, and they describe the internal consistency of the coordinate file rather than the fold it depicts",
+          "absence_reason": ""
+        },
+        {
+          "objective": "binding",
+          "found": false,
+          "record": "",
+          "detail": "no measured affinity change names any structure of this target and the declared structure carries no bound component",
+          "absence_reason": "no-affinity-record"
+        },
+        {
+          "objective": "catalysis",
+          "found": true,
+          "record": "P00374, 1 catalytic-activity annotation, catalogue 1.5.1.3, reaction (6S)-5,6,7,8-tetrahydrofolate + NADP(+) = 7,8-dihydrofolate + NADPH + H(+)",
+          "detail": "the accession carries a catalytic-activity annotation with a named reaction, which is a statement about the transformation and not a measured rate",
+          "absence_reason": ""
+        },
+        {
+          "objective": "function",
+          "found": true,
+          "record": "P00374, Catalyzes the reduction of 7,8-dihydrofolate (DHF) to 5,6,7,8-tetrahydrofolate in a NADPH-dependent manner (PubMed:12096917, PubMed:15039552, PubMed:17569517, PubMed:19196009, PubMed:19478082, PubMed:21876184,...",
+          "detail": "the accession carries a functional annotation, which is a statement about what the entity does and not a measurement of any of the other objectives",
+          "absence_reason": ""
+        }
+      ]
+    },
+    {
+      "accession": "P04637",
+      "symbol": "TP53",
+      "name": "Cellular tumor antigen p53",
+      "structure_id": "1YCS",
+      "evidenced_objectives": 5,
+      "empty_objectives": 1,
+      "outcomes": [
+        {
+          "objective": "sequence-recovery",
+          "found": true,
+          "record": "1YCS against P04637, 199 of 199 evaluated positions match (1.0000)",
+          "detail": "the fraction is counted position by position over the region the archive's alignment record covers, and the positions outside that region are not scored; chain A, entity 1-199, reference P04637 94-292",
+          "absence_reason": ""
+        },
+        {
+          "objective": "folding",
+          "found": true,
+          "record": "1YCS, X-RAY DIFFRACTION, covering 199 residues of P04637 (94-292) in chain A; the model archive holds AF-P04637-F1, dated 2025-08-01, with a global metric of 75.06, which is a prediction and not an observation",
+          "detail": "the deposited structure is an experimental observation of a conformation in the state the experiment produced, and it is limited to that state; a prediction is not an observation of folding, and neither record supplies a binding or functional measurement",
+          "absence_reason": ""
+        },
+        {
+          "objective": "structural-plausibility",
+          "found": true,
+          "record": "1YCS, 3291 coordinate rows audited, of which 1501 belong to the examined entity, 0 bond-length outliers and 0 clashes",
+          "detail": "the plausibility figures are computed here from the deposited coordinates, not quoted from a score the archive reports, and they describe the internal consistency of the coordinate file rather than the fold it depicts",
+          "absence_reason": ""
+        },
+        {
+          "objective": "binding",
+          "found": true,
+          "record": "1YCS, mutation RA273H, wild type 2.2e-06 M, mutant 1.8e-06 M, method ITC",
+          "detail": "the row names a deposited structure of P04637 that the archive itself lists as referencing it; the row carries both sides of a measured change, with its unit and the method that produced it",
+          "absence_reason": ""
+        },
+        {
+          "objective": "catalysis",
+          "found": false,
+          "record": "",
+          "detail": "the accession carries no catalytic-activity annotation and no enzyme catalogue number",
+          "absence_reason": "no-catalysis-annotation"
+        },
+        {
+          "objective": "function",
+          "found": true,
+          "record": "P04637, Multifunctional transcription factor that induces cell cycle arrest, DNA repair or apoptosis upon binding to its target DNA sequence (PubMed:11025664, PubMed:12524540, PubMed:12810724, PubMed:15186775, PubMed:15340061,...",
+          "detail": "the accession carries a functional annotation, which is a statement about what the entity does and not a measurement of any of the other objectives",
+          "absence_reason": ""
+        }
+      ]
+    },
+    {
+      "accession": "P03372",
+      "symbol": "ESR1",
+      "name": "Estrogen receptor",
+      "structure_id": "11SD",
+      "evidenced_objectives": 4,
+      "empty_objectives": 2,
+      "outcomes": [
+        {
+          "objective": "sequence-recovery",
+          "found": true,
+          "record": "11SD against P03372, 30 of 30 evaluated positions match (1.0000)",
+          "detail": "the fraction is counted position by position over the region the archive's alignment record covers, and the positions outside that region are not scored; chain X, entity 1-15, reference P03372 581-595; chain Y, entity 1-15, reference P03372 581-595",
+          "absence_reason": ""
+        },
+        {
+          "objective": "folding",
+          "found": true,
+          "record": "11SD, X-RAY DIFFRACTION, covering 15 residues of P03372 (581-595) in chains X, Y; the model archive holds AF-P03372-F1, dated 2025-08-01, with a global metric of 66.44, which is a prediction and not an observation",
+          "detail": "the deposited structure is an experimental observation of a conformation in the state the experiment produced, and it is limited to that state; a prediction is not an observation of folding, and neither record supplies a binding or functional measurement",
+          "absence_reason": ""
+        },
+        {
+          "objective": "structural-plausibility",
+          "found": true,
+          "record": "11SD, 3845 coordinate rows audited, of which 93 belong to the examined entity, 0 bond-length outliers and 0 clashes",
+          "detail": "the plausibility figures are computed here from the deposited coordinates, not quoted from a score the archive reports, and they describe the internal consistency of the coordinate file rather than the fold it depicts",
+          "absence_reason": ""
+        },
+        {
+          "objective": "binding",
+          "found": false,
+          "record": "",
+          "detail": "the declared structure carries A1DAI, but a bound component is not a measured binding value, because crystallisation additives and ions appear in most deposited entries, and no measured change names any structure of this target",
+          "absence_reason": "no-affinity-record"
+        },
+        {
+          "objective": "catalysis",
+          "found": false,
+          "record": "",
+          "detail": "the accession carries no catalytic-activity annotation and no enzyme catalogue number",
+          "absence_reason": "no-catalysis-annotation"
+        },
+        {
+          "objective": "function",
+          "found": true,
+          "record": "P03372, Nuclear hormone receptor. The steroid hormones and their receptors are involved in the regulation of eukaryotic gene expression and affect cellular proliferation and differentiation in target tissues.",
+          "detail": "the accession carries a functional annotation, which is a statement about what the entity does and not a measurement of any of the other objectives",
+          "absence_reason": ""
+        }
+      ]
+    },
+    {
+      "accession": "P08183",
+      "symbol": "ABCD1",
+      "name": "ATP-dependent transporter ABCB1",
+      "structure_id": "6C0V",
+      "evidenced_objectives": 5,
+      "empty_objectives": 1,
+      "outcomes": [
+        {
+          "objective": "sequence-recovery",
+          "found": true,
+          "record": "6C0V against P08183, 1278 of 1280 evaluated positions match (0.9984)",
+          "detail": "the fraction is counted position by position over the region the archive's alignment record covers, and the positions outside that region are not scored; chain A, entity 1-1280, reference P08183 1-1280; the positions that differ are chain A position 556: deposited Q, reference E; chain A position 1201: deposited Q, reference E",
+          "absence_reason": ""
+        },
+        {
+          "objective": "folding",
+          "found": true,
+          "record": "6C0V, ELECTRON MICROSCOPY, covering 1280 residues of P08183 (1-1280) in chain A; the model archive holds AF-P08183-F1, dated 2025-08-01, with a global metric of 84.56, which is a prediction and not an observation",
+          "detail": "the deposited structure is an experimental observation of a conformation in the state the experiment produced, and it is limited to that state; a prediction is not an observation of folding, and neither record supplies a binding or functional measurement",
+          "absence_reason": ""
+        },
+        {
+          "objective": "structural-plausibility",
+          "found": true,
+          "record": "6C0V, 8976 coordinate rows audited, of which 8912 belong to the examined entity, 0 bond-length outliers and 0 clashes",
+          "detail": "the plausibility figures are computed here from the deposited coordinates, not quoted from a score the archive reports, and they describe the internal consistency of the coordinate file rather than the fold it depicts",
+          "absence_reason": ""
+        },
+        {
+          "objective": "binding",
+          "found": false,
+          "record": "",
+          "detail": "the declared structure carries ATP, MG, but a bound component is not a measured binding value, because crystallisation additives and ions appear in most deposited entries, and no measured change names any structure of this target",
+          "absence_reason": "no-affinity-record"
+        },
+        {
+          "objective": "catalysis",
+          "found": true,
+          "record": "P08183, 7 catalytic-activity annotations, catalogue 7.6.2.2, 7.6.2.1, reaction ATP + H2O + xenobioticSide 1 = ADP + phosphate + xenobioticSide 2.",
+          "detail": "the accession carries a catalytic-activity annotation with a named reaction, which is a statement about the transformation and not a measured rate",
+          "absence_reason": ""
+        },
+        {
+          "objective": "function",
+          "found": true,
+          "record": "P08183, Translocates phospholipids and drugs across the membrane (PubMed:2897240, PubMed:35970996, PubMed:8898203, PubMed:9038218, PubMed:35507548).",
+          "detail": "the accession carries a functional annotation, which is a statement about what the entity does and not a measurement of any of the other objectives",
+          "absence_reason": ""
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "targets": 6,
+    "objectives": 6,
+    "cells": 36,
+    "filled_cells": 31,
+    "empty_cells": 5,
+    "filled_per_objective": {
+      "sequence-recovery": 6,
+      "folding": 6,
+      "structural-plausibility": 6,
+      "binding": 3,
+      "catalysis": 4,
+      "function": 6
+    }
+  }
+}

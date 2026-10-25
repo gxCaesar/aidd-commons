@@ -1,0 +1,120 @@
+---
+title: 一个 CYP 抑制数字能预测另一个吗？
+description: 读取两种细胞色素 P450 酶的真实 ChEMBL 37 IC50 记录，看对一种酶的效力预测另一种酶效力的能力有多弱，以及为什么必须点名酶、检测和文献。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[Does one CYP inhibition number predict another?](/labs/cyp-assay-system/)。
+
+## 运行之前
+
+**模式：在一个实时、带版本号的数据库快照上做独立计算。** 这里没有任何冻结的一次性评估：
+准入规则由 `protocol.json` 固定，但底层的 ChEMBL 发行版本原则上可能被后续版本取代，因此每条
+命令在做任何事之前都会先重新核对发行版字段。本实验中没有任何地方拟合过模型。
+
+```bash
+python labs/cyp_assay_system/run_lab.py download   # 抓取并缓存实时快照
+python labs/cyp_assay_system/inspect_cyp_assay_system.py show
+python labs/cyp_assay_system/inspect_cyp_assay_system.py check
+```
+
+需要 Python 3.11 或更新版本、NumPy、SciPy 与 RDKit。只有一次性下载需要联网，来源是公开的
+ChEMBL REST API；一旦 `.cache/cyp_assay_system/` 下的缓存存在，就不再需要联网。
+
+## 为什么是两个完整靶点，而不是两个具名检测
+
+姊妹实验[冻结契约检查实验](/zh-cn/labs/chembl-contract-inspection/)只准入来自两个具名 EGFR
+检测的记录。单个 CYP 靶点的 IC50 记录集合并非如此：它分散在数百个独立检测和文献中，由不同
+实验室历经数年完成。这种分散本身就是本实验要教的内容，而不是需要悄悄平均掉的麻烦，因此
+`protocol.json` 原样沿用了 EGFR 实验的准入规则，但把它应用到两个完整的 ChEMBL 靶点，
+CYP3A4（`CHEMBL340`）与 CYP2D6（`CHEMBL289`），并为每个被准入的母体分子追踪其贡献检测和
+文献，而不是把一个靶点当成一次测量。
+
+## 准入规则，以及它丢弃了什么
+
+一条记录只有在满足以下条件时才会被准入：以 nM 为单位的精确 IC50、`standard_flag=1`、
+`potential_duplicate=0`、不带数据有效性备注、直接命名母体分子（`molecule_chembl_id` 等于
+`parent_molecule_chembl_id`）、结构在 RDKit 下有效，并且报告的 pChEMBL 值与其 nM 值在
+0.011 的容差内一致。于 2026-09-12 计算：
+
+| 靶点 | 输入行数 | 保留行数 | 被准入的母体分子 |
+| --- | ---: | ---: | ---: |
+| CYP3A4（`CHEMBL340`） | 6,750 | 6,118 | 5,251 |
+| CYP2D6（`CHEMBL289`） | 3,432 | 3,031 | 2,781 |
+
+同一母体在同一靶点下的重复被准入活性以中位数聚合。649 个 CYP3A4 母体和 181 个 CYP2D6
+母体带有一条以上被准入的活性；`show` 会报告这些重复之间 pChEMBL 极差的中位数与最大值，
+这样聚合本身的分歧就可见，而不是被藏进单一数字里。
+
+## 一次相关性，与自身互相校验
+
+1,195 个母体分子在两个靶点下都被准入。`show` 报告了两个相关性汇总：完整重叠集合，以及一个
+限制在每个靶点恰好一条被准入活性、且来自同一篇文献的"干净"子集，共 1,015 个母体，这样任何
+一侧的 pChEMBL 值都不是跨研究的中位数。
+
+| 子集 | n | Pearson r | Spearman rho | p |
+| --- | ---: | ---: | ---: | ---: |
+| 完整重叠 | 1,195 | 0.2987 | 0.2981 | 6.08e-26 |
+| 仅干净配对 | 1,015 | 0.2990 | 0.3038 | 4.10e-23 |
+
+两个子集彼此吻合到约两位有效数字，这是一次稳健性检验，而不是对同一底层事实的两次独立确认：
+两者都读自有重叠的真实数据，而不是两次独立实验。两者都远离 0（无关系）或 1（同一测量重复
+两次）。在这个数据集里，CYP3A4 效力对 CYP2D6 效力是一个真实但微弱的正向信号。
+
+## 平均数掩盖了什么
+
+`show` 还会打印干净配对子集中两个方向上最偏离的具名例子：
+
+| 化合物 | CYP3A4 pIC50 | CYP2D6 pIC50 | 差值 |
+| --- | ---: | ---: | ---: |
+| 阿巴康唑（`CHEMBL298817`） | 7.40 | 4.50 | +2.90 |
+| 奎尼丁（`CHEMBL1294`，非干净配对） | 4.55（1 条记录） | 中位数 7.37（32 条记录，pIC50 极差 4.1） | 无法作为一对配对比较 |
+
+阿巴康唑在同一篇文献中明显偏向 CYP3A4 选择性。奎尼丁根本进不了干净配对表：它唯一一条
+CYP3A4 记录旁边，是 32 条独立的 CYP2D6 记录，报告效力跨度超过 10,000 倍。只报告"奎尼丁的
+CYP 效力"这一个数字，早在与 CYP3A4 比较之前，就已经丢弃了 32 项研究彼此相差四个数量级
+这一事实。
+
+## 这没有展示什么
+
+本协议只读取体外 IC50 抑制记录。它对转运体、酶诱导、代谢产物鉴定，或对任何具名药物对的
+临床药物相互作用结局都未作任何陈述，除了已声明的同文献"干净配对"比较之外，也不对跨研究
+异质性做任何校正。完整的、机器可读的清单见 `protocol.json` 的 `excluded_by_design`。
+
+## 独立练习
+
+一份幻灯片写道:"化合物 Y 是一个强效 CYP 抑制剂（IC50 = 12 nM）。"仅使用 `show` 报告的内容,
+说出在把这句话当作与本实验重叠表中任意一行可比之前,你需要先回答的两个问题,并解释为什么
+奎尼丁是一个真实的化合物,使得这两个问题的答案会因你选取哪条记录而不同。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+你需要知道测的是哪种 CYP 酶,因为在这里 CYP3A4 与 CYP2D6 的效力只呈微弱相关
+（无论哪个方向，Spearman rho 都约为 0.30）；还需要知道是哪个检测和哪篇文献产出了这个数字,
+因为单个靶点的记录并非一次测量,而是数百次独立测量。奎尼丁同时展示了这两点为何都重要：它
+唯一一条被准入的 CYP3A4 记录报告 pIC50 4.55，而它 32 条被准入的 CYP2D6 记录在与 CYP3A4
+一侧比较之前，彼此之间就已相差超过四个数量级（pIC50 极差 4.1）。"化合物 Y 是一个强效 CYP
+抑制剂"这句话，在点名酶、检测和文献之前，都无法与本实验这样的记录相互核对。
+
+</details>
+
+## 来源与下一课
+
+<div data-case-sources>
+
+- [ChEMBL 37 发行状态](https://www.ebi.ac.uk/chembl/api/data/status.json)，于 2026-09-12 实时读取
+- [靶点 CHEMBL340（CYP3A4）的 ChEMBL 37 活性记录](https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL340)
+- [靶点 CHEMBL289（CYP2D6）的 ChEMBL 37 活性记录](https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL289)
+
+</div>
+
+本页与已完成的 ChEMBL EGFR 表征实验共享准入规则，但读取的是独立的数据；它不改变那里的
+任何划分、所选超参数或已锁定结果。接下来可阅读
+[从代谢到安全性决策](/zh-cn/learn/admet-pk/metabolism-to-safety/)
+了解这一内容在其他 ADMET 证据流中的位置。
+
+原创文字采用 CC BY 4.0，原创教学代码采用 Apache-2.0。最后审阅：2026-09-12。

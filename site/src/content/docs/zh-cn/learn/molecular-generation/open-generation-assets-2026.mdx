@@ -1,0 +1,116 @@
+---
+title: 2026 年的开放生成模型资产
+description: 分别核查分子生成模型所发布的代码、检查点和训练语料能否取得，以及适用于各项资产的证据与许可条款。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="molecular-generation/open-generation-assets-2026" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+学完[生成模型机制](/learn/molecular-generation/generative-model-mechanisms/)
+和[生成工具与评价任务的选择](/learn/molecular-generation/generation-resource-guide/)后，
+应能辨别读者可以取得哪些模型资产、各资产适用什么条款，以及已命名的训练数据仍
+不能说明什么。本课是一节附带书面练习的阅读课，没有运行任一生成模型。
+[英文原版](/learn/molecular-generation/open-generation-assets-2026/)是规范版本。
+
+## 比较约定
+
+Zatom-1 和 MolCraftDiffusion 都涉及三维生成，但目录记录确立的资产使用途径不同。
+公布检查点清单本身不能确立访问权限，代码许可也不会自动赋予权重或训练语料的
+使用条款。应逐项比较记录已经确立的事实，并把所得坐标作为候选提案，不能据此
+断言它们在物理上可行或具有药物用途。
+
+## Zatom-1
+
+Zatom-1 是面向三维分子与材料的多模态流匹配模型，旨在让生成和性质预测任务
+共用一个预训练模型。其仓库发布了推断、训练和评估代码，读者可以检查相应操作。
+Zenodo 记录提供完整的检查点发布集及生成样本归档。README 还给出获取已命名
+训练语料的脚本。这些是取得资产的途径，不是本课运行模型或复现训练的证据。
+
+仓库代码采用经过修改的 BSD-3-Clause 许可，其中增列了对贡献者公开提供的改进
+向该大学授予许可的条款。Zenodo 记录中的检查点和生成样本采用 CC BY 4.0。
+因此，再分发源码和再分发检查点涉及不同的许可。训练数据集另有自身条款，而该
+记录未予确立。
+README 列出 QM9、MP20、GEOM-Drugs、QMOF150、OMol25、Matbench 和 MPtrj，
+但没有说明这些语料的过滤、划分或整理程序。它还列出不同的检查点版本，却没有
+指定下游用途应选择哪一个。完整训练配方及归档坐标的物理有效性均未得到确立。
+
+## MolCraftDiffusion
+
+MolCraftDiffusion 是在笛卡尔空间中生成三维分子的模块化平台。它用统一的命令行、
+配置系统、数据流水线和检查点系统组织从头生成、性质引导、口袋条件生成等方法。
+其仓库提供推断、训练和评估代码的文档，读者可以检查这些接口。但是 README
+声明资产目录仓库目前为私有，访问需要具有权限的 Hugging Face token。它描述了
+归档数据集、检查点和示例配置，却没有确立读者可以取得这些资产。
+
+README 没有给出代码许可声明。页面中唯一带许可的行位于论文的 BibTeX 元数据，
+适用于文章而非软件。该记录也未确立权重或数据集的许可。页面未列出任何具体化学
+数据集或训练与验证划分，因此不能据此识别每个已发布检查点背后的语料。已发布
+检查点的数量也未说明。训练代码可用并不能补齐这些缺口。
+
+## 按维度记录开放状态
+
+以下七列保留目录中各自独立的维度。可用表示被引用的记录确立了访问或文档证据，
+不代表本课执行过资产。未核实表示记录没有确立该维度。特别是，下载数据的脚本
+可以支持数据配方字段标为可用，却不说明训练语料如何构建。
+
+| 资源 | 推断代码 | 训练代码 | 权重 | 架构 | 数据配方 | 训练数据 | 评估代码 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Zatom-1 | 可用 | 可用 | 可用 | 可用 | 可用 | 可用 | 可用 |
+| MolCraftDiffusion | 可用 | 可用 | 未核实 | 可用 | 未核实 | 未核实 | 可用 |
+
+## 推演案例
+
+一位读者希望运行其中一项发布资源。根据记录，读者需要取得什么，各项所得资产
+适用什么许可，这些许可分别覆盖流程的哪一部分？在提出有关训练模型或其输出的
+结论前，还需要核查什么？
+
+对于 Zatom-1，源码仓库提供遵循修改版 BSD-3-Clause 条款的推断、训练和评估
+代码。读者若要推断，需要从 Zenodo 选择并取得一个检查点。该检查点以及从同一
+记录取得的生成样本归档采用 CC BY 4.0，而非代码许可。下载脚本提供取得已命名
+语料的途径，但复现训练时仍需核查语料各自的条款，以及未说明的过滤和划分决定。
+对于 MolCraftDiffusion，读者可以检查代码和命令行，但取得所述检查点、数据集
+及可运行的示例配置需要具有访问权限的 token。记录没有确立这些步骤涉及的软件
+或资产许可。文章元数据中的许可无法填补这一空缺。任一途径都不能确立生成结构
+在物理上可行，或可用作药物。
+
+## 独立练习
+
+一位同事看到 Zatom-1 的数据配方字段为可用，又看到 MolCraftDiffusion 的归档
+链接，就说两者的训练语料都有完整文档。利用开放状态表和记录，指出各资源仍未
+核实的维度，并解释为何两项记录都不提供完整的训练配方。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+表中 Zatom-1 有 0 个未核实的开放状态维度。其数据配方字段为可用，依据是一个
+下载脚本，但记录未给出已命名语料的过滤、划分或整理程序。MolCraftDiffusion 有
+3 个未核实的维度，即 `weights`、`data_recipe` 和 `training_data`。归档链接既
+不能消除已声明的 token 访问限制，也不能识别每个检查点背后的语料。两行中训练
+代码的可用状态都无法重建这些缺失的决定。
+
+</details>
+
+## 适用范围
+
+本课没有运行任一模型，也没有生成样本。生成结构是候选提案，样本归档是一组
+坐标。记录未确立这些坐标在物理上可行，也未确立其中的化合物是药物。两项记录
+都未确立完整的训练配方。本课只在 Zatom-1 记录已命名语料的地方列出名称，不
+描述其构建过程，并将 MolCraftDiffusion 未命名的语料保留为未知。各资源保留自身
+的许可，本课仅转述记录对适用范围的解读。阅读开放状态字段不等于执行资产。
+
+## 来源
+
+目录记录 `model-zatom-1` 和 `model-molcraftdiffusion` 最后核实于
+2026-10-23。记录中的访问情况、开放状态、许可解读和限制界定了本课的范围。
+
+- `model-zatom-1` 记录了 [Zatom-1 仓库](https://github.com/Zatom-AI/zatom)、[README](https://raw.githubusercontent.com/Zatom-AI/zatom/main/README.md)、[许可文件](https://github.com/Zatom-AI/zatom/blob/main/LICENSE)和 [Zenodo 检查点及样本记录](https://zenodo.org/records/19766997)。
+- `model-molcraftdiffusion` 记录了 [MolCraftDiffusion 仓库](https://github.com/lcmd-epfl/MolCraftDiffusion)和 [README](https://raw.githubusercontent.com/lcmd-epfl/MolCraftDiffusion/main/README.md)。
+
+原创课程文字采用 CC BY 4.0，链接来源保留各自的条款。
+
+Last reviewed: 2026-10-23.

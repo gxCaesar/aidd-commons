@@ -1,0 +1,84 @@
+id: tool-polaris
+name: Polaris
+kind: software
+summary: A hosted platform for sharing drug-discovery datasets and benchmarks, with a Python client library that downloads datasets, loads benchmark splits and evaluates a method against a benchmark.
+canonical_url: https://github.com/polaris-hub/polaris
+identifiers:
+  - scheme: portal
+    value: "Polaris Hub service"
+    url: https://polarishub.io/
+  - scheme: documentation
+    value: "Polaris Python client documentation"
+    url: https://polaris-hub.github.io/polaris/stable/
+  - scheme: terms
+    value: "Polaris Platform Agreement, last updated 3 April 2024"
+    url: https://polarishub.io/legal/terms-of-use
+stages: [data-intake, model-development, evaluation]
+modalities: [small-molecule, image, sequence]
+tasks: [benchmark-evaluation, data-stewardship]
+relations: []
+status: { value: active, evidence: [commits, hub-home] }
+access_level: { value: open_source, evidence: [source-license] }
+openness:
+  inference_code: { value: available, evidence: [readme, client-documentation] }
+  training_code: { value: not_applicable, evidence: [readme] }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [readme, client-documentation] }
+licenses:
+  - name: Apache-2.0
+    scope: The licence stated in the polaris-hub/polaris repository, which covers the source code of the Python client distributed on PyPI as polaris-lib and on conda-forge as polaris. It covers that client code only and grants no right to use, redistribute or re-host the hosted Polaris Platform or the datasets, benchmarks and models it serves.
+    evidence: [source-license, readme]
+  - name: Polaris Platform Agreement
+    scope: The terms of the hosted Polaris Platform, operated by Valence Labs and last updated on 3 April 2024. The documentation is licensed on a revocable, non-exclusive, non-transferable and non-sublicensable basis limited to using the platform; the platform and its intellectual property may not be sub-licensed, sold, rented, lent, leased or distributed; use for building a similar or competitive product or service is prohibited; and a dataset uploaded by another user is governed by the licence stated with that dataset, which without one defaults to a right to use, display and perform it through the platform and to reproduce it on the platform as permitted by Valence Labs.
+    evidence: [terms-of-use]
+evidence:
+  - id: repository
+    url: https://github.com/polaris-hub/polaris
+    label: Polaris repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/polaris-hub/polaris/main/README.md
+    label: Polaris README
+    supports: [name, kind, summary, tasks, caveats]
+  - id: source-license
+    url: https://raw.githubusercontent.com/polaris-hub/polaris/main/LICENSE
+    label: Polaris Apache-2.0 licence file
+    supports: []
+  - id: client-documentation
+    url: https://polaris-hub.github.io/polaris/stable/
+    label: Polaris Python client documentation
+    supports: [identifiers, summary, tasks]
+  - id: hub-home
+    url: https://polarishub.io/
+    label: Polaris Hub home page
+    supports: [identifiers, summary, caveats]
+  - id: datasets-listing
+    url: https://polarishub.io/datasets
+    label: Polaris Hub dataset listing
+    supports: [modalities, caveats]
+  - id: models-listing
+    url: https://polarishub.io/models
+    label: Polaris Hub model listing
+    supports: [caveats]
+  - id: small-molecule-guidelines
+    url: https://polarishub.io/guidelines/small-molecules
+    label: Polaris small-molecule curation guidelines
+    supports: [caveats]
+  - id: terms-of-use
+    url: https://polarishub.io/legal/terms-of-use
+    label: Polaris Platform Agreement terms of use
+    supports: [identifiers, caveats]
+  - id: commits
+    url: https://github.com/polaris-hub/polaris/commits/main
+    label: Polaris commit history
+    supports: [caveats]
+caveats:
+  - The Apache-2.0 licence covers the client library only; the hosted service is operated by Valence Labs under the Polaris Platform Agreement, which restricts redistribution of the platform and use for a competing service.
+  - The client library's most recent commit shown is dated 30 July 2025, while the hosted service is live and lists datasets, benchmarks, competitions and models.
+  - "The Hub's own curation guidance is incomplete: the small-molecule guidelines page marks the Data Curation paper as Planned and the Splitting Methods paper as In Progress, so no published curation or split rule is available."
+  - The models page lists six models but shows no weight or checkpoint download and no model-specific licence, so the weights dimension stays unverified.
+acknowledgements: []
+last_verified: "2026-10-21"

@@ -1,0 +1,59 @@
+id: model-chai-2
+name: Chai-2
+kind: model
+summary: Chai-2 is a protein and antibody design model from Chai Discovery, offered through an access form for commercial organisations and limited non-commercial academic use.
+canonical_url: https://www.chaidiscovery.com/product
+identifiers:
+  - scheme: paper
+    value: "Drug-like antibody design against challenging targets with atomic precision; DOI 10.1101/2025.11.29.691346"
+    url: https://www.biorxiv.org/content/10.1101/2025.11.29.691346v2.full.pdf
+  - scheme: paper
+    value: "Zero-shot antibody design in a 24-well plate; DOI 10.1101/2025.07.05.663018"
+    url: https://www.biorxiv.org/content/10.1101/2025.07.05.663018
+stages: [design, candidate-nomination]
+modalities: [protein, antibody]
+tasks: [protein-design]
+relations: []
+status: { value: unverified }
+access_level: { value: gated, evidence: [product-page] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://www.chaidiscovery.com/product
+    label: Official source for additional resource links (reviewed 2026-09-08, re-opened 2026-10-21)
+    supports: [identifiers]
+  - id: product-page
+    url: https://www.chaidiscovery.com/product
+    label: Chai Discovery product page (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: repository
+    url: https://github.com/chaidiscovery/chai-lab
+    label: Chai Lab repository (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: report-record
+    url: https://api.biorxiv.org/details/biorxiv/10.1101/2025.11.29.691346
+    label: Chai-2 technical report record (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: early-report-record
+    url: https://api.biorxiv.org/details/biorxiv/10.1101/2025.07.05.663018
+    label: Chai-2 antibody design report record (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: terms-page
+    url: https://www.chaidiscovery.com/product
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one.
+  - The chai-lab repository states licence terms for Chai-1 only and gives no code or weight terms for Chai-2, so the Chai-2 weights stay unverified.
+  - The product page offers an access form for commercial organisations and limited non-commercial academic use, and states no licence grant, pricing or detailed usage conditions.
+  - The product page describes Chai-1 in neither model nor access terms.
+acknowledgements: []
+last_verified: "2026-10-23"

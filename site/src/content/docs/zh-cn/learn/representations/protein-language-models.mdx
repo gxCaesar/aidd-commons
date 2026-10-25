@@ -1,0 +1,113 @@
+---
+title: 蛋白质语言模型及其发布边界
+description: 从发布资产、训练证据和许可范围阅读四份注明日期的蛋白质语言模型记录。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="representations/protein-language-models" />
+
+<ScrollableRegions />
+
+英文原文：[Protein language models and their release boundaries](/learn/representations/protein-language-models/)。
+
+## 学习目标与前置知识
+
+学完[蛋白、复合物、细胞状态与知识图谱表示](/zh-cn/learn/representations/complex-cell-and-knowledge-graphs/)后，这份注明日期的阅读材料检查四份蛋白质语言模型记录实际提供了什么。完成本课后，你应能区分模型描述与可取得的检查点，逐项阅读资产的开放状态，并指出已发布材料没有回答哪些训练与许可问题。
+
+这是一份附有书面练习的来源阅读。本课没有运行模型、载入检查点或下载数据集。这些记录不共享实测比较协议，因此不支持性能排名。
+
+## 任务约定
+
+蛋白质语言模型以蛋白质序列作为其声明的输入，输出取决于具体发布。ESMC 被介绍为序列表示模型，Prot42 与 PPI-Llama2 被描述用于以靶点为条件的结合蛋白生成。ESM Cambrian 记录涵盖一个还包括折叠模型、稀疏自编码器、图谱与结合蛋白设计系统的集合。这些伴随资产并不全是 ESMC 检查点的输出。
+
+本课的约定比模型的拟议用途更窄。论文可以描述架构或任务，却不提供核查所需的代码、权重或数据。模型卡可以确立检查点，同时让训练配方与复用条款悬而未决。下文逐项按资产阅读记录。
+
+## ESM Cambrian
+
+[Biohub ESM 仓库](https://github.com/Biohub/esm)发布 ESMC 6B、ESMFold2 与 ESMC 稀疏自编码器，同时宣布 ESM Atlas 与结合蛋白设计系统。其 README 称 ESMC 的代码、权重与模型变体可通过 Hugging Face 获得。仓库把 ESM Atlas 描述为 6.8 billion 个蛋白质的图谱，并称 ESMFold2 的吞吐能力促成了超过 1 billion 个结构的预测。这些是发布方的描述，并非本课测得的数值。
+
+[MIT 许可文件](https://raw.githubusercontent.com/Biohub/esm/main/LICENSE.md)与 README 覆盖已发布源码和权重。README 没有为图谱或结合蛋白设计系统单独指明条款。ESMC 6B 与稀疏自编码器的模型卡还在 `mit` 旁列出 `other`，并链接一份未解释该附加标签的 Acceptable Use Policy。只有 [ESMFold2 模型卡](https://huggingface.co/biohub/ESMFold2)指明训练语料，即 Protein Data Bank 和 AlphaFold DB。这不能确立整个 Cambrian 集合的数据配方。
+
+## ESMC
+
+[ESMC 6B 模型卡](https://huggingface.co/biohub/ESMC-6B)标识了来自同一 Biohub 项目、拥有 6 billion 参数的检查点。它指明 UniRef、MGnify 与 Joint Genome Institute 为训练序列来源，却没有说明这些来源的许可或使用条款。项目 README 确立 ESMC 6B 的推理代码与权重已发布，但没有确立是否包含训练代码。
+
+该模型卡与 ESM Cambrian 仓库描述的是重叠资产，并非彼此独立的模型发布或性能证据。模型卡列出 `mit` 和 `other` 两个许可标签，并链接 Acceptable Use Policy，却没有说明 `other` 覆盖什么。因此，项目代码与权重的 MIT 声明没有解决模型卡提出的每一项复用问题。
+
+## Prot42
+
+[Prot42 论文](https://arxiv.org/abs/2504.04453)描述自回归 decoder-only 模型，包括 Prot42-B 与 Prot42-L，用于靶点感知的结合蛋白生成，支持最长 8,192 个残基的上下文。论文指明 UniRef50 为预训练语料，STRING 与 PDIdb 2010 为微调数据。这些是论文中具名的语料，并不等于已核实可取得的 Prot42 训练材料。
+
+摘要声称模型公开可用，但文中指向的 [Hugging Face 组织页面](https://huggingface.co/inceptionai)称其名称仅作预留，并未列出公开模型。目录所做的 Hugging Face 模型搜索和 GitHub 仓库搜索也没有找到 Prot42 发布。可取得的权重、代码与模型许可均未得到确立。即使论文描述了这个模型家族，其访问级别与全部七个开放维度仍是未核实。
+
+## PPI-Llama2
+
+[PPI-Llama2 模型卡](https://huggingface.co/ChatterjeeLab/PPI-Llama2)提供已发布权重。该模型改用 Meta 的 Llama2 架构，从靶点序列生成结合蛋白，而不使用结构输入。该工作见于 [ICLR 2024 workshop 列表](https://iclr.cc/virtual/2024/22792)。权重须经人工审核才能访问。模型卡的条件要求研究或教育目的、非商业使用，以及同意不为生成的序列申请专利。权重采用 CC BY-NC-ND 4.0，而模型卡没有重述底层 Llama2 权重的条款。
+
+没有找到该模型的源码仓库，模型卡也没有给出代码链接。它说模型在蛋白质相互作用序列上训练，却没有指明语料或其构建过程。因此代码与数据维度仍是未核实。这里的权重可用，表示存在可识别但访问受限的检查点，并不表示访问不受限或有完整的复现包。
+
+## 按维度记录开放状态
+
+可用表示目录确立了资产或其文档，并不表示本课使用过。未核实表示已打开的证据没有确立该维度。ESM Cambrian 的训练数据一栏指其 ESMFold2 模型卡所列语料，而非整个集合都具有已核实的数据配方。
+
+| 记录 | 推理代码 | 训练代码 | 权重 | 架构 | 数据配方 | 训练数据 | 评估代码 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| ESM Cambrian | 可用 | 未核实 | 可用 | 可用 | 未核实 | 可用 | 未核实 |
+| ESMC | 可用 | 未核实 | 可用 | 可用 | 未核实 | 可用 | 未核实 |
+| Prot42 | 未核实 | 未核实 | 未核实 | 未核实 | 未核实 | 未核实 | 未核实 |
+| PPI-Llama2 | 未核实 | 未核实 | 可用，访问受限 | 可用 | 未核实 | 未核实 | 未核实 |
+
+前两行属于同一项目。Prot42 有论文中的声明，却没有找到发布入口。PPI-Llama2 有访问受限的检查点，却没有找到实现。把这些状态压成单一的开放或封闭标签，会抹掉读者需要作出的判断。
+
+## 训练语料与覆盖范围
+
+| 记录 | 语料陈述 | 仍未核实的内容 |
+| --- | --- | --- |
+| ESM Cambrian | ESMFold2 模型卡指明 Protein Data Bank 与 AlphaFold DB | Cambrian 集合的数据配方，以及 ESM Atlas 在训练中的角色 |
+| ESMC | 模型卡指明 UniRef、MGnify 与 Joint Genome Institute | 来源条款与数据配方 |
+| Prot42 | 论文指明 UniRef50、STRING 与 PDIdb 2010 | Prot42 专属数据的可取得性与配方 |
+| PPI-Llama2 | 模型卡称使用蛋白质相互作用序列 | 语料身份与构建程序 |
+
+ESM Atlas 的规模描述的是已发布图谱，并非已核实的训练集清单。具名来源也不意味着能够还原准确的训练行、过滤规则和划分。任何一条记录都不足以推断对特定靶点序列的覆盖，也不支持模型间的匹配比较结果。
+
+## 推演案例
+
+设一位读者正在为蛋白质表示研究整理资产清单，需要能够识别的检查点、支配它的条款以及有记录的训练来源。这是构造的来源核查案例，并非模型实验。
+
+1. ESMC 有可识别的检查点，模型卡指明三个训练序列来源。项目为代码与权重声明 MIT，但模型卡中未经解释的 `other` 标签与 Acceptable Use Policy 仍需厘清，才能判断复用。
+2. ESM Cambrian 还提供伴随资产，但图谱规模并非训练配方。ESMFold2 的语料陈述不能赋给每一件 Cambrian 资产。
+3. Prot42 在论文中点名语料，但其所述发布入口没有公开模型。论文声明不能填上权重或代码栏。
+4. PPI-Llama2 有可识别的权重，但访问受限、语料未具名，而且底层模型条款没有重述。识别出检查点并不等于可以自由复用。
+
+站得住脚的清单逐项列出资产与悬而未决的条款。它不声称复现了模型，也不声称哪一个模型表现更好。
+
+## 独立练习
+
+一位同事打算把 ESM Atlas 的数量当作 ESMC 的训练集大小，从论文所指组织下载 Prot42，并因为 PPI-Llama2 的模型卡公开就把它的已发布权重当作不受限。请为每项主张指出一项缺失的证据，并说明当前记录允许说什么。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+图谱被描述为包含 6.8 billion 个蛋白质的地图。仓库和 ESMC 模型卡都没有把它指认为 ESMC 训练集，因此不能把该数量改写为训练集大小。Prot42 指向的组织页面没有列出公开模型，搜索也没有找到发布，所以其权重仍为未核实。PPI-Llama2 的模型卡标识了权重，但访问受限，并列出研究或教育、专利与非商业条件。它的 CC BY-NC-ND 4.0 标签也没有解决未说明的 Llama2 底层条款。当前记录支持附带这些限制的资产清单，并不支持拟议的下载或不受限复用。
+
+</details>
+
+## 适用范围与材料未展示的内容
+
+这四条记录最后核验于 2026-10-21。它们确立了不同的发布状态、来源陈述和许可边界。它们没有确立共同基准、已复现的推理、完整的训练来源、所有下游用途的许可或读者学习成果。本课没有执行模型。
+
+## 来源
+
+<div data-case-sources>
+
+- [Biohub ESM 仓库](https://github.com/Biohub/esm)、[ESMC 6B 模型卡](https://huggingface.co/biohub/ESMC-6B)、[ESMFold2 模型卡](https://huggingface.co/biohub/ESMFold2)及 [MIT 许可文件](https://raw.githubusercontent.com/Biohub/esm/main/LICENSE.md)
+- [Prot42 论文](https://arxiv.org/abs/2504.04453)及其指向的 [Hugging Face 组织页面](https://huggingface.co/inceptionai)
+- [PPI-Llama2 模型卡](https://huggingface.co/ChatterjeeLab/PPI-Llama2)与 [ICLR 2024 workshop 列表](https://iclr.cc/virtual/2024/22792)
+
+</div>
+
+原创课程文字采用 CC BY 4.0。链接的资产保留各自条款。
+
+最后审阅：2026-10-23。

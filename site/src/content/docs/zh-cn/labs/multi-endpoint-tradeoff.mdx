@@ -1,0 +1,78 @@
+---
+title: 不合成总分的多终点覆盖
+description: 按终点家族统计获准纳入的 ChEMBL 测量，并保留缺失家族。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[Multi-endpoint coverage without a score](/labs/multi-endpoint-tradeoff/)。
+
+## 准备与学习目标
+
+本实验先问已声明的化合物队列究竟覆盖了哪些测量，再讨论疗效、安全性或暴露的比较。请先读[决策单位课](/zh-cn/learn/foundations/decision-unit-scope/)和[从代谢到安全性](/zh-cn/learn/admet-pk/metabolism-to-safety/)。你将区分活性行与独立测量，在每个报告值旁保留单位和离散程度，并把未测家族标为缺失。
+
+## 全新独立计算
+
+本模式是在冻结协议下进行全新独立计算。使用项目的 Python 3.11 环境。第一个命令把 ChEMBL 37 快照下载到单独缓存，需要联网。其余命令离线读取缓存，不需要加速器，也不更改源数据。导出命令仅在协议和算术检查全部通过后覆盖已提交的小型摘要。
+
+```bash
+.venv/bin/python labs/multi_endpoint_tradeoff/run_lab.py download
+.venv/bin/python labs/multi_endpoint_tradeoff/inspect_multi_endpoint_tradeoff.py show
+.venv/bin/python labs/multi_endpoint_tradeoff/inspect_multi_endpoint_tradeoff.py check
+.venv/bin/python labs/multi_endpoint_tradeoff/export_summary.py
+.venv/bin/python -m pytest labs/tests/multi_endpoint_tradeoff -q
+```
+
+## 来源记录与测量规则
+
+已声明队列有 15 个 ChEMBL 种子分子，解析为 10 个母体分子。读取器复用决策单位实验的 ChEMBL 37 缓存格式、母体解析及准入规则。点值行必须报告 `AC50`、`EC50`、`IC50`、`Kd` 或 `Ki`，单位为 `nM`、关系符为 `=`，并满足已声明的整理和质量标记。`>` 等界限值在相邻实验的人口普查中仍计为界限值，但不进入这里的数值摘要。一项独立点值测量由母体、测定、文献和标准类型共同唯一确定。同一键的两行只贡献一个中位值。
+
+家族映射事先明示。`AC50`、`EC50`、`IC50` 进入与疗效相关的反应效力代理家族。`Kd` 和 `Ki` 作为亲和力测量进入 `other`。任何新准入而未映射的类型也进入 `other`。准入标准类型中没有能标识毒性或暴露的类型，所以这两个家族都没有测量。这说明的是本协议的覆盖范围，不能推断这些化合物从未接受过相关检测。
+
+## 各家族测量
+
+2026-10-23 的已提交计算得到 488 条准入点值行和 486 项独立测量。后者与同一 ChEMBL 37 队列的决策单位实验计数相同。下列每个中位数和四分位距描述单位为 `nM` 的独立报告值。四分位数在 25% 和 75% 位置使用线性插值。破折号表示没有可计算的值。
+
+| 家族 | 独立测量 | 文献 | 测定 | 中位数 (`nM`) | 四分位距 (`nM`) | 无测量母体 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 疗效相关反应效力 | 462 | 208 | 459 | 1885 | 9839.5 | 1 |
+| 毒性 | 0 | 0 | 0 | — | — | 10 |
+| 暴露 | 0 | 0 | 0 | — | — | 10 |
+| 其他亲和力 | 24 | 14 | 24 | 1600 | 6970.0325 | 6 |
+
+中位数只是对不同测定、靶点和终点类型的描述，不是跨靶点的效力估计，也不是临床疗效估计。独立测量数及离散程度使孤立中位数的局限显露出来。
+
+## 各母体化合物的覆盖
+
+下表列出同一测量键的重复行合并后的独立测量。最后一列统计至少有一项测量的具名家族，即疗效相关、毒性及暴露。`other` 保留可见，但不会把亲和力改称为暴露或毒性。
+
+| 母体 | 反应效力 | 毒性 | 暴露 | 其他亲和力 | 已覆盖具名家族 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `CHEMBL109` VALPROIC ACID | 27 | 0 | 0 | 0 | 1 |
+| `CHEMBL1144` PRAVASTATIN | 33 | 0 | 0 | 3 | 1 |
+| `CHEMBL13829` MIXTURE OF MMC AND TA | 1 | 0 | 0 | 0 | 1 |
+| `CHEMBL23393` SODIUM LAURYL SULFATE | 3 | 0 | 0 | 1 | 1 |
+| `CHEMBL25` ASPIRIN | 98 | 0 | 0 | 5 | 1 |
+| `CHEMBL275835` DARBUFELONE | 12 | 0 | 0 | 0 | 1 |
+| `CHEMBL441` THIOPENTAL | 2 | 0 | 0 | 0 | 1 |
+| `CHEMBL588` FENOLDOPAM | 36 | 0 | 0 | 15 | 1 |
+| `CHEMBL593` DELAVIRDINE | 250 | 0 | 0 | 0 | 1 |
+| `CHEMBL906` MINOXIDIL SULFATE | 0 | 0 | 0 | 0 | 0 |
+
+全部 10 个母体都有空的具名家族。全部 10 个母体的毒性和暴露家族为空。`CHEMBL906` 还缺少反应效力测量，因此覆盖 0 个具名家族。已提交摘要逐一列出有空家族的母体及其家族。空白家族不表示有利的测定结果。
+
+## 材料的边界
+
+这 15 个种子是为覆盖准入规则而选，并非随机样本。本实验不拟合模型、不估计性能、不合并家族、不产生分数，也不排列化合物。不能从测量缺失推断安全、无相互作用风险或具有生物利用度。反应效力类型本身不确立治疗疗效，而跨测定的汇总中位数不能代替各自的实验语境。本地快照含来源活性记录，已提交摘要仅含计数和描述统计，不含活性行。
+
+## 来源与署名
+
+[多终点整合实验](/zh-cn/labs/multi-endpoint-integration/)在这份清单上再走一步:按母体分子连接
+能连接的族,让读者看到究竟有多少化合物带着不止一个实测族。
+
+
+来源快照的 [ChEMBL 37 版本状态](https://www.ebi.ac.uk/chembl/api/data/status.json)和[活性记录](https://www.ebi.ac.uk/chembl/api/data/activity.json)于 2026-10-21 读取。ChEMBL 37 的发布日期是 2026-05-01。[版本许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)和 [README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README)于 2026-10-21 读取。数据许可为 Creative Commons Attribution-ShareAlike 3.0 Unported。原创课程文字采用 CC BY 4.0，原创实验代码采用 Apache-2.0。
+
+最后复核于 2026-10-23。

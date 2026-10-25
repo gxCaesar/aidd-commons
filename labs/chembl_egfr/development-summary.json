@@ -1,0 +1,218 @@
+{
+  "artifact_type": "reviewed-development-summary",
+  "data": {
+    "parent_overlap": 0,
+    "primary": {
+      "assay_chembl_id": "CHEMBL5736995",
+      "duplicate_parent_count": 57,
+      "exclusion_counts": {
+        "missing_structure": 9
+      },
+      "input_rows": 975,
+      "maximum_duplicate_range": 3.5999999999999996,
+      "median_duplicate_range": 0.4800000000000004,
+      "parent_count": 902,
+      "retained_rows": 966
+    },
+    "replication": {
+      "assay_chembl_id": "CHEMBL3705421",
+      "duplicate_parent_count": 3,
+      "exclusion_counts": {},
+      "input_rows": 173,
+      "parent_count": 170,
+      "retained_rows": 173
+    }
+  },
+  "limitations": [
+    "Validation metrics are model-selection evidence, not primary-test performance.",
+    "The primary scaffold-disjoint test and assay-level replication have not run.",
+    "Repeated parent measurements are aggregated by the frozen median rule and expose assay noise."
+  ],
+  "locked_evaluations": {
+    "primary": "not_run",
+    "replication": "not_run"
+  },
+  "protocol_version": "chembl37-egfr-representation-v1",
+  "reviewed_on": "2026-09-05",
+  "schema_version": "aidd-commons.chembl-egfr-development-summary.v1",
+  "selection": {
+    "grid_scores": {
+      "descriptor_ridge": [
+        {
+          "alpha": 0.001,
+          "metrics": {
+            "mae": 1.2133173130174673,
+            "rmse": 1.971589782485343,
+            "spearman": 0.08059746067318238,
+            "spearman_status": "defined"
+          }
+        },
+        {
+          "alpha": 0.01,
+          "metrics": {
+            "mae": 1.0700209448152314,
+            "rmse": 1.5236725095170784,
+            "spearman": 0.052461115846602804,
+            "spearman_status": "defined"
+          }
+        },
+        {
+          "alpha": 0.1,
+          "metrics": {
+            "mae": 0.6240475477094708,
+            "rmse": 0.8127487142127359,
+            "spearman": 0.3327826542818916,
+            "spearman_status": "defined"
+          }
+        },
+        {
+          "alpha": 1.0,
+          "metrics": {
+            "mae": 0.6199548969768602,
+            "rmse": 0.8028401627301208,
+            "spearman": 0.39146177329129045,
+            "spearman_status": "defined"
+          }
+        },
+        {
+          "alpha": 10.0,
+          "metrics": {
+            "mae": 0.5825176965998985,
+            "rmse": 0.8045550865058871,
+            "spearman": 0.40673913463631534,
+            "spearman_status": "defined"
+          }
+        },
+        {
+          "alpha": 100.0,
+          "metrics": {
+            "mae": 0.4897839630283756,
+            "rmse": 0.6698005115334376,
+            "spearman": 0.4059600919648812,
+            "spearman_status": "defined"
+          }
+        },
+        {
+          "alpha": 1000.0,
+          "metrics": {
+            "mae": 0.44668050781385205,
+            "rmse": 0.6080355481209703,
+            "spearman": 0.3639156847219018,
+            "spearman_status": "defined"
+          }
+        }
+      ],
+      "morgan_ridge": [
+        {
+          "alpha": 0.001,
+          "metrics": {
+            "mae": 0.4535791424085301,
+            "rmse": 0.6085498253811906,
+            "spearman": 0.5809364215510019,
+            "spearman_status": "defined"
+          }
+        },
+        {
+          "alpha": 0.01,
+          "metrics": {
+            "mae": 0.44642872668815875,
+            "rmse": 0.5993081792821835,
+            "spearman": 0.5895656334729297,
+            "spearman_status": "defined"
+          }
+        },
+        {
+          "alpha": 0.1,
+          "metrics": {
+            "mae": 0.4069056336907026,
+            "rmse": 0.5530189788034804,
+            "spearman": 0.623200681327024,
+            "spearman_status": "defined"
+          }
+        },
+        {
+          "alpha": 1.0,
+          "metrics": {
+            "mae": 0.37286364587169407,
+            "rmse": 0.520719704822371,
+            "spearman": 0.6495089045473242,
+            "spearman_status": "defined"
+          }
+        },
+        {
+          "alpha": 10.0,
+          "metrics": {
+            "mae": 0.3766583324923752,
+            "rmse": 0.5321042397077189,
+            "spearman": 0.6019490663667071,
+            "spearman_status": "defined"
+          }
+        },
+        {
+          "alpha": 100.0,
+          "metrics": {
+            "mae": 0.38775136078985756,
+            "rmse": 0.5409181060304687,
+            "spearman": 0.5615655016287788,
+            "spearman_status": "defined"
+          }
+        },
+        {
+          "alpha": 1000.0,
+          "metrics": {
+            "mae": 0.4399146946425525,
+            "rmse": 0.5878659815684995,
+            "spearman": 0.44683115579781746,
+            "spearman_status": "defined"
+          }
+        }
+      ]
+    },
+    "metrics": {
+      "descriptor_ridge": {
+        "mae": 0.44668050781385205,
+        "rmse": 0.6080355481209703,
+        "spearman": 0.3639156847219018,
+        "spearman_status": "defined"
+      },
+      "morgan_ridge": {
+        "mae": 0.37286364587169407,
+        "rmse": 0.520719704822371,
+        "spearman": 0.6495089045473242,
+        "spearman_status": "defined"
+      },
+      "train_mean": {
+        "mae": 0.5087103358693635,
+        "rmse": 0.6423290202533788,
+        "spearman": null,
+        "spearman_status": "undefined_constant_prediction"
+      }
+    },
+    "selected_alphas": {
+      "descriptor_ridge": 1000.0,
+      "morgan_ridge": 1.0
+    }
+  },
+  "software": {
+    "numpy": "2.4.6",
+    "python": "3.11.15",
+    "rdkit": "2025.09.6",
+    "scikit_learn": "1.9.0"
+  },
+  "split": {
+    "actual_counts": {
+      "test": 132,
+      "train": 634,
+      "validation": 136
+    },
+    "scaffold_counts": {
+      "primary": 238,
+      "replication": 23
+    },
+    "target_counts": {
+      "test": 136,
+      "train": 631,
+      "validation": 135
+    }
+  }
+}

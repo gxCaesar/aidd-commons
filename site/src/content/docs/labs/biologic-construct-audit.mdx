@@ -1,0 +1,150 @@
+---
+title: Therapeutic construct-record audit
+description: Read real therapeutic records and distinguish modality, product-specific construct, production host and intended function.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+Read the [construct identity lesson](/learn/biologics-design/construct-identity-and-objectives/) first. This laboratory asks what each therapeutic entity's own record states about its molecular identity. You will reproduce field coverage, distinguish native protein information from a product-specific construct, and explain why a missing production host prevents a source record from defining that construct. You will also distinguish disagreement between stated values from differences in coverage. The [canonical English guide](/labs/biologic-construct-audit/) is this page.
+
+## Mode and commands
+
+The mode is fresh independent computation under a frozen protocol. Use the project Python 3.11 environment and CPU. No accelerator or additional dependency is needed. For a fresh network fetch, `download` requests the declared UniProt search, its individual entries and selected DailyMed labels. It records the exact URLs, response lengths, source versions and UTC retrieval time. It replaces the embedded source snapshot only after validation.
+
+```bash
+.venv/bin/python labs/biologic_construct_audit/run_lab.py download
+.venv/bin/python labs/biologic_construct_audit/inspect_biologic_construct_audit.py show
+.venv/bin/python labs/biologic_construct_audit/inspect_biologic_construct_audit.py check
+.venv/bin/python labs/biologic_construct_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/biologic_construct_audit -q
+```
+
+For an offline fresh independent computation, retain the committed source snapshot and start with the following commands. They read the same selected passages that produced the committed observations below.
+
+```bash
+.venv/bin/python labs/biologic_construct_audit/inspect_biologic_construct_audit.py show
+.venv/bin/python labs/biologic_construct_audit/inspect_biologic_construct_audit.py check
+.venv/bin/python labs/biologic_construct_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/biologic_construct_audit -q
+```
+
+`show` prints the source-level audit and normalized field values. `check` recomputes its invariants and exits non-zero on failure. Both write nothing. The exporter overwrites only the compact summary after the protocol and audit checks pass. It writes no summary when a check fails. A later live fetch can change the source passages, so the tables below describe the recorded snapshot.
+
+## Records and four-field rules
+
+The counted unit is one named therapeutic entity. A UniProt accession can mention several products, so its pharmaceutical annotation is read for each selected product separately. DailyMed contributes the declared description and mechanism passages. Native protein function, target cross-references and disease indications cannot fill a missing product-specific field.
+
+| Field | Stated rule |
+| --- | --- |
+| Modality | Count the product's explicit biological class in its label. A reviewed UniProt protein entry that names the pharmaceutical product and protein establishes the broad protein modality. |
+| Construct | Count product-specific components, assembly or sequence alteration in the selected passage. A product name or an unspecified glycosylation difference is insufficient. Retain whether the passage distinguishes the parts of a multi-chain entity. |
+| Expression system | Count a named production host explicitly linked to the product. The native source organism does not establish an expression host. |
+| Intended function | Count an explicit product action in the pharmaceutical annotation or mechanism section. An endogenous protein's function or a disease indication does not supply it. |
+
+A field counts at entity level when an admitted source record states it. Source records remain separate. Definition status requires modality, product-specific construct and production host together in the same record. Function remains a separate fourth field. A modality alone is not a construct, and a construct without a production host does not satisfy the definition rule.
+
+## Observed entity coverage
+
+The committed computation reads the recorded snapshot and applies the rules above. The software versions identify the computation, rather than a required minimum environment.
+
+| Computation item | Observed value |
+| --- | --- |
+| Computation date | 2026-10-23 |
+| Source retrieval time | 2026-10-23T14:25:57+00:00 |
+| Python | 3.11.15 |
+| aidd-commons-labs | 0.2.0rc1 |
+| Therapeutic entities | 6 |
+
+| Entity | Modality | Construct | Expression system | Intended function | Fields stated | Defined in a source record |
+| --- | --- | --- | --- | --- | ---: | --- |
+| adalimumab | stated | stated | stated | stated | 4 | yes, DailyMed |
+| agalsidase-beta | stated | stated | stated | stated | 4 | yes, DailyMed |
+| etanercept | stated | stated | stated | stated | 4 | yes, DailyMed |
+| human-insulin-humulin | stated | unstated | unstated | unstated | 1 | no |
+| insulin-lispro | stated | stated | unstated | unstated | 2 | no |
+| reteplase | stated | stated | unstated | stated | 3 | no |
+
+| Field | Stated | Unstated |
+| --- | ---: | ---: |
+| Modality | 6 | 0 |
+| Construct | 5 | 1 |
+| Expression system | 3 | 3 |
+| Intended function | 4 | 2 |
+
+| Coverage group | Entities |
+| --- | --- |
+| All 4 fields | adalimumab, agalsidase-beta, etanercept |
+| 2–3 fields | insulin-lispro, reteplase |
+| 1 field | human-insulin-humulin |
+| 0 fields | none |
+
+## Constructs and production hosts
+
+The source-level audit preserves assembly and distinguished multi-chain parts separately from the construct flag. An unstated assembly or an undistinguished part describes the selected passage's coverage.
+
+| Entity | Source | Assembly stated | Multi-chain parts distinguished |
+| --- | --- | --- | --- |
+| adalimumab | DailyMed | heavy and light chains | yes |
+| agalsidase-beta | DailyMed | homodimer | yes |
+| agalsidase-beta | UniProt | unstated | no |
+| etanercept | DailyMed | dimer | yes |
+| etanercept | UniProt | unstated | no |
+| human-insulin-humulin | UniProt | unstated | no |
+| insulin-lispro | UniProt | unstated | no |
+| reteplase | UniProt | unstated | no |
+
+Etanercept's UniProt passage names the receptor and Fc components without stating their assembly. Its DailyMed description supplies the dimeric assembly and CHO production host. The selected Humulin passage names a product without specifying its construct or host. The underlying medicine does not acquire those omissions from this record.
+
+| Source-level gap | Entities | Source |
+| --- | --- | --- |
+| Construct stated without production host | etanercept, insulin-lispro, reteplase | UniProt |
+| Production host stated without construct | agalsidase-beta | UniProt |
+
+The known-bad tests present a modality-only record reported as defined and a construct reported as defined without a host. The audit refuses both. A record with neither a construct nor a host also cannot be reported as defined.
+
+## Differences between sources
+
+Only fields stated by both sources are compared for disagreement. Silence in one source remains a coverage difference. The committed comparison found no disagreement in the jointly stated fields and found the following coverage differences.
+
+| Entity | Field | Stated by | Unstated in |
+| --- | --- | --- | --- |
+| agalsidase-beta | construct | DailyMed | UniProt |
+| agalsidase-beta | intended function | DailyMed | UniProt |
+| etanercept | expression system | DailyMed | UniProt |
+
+These observations concern the selected product passages. They do not establish agreement between complete databases or permit filling a missing source field from the other source.
+
+## Independent interpretation
+
+Use `show` to explain why agalsidase-beta is defined in its DailyMed record but remains undefined in its UniProt record. Then explain why the Humulin passage cannot be reported as defining a construct. Decide whether the missing fields in either record establish anything about the medicine itself.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+DailyMed states agalsidase-beta's modality, homodimeric construct and CHO production host together. The selected UniProt passage states a host but supplies no product-specific construct under the frozen rule, so that source record remains undefined. Its missing intended-function statement is recorded separately. The Humulin passage supplies modality alone. Neither omission shows that the therapeutic entity lacks a construct, a production host or a biological function.
+
+</details>
+
+## Limits of the material
+
+The audit reads what each entity's own selected record states. A field the record does not state is not a field the entity lacks. The product list is a bounded teaching cohort, and the selected passages do not measure coverage across all therapeutics or complete source records. Counts of stated fields do not rank the entities. A record that satisfies the definition rule does not thereby establish developability or therapeutic-candidate status. Reader learning has not been observed.
+
+## Sources and terms
+
+The following source passages were fetched and read on 2026-10-23. The snapshot retains the pharmaceutical annotations from UniProt and the declared description and mechanism paragraphs from DailyMed. The [construct identity lesson](/learn/biologics-design/construct-identity-and-objectives/) was read on the same date.
+
+| Source | Record | Recorded version |
+| --- | --- | ---: |
+| UniProt | [P00750, tissue-type plasminogen activator](https://rest.uniprot.org/uniprotkb/P00750.json) | 282 |
+| UniProt | [P01308, insulin](https://rest.uniprot.org/uniprotkb/P01308.json) | 284 |
+| UniProt | [P06280, alpha-galactosidase A](https://rest.uniprot.org/uniprotkb/P06280.json) | 253 |
+| UniProt | [P20333, TNFRSF1B](https://rest.uniprot.org/uniprotkb/P20333.json) | 247 |
+| DailyMed | [ENBREL, etanercept](https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/a002b40c-097d-47a5-957f-7a7b1807af7f.xml) | 218 |
+| DailyMed | [HUMIRA, adalimumab](https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/a06a9aec-fd5b-4c3e-a81f-eb46bb384100.xml) | 6 |
+| DailyMed | [FABRAZYME, agalsidase beta](https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/988513ab-b06f-4dd0-93f7-d2d4531dcce4.xml) | 35 |
+
+Original guide prose is CC BY 4.0 and laboratory code is Apache-2.0. Third-party annotations retain their source terms. The protocol assigns no reuse licence to DailyMed label text. UniProt provides its [source terms](https://rest.uniprot.org/help/license). Last reviewed on 2026-10-23.

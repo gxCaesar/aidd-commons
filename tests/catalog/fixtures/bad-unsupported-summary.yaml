@@ -1,0 +1,31 @@
+id: unsupported-summary
+name: Unsupported Summary
+kind: fixture
+summary: Local fixture with a summary that has no supporting evidence.
+canonical_url: https://example.org/unsupported-summary
+identifiers: []
+stages: [discovery]
+modalities: [small-molecule]
+tasks: [catalog-testing]
+relations: []
+status:
+  value: unverified
+access_level:
+  value: unverified
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: fixture-source
+    url: https://example.org/unsupported-summary/source
+    label: Local fixture source
+    supports: [name, kind, stages, modalities, tasks]
+caveats: []
+acknowledgements: []
+last_verified: "2026-09-04"

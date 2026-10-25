@@ -1,0 +1,227 @@
+{
+  "schema_version": "aidd-commons.multi-endpoint-tradeoff-protocol.v1",
+  "protocol_id": "chembl37-multi-endpoint-tradeoff-v1",
+  "issued_on": "2026-10-23",
+  "source": {
+    "database": "ChEMBL_37",
+    "release_date": "2026-05-01",
+    "status_url": "https://www.ebi.ac.uk/chembl/api/data/status.json",
+    "licence": {
+      "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+    }
+  },
+  "cohort": {
+    "seeds": [
+      {
+        "molecule_chembl_id": "CHEMBL929",
+        "pref_name": "DELAVIRDINE MESYLATE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL593",
+        "pref_name": "DELAVIRDINE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL1026",
+        "pref_name": "FENOLDOPAM MESYLATE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL588",
+        "pref_name": "FENOLDOPAM"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL433",
+        "pref_name": "VALPROATE SODIUM"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL109",
+        "pref_name": "VALPROIC ACID"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL690",
+        "pref_name": "PRAVASTATIN SODIUM"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL1144",
+        "pref_name": "PRAVASTATIN"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL109745",
+        "pref_name": "DARBUFELONE MESYLATE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL275835",
+        "pref_name": "DARBUFELONE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL23393",
+        "pref_name": "SODIUM LAURYL SULFATE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL13829",
+        "pref_name": "MIXTURE OF MMC AND TA"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL906",
+        "pref_name": "MINOXIDIL SULFATE"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL441",
+        "pref_name": "THIOPENTAL"
+      },
+      {
+        "molecule_chembl_id": "CHEMBL25",
+        "pref_name": "ASPIRIN"
+      }
+    ],
+    "resolved_parents": [
+      "CHEMBL109",
+      "CHEMBL1144",
+      "CHEMBL13829",
+      "CHEMBL23393",
+      "CHEMBL25",
+      "CHEMBL275835",
+      "CHEMBL441",
+      "CHEMBL588",
+      "CHEMBL593",
+      "CHEMBL906"
+    ]
+  },
+  "endpoint": {
+    "standard_types": [
+      "AC50",
+      "EC50",
+      "IC50",
+      "Kd",
+      "Ki"
+    ],
+    "standard_units": "nM",
+    "point_relation": "=",
+    "bound_relations": [
+      "<",
+      "<=",
+      ">",
+      ">="
+    ],
+    "exclusion_priority": [
+      "outside_endpoint_family",
+      "non_nanomolar_units",
+      "non_standard_activity",
+      "potential_duplicate",
+      "data_validity_comment",
+      "missing_value",
+      "missing_structure",
+      "missing_relation"
+    ],
+    "measurement_key": [
+      "assay_chembl_id",
+      "document_chembl_id",
+      "standard_type"
+    ]
+  },
+  "family_rule": {
+    "families": [
+      "efficacy",
+      "toxicity",
+      "exposure",
+      "other"
+    ],
+    "type_to_family": {
+      "AC50": "efficacy",
+      "EC50": "efficacy",
+      "IC50": "efficacy",
+      "Kd": "other",
+      "Ki": "other"
+    },
+    "unmapped_family": "other",
+    "interpretation": "AC50, EC50 and IC50 are response-potency proxies only, not proof of therapeutic efficacy. Kd and Ki enter other as affinity measurements. The admitted type vocabulary cannot identify toxicity or exposure, so those families remain unmeasured in this snapshot."
+  },
+  "statistics": {
+    "per_family": [
+      "independent_measurement_count",
+      "distinct_document_count",
+      "distinct_assay_count",
+      "median",
+      "interquartile_range",
+      "compounds_without_measurement_count"
+    ],
+    "quantile_method": "linear",
+    "unit": "nM",
+    "definition": "One independent point measurement is one parent, assay, document and standard type. Replicate rows sharing this key are represented by their median. Family medians and linear 25th and 75th percentiles summarize these measurements in nM. Empty families have null statistics. The IQR is Q3 minus Q1. Counts are exact for this declared cohort, not population estimates."
+  },
+  "artifacts": [
+    {
+      "path": "status.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/status.json",
+      "byte_length": 231
+    },
+    {
+      "path": "molecules.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/molecule/{molecule_chembl_id}.json",
+      "byte_length": 4003
+    },
+    {
+      "path": "activities-CHEMBL109.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL109",
+      "byte_length": 5440753
+    },
+    {
+      "path": "activities-CHEMBL1144.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL1144",
+      "byte_length": 1491763
+    },
+    {
+      "path": "activities-CHEMBL13829.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL13829",
+      "byte_length": 2030
+    },
+    {
+      "path": "activities-CHEMBL23393.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL23393",
+      "byte_length": 116508
+    },
+    {
+      "path": "activities-CHEMBL25.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL25",
+      "byte_length": 3504249
+    },
+    {
+      "path": "activities-CHEMBL275835.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL275835",
+      "byte_length": 23503
+    },
+    {
+      "path": "activities-CHEMBL441.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL441",
+      "byte_length": 97917
+    },
+    {
+      "path": "activities-CHEMBL588.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL588",
+      "byte_length": 218661
+    },
+    {
+      "path": "activities-CHEMBL593.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL593",
+      "byte_length": 730939
+    },
+    {
+      "path": "activities-CHEMBL906.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL906",
+      "byte_length": 3616
+    },
+    {
+      "path": "assays.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/assay.json",
+      "byte_length": 248931
+    }
+  ],
+  "declared_question": "Which admitted response-potency, toxicity and exposure measurements cover each parent compound, and which endpoint families remain unmeasured?",
+  "excluded_by_design": [
+    "any blended or weighted score across endpoint families",
+    "any performance estimate or clinical efficacy, toxicity or exposure inference",
+    "any claim that endpoint families can be combined into a single ranking",
+    "treating an unmeasured family as safe, clean or bioavailable",
+    "pooling censored bounds with point values or treating response potency as a target-independent effect"
+  ]
+}

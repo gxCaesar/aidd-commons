@@ -1,0 +1,59 @@
+---
+title: Generation and search
+description: Treat molecular generation as constrained search followed by experimental evidence.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="molecular-generation/generation-and-search" />
+
+## Foundations
+
+A generated structure is a candidate proposal, not a discovery result. Define
+the chemical series, required properties, prohibited motifs, synthetic
+constraints, target evidence, and nomination decision before choosing a
+generator or an optimizer.
+
+## Practical workflow
+
+Write a frozen multi-objective specification and retain a simple enumerative or
+similarity baseline. Use [REINVENT](https://github.com/MolecularAI/REINVENT4)
+or another search system only after specifying what each score represents and
+which laboratory result will update the next round. Keep novelty, validity,
+and synthetic accessibility distinct.
+
+## Evaluation
+
+Use train-only baselines and splits that prevent trivial scaffold or near-
+duplicate recovery. [MOSES](https://github.com/molecularsets/moses) and
+[GuacaMol](https://github.com/BenevolentAI/guacamol) define benchmark tasks;
+they do not establish prospective activity or developability.
+
+## Frontier and open questions
+
+Structure-conditioned systems such as
+[Pocket2Mol](https://github.com/pengxingang/Pocket2Mol) and
+[TargetDiff](https://github.com/guanjq/targetdiff) raise questions about
+target-state uncertainty, pose uncertainty, and experimental feedback. These
+questions should be reported before comparing generated lists.
+
+## Choose the generator and evaluator separately
+
+The [generation resource guide](/learn/molecular-generation/generation-resource-guide/)
+distinguishes REINVENT 4 from the archived 3.2 implementation, separates
+distribution-learning and goal-directed tasks, and works through candidate
+validity, uniqueness and novelty denominators.
+
+## What v0.1 does not yet teach
+
+v0.1 does not rank generators, claim that benchmark novelty predicts utility,
+or provide a wet-lab validation campaign.
+
+## Core-source path
+
+Read the [REINVENT documentation](https://github.com/MolecularAI/REINVENT4),
+then the [MOSES](https://github.com/molecularsets/moses) and
+[GuacaMol](https://github.com/BenevolentAI/guacamol) task definitions before
+selecting an evaluation.
+
+Last reviewed: 2026-09-04.

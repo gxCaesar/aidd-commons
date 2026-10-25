@@ -1,0 +1,439 @@
+---
+title: Reading a structure from an image
+description: Recover a chemical structure from a picture, and keep the origin and the error of that recovery visible before the structure enters a model table.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="data-governance/structure-from-images" />
+
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+[From assay records to a modelling table](/learn/data-governance/records-to-model-table/)
+established what a record is, how entities are aligned and how a modelling table is
+assembled. This lesson covers the step before that one. A structure in a table was
+either typed by a person or read off a picture by a model, and the two do not carry the
+same warrant.
+
+After this lesson you should be able to:
+
+1. state the input and output contract of an optical chemical structure recognition
+   system, and name the parts of that contract a registry has to keep.
+2. read the seven openness dimensions of one released artefact and say what each one
+   does not establish.
+3. compare two licences on the asset they cover rather than on the project they belong
+   to.
+4. explain why a recovered structure is a measurement with an origin and an unmeasured
+   error, and name the fields a registry entry needs for it.
+5. name the boundaries that stop a structure recovered from an image from being used as
+   an asserted chemical fact.
+
+This is a dated frontier reading. Every claim below is an observed fact from the
+project Atlas records reviewed on 2026-10-21, a project decision, an open question, or
+future work. Nothing in this family was run, reproduced or re-implemented for this
+lesson, and no accuracy figure here comes from executing any of these artefacts.
+
+## The task and its input and output contract
+
+Optical chemical structure recognition takes a picture of a chemical structure
+depiction and returns a machine-readable structure. The input is pixels. The output is
+a hypothesis about the molecule that was drawn.
+
+The output contract is not uniform across the family. Three of the six artefacts
+return a string. One returns a string together with a molfile and per-prediction
+confidence values. One returns a MolFile and a string. One is an application that
+returns a string after an intermediate editing step. A molfile adds a drawing and
+two-dimensional coordinates, so a consumer that stores one string column has quietly
+discarded geometry it was handed. Confidence values make a prediction auditable in a
+way a bare string is not. A registry that gives all of them one column cannot say
+which kind of thing it holds.
+
+The task also has more than one stage when the source is a page rather than a cropped
+structure. The DECIMER.ai paper is titled as an open platform for automated optical
+chemical structure identification and segmentation in scientific publications, and the
+DECIMER.ai README places the segmentation, transformer and classifier implementations
+in separate component repositories. A structure on a page is therefore located, then
+read, and any abbreviation or label in it is then classified. A registry that stores
+only the final string does not record which stage produced it, and the stages fail in
+different ways.
+
+| Artefact | Input | Output | Architecture the record names |
+| --- | --- | --- | --- |
+| [Img2Mol](/atlas/model-img2mol/) | a picture of a chemical structure | a SMILES string | none named in the record |
+| [DECIMER Image Transformer](/atlas/model-decimer-image-transformer/) | a chemical structure depiction | a SMILES string | an EfficientNet-V2 image encoder with a transformer decoder |
+| [DECIMER.ai](/atlas/tool-decimer-ai/) | a chemical structure image | a SMILES string, editable in the application | none named in the record |
+| [MolScribe](/atlas/model-molscribe/) | a chemical structure image | atoms and bonds, returned as SMILES, a molfile and confidence values | an image-to-graph model |
+| [MolNexTR](/atlas/model-molnextr/) | a molecular image | atoms and bonds, converted to a MolFile and SMILES | a ConvNext and Vision Transformer encoder |
+| [SwinOCSR](/atlas/model-swinocsr/) | an image of a chemical structure | a SMILES string | a Swin Transformer backbone with a Transformer decoder |
+
+Two shapes of model sit inside that table. A sequence model reads the picture and
+emits a string of structure tokens. A graph model predicts the atoms and the bonds
+and then converts the predicted graph into a structure. The difference is not a detail.
+A string can parse cleanly and still describe a molecule other than the one depicted,
+and no validation of the string rules that out, because the check examines the string
+and not the picture.
+
+## What the released artefacts do
+
+[Img2Mol](/atlas/model-img2mol/) ships an inference implementation, two example
+notebooks and a checkpoint download script. The README describes the project as
+serving training and inference, and the record states that the complete file tree
+holds no runnable training script and no evaluation script either. The repository
+supplies the benchmark collections and their image-to-SMILES maps in place of one.
+
+[DECIMER Image Transformer](/atlas/model-decimer-image-transformer/) pairs an
+EfficientNet-V2 image encoder with a transformer decoder and ships pretrained
+checkpoints together with a benchmarking folder. The repository is a GitHub fork of
+Kohulan/DECIMER-Image_Transformer, and its CITATION.cff points at a differently named
+upstream repository, so this fork and the upstream project are not the same artefact.
+Two files in that repository also point at different archives. The CITATION.cff
+records the software release as DECIMER-V2 version 2.2.0 with the Zenodo DOI
+10.5281/zenodo.7655952, while the README model card badge links record 8300489.
+
+[DECIMER.ai](/atlas/tool-decimer-ai/) is the delivery surface rather than the model.
+It is a web application and a self-hostable Docker service with a built-in editor for
+correcting the recognised structure and an API reference. No training code ships in
+the application repository, and the container requirements pin TensorFlow and RDKit.
+The README Zenodo badge points at the identifier 486488537, and neither that
+identifier nor 4864885 resolved to a live record on 2026-10-21, returning 404 and 410
+respectively, so the only resolvable software archive for the project is record
+8139383.
+
+[MolScribe](/atlas/model-molscribe/) predicts atoms and bonds and returns them as a
+SMILES string, a molfile and confidence values, with training and evaluation scripts
+included. [MolNexTR](/atlas/model-molnextr/) predicts atoms and bonds with a ConvNext
+and Vision Transformer encoder and converts the prediction to a MolFile and SMILES.
+
+[SwinOCSR](/atlas/model-swinocsr/) uses a Swin Transformer backbone with a Transformer
+decoder and does ship inference, training and evaluation scripts, among them an
+image-inference script, a training entry point under a cross-entropy-loss directory,
+an evaluation script, and the pycocoevalcap metric package. The record states that
+the repository declares no licence, so the availability of those scripts for use is
+not established.
+
+The records do not state a training objective in enough detail to reproduce one. Two
+checkpoint file names carry fragments such as char_aux, and no record defines what
+those fragments denote, so this reading does not read them.
+
+## Training data and the released weights
+
+| Artefact | What the record says about the training corpus | Released weights and their host |
+| --- | --- | --- |
+| [Img2Mol](/atlas/model-img2mol/) | The README names no training corpus. The benchmark collections are described with sizes and rendering libraries, but that description covers the evaluation collections and not the data the released weights were trained on. | `model.ckpt`, about 2.4 GB, hosted on Google Drive. |
+| [DECIMER Image Transformer](/atlas/model-decimer-image-transformer/) | The model card states that the models were trained on images generated with RanDepict 1.1.3 and gives no corpus composition, no split and no data terms. The README refers to datasets of over one million images without naming a corpus. | The DECIMER V2 checkpoints in Zenodo record 8300489, record version 2.4. |
+| [DECIMER.ai](/atlas/tool-decimer-ai/) | No training code ships in the application repository, and the record marks the training data and the data recipe unverified. | Unverified. The container pins TensorFlow and RDKit, and no opened page names a checkpoint file, a checkpoint version or the origin of the served weights. |
+| [MolScribe](/atlas/model-molscribe/) | The README documents the recipe and the data. Training renders images with a modified copy of Indigo vendored inside the repository, and the training archives `uspto_mol.zip` and `pubchem.zip` are re-hosted on the model repository. | `swin_base_char_aux_1m.pth` and `swin_base_char_aux_1m680k.pth` on the Hugging Face Hub, with the record also noting Dropbox. The Hub listing carries three checkpoint files and the model repository's README file is empty. |
+| [MolNexTR](/atlas/model-molnextr/) | `train_pubchem.csv` and `train_uspto.zip` sit on a Hugging Face dataset repository that declares apache-2.0 and has an empty README, so the per-column provenance of the derived files and the upstream PubChem and USPTO terms are undocumented. | `molnextr_best.pth` in Zenodo record 13304899, version 1.0.0, and the same checkpoint also appears on the Hugging Face repository. |
+| [SwinOCSR](/atlas/model-swinocsr/) | The README names DeepSMILES split files, including `500wan_shuffle_DeepSMILES_train.pkl`, and the repository ships .rar dataset archives. No corpus composition, no source for the molecules and no data terms are documented. | Trained models on Kaggle, in versions for cross-entropy loss and for focal loss. The record notes that those pages rendered only their titles on 2026-10-21. |
+
+Two facts in that table matter more than the rest for a registry. First, the two
+artefacts whose records document a training corpus document it as a re-host of
+archives rather than as a corpus description, so the upstream terms of the molecules
+that were rendered into the images are not documented in either case. Second, the
+record for the application that a reader would use first names no weights at all.
+
+## The seven openness dimensions
+
+The Atlas keeps seven dimensions apart for every resource, and each one is a claim
+with its own evidence. Inference code, training code, weights, architecture, data
+recipe, training data and evaluation code. A dimension marked available means a reader
+can obtain that asset from the cited page. It does not mean the asset is documented,
+licensed for the intended use, or sufficient to reproduce a result.
+
+| Artefact | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| [Img2Mol](/atlas/model-img2mol/) | available | not available | available | available | unverified | unverified | not available |
+| [DECIMER Image Transformer](/atlas/model-decimer-image-transformer/) | available | available | available | available | unverified | unverified | available |
+| [DECIMER.ai](/atlas/tool-decimer-ai/) | available | not available | unverified | unverified | unverified | unverified | unverified |
+| [MolScribe](/atlas/model-molscribe/) | available | available | available | available | available | available | available |
+| [MolNexTR](/atlas/model-molnextr/) | available | available | available | available | available | available | available |
+| [SwinOCSR](/atlas/model-swinocsr/) | unverified | unverified | unverified | unverified | unverified | unverified | unverified |
+
+The values are the record claims as reviewed on 2026-10-21. Two records report every
+dimension as available. One reports every dimension as unverified while its
+repository does ship inference, training and evaluation scripts, because a repository
+with no licence file does not establish availability for use. The dimensions that are
+never available across the family are the two that describe how the weights were made.
+
+## What the licences permit
+
+A licence on a repository is a licence on the source. It says nothing about the
+weights, the training archives, the benchmark collections or the hosted service
+unless a record says so, and every one of the six records leaves at least one asset
+or one combination unresolved.
+
+| Artefact | Licence on the source | Licence on the weights or the archive | What is unresolved |
+| --- | --- | --- | --- |
+| [Img2Mol](/atlas/model-img2mol/) | Apache-2.0, with the appendix copyright line naming Machine Learning Research at Bayer AG | CC BY-NC 4.0 for the trained parameters only | The benchmark archives and the collections credited from earlier work carry no licence statement, and the non-commercial restriction appears only in the README. |
+| [DECIMER Image Transformer](/atlas/model-decimer-image-transformer/) | MIT, with a licence file naming Kohulan Rajan | CC BY 4.0 for the checkpoints in Zenodo record 8300489 | No opened page states how the two licences combine for a user who loads a checkpoint into this code. The README badge reads License MIT 2.0 while the licence file and the GitHub licence field both read MIT, and no licence file named MIT 2.0 is present. |
+| [DECIMER.ai](/atlas/tool-decimer-ai/) | MIT, with a licence file naming Otto Brinkhaus and a README naming Kohulan at Steinbeck Lab | The Zenodo software archive 8139383 carries only the Zenodo licence identifier other-open, with no licence name or URL attached | The hosted service states that all rights are reserved and gives no terms of use, and the repository licence does not state that it covers the service. The README badge points at an archive that no longer resolves. |
+| [MolScribe](/atlas/model-molscribe/) | MIT, with a licence file naming Yujie Qian | MIT on the Hugging Face model repository that hosts the checkpoints and the training archives | The README states no separate terms for the USPTO Grant Red Book and PubChem sources behind those archives, the per-column provenance of the rendered images is not documented, and the repository does not state the terms of the vendored Indigo copy. |
+| [MolNexTR](/atlas/model-molnextr/) | Apache-2.0, with an appendix copyright placeholder never filled in | CC BY 4.0 for the Zenodo artefacts, the checkpoint in record 13304899 and the article PDF in record 13857412 | The Hugging Face repository README is empty, so the upstream PubChem and USPTO terms are undocumented, and the Zenodo checkpoint record names no training dataset. |
+| [SwinOCSR](/atlas/model-swinocsr/) | none | none | The GitHub licence field is null and no licence file appears in the file tree, so the code, the bundled dataset archives and the trained checkpoints have no established terms. The Kaggle pages gave no terms of use. |
+
+Three of those rows decide what a registry may ship. The Img2Mol checkpoint is
+non-commercial while the code around it is Apache-2.0, so a commercial use of the
+code does not carry a commercial use of the weights. The DECIMER Image Transformer
+code and checkpoints carry different licences with no stated combination, so a reader
+who loads a checkpoint into that code is in an unstated case. The DECIMER.ai software
+archive is not self-describing, and the hosted service that a reader would try first
+carries no terms of use at all.
+
+## The comparison the records can support
+
+No record in this family carries a matched comparison. Each paper was identified
+through Crossref metadata, so the accuracy tables inside those papers are outside
+what this reading establishes, and the six artefacts were not scored under one
+protocol by anything recorded here. A ranking of these methods would be an
+invention, and this lesson does not make one.
+
+The comparison the records do support is on openness, because the seven dimensions
+are defined by one schema and were read from the same page classes for all six
+artefacts. That comparison is about what a reader can obtain and redistribute, and
+not about which method reads a structure better.
+
+Two cross-member links are recorded, and both are narrow. The perturbed benchmark of
+[MolScribe](/atlas/model-molscribe/) is taken from the [Img2Mol](/atlas/model-img2mol/)
+repository, so two members share one evaluation data collection. That relation covers
+the benchmark data reuse and not the Img2Mol weights. The [DECIMER.ai](/atlas/tool-decimer-ai/)
+record carries a used-by relation to the [DECIMER Image Transformer](/atlas/model-decimer-image-transformer/)
+model whose status is unverified, and the application links the upstream repository
+rather than the fork that the model record describes.
+
+## Entities, splits, metrics and resources
+
+The entity in this family's task is a depicted molecule, and the unit of the data is
+a depiction. The same compound can be drawn many times, so a count of images is not a
+count of compounds and a split over images is not an entity-disjoint split. The rule
+from the previous lesson applies one step earlier, to the structure column itself.
+
+The records name these corpora and collections. The USPTO Grant Red Book and PubChem
+behind the MolScribe training archives. PubChem and USPTO behind the MolNexTR
+training files. The DeepSMILES split files in the SwinOCSR repository. The Img2Mol
+benchmark collections. Images rendered with RanDepict 1.1.3 for the DECIMER Image
+Transformer, whose corpus the record does not name.
+
+On splits, the MolScribe model repository carries `uspto_mol.zip`, `pubchem.zip`,
+`real.zip`, `perturb.zip` and `synthetic.zip`. The record names those archives and
+does not describe their contents. The SwinOCSR repository carries DeepSMILES split
+files including a train split. No record states how any split was formed or how many
+molecules it holds.
+
+On metrics, no record states the metric used to score a recovered structure, and the
+Atlas carries no accuracy figure for any member of this family. The SwinOCSR file
+tree contains the pycocoevalcap metric package, and the Img2Mol repository supplies
+the benchmark collections and their image-to-SMILES maps in place of an evaluation
+script. There is therefore no number to report in this lesson, and a reader should
+not expect one from this material.
+
+The resources are Zenodo records 8300489, 8139383, 13304899 and 13857412, a
+Hugging Face model repository for MolScribe, a Hugging Face dataset repository for
+MolNexTR, Kaggle model and dataset pages for SwinOCSR, a Google Drive checkpoint and
+benchmark archive for Img2Mol, and a hosted web application for DECIMER.ai. Every
+one of those hosts is a third party. Availability of a checkpoint is a property of a
+host, and the record for each of them says so in its own way.
+
+## What was inspected and what was not run
+
+The following pages were opened for this reading, all reviewed on 2026-10-21. The
+GitHub repository pages, READMEs, licence files, CITATION.cff and recursive
+repository file trees for the six artefacts, and the GitHub repository metadata page
+for SwinOCSR. The Img2Mol benchmark data description. Zenodo records 8300489,
+8139383, 13304899 and 13857412, and the Zenodo record metadata for 8139383. The
+Hugging Face Hub model metadata for MolScribe and dataset metadata for MolNexTR. The
+Kaggle model and dataset pages that the SwinOCSR README links. Crossref metadata for
+the six papers. The hosted DECIMER web application page.
+
+Nothing was executed. No checkpoint was downloaded, no image was recognised, no
+benchmark was reproduced and no model was loaded. The papers were identified through
+Crossref metadata and their full text was not read for this lesson, and for SwinOCSR
+the publisher page redirected to a sign-in flow, so that article's own data and code
+availability statements remain unread. Every statement above is a statement about a
+page that was opened.
+
+## A constructed worked case
+
+The following counts are invented for arithmetic. They are not a measurement of any
+method, and no record reports an error rate for this family.
+
+A document-extraction project assembles a registry of chemical structures cited in a
+set of publications and patents. It extracts 500 depictions from the documents and
+stores one row per depiction in a table with two columns, a structure string and an
+origin field. The origin field is empty.
+
+The provenance of the 500 rows is known to the project. 180 rows carry a structure
+that a person typed from the source document's own structure table. 320 rows carry a
+structure that a model read from a figure.
+
+The project applies two checks to the 320 image-derived rows. 27 of them return a
+string that does not survive a chemical sanity check, because the returned string has
+a disconnected fragment or an impossible valence, and those rows are held for a
+person to correct. 41 of the remaining 293 rows carry a canonical structure the
+table already holds, because the same compound was depicted more than once.
+
+The project can now report 432 distinct structures, which is 500 rows less 27 rows
+less 41 rows. It can also report that 252 of the 432 came from a picture. It cannot
+report how many of the 252 are the molecules the documents depict, because nothing in
+the pipeline recorded an error estimate per row and no person reviewed them.
+
+Three fields would change what the table can support. The first is the origin of each
+structure, which separates a typed assertion from a recovered measurement. The second
+is the model and checkpoint behind each recovered structure, which is what makes that
+row's error estimable in principle and traceable in practice. The third is the review
+state, which separates a structure a person has corrected from one that has only been
+validated.
+
+Nothing else in the pipeline is missing. The 432 is the right count of rows, the 27
+and the 41 are the right exclusions, and the units are right. The table is still not
+a table of 432 known molecules, and the gap between those two statements is exactly
+what the three fields carry.
+
+## Where the evidence stops
+
+The error rate of this family is not established anywhere in the material read for
+this lesson. A recovered structure can be a molecule other than the one depicted, and
+only a wrong but valid structure escapes a sanity check. The Atlas carries no
+accuracy figure for any of the six artefacts, so a reader cannot size that risk from
+these records.
+
+The training corpus of the DECIMER Image Transformer is undocumented. The model card
+names the renderer and not the corpus, the split or the data terms, so a reader
+cannot judge which depictions those weights were trained to read.
+
+The application a reader would try first names no weights. The DECIMER.ai container
+pins TensorFlow and RDKit and names no checkpoint file, no checkpoint version and no
+origin for the weights it serves.
+
+One artefact has no licence at all. SwinOCSR ships scripts, archives and checkpoints
+that carry no established terms, and its Kaggle pages rendered only their titles on
+2026-10-21.
+
+The licences are narrow in ways that transfer. The Img2Mol weights are non-commercial
+while the code is Apache-2.0. The DECIMER Image Transformer code and checkpoints
+carry different licences with no stated combination. MolScribe and MolNexTR both
+re-host their training archives under a permissive tag while the upstream PubChem and
+USPTO terms are undocumented.
+
+What this material does not show:
+
+- It does not show that any of these methods was run, reproduced or re-implemented.
+  None was.
+- It does not rank the six artefacts. The records carry no matched comparison, and
+  the openness table above is not a quality judgement.
+- It does not establish an accuracy, an error rate or a reliability figure for any
+  member of the family.
+- It does not show what the DECIMER.ai application or the DECIMER Image Transformer
+  fork produce on any particular picture.
+- It does not establish that a model name implies a capability. Each artefact here is
+  for reading a depiction, and the records stop at the boundary of what that reading
+  establishes.
+- It does not show that the licence statements are complete. Each record states a
+  scope, and several scopes end in an unresolved combination.
+- It does not provide reader outcomes for this material.
+
+## Independent exercise
+
+A second export has 800 rows. 240 of them carry a structure typed by a person and 560
+carry a structure recovered from a figure. 46 of the 560 fail the chemical sanity
+check. 93 of the remaining 514 rows carry a canonical structure the table already
+holds.
+
+1. How many rows survive the two checks, and how many of the survivors are
+   image-derived?
+2. Name the three fields the first table needs, and say which of them the second
+   table needs as well.
+3. The 514 rows that pass the sanity check are reported as validated structures.
+   What does that description establish, and what does it leave open?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The two exclusions remove 46 rows and then 93 rows, so 800 rows less 46 rows less 93
+rows leaves 661 rows. The image-derived survivors are 560 less 46 less 93, which is
+421, and the typed survivors are the remaining 240.
+
+The three fields are the structure origin, the model and checkpoint that produced the
+structure, and the review state. The second table needs all three, because it mixes
+the same two kinds of rows in the same proportions. A table in which every structure
+came from a typed source table would need none of them, and that difference is the
+reason the origin field is worth a column.
+
+The description establishes that each of the 514 strings parses as a molecule with a
+legal valence. It leaves open whether the molecule is the one that was depicted,
+because a sanity check examines the returned string and not the picture. A wrong ring
+size or a wrong bond order produces a valid molecule that no string check will
+reject. The report should say that the structures passed a validity check, and it
+should not call them validated structures.
+
+</details>
+
+## Sources and attribution
+
+Every link below is the canonical page that the record reviewed on 2026-10-21.
+
+- [Img2Mol repository](https://github.com/bayer-science-for-a-better-life/Img2Mol),
+  [README](https://raw.githubusercontent.com/bayer-science-for-a-better-life/Img2Mol/main/README.md),
+  [licence file](https://raw.githubusercontent.com/bayer-science-for-a-better-life/Img2Mol/main/LICENSE),
+  [file tree](https://api.github.com/repos/bayer-science-for-a-better-life/Img2Mol/git/trees/main?recursive=1),
+  [benchmark data description](https://raw.githubusercontent.com/bayer-science-for-a-better-life/Img2Mol/main/benchmark_data/README.md),
+  [checkpoint on Google Drive](https://drive.google.com/file/d/1pk21r4Zzb9ZJkszJwP9SObTlfTaRMMtF/view),
+  and [the Img2Mol paper](https://doi.org/10.1039/D1SC01839F).
+- [DECIMER Image Transformer repository](https://github.com/Steinbeck-Lab/DECIMER-Image_Transformer),
+  [README](https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER-Image_Transformer/master/README.md),
+  [licence file](https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER-Image_Transformer/master/LICENSE),
+  [CITATION.cff](https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER-Image_Transformer/master/CITATION.cff),
+  [file tree](https://api.github.com/repos/Steinbeck-Lab/DECIMER-Image_Transformer/git/trees/master?recursive=1),
+  [DECIMER V2 model card in Zenodo record 8300489](https://zenodo.org/records/8300489),
+  and [the DECIMER 1.0 paper](https://doi.org/10.1186/s13321-021-00538-8).
+- [DECIMER.ai repository](https://github.com/Steinbeck-Lab/DECIMER.ai),
+  [README](https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER.ai/main/README.md),
+  [licence file](https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER.ai/main/LICENSE),
+  [file tree](https://api.github.com/repos/Steinbeck-Lab/DECIMER.ai/git/trees/main?recursive=1),
+  [software archive in Zenodo record 8139383](https://zenodo.org/records/8139383),
+  [record metadata](https://zenodo.org/api/records/8139383),
+  [the hosted application](https://decimer.ai),
+  and [the DECIMER.ai paper](https://doi.org/10.1038/s41467-023-40782-0).
+- [MolScribe repository](https://github.com/thomas0809/MolScribe),
+  [README](https://raw.githubusercontent.com/thomas0809/MolScribe/main/README.md),
+  [licence file](https://raw.githubusercontent.com/thomas0809/MolScribe/main/LICENSE),
+  [file tree](https://api.github.com/repos/thomas0809/MolScribe/git/trees/main?recursive=1),
+  [model repository on the Hugging Face Hub](https://huggingface.co/yujieq/MolScribe),
+  [Hub metadata](https://huggingface.co/api/models/yujieq/MolScribe),
+  and [the MolScribe paper](https://doi.org/10.1021/acs.jcim.2c01480).
+- [MolNexTR repository](https://github.com/CYF2000127/MolNexTR),
+  [README](https://raw.githubusercontent.com/CYF2000127/MolNexTR/main/README.md),
+  [licence file](https://raw.githubusercontent.com/CYF2000127/MolNexTR/main/LICENSE),
+  [file tree](https://api.github.com/repos/CYF2000127/MolNexTR/git/trees/main?recursive=1),
+  [dataset repository on the Hugging Face Hub](https://huggingface.co/datasets/CYF200127/MolNexTR),
+  [Hub metadata](https://huggingface.co/api/datasets/CYF200127/MolNexTR),
+  [best checkpoint in Zenodo record 13304899](https://zenodo.org/records/13304899),
+  [publication archive in Zenodo record 13857412](https://zenodo.org/records/13857412),
+  and [the MolNexTR paper](https://doi.org/10.1186/s13321-024-00926-w).
+- [SwinOCSR repository](https://github.com/suanfaxiaohuo/SwinOCSR),
+  [README](https://raw.githubusercontent.com/suanfaxiaohuo/SwinOCSR/main/README.md),
+  [file tree](https://api.github.com/repos/suanfaxiaohuo/SwinOCSR/git/trees/main?recursive=1),
+  [repository metadata](https://api.github.com/repos/suanfaxiaohuo/SwinOCSR),
+  [trained models on Kaggle](https://www.kaggle.com/gogogogo11/moedel),
+  [label files on Kaggle](https://www.kaggle.com/gogogogo11/datasetlabel),
+  and [the SwinOCSR paper](https://doi.org/10.1186/s13321-022-00624-5).
+
+The Atlas entries for these artefacts carry the access levels, the licence scopes and
+the caveats in full, at
+[Img2Mol](/atlas/model-img2mol/),
+[DECIMER Image Transformer](/atlas/model-decimer-image-transformer/),
+[DECIMER.ai](/atlas/tool-decimer-ai/),
+[MolScribe](/atlas/model-molscribe/),
+[MolNexTR](/atlas/model-molnextr/) and
+[SwinOCSR](/atlas/model-swinocsr/).
+
+Continue to [Entity resolution, scientific lineage and permitted
+reuse](/learn/data-governance/identity-lineage-and-reuse/) for how a recovered
+structure acquires a lineage of its own, and to [Small-molecule
+representations](/learn/representations/small-molecule-representations/) for what a
+structure is worth once it is in the table.
+
+Original lesson prose is CC BY 4.0 and linked sources retain their own terms.
+Last reviewed: 2026-10-22.

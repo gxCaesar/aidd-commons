@@ -1,0 +1,3758 @@
+version: "0.1"
+tracks:
+  - id: foundations
+    order: 1
+    title: Start here, pathways, environment, and glossary
+    title_zh: 起步、学习路径、环境与术语
+    summary: Establish the shared evidence vocabulary and navigate the 18-track curriculum.
+    summary_zh: 建立共同的证据术语，并进入由 18 条路径组成的课程图谱。
+    audience: [graduate-students, researchers, engineers]
+    learning_outcomes: [locate-evidence, distinguish-claims-from-unknowns]
+    prerequisites: [none]
+    cross_track_prerequisites: []
+    pipeline_stages: [onboarding]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: getting-started
+        order: 1
+        title: Start with the AIDD pipeline
+        title_zh: 从 AIDD 流水线开始
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids: [tool-deepchem, benchmark-o3dc, standard-osaid]
+        prerequisites: []
+      - id: first-session
+        order: 2
+        title: "Your first session: representations, evidence, and a completed comparison"
+        title_zh: 你的第一次学习
+        type: lesson
+        sections:
+          [route-choice, local-setup, worked-example, exercise, observed-result]
+        source_ids: [tool-rdkit, db-chembl, dataset-rmd17]
+        prerequisites: [getting-started]
+        capabilities: [orientation, worked-example, exercise, runnable]
+      - id: source-and-entity-literacy
+        order: 3
+        title: "Read a source and identify its biological object"
+        title_zh: "阅读来源并识别它描述的生物对象"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [standard-fair-principles, standard-spdx]
+        prerequisites: [getting-started]
+        capabilities: [explanation, worked-example, exercise]
+      - id: decision-unit
+        order: 4
+        title: "One claim, one decision unit"
+        title_zh: "一个主张，一个决策单位"
+        type: lesson
+        sections:
+          [
+            learning-goals,
+            four-fields,
+            worked-example,
+            action-and-unit,
+            exercise,
+            limitations,
+          ]
+        source_ids: [db-chembl, standard-fair-principles]
+        prerequisites: [getting-started, source-and-entity-literacy]
+        capabilities: [explanation, worked-example, exercise]
+      - id: decision-unit-scope
+        order: 5
+        title: "The scope of one decision unit"
+        title_zh: "一个决策单元的尺度"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            a-reported-value-is-a-row,
+            the-counts-a-reader-can-check,
+            what-travels-with-a-surviving-measurement,
+            worked-case,
+            what-this-material-does-not-show,
+            independent-exercise,
+            run-the-count-yourself,
+            sources-and-attribution
+          ]
+        source_ids: [dataset-chembl-activity, db-chembl-37]
+        prerequisites: [decision-unit]
+        capabilities: [explanation, worked-example, exercise, runnable]
+      - id: evidence-claims-and-unknowns
+        order: 6
+        title: "Evidence, claims and unresolved fields"
+        title_zh: "证据、主张与未解决字段"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            four-ways-a-record-can-support-a-statement,
+            worked-case,
+            independent-exercise,
+            what-this-material-does-not-show,
+            run-the-audit,
+            sources-and-attribution,
+          ]
+        source_ids: [db-rcsb-pdb, db-skempi, tool-openmm, model-alphafold-2]
+        prerequisites: [source-and-entity-literacy]
+        capabilities: [orientation, explanation, worked-example, exercise, runnable]
+      - id: source-review-and-claim-scope
+        order: 7
+        title: "Source review and claim scope"
+        title_zh: "来源审阅与主张范围"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            four-parts-of-a-reviewable-claim,
+            a-name-and-a-source-surface,
+            worked-case,
+            independent-exercise,
+            what-this-material-does-not-show,
+            run-the-audit,
+            sources-and-attribution,
+          ]
+        source_ids: [db-rcsb-pdb, db-uniprot, tool-rdkit, model-boltz-2]
+        prerequisites: [source-and-entity-literacy]
+        capabilities: [orientation, explanation, worked-example, exercise, runnable]
+      - id: entity-kinds-and-identifiers
+        order: 8
+        title: "Entity kinds and identifiers"
+        title_zh: "实体类别与标识符"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            the-five-named-kinds,
+            molecule-records-and-parents,
+            worked-case,
+            independent-exercise,
+            what-this-material-does-not-show,
+            run-the-audit,
+            sources-and-attribution,
+          ]
+        source_ids: [dataset-chembl-activity, db-chembl-37]
+        prerequisites: [source-and-entity-literacy, decision-unit-scope]
+        capabilities: [orientation, explanation, worked-example, exercise, runnable]
+      - id: foundations-core-source-path
+        order: 9
+        title: Core source path for onboarding and evidence literacy
+        type: core-source-path
+        sections: []
+        source_ids: [standard-fair-principles, standard-spdx]
+        prerequisites: [first-session]
+
+  - id: drug-discovery-foundations
+    order: 2
+    title: Drug discovery, medicinal chemistry, structural biology, and experimental foundations
+    title_zh: 药物发现、药物化学、结构生物学与实验基础
+    summary: Connect experimental decision making with the chemical and biological context of discovery.
+    summary_zh: 将实验决策与药物发现中的化学和生物学背景连接起来。
+    audience: [graduate-students, computational-researchers]
+    learning_outcomes: [map-discovery-decisions, identify-experimental-feedback]
+    prerequisites: [basic-chemistry, basic-cell-biology]
+    cross_track_prerequisites: [foundations]
+    pipeline_stages: [disease-mechanism, target-discovery, hit-discovery]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: discovery-context
+        order: 1
+        title: Drug discovery context
+        title_zh: 药物发现语境
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids: [db-chembl, db-pubchem, db-drugbank, tutorial-teachopencadd]
+        prerequisites: []
+      - id: assay-controls-dose-response
+        order: 2
+        title: Assay controls and dose response
+        title_zh: 测定对照与剂量反应
+        type: lesson
+        sections: [goals, readouts, controls, dose-response, exercise]
+        source_ids: [db-chembl, db-pubchem]
+        prerequisites: [discovery-context]
+        capabilities: [explanation, worked-example, exercise]
+      - id: product-profile-and-series
+        order: 3
+        title: "Target product profiles and chemical-series feedback"
+        title_zh: "目标产品概况与化学系列反馈"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [db-chembl, db-pubchem]
+        prerequisites: [discovery-context, assay-controls-dose-response]
+        capabilities: [explanation, worked-example, exercise]
+      - id: assay-endpoint-controls
+        order: 4
+        title: "What an assay actually contains"
+        title_zh: "一个测定里究竟有什么"
+        type: lesson
+        sections:
+          [
+            learning-goals,
+            prerequisites-and-scope,
+            the-cheap-baseline,
+            equality-and-bound,
+            the-replicate-structure,
+            the-control-record,
+            the-normalisation-equation,
+            worked-case,
+            what-this-does-not-show,
+            independent-exercise,
+            sources-and-next-step
+          ]
+        source_ids: [db-pubchem]
+        prerequisites: [assay-controls-dose-response]
+        capabilities: [explanation, worked-example, exercise, runnable]
+      - id: discovery-core-source-path
+        order: 5
+        title: Core source path for chemical and experimental foundations
+        type: core-source-path
+        sections: []
+        source_ids: [tool-rdkit, tool-openbabel]
+        prerequisites: [discovery-context]
+
+  - id: machine-learning
+    order: 3
+    title: Machine learning, geometric learning, probability, and scientific computing
+    title_zh: 机器学习、几何学习、概率与科学计算
+    summary: Build the modelling and computing vocabulary required to audit AIDD predictions.
+    summary_zh: 建立审查 AIDD 预测所需的建模与科学计算语言。
+    audience: [graduate-students, engineers]
+    learning_outcomes:
+      [select-model-representations, inspect-training-and-evaluation-code]
+    prerequisites: [linear-algebra, probability, python]
+    cross_track_prerequisites: [foundations]
+    pipeline_stages: [model-development, evaluation]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: scientific-computing
+        order: 1
+        title: Scientific machine learning
+        title_zh: 科学机器学习
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids:
+          [
+            tool-dgl-lifesci,
+            tool-pytorch-geometric,
+            tool-torchdrug,
+            model-graphormer,
+            tutorial-deepchem,
+          ]
+        prerequisites: []
+      - id: baseline-training-validation
+        order: 2
+        title: Baseline training and validation
+        title_zh: 基线如何学习、预测与被选择
+        type: lesson
+        sections:
+          [
+            goals,
+            data-contract,
+            train-validation-test,
+            baseline,
+            errors,
+            exercise,
+          ]
+        source_ids: [tool-pytorch-geometric, tool-torchdrug, benchmark-tdc]
+        prerequisites: [scientific-computing, records-to-model-table]
+        capabilities: [explanation, worked-example, exercise, runnable]
+      - id: student-modelling-sandbox
+        order: 3
+        title: Student modelling sandbox
+        title_zh: 学生沙箱：拟合、选择、检查与解释
+        type: lesson
+        sections:
+          [goals, sandbox-contract, baseline-run, result-reading, exercise]
+        source_ids: [tool-pytorch-geometric, tool-torchdrug, benchmark-tdc]
+        prerequisites:
+          [baseline-training-validation, regression-classification-errors]
+        capabilities: [explanation, worked-example, exercise, runnable]
+      - id: neural-representations
+        order: 4
+        title: "Message passing, attention and geometric equivariance"
+        title_zh: "消息传递、注意力与几何等变性"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [tool-pytorch-geometric, model-uni-mol]
+        prerequisites: [scientific-computing]
+        capabilities: [explanation, worked-example, exercise]
+      - id: probability-loss-and-checkpoints
+        order: 5
+        title: "Probability models, loss functions and validation checkpoints"
+        title_zh: "概率模型、损失函数与验证检查点"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [tool-pytorch-geometric, tool-botorch]
+        prerequisites: [regression-classification-errors]
+        capabilities: [explanation, worked-example, exercise]
+      - id: machine-learning-core-source-path
+        order: 6
+        title: Core source path for graph learning and implementation
+        type: core-source-path
+        sections: []
+        source_ids: [tool-dig, tool-moleculex, tool-bionemo-recipes]
+        prerequisites: [student-modelling-sandbox]
+
+  - id: data-governance
+    order: 4
+    title: Data, licensing, standards, cleaning, and entity alignment
+    title_zh: 数据、许可、标准、清洗与实体对齐
+    summary: Make provenance, legal scope, standards, and entity alignment explicit before modelling.
+    summary_zh: 在建模前明确数据来源、法律范围、标准与实体对齐。
+    audience: [researchers, data-engineers]
+    learning_outcomes: [write-data-contracts, preserve-unverified-legal-fields]
+    prerequisites: [foundations]
+    cross_track_prerequisites: [foundations]
+    pipeline_stages: [data-intake, target-discovery, evaluation]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: data-contracts
+        order: 1
+        title: Data contracts and licences
+        title_zh: 数据契约与许可
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids: [db-rcsb-pdb, db-pdbe, db-uniprot, db-interpro]
+        prerequisites: []
+      - id: records-to-model-table
+        order: 2
+        title: From records to a model table
+        title_zh: 从测定记录到建模表
+        type: lesson
+        sections:
+          [
+            goals,
+            record-contract,
+            entity-alignment,
+            exclusions,
+            model-table,
+            exercise,
+          ]
+        source_ids: [db-chembl, tool-datamol, standard-ord-schema]
+        prerequisites: [data-contracts]
+        capabilities: [explanation, worked-example, exercise, runnable]
+      - id: identity-lineage-and-reuse
+        order: 3
+        title: "Entity resolution, scientific lineage and permitted reuse"
+        title_zh: "实体消歧、科学来源与使用权限"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [standard-fair-principles, standard-spdx, db-uniprot]
+        prerequisites: [source-and-entity-literacy, records-to-model-table]
+        capabilities: [explanation, worked-example, exercise]
+      - id: structure-from-images
+        order: 4
+        title: "Reading a structure from an image"
+        title_zh: "从图像读取结构"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            the-task-and-its-input-and-output-contract,
+            what-the-released-artefacts-do,
+            training-data-and-the-released-weights,
+            the-seven-openness-dimensions,
+            what-the-licences-permit,
+            the-comparison-the-records-can-support,
+            entities-splits-metrics-and-resources,
+            what-was-inspected-and-what-was-not-run,
+            a-constructed-worked-case,
+            where-the-evidence-stops,
+            independent-exercise,
+            sources-and-attribution
+          ]
+        source_ids: [model-decimer-image-transformer, tool-decimer-ai, model-molscribe, model-img2mol, model-molnextr, model-swinocsr]
+        prerequisites: [records-to-model-table]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: reading-a-licence-scope
+        order: 5
+        title: "Reading a licence scope, not a licence name"
+        title_zh: "读许可证的范围，而不是名字"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            the-four-questions,
+            seven-scopes,
+            worked-case,
+            independent-exercise,
+          ]
+        source_ids:
+          [
+            db-gtex-portal,
+            freesolv-v0-52,
+            dataset-toxcast,
+            db-sabdab2,
+            benchmark-plabench,
+            benchmark-beyond-affinity,
+            db-depmap,
+          ]
+        prerequisites: [data-contracts, identity-lineage-and-reuse]
+        capabilities: [explanation, worked-example, exercise]
+      - id: data-governance-core-source-path
+        order: 6
+        title: Core source path for standards and entity alignment
+        type: core-source-path
+        sections: []
+        source_ids: [standard-ord-schema, db-biogrid]
+        prerequisites: [records-to-model-table]
+
+  - id: representations
+    order: 5
+    title: Molecular, protein, complex, omics, and knowledge-graph representations
+    title_zh: 分子、蛋白、复合物、组学与知识图谱表示
+    summary: Compare representations by the biological objects, assumptions, and information they retain.
+    summary_zh: 按生物对象、科学假设和保留的信息比较不同表示。
+    audience: [machine-learning-researchers, computational-biologists]
+    learning_outcomes:
+      [match-representation-to-object, identify-information-loss]
+    prerequisites: [molecular-notation, machine-learning]
+    cross_track_prerequisites: [foundations, machine-learning, data-governance]
+    pipeline_stages: [data-intake, representation-learning]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: biological-representations
+        order: 1
+        title: Biological representations
+        title_zh: 生物学表示
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids:
+          [
+            dataset-pcqm4mv2,
+            dataset-geom,
+            tool-datamol,
+            tool-molfeat,
+            model-grover,
+            model-molclr,
+          ]
+        prerequisites: []
+      - id: small-molecule-representations
+        order: 2
+        title: Small-molecule representations
+        title_zh: 小分子表示
+        type: lesson
+        sections:
+          [
+            prerequisites,
+            goals,
+            scientific-assumptions,
+            data-contract,
+            representation-families,
+            cheap-baseline,
+            worked-case,
+            evaluation-traps,
+            failure-modes,
+            openness-and-licensing,
+            source-list,
+          ]
+        source_ids:
+          [
+            tool-rdkit,
+            db-chembl,
+            tool-datamol,
+            tool-molfeat,
+            model-grover,
+            model-molclr,
+            model-uni-mol,
+            tutorial-rdkit-cookbook,
+          ]
+        prerequisites: [biological-representations]
+      - id: complex-cell-and-knowledge-graphs
+        order: 3
+        title: "Protein, complex, cell-state and knowledge-graph representations"
+        title_zh: "蛋白、复合物、细胞状态与知识图谱表示"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [model-esm, db-uniprot, db-reactome]
+        prerequisites:
+          [
+            biological-representations,
+            neural-representations,
+            identity-lineage-and-reuse,
+          ]
+        capabilities: [explanation, worked-example, exercise]
+      - id: single-cell-and-virtual-cell-models
+        order: 4
+        title: "Single-cell foundation models and virtual cells"
+        title_zh: "单细胞基础模型与虚拟细胞"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            two-task-contracts,
+            scgpt,
+            scfoundation,
+            cellfm,
+            uce,
+            gears,
+            cpa,
+            pertformer,
+            the-zero-shot-evaluation-study,
+            openness-by-dimension,
+            training-corpora-and-cell-type-coverage,
+            worked-case,
+            independent-exercise,
+            scope-and-what-the-material-does-not-show,
+            sources
+          ]
+        source_ids: [model-geneformer, model-tgpt, model-scgpt, model-scfoundation, model-gears, model-cpa, model-uce, model-cellfm, model-pertformer, model-zeroshot-scfoundation]
+        prerequisites: [complex-cell-and-knowledge-graphs]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: protein-language-models
+        order: 5
+        title: "Protein language models and what they open"
+        title_zh: "蛋白质语言模型及其打开的边界"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            task-contract,
+            esm-cambrian,
+            esmc,
+            prot42,
+            ppi-llama2,
+            openness-by-dimension,
+            training-corpora-and-coverage,
+            worked-case,
+            independent-exercise,
+            scope-and-what-the-material-does-not-show,
+            sources,
+          ]
+        source_ids: [model-esm-c, model-esmc, model-prot42, model-ppi-llama2]
+        prerequisites: [complex-cell-and-knowledge-graphs]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: relational-graph-evidence
+        order: 6
+        title: "Typed relations and evidence in a resource graph"
+        title_zh: "资源图谱中的类型化关系与证据"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            typed-nodes-and-directed-relations,
+            provenance-belongs-to-the-declaring-record,
+            missing-edges-and-candidate-pairs,
+            worked-case,
+            independent-exercise,
+            what-the-material-does-not-show,
+            sources-and-review-date,
+          ]
+        source_ids: [model-boltz-2, model-cgflow, model-rxnflow, model-tacogfn]
+        prerequisites: [complex-cell-and-knowledge-graphs]
+        capabilities: [orientation, explanation, worked-example, exercise, runnable]
+      - id: open-representation-stack
+        order: 7
+        title: "The open representation stack, step by step"
+        title_zh: "开放的表征栈,逐步看"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            comparison-contract,
+            the-steps-of-a-representation,
+            grover,
+            molclr,
+            moleculex,
+            progen,
+            lincs-l1000-and-the-cell-census,
+            openness-by-dimension,
+            worked-case,
+            independent-exercise,
+            scope,
+            sources,
+          ]
+        source_ids:
+          [
+            model-grover,
+            model-molclr,
+            tool-moleculex,
+            model-progen,
+            dataset-connectivity-map-l1000,
+            dataset-cellxgene-census,
+          ]
+        prerequisites: [biological-representations]
+        capabilities: [explanation, worked-example, exercise]
+      - id: representations-core-source-path
+        order: 8
+        title: Core source path for molecular and protein representations
+        type: core-source-path
+        sections: []
+        source_ids:
+          [
+            model-uni-mol,
+            model-esm,
+            model-esm3,
+            model-prottrans,
+            tool-mmseqs2,
+            tool-foldseek,
+          ]
+        prerequisites: [small-molecule-representations]
+
+  - id: mechanism-targets
+    order: 6
+    title: Disease mechanism, target discovery, causal inference, and perturbational omics
+    title_zh: 疾病机制、靶点发现、因果推断与扰动组学
+    summary: Form target hypotheses from linked disease, mechanism, and perturbational evidence.
+    summary_zh: 从关联的疾病、机制与扰动证据中形成靶点假设。
+    audience: [computational-biologists, translational-researchers]
+    learning_outcomes:
+      [form-target-hypotheses, separate-correlation-from-causation]
+    prerequisites: [cell-biology, statistics]
+    cross_track_prerequisites: [drug-discovery-foundations, data-governance]
+    pipeline_stages: [disease-mechanism, target-discovery]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: disease-to-target
+        order: 1
+        title: From disease mechanism to target
+        title_zh: 从疾病机制到靶点
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids: [db-depmap, db-reactome]
+        prerequisites: []
+      - id: disease-state-definition
+        order: 2
+        title: Define the disease state before the target
+        title_zh: 先定义疾病状态，再谈靶点
+        type: lesson
+        sections:
+          [
+            learning-goals,
+            six-fields,
+            cell-state,
+            population,
+            temporal-context,
+            structure-evidence,
+            exercise,
+            limitations,
+          ]
+        source_ids: [db-depmap, db-gtex-portal, db-uniprot, db-rcsb-pdb]
+        prerequisites: [disease-to-target]
+        capabilities: [explanation, worked-example, exercise]
+      - id: perturbation-context-generalization
+        order: 3
+        title: Perturbation, context, and generalization
+        title_zh: 跨细胞语境的扰动预测
+        type: lesson
+        sections:
+          [
+            goals,
+            perturbation-unit,
+            context,
+            generalization,
+            counterevidence,
+            exercise,
+          ]
+        source_ids:
+          [
+            db-depmap,
+            db-reactome,
+            db-biogrid,
+            dataset-cellxgene-census,
+            dataset-connectivity-map-l1000,
+          ]
+        prerequisites: [disease-to-target, biological-representations]
+        capabilities: [explanation, worked-example, exercise]
+      - id: genetics-to-target-evidence
+        order: 4
+        title: From genetic evidence to a target hypothesis
+        title_zh: 从遗传证据到靶点假设
+        type: lesson
+        sections:
+          [
+            goals,
+            fine-mapping,
+            colocalization,
+            mendelian-randomization,
+            exercise,
+          ]
+        source_ids:
+          [
+            db-reactome,
+            db-biogrid,
+            db-open-targets-platform,
+            db-gwas-catalog,
+            db-gtex-portal,
+          ]
+        prerequisites: [disease-to-target, biological-representations]
+        capabilities: [explanation, worked-example, exercise]
+      - id: perturbation-to-target-validation
+        order: 5
+        title: "From perturbation to target validation"
+        title_zh: "从扰动到靶点验证"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids:
+          [
+            db-depmap,
+            db-reactome,
+            db-biogrid,
+            dataset-jump-cell-painting,
+            dataset-prism-repurposing,
+            db-human-protein-atlas,
+          ]
+        prerequisites: [disease-to-target, genetics-to-target-evidence]
+        capabilities: [explanation, worked-example, exercise]
+      - id: target-resource-guide
+        order: 6
+        title: Selecting target-evidence resources
+        title_zh: 选择靶点证据资源
+        type: lesson
+        sections: [resource-selection, worked-example, exercise, limitations]
+        source_ids:
+          [
+            db-open-targets-platform,
+            db-gwas-catalog,
+            db-gtex-portal,
+            dataset-cellxgene-census,
+            dataset-connectivity-map-l1000,
+            dataset-jump-cell-painting,
+            db-human-protein-atlas,
+            dataset-prism-repurposing,
+          ]
+        prerequisites: [disease-to-target, genetics-to-target-evidence]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: cross-modality-perturbation-evidence
+        order: 7
+        title: "Two readouts of one perturbation"
+        title_zh: "同一次扰动的两种读出"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            two-readouts-of-one-perturbation,
+            the-design-between-the-readouts,
+            the-runnable-check,
+            worked-case,
+            what-this-does-not-show,
+            independent-exercise,
+            sources-and-next-lesson
+          ]
+        source_ids: [dataset-cellpainting-rosetta]
+        prerequisites: [perturbation-to-target-validation]
+        capabilities: [explanation, worked-example, exercise, runnable]
+      - id: mechanism-targets-core-source-path
+        order: 8
+        title: Core source path for mechanism evidence
+        type: core-source-path
+        sections: []
+        source_ids: [db-biogrid, model-biogpt]
+        prerequisites: [perturbation-context-generalization]
+
+  - id: qsar-properties
+    order: 7
+    title: QSAR, activity prediction, and molecular properties
+    title_zh: QSAR、活性预测与分子性质
+    summary: Establish train-only baselines and task-aligned evaluation for property prediction.
+    summary_zh: 为性质预测建立仅训练集基线与任务一致的评估。
+    audience: [machine-learning-researchers, medicinal-chemists]
+    learning_outcomes: [build-cheap-baselines, audit-property-splits]
+    prerequisites: [representations, supervised-learning]
+    cross_track_prerequisites:
+      [machine-learning, data-governance, representations]
+    pipeline_stages: [hit-discovery, lead-optimization]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: property-prediction
+        order: 1
+        title: Property prediction
+        title_zh: 性质预测
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids: [benchmark-tdc, benchmark-ogb, tool-chemprop]
+        prerequisites: []
+      - id: regression-classification-errors
+        order: 2
+        title: Regression, classification, and errors
+        title_zh: 回归、分类与它们掩盖的误差
+        type: lesson
+        sections:
+          [goals, endpoint, regression, classification, errors, exercise]
+        source_ids: [benchmark-tdc, benchmark-ogb, tool-chemprop]
+        prerequisites: [property-prediction, baseline-training-validation]
+        capabilities: [explanation, worked-example, exercise, runnable]
+      - id: chemical-series-and-domains
+        order: 3
+        title: "Chemical series, representation choice and applicability domains"
+        title_zh: "化学系列、表示选择与适用域"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [tool-rdkit, db-chembl]
+        prerequisites:
+          [small-molecule-representations, regression-classification-errors]
+        capabilities: [explanation, worked-example, exercise]
+      - id: uncertainty-to-decisions
+        order: 4
+        title: "Predictive uncertainty, calibration and decisions"
+        title_zh: "预测不确定性、校准与决策"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [tool-botorch, benchmark-tdc]
+        prerequisites:
+          [probability-loss-and-checkpoints, chemical-series-and-domains]
+        capabilities: [explanation, worked-example, exercise]
+      - id: applicability-domain-diagnostics
+        order: 5
+        title: "Applicability domain diagnostics"
+        title_zh: "适用域诊断"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            distance-is-conditional-on-representation,
+            scaffold-held-out-error,
+            worked-case-from-measured-counts,
+            independent-exercise,
+            what-this-material-does-not-show,
+            sources-and-review-date,
+          ]
+        source_ids: [freesolv-v0-52, tool-rdkit]
+        prerequisites: [chemical-series-and-domains, regression-classification-errors]
+        capabilities: [orientation, explanation, worked-example, exercise, runnable]
+      - id: qsar-core-source-path
+        order: 6
+        title: Core source path for property benchmarks
+        type: core-source-path
+        sections: []
+        source_ids: [freesolv-v0-52, model-graphormer]
+        prerequisites: [regression-classification-errors]
+
+  - id: admet-pk
+    order: 8
+    title: ADMET, toxicity, DMPK, and PK/PD
+    title_zh: ADMET、毒性、DMPK 与 PK/PD
+    summary: Treat exposure and safety as evidence streams, not single-model scores.
+    summary_zh: 将暴露和安全性视为证据流，而非单一模型分数。
+    audience: [medicinal-chemists, pharmacology-researchers]
+    learning_outcomes:
+      [interpret-admet-evidence, reject-single-score-nomination]
+    prerequisites: [qsar-properties, pharmacology]
+    cross_track_prerequisites: [qsar-properties]
+    pipeline_stages: [lead-optimization, dmpk-toxicology]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: admet-evaluation
+        order: 1
+        title: ADMET evaluation
+        title_zh: ADMET 评估
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids:
+          [
+            tool-admet-ai,
+            benchmark-tdc,
+            tool-openadmet-models,
+            tutorial-openadmet-demos,
+          ]
+        prerequisites: []
+      - id: exposure-clearance-pkpd
+        order: 2
+        title: From clearance and exposure to PK/PD
+        title_zh: 从清除率和暴露到 PK/PD
+        type: lesson
+        sections:
+          [
+            goals,
+            pk-model,
+            fitting,
+            unbound-exposure,
+            pharmacodynamics,
+            exercise,
+          ]
+        source_ids: [tool-admet-ai, benchmark-tdc, db-pk-db, tool-pk-sim, db-chembl]
+        prerequisites: [admet-evaluation, assay-controls-dose-response]
+        capabilities: [explanation, worked-example, exercise, runnable]
+      - id: metabolism-to-safety
+        order: 3
+        title: "From metabolism to safety decisions"
+        title_zh: "从代谢到安全性决策"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids:
+          [
+            tool-admet-ai,
+            benchmark-tdc,
+            db-drugbank,
+            dataset-toxcast,
+            db-comptox-chemicals-dashboard,
+            db-chembl,
+          ]
+        prerequisites: [admet-evaluation, exposure-clearance-pkpd]
+        capabilities: [explanation, worked-example, exercise]
+      - id: admet-resource-guide
+        order: 4
+        title: Choosing ADMET and PK resources
+        title_zh: 选择 ADMET 与 PK 资源
+        type: lesson
+        sections: [resource-selection, worked-example, exercise, limitations]
+        source_ids:
+          [
+            tool-openadmet-models,
+            tutorial-openadmet-demos,
+            tool-pk-sim,
+            db-pk-db,
+            db-comptox-chemicals-dashboard,
+            dataset-toxcast,
+          ]
+        prerequisites: [admet-evaluation, exposure-clearance-pkpd]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: admet-and-dmpk-tool-frontier
+        order: 5
+        title: "The ADMET and DMPK tool frontier"
+        title_zh: "ADMET 与 DMPK 工具前沿"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            task-and-input-output-contract,
+            representation-objective-training-and-inference,
+            openness-and-licence-posture,
+            the-comparison-the-records-do-not-support,
+            entities-splits-metrics-and-resources,
+            what-was-inspected-and-what-was-run,
+            worked-case,
+            what-this-material-does-not-show,
+            independent-exercise,
+            sources-and-attribution
+          ]
+        source_ids: [tool-admet-ai, tool-polaris, benchmark-tdc, tool-admetlab, tool-openadmet-models, dataset-polaris-adme]
+        prerequisites: [metabolism-to-safety]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: multi-endpoint-integration
+        order: 6
+        title: "Multi-endpoint integration without a composite score"
+        title_zh: "不合成总分的多终点整合"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            endpoint-families-and-measurement-units,
+            worked-case,
+            independent-exercise,
+            what-this-material-does-not-show,
+            sources-and-attribution,
+          ]
+        source_ids: [db-chembl-37, dataset-chembl-activity]
+        prerequisites: [metabolism-to-safety, exposure-clearance-pkpd]
+        capabilities: [orientation, explanation, worked-example, exercise, runnable]
+      - id: admet-core-source-path
+        order: 7
+        title: Core source path for physical-property evaluation
+        type: core-source-path
+        sections: []
+        source_ids: [tool-openff-evaluator, db-drugbank]
+        prerequisites: [admet-evaluation]
+
+  - id: dti-screening
+    order: 9
+    title: Drug-target interaction, affinity, virtual screening, and repurposing
+    title_zh: 药物-靶点相互作用、亲和力、虚拟筛选与再利用
+    summary: Design screening comparisons around a target, assay, decoy, and experimental feedback loop.
+    summary_zh: 围绕靶点、实验、诱饵与实验反馈循环设计筛选比较。
+    audience: [computational-chemists, drug-discovery-researchers]
+    learning_outcomes: [specify-screening-units, design-experimental-follow-up]
+    prerequisites: [representations, qsar-properties, structural-biology]
+    cross_track_prerequisites:
+      [drug-discovery-foundations, qsar-properties, representations]
+    pipeline_stages: [hit-discovery, hit-to-lead]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: screening-and-affinity
+        order: 1
+        title: Screening and affinity
+        title_zh: 筛选与亲和力
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids:
+          [
+            benchmark-dude,
+            benchmark-lit-pcba,
+            benchmark-posebusters,
+            benchmark-drugood,
+            tool-autodock-vina,
+            tool-gnina,
+          ]
+        prerequisites: []
+      - id: screening-prevalence-and-transfer
+        order: 2
+        title: "Screening prevalence, affinity scales, and transfer"
+        title_zh: "筛选候选活性率、亲和力尺度与迁移"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [benchmark-dude, benchmark-lit-pcba, benchmark-posebusters]
+        prerequisites:
+          [screening-and-affinity, regression-classification-errors]
+        capabilities: [explanation, worked-example, exercise]
+      - id: docking-and-pose-validity
+        order: 3
+        title: Docking, pose generation, and physical validity
+        title_zh: 对接、位姿生成与物理有效性
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [benchmark-posebusters, tool-autodock-vina, model-diffdock]
+        prerequisites:
+          [screening-and-affinity, screening-prevalence-and-transfer]
+        capabilities: [explanation, worked-example, exercise]
+      - id: consensus-screening-and-ai-native-docking
+        order: 4
+        title: Consensus virtual screening and AI-native docking
+        title_zh: 共识虚拟筛选与 AI 原生对接
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [tool-dockm8, tool-trids, benchmark-dude, benchmark-lit-pcba]
+        prerequisites:
+          [docking-and-pose-validity, screening-prevalence-and-transfer]
+        capabilities: [explanation, worked-example, exercise]
+      - id: dti-screening-core-source-path
+        order: 5
+        title: Core source path for screening models and pose checks
+        type: core-source-path
+        sections: []
+        source_ids:
+          [
+            asset-gnina-models,
+            tool-smina,
+            model-diffdock,
+            tool-uni-dock,
+            model-equibind,
+            model-dynamicbind,
+            model-neuralplexer,
+            model-deepdta,
+            model-graphdta,
+            model-pocket2mol,
+            model-targetdiff,
+          ]
+        prerequisites: [screening-and-affinity]
+
+  - id: structure-and-pockets
+    order: 10
+    title: Structure prediction, pockets, and co-folding
+    title_zh: 结构预测、口袋与共折叠
+    summary: Interpret structural and co-folding outputs with dimensional openness and experimental limits visible.
+    summary_zh: 在保留多维开放性和实验局限的前提下解读结构与共折叠输出。
+    audience: [structural-biologists, protein-model-researchers]
+    learning_outcomes: [read-cofolding-claims, distinguish-openness-dimensions]
+    prerequisites: [representations, structural-biology]
+    cross_track_prerequisites: [representations]
+    pipeline_stages: [structure-prediction, hit-discovery, evaluation]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: cofolding-frontier
+        order: 1
+        title: Structure, pockets, and co-folding
+        title_zh: 结构、口袋与共折叠
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids:
+          [
+            model-chai-1,
+            model-chai-2,
+            paper-alphafold-3,
+            model-alphafold-3-inference,
+            model-isodde,
+            model-boltz-1,
+            model-boltz-2,
+          ]
+        prerequisites: []
+      - id: structure-affinity-mechanisms
+        order: 2
+        title: Structure, affinity, and mechanism hypotheses
+        title_zh: 结构、亲和力与预测量的含义
+        type: lesson
+        sections:
+          [goals, structure-state, pocket, affinity, alternatives, exercise]
+        source_ids: [model-chai-1, model-boltz-2, paper-alphafold-3]
+        prerequisites: [cofolding-frontier, docking-to-fep]
+        capabilities: [explanation, worked-example, exercise]
+      - id: pocket-states-and-confidence
+        order: 3
+        title: "Pocket states, confidence, and reusable structural evidence"
+        title_zh: "口袋状态、置信度与可复用结构证据"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [db-rcsb-pdb, model-alphafold-3-inference, model-boltz-2]
+        prerequisites: [cofolding-frontier, structure-affinity-mechanisms]
+        capabilities: [explanation, worked-example, exercise]
+      - id: asset-openness-and-reuse
+        order: 4
+        title: "Asset openness and reuse"
+        title_zh: "资产开放性与复用"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            seven-different-objects,
+            access-and-permission-answer-different-questions,
+            worked-case-across-two-inference-releases,
+            independent-exercise,
+            what-the-material-does-not-show,
+            sources-and-review-date,
+          ]
+        source_ids:
+          [model-boltz-2, model-alphafold-3-inference, tool-rdkit, db-uniprot]
+        prerequisites: [pocket-states-and-confidence]
+        capabilities: [orientation, explanation, worked-example, exercise, runnable]
+      - id: structure-metrics-and-benchmarks
+        order: 5
+        title: "Metrics for structure predictions and the benchmarks behind them"
+        title_zh: "结构预测的度量及其背后的基准"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            comparison-contract,
+            the-four-measures,
+            correspondence-before-comparison,
+            a-benchmark-and-its-time-window,
+            openness-by-dimension,
+            worked-case,
+            independent-exercise,
+            scope,
+            sources,
+          ]
+        source_ids: [tool-pxmeter]
+        prerequisites: [cofolding-frontier]
+        capabilities: [explanation, worked-example, exercise]
+      - id: open-structure-stack
+        order: 6
+        title: "The open structure stack, step by step"
+        title_zh: "开放的结构栈,逐步看"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            comparison-contract,
+            the-steps-of-a-structure,
+            mmseqs2,
+            colabfold,
+            rosettafold-all-atom,
+            dynamicbind,
+            openness-by-dimension,
+            worked-case,
+            independent-exercise,
+            scope,
+            sources,
+          ]
+        source_ids: [tool-mmseqs2, tool-colabfold, model-rosettafold-all-atom, model-dynamicbind]
+        prerequisites: [cofolding-frontier]
+        capabilities: [explanation, worked-example, exercise]
+      - id: affinity-routes-2026
+        order: 7
+        title: "Four routes to an affinity number in 2026"
+        title_zh: "2026 年通向亲和力数值的四条路径"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            comparison-contract,
+            four-routes-to-an-affinity-number,
+            aqaffinity,
+            nesso-1,
+            byteff,
+            byteff2,
+            openness-by-dimension,
+            worked-case,
+            independent-exercise,
+            scope,
+            sources,
+          ]
+        source_ids: [model-aqaffinity, model-nesso, model-byteff, model-byteff2]
+        prerequisites: [structure-affinity-mechanisms]
+        capabilities: [explanation, worked-example, exercise]
+      - id: structure-core-source-path
+        order: 8
+        title: Core source path for reproducibility and co-folding
+        type: core-source-path
+        sections: []
+        source_ids:
+          [
+            model-openfold,
+            model-protenix,
+            model-opendde,
+            tool-colabfold,
+            model-alphafold-2,
+            model-rosettafold-all-atom,
+          ]
+        prerequisites: [structure-affinity-mechanisms]
+
+  - id: physics-based-modeling
+    order: 11
+    title: Docking, scoring, molecular dynamics, FEP, quantum chemistry, and ML potentials
+    title_zh: 对接、打分、分子动力学、FEP、量子化学与机器学习势能
+    summary: Match physical modelling tools to the decision and the experimental uncertainty they can address.
+    summary_zh: 将物理建模工具与其决策目标和可处理的实验不确定性相匹配。
+    audience: [computational-chemists, physical-scientists]
+    learning_outcomes: [match-physics-to-decision, identify-protocol-mismatch]
+    prerequisites: [drug-discovery-foundations, structure-and-pockets]
+    cross_track_prerequisites:
+      [drug-discovery-foundations, structure-and-pockets]
+    pipeline_stages: [hit-discovery, hit-to-lead, lead-optimization]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: docking-to-fep
+        order: 1
+        title: Docking through FEP
+        title_zh: 从对接到 FEP
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids:
+          [
+            tool-openff-toolkit,
+            tool-openmm,
+            tool-gromacs,
+            tool-mdanalysis,
+            tool-mdtraj,
+          ]
+        prerequisites: []
+      - id: physical-model-system-state
+        order: 2
+        title: Physical model and system state
+        title_zh: 物理模型与体系状态
+        type: lesson
+        sections:
+          [
+            prerequisites,
+            goals,
+            state-anatomy,
+            data-contract,
+            ordering-and-dependence,
+            invariant-representation,
+            train-only-fitting,
+            system-level-evaluation,
+            worked-lab,
+            failure-gates,
+            limitations,
+            source-list,
+          ]
+        source_ids: [dataset-rmd17, tool-mdanalysis, tool-openmm]
+        prerequisites: [docking-to-fep]
+      - id: force-fields-and-sampling
+        order: 3
+        title: "Force fields, solvent, and sampling"
+        title_zh: "力场、溶剂与采样"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [tool-openmm, tool-gromacs, dataset-rmd17]
+        prerequisites: [physical-model-system-state]
+        capabilities: [explanation, worked-example, exercise]
+      - id: free-energy-cycles-and-convergence
+        order: 4
+        title: "Free-energy cycles, endpoints, and convergence"
+        title_zh: "自由能循环、终点与收敛"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [tool-openmm, tool-openfe, tutorial-openfe, dataset-rmd17]
+        prerequisites: [force-fields-and-sampling]
+        capabilities: [explanation, worked-example, exercise]
+      - id: qm-mm-and-reactive-events
+        order: 5
+        title: "QM/MM boundaries and reactive events"
+        title_zh: "QM/MM 边界与反应事件"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [tool-openmm, tool-xtb]
+        prerequisites: [force-fields-and-sampling]
+        capabilities: [explanation, worked-example, exercise]
+      - id: physics-resource-guide
+        order: 6
+        title: Choosing physical-modelling resources
+        title_zh: 选择物理建模资源
+        type: lesson
+        sections: [resource-selection, worked-example, exercise, limitations]
+        source_ids:
+          [
+            tool-autodock-vina,
+            tool-openff-toolkit,
+            tool-openmm,
+            tool-mdanalysis,
+            tool-openfe,
+            tutorial-openfe,
+            tool-psi4,
+            tool-xtb,
+          ]
+        prerequisites:
+          [force-fields-and-sampling, free-energy-cycles-and-convergence]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: ml-potentials
+        order: 7
+        title: "Machine-learning interatomic potentials"
+        title_zh: "机器学习原子间势"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            from-a-fixed-functional-form-to-a-learned-surface,
+            what-the-six-released-code-bases-are,
+            the-openness-picture-across-the-six,
+            where-the-training-corpus-stays-dark,
+            when-one-name-means-two-things,
+            when-two-results-are-not-independent,
+            what-a-reported-error-does-and-does-not-mean,
+            what-a-matched-comparison-would-need,
+            worked-case,
+            independent-exercise,
+            what-this-material-does-not-show,
+            sources-and-attribution
+          ]
+        source_ids: [model-nequip, model-mace, model-chgnet, model-mattersim, model-sevennet, model-torchani]
+        prerequisites: [force-fields-and-sampling]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: physics-core-source-path
+        order: 8
+        title: Core source path for free-energy and quantum tools
+        type: core-source-path
+        sections: []
+        source_ids: [tool-psi4, tool-xtb, tool-openfe, tool-perses]
+        prerequisites: [physical-model-system-state]
+
+  - id: molecular-generation
+    order: 12
+    title: Small-molecule generation, search, and multi-objective optimization
+    title_zh: 小分子生成、搜索与多目标优化
+    summary: Make the objective, constraints, and experimental feedback loop explicit for molecular design.
+    summary_zh: 为分子设计明确目标、约束和实验反馈循环。
+    audience: [generative-model-researchers, medicinal-chemists]
+    learning_outcomes:
+      [write-multi-objective-specifications, define-generation-failure-gates]
+    prerequisites: [qsar-properties, physics-based-modeling]
+    cross_track_prerequisites: [qsar-properties, physics-based-modeling]
+    pipeline_stages: [hit-discovery, hit-to-lead, lead-optimization]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: generation-and-search
+        order: 1
+        title: Generation and search
+        title_zh: 生成与搜索
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids: [benchmark-moses, benchmark-guacamol, tool-reinvent-4]
+        prerequisites: []
+      - id: generative-model-mechanisms
+        order: 2
+        title: Generative model mechanisms
+        title_zh: 条件生成的机制
+        type: lesson
+        sections:
+          [
+            goals,
+            objective,
+            generation-family,
+            constraints,
+            selection,
+            exercise,
+          ]
+        source_ids: [benchmark-moses, benchmark-guacamol, tool-reinvent-4, model-rfdiffusion2]
+        prerequisites: [generation-and-search]
+        capabilities: [explanation, worked-example, exercise]
+      - id: flows-and-constrained-search
+        order: 3
+        title: "Flows and constrained molecular search"
+        title_zh: "流模型与受约束分子搜索"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [benchmark-guacamol, benchmark-moses, tool-rdkit]
+        prerequisites: [generation-and-search, generative-model-mechanisms]
+        capabilities: [explanation, worked-example, exercise]
+      - id: generation-resource-guide
+        order: 4
+        title: Choosing generation tools and evaluation tasks
+        title_zh: 选择分子生成工具与评价任务
+        type: lesson
+        sections: [resource-selection, worked-example, exercise, limitations]
+        source_ids:
+          [
+            tool-reinvent-4,
+            model-reinvent-3,
+            benchmark-moses,
+            benchmark-guacamol,
+            tool-molscore,
+          ]
+        prerequisites: [generation-and-search, flows-and-constrained-search]
+        capabilities: [orientation, explanation, worked-example, exercise, runnable]
+      - id: flow-matching-and-gflownet
+        order: 5
+        title: "Flow matching and GFlowNet objectives"
+        title_zh: "流匹配与 GFlowNet 目标"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            the-objective-decides-the-sample-set,
+            the-flow-matching-objective,
+            the-gflownet-objective,
+            libraries-behind-the-two-objectives,
+            molecular-records-under-flow-matching,
+            molecular-records-under-gflownet,
+            reinforcement-learning-on-a-flow-model,
+            what-the-evaluation-depends-on,
+            openness-by-dimension,
+            what-a-matched-comparison-would-need,
+            worked-case,
+            independent-exercise,
+            what-this-material-does-not-show,
+            sources
+          ]
+        source_ids: [tool-gflownet, tool-torchgfn, tool-flow-matching, model-flowmol3, model-fragfm, model-defog, model-agfn, model-rxnflow, model-cgflow, model-tacogfn, model-graph-grpo, model-instaflow, model-molfm]
+        prerequisites: [flows-and-constrained-search]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: generative-binder-design
+        order: 6
+        title: "Generative binder design and where the release stops"
+        title_zh: "生成式结合体设计与发布止步之处"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            task-contract,
+            bindcraft,
+            alphaproteo,
+            boltzgen,
+            rfdiffusion2,
+            openness-by-dimension,
+            training-corpora-and-coverage,
+            worked-case,
+            independent-exercise,
+            scope-and-what-the-material-does-not-show,
+            sources,
+          ]
+        source_ids: [tool-bindcraft, model-alphaproteo, model-boltzgen, model-rfdiffusion2]
+        prerequisites: [flows-and-constrained-search]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: open-generation-assets-2026
+        order: 7
+        title: "Open generation assets of 2026"
+        title_zh: "2026 年的开放生成资产"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            comparison-contract,
+            zatom-1,
+            molcraftdiffusion,
+            openness-by-dimension,
+            worked-case,
+            independent-exercise,
+            scope,
+            sources,
+          ]
+        source_ids: [model-zatom-1, model-molcraftdiffusion]
+        prerequisites: [generative-model-mechanisms]
+        capabilities: [explanation, worked-example, exercise]
+      - id: molecular-generation-core-source-path
+        order: 8
+        title: Core source path for constrained generation
+        type: core-source-path
+        sections: []
+        source_ids: [tool-molscore, model-pocket2mol, model-targetdiff]
+        prerequisites: [generative-model-mechanisms]
+
+  - id: biologics-design
+    order: 13
+    title: Protein, peptide, antibody, nucleic-acid, and multimodal design
+    title_zh: 蛋白、多肽、抗体、核酸与多模态设计
+    summary: Separate designed sequences and structures from evidence of biological function.
+    summary_zh: 将设计的序列与结构同生物功能证据区分开来。
+    audience: [protein-engineers, structural-biologists]
+    learning_outcomes:
+      [separate-design-from-function, plan-biological-validation]
+    prerequisites: [representations, structure-and-pockets]
+    cross_track_prerequisites: [representations, structure-and-pockets]
+    pipeline_stages: [design, hit-discovery, evaluation]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: multimodal-design
+        order: 1
+        title: Biologics and multimodal design
+        title_zh: 生物制剂与多模态设计
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids:
+          [model-proteinmpnn, model-rfdiffusion, model-ligandmpnn, model-chroma]
+        prerequisites: []
+      - id: construct-identity-and-objectives
+        order: 2
+        title: "Biologic construct identity and evaluation objectives"
+        title_zh: "生物大分子构建体身份与评估目标"
+        type: lesson
+        sections:
+          [
+            learning-goals,
+            construct-definition,
+            construct-worked-case,
+            construct-exercise,
+            objective-separation,
+            objective-worked-case,
+            objective-exercise,
+            sources,
+          ]
+        source_ids: [db-drugbank, db-thera-sabdab, db-uniprot, db-rcsb-pdb]
+        prerequisites: [multimodal-design]
+        capabilities: [explanation, worked-example, exercise, runnable]
+      - id: antibody-peptide-design
+        order: 3
+        title: "Antibody and peptide design with negative selection"
+        title_zh: "抗体与多肽设计及负向选择"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids:
+          [model-proteinmpnn, model-rfdiffusion, db-sabdab2, db-oas, db-iedb]
+        prerequisites: [multimodal-design]
+        capabilities: [explanation, worked-example, exercise]
+      - id: nucleic-acids-conjugates-degraders
+        order: 4
+        title: "Nucleic acids, conjugates, and degraders"
+        title_zh: "核酸、偶联物与降解剂"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [db-drugbank, benchmark-tdc]
+        prerequisites: [multimodal-design]
+        capabilities: [explanation, worked-example, exercise]
+      - id: developability-and-validation
+        order: 5
+        title: "Developability and functional validation"
+        title_zh: "可开发性与功能验证"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [model-proteinmpnn, model-ligandmpnn, db-thera-sabdab]
+        prerequisites: [multimodal-design, antibody-peptide-design]
+        capabilities: [explanation, worked-example, exercise]
+      - id: modality-resource-guide
+        order: 6
+        title: Choosing biologics-design resources
+        title_zh: 选择生物大分子设计资源
+        type: lesson
+        sections: [resource-selection, worked-example, exercise, limitations]
+        source_ids: [db-sabdab2, db-oas, db-thera-sabdab, db-iedb]
+        prerequisites: [multimodal-design, antibody-peptide-design]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: affinity-table-independent-unit
+        order: 7
+        title: "The independent unit in an affinity table"
+        title_zh: "亲和力表里的独立单元"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            rows-and-independent-units,
+            ragged-positional-records,
+            complete-measurements,
+            held-out-evaluation,
+            data-terms,
+            worked-case,
+            independent-exercise,
+            scope-and-sources
+          ]
+        source_ids: [db-skempi]
+        prerequisites: [construct-identity-and-objectives]
+        capabilities: [explanation, worked-example, exercise, runnable]
+
+      - id: nucleic-acid-and-peptide-models
+        order: 8
+        title: "Open models for nucleic-acid and peptide design"
+        title_zh: "核酸与肽设计的开放模型"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            comparison-contract,
+            rna-fm,
+            ribonanzanet,
+            pephar,
+            helm-bert,
+            proteinflow,
+            openness-by-dimension,
+            worked-case,
+            independent-exercise,
+            scope,
+            sources
+          ]
+        source_ids: [model-rna-fm, model-ribonannanet, model-pephar, model-helm-bert, tool-proteinflow]
+        prerequisites: [nucleic-acids-conjugates-degraders]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: binding-functional-and-clinical-claims
+        order: 9
+        title: "Binding, functional and clinical claims"
+        title_zh: "结合、功能与临床三类主张"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            three-claims-and-their-records,
+            the-record-rule,
+            worked-case,
+            independent-exercise,
+            what-this-material-does-not-show,
+            run-the-audit,
+            sources-and-attribution,
+          ]
+        source_ids: [db-chembl-37, db-pubchem]
+        prerequisites: [developability-and-validation]
+        capabilities: [orientation, explanation, worked-example, exercise, runnable]
+      - id: objective-ladder
+        order: 10
+        title: "An objective ladder for public protein records"
+        title_zh: "公共蛋白质记录的目标阶梯"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            evidence-at-each-objective,
+            how-the-reading-is-made,
+            the-reading,
+            the-empty-cells,
+            worked-case,
+            independent-exercise,
+            what-this-material-does-not-show,
+            run-the-reading-yourself,
+            sources-and-attribution,
+          ]
+        source_ids: [db-uniprot, db-rcsb-pdb, db-alphafold-db, db-skempi]
+        prerequisites: [construct-identity-and-objectives]
+        capabilities: [explanation, worked-example, exercise, runnable]
+
+      - id: specificity-and-negative-selection
+        order: 11
+        title: "Specificity and negative selection records"
+        title_zh: "特异性与负向选择记录"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            a-margin-needs-two-measurements,
+            negative-selection-records,
+            worked-case,
+            independent-exercise,
+            what-this-material-does-not-show,
+            sources-and-attribution,
+          ]
+        source_ids: [db-skempi]
+        prerequisites: [affinity-table-independent-unit]
+        capabilities: [explanation, worked-example, exercise, runnable]
+
+      - id: frontier-protein-design-2026
+        order: 12
+        title: "Three protein-design methods from 2026"
+        title_zh: "2026 年的三个蛋白质设计方法"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            comparison-contract,
+            raygun,
+            nise,
+            lasermpnn,
+            openness-by-dimension,
+            worked-case,
+            independent-exercise,
+            scope,
+            sources,
+          ]
+        source_ids: [model-raygun, model-nise, model-lasermpnn]
+        prerequisites: [construct-identity-and-objectives]
+        capabilities: [explanation, worked-example, exercise]
+
+      - id: biologics-core-source-path
+        order: 13
+        title: Core source path for protein design
+        type: core-source-path
+        sections: []
+        source_ids:
+          [
+            model-progen,
+            model-rosettafold-all-atom,
+            model-chai-1,
+            model-protenix,
+          ]
+        prerequisites: [multimodal-design]
+  - id: synthesis-and-automation
+    order: 14
+    title: Reaction prediction, retrosynthesis, synthesizability, and laboratory automation
+    title_zh: 反应预测、逆合成、可合成性与实验室自动化
+    summary: Treat synthesis plans as hypotheses that must survive route, material, and laboratory constraints.
+    summary_zh: 将合成路线视为必须经受路线、原料与实验室约束检验的假设。
+    audience: [synthetic-chemists, automation-engineers]
+    learning_outcomes:
+      [evaluate-synthetic-feasibility, connect-plans-to-lab-feedback]
+    prerequisites: [drug-discovery-foundations, data-governance]
+    cross_track_prerequisites: [drug-discovery-foundations, data-governance]
+    pipeline_stages: [hit-to-lead, lead-optimization, make]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: reaction-to-lab
+        order: 1
+        title: Reaction prediction to the lab
+        title_zh: 从反应预测到实验室
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids: [tool-rxnmapper, model-chemformer, tool-aizynthfinder]
+        prerequisites: []
+      - id: reaction-mapping-and-route-search
+        order: 2
+        title: "Reaction mapping and route search"
+        title_zh: "反应映射与路线搜索"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [tool-rxnmapper, tool-aizynthfinder, tool-askcos]
+        prerequisites: [reaction-to-lab]
+        capabilities: [explanation, worked-example, exercise]
+      - id: route-feasibility-and-feedback
+        order: 3
+        title: "Route feasibility, forward prediction, and feedback"
+        title_zh: "路线可行性、正向预测与反馈"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [tool-aizynthfinder, tool-askcos, standard-ord-schema]
+        prerequisites: [reaction-mapping-and-route-search]
+        capabilities: [explanation, worked-example, exercise]
+      - id: retrieval-and-reinforcement-learning-for-route-planning
+        order: 4
+        title: Retrieval and reinforcement learning for route planning
+        title_zh: 面向路线规划的检索与强化学习
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids:
+          [agent-retroagent, agent-syn-rrag, tool-askcos, tool-aizynthfinder]
+        prerequisites: [route-feasibility-and-feedback]
+        capabilities: [explanation, worked-example, exercise]
+      - id: synthesis-core-source-path
+        order: 5
+        title: Core source path for retrosynthesis
+        type: core-source-path
+        sections: []
+        source_ids: [tool-askcos, tool-retrosim, standard-ord-schema]
+        prerequisites: [reaction-to-lab]
+
+  - id: active-learning
+    order: 15
+    title: Active learning, Bayesian optimization, and design-make-test-analyze loops
+    title_zh: 主动学习、贝叶斯优化与设计-合成-测试-分析循环
+    summary: Allocate limited experiments through uncertainty-aware and predeclared selection rules.
+    summary_zh: 通过不确定性感知和预先声明的选择规则分配有限实验。
+    audience: [experimentalists, optimization-researchers]
+    learning_outcomes: [allocate-experiments, freeze-selection-rules]
+    prerequisites: [qsar-properties, admet-pk]
+    cross_track_prerequisites: [qsar-properties, admet-pk]
+    pipeline_stages: [design, make, test, analyze]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: dmta-loops
+        order: 1
+        title: Design-make-test-analyze loops
+        title_zh: 设计—制备—测试—分析循环
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids: [tool-botorch, tool-ax]
+        prerequisites: []
+      - id: experiment-pools-and-budgets
+        order: 2
+        title: Experiment pools, budgets, and feasibility
+        title_zh: 实验池、预算与可行性
+        type: lesson
+        sections: []
+        source_ids: [tool-rdkit, db-chembl, tool-botorch, tool-ax]
+        prerequisites: [dmta-loops]
+      - id: diversity-uncertainty-feedback
+        order: 3
+        title: Diversity, uncertainty, and experimental feedback
+        title_zh: 多样性、不确定性与实验反馈
+        type: lesson
+        sections:
+          [
+            before-you-start,
+            information-flow,
+            case-1,
+            case-2,
+            case-3,
+            case-4,
+            information-access-card,
+          ]
+        source_ids: [tool-rdkit, db-chembl, tool-botorch]
+        prerequisites: [experiment-pools-and-budgets]
+      - id: acquisition-delays-and-stopping
+        order: 4
+        title: "Acquisition functions, delayed feedback and stopping"
+        title_zh: "采集函数、延迟反馈与停止规则"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [tool-botorch, tool-ax, tutorial-botorch, db-chembl]
+        prerequisites:
+          [
+            experiment-pools-and-budgets,
+            diversity-uncertainty-feedback,
+            uncertainty-to-decisions,
+          ]
+        capabilities: [explanation, worked-example, exercise]
+      - id: open-active-learning-stack
+        order: 5
+        title: "The open active-learning stack, role by role"
+        title_zh: "开放的主动学习栈,逐个职责"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            comparison-contract,
+            the-roles-of-a-loop,
+            alf,
+            the-mobley-lab-notebooks,
+            openness-by-dimension,
+            worked-case,
+            independent-exercise,
+            scope,
+            sources,
+          ]
+        source_ids: [tool-alf, tutorial-multiobjective-al]
+        prerequisites: [diversity-uncertainty-feedback]
+        capabilities: [explanation, worked-example, exercise]
+      - id: active-learning-core-source-path
+        order: 6
+        title: Core source path for multi-objective selection
+        type: core-source-path
+        sections: []
+        source_ids: [tool-molscore, model-reinvent-3]
+        prerequisites: [experiment-pools-and-budgets]
+
+  - id: scientific-agents
+    order: 16
+    title: Scientific language models, retrieval, tools, and agents
+    title_zh: 科学语言模型、检索、工具与智能体
+    summary: Evaluate language models and tool-using agents against explicit scientific tasks and boundaries.
+    summary_zh: 针对明确的科学任务与边界评估语言模型和工具型智能体。
+    audience: [agent-researchers, scientific-software-engineers]
+    learning_outcomes: [bound-agent-actions, evaluate-tool-use-against-evidence]
+    prerequisites: [machine-learning, data-governance]
+    cross_track_prerequisites: [machine-learning, data-governance]
+    pipeline_stages: [evidence-synthesis, design, analysis]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: agents-and-tools
+        order: 1
+        title: Scientific agents and tools
+        title_zh: 科学智能体与工具
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids: [agent-chemcrow, model-biogpt, tool-bionemo-recipes]
+        prerequisites: []
+      - id: retrieval-tools-feedback
+        order: 2
+        title: Retrieval, tools, and feedback
+        title_zh: 检索、类型化工具与反馈环
+        type: lesson
+        sections: [goals, retrieval, tool-contract, trace, feedback, exercise]
+        source_ids: [agent-chemcrow, model-biogpt, tool-bionemo-recipes]
+        prerequisites: [agents-and-tools]
+        capabilities: [explanation, worked-example, exercise]
+      - id: agent-resource-guide
+        order: 3
+        title: Choosing scientific-agent resources and evaluations
+        title_zh: 选择科学智能体资源与评测
+        type: lesson
+        sections: [goals, resource-selection, implementation-boundaries, evaluation, worked-case, exercise]
+        source_ids: [model-biogpt, agent-paperqa, agent-chemcrow, benchmark-lab-bench, benchmark-bixbench]
+        prerequisites: [retrieval-tools-feedback]
+        capabilities: [explanation, worked-example, exercise]
+      - id: agent-frontier-2026
+        order: 4
+        title: "Agent frameworks from 2026"
+        title_zh: "2026 年的智能体框架"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            comparison-contract,
+            agentd,
+            mdcrow,
+            litenexus,
+            openness-by-dimension,
+            worked-case,
+            independent-exercise,
+            scope,
+            sources,
+          ]
+        source_ids: [agent-agentd, agent-mdcrow, agent-litenexus]
+        prerequisites: [retrieval-tools-feedback]
+        capabilities: [explanation, worked-example, exercise]
+      - id: autonomous-laboratory-agents
+        order: 5
+        title: "Autonomous laboratory agents"
+        title_zh: "自主实验室智能体"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            task-and-input-output-contract,
+            representation-objective-training-and-inference,
+            the-comparison-the-records-do-not-support,
+            entities-splits-metrics-and-resources,
+            what-was-inspected-and-what-was-run,
+            openness-and-licence-posture,
+            worked-case,
+            what-this-material-does-not-show,
+            independent-exercise,
+            sources-and-attribution
+          ]
+        source_ids: [agent-coscientist, agent-robin, agent-agent-laboratory, agent-ai-coscientist, benchmark-chem-bench, benchmark-ai-researcher, tool-autolabs, benchmark-lab-bench]
+        prerequisites: [retrieval-tools-feedback]
+        capabilities: [orientation, explanation, worked-example, exercise]
+      - id: scientific-agents-core-source-path
+        order: 6
+        title: Core source path for scientific agents
+        type: core-source-path
+        sections: []
+        source_ids: [model-progen, model-chemformer, agent-paperqa, benchmark-lab-bench, benchmark-bixbench]
+        prerequisites: [retrieval-tools-feedback]
+
+  - id: evaluation-and-reproducibility
+    order: 17
+    title: Splits, benchmarks, uncertainty, out-of-distribution evaluation, leakage, and reproducibility
+    title_zh: 划分、基准、不确定性、分布外评估、泄漏与可复现性
+    summary: Audit the unit of generalization before interpreting a reported model result.
+    summary_zh: 在解读模型结果前，先审查其泛化的独立单位。
+    audience: [all-aidd-learners]
+    learning_outcomes: [audit-generalization-units, detect-evaluation-leakage]
+    prerequisites: [machine-learning, data-governance]
+    cross_track_prerequisites:
+      [machine-learning, data-governance, qsar-properties]
+    pipeline_stages: [evaluation, reproducibility]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: honest-evaluation
+        order: 1
+        title: Honest evaluation
+        title_zh: 诚实评估
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids:
+          [
+            benchmark-tdc,
+            benchmark-ogb,
+            benchmark-drugood,
+            benchmark-posebusters,
+          ]
+        prerequisites: []
+      - id: split-and-leakage-cases
+        order: 2
+        title: Splits and leakage across three labs
+        title_zh: 三个实验中的数据划分与泄漏
+        type: lesson
+        sections:
+          [
+            before-you-start,
+            case-1,
+            case-2,
+            case-3,
+            case-4,
+            evaluation-memo,
+            case-materials,
+          ]
+        source_ids: [db-chembl, tool-rdkit, dataset-rmd17]
+        prerequisites: [honest-evaluation]
+      - id: metrics-and-uncertainty
+        order: 3
+        title: Metrics and uncertainty across four labs
+        title_zh: 四个实验中的指标与不确定性
+        type: lesson
+        sections:
+          [
+            before-you-start,
+            metric-questions,
+            case-1,
+            case-2,
+            case-3,
+            case-4,
+            metric-card,
+          ]
+        source_ids: [db-chembl, freesolv-v0-52, dataset-rmd17, tool-rdkit]
+        prerequisites: [split-and-leakage-cases]
+      - id: assay-shift-diagnosis
+        order: 4
+        title: Diagnosing cross-assay prediction failure
+        title_zh: 跨测定预测失效诊断
+        type: lesson
+        sections:
+          [
+            recipe-parity,
+            observed-reversal,
+            competing-explanations,
+            decision-memo,
+          ]
+        source_ids: [db-chembl, tool-rdkit]
+        prerequisites: [metrics-and-uncertainty, assay-controls-dose-response]
+        capabilities: [explanation, worked-example, exercise]
+      - id: split-leakage-routes
+        order: 5
+        title: "Leakage routes in an activity table"
+        title_zh: "活性数据表中的泄漏路径"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            a-route-is-a-shared-identity,
+            how-the-overlap-is-counted,
+            worked-case-from-the-measured-counts,
+            routes-the-table-cannot-expose,
+            independent-exercise,
+            what-this-material-does-not-show,
+          ]
+        source_ids: [dataset-chembl-activity, db-chembl-37, tool-rdkit]
+        prerequisites: [split-and-leakage-cases, decision-unit-scope]
+        capabilities: [orientation, explanation, worked-example, exercise, runnable]
+      - id: generalization-unit-and-estimand
+        order: 6
+        title: "Generalization unit and estimand"
+        title_zh: "泛化单位与估计量"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            the-quantity-and-its-independent-unit,
+            rows-and-unit-values,
+            worked-case-from-the-counts,
+            independent-exercise,
+            what-this-material-does-not-show,
+          ]
+        source_ids: [dataset-chembl-activity, db-chembl-37, tool-rdkit]
+        prerequisites: [decision-unit-scope, split-and-leakage-cases]
+        capabilities: [orientation, explanation, worked-example, exercise, runnable]
+      - id: benchmark-honesty-2026
+        order: 7
+        title: "What four 2026 benchmarks say about reported scores"
+        title_zh: "四个 2026 基准对已报分数的说法"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            the-four-benchmarks,
+            what-each-one-licenses,
+            handworked-exercise,
+            what-this-material-does-not-show,
+          ]
+        source_ids:
+          [
+            benchmark-plabench,
+            benchmark-multipardigm-docking,
+            benchmark-beyond-affinity,
+            benchmark-benchtox,
+            benchmark-shallowbench,
+            benchmark-dta-distribution-shift,
+            benchmark-cryptobench,
+            benchmark-plinder,
+            benchmark-cache-challenge,
+          ]
+        prerequisites:
+          [generalization-unit-and-estimand, split-leakage-routes]
+        capabilities: [explanation, worked-example, exercise]
+      - id: evaluation-core-source-path
+        order: 8
+        title: Core source path for reproducible benchmarks
+        type: core-source-path
+        sections: []
+        source_ids:
+          [freesolv-v0-52, paper-alphafold-3, model-boltz-1, model-graphdta]
+        prerequisites: [honest-evaluation]
+
+  - id: candidate-nomination
+    order: 18
+    title: Candidate nomination, failure analysis, biosecurity, open science, and capstone work
+    title_zh: 候选提名、失败分析、生物安全、开放科学与综合项目
+    summary: Integrate evidence, uncertainty, experiments, and governance into a traceable nomination decision.
+    summary_zh: 将证据、不确定性、实验与治理整合为可追溯的候选提名决策。
+    audience: [advanced-aidd-learners, project-leads]
+    learning_outcomes: [assemble-nomination-evidence, record-failure-analysis]
+    prerequisites: [evaluation-and-reproducibility, active-learning]
+    cross_track_prerequisites:
+      [
+        mechanism-targets,
+        dti-screening,
+        admet-pk,
+        evaluation-and-reproducibility,
+      ]
+    pipeline_stages: [candidate-nomination, failure-analysis, governance]
+    coverage_state: curated-intro-core-source
+    lessons:
+      - id: capstone
+        order: 1
+        title: Candidate nomination capstone
+        title_zh: 候选项提名综合课
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids: [model-chai-2, model-isodde, standard-osaid]
+        prerequisites: []
+      - id: evidence-to-validation
+        order: 2
+        title: From computational evidence to a validation decision
+        title_zh: 从计算证据到验证决策
+        type: lesson
+        sections:
+          [
+            decision-question,
+            competing-explanations,
+            worked-case,
+            independent-exercise,
+            decision-memo,
+          ]
+        source_ids: [db-chembl, db-pubchem]
+        prerequisites: [capstone, assay-controls-dose-response]
+        capabilities: [explanation, worked-example, exercise]
+      - id: readiness-rules-and-next-experiment
+        order: 3
+        title: "Readiness rules and the next experiment"
+        title_zh: "就绪规则与下一项实验"
+        type: lesson
+        sections:
+          [
+            learning-goals-and-prerequisites,
+            a-readiness-rule-fixes-a-decision-boundary,
+            three-conditions-and-three-states,
+            observed-cohort-and-rule-application,
+            worked-case-and-next-observation,
+            independent-exercise,
+            a-rule-chosen-after-the-outcome,
+            what-the-material-does-not-show,
+            sources-and-terms,
+          ]
+        source_ids: [dataset-chembl-activity, db-chembl-37]
+        prerequisites: [decision-unit-scope, evidence-to-validation]
+        capabilities: [orientation, explanation, worked-example, exercise, runnable]
+      - id: capstone-workbook
+        order: 4
+        title: "Five-case capstone workbook"
+        title_zh: "五案例综合工作簿"
+        type: lesson
+        sections:
+          [learning-goals, mechanism, worked-example, exercise, limitations]
+        source_ids: [standard-spdx, db-chembl, benchmark-tdc]
+        prerequisites: [capstone, evidence-to-validation]
+        capabilities: [explanation, worked-example, exercise]
+      - id: candidate-nomination-core-source-path
+        order: 5
+        title: Core source path for open and bounded nomination work
+        type: core-source-path
+        sections: []
+        source_ids: [standard-spdx, standard-fair-principles, model-boltz-2]
+        prerequisites: [capstone]
+
+learning_paths:
+  - id: core
+    kind: core
+    title: Core AIDD evidence-to-model route
+    title_zh: AIDD 证据到模型核心路径
+    description: Build a shared evidence vocabulary, construct a model table, fit and inspect a baseline, then audit a candidate-facing result.
+    description_zh: 建立共同证据词汇，构造模型表，拟合并检查基线，再审查面向候选项的结果。
+    lesson_ids:
+      - foundations/getting-started
+      - foundations/first-session
+      - foundations/source-and-entity-literacy
+      - drug-discovery-foundations/discovery-context
+      - machine-learning/scientific-computing
+      - data-governance/data-contracts
+      - data-governance/records-to-model-table
+      - data-governance/identity-lineage-and-reuse
+      - machine-learning/baseline-training-validation
+      - representations/biological-representations
+      - qsar-properties/property-prediction
+      - qsar-properties/regression-classification-errors
+      - machine-learning/student-modelling-sandbox
+      - mechanism-targets/disease-to-target
+      - admet-pk/admet-evaluation
+      - dti-screening/screening-and-affinity
+      - structure-and-pockets/cofolding-frontier
+      - physics-based-modeling/docking-to-fep
+      - molecular-generation/generation-and-search
+      - biologics-design/multimodal-design
+      - synthesis-and-automation/reaction-to-lab
+      - active-learning/dmta-loops
+      - scientific-agents/agents-and-tools
+      - evaluation-and-reproducibility/honest-evaluation
+      - candidate-nomination/capstone
+    prerequisites: []
+  - id: small-molecules
+    kind: specialist
+    title: Small-molecule design route
+    title_zh: 小分子设计路径
+    description: Connect molecular representations, property evidence, generation, synthesis, and experimental selection without treating any score as a nomination.
+    description_zh: 连接分子表示、性质证据、生成、合成和实验选择，而不把任何单一评分当作提名。
+    lesson_ids:
+      - drug-discovery-foundations/assay-controls-dose-response
+      - drug-discovery-foundations/product-profile-and-series
+      - representations/biological-representations
+      - representations/small-molecule-representations
+      - qsar-properties/property-prediction
+      - qsar-properties/regression-classification-errors
+      - machine-learning/probability-loss-and-checkpoints
+      - qsar-properties/chemical-series-and-domains
+      - qsar-properties/uncertainty-to-decisions
+      - admet-pk/admet-evaluation
+      - admet-pk/exposure-clearance-pkpd
+      - admet-pk/metabolism-to-safety
+      - admet-pk/admet-resource-guide
+      - dti-screening/screening-and-affinity
+      - dti-screening/screening-prevalence-and-transfer
+      - molecular-generation/generation-and-search
+      - molecular-generation/generative-model-mechanisms
+      - molecular-generation/flows-and-constrained-search
+      - synthesis-and-automation/reaction-to-lab
+      - synthesis-and-automation/reaction-mapping-and-route-search
+      - synthesis-and-automation/route-feasibility-and-feedback
+      - active-learning/dmta-loops
+      - active-learning/experiment-pools-and-budgets
+      - active-learning/diversity-uncertainty-feedback
+      - active-learning/acquisition-delays-and-stopping
+      - evaluation-and-reproducibility/assay-shift-diagnosis
+      - candidate-nomination/capstone
+      - candidate-nomination/evidence-to-validation
+      - candidate-nomination/capstone-workbook
+    prerequisites:
+      - foundations/getting-started
+      - drug-discovery-foundations/discovery-context
+      - data-governance/records-to-model-table
+      - machine-learning/baseline-training-validation
+      - evaluation-and-reproducibility/metrics-and-uncertainty
+  - id: structure-physics
+    kind: specialist
+    title: Structure and physics route
+    title_zh: 结构与物理路径
+    description: Trace a structural hypothesis through pocket interpretation, physical modelling, and a decision-relevant screening comparison.
+    description_zh: 将结构假设贯穿口袋解读、物理建模和与决策相关的筛选比较。
+    lesson_ids:
+      - machine-learning/neural-representations
+      - representations/complex-cell-and-knowledge-graphs
+      - physics-based-modeling/docking-to-fep
+      - structure-and-pockets/cofolding-frontier
+      - structure-and-pockets/structure-affinity-mechanisms
+      - structure-and-pockets/pocket-states-and-confidence
+      - structure-and-pockets/structure-metrics-and-benchmarks
+      - structure-and-pockets/open-structure-stack
+      - structure-and-pockets/affinity-routes-2026
+      - physics-based-modeling/physical-model-system-state
+      - physics-based-modeling/force-fields-and-sampling
+      - physics-based-modeling/free-energy-cycles-and-convergence
+      - physics-based-modeling/qm-mm-and-reactive-events
+      - dti-screening/screening-and-affinity
+      - dti-screening/screening-prevalence-and-transfer
+    prerequisites:
+      - foundations/getting-started
+      - representations/biological-representations
+      - data-governance/identity-lineage-and-reuse
+      - qsar-properties/regression-classification-errors
+  - id: biologics
+    kind: specialist
+    title: Biologics design route
+    title_zh: 生物大分子设计路径
+    description: Relate modality and construct choices to structural evidence, specificity, developability, and functional validation.
+    description_zh: 将模态与构建体选择关联到结构证据、特异性、可开发性和功能验证。
+    lesson_ids:
+      - mechanism-targets/disease-to-target
+      - machine-learning/neural-representations
+      - representations/complex-cell-and-knowledge-graphs
+      - representations/open-representation-stack
+      - structure-and-pockets/cofolding-frontier
+      - structure-and-pockets/structure-affinity-mechanisms
+      - structure-and-pockets/pocket-states-and-confidence
+      - biologics-design/multimodal-design
+      - biologics-design/antibody-peptide-design
+      - biologics-design/nucleic-acids-conjugates-degraders
+      - biologics-design/developability-and-validation
+      - biologics-design/modality-resource-guide
+      - biologics-design/frontier-protein-design-2026
+      - evaluation-and-reproducibility/honest-evaluation
+      - candidate-nomination/capstone
+      - candidate-nomination/evidence-to-validation
+      - candidate-nomination/capstone-workbook
+    prerequisites:
+      - foundations/getting-started
+      - drug-discovery-foundations/discovery-context
+      - representations/biological-representations
+      - physics-based-modeling/docking-to-fep
+      - data-governance/identity-lineage-and-reuse
+  - id: targets-cells
+    kind: specialist
+    title: Targets and cells route
+    title_zh: 靶点与细胞路径
+    description: Form, challenge, and contextualize target hypotheses with disease, perturbation, and assay evidence.
+    description_zh: 使用疾病、扰动和测定证据形成、质疑并情境化靶点假设。
+    lesson_ids:
+      - drug-discovery-foundations/assay-controls-dose-response
+      - data-governance/data-contracts
+      - data-governance/records-to-model-table
+      - foundations/source-and-entity-literacy
+      - data-governance/identity-lineage-and-reuse
+      - machine-learning/neural-representations
+      - representations/complex-cell-and-knowledge-graphs
+      - mechanism-targets/disease-to-target
+      - mechanism-targets/genetics-to-target-evidence
+      - mechanism-targets/target-resource-guide
+      - mechanism-targets/perturbation-to-target-validation
+      - mechanism-targets/perturbation-context-generalization
+      - dti-screening/screening-and-affinity
+      - candidate-nomination/capstone
+      - candidate-nomination/evidence-to-validation
+      - candidate-nomination/capstone-workbook
+    prerequisites:
+      - foundations/getting-started
+      - drug-discovery-foundations/discovery-context
+      - representations/biological-representations
+  - id: agents-feedback
+    kind: specialist
+    title: Agents and feedback route
+    title_zh: 智能体与反馈路径
+    description: Bound retrieval and tool use, then connect experiment selection, feedback, and evaluation to human review.
+    description_zh: 限定检索与工具使用的边界，再将实验选择、反馈和评估连接到人工审查。
+    lesson_ids:
+      - scientific-agents/agents-and-tools
+      - scientific-agents/retrieval-tools-feedback
+      - scientific-agents/agent-frontier-2026
+      - active-learning/dmta-loops
+      - active-learning/experiment-pools-and-budgets
+      - active-learning/diversity-uncertainty-feedback
+      - active-learning/acquisition-delays-and-stopping
+      - active-learning/open-active-learning-stack
+      - evaluation-and-reproducibility/honest-evaluation
+      - evaluation-and-reproducibility/split-and-leakage-cases
+      - evaluation-and-reproducibility/metrics-and-uncertainty
+      - candidate-nomination/capstone
+      - candidate-nomination/evidence-to-validation
+      - candidate-nomination/capstone-workbook
+    prerequisites:
+      - foundations/getting-started
+      - data-governance/records-to-model-table
+      - machine-learning/baseline-training-validation
+      - qsar-properties/uncertainty-to-decisions
+
+units:
+  - id: evidence-claim-boundaries
+    track_id: foundations
+    title: Evidence claim boundaries
+    title_zh: 证据与主张边界
+    learning_objective: Separate direct observations from inferences and unresolved unknowns in an AIDD question.
+    learning_objective_zh: 在 AIDD 问题中区分直接观察、推断与未解决的未知。
+    layer: core
+    prerequisites: []
+    historical_topic_ids: [t01-evidence-claim-unknown]
+    lesson_id: foundations/getting-started
+  - id: aidd-decision-framing
+    track_id: foundations
+    title: AIDD decision framing
+    title_zh: AIDD 决策框定
+    learning_objective: Define the scientific object, intended action, consequence, and unit of inference before selecting a method.
+    learning_objective_zh: 在选择方法前明确科学对象、预期行动、后果与推断单位。
+    layer: core
+    prerequisites: []
+    historical_topic_ids: [t01-aidd-decision-unit]
+    lesson_id: foundations/decision-unit
+  - id: source-scope-review
+    track_id: foundations
+    lesson_id: foundations/source-and-entity-literacy
+    title: Source scope review
+    title_zh: 来源范围审查
+    learning_objective: State what a reviewed source directly supports and what remains outside its scope.
+    learning_objective_zh: 说明已审查来源直接支持的内容及其范围之外仍未知的内容。
+    layer: research
+    prerequisites: [evidence-claim-boundaries]
+    historical_topic_ids: [t01-source-review-scope]
+  - id: entity-vocabulary-and-identity
+    track_id: foundations
+    lesson_id: foundations/source-and-entity-literacy
+    title: Entity vocabulary and identity
+    title_zh: 实体术语与身份
+    learning_objective: Distinguish molecules, compounds, assays, targets, complexes, cell states, patients, and candidates.
+    learning_objective_zh: 区分分子、化合物、测定、靶点、复合物、细胞状态、患者与候选项。
+    layer: core
+    prerequisites: [aidd-decision-framing]
+    historical_topic_ids: [t01-entity-glossary]
+  - id: comparison-reading-practice
+    track_id: foundations
+    title: Comparison reading practice
+    title_zh: 比较结果阅读练习
+    learning_objective: Read a completed comparison while identifying its inputs, claim boundary, and remaining uncertainty.
+    learning_objective_zh: 阅读一个已完成的比较，同时识别其输入、主张边界和剩余不确定性。
+    layer: practice
+    prerequisites: [evidence-claim-boundaries, source-scope-review]
+    historical_topic_ids: [t01-evidence-claim-unknown, t01-source-review-scope]
+    lesson_id: foundations/first-session
+
+  - id: therapeutic-decision-framing
+    track_id: drug-discovery-foundations
+    title: Therapeutic decision framing
+    title_zh: 治疗决策框定
+    learning_objective: Link disease need, intervention hypothesis, modality, evidence, and the next falsifiable decision.
+    learning_objective_zh: 连接疾病需求、干预假设、模态、证据与下一项可证伪决策。
+    layer: core
+    prerequisites: [aidd-decision-framing]
+    historical_topic_ids: [t02-therapeutic-decision-context]
+    lesson_id: drug-discovery-foundations/discovery-context
+  - id: target-product-profile-design
+    track_id: drug-discovery-foundations
+    lesson_id: drug-discovery-foundations/product-profile-and-series
+    title: Target product profile design
+    title_zh: 目标产品概况设计
+    learning_objective: Specify population, route, efficacy, safety, exposure, and developability constraints before optimization.
+    learning_objective_zh: 在优化前明确人群、给药途径、疗效、安全性、暴露与可开发性约束。
+    layer: core
+    prerequisites: [therapeutic-decision-framing]
+    historical_topic_ids: [t02-target-product-profile]
+  - id: assay-readout-and-controls
+    track_id: drug-discovery-foundations
+    title: Assay readout and controls
+    title_zh: 测定读出与对照
+    learning_objective: Match a biological system, readout, controls, error source, and decision-relevant endpoint.
+    learning_objective_zh: 匹配生物体系、读出、对照、误差来源和与决策相关的终点。
+    layer: core
+    prerequisites: [therapeutic-decision-framing]
+    historical_topic_ids: [t02-assay-endpoint-controls]
+    lesson_id: drug-discovery-foundations/assay-controls-dose-response
+  - id: dose-response-and-assay-windows
+    track_id: drug-discovery-foundations
+    title: Dose response and assay windows
+    title_zh: 剂量反应与测定窗口
+    learning_objective: Interpret response ranges, controls, and assay windows without treating a single readout as mechanism proof.
+    learning_objective_zh: 解读反应范围、对照和测定窗口，而不将单一读出视为机制证明。
+    layer: research
+    prerequisites: [assay-readout-and-controls]
+    historical_topic_ids: [t02-assay-endpoint-controls]
+    lesson_id: drug-discovery-foundations/assay-controls-dose-response
+  - id: chemical-series-feedback
+    track_id: drug-discovery-foundations
+    lesson_id: drug-discovery-foundations/product-profile-and-series
+    title: Chemical series feedback
+    title_zh: 化学系列反馈
+    learning_objective: Use analogue series and experimental feedback to revise a discovery hypothesis.
+    learning_objective_zh: 使用类似物系列和实验反馈修订药物发现假设。
+    layer: practice
+    prerequisites: [target-product-profile-design, assay-readout-and-controls]
+    historical_topic_ids: [t02-chemical-series-feedback]
+
+  - id: scientific-computing-environments
+    track_id: machine-learning
+    title: Scientific computing environments
+    title_zh: 科学计算环境
+    learning_objective: Identify the data, code, numerical, and compute assumptions needed to reproduce a bounded modelling exercise.
+    learning_objective_zh: 识别复现受限建模练习所需的数据、代码、数值与计算假设。
+    layer: core
+    prerequisites: [aidd-decision-framing]
+    historical_topic_ids: [t03-computational-uncertainty]
+    lesson_id: machine-learning/scientific-computing
+  - id: endpoint-and-loss-design
+    track_id: machine-learning
+    lesson_id: machine-learning/probability-loss-and-checkpoints
+    title: Endpoint and loss design
+    title_zh: 终点与损失设计
+    learning_objective: Translate a scientific endpoint into model inputs, targets, losses, and mismatch risks.
+    learning_objective_zh: 将科学终点转化为模型输入、目标、损失与失配风险。
+    layer: core
+    prerequisites: [aidd-decision-framing]
+    historical_topic_ids: [t03-prediction-target-loss]
+  - id: ridge-fitting-and-validation-selection
+    track_id: machine-learning
+    title: Ridge fitting and validation selection
+    title_zh: 岭回归拟合与验证集选择
+    learning_objective: Fit a Ridge baseline, choose regularization on validation data, and reserve final holdout results for interpretation.
+    learning_objective_zh: 拟合岭回归基线，在验证数据上选择正则化，并将最终留出集结果保留给解释。
+    layer: core
+    prerequisites: [endpoint-and-loss-design, scientific-computing-environments]
+    historical_topic_ids: [t03-training-validation-selection]
+    lesson_id: machine-learning/baseline-training-validation
+  - id: gnn-message-passing
+    track_id: machine-learning
+    lesson_id: machine-learning/neural-representations
+    title: GNN message passing
+    title_zh: 图神经网络消息传递
+    learning_objective: Explain how node and edge messages aggregate local graph information and what they cannot identify.
+    learning_objective_zh: 解释节点与边消息如何聚合局部图信息，以及其无法识别的内容。
+    layer: research
+    prerequisites: [endpoint-and-loss-design]
+    historical_topic_ids: [t03-inductive-bias-selection]
+  - id: transformer-attention
+    track_id: machine-learning
+    lesson_id: machine-learning/neural-representations
+    title: Transformer attention
+    title_zh: Transformer 注意力
+    learning_objective: Explain attention as content-dependent aggregation and distinguish it from evidence of causal importance.
+    learning_objective_zh: 将注意力解释为依内容而变的聚合，并将其与因果重要性的证据区分开来。
+    layer: research
+    prerequisites: [endpoint-and-loss-design]
+    historical_topic_ids: [t03-inductive-bias-selection]
+  - id: geometric-equivariance
+    track_id: machine-learning
+    lesson_id: machine-learning/neural-representations
+    title: Geometric equivariance
+    title_zh: 几何等变性
+    learning_objective: Match rotational and translational symmetry assumptions to a molecular geometry task.
+    learning_objective_zh: 将旋转和平移对称性假设与分子几何任务相匹配。
+    layer: research
+    prerequisites: [endpoint-and-loss-design]
+    historical_topic_ids: [t03-inductive-bias-selection]
+  - id: gaussian-processes
+    track_id: machine-learning
+    lesson_id: machine-learning/probability-loss-and-checkpoints
+    title: Gaussian processes
+    title_zh: 高斯过程
+    learning_objective: Use a Gaussian-process view to relate kernel assumptions, interpolation, and predictive uncertainty.
+    learning_objective_zh: 使用高斯过程视角关联核假设、插值与预测不确定性。
+    layer: research
+    prerequisites: [endpoint-and-loss-design]
+    historical_topic_ids: [t03-computational-uncertainty]
+  - id: validation-checkpoint-and-uncertainty
+    track_id: machine-learning
+    lesson_id: machine-learning/probability-loss-and-checkpoints
+    title: Validation checkpoint and uncertainty
+    title_zh: 验证集检查点与不确定性
+    learning_objective: Separate fitting, validation selection, checkpoint choice, and uncertainty reporting under a fixed rule.
+    learning_objective_zh: 在固定规则下区分拟合、验证集选择、检查点选择与不确定性报告。
+    layer: core
+    prerequisites: [ridge-fitting-and-validation-selection]
+    historical_topic_ids:
+      [t03-training-validation-selection, t03-computational-uncertainty]
+  - id: fitting-selection-and-error-sandbox
+    track_id: machine-learning
+    title: Fitting selection and error sandbox
+    title_zh: 拟合选择与误差沙箱
+    learning_objective: Run a synthetic teaching example that keeps validation choice separate from final holdout interpretation.
+    learning_objective_zh: 运行一个合成教学示例，将验证集选择与最终留出集解释保持分离。
+    layer: practice
+    prerequisites:
+      [
+        model-table-construction,
+        ridge-fitting-and-validation-selection,
+        regression-and-classification-errors,
+      ]
+    historical_topic_ids: [t03-training-validation-selection]
+    lesson_id: machine-learning/student-modelling-sandbox
+
+  - id: entity-resolution-workflow
+    track_id: data-governance
+    lesson_id: data-governance/identity-lineage-and-reuse
+    title: Entity resolution workflow
+    title_zh: 实体解析流程
+    learning_objective: Resolve chemical, protein, assay, disease, and sample identifiers while retaining ambiguity.
+    learning_objective_zh: 解析化学、蛋白、测定、疾病和样本标识符，同时保留歧义。
+    layer: core
+    prerequisites: [entity-vocabulary-and-identity]
+    historical_topic_ids: [t04-entity-identity-resolution]
+  - id: data-contract-assembly
+    track_id: data-governance
+    title: Data contract assembly
+    title_zh: 数据契约组装
+    learning_objective: Declare producer, version, entities, labels, exclusions, inference unit, split, and expected output.
+    learning_objective_zh: 声明生产者、版本、实体、标签、排除、推断单位、划分与预期输出。
+    layer: core
+    prerequisites: [entity-resolution-workflow]
+    historical_topic_ids: [t04-data-contract]
+    lesson_id: data-governance/data-contracts
+  - id: provenance-lineage
+    track_id: data-governance
+    lesson_id: data-governance/identity-lineage-and-reuse
+    title: Provenance lineage
+    title_zh: 来源谱系
+    learning_objective: Trace records and transformations to a dated source release and processing stage.
+    learning_objective_zh: 将记录和转换追溯到带日期的来源版本和处理阶段。
+    layer: research
+    prerequisites: [data-contract-assembly, source-scope-review]
+    historical_topic_ids: [t04-provenance-versioning]
+  - id: record-normalization-and-exclusion
+    track_id: data-governance
+    lesson_id: data-governance/records-to-model-table
+    title: Record normalization and exclusion
+    title_zh: 记录标准化与排除
+    learning_objective: Define duplicate, normalization, censoring, missingness, conflict, and exclusion rules before modelling.
+    learning_objective_zh: 在建模前定义重复、标准化、删失、缺失、冲突和排除规则。
+    layer: practice
+    prerequisites: [data-contract-assembly]
+    historical_topic_ids: [t04-cleaning-exclusion-rules]
+  - id: model-table-construction
+    track_id: data-governance
+    title: Model table construction
+    title_zh: 建模表构建
+    learning_objective: Transform aligned records into a model table with an explicit row unit and retained exclusions.
+    learning_objective_zh: 将对齐记录转换为建模表，并明确行单位和保留的排除项。
+    layer: core
+    prerequisites:
+      [
+        entity-resolution-workflow,
+        data-contract-assembly,
+        record-normalization-and-exclusion,
+      ]
+    historical_topic_ids: [t04-data-contract, t04-cleaning-exclusion-rules]
+    lesson_id: data-governance/records-to-model-table
+  - id: licence-and-permitted-use
+    track_id: data-governance
+    lesson_id: data-governance/identity-lineage-and-reuse
+    title: Licence and permitted use
+    title_zh: 许可证与允许用途
+    learning_objective: Separate data access from licence, redistribution, commercial use, privacy, consent, and unresolved fields.
+    learning_objective_zh: 将数据访问与许可证、再分发、商业用途、隐私、同意和未解决字段区分开来。
+    layer: research
+    prerequisites: [provenance-lineage]
+    historical_topic_ids: [t04-permitted-use-legal-scope]
+
+  - id: molecular-representation-choice
+    track_id: representations
+    title: Molecular representation choice
+    title_zh: 分子表示选择
+    learning_objective: Compare line notations, descriptors, fingerprints, graphs, and conformers by the chemical information they retain.
+    learning_objective_zh: 按保留的化学信息比较线性符号、描述符、指纹、图和构象。
+    layer: core
+    prerequisites: [entity-resolution-workflow]
+    historical_topic_ids: [t05-small-molecule-representation]
+    lesson_id: representations/small-molecule-representations
+  - id: protein-sequence-and-structure-encoding
+    track_id: representations
+    title: Protein sequence and structure encoding
+    title_zh: 蛋白序列与结构编码
+    learning_objective: Relate sequence, alignment, residue, geometry, surface, and ensemble encodings to a protein question.
+    learning_objective_zh: 将序列、比对、残基、几何、表面和集合编码与蛋白问题关联起来。
+    layer: core
+    prerequisites: [entity-resolution-workflow]
+    historical_topic_ids: [t05-protein-sequence-structure-representation]
+    lesson_id: representations/complex-cell-and-knowledge-graphs
+  - id: complex-contact-and-pose-graphs
+    track_id: representations
+    lesson_id: representations/complex-cell-and-knowledge-graphs
+    title: Complex contact and pose graphs
+    title_zh: 复合物接触与构象图
+    learning_objective: Represent complexes, interfaces, contacts, and poses without collapsing distinct physical states.
+    learning_objective_zh: 表示复合物、界面、接触和构象，而不合并不同物理状态。
+    layer: research
+    prerequisites:
+      [molecular-representation-choice, protein-sequence-and-structure-encoding]
+    historical_topic_ids: [t05-complex-interaction-representation]
+  - id: cell-state-and-perturbation-encoding
+    track_id: representations
+    lesson_id: representations/complex-cell-and-knowledge-graphs
+    title: Cell state and perturbation encoding
+    title_zh: 细胞状态与扰动编码
+    learning_objective: Encode molecular profiles, cell states, perturbations, time, and context at the relevant biological unit.
+    learning_objective_zh: 在相关生物单位上编码分子谱、细胞状态、扰动、时间和语境。
+    layer: research
+    prerequisites: [data-contract-assembly]
+    historical_topic_ids: [t05-omics-perturbation-representation]
+  - id: knowledge-graph-schema-and-evidence
+    track_id: representations
+    lesson_id: representations/complex-cell-and-knowledge-graphs
+    title: Knowledge graph schema and evidence
+    title_zh: 知识图谱模式与证据
+    learning_objective: Model typed entities, relations, evidence provenance, and missing edges without equating connectivity with causality.
+    learning_objective_zh: 建模带类型的实体、关系、证据来源和缺失边，而不将连通性等同于因果性。
+    layer: research
+    prerequisites: [entity-resolution-workflow]
+    historical_topic_ids: [t05-relational-knowledge-graph-representation]
+  - id: representation-loss-and-invariance
+    track_id: representations
+    lesson_id: representations/complex-cell-and-knowledge-graphs
+    title: Representation loss and invariance
+    title_zh: 表示损失与不变性
+    learning_objective: Identify information lost by an encoding and state which transformations should leave a prediction unchanged.
+    learning_objective_zh: 识别编码丢失的信息，并说明哪些变换应使预测保持不变。
+    layer: core
+    prerequisites:
+      [molecular-representation-choice, protein-sequence-and-structure-encoding]
+    historical_topic_ids:
+      [
+        t05-small-molecule-representation,
+        t05-protein-sequence-structure-representation,
+      ]
+
+  - id: phenotype-context-definition
+    track_id: mechanism-targets
+    title: Phenotype context definition
+    title_zh: 表型语境定义
+    learning_objective: Define indication, phenotype, tissue, cell state, population, and temporal context for a target question.
+    learning_objective_zh: 为靶点问题定义适应症、表型、组织、细胞状态、人群和时间语境。
+    layer: core
+    prerequisites: [therapeutic-decision-framing, data-contract-assembly]
+    historical_topic_ids: [t06-disease-state-definition]
+    lesson_id: mechanism-targets/disease-state-definition
+  - id: mechanism-hypothesis-and-counterevidence
+    track_id: mechanism-targets
+    lesson_id: mechanism-targets/perturbation-to-target-validation
+    title: Mechanism hypothesis and counterevidence
+    title_zh: 机制假设与反证
+    learning_objective: Connect a disease mechanism to supporting evidence, alternatives, and a falsifying observation.
+    learning_objective_zh: 将疾病机制与支持证据、替代解释和可证伪观察连接起来。
+    layer: core
+    prerequisites: [evidence-claim-boundaries, phenotype-context-definition]
+    historical_topic_ids: [t06-mechanism-hypothesis-counterevidence]
+  - id: gwas-fine-mapping
+    track_id: mechanism-targets
+    title: GWAS fine mapping
+    title_zh: GWAS 精细定位
+    learning_objective: Distinguish an associated locus from a credible causal variant set and its assumptions.
+    learning_objective_zh: 区分关联位点与可信因果变异集合及其假设。
+    layer: research
+    prerequisites: [phenotype-context-definition]
+    historical_topic_ids: [t06-causal-target-evidence]
+    lesson_id: mechanism-targets/genetics-to-target-evidence
+  - id: colocalization-and-mendelian-randomization
+    track_id: mechanism-targets
+    title: Colocalization and Mendelian randomization
+    title_zh: 共定位与孟德尔随机化
+    learning_objective: Compare shared-signal and instrumental-variable assumptions when prioritizing a target.
+    learning_objective_zh: 在靶点优先级排序时比较共享信号和工具变量假设。
+    layer: research
+    prerequisites: [gwas-fine-mapping]
+    historical_topic_ids: [t06-causal-target-evidence]
+    lesson_id: mechanism-targets/genetics-to-target-evidence
+  - id: crispr-and-perturb-seq
+    track_id: mechanism-targets
+    lesson_id: mechanism-targets/perturbation-to-target-validation
+    title: CRISPR and Perturb-seq
+    title_zh: CRISPR 与 Perturb-seq
+    learning_objective: Define perturbation, cell, donor, and context units when interpreting genetic perturbation responses.
+    learning_objective_zh: 在解读遗传扰动响应时定义扰动、细胞、供体和语境单位。
+    layer: practice
+    prerequisites:
+      [phenotype-context-definition, cell-state-and-perturbation-encoding]
+    historical_topic_ids: [t06-perturbation-genetic-validation]
+  - id: perturbation-context-generalization
+    track_id: mechanism-targets
+    title: Perturbation context generalization
+    title_zh: 扰动语境泛化
+    learning_objective: Test whether a perturbation prediction transports across cell contexts without interpreting transfer as validation.
+    learning_objective_zh: 检验扰动预测能否跨细胞语境迁移，而不将迁移解释为验证。
+    layer: research
+    prerequisites: [crispr-and-perturb-seq]
+    historical_topic_ids: [t06-perturbation-genetic-validation]
+    lesson_id: mechanism-targets/perturbation-context-generalization
+  - id: target-tractability-and-risk
+    track_id: mechanism-targets
+    lesson_id: mechanism-targets/perturbation-to-target-validation
+    title: Target tractability and risk
+    title_zh: 靶点可成药性与风险
+    learning_objective: Assess modality access, selectivity, safety liabilities, and translational uncertainty for a target hypothesis.
+    learning_objective_zh: 评估靶点假设的模态可及性、选择性、安全负担和转化不确定性。
+    layer: core
+    prerequisites:
+      [
+        target-product-profile-design,
+        colocalization-and-mendelian-randomization,
+      ]
+    historical_topic_ids: [t06-tractability-target-risk]
+
+  - id: property-endpoint-contract
+    track_id: qsar-properties
+    title: Property endpoint contract
+    title_zh: 性质终点契约
+    learning_objective: Specify property, assay, unit, censoring, aggregation, and prediction unit before fitting a model.
+    learning_objective_zh: 在拟合模型前明确性质、测定、单位、删失、聚合和预测单位。
+    layer: core
+    prerequisites: [assay-readout-and-controls]
+    historical_topic_ids: [t07-endpoint-definition]
+    lesson_id: qsar-properties/property-prediction
+  - id: chemical-standardization
+    track_id: qsar-properties
+    lesson_id: qsar-properties/chemical-series-and-domains
+    title: Chemical standardization
+    title_zh: 化学标准化
+    learning_objective: Freeze salt, charge, tautomer, stereochemistry, duplicate, mixture, and identifier rules for a dataset.
+    learning_objective_zh: 为数据集冻结盐型、电荷、互变异构、立体化学、重复、混合物和标识符规则。
+    layer: core
+    prerequisites: [model-table-construction]
+    historical_topic_ids: [t07-chemical-standardisation]
+  - id: representation-selection-for-properties
+    track_id: qsar-properties
+    lesson_id: qsar-properties/chemical-series-and-domains
+    title: Representation selection for properties
+    title_zh: 性质任务表示选择
+    learning_objective: Select representations from the endpoint, data regime, and information that must be retained.
+    learning_objective_zh: 根据终点、数据规模和必须保留的信息选择表示。
+    layer: core
+    prerequisites: [property-endpoint-contract, molecular-representation-choice]
+    historical_topic_ids: [t07-property-representation-selection]
+  - id: regression-and-classification-errors
+    track_id: qsar-properties
+    title: Regression and classification errors
+    title_zh: 回归与分类误差
+    learning_objective: Compare residuals, thresholds, label noise, and error costs before converting an endpoint into a task.
+    learning_objective_zh: 在将终点转化为任务前比较残差、阈值、标签噪声和误差代价。
+    layer: core
+    prerequisites:
+      [property-endpoint-contract, ridge-fitting-and-validation-selection]
+    historical_topic_ids:
+      [t07-regression-formulation, t07-classification-formulation]
+    lesson_id: qsar-properties/regression-classification-errors
+  - id: scaffold-time-and-group-splits
+    track_id: qsar-properties
+    lesson_id: qsar-properties/chemical-series-and-domains
+    title: Scaffold time and group splits
+    title_zh: 骨架时间与分组划分
+    learning_objective: Choose a split that matches the intended prospective, scaffold, group, or time generalization claim.
+    learning_objective_zh: 选择与预期前瞻、骨架、分组或时间泛化主张相匹配的划分。
+    layer: core
+    prerequisites: [chemical-standardization, property-endpoint-contract]
+    historical_topic_ids: [t07-property-task-split-design]
+  - id: calibrated-predictive-uncertainty
+    track_id: qsar-properties
+    lesson_id: qsar-properties/uncertainty-to-decisions
+    title: Calibrated predictive uncertainty
+    title_zh: 校准的预测不确定性
+    learning_objective: Check whether stated uncertainty aligns with observed error at the decision-relevant unit.
+    learning_objective_zh: 检查陈述的不确定性是否与决策相关单位上的实际误差一致。
+    layer: research
+    prerequisites: [regression-and-classification-errors]
+    historical_topic_ids: [t07-calibration]
+  - id: applicability-domain-diagnostics
+    track_id: qsar-properties
+    lesson_id: qsar-properties/chemical-series-and-domains
+    title: Applicability domain diagnostics
+    title_zh: 适用域诊断
+    learning_objective: Identify when a query differs from training support and what that limits in a prediction.
+    learning_objective_zh: 识别查询何时偏离训练支持集，以及这对预测施加的限制。
+    layer: research
+    prerequisites:
+      [
+        representation-selection-for-properties,
+        regression-and-classification-errors,
+      ]
+    historical_topic_ids: [t07-applicability-domain]
+  - id: sar-explanations-and-counterfactuals
+    track_id: qsar-properties
+    lesson_id: qsar-properties/chemical-series-and-domains
+    title: SAR explanations and counterfactuals
+    title_zh: 构效关系解释与反事实
+    learning_objective: Form a bounded structure activity explanation and state the analogue evidence that could challenge it.
+    learning_objective_zh: 形成有边界的构效关系解释，并说明可挑战它的类似物证据。
+    layer: research
+    prerequisites: [applicability-domain-diagnostics]
+    historical_topic_ids: [t07-interpretability-sar]
+  - id: ranking-and-decision-thresholds
+    track_id: qsar-properties
+    lesson_id: qsar-properties/uncertainty-to-decisions
+    title: Ranking and decision thresholds
+    title_zh: 排序与决策阈值
+    learning_objective: Relate calibrated predictions and uncertainty to a screening or follow-up decision threshold.
+    learning_objective_zh: 将校准预测和不确定性与筛选或后续实验的决策阈值关联起来。
+    layer: practice
+    prerequisites:
+      [calibrated-predictive-uncertainty, applicability-domain-diagnostics]
+    historical_topic_ids: [t07-property-decision-use]
+
+  - id: exposure-and-endpoint-contract
+    track_id: admet-pk
+    title: Exposure and endpoint contract
+    title_zh: 暴露与终点契约
+    learning_objective: Define an exposure endpoint, route, sampling context, and decision use before interpreting a prediction.
+    learning_objective_zh: 在解读预测前定义暴露终点、给药途径、采样语境和决策用途。
+    layer: core
+    prerequisites: [property-endpoint-contract]
+    historical_topic_ids: [t08-exposure-pk-endpoint]
+    lesson_id: admet-pk/admet-evaluation
+  - id: clearance-exposure-and-pkpd
+    track_id: admet-pk
+    title: Clearance exposure and PK PD
+    title_zh: 清除率、暴露与 PK PD
+    learning_objective: Relate clearance, concentration time profiles, pharmacodynamics, and translational assumptions.
+    learning_objective_zh: 关联清除率、浓度时间曲线、药效学和转化假设。
+    layer: core
+    prerequisites:
+      [exposure-and-endpoint-contract, dose-response-and-assay-windows]
+    historical_topic_ids:
+      [t08-exposure-pk-endpoint, t08-pkpd-translational-assumption]
+    lesson_id: admet-pk/exposure-clearance-pkpd
+  - id: metabolism-and-ddi-mechanisms
+    track_id: admet-pk
+    lesson_id: admet-pk/metabolism-to-safety
+    title: Metabolism and DDI mechanisms
+    title_zh: 代谢与 DDI 机制
+    learning_objective: Distinguish metabolism hypotheses, enzyme context, and drug drug interaction risk from a generic score.
+    learning_objective_zh: 将代谢假设、酶语境和药物相互作用风险与通用评分区分开来。
+    layer: research
+    prerequisites: [exposure-and-endpoint-contract]
+    historical_topic_ids: [t08-metabolism-ddi-risk]
+  - id: toxicity-endpoints-and-transfer
+    track_id: admet-pk
+    lesson_id: admet-pk/metabolism-to-safety
+    title: Toxicity endpoints and transfer
+    title_zh: 毒性终点与迁移
+    learning_objective: Match a toxicity endpoint and biological system to the population and exposure context of a decision.
+    learning_objective_zh: 将毒性终点和生物体系与决策的人群和暴露语境相匹配。
+    layer: core
+    prerequisites: [property-endpoint-contract]
+    historical_topic_ids: [t08-safety-toxicity-endpoint]
+  - id: multi-parameter-admet-optimization
+    track_id: admet-pk
+    lesson_id: admet-pk/metabolism-to-safety
+    title: Multi-parameter ADMET optimization
+    title_zh: 多参数 ADMET 优化
+    learning_objective: Compare efficacy, exposure, metabolism, and safety tradeoffs without reducing them to one score.
+    learning_objective_zh: 比较疗效、暴露、代谢和安全性权衡，而不将其缩减为一个分数。
+    layer: practice
+    prerequisites:
+      [
+        clearance-exposure-and-pkpd,
+        metabolism-and-ddi-mechanisms,
+        toxicity-endpoints-and-transfer,
+      ]
+    historical_topic_ids: [t08-multiendpoint-tradeoff]
+  - id: screening-unit-and-assay-design
+    track_id: dti-screening
+    title: Screening unit and assay design
+    title_zh: 筛选单位与测定设计
+    learning_objective: Define target, assay, compound set, control, and screening unit before comparing methods.
+    learning_objective_zh: 在比较方法前定义靶点、测定、化合物集合、对照和筛选单位。
+    layer: core
+    prerequisites: [assay-readout-and-controls]
+    historical_topic_ids: [t09-target-assay-screen-unit]
+    lesson_id: dti-screening/screening-and-affinity
+  - id: binding-mode-and-pose-hypotheses
+    track_id: dti-screening
+    lesson_id: dti-screening/screening-prevalence-and-transfer
+    title: Binding mode and pose hypotheses
+    title_zh: 结合模式与构象假设
+    learning_objective: Treat a predicted pose as a hypothesis with explicit alternatives and experimental checks.
+    learning_objective_zh: 将预测构象视为具有明确替代解释和实验检验的假设。
+    layer: research
+    prerequisites: [complex-contact-and-pose-graphs]
+    historical_topic_ids: [t09-binding-mode-pose-hypothesis]
+  - id: binder-classification-and-decoys
+    track_id: dti-screening
+    lesson_id: dti-screening/screening-prevalence-and-transfer
+    title: Binder classification and decoys
+    title_zh: 结合体分类与诱饵
+    learning_objective: Define positive, negative, and decoy construction choices before interpreting a binder classifier.
+    learning_objective_zh: 在解读结合体分类器前定义阳性、阴性和诱饵构建选择。
+    layer: core
+    prerequisites: [screening-unit-and-assay-design]
+    historical_topic_ids: [t09-binder-classification]
+  - id: affinity-scales-and-ranking
+    track_id: dti-screening
+    lesson_id: dti-screening/screening-prevalence-and-transfer
+    title: Affinity scales and ranking
+    title_zh: 亲和力尺度与排序
+    learning_objective: Relate affinity units, assay conditions, rank order, and uncertainty to a ranking claim.
+    learning_objective_zh: 将亲和力单位、测定条件、排序和不确定性与排序主张关联起来。
+    layer: core
+    prerequisites:
+      [screening-unit-and-assay-design, regression-and-classification-errors]
+    historical_topic_ids: [t09-affinity-ranking]
+  - id: virtual-screening-and-repurposing-transfer
+    track_id: dti-screening
+    lesson_id: dti-screening/screening-prevalence-and-transfer
+    title: Virtual screening and repurposing transfer
+    title_zh: 虚拟筛选与再利用迁移
+    learning_objective: Evaluate enrichment and transfer claims against the target, assay, decoy, and follow-up context.
+    learning_objective_zh: 根据靶点、测定、诱饵和后续实验语境评估富集与迁移主张。
+    layer: research
+    prerequisites:
+      [binder-classification-and-decoys, affinity-scales-and-ranking]
+    historical_topic_ids: [t09-screening-selection-repurposing-transfer]
+
+  - id: structure-evidence-and-state
+    track_id: structure-and-pockets
+    title: Structure evidence and state
+    title_zh: 结构证据与状态
+    learning_objective: Identify the experimental or predicted structural state and its relevant missing context.
+    learning_objective_zh: 识别实验或预测结构状态及其相关的缺失语境。
+    layer: core
+    prerequisites: [protein-sequence-and-structure-encoding]
+    historical_topic_ids: [t10-structure-evidence-state]
+    lesson_id: structure-and-pockets/cofolding-frontier
+  - id: pocket-definition-and-cryptic-sites
+    track_id: structure-and-pockets
+    lesson_id: structure-and-pockets/pocket-states-and-confidence
+    title: Pocket definition and cryptic sites
+    title_zh: 口袋定义与隐蔽位点
+    learning_objective: Define a binding site boundary and distinguish observed pockets from hypothesized cryptic sites.
+    learning_objective_zh: 定义结合位点边界，并区分观察到的口袋与假设的隐蔽位点。
+    layer: core
+    prerequisites: [structure-evidence-and-state]
+    historical_topic_ids: [t10-binding-site-pocket-definition]
+  - id: cofolding-state-hypotheses
+    track_id: structure-and-pockets
+    title: Cofolding state hypotheses
+    title_zh: 共折叠状态假设
+    learning_objective: Interpret a cofolded complex as one structural hypothesis rather than a direct affinity measurement.
+    learning_objective_zh: 将共折叠复合物解读为一种结构假设，而非直接亲和力测量。
+    layer: research
+    prerequisites:
+      [structure-evidence-and-state, pocket-definition-and-cryptic-sites]
+    historical_topic_ids: [t10-complex-cofolding-hypothesis]
+    lesson_id: structure-and-pockets/cofolding-frontier
+  - id: structural-confidence-and-alternatives
+    track_id: structure-and-pockets
+    lesson_id: structure-and-pockets/pocket-states-and-confidence
+    title: Structural confidence and alternatives
+    title_zh: 结构置信度与替代解释
+    learning_objective: Compare confidence signals, alternative states, and experimental information that could resolve a structural ambiguity.
+    learning_objective_zh: 比较置信度信号、替代状态和可解决结构歧义的实验信息。
+    layer: research
+    prerequisites: [cofolding-state-hypotheses]
+    historical_topic_ids: [t10-structural-confidence-alternatives]
+  - id: open-structural-assets-and-reuse
+    track_id: structure-and-pockets
+    lesson_id: structure-and-pockets/pocket-states-and-confidence
+    title: Open structural assets and reuse
+    title_zh: 开放结构资产与复用
+    learning_objective: Check model, weights, code, input, output, and licence availability before claiming a workflow is reproducible.
+    learning_objective_zh: 在声称工作流可复现前检查模型、权重、代码、输入、输出和许可证的可用性。
+    layer: practice
+    prerequisites: [structure-evidence-and-state, licence-and-permitted-use]
+    historical_topic_ids: [t10-asset-openness-reproducibility]
+  - id: pose-affinity-and-binder-separation
+    track_id: structure-and-pockets
+    title: Pose affinity and binder separation
+    title_zh: 构象、亲和力与结合体判定分离
+    learning_objective: Separate coordinate confidence, binder probability, and affinity prediction from causal energetic proof.
+    learning_objective_zh: 将坐标置信度、结合体概率和亲和力预测与因果能量证明分开。
+    layer: research
+    prerequisites: [cofolding-state-hypotheses, docking-score-and-rescoring]
+    historical_topic_ids:
+      [t10-complex-cofolding-hypothesis, t10-structural-confidence-alternatives]
+    lesson_id: structure-and-pockets/structure-affinity-mechanisms
+
+  - id: system-state-and-boundary-conditions
+    track_id: physics-based-modeling
+    title: System state and boundary conditions
+    title_zh: 体系状态与边界条件
+    learning_objective: Specify components, protonation, solvent, temperature, restraints, and observables for a physical model.
+    learning_objective_zh: 为物理模型明确组分、质子化、溶剂、温度、约束和观测量。
+    layer: core
+    prerequisites: [structure-evidence-and-state]
+    historical_topic_ids: [t11-physical-model-system-state]
+    lesson_id: physics-based-modeling/physical-model-system-state
+  - id: force-fields-and-solvent
+    track_id: physics-based-modeling
+    lesson_id: physics-based-modeling/force-fields-and-sampling
+    title: Force fields and solvent
+    title_zh: 力场与溶剂
+    learning_objective: Explain how force-field choice and solvent treatment define a model rather than a universal physical truth.
+    learning_objective_zh: 解释力场选择和溶剂处理如何定义一个模型，而非普遍物理真相。
+    layer: core
+    prerequisites: [system-state-and-boundary-conditions]
+    historical_topic_ids: [t11-physical-model-system-state]
+  - id: docking-score-and-rescoring
+    track_id: physics-based-modeling
+    title: Docking score and rescoring
+    title_zh: 对接打分与重打分
+    learning_objective: Separate pose generation, scoring, rescoring, and experimental binding evidence.
+    learning_objective_zh: 区分构象生成、打分、重打分和实验结合证据。
+    layer: core
+    prerequisites: [pocket-definition-and-cryptic-sites]
+    historical_topic_ids: [t11-docking-scoring-protocol]
+    lesson_id: physics-based-modeling/docking-to-fep
+  - id: molecular-dynamics-and-sampling
+    track_id: physics-based-modeling
+    lesson_id: physics-based-modeling/force-fields-and-sampling
+    title: Molecular dynamics and sampling
+    title_zh: 分子动力学与采样
+    learning_objective: Relate trajectories, sampling limits, observables, and correlated frames to a dynamical claim.
+    learning_objective_zh: 将轨迹、采样限制、观测量和相关帧与动态主张关联起来。
+    layer: research
+    prerequisites: [force-fields-and-solvent]
+    historical_topic_ids: [t11-dynamic-simulation-observable]
+  - id: relative-and-absolute-binding-free-energy
+    track_id: physics-based-modeling
+    lesson_id: physics-based-modeling/free-energy-cycles-and-convergence
+    title: Relative and absolute binding free energy
+    title_zh: 相对与绝对结合自由能
+    learning_objective: Distinguish alchemical relative and absolute free-energy endpoints, their networks, and their assumptions.
+    learning_objective_zh: 区分炼金相对与绝对自由能终点、其网络及其假设。
+    layer: core
+    prerequisites: [molecular-dynamics-and-sampling]
+    historical_topic_ids: [t11-free-energy-endpoint-network]
+  - id: qm-mm-boundaries
+    track_id: physics-based-modeling
+    lesson_id: physics-based-modeling/qm-mm-and-reactive-events
+    title: QM MM boundaries
+    title_zh: QM MM 边界
+    learning_objective: Choose a quantum and molecular-mechanics boundary that matches the chemical event and state the approximation.
+    learning_objective_zh: 选择与化学事件相匹配的量子与分子力学边界，并说明该近似。
+    layer: research
+    prerequisites: [system-state-and-boundary-conditions]
+    historical_topic_ids: [t11-physical-model-system-state]
+  - id: thermodynamic-cycle-design
+    track_id: physics-based-modeling
+    lesson_id: physics-based-modeling/free-energy-cycles-and-convergence
+    title: Thermodynamic cycle design
+    title_zh: 热力学循环设计
+    learning_objective: Construct a thermodynamic cycle whose edge definitions support the desired free-energy comparison.
+    learning_objective_zh: 构建边定义支持所需自由能比较的热力学循环。
+    layer: research
+    prerequisites: [relative-and-absolute-binding-free-energy]
+    historical_topic_ids: [t11-free-energy-endpoint-network]
+  - id: convergence-and-replica-diagnostics
+    track_id: physics-based-modeling
+    lesson_id: physics-based-modeling/free-energy-cycles-and-convergence
+    title: Convergence and replica diagnostics
+    title_zh: 收敛与重复诊断
+    learning_objective: Diagnose convergence, replica agreement, and sensitivity before interpreting a physical estimate.
+    learning_objective_zh: 在解读物理估计前诊断收敛、重复一致性和敏感性。
+    layer: practice
+    prerequisites:
+      [
+        molecular-dynamics-and-sampling,
+        relative-and-absolute-binding-free-energy,
+      ]
+    historical_topic_ids: [t11-convergence-protocol-uncertainty]
+
+  - id: design-objective-and-constraints
+    track_id: molecular-generation
+    title: Design objective and constraints
+    title_zh: 设计目标与约束
+    learning_objective: Write an explicit design objective with property, novelty, synthesis, safety, and experimental constraints.
+    learning_objective_zh: 写出包含性质、新颖性、合成、安全和实验约束的明确设计目标。
+    layer: core
+    prerequisites: [target-product-profile-design]
+    historical_topic_ids: [t12-design-objective-constraints]
+    lesson_id: molecular-generation/generation-and-search
+  - id: candidate-space-and-fragment-grammar
+    track_id: molecular-generation
+    lesson_id: molecular-generation/flows-and-constrained-search
+    title: Candidate space and fragment grammar
+    title_zh: 候选空间与片段语法
+    learning_objective: Define the molecular space and construction grammar before interpreting generated candidates.
+    learning_objective_zh: 在解读生成候选项前定义分子空间和构建语法。
+    layer: core
+    prerequisites: [molecular-representation-choice]
+    historical_topic_ids: [t12-candidate-design-space]
+  - id: autoregressive-generation
+    track_id: molecular-generation
+    title: Autoregressive generation
+    title_zh: 自回归生成
+    learning_objective: Explain conditional token factorization and distinguish likelihood from a downstream experimental objective.
+    learning_objective_zh: 解释条件词元分解，并将似然与下游实验目标区分开来。
+    layer: research
+    prerequisites: [candidate-space-and-fragment-grammar]
+    historical_topic_ids: [t12-candidate-design-space]
+    lesson_id: molecular-generation/generative-model-mechanisms
+  - id: variational-autoencoders
+    track_id: molecular-generation
+    title: Variational autoencoders
+    title_zh: 变分自编码器
+    learning_objective: Relate latent variables, reconstruction, and regularization to a constrained molecular generation task.
+    learning_objective_zh: 将潜变量、重构和正则化与受约束的分子生成任务关联起来。
+    layer: research
+    prerequisites: [candidate-space-and-fragment-grammar]
+    historical_topic_ids: [t12-candidate-design-space]
+    lesson_id: molecular-generation/generative-model-mechanisms
+  - id: diffusion-generation
+    track_id: molecular-generation
+    title: Diffusion generation
+    title_zh: 扩散生成
+    learning_objective: Explain iterative denoising and conditional generation without treating a generated sample as validated.
+    learning_objective_zh: 解释迭代去噪和条件生成，而不将生成样本视为已验证。
+    layer: research
+    prerequisites: [candidate-space-and-fragment-grammar]
+    historical_topic_ids: [t12-candidate-design-space]
+    lesson_id: molecular-generation/generative-model-mechanisms
+  - id: normalizing-flows
+    track_id: molecular-generation
+    lesson_id: molecular-generation/flows-and-constrained-search
+    title: Normalizing flows
+    title_zh: 归一化流
+    learning_objective: Explain invertible transformations and density change terms before using a flow-based design model.
+    learning_objective_zh: 在使用基于流的设计模型前解释可逆变换和密度变化项。
+    layer: research
+    prerequisites: [candidate-space-and-fragment-grammar]
+    historical_topic_ids: [t12-candidate-design-space]
+  - id: flow-matching
+    track_id: molecular-generation
+    title: Flow matching
+    title_zh: 流匹配
+    learning_objective: Explain flow matching as velocity learning over a path between distributions without implying a complete design workflow.
+    learning_objective_zh: 将流匹配解释为分布路径上的速度学习，而不暗示其构成完整设计工作流。
+    layer: research
+    prerequisites: [candidate-space-and-fragment-grammar]
+    historical_topic_ids: [t12-candidate-design-space]
+    lesson_id: molecular-generation/generative-model-mechanisms
+  - id: multiobjective-search-and-diversity
+    track_id: molecular-generation
+    lesson_id: molecular-generation/flows-and-constrained-search
+    title: Multiobjective search and diversity
+    title_zh: 多目标搜索与多样性
+    learning_objective: Allocate search effort across objectives and diversity without silently changing the selection rule.
+    learning_objective_zh: 在不暗中改变选择规则的情况下，在多个目标和多样性之间分配搜索资源。
+    layer: practice
+    prerequisites: [design-objective-and-constraints]
+    historical_topic_ids: [t12-multiobjective-search-diversity]
+  - id: validity-novelty-synthesizability-and-batch-triage
+    track_id: molecular-generation
+    lesson_id: molecular-generation/flows-and-constrained-search
+    title: Validity novelty synthesizability and batch triage
+    title_zh: 有效性、新颖性、可合成性与批次分流
+    learning_objective: Separate validity, novelty, synthesizability, and objective proxies when triaging a generated batch.
+    learning_objective_zh: 在分流生成批次时区分有效性、新颖性、可合成性和目标代理。
+    layer: practice
+    prerequisites: [multiobjective-search-and-diversity]
+    historical_topic_ids:
+      [
+        t12-validity-novelty-synthetic-screen,
+        t12-generated-candidate-evaluation-batch,
+      ]
+
+  - id: modality-and-construct-selection
+    track_id: biologics-design
+    title: Modality and construct selection
+    title_zh: 模态与构建体选择
+    learning_objective: Match protein, peptide, antibody, nucleic-acid, conjugate, or degrader choices to a therapeutic hypothesis.
+    learning_objective_zh: 将蛋白、多肽、抗体、核酸、偶联物或降解剂选择与治疗假设相匹配。
+    layer: core
+    prerequisites: [target-product-profile-design]
+    historical_topic_ids: [t13-biologic-modality-construct]
+    lesson_id: biologics-design/construct-identity-and-objectives
+  - id: antibody-design
+    track_id: biologics-design
+    lesson_id: biologics-design/antibody-peptide-design
+    title: Antibody design
+    title_zh: 抗体设计
+    learning_objective: Connect antibody sequence and structural choices to epitope, specificity, developability, and validation plans.
+    learning_objective_zh: 将抗体序列和结构选择与表位、特异性、可开发性和验证计划关联起来。
+    layer: research
+    prerequisites: [modality-and-construct-selection]
+    historical_topic_ids: [t13-sequence-structure-function-objective]
+  - id: peptide-design
+    track_id: biologics-design
+    lesson_id: biologics-design/antibody-peptide-design
+    title: Peptide design
+    title_zh: 多肽设计
+    learning_objective: Define peptide sequence and conformational objectives together with stability and delivery constraints.
+    learning_objective_zh: 将多肽序列和构象目标与稳定性和递送约束共同定义。
+    layer: research
+    prerequisites: [modality-and-construct-selection]
+    historical_topic_ids: [t13-sequence-structure-function-objective]
+  - id: nucleic-acid-therapeutics
+    track_id: biologics-design
+    lesson_id: biologics-design/nucleic-acids-conjugates-degraders
+    title: Nucleic acid therapeutics
+    title_zh: 核酸治疗
+    learning_objective: Relate nucleic-acid modality, target biology, delivery, and off-target risks to a validation plan.
+    learning_objective_zh: 将核酸模态、靶点生物学、递送和脱靶风险与验证计划关联起来。
+    layer: research
+    prerequisites: [modality-and-construct-selection]
+    historical_topic_ids: [t13-biologic-modality-construct]
+  - id: adc-and-degrader-modalities
+    track_id: biologics-design
+    lesson_id: biologics-design/nucleic-acids-conjugates-degraders
+    title: ADC and degrader modalities
+    title_zh: ADC 与降解剂模态
+    learning_objective: Distinguish target engagement, linker or recruiter choices, exposure, and mechanism evidence for conjugates and degraders.
+    learning_objective_zh: 区分偶联物和降解剂的靶点结合、连接子或招募子选择、暴露和机制证据。
+    layer: research
+    prerequisites: [modality-and-construct-selection]
+    historical_topic_ids: [t13-biologic-modality-construct]
+  - id: specificity-and-negative-selection
+    track_id: biologics-design
+    lesson_id: biologics-design/specificity-and-negative-selection
+    title: Specificity and negative selection
+    title_zh: 特异性与负向筛选
+    learning_objective: Design positive and negative selection conditions that test specificity rather than a generic activity score.
+    learning_objective_zh: 设计检验特异性而非通用活性评分的正向和负向筛选条件。
+    layer: core
+    prerequisites: [antibody-design]
+    historical_topic_ids: [t13-specificity-negative-selection]
+  - id: developability-and-manufacturability
+    track_id: biologics-design
+    lesson_id: biologics-design/developability-and-validation
+    title: Developability and manufacturability
+    title_zh: 可开发性与可制造性
+    learning_objective: Evaluate expression, stability, aggregation, formulation, and manufacturing constraints alongside functional design.
+    learning_objective_zh: 将表达、稳定性、聚集、制剂和制造约束与功能设计一同评估。
+    layer: core
+    prerequisites: [modality-and-construct-selection]
+    historical_topic_ids: [t13-expression-developability-manufacturability]
+  - id: functional-validation-design
+    track_id: biologics-design
+    lesson_id: biologics-design/developability-and-validation
+    title: Functional validation design
+    title_zh: 功能验证设计
+    learning_objective: Plan functional validation that distinguishes intended activity, context dependence, and safety-relevant alternatives.
+    learning_objective_zh: 规划可区分预期活性、语境依赖性和安全相关替代解释的功能验证。
+    layer: practice
+    prerequisites:
+      [specificity-and-negative-selection, developability-and-manufacturability]
+    historical_topic_ids: [t13-functional-validation]
+
+  - id: reaction-record-and-condition-contract
+    track_id: synthesis-and-automation
+    title: Reaction record and condition contract
+    title_zh: 反应记录与条件契约
+    learning_objective: Define reactants, products, conditions, yields, provenance, and missing fields for a reaction record.
+    learning_objective_zh: 为反应记录定义反应物、产物、条件、产率、来源和缺失字段。
+    layer: core
+    prerequisites: [data-contract-assembly]
+    historical_topic_ids: [t14-reaction-record-condition-unit]
+    lesson_id: synthesis-and-automation/reaction-to-lab
+  - id: atom-mapping-and-reaction-classes
+    track_id: synthesis-and-automation
+    lesson_id: synthesis-and-automation/reaction-mapping-and-route-search
+    title: Atom mapping and reaction classes
+    title_zh: 原子映射与反应类别
+    learning_objective: Inspect atom mappings and reaction classes as hypotheses with known representation errors.
+    learning_objective_zh: 将原子映射和反应类别作为具有已知表示误差的假设来检查。
+    layer: research
+    prerequisites: [reaction-record-and-condition-contract]
+    historical_topic_ids: [t14-atom-mapping-transformation-class]
+  - id: retrosynthetic-disconnection
+    track_id: synthesis-and-automation
+    lesson_id: synthesis-and-automation/reaction-mapping-and-route-search
+    title: Retrosynthetic disconnection
+    title_zh: 逆合成断键
+    learning_objective: Propose and compare disconnections while preserving route assumptions and unavailable precursors.
+    learning_objective_zh: 提出并比较断键策略，同时保留路线假设和不可得前体。
+    layer: core
+    prerequisites: [atom-mapping-and-reaction-classes]
+    historical_topic_ids: [t14-retrosynthetic-disconnection]
+  - id: chemoselectivity-and-protecting-groups
+    track_id: synthesis-and-automation
+    lesson_id: synthesis-and-automation/reaction-mapping-and-route-search
+    title: Chemoselectivity and protecting groups
+    title_zh: 化学选择性与保护基
+    learning_objective: Identify chemoselectivity and protecting-group constraints that a retrosynthetic graph can hide.
+    learning_objective_zh: 识别逆合成图可能隐藏的化学选择性和保护基约束。
+    layer: research
+    prerequisites: [retrosynthetic-disconnection]
+    historical_topic_ids: [t14-retrosynthetic-disconnection]
+  - id: route-feasibility-material-and-safety
+    track_id: synthesis-and-automation
+    lesson_id: synthesis-and-automation/route-feasibility-and-feedback
+    title: Route feasibility material and safety
+    title_zh: 路线可行性、原料与安全
+    learning_objective: Assess material availability, route length, safety, and operational constraints before selecting a synthesis plan.
+    learning_objective_zh: 在选择合成计划前评估原料可得性、路线长度、安全性和操作约束。
+    layer: core
+    prerequisites: [retrosynthetic-disconnection]
+    historical_topic_ids: [t14-route-feasibility-material-safety]
+  - id: forward-reaction-and-lab-feedback
+    track_id: synthesis-and-automation
+    lesson_id: synthesis-and-automation/route-feasibility-and-feedback
+    title: Forward reaction and lab feedback
+    title_zh: 正向反应与实验反馈
+    learning_objective: Compare predicted reaction conditions with laboratory observations and use failures to revise a route.
+    learning_objective_zh: 将预测反应条件与实验室观察比较，并利用失败修订路线。
+    layer: practice
+    prerequisites: [route-feasibility-material-and-safety]
+    historical_topic_ids: [t14-forward-reaction-lab-feedback]
+
+  - id: dmta-decision-loop
+    track_id: active-learning
+    title: DMTA decision loop
+    title_zh: DMTA 决策循环
+    learning_objective: Define the design make test analyze loop, its evidence inputs, and its next experimental decision.
+    learning_objective_zh: 定义设计、制备、测试、分析循环及其证据输入和下一项实验决策。
+    layer: core
+    prerequisites: [target-product-profile-design]
+    historical_topic_ids: [t15-experiment-pool-budget-feasibility]
+    lesson_id: active-learning/dmta-loops
+  - id: experiment-pools-and-budgeting
+    track_id: active-learning
+    title: Experiment pools and budgeting
+    title_zh: 实验池与预算
+    learning_objective: Construct a feasible experiment pool with budget, capacity, timing, and exclusion constraints.
+    learning_objective_zh: 构建具有预算、容量、时间和排除约束的可行实验池。
+    layer: core
+    prerequisites: [dmta-decision-loop]
+    historical_topic_ids: [t15-experiment-pool-budget-feasibility]
+    lesson_id: active-learning/experiment-pools-and-budgets
+  - id: acquisition-functions-and-uncertainty
+    track_id: active-learning
+    lesson_id: active-learning/acquisition-delays-and-stopping
+    title: Acquisition functions and uncertainty
+    title_zh: 采集函数与不确定性
+    learning_objective: Compare exploitation, exploration, uncertainty, and calibration assumptions in an acquisition policy.
+    learning_objective_zh: 比较采集策略中的利用、探索、不确定性和校准假设。
+    layer: research
+    prerequisites:
+      [experiment-pools-and-budgeting, calibrated-predictive-uncertainty]
+    historical_topic_ids: [t15-acquisition-policy-uncertainty]
+  - id: batch-diversity-and-pareto-allocation
+    track_id: active-learning
+    title: Batch diversity and Pareto allocation
+    title_zh: 批次多样性与 Pareto 分配
+    learning_objective: Allocate a batch across diversity and multiple objectives under a stated selection rule.
+    learning_objective_zh: 在明确选择规则下，在多样性和多个目标之间分配一个批次。
+    layer: practice
+    prerequisites: [acquisition-functions-and-uncertainty]
+    historical_topic_ids: [t15-batch-diversity-multiobjective-allocation]
+    lesson_id: active-learning/diversity-uncertainty-feedback
+  - id: time-ordered-feedback-updates
+    track_id: active-learning
+    lesson_id: active-learning/acquisition-delays-and-stopping
+    title: Time ordered feedback updates
+    title_zh: 时间有序反馈更新
+    learning_objective: Update a decision state with delayed experimental outcomes without leaking future observations.
+    learning_objective_zh: 使用延迟实验结果更新决策状态，而不泄漏未来观察。
+    layer: research
+    prerequisites: [batch-diversity-and-pareto-allocation]
+    historical_topic_ids: [t15-time-ordered-feedback-update]
+  - id: stopping-rules-and-policy-evaluation
+    track_id: active-learning
+    lesson_id: active-learning/acquisition-delays-and-stopping
+    title: Stopping rules and policy evaluation
+    title_zh: 停止规则与策略评估
+    learning_objective: Predeclare stopping rules and evaluate an experiment-selection policy against opportunity cost.
+    learning_objective_zh: 预先声明停止规则，并根据机会成本评估实验选择策略。
+    layer: practice
+    prerequisites: [time-ordered-feedback-updates]
+    historical_topic_ids: [t15-stopping-rule-policy-evaluation]
+
+  - id: scientific-task-and-authority-boundaries
+    track_id: scientific-agents
+    title: Scientific task and authority boundaries
+    title_zh: 科学任务与权限边界
+    learning_objective: Define a bounded scientific task, permitted actions, unresolved decisions, and human authority.
+    learning_objective_zh: 定义受限科学任务、允许行动、未解决决策和人工权限。
+    layer: core
+    prerequisites: [aidd-decision-framing]
+    historical_topic_ids: [t16-scientific-task-action-boundary]
+    lesson_id: scientific-agents/agents-and-tools
+  - id: retrieval-augmented-generation
+    track_id: scientific-agents
+    title: Retrieval augmented generation
+    title_zh: 检索增强生成
+    learning_objective: Separate retrieved context, source scope, and model generation from a verified scientific conclusion.
+    learning_objective_zh: 将检索语境、来源范围和模型生成与已验证科学结论区分开来。
+    layer: core
+    prerequisites: [source-scope-review]
+    historical_topic_ids: [t16-source-retrieval-evidence-grounding]
+    lesson_id: scientific-agents/retrieval-tools-feedback
+  - id: tool-input-output-contracts
+    track_id: scientific-agents
+    title: Tool input output contracts
+    title_zh: 工具输入输出契约
+    learning_objective: Specify typed inputs, outputs, failure states, and validation rules for a scientific tool call.
+    learning_objective_zh: 为科学工具调用定义类型化输入、输出、失败状态和验证规则。
+    layer: core
+    prerequisites: [data-contract-assembly]
+    historical_topic_ids: [t16-tool-input-output-contract]
+    lesson_id: scientific-agents/retrieval-tools-feedback
+  - id: agent-planning
+    track_id: scientific-agents
+    title: Agent planning
+    title_zh: 智能体规划
+    learning_objective: Compare a fixed pipeline with an adaptive plan while keeping task boundaries and stop conditions explicit.
+    learning_objective_zh: 比较固定流程与自适应计划，同时保持任务边界和停止条件明确。
+    layer: research
+    prerequisites:
+      [scientific-task-and-authority-boundaries, tool-input-output-contracts]
+    historical_topic_ids: [t16-scientific-task-action-boundary]
+    lesson_id: scientific-agents/retrieval-tools-feedback
+  - id: execution-trace-and-state-recovery
+    track_id: scientific-agents
+    title: Execution trace and state recovery
+    title_zh: 执行轨迹与状态恢复
+    learning_objective: Inspect a tool trace to recover inputs, outputs, state changes, and unobserved failures.
+    learning_objective_zh: 检查工具轨迹以恢复输入、输出、状态变化和未观察到的失败。
+    layer: practice
+    prerequisites: [tool-input-output-contracts]
+    historical_topic_ids: [t16-trace-recovery]
+    lesson_id: scientific-agents/retrieval-tools-feedback
+  - id: verifiers-and-human-review
+    track_id: scientific-agents
+    title: Verifiers and human review
+    title_zh: 验证器与人工审查
+    learning_objective: State what a verifier can check and which scientific, safety, or authority decisions require human review.
+    learning_objective_zh: 说明验证器能够检查的内容，以及哪些科学、安全或权限决策需要人工审查。
+    layer: core
+    prerequisites:
+      [
+        scientific-task-and-authority-boundaries,
+        execution-trace-and-state-recovery,
+      ]
+    historical_topic_ids: [t16-human-review-authority-evaluation]
+    lesson_id: scientific-agents/retrieval-tools-feedback
+  - id: tool-to-experiment-boundaries
+    track_id: scientific-agents
+    lesson_id: scientific-agents/retrieval-tools-feedback
+    title: Tool to experiment boundaries
+    title_zh: 工具到实验的边界
+    learning_objective: Distinguish a tool call, a simulated observation, and a wet experiment with its own authority and evidence.
+    learning_objective_zh: 区分工具调用、模拟观察和具有自身权限与证据的湿实验。
+    layer: research
+    prerequisites: [verifiers-and-human-review]
+    historical_topic_ids: [t16-scientific-task-action-boundary]
+
+  - id: generalization-unit-and-estimand
+    track_id: evaluation-and-reproducibility
+    title: Generalization unit and estimand
+    title_zh: 泛化单位与估计量
+    learning_objective: Define the independent unit and target population to which a result is intended to generalize.
+    learning_objective_zh: 定义结果意图泛化到的独立单位和目标人群。
+    layer: core
+    prerequisites: [endpoint-and-loss-design]
+    historical_topic_ids: [t17-generalization-unit]
+    lesson_id: evaluation-and-reproducibility/honest-evaluation
+  - id: split-construction-and-leakage-audit
+    track_id: evaluation-and-reproducibility
+    title: Split construction and leakage audit
+    title_zh: 划分构建与泄漏审查
+    learning_objective: Construct and audit splits for entity, time, group, and preprocessing leakage.
+    learning_objective_zh: 针对实体、时间、分组和预处理泄漏构建并审查数据划分。
+    layer: core
+    prerequisites: [generalization-unit-and-estimand]
+    historical_topic_ids: [t17-split-leakage-audit]
+    lesson_id: evaluation-and-reproducibility/split-and-leakage-cases
+  - id: baseline-recipe-parity
+    track_id: evaluation-and-reproducibility
+    title: Baseline recipe parity
+    title_zh: 基线配方一致性
+    learning_objective: Compare baseline data, representation, selection rule, and compute recipe before interpreting a reported margin.
+    learning_objective_zh: 在解读报告的优势前比较基线的数据、表示、选择规则和计算配方。
+    layer: core
+    prerequisites: [ridge-fitting-and-validation-selection]
+    historical_topic_ids: [t17-baseline-model-selection-protocol]
+    lesson_id: evaluation-and-reproducibility/assay-shift-diagnosis
+  - id: selection-locks-and-test-isolation
+    track_id: evaluation-and-reproducibility
+    lesson_id: evaluation-and-reproducibility/split-and-leakage-cases
+    title: Selection locks and test isolation
+    title_zh: 选择锁定与测试集隔离
+    learning_objective: Keep model selection, threshold choices, and test interpretation isolated under a frozen protocol.
+    learning_objective_zh: 在冻结协议下保持模型选择、阈值选择和测试集解释彼此隔离。
+    layer: practice
+    prerequisites: [baseline-recipe-parity]
+    historical_topic_ids: [t17-baseline-model-selection-protocol]
+  - id: metric-estimand-and-uncertainty
+    track_id: evaluation-and-reproducibility
+    title: Metric estimand and uncertainty
+    title_zh: 指标估计量与不确定性
+    learning_objective: Match a metric and uncertainty interval to the endpoint, independent unit, and decision.
+    learning_objective_zh: 将指标和不确定性区间与终点、独立单位和决策相匹配。
+    layer: core
+    prerequisites: [generalization-unit-and-estimand]
+    historical_topic_ids: [t17-metric-endpoint-uncertainty]
+    lesson_id: evaluation-and-reproducibility/metrics-and-uncertainty
+  - id: ood-shift-and-transportability
+    track_id: evaluation-and-reproducibility
+    title: OOD shift and transportability
+    title_zh: 分布外变化与可迁移性
+    learning_objective: Specify the distribution shift and assumptions required to transport a result beyond observed data.
+    learning_objective_zh: 明确将结果迁移到观察数据之外所需的分布变化和假设。
+    layer: research
+    prerequisites:
+      [split-construction-and-leakage-audit, metric-estimand-and-uncertainty]
+    historical_topic_ids: [t17-ood-transportability]
+    lesson_id: evaluation-and-reproducibility/assay-shift-diagnosis
+  - id: reproduction-scope-and-limitations
+    track_id: evaluation-and-reproducibility
+    lesson_id: evaluation-and-reproducibility/assay-shift-diagnosis
+    title: Reproduction scope and limitations
+    title_zh: 复现范围与局限
+    learning_objective: State the inputs, protocol scope, observed outputs, and limitations of a reproduction attempt.
+    learning_objective_zh: 陈述复现尝试的输入、协议范围、观察到的输出和局限。
+    layer: practice
+    prerequisites: [baseline-recipe-parity, metric-estimand-and-uncertainty]
+    historical_topic_ids: [t17-reproduction-reporting-receipt]
+
+  - id: evidence-package-assembly
+    track_id: candidate-nomination
+    title: Evidence package assembly
+    title_zh: 证据包组装
+    learning_objective: Assemble target, screening, ADMET, and evaluation evidence while retaining conflicts and unknowns.
+    learning_objective_zh: 组装靶点、筛选、ADMET 和评估证据，同时保留冲突和未知。
+    layer: core
+    prerequisites:
+      [
+        target-tractability-and-risk,
+        multi-parameter-admet-optimization,
+        virtual-screening-and-repurposing-transfer,
+        metric-estimand-and-uncertainty,
+      ]
+    historical_topic_ids: [t18-evidence-package-claim-chain]
+    lesson_id: candidate-nomination/capstone
+  - id: cross-domain-tradeoffs
+    track_id: candidate-nomination
+    lesson_id: candidate-nomination/capstone-workbook
+    title: Cross-domain tradeoffs
+    title_zh: 跨领域权衡
+    learning_objective: Compare efficacy, safety, exposure, synthetic feasibility, and evidence gaps against the product profile.
+    learning_objective_zh: 根据产品概况比较疗效、安全性、暴露、合成可行性和证据缺口。
+    layer: core
+    prerequisites: [evidence-package-assembly]
+    historical_topic_ids: [t18-crossdomain-tradeoff-decision]
+  - id: counterevidence-led-failure-analysis
+    track_id: candidate-nomination
+    title: Counterevidence led failure analysis
+    title_zh: 由反证驱动的失败分析
+    learning_objective: Preserve counterevidence and diagnose failure modes before promoting a candidate claim.
+    learning_objective_zh: 在提升候选项主张前保留反证并诊断失败模式。
+    layer: research
+    prerequisites:
+      [evidence-package-assembly, mechanism-hypothesis-and-counterevidence]
+    historical_topic_ids: [t18-counterevidence-failure-analysis]
+    lesson_id: candidate-nomination/capstone
+  - id: nomination-readiness
+    track_id: candidate-nomination
+    title: Nomination readiness
+    title_zh: 提名准备度
+    learning_objective: Decide whether a candidate is ready for a bounded next experiment and state the evidence gap.
+    learning_objective_zh: 判断候选项是否准备好进入受限的下一项实验，并说明证据缺口。
+    layer: practice
+    prerequisites:
+      [cross-domain-tradeoffs, counterevidence-led-failure-analysis]
+    historical_topic_ids: [t18-nomination-readiness-next-experiment]
+    lesson_id: candidate-nomination/capstone
+  - id: next-experiment-design
+    track_id: candidate-nomination
+    title: Next experiment design
+    title_zh: 下一项实验设计
+    learning_objective: Specify the next experiment, its control, expected decision update, and observation that would change course.
+    learning_objective_zh: 明确下一项实验、其对照、预期决策更新和会改变方向的观察。
+    layer: practice
+    prerequisites: [nomination-readiness]
+    historical_topic_ids: [t18-nomination-readiness-next-experiment]
+    lesson_id: candidate-nomination/evidence-to-validation
+  - id: governance-and-dual-use-boundaries
+    track_id: candidate-nomination
+    lesson_id: candidate-nomination/capstone-workbook
+    title: Governance and dual-use boundaries
+    title_zh: 治理与双重用途边界
+    learning_objective: Identify openness, biosecurity, governance, and authority boundaries that require scoped human review.
+    learning_objective_zh: 识别需要范围化人工审查的开放性、生物安全、治理和权限边界。
+    layer: research
+    prerequisites:
+      [
+        nomination-readiness,
+        verifiers-and-human-review,
+        licence-and-permitted-use,
+      ]
+    historical_topic_ids: [t18-openness-biosecurity-governance-boundary]

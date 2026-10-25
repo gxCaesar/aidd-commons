@@ -1,0 +1,60 @@
+id: model-boltz-2
+name: Boltz-2
+kind: model
+summary: Boltz-2 is a biomolecular foundation model that jointly predicts complex structures and binding affinities; its code and weights are published under the MIT licence in the Boltz repository.
+canonical_url: https://github.com/jwohlwend/boltz
+identifiers:
+  - scheme: paper
+    value: "Boltz-2: Towards Accurate and Efficient Binding Affinity Prediction; DOI 10.1101/2025.06.14.659707"
+    url: https://doi.org/10.1101/2025.06.14.659707
+  - scheme: documentation
+    value: "Boltz prediction instructions"
+    url: https://github.com/jwohlwend/boltz/blob/main/docs/prediction.md
+stages: [hit-discovery, lead-optimization, evaluation]
+modalities: [biomolecular-complex]
+tasks: [co-folding, affinity-prediction]
+relations:
+  - type: successor-to
+    target: model-boltz-1
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [readme] }
+  architecture: { value: available, evidence: [readme] }
+  data_recipe: { value: available, evidence: [model-boltz-2-readme] }
+  training_data: { value: available, evidence: [model-boltz-2-readme] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: covers the Boltz source code and the model weights, per the repository README; the evaluation sets named on the page, FEP+, CASP16 and the MF-PCBA test set, are not covered by it and the page states no terms for them
+    evidence: [license, readme]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/jwohlwend/boltz
+    label: Official source for additional resource links (reviewed 2026-09-08, re-opened 2026-10-21)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/jwohlwend/boltz
+    label: Boltz repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, relations, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/jwohlwend/boltz/main/README.md
+    label: Boltz README (re-opened 2026-10-21)
+    supports: []
+  - id: license
+    url: https://raw.githubusercontent.com/jwohlwend/boltz/main/LICENSE
+    label: Boltz MIT licence file (re-opened 2026-10-21)
+    supports: []
+  - id: model-boltz-2-readme
+    url: https://raw.githubusercontent.com/jwohlwend/boltz/HEAD/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The training documentation states that the structure model was trained on the PDB and the OpenFold self-distillation set, that the pre-processed training data can be downloaded, and that the processing pipeline is documented at the foot of the page.
+  - The README states that the two affinity outputs are trained on largely different datasets but names neither dataset, so the affinity training data stays unverified.
+  - The README marks updated training code and updated evaluation code for Boltz-2 as still to come.
+  - The evaluation sets named on the page, FEP+, CASP16 and the MF-PCBA test set, are described as test sets, and the page states no terms for them.
+acknowledgements: []
+last_verified: "2026-10-23"

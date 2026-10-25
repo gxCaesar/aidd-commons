@@ -1,0 +1,43 @@
+---
+const stages = [
+  {
+    atlas: "disease-mechanism",
+    name: "Disease mechanism",
+    summary: "Establish causal context and evidence boundaries.",
+  },
+  {
+    atlas: "target-discovery",
+    name: "Target discovery",
+    summary: "Prioritize targets from linked biological evidence.",
+  },
+  {
+    atlas: "hit-discovery",
+    name: "Hit discovery",
+    summary: "Screen, score, and compare candidate hypotheses.",
+  },
+  {
+    atlas: "lead-optimization",
+    name: "Lead optimization",
+    summary: "Balance efficacy, safety, and practical constraints.",
+  },
+  {
+    atlas: "candidate-nomination",
+    name: "Candidate nomination",
+    summary: "Make a traceable selection with caveats visible.",
+  },
+];
+---
+
+<div class="pipeline-map" aria-label="Target discovery through candidate nomination pipeline">
+  {stages.map((stage, index) => (
+    <article class="pipeline-stage">
+      <p class="meta-label">Stage {index + 1}</p>
+      <h3>{stage.name}</h3>
+      <p>{stage.summary}</p>
+      <div class="pipeline-stage__links">
+        <span class="planned-action">Learning route planned</span>
+        <a href={`/atlas/?stage=${stage.atlas}`}>Browse atlas resources</a>
+      </div>
+    </article>
+  ))}
+</div>

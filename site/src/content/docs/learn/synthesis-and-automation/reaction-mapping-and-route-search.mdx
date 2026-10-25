@@ -1,0 +1,169 @@
+---
+title: Reaction mapping and route search
+description: Treat atom maps, reaction classes, and retrosynthetic disconnections as explicit graph hypotheses with a named evidence and feasibility boundary.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="synthesis-and-automation/reaction-mapping-and-route-search" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will distinguish an atom-mapping hypothesis from a reaction mechanism,
+represent a retrosynthetic proposal as a graph, and record chemoselectivity and
+protecting-group constraints without turning a route plan into a laboratory
+procedure. Read [Reaction prediction to the lab](/learn/synthesis-and-automation/reaction-to-lab/)
+first. This is a browser and handworked reasoning lesson. It contains no
+experimental recipe, reagent list, operating condition, or claim that a route
+will work.
+
+## Atom maps name correspondence, not causality
+
+An atom map assigns an identity label to atoms on the reactant and product sides
+of a reaction record. If `A_R` and `A_P` are the retained atom sets, a map can be
+written as `m: A_R -> A_P`. It helps a model or reader describe which atoms are
+treated as conserved across a transformation. It is not an observation of a
+microscopic mechanism, a guarantee of mass balance, or proof that the labelled
+path occurred in a flask. Symmetry, standardization, missing species, and
+ambiguous reactant roles can permit more than one defensible map.
+
+Reaction classes add a coarser label such as the type of bond edit or functional
+change. A class may support a search policy, but it does not specify conditions,
+scope, selectivity, yield, purification burden, or safety. The official
+RXNMapper repository describes an attention-guided atom-mapping system and links
+its associated publication [RXNMapper](https://github.com/rxn4chemistry/rxnmapper).
+Its availability is useful for an implementation boundary; it is not validation
+of the mapping for a new record.
+
+| Field                | A reproducible reaction-graph record                                | What it must not be called       |
+| -------------------- | ------------------------------------------------------------------- | -------------------------------- |
+| molecular identities | standardized structures, stereochemistry policy and mapping version | “the reaction” with no inputs    |
+| atom map             | mapped reactant/product atoms and handling of unmapped atoms        | a proven mechanism               |
+| roles                | substrate, product, reagent/agent and solvent-role policy           | complete experimental conditions |
+| class                | named transformation vocabulary and source of the label             | an execution instruction         |
+| outcome evidence     | stated provenance and outcome fields if available                   | prospective feasibility          |
+
+## Retrosynthesis searches a directed hypergraph
+
+Retrosynthesis reverses a desired product-side transformation: from a target
+node `T`, it proposes a precursor set `{P_1, P_2, ...}`. Unlike an ordinary
+edge, a disconnection often needs several precursors jointly, so a route is
+better represented as a directed hypergraph. Each hyperedge should carry at
+least its template or policy source, reaction-class label, mapping or edit
+hypothesis, and the constraints under which it was proposed.
+
+A search system can rank many such paths by learned likelihood, template
+coverage, stock availability, length, or other heuristics. These are search
+signals, not measured success probabilities. The AiZynthFinder project describes
+retrosynthetic planning with a search that recursively decomposes a molecule to
+purchasable precursors and a policy that proposes expansions
+[AiZynthFinder](https://github.com/MolecularAI/aizynthfinder). ASKCOS describes
+computer-aided synthesis planning and notes migration of newer releases, which
+is a reminder to record a tool and model version rather than assume a static
+system [ASKCOS](https://github.com/ASKCOS/askcos).
+
+The decision unit is the full route graph, not an isolated high-ranked step.
+For each terminal precursor, record the declared availability source and date.
+For each edge, record whether it is proposed from precedent, a model, or a
+human rule. Do not count alternate routes as independent experimental evidence
+when they share templates, training records, or an untested selectivity premise.
+
+## Chemoselectivity and protecting groups are state variables
+
+If several sites could be transformed, a route graph needs a selectivity
+hypothesis: which site is intended, which competing sites exist, and what
+structural state each node represents. A protecting group is not a footnote to
+be added after search; it changes the molecular graph and therefore changes
+which disconnections are meaningful. In a safe planning record, represent it
+abstractly as a node state such as “site X masked” or “site X unmasked,” linked
+to an explicit add, retain, or remove transformation class. Do not infer a
+specific procedure from that graph.
+
+This discipline prevents a deceptive shortcut: a planner may find a short path
+only because it silently treats a protected and unprotected form as the same
+node. It also forces a useful human review question: is the competing-site
+assumption supported by the proposed record, or is it unknown? Unknown is a
+valid route status. It should trigger feasibility review, not be filled with an
+invented condition.
+
+## Worked case: a graph with an unresolved selectivity field
+
+All values in this case are **constructed for teaching**. A target graph `T`
+contains labelled atoms `{a, b, c, d}`. A proposed disconnection `e_1` gives
+precursors `{P_1(a,b), P_2(c,d)}` and class label `C_1`. A second mapping
+hypothesis swaps two symmetry-equivalent atom labels but retains the same
+unlabelled graphs. The right record retains both mapping hypotheses or declares
+the tie-breaking policy; neither map demonstrates the molecular mechanism.
+
+Two proposed route graphs then reach `T`:
+
+| Route | terminal availability record | edge count | selectivity field                    | status                      |
+| ----- | ---------------------------- | ---------: | ------------------------------------ | --------------------------- |
+| R1    | both terminals recorded      |        `2` | “competing site unresolved”          | hold for feasibility review |
+| R2    | both terminals recorded      |        `2` | “protected-state mismatch at node N” | graph inconsistency         |
+
+R1 is not “feasible” merely because it is short and its terminal nodes are
+recorded. It is an abstract route hypothesis with an unresolved field. R2 is
+not rescued by a high search score: the node-state mismatch prevents the stated
+edges from composing into one coherent graph. The honest handoff asks a chemist
+to examine the declared structural alternatives and evidence, without supplying
+an operational procedure.
+
+## Limits and independent exercise
+
+Historical reaction records can omit roles, conditions, failures, and negative
+outcomes. Atom mapping can be wrong or non-unique. Search scores may reflect
+coverage of a database rather than feasibility for a new target. A short route
+can concentrate difficulty in one unsupported transformation. Separate these
+limitations from an implementation failure and preserve “unknown” fields.
+
+**Handworked exercise (not runnable or empirical):** A constructed route graph
+has target `U`, precursor set `{V, W}`, and one class label `C_2`. Its map has an
+unmapped atom `z`; a second candidate route has no unmapped atoms but a terminal
+availability field marked “not recorded.” What must be retained for each route,
+and which statement is not justified: “the first map proves the mechanism,”
+“the second needs an availability check,” or “both are graph hypotheses”?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Retain identities, standardized graph and mapping versions, atom-map handling,
+class/source, every edge and terminal field, and each uncertainty or failure
+reason. The first route needs a declared policy for `z`; the second needs an
+availability check. “The first map proves the mechanism” is not justified. Both
+remain graph hypotheses until separate evidence and feasibility review support a
+narrower claim.
+
+</details>
+
+## Compare the families yourself
+
+The [disconnection comparison lab](/labs/retro-disconnection/) runs rule,
+retrieval and template disconnections over one constructed route set, and
+declares the learned family without running it. All three are perfect inside the
+precedent set and separate completely outside it, for three different reasons.
+The route set keeps laboratory feasibility unassessed throughout, because
+recovering a recorded route is a statement about a graph edit.
+
+## Sources and next lesson
+
+The following project sources were opened on 2026-09-09. They support the
+software and search/mapping boundaries, not the constructed routes or execution
+of a synthetic transformation.
+
+<div data-case-sources>
+
+- [RXNMapper: attention-guided atom mapping](https://github.com/rxn4chemistry/rxnmapper)
+- [AiZynthFinder: a tool for retrosynthetic planning](https://github.com/MolecularAI/aizynthfinder)
+- [ASKCOS: software for computer-aided synthesis planning](https://github.com/ASKCOS/askcos)
+
+</div>
+
+Continue to [Route feasibility and feedback](/learn/synthesis-and-automation/route-feasibility-and-feedback/)
+to add materials, safety, forward-prediction and laboratory-feedback evidence
+without turning an abstract graph into an execution claim. Original lesson prose
+is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-09.

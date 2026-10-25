@@ -1,0 +1,152 @@
+id: european-aidd-network
+name: Advanced Machine Learning for Innovative Drug Discovery
+provider_class: curriculum
+canonical_url: https://aidd.ochem.eu/
+summary: A Horizon 2020 doctoral training network combining machine learning, chemistry, medicinal chemistry, research projects, courses, and schools.
+audiences: [doctoral-researchers, chemists, machine-learning-researchers]
+languages: [en]
+metadata_evidence: [official-about]
+access:
+  content: { value: open, evidence: [official-about] }
+  code: { value: open, evidence: [official-github] }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence was encoded for omitted taxonomy topics in this dated review.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t01-aidd-decision-unit
+    depth: mentioned
+    evidence: [official-about]
+    reviewed_scope: Public project About page
+    note: The page links chemistry, biology, property prediction, molecule generation, and synthesis within drug-design training.
+  - topic_id: t03-inductive-bias-selection
+    depth: mentioned
+    evidence: [official-about]
+    reviewed_scope: Public project About page
+    note: The page describes sixteen machine-learning-in-chemistry research topics but does not expose enough course content to assign deeper coverage.
+  - topic_id: t02-therapeutic-decision-context
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. AI from a MedChem perspective; Development of a CCR5 antagonist for HIV therapy; Introduction to Computer-Aided Drug Design. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t03-computational-uncertainty
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Efficient uncertainty estimation with node-based BNNs; Priors in Bayesian Deep Learning; Bayesian Deep Learning. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t05-small-molecule-representation
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. A tour through molecular representations in AI-driven drug discovery; SELFIES self-referencing embedded strings; SMILES based modelling; RDKit basics. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t05-omics-perturbation-representation
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Cell painting assay, data analysis and reporting; JUMP-Cell Painting; Cross Multimodal Learning of Cell Painting and Transcriptomics. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t07-calibration
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Understanding Model Uncertainty and Enhancing Probability Calibration; Conformal prediction for the design problem. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t07-interpretability-sar
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. XAI for Chemistry; Explainability for molecular neural networks; Application of Machine Learning Methods for Prediction of Compound Activities and SAR Analysis. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t08-safety-toxicity-endpoint
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Overview of toxicity prediction methods; Machine Learning Models to Address Cardiotoxicity within an AOP Framework; Introduction to Tox. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t09-binding-mode-pose-hypothesis
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Success stories of structure-based drug discovery; 3D structure refinement. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t11-physical-model-system-state
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Constructing accurate machine learning force fields for flexible molecules; Graph neural networks at the service of molecular simulations. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t12-candidate-design-space
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Artificial intelligence and the chemical space; Navigating Chemical Compound Space Directly and Inversely. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t12-multiobjective-search-diversity
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Multi-Objective Optimization in Continuous Latent Spaces; Monte Carlo tree search and multi-objective variants. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t14-retrosynthetic-disconnection
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Synthesis planning strategies; Comparing and clustering synthetic route prediction. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t15-acquisition-policy-uncertainty
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. The Use of Active Learning for Effective Exploration of Chemical space; Gaussian processes and sequential design of experiments. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t16-human-review-authority-evaluation
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. A Survey on Human-in-the-loop Machine Learning; Towards Interpretable Models of Chemist Preferences for Human-in-the-loop. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t17-split-leakage-audit
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Scaffold Splits Overestimate Virtual Screening Performance. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t17-ood-transportability
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Temporal Evaluation of Uncertainty Quantification under Distribution shift; Causality-inspired ML and the domain adaptation case. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t17-reproduction-reporting-receipt
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Rigor and reproducibility of Chemoinformatics models, from data curation to experimental validation; Responsible Conduct of Research. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+  - topic_id: t18-openness-biosecurity-governance-boundary
+    depth: mentioned
+    evidence: [school-lectures]
+    reviewed_scope: The Lectures page read in full on 2026-09-11, carrying published agendas for all six AIDD schools and 109 downloadable lecture-slide links, with the named lectures listed below
+    note: Named school lectures addressing this topic, each with a downloadable slide deck. Ethics of AI; Responsible Conduct of Research. The slide decks are hosted on the ai-dd.eu domain and were refused by a bot challenge from this environment, so no deck was opened. The depth recorded here is limited by this review's reach, not by the provider's material, and a reviewer able to open the decks should expect to raise it.
+evidence:
+  - id: school-lectures
+    url: https://aidd.ochem.eu/lectures
+    title: AIDD school agendas and lecture slide index
+    observed_scope: The Lectures page read in full, carrying published agendas for the First school at Helmholtz Munich, the Second at Lugano, the Third at Leuven, the Fourth at Aalto, the Fifth at Gothenburg and the Final school at Berlin, together with 109 links to downloadable lecture slide decks and workshop materials. Lecture titles and speakers were observed. No slide deck was opened, because the files are served from the ai-dd.eu domain behind a bot challenge that refused retrieval from this environment.
+    access: opened
+    reviewed_on: 2026-09-11
+  - id: site-navigation
+    url: https://aidd.ochem.eu/lectures
+    title: AIDD project site navigation and lectures feed
+    observed_scope: The complete public navigation reviewed on 2026-09-11, being Home, Partners, Fellows, Articles, Lectures, News, Newsletters, Contact, AIDD Workshop, Conferences and Presentations. There is no course, module, lesson or notebook page. The Lectures page is a reverse-chronological feed of talk and workshop announcements with dates and speaker names, not learning material.
+    access: opened
+    reviewed_on: 2026-09-11
+  - id: official-about
+    url: https://aidd.ochem.eu/
+    title: Advanced Machine Learning for Innovative Drug Discovery — About
+    observed_scope: Project goal, doctoral training context, research-topic breadth, courses and schools, open-source intent, and official GitHub link.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: official-github
+    url: https://github.com/aidd-msca
+    title: AIDD Marie Skłodowska-Curie Action GitHub organization
+    observed_scope: Public organization identity and visible public software repositories; individual repository terms were not generalized to the network.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats:
+  - The reviewed About page names a structured curriculum, online courses, and six schools but does not expose item-level course content for a deeper topic audit.
+  - A review on 2026-09-11 concluded from the first screen of the Lectures page that no course material was published anywhere on this site. That conclusion was wrong and is corrected here. Reading the page in full found published agendas for all six AIDD schools and 109 downloadable lecture slide decks and workshop materials. The error came from stopping partway down a long page, and the earlier eligibility question it raised is withdrawn.
+  - The slide decks are served from the ai-dd.eu domain behind a bot challenge that refused retrieval from this environment, so lecture titles and speakers were observed but no deck was opened. Every school-lecture cell is therefore scored 'mentioned' as a limit of this review's reach, not as an observation about the depth of the material. A reviewer able to open the decks should expect to raise these scores rather than confirm them.
+  - The GitHub organisation aidd-msca was reviewed on 2026-09-11 and holds 26 repositories, which are publication-accompanying research code plus one pip-installable library. It is not course material and no topic is scored from it.
+  - The project states an open-source software commitment, but no single network-wide software or content licence was verified; individual repositories have separate terms.
+last_verified: 2026-09-11

@@ -1,0 +1,132 @@
+---
+title: Readiness rules and the next experiment
+description: Fix go, hold and stop conditions before applying them, then derive a bounded next observation from the evidence gap.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="candidate-nomination/readiness-rules-and-next-experiment" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After this lesson, you should be able to specify a readiness rule before computing its states, explain what each state licenses, and name the observation that could resolve a failed condition. Read [The scope of one decision unit](/learn/foundations/decision-unit-scope/) and [From computational evidence to a validation decision](/learn/candidate-nomination/evidence-to-validation/) first. The [readiness audit laboratory](/labs/nomination-readiness-audit/) makes this lesson's counting rule executable.
+
+The worked case reads existing results from a frozen ChEMBL 37 snapshot. The laboratory offers fresh independent computation under that protocol. The independent exercise below is constructed and needs no installation or network. Its proposed observations are not new experimental results.
+
+## A readiness rule fixes a decision boundary
+
+A readiness rule connects an evidence state to a specified next decision. It must identify the object being judged, the measurements that count, the conditions to be met and the action attached to each outcome. Without those commitments, a label can be adjusted to whichever compound a reader already favours.
+
+For this laboratory, the object is the ChEMBL parent molecule. The evidence is admitted nanomolar point measurements in the declared potency family. One measurement is one distinct assay, document and endpoint tuple within that parent. Those choices come before the three thresholds, because a threshold on an undefined count has no stable meaning.
+
+Freeze the cohort, admission and grouping rules, thresholds and state logic before executing the tally. Also state which missing observations could change a decision and which claims the rule excludes. Keep a failed condition visible even when another condition is satisfied by a large margin. The surplus cannot compensate unless the original rule explicitly allows compensation.
+
+## Three conditions and three states
+
+Let `M` be the independent measurement count, `A` the distinct assay count and `D` the distinct document count among admitted point measurements. All are non-negative integer counts. The laboratory's protocol declares the following conditions before this readiness audit is computed.
+
+| Count | Condition |
+| --- | --- |
+| `M` | `M ≥ 5` |
+| `A` | `A ≥ 3` |
+| `D` | `D ≥ 2` |
+
+These are author-defined teaching conditions. They have not been validated as a candidate-nomination standard. They apply to evidence coverage and do not require a favourable potency value.
+
+| State | Conditions met | Bounded action |
+| --- | --- | --- |
+| `go` | All conditions | Proceed to the specified next review with these coverage conditions satisfied |
+| `hold` | Some but not all conditions | Keep advancement pending and name every missing observation |
+| `stop` | No conditions | Stop advancement under this rule and state the evidence needed for reconsideration |
+
+Stopping advancement does not require deleting evidence or declaring a compound inactive. Holding a compound does not promise that collecting more records will establish a useful effect. A `go` state permits the next review under these conditions. It does not nominate a candidate.
+
+## Observed cohort and rule application
+
+The laboratory reuses the source reader's 15 seed records, which resolve to 10 parents. The endpoint family is AC50, EC50, IC50, Kd and Ki in nM. Admitted point records carry `=`. Bounds are kept outside this count. Repeated assay, document and endpoint tuples within a parent collapse to one measurement.
+
+The committed summary was computed on 2026-10-23 with Python 3.11.15, NumPy 2.4.6 and RDKit 2025.09.6. It contains 486 independent measurements. The following rows illustrate how the same rule handles adequate coverage, partial coverage and no satisfied condition. The laboratory guide carries the complete parent table.
+
+| Parent | Compound | `M` | `A` | `D` | State | Failed conditions |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| CHEMBL109 | VALPROIC ACID | 27 | 27 | 15 | `go` | None |
+| CHEMBL23393 | SODIUM LAURYL SULFATE | 4 | 4 | 3 | `hold` | `M` |
+| CHEMBL441 | THIOPENTAL | 2 | 2 | 2 | `hold` | `M`, `A` |
+| CHEMBL13829 | MIXTURE OF MMC AND TA | 1 | 1 | 1 | `stop` | `M`, `A`, `D` |
+| CHEMBL906 | MINOXIDIL SULFATE | 0 | 0 | 0 | `stop` | `M`, `A`, `D` |
+
+| State | Parents in the complete cohort |
+| --- | ---: |
+| `go` | 6 |
+| `hold` | 2 |
+| `stop` | 2 |
+
+The mixture has admitted evidence and still receives `stop`, because none of its counts reaches its respective minimum. THIOPENTAL reaches the document minimum and remains `hold`, because satisfying that condition does not repair the measurement and assay shortfalls.
+
+## Worked case and next observation
+
+SODIUM LAURYL SULFATE is the closest non-`go` parent under the frozen ordering. That ordering minimizes failed conditions first, then the sum of missing counts, then the parent identifier in lexicographic order. This is a distance to the declared rule, not a ranking of compounds for discovery.
+
+| Condition | Observed count | Minimum | Additional count needed |
+| --- | ---: | ---: | ---: |
+| Independent measurements | 4 | 5 | 1 |
+| Distinct assays | 4 | 3 | 0 |
+| Distinct documents | 3 | 2 | 0 |
+
+The missing item is an admitted point measurement with a previously unseen assay, document and endpoint tuple for this parent. An additional database row with an existing tuple would not close that gap. The relevant record fields are `assay_chembl_id`, `document_chembl_id` and `standard_type`, together with the parent identifier and every field required by admission.
+
+A bounded proposal is to obtain a new measurement in a previously unrepresented assay, with the parent, endpoint, units, relation and source document recorded. The assay design must establish what makes the experiment independent. A new identifier alone cannot do that. This is a proposed coverage measurement, not a wet-lab procedure or a claim that its result will be favourable.
+
+Predeclare the update before obtaining the observation. If it yields an admissible new tuple, `M` increases by 1 and all conditions are met. If it repeats an existing tuple or fails admission, the state remains `hold`. If it reports a bound, it remains outside the point count. Preserve each outcome and its reason. No such follow-up was performed for this lesson.
+
+The rule makes the measurement gap explicit, but the biological question still needs an endpoint, context and informative controls. Use the [validation-decision lesson](/learn/candidate-nomination/evidence-to-validation/) to distinguish an independent endpoint, an interference control and evidence of target dependence. Coverage counts cannot choose those for you.
+
+## Independent exercise
+
+Consider an invented parent X with `M = 5`, `A = 2` and `D = 2`. Apply the same frozen thresholds. Classify X and name its shortfall. Then consider each proposed record separately, starting from the original counts. Assume every record otherwise passes admission.
+
+| Proposed record | Relation to existing measurements |
+| --- | --- |
+| R | Repeats an existing assay, document and endpoint tuple |
+| S | Adds a previously unseen endpoint tuple within an existing assay and document |
+| T | Adds a measurement from a new assay in an existing document |
+
+For each record, give the updated counts and state. Name the observation that addresses X's failed condition. Explain whether satisfying this rule would establish useful activity or candidate readiness.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+X starts in `hold`. It meets the measurement and document conditions but lacks 1 distinct assay.
+
+| Case | `M` | `A` | `D` | State |
+| --- | ---: | ---: | ---: | --- |
+| Original X | 5 | 2 | 2 | `hold` |
+| X plus R | 5 | 2 | 2 | `hold` |
+| X plus S | 6 | 2 | 2 | `hold` |
+| X plus T | 6 | 3 | 2 | `go` |
+
+R adds no new key. S increases the measurement count without adding an assay, so the failed condition persists. T supplies a previously unrepresented `assay_chembl_id` on an admitted point record and closes the assay gap. Its new tuple also adds a measurement.
+
+The T observation satisfies this coverage rule. It establishes neither useful activity nor candidate readiness. Its scientific value depends on what was measured and how the experiment distinguishes the relevant explanations. The table is constructed and supplies no evidence about a real compound.
+
+</details>
+
+## A rule chosen after the outcome
+
+Lowering a minimum because a preferred compound failed would change the question after the result was known. The revised condition can be explored as a new hypothesis, but it cannot be described as the rule that prospectively governed the original decision. Preserve the original classification and identify what information informed the revision.
+
+The same problem arises when the count changes meaning. Counting repeated rows as new measurements or accepting bounds as point values changes the evidence unit even if the threshold stays numerically fixed. A reproducible rule therefore freezes the count's definition and the response to a missing observation as well as its threshold.
+
+## What the material does not show
+
+A measurement count does not say a compound is good. A `go` compound is not thereby a candidate, and a `stop` compound is not thereby inactive. This exercise predicts no activity, safety or exposure and does not show that these are the right thresholds. It does not establish assay comparability, biological independence or a therapeutic mechanism.
+
+The selected cohort is not a random sample, so its state counts estimate no population rate. ChEMBL's duplicate marker cannot guarantee independence. This lesson proposes a next observation and performs no biological follow-up. Reader learning outcomes remain not observed.
+
+## Sources and terms
+
+The Atlas source identifiers are `dataset-chembl-activity` and `db-chembl-37`. The [ChEMBL activity records](https://www.ebi.ac.uk/chembl/api/data/activity.json) and [release status](https://www.ebi.ac.uk/chembl/api/data/status.json) were captured on 2026-10-21. ChEMBL 37 was released on 2026-05-01. The worked counts come from the readiness laboratory's 2026-10-23 computation of that validated snapshot.
+
+The [release README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README), [schema documentation](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/schema_documentation.txt) and [release licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) were read on 2026-10-23. ChEMBL data retain Creative Commons Attribution-ShareAlike 3.0 Unported terms. Original lesson prose is CC BY 4.0 and original laboratory code is Apache-2.0. Last reviewed on 2026-10-23.

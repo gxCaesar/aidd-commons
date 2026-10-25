@@ -1,0 +1,80 @@
+id: tool-sae-single-cell-atlas
+name: Single-cell foundation model feature atlases
+kind: software
+summary: Interactive atlases of sparse-autoencoder features extracted from every layer of two single-cell foundation models, published to let a reader inspect what the learned representations separate and to compare that with what the models can be shown to know.
+canonical_url: https://github.com/biodyn-ai/scgpt-atlas
+identifiers:
+- scheme: paper
+  value: 'Sparse autoencoders reveal organized biological knowledge but minimal regulatory logic in single-cell foundation models: a comparative atlas of Geneformer and scGPT; arXiv 2603.02952, submitted 2026-03-03'
+  url: https://arxiv.org/abs/2603.02952
+- scheme: code
+  value: The scGPT feature atlas web application, biodyn-ai/scgpt-atlas
+  url: https://github.com/biodyn-ai/scgpt-atlas
+- scheme: code
+  value: The Geneformer feature atlas web application, biodyn-ai/geneformer-atlas
+  url: https://github.com/biodyn-ai/geneformer-atlas
+stages:
+- evaluation
+modalities:
+- single-cell
+- gene-expression
+tasks:
+- representation-interpretability
+- feature-atlas
+- causal-circuit-tracing
+relations:
+- type: analyses
+  target: model-scgpt
+- type: analyses
+  target: model-geneformer
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - sae-atlas-repository
+openness:
+  inference_code:
+    value: available
+    evidence:
+    - sae-atlas-repository
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses: []
+evidence:
+- id: sae-atlas-paper
+  url: https://arxiv.org/abs/2603.02952
+  label: The feature-atlas preprint (reviewed 2026-10-23)
+  supports:
+  - name
+  - kind
+  - summary
+  - identifiers
+  - stages
+  - modalities
+  - tasks
+  - relations
+  - caveats
+- id: sae-atlas-repository
+  url: https://github.com/biodyn-ai/scgpt-atlas
+  label: The scGPT feature atlas application repository (reviewed 2026-10-23)
+  supports:
+  - caveats
+caveats:
+- The paper is an arXiv preprint submitted on 2026-03-03 and no journal or conference venue is listed, so the record carries a preprint and not a peer-reviewed result.
+- The two atlas repositories are web-application source trees with no README and no licence file, so the record carries no licence and the access level stays unverified. The atlases are reached through their hosted pages rather than through a published package.
+- 'The paper''s own numbers are what the record carries, and they were read from the abstract and its summary rather than from the article''s full text: atlases of 82,525 and 24,527 features, 99.8 percent of features invisible to singular value decomposition, 29 to 59 percent of features annotating to a named pathway database, 141 and 76 co-activation modules, a median causal specificity of 2.36 times, and 3 of 48 transcription factors, or 6.2 percent, showing transcription-factor-specific feature responses under genome-scale CRISPRi testing.'
+- That last number is the one the record holds on to. The paper reports organised biological knowledge in the representations and little regulatory logic in them, and the multi-tissue control improves that to 10.4 percent, or 5 of 48. A representation that separates cell types is therefore not by itself evidence that the model represents regulation, and the record carries the distinction rather than the headline.
+- The repositories contain the application source and not the extracted features, the trained sparse autoencoders, the annotation tables or the layer-by-layer results, so a reader cannot recompute the atlas from the repository alone.
+acknowledgements: []
+last_verified: '2026-10-23'

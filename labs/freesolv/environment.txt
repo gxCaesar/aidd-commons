@@ -1,0 +1,22 @@
+FreeSolv v0.52 honest-baseline reference environment
+
+This is a public, human-readable record of the runtime observed for the frozen
+lab commands. It is not a dependency solver output.
+
+Observed command basis
+  env UV_CACHE_DIR=.cache/uv uv run python labs/freesolv/run_lab.py pretest
+  env UV_CACHE_DIR=.cache/uv uv run python labs/freesolv/run_lab.py evaluate-test
+
+Observed runtime
+  Python 3.11.15
+  numpy 2.4.6
+  pandas 2.3.3
+  rdkit 2025.09.6
+  scikit-learn 1.9.0
+  nbclient 0.11.0
+  nbformat 5.11.1
+
+Relationship to project constraints
+  pyproject.toml pins the supported direct dependency versions.
+  uv resolves and runs those project constraints. The versions above are the
+  exact runtime versions observed for this lab's recorded execution.

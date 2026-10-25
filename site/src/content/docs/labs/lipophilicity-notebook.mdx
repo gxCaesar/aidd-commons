@@ -1,0 +1,110 @@
+---
+title: "Lipophilicity: split, fit, inspect"
+description: A notebook-first, editable exercise for learning a scaffold-aware logD regression workflow on public data.
+---
+
+import LabDownloads from "../../../components/LabDownloads.astro";
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+<LabDownloads lab="lipophilicity-notebook" />
+
+## Start in a notebook
+
+New to notebooks? Start with the [practice route and execution guide](/labs/notebook-guide/).
+The [molecule inspector](/labs/molecule-representation-inspector/) and
+[synthetic fitting notebook](/learn/machine-learning/student-modelling-sandbox/)
+provide the representation and train/validation/test prerequisites.
+
+Mode: editable student exercise. This is a fresh local run on a public teaching
+table, not a reading interface for a frozen author evaluation. It downloads the
+public `Lipophilicity.csv` table when you run it, installs its pinned Python
+packages in the active environment, and writes its plots and report only to
+your own runtime or working directory. It does not upload your data or use a
+custom backend.
+
+The default route is [Google Colab](https://colab.research.google.com/): download
+the English notebook above, open Colab, choose **File > Upload notebook**, and
+select the `.ipynb` file. This is an upload route, not a one-click link to this
+repository. Google documents that uploaded notebooks run in an account-private
+virtual machine and that runtime lifetime, available hardware, and usage limits
+can vary; save any work you want to keep outside that ephemeral runtime in line
+with the [Colab FAQ](https://research.google.com/colaboratory/faq.html).
+
+For local Jupyter, download the same notebook, create a project environment, and
+open it from the repository root:
+
+```sh
+uv sync --python 3.11
+uv run jupyter lab labs/lipophilicity/lipophilicity_tutorial.ipynb
+```
+
+Use a standard CPU runtime. This exercise has no GPU or remote-compute
+requirement. A current network connection is needed for the package installation
+and public CSV download. Re-running cells can change a local output directory;
+use a new directory or copy a report before trying an alternative.
+
+## What question does the notebook answer?
+
+The learning question is: _how do simple representations compare when predicting
+measured lipophilicity for molecules with scaffolds absent from training?_
+The target is the supplied `exp` column, measured logD at pH 7.4.
+It is not binding affinity, pChEMBL, logP, solubility, or a clinical endpoint.
+
+The table is a public teaching CSV with `CMPD_CHEMBLID`, `exp`, and `smiles`
+columns. It is retrieved rather than redistributed. The teaching-table loader is
+documented in [DeepChem 2.8.0](https://github.com/deepchem/deepchem/blob/2.8.0/deepchem/molnet/load_function/lipo_datasets.py).
+The [original deposit](https://doi.org/10.6019/CHEMBL3301361) and
+[ChEMBL data licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/LICENSE)
+are linked in the notebook. Retain the download date with your own report. The notebook is deliberately
+an exercise, not a new benchmark or method claim.
+
+## Follow the teaching sequence
+
+1. **Question and target.** State the endpoint, unit (logD), grouping unit
+   (scaffold), and the generalization claim before fitting a model.
+2. **Data and molecules.** Download the CSV, check required fields and invalid
+   structures, inspect the label distribution and selected structures, and keep
+   supplied rows visible rather than silently filtering them after seeing errors.
+3. **Scaffold split.** Build Bemis–Murcko scaffold keys and allocate complete
+   groups to train, validation, and test partitions. Inspect counts and assert
+   that an ID, exact structure, or scaffold key does not cross a partition.
+4. **Representations.** Contrast a train mean with compact RDKit descriptors and
+   a radius-2, 2,048-bit Morgan fingerprint. `MolLogP` is a computed feature in
+   the descriptor baseline, not the answer to the logD task.
+5. **Train and select.** Fit preprocessing on training molecules only. Select
+   the stated Ridge regularisation from validation RMSE only; do not use the
+   test labels to choose a representation or hyperparameter.
+6. **Plots and errors.** After selection, evaluate once on the held-out split.
+   Read predicted-versus-observed and residual plots as diagnostics. Check
+   scaffold membership, endpoint values, and near-neighbour similarity without
+   retuning against the same test set.
+7. **Exercise and report.** Use a separate exploratory copy for changed choices;
+   a new folder alone does not make the already observed test independent.
+   Report the question, data source/date, split,
+   representation, validation selection rule, test metrics, error examples, and
+   limitations. Keep a worse-than-constant or negative result.
+
+## How to read a result honestly
+
+Your numbers are local exercise outputs. They are not the repository's frozen
+FreeSolv, ChEMBL EGFR, rMD17, or pool-budget results, and they do not establish
+general performance beyond this dataset and split. The rows are not known to be
+independent assay replicates; the table does not supply batch, replicate, or
+experimental-uncertainty fields. A scaffold split is a declared grouping rule,
+not proof of prospective chemical novelty or assay transfer.
+
+Do not improve the reported test result by dropping difficult structures,
+changing the split after viewing test labels, or selecting a model on the test
+plot. If the notebook fails because a public download or a Colab runtime is
+unavailable, record that failure and use local Jupyter when appropriate; do not
+substitute another dataset while keeping the same claim.
+
+## Downloads
+
+The English and Chinese notebooks above are self-contained teaching materials.
+They install only the pinned libraries they need and fetch the public CSV in the
+reader's environment. No repository URL is assumed, and this page does not
+claim that the notebook has been executed in Colab. The historical data
+inspection, constructed-fixture verification and completed local real-data run are documented in
+`labs/lipophilicity/README.md`.

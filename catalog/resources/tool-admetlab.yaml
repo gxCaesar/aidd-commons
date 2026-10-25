@@ -1,0 +1,80 @@
+id: tool-admetlab
+name: ADMETlab
+kind: software
+summary: A web platform that predicts physicochemical, ADME and toxicity properties of small molecules, with the hosted ADMETlab 3.0 service built on DMPNN models and a separate repository that distributes the earlier model archives and the code needed to run them locally.
+canonical_url: https://admetlab3.scbdd.com/
+identifiers:
+  - scheme: paper
+    value: "ADMETlab 2.0: an integrated online platform for accurate and comprehensive predictions of ADMET properties; Nucleic Acids Research 49(W5), W5-W14 (2021); DOI 10.1093/nar/gkab255"
+    url: https://doi.org/10.1093/nar/gkab255
+  - scheme: paper
+    value: "ADMETlab: a platform for systematic ADME evaluation based on a comprehensively collected ADMET database; Journal of Cheminformatics 10, 29 (2018); DOI 10.1186/s13321-018-0283-x"
+    url: https://doi.org/10.1186/s13321-018-0283-x
+  - scheme: source-code
+    value: "ifyoungnet/ADMETlab model archive repository"
+    url: https://github.com/ifyoungnet/ADMETlab
+stages: [dmpk-toxicology, property-prediction]
+modalities: [small-molecule]
+tasks: [admet-prediction, toxicity-prediction]
+relations: []
+status: { value: active, evidence: [service-home, commits] }
+access_level: { value: source_available, evidence: [repository, source-license] }
+openness:
+  inference_code: { value: available, evidence: [repository, example-directory] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [repository] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: GNU Affero General Public License v3
+    scope: The licence text in the LICENSE file of the ifyoungnet/ADMETlab repository, the only licence file in that repository. Its authority is contested, because the README of the same repository names a different licence for the same software and data, and this record does not adjudicate which statement governs.
+    evidence: [source-license, readme]
+  - name: New BSD
+    scope: The licence that the ifyoungnet/ADMETlab README names for the software and its associated data and documents. It conflicts with the AGPL-3.0 LICENSE file in the same repository, so the effective terms for reuse are unverified.
+    evidence: [readme, source-license]
+evidence:
+  - id: service-home
+    url: https://admetlab3.scbdd.com/
+    label: ADMETlab 3.0 service home page (reviewed 2026-10-21)
+    supports:
+      [name, kind, summary, stages, modalities, tasks, caveats, acknowledgements]
+  - id: publication-page
+    url: https://admetlab3.scbdd.com/publication/
+    label: ADMETlab publication page
+    supports: [identifiers, caveats]
+  - id: repository
+    url: https://github.com/ifyoungnet/ADMETlab
+    label: ifyoungnet/ADMETlab repository
+    supports: [name, kind, summary, identifiers, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/ifyoungnet/ADMETlab/master/README.md
+    label: ifyoungnet/ADMETlab README
+    supports: [identifiers, caveats]
+  - id: example-directory
+    url: https://github.com/ifyoungnet/ADMETlab/tree/master/example
+    label: ifyoungnet/ADMETlab example directory
+    supports: [caveats]
+  - id: source-license
+    url: https://raw.githubusercontent.com/ifyoungnet/ADMETlab/master/LICENSE
+    label: ifyoungnet/ADMETlab LICENSE file
+    supports: []
+  - id: site-license-link
+    url: https://github.com/antwiser/ADMETlab-3.0/blob/main/LICENSE
+    label: LICENSE link target on the ADMETlab 3.0 site, which returns HTTP 404
+    supports: [caveats]
+  - id: commits
+    url: https://github.com/ifyoungnet/ADMETlab/commits/master
+    label: ifyoungnet/ADMETlab commit history
+    supports: [caveats]
+caveats:
+  - The ADMETlab 3.0 site states no licence for the prediction service; its only LICENSE link points to a GitHub repository path that does not exist, so the service terms are unverified.
+  - The repository LICENSE file is the GNU Affero General Public License v3 while the README of the same repository names a New BSD licence for the software and its associated data and documents; both are recorded here and neither is treated as controlling.
+  - The repository distributes the ADMETlab model archives described in the 2018 paper, and its README does not state that it implements the 3.0 release served by the site.
+  - The site states that the prediction models are trained by the Directed Message Passing Neural Network framework on an internal database of 0.37M entries spanning 77 endpoints, and it publishes neither that database, the training code, nor the model definitions.
+  - The site reports 34 ADME endpoints, 36 toxicity endpoints and 8 toxicophore rules, and separately states that the predictable endpoint count rose from 88 to 119 while the underlying database spans 77 endpoints; the page does not reconcile these figures.
+  - The site's last stated update is 31 January 2024 and the repository's most recent commit shown is 20 June 2024, so maintenance beyond those dates is not established.
+acknowledgements:
+  - The service is run by the Computational Biology and Drug Design Group, and the site footer carries a copyright notice dated 2020.
+last_verified: "2026-10-21"

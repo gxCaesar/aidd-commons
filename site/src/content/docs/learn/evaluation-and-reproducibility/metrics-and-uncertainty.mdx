@@ -1,0 +1,247 @@
+---
+title: Metrics and uncertainty across four labs
+description: Distinguish prediction error, rank association, interval coverage and budgeted recovery without inventing a common score.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="evaluation-and-reproducibility/metrics-and-uncertainty" />
+
+## Before you start
+
+Complete [Splits and leakage across three labs](/learn/evaluation-and-reproducibility/split-and-leakage-cases/)
+first. Here you will read existing summaries, identify each metric's denominator
+and unit, then separate a descriptive result from an uncertainty claim. No
+installation, model fitting, new statistical test or repeated evaluation is needed.
+
+Keep these case materials available. Each lab links its existing curated
+protocol or results downloads; the summaries remain the numerical authorities.
+
+<div data-case-sources>
+
+- [ChEMBL representation comparison](/labs/chembl-egfr-representation-baselines/)
+- [FreeSolv scaffold-primary results](/labs/freesolv-honest-baselines/)
+- [rMD17 within-system energy results](/labs/rmd17-system-state-energy-baselines/)
+- [Pool-budget simulator and real campaign](/labs/pool-budget-campaign/)
+
+</div>
+
+The quoted claims below are deliberately incorrect reading exercises, not
+additional analyses performed in those labs.
+
+## Four different questions
+
+- **MAE and RMSE:** how far are predicted values from their recorded targets?
+  MAE averages absolute errors. RMSE takes the square root of the mean squared
+  error, giving larger errors more weight before aggregation. Both retain the
+  target's units; lower is better under the same task and evaluated records.
+  See the [regression metric definitions](https://scikit-learn.org/stable/modules/model_evaluation.html#regression-metrics).
+- **Spearman correlation:** how well does the ordering of predictions agree
+  with the ordering of targets? It is a dimensionless rank association, not an
+  error in target units or a probability of correctness. A constant prediction
+  vector has undefined Spearman correlation, not zero correlation. Higher values
+  indicate better agreement with increasing target values here. See the
+  [SciPy definition and constant-input warning](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html).
+- **Interval coverage and width:** how often do recorded targets fall inside
+  their prediction intervals, and how wide are those intervals? Coverage is a
+  fraction of evaluated targets; width is in target units. Coverage alone does
+  not tell you whether an interval is useful.
+- **Recovery AUC:** how early does a policy acquire a fixed set of high-scoring
+  pool entries within the declared budget? Its axes and normalization are
+  defined by the campaign, not by the letters “AUC.”
+
+The number of rows in a metric denominator is not automatically the number of
+independent units available for statistical inference.
+
+## Case 1: rank agreement is not prediction accuracy
+
+Read the ChEMBL primary and separate-assay tables, keeping all three baselines.
+
+> “Replace the train mean's missing Spearman with zero. Average Spearman with
+> MAE to rank models, then report the primary winner as best across assays.”
+
+Identify three errors. State the endpoint, the scoring unit and the direction
+of each metric. Would adding the same offset to every nonconstant prediction
+preserve Spearman? Must it preserve MAE?
+
+<details data-worked-answer>
+<summary>Case 1 — worked answer</summary>
+
+The target is median-aggregated parent-molecule pChEMBL derived from exact
+IC50 measurements. MAE and RMSE are errors on that logarithmic scale, not nM
+errors. Spearman uses ranks and is dimensionless. Adding a constant preserves
+prediction ranks, but can change absolute errors. Good ordering therefore
+does not establish accurate endpoint values.
+
+The primary metrics use 132 parents; the separate-assay metrics use 170.
+The train mean has valid error metrics but no rank variation, so its
+`null` Spearman and `undefined_constant_prediction` status must remain visible.
+Zero would instead be a defined correlation value. Do not discard the baseline
+or fabricate a replacement value to make a composite score computable.
+
+Raw MAE and Spearman have different scales and preferred directions. No rule
+for combining them was declared. Morgan Ridge has the lowest primary MAE but
+the highest separate-assay MAE; descriptor Ridge has the lowest separate-assay
+MAE. These are separate descriptive comparisons, not a uniform winner or a
+significance test. No confidence interval or p value is reported for them.
+T15's prior access to shared labels also prevents an untouched independent
+confirmation claim; no retuning followed that exposure.
+
+</details>
+
+## Case 2: what does a 90% interval cover?
+
+Read the FreeSolv scaffold-primary table and its downloaded aggregate summary.
+Both learned models target experimental hydration free energy in kcal/mol.
+The summary records 64 test molecules, empirical coverage **0.875** for Ridge
+and **0.90625** for the random forest.
+
+> “These are 90% confidence intervals for MAE. The random forest is calibrated
+> for every new scaffold, so it is the better predictor. Widen the Ridge
+> intervals until this test set reaches the target coverage.”
+
+Correct the interval's object, distinguish nominal from empirical coverage,
+and compare coverage together with width and MAE. Which records determine
+the interval radius? What does the aggregate not tell you about subgroups?
+
+<details data-worked-answer>
+<summary>Case 2 — worked answer</summary>
+
+These are prediction intervals around individual predicted hydration free
+energies, not confidence intervals for MAE or a population mean. Each learned
+model uses a validation-only split-conformal radius, calibrated at a nominal
+90% level. Test labels evaluate coverage; they do not set that radius.
+
+Empirical coverage divides covered test targets by all 64 test molecules.
+The reported fractions correspond arithmetically to 56 covered targets for
+Ridge and 58 for the random forest. This reads the existing aggregate; it does
+not independently recheck individual predictions. Nominal 90% is the procedure's
+target, not a promise that every finite test sample has exactly that fraction.
+
+The random forest's observed coverage is higher and its mean interval is wider,
+while Ridge has lower MAE on this scaffold-primary split. Neither coverage alone
+nor MAE alone resolves every predictive objective. Widening an interval can
+increase coverage without improving point predictions; changing radii after
+reading this test would make the test part of calibration.
+
+The usual split-conformal marginal guarantee relies on exchangeability of
+calibration and test examples. It is not a per-molecule or every-subgroup
+guarantee. Scaffold separation alone does not establish that assumption, and
+the aggregate does not show coverage by scaffold. See
+[Angelopoulos and Bates, sections 1 and 3](https://arxiv.org/abs/2107.07511).
+Do not label these results conditional calibration or guaranteed performance
+under a new distribution shift.
+
+</details>
+
+## Case 3: a denominator is not an independence claim
+
+Read the rMD17 completed result and its limitations.
+
+> “Pool the 200 evaluation frames from each system. There are 400 independent
+> repeats, so the lower MAE proves a precise, general improvement. FreeSolv
+> also uses kcal/mol, so compare the two labs' MAEs directly.”
+
+Distinguish a frame-level error average from replication over systems. Which
+uncertainty estimate was actually reported? Does a shared physical unit make
+the endpoints or prediction tasks interchangeable?
+
+<details data-worked-answer>
+<summary>Case 3 — worked answer</summary>
+
+Each rMD17 MAE averages errors over 200 evaluation frames within one system.
+Results are reported separately for benzene and uracil. Each system's model is
+fitted only on its own training frames. Frames are correlated configurations, not 400
+independent molecular-system replications. Even the two system results do not
+establish representative sampling of all molecular systems.
+
+Ridge has lower energy MAE than the train-mean control in each completed
+within-system comparison. The delivered summary reports no confidence interval
+or p value, and no frame-pooled result. A range or median of two system scores
+is a descriptive summary, not a confidence interval. Missing uncertainty is
+not evidence of no uncertainty. No new interval is computed here.
+
+FreeSolv predicts experimental hydration free energy across molecules; this
+rMD17 exercise predicts configuration energy within a named system. Both use
+kcal/mol, but their endpoints, target variation, splits and baselines differ.
+The common unit does not create a matched comparison. The rMD17 run also lacks
+saved per-frame Ridge predictions, so its Ridge scores were not independently
+recomputed after the run. Retain that limitation rather than imply that this
+lesson supplies the missing record.
+
+</details>
+
+## Case 4: recovery AUC is not ROC AUC
+
+Read the pool-budget lab's completed real campaign and
+[the recovery definition](/learn/active-learning/experiment-pools-and-budgets/#4-define-the-recovery-denominator-and-integrate-it).
+Keep the artificial-score simulator separate from the real ChEMBL replay.
+
+> “AUC below 0.5 means below chance. Five random seeds are five independent
+> assays, and final recovery is enough to reconstruct the AUC.”
+
+Name the numerator, denominator, horizontal axis and integration rule. What
+varies across random seeds, and what stays shared? Explain why the order and
+checkpoints matter even when final recovery is identical.
+
+<details data-worked-answer>
+<summary>Case 4 — worked answer</summary>
+
+At a checkpoint, recovery counts acquired members of the fixed top-decile
+target set and divides by that target-set size. In the real replay, the target
+set contains exactly `ceil(P/10)` parents ranked by decreasing pChEMBL from the
+original acquisition pool of `P` parents, with the declared tie rule. Initial
+training molecules and the separate predictive evaluation set are outside
+this denominator; it is not the number selected so far.
+
+The horizontal axis is cumulative acquisitions. The lab integrates recovery
+by trapezoids at the declared round boundaries, including the initial zero,
+then divides by the final acquisition count. Final recovery alone does not
+determine this area: earlier recovery contributes for more of the budget.
+Changing checkpoint placement can also change the result. This is not an ROC
+curve, and it has no universal 0.5 chance reference.
+
+For the real primary assay, MaxMin's recovery AUC is 0.05078125; for the separate
+assay it is 0. In both assays it is below every one of the five fixed random
+policy instances. Retain all instances, including zeros, rather than select
+the most favorable seed. The seed changes a policy's selections within the
+same pool; it does not generate another independent assay. These descriptive
+outcomes do not establish random selection as universally better, and no
+confidence interval or significance test is supplied.
+
+The real replay's separate evaluation-set MAE on pChEMBL values answers a different question
+from recovery: prediction of unacquired evaluation labels versus acquisition
+of designated pool targets. T15 remains retrospective teaching evidence, not
+prospective discovery or independent T05 corroboration.
+
+</details>
+
+## Write a metric card
+
+Choose one reported quantity and record its endpoint, units, evaluated set,
+numerator and denominator where applicable, preferred direction, and the
+uncertainty actually supplied. Finish with one supported sentence and one
+claim the result cannot establish. Link the lab or downloaded summary you used.
+
+A complete answer keeps undefined correlation distinct from zero, prediction
+intervals distinct from confidence intervals, marginal coverage distinct from
+subgroup coverage, and repeated seeds or frames distinct from new independent
+experimental units. Do not fill an unavailable uncertainty field with zero.
+
+This exercise does not change the frozen metrics, splits, comparisons or
+results. It supplies no new confidence interval, p value or learner-effectiveness
+measurement. Original lesson prose is CC BY 4.0; linked data and software
+retain their own terms, including the stated FreeSolv v0.52 licence uncertainty.
+
+## From interpretation to diagnosis
+
+Continue to [Diagnosing cross-assay prediction failure](/learn/evaluation-and-reproducibility/assay-shift-diagnosis/)
+to distinguish recipe checks, plausible causes and the evidence needed for a new
+transport claim. It uses the same completed ChEMBL comparison without retuning.
+
+For the denominator question on a second dataset, where every error is printed
+beside the range it is measured over and confidence intervals are forbidden by
+protocol, run
+[what the error is an error over](/labs/rmd17-contract-inspection/).
+
+Last reviewed: 2026-09-09.

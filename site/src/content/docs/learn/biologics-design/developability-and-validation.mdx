@@ -1,0 +1,188 @@
+---
+title: Developability and functional validation
+description: Treat expression, physical behavior, specificity, and function as distinct evidence needed to advance a biologic design.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/developability-and-validation" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will define developability as a multi-field evidence problem, design a
+functional validation contrast, and select candidates without collapsing missing
+fields into a favourable score. Read [Antibody and peptide design with negative
+selection](/learn/biologics-design/antibody-peptide-design/) first. This lesson
+is conceptual and handworked, not a manufacturing process, expression method, or
+clinical-development protocol.
+
+## Developability is not a synonym for potency
+
+Developability asks whether a specified construct can be made, handled, and
+studied with properties compatible with its intended use. Depending on modality,
+fields can include expression yield, identity and integrity, aggregation or
+self-association, solubility, stability in a stated condition, non-specific
+interaction, and formulation-relevant behavior. A good binding or functional
+signal does not fill these fields. Conversely, good physical behavior does not
+prove target-specific function.
+
+The relevant evidence unit includes the construct identity, production context,
+measurement condition, output unit, and aggregation rule. If a metric reports a
+distribution rather than a scalar, preserve the distribution and predeclare the
+summary. Complementary developability assays can disagree because they interrogate
+different interactions; studies of engineered antibodies explicitly compare
+self-interaction, light scattering, and solubility rather than treating one as a
+universal oracle [Shan et al.](https://pubmed.ncbi.nlm.nih.gov/30395473/).
+
+## Functional validation asks a causal comparison
+
+Write a functional claim as: “Construct K produces endpoint Y through the
+proposed target-dependent route in context C.” The validation panel needs a
+positive condition, a matched negative context or construct, and a readout
+close enough to the proposed route to make alternatives visible. A target-negative
+cell context addresses dependence on target presence; a binding-deficient or
+non-targeting construct addresses a construct-specific alternative; an orthogonal
+readout addresses detector dependence. They are not interchangeable.
+
+Let `Y_K,C` be an aggregate over declared independent preparations. The primary
+contrast might be `Δ_func = mean(Y_K,C+) − mean(Y_control,C+)`, accompanied by
+`Δ_neg = mean(Y_K,C−) − mean(Y_control,C−)`. An intended pattern could be a
+large `Δ_func` and small `Δ_neg`, but exact thresholds must be registered for a
+real decision. Neither contrast proves direct molecular mechanism if an
+unmeasured pathway can produce the same endpoint.
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Question</th>
+      <th>Common invalid upgrade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Physical behavior</td>
+      <td>Is this construct well behaved under stated conditions?</td>
+      <td>“It will manufacture successfully.”</td>
+    </tr>
+    <tr>
+      <td>Specificity panel</td>
+      <td>What known alternatives were not detected?</td>
+      <td>“No off-targets exist.”</td>
+    </tr>
+    <tr>
+      <td>Functional contrast</td>
+      <td>Does endpoint Y change in C relative to a control?</td>
+      <td>“The proposed molecular route is proved.”</td>
+    </tr>
+    <tr>
+      <td>Independent validation</td>
+      <td>Does the pattern persist in a second appropriate unit?</td>
+      <td>“Technical repeats establish generalization.”</td>
+    </tr>
+  </tbody>
+</table>
+
+## Worked case: a constructed advance table
+
+Everything below is **constructed for teaching**. Before evaluation, a team
+declares three gates: apparent soluble fraction at least 0.80 under a stated
+screen; negative-panel signal no more than 20 units; and an intended-context
+functional contrast at least 30 units with a target-negative contrast no more
+than 10 units. These values are not platform standards.
+
+<table>
+  <thead>
+    <tr>
+      <th>Construct</th>
+      <th>Soluble fraction</th>
+      <th>Negative signal</th>
+      <th>Δ_func in C+</th>
+      <th>Δ_neg in C−</th>
+      <th>Decision</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>J</td>
+      <td>0.86</td>
+      <td>14</td>
+      <td>41</td>
+      <td>8</td>
+      <td>Meets this constructed screen.</td>
+    </tr>
+    <tr>
+      <td>K</td>
+      <td>0.62</td>
+      <td>11</td>
+      <td>45</td>
+      <td>7</td>
+      <td>Fails developability gate.</td>
+    </tr>
+    <tr>
+      <td>L</td>
+      <td>0.89</td>
+      <td>27</td>
+      <td>38</td>
+      <td>9</td>
+      <td>Fails negative-selection gate.</td>
+    </tr>
+  </tbody>
+</table>
+
+J is the only conditional survivor. It is not “manufacturable” and not
+“validated”: soluble fraction comes from one stated screen, and the functional
+contrast can still reflect an untested alternative. The next step is a
+predeclared independent production or context comparison coupled to an
+orthogonal functional measurement. K cannot be advanced by its larger `Δ_func`
+without changing the declared rule. L cannot be rescued by averaging 27 with its
+other attractive columns.
+
+## Alternatives, limitations, and independent exercise
+
+A Pareto front can retain several candidates for further evidence when gates do
+not decide; a weighted score is defensible only after units, directions, weights,
+and missingness policy are frozen. Design-model confidence can prioritize a
+small panel but must not substitute for observed expression or functional data.
+Published physicochemical rules identify relative risk patterns in particular
+antibody datasets, not a universal admission rule [Zhang et
+al.](https://pubmed.ncbi.nlm.nih.gov/32453957/).
+
+**Handworked exercise (not runnable or empirical):** With the same constructed
+gates, M has soluble fraction `0.83`, negative signal `18`, `Δ_func = 29`, and
+`Δ_neg = 6`; N has `0.81`, `16`, `34`, and `13`. Which gate does each fail?
+For J, state one independent unit and one orthogonal readout; why are those not
+two more technical wells?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+M fails the intended-context functional gate because `29 < 30`. N fails the
+target-negative contrast gate because `13 > 10`. For J, a separately prepared
+construct batch or a separately derived relevant cell preparation could be an
+independent unit; a second detection principle for the functional endpoint is
+an orthogonal readout. Technical wells repeat the same preparation and do not
+create either new biological or production variation.
+
+</details>
+
+## Sources and next lesson
+
+Sources were opened on 2026-09-09. They support the distinctions above; all
+table values are invented.
+
+<div data-case-sources>
+
+- [Developability assessment of engineered monoclonal antibody variants](https://pubmed.ncbi.nlm.nih.gov/30395473/)
+- [Physicochemical rules for identifying monoclonal antibodies with drug-like specificity](https://pubmed.ncbi.nlm.nih.gov/32453957/)
+- [Basic Guidelines for Reporting Non-Clinical Data — NCBI Assay Guidance Manual](https://www.ncbi.nlm.nih.gov/books/NBK550206/)
+
+</div>
+
+Next, [Candidate nomination](/learn/candidate-nomination/evidence-to-validation/)
+integrates these unresolved fields without treating a single favourable endpoint
+as a candidate claim. Original lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-09.

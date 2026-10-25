@@ -1,0 +1,37 @@
+id: standard-osaid
+name: Open Source AI Definition 1.0
+kind: standard
+summary: Open Source Initiative definition for evaluating openness of AI systems.
+canonical_url: https://opensource.org/ai/open-source-ai-definition
+identifiers: []
+stages: [governance, candidate-nomination]
+modalities: [ai-system]
+tasks: [openness-assessment]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [terms-page] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC-BY-4.0
+    scope: covers the content of the website, of which Opensource.org is the author, per the site's own statement; the licences the site reproduces belong to their own authors and are not covered
+    evidence: [terms-page]
+evidence:
+  - id: official-page
+    url: https://opensource.org/ai/open-source-ai-definition
+    label: OSI Open Source AI Definition page
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: terms-page
+    url: https://opensource.org/ai/open-source-ai-definition
+    label: Open Source Initiative site content statement (reviewed 2026-10-23)
+    supports: []
+caveats:
+  - This definition does not establish that a named model meets its criteria.
+acknowledgements: []
+last_verified: "2026-10-23"

@@ -1,0 +1,55 @@
+---
+title: 设计—制备—测试—分析循环
+description: 用冻结的选择规则和可观察的反馈分配有限实验。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Design-make-test-analyze loops](/learn/active-learning/dmta-loops/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="active-learning/dmta-loops" />
+
+## 基础
+
+设计—制备—测试—分析循环分配有限的实验能力。决策单位是在既定预算、测定和
+选择规则下的一批可行候选项。只有当不确定性会改变实验选择且之后会根据结果进行
+检验时，它才有用。
+
+## 实践工作流
+
+预先声明候选池、目标、约束、批次大小、多样性规则、采集函数和停止条件。先采用
+随机、基于多样性或简单性质的基线。[BoTorch](https://botorch.org/)
+和 [Ax](https://ax.dev/) 记录了优化工具；它们并不为项目选择科学目标。
+
+## 评估
+
+在相同的预算轮次中比较策略，并保留实验反馈的时间顺序。报告校准、合成失败、
+测定失败以及实际独立实验单位的数量，而非只报告观测到的最佳分子。
+
+## 前沿与开放问题
+
+多目标选择会揭示效力、暴露、合成和新颖性之间的权衡。
+[MolScore](https://github.com/MorganCThomas/MolScore) 可以使评分规范可执行，
+但评分规范必须能够追溯到一项决策和测定计划。
+
+## v0.1 尚未教授的内容
+
+v0.1 不提供实时机器人循环、通用采集函数，也不声称未经实验检查的模型不确定性
+已经校准。
+
+## 核心来源路径
+
+继续阅读[实验池、预算与可行性](/zh-cn/learn/active-learning/experiment-pools-and-budgets/)，
+了解可运行的合成活动、精确的预算算术和已解习题。
+
+接着阅读[多样性、不确定性与实验反馈](/zh-cn/learn/active-learning/diversity-uncertainty-feedback/)，
+区分重新拟合预测器与由模型引导的选择规则。
+
+先阅读 [BoTorch 文档](https://botorch.org/) 和
+[Ax 文档](https://ax.dev/)，然后在将模型接入实验室队列之前写一份小型选择契约。
+
+最后审阅：2026-09-04。
+
+导航更新：2026-09-09。

@@ -1,0 +1,30 @@
+id: bad-duplicate-evidence
+name: Duplicate evidence identifiers
+provider_class: specialist-reference
+canonical_url: https://example.org/duplicate-evidence
+summary: A fixture containing two evidence entries with the same ID.
+audiences: [engineers]
+languages: [en]
+metadata_evidence: [overview]
+access:
+  content: { value: open, evidence: [overview] }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: not_applicable, evidence: [overview] }
+licenses: []
+coverage: []
+evidence:
+  - id: overview
+    url: https://example.org/duplicate-evidence
+    title: First overview
+    observed_scope: System identity and content access.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: overview
+    url: https://example.org/duplicate-evidence/second
+    title: Second overview
+    observed_scope: A conflicting second evidence entry.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

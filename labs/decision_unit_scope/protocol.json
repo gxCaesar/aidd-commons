@@ -1,0 +1,226 @@
+{
+  "schema_version": "aidd-commons.decision-unit-scope-protocol.v1",
+  "protocol_id": "chembl37-decision-unit-scope-v1",
+  "issued_on": "2026-10-21",
+  "seed": 20261021,
+  "authority": "labs/src/aidd_commons/decision_unit_scope/protocol.py",
+  "authority_note": "The compiled-in contract in that module is the authority for every load-bearing field below. protocol.json must match it field for field, or the pipeline refuses to run; see validated_fields for the list of fields that are compared.",
+  "validated_fields": [
+    "schema_version",
+    "protocol_id",
+    "issued_on",
+    "seed",
+    "source.database",
+    "source.release_date",
+    "source.status_url",
+    "source.api_root",
+    "source.licence.name",
+    "source.licence.url",
+    "cohort.seeds",
+    "cohort.resolved_parents",
+    "endpoint.standard_types",
+    "endpoint.standard_units",
+    "endpoint.point_relation",
+    "endpoint.bound_relations",
+    "endpoint.exclusion_priority",
+    "split_and_grouping.grouping_unit",
+    "split_and_grouping.experiment_unit",
+    "artifacts[].path",
+    "artifacts[].source_url",
+    "artifacts[].byte_length"
+  ],
+  "declared_question": "For a declared set of real compounds, how many independent measurements does each compound actually have, and which rows have to be set aside before that number means anything?",
+  "run_basis": "The runnable task is a deterministic recount. For every declared parent molecule the lab resolves the entity hierarchy, applies the declared admission rule to every activity row ChEMBL files under that parent, and counts the surviving measurements under the declared grouping unit. No model is fitted, no split is drawn, nothing is held out and no threshold is tuned. The 'check' subcommand recomputes every published count from the cached snapshot and from the committed summary, and exits non-zero on any disagreement.",
+  "source": {
+    "database": "ChEMBL_37",
+    "release_date": "2026-05-01",
+    "status_url": "https://www.ebi.ac.uk/chembl/api/data/status.json",
+    "api_root": "https://www.ebi.ac.uk",
+    "licence": {
+      "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+    },
+    "release_readme_url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README",
+    "schema_documentation_url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/schema_documentation.txt",
+    "bulk_artefacts_not_used": {
+      "note": "Byte lengths measured from the ChEMBL 37 release directory on 2026-10-21. This lab reads the REST API and none of these files.",
+      "chembl_37_sqlite_tar_gz_bytes": 5764252857,
+      "chembl_37_mysql_tar_gz_bytes": 2101694224,
+      "chembl_37_postgresql_tar_gz_bytes": 2088889426,
+      "chembl_37_sdf_gz_bytes": 931156420
+    }
+  },
+  "cohort": {
+    "selection_rule": "Fifteen ChEMBL molecule identifiers, declared by the author before any activity row was fetched, so that every branch of the protocol's counting rule is exercised on real rows. Five seeds are salt formulations whose parent is also a seed, so the declared set of molecules is larger than the set of units of inference. Three of the seeds are formulations rather than single molecules: two are stored as two-component structures that ChEMBL keeps as their own parent, and one is named as a salt but stored with a single component. One seed has four ChEMBL rows and no admissible measurement, one has two admissible measurements, and one has several thousand rows. This is a teaching cohort, not a random sample: no proportion computed over it estimates a population rate.",
+    "seeds": [
+      { "molecule_chembl_id": "CHEMBL929", "pref_name": "DELAVIRDINE MESYLATE" },
+      { "molecule_chembl_id": "CHEMBL593", "pref_name": "DELAVIRDINE" },
+      { "molecule_chembl_id": "CHEMBL1026", "pref_name": "FENOLDOPAM MESYLATE" },
+      { "molecule_chembl_id": "CHEMBL588", "pref_name": "FENOLDOPAM" },
+      { "molecule_chembl_id": "CHEMBL433", "pref_name": "VALPROATE SODIUM" },
+      { "molecule_chembl_id": "CHEMBL109", "pref_name": "VALPROIC ACID" },
+      { "molecule_chembl_id": "CHEMBL690", "pref_name": "PRAVASTATIN SODIUM" },
+      { "molecule_chembl_id": "CHEMBL1144", "pref_name": "PRAVASTATIN" },
+      { "molecule_chembl_id": "CHEMBL109745", "pref_name": "DARBUFELONE MESYLATE" },
+      { "molecule_chembl_id": "CHEMBL275835", "pref_name": "DARBUFELONE" },
+      { "molecule_chembl_id": "CHEMBL23393", "pref_name": "SODIUM LAURYL SULFATE" },
+      { "molecule_chembl_id": "CHEMBL13829", "pref_name": "MIXTURE OF MMC AND TA" },
+      { "molecule_chembl_id": "CHEMBL906", "pref_name": "MINOXIDIL SULFATE" },
+      { "molecule_chembl_id": "CHEMBL441", "pref_name": "THIOPENTAL" },
+      { "molecule_chembl_id": "CHEMBL25", "pref_name": "ASPIRIN" }
+    ],
+    "resolved_parents": [
+      "CHEMBL109",
+      "CHEMBL1144",
+      "CHEMBL13829",
+      "CHEMBL23393",
+      "CHEMBL25",
+      "CHEMBL275835",
+      "CHEMBL441",
+      "CHEMBL588",
+      "CHEMBL593",
+      "CHEMBL906"
+    ]
+  },
+  "entity_rule": {
+    "unit_of_inference": "One ChEMBL parent molecule, identified by parent_molecule_chembl_id. Every activity row carries both the form that was actually tested (molecule_chembl_id) and the parent entity the row is filed under (parent_molecule_chembl_id). The parent is the unit this lab counts, because the parent is the entity whose identity a comparison between two compounds is about.",
+    "child_parent_rule": "A declared seed is resolved to its parent through molecule_hierarchy.parent_chembl_id in the ChEMBL molecule record. Fifteen declared seeds resolve to ten distinct parents, so five of the declared molecules are salt formulations of a compound that is itself in the cohort.",
+    "salt_rule": "A row whose molecule_chembl_id differs from its parent_molecule_chembl_id is a salt or mixture form of the parent. It is admitted, not rejected: it is a real measurement of the parent entity obtained on a different formulation, and rejecting it would silently discard part of the compound's evidence. The protocol counts these rows separately as salt-form measurements so that a reader can see how much of a compound's evidence base was obtained on something other than the parent structure. This is a deliberate protocol decision, and it is the opposite of the rule in labs/chembl_egfr, where aidd_commons.chembl_egfr.data.normalise_activity_rows raises a contract error for any child row.",
+    "mixture_rule": "A stored structure with more than one disconnected component is a formulation, not a molecule. ChEMBL is not consistent about these: it strips the counterion from some (SAQUINAVIR MESYLATE resolves to SAQUINAVIR) and keeps the salt as the entity's own parent in others (SODIUM LAURYL SULFATE, MIXTURE OF MMC AND TA), and it stores MINOXIDIL SULFATE with a single-component structure at all. This protocol does not correct ChEMBL here. It reports the stored fragment count for every declared seed and states that a measurement of a multi-component entity is a measurement of that formulation, not of a single molecule.",
+    "contrast_with_sibling_lab": "labs/chembl_egfr treats a child row as a contract error. That is the right call for a lab that fits one model on one parent structure, and the wrong call for a lab whose subject is the unit of inference, because there the child row is evidence rather than an error. The two labs therefore disagree by design, and this protocol says so rather than hiding the difference."
+  },
+  "endpoint": {
+    "definition": "A nanomolar potency endpoint: one of AC50, EC50, IC50, Kd or Ki, reported in nM, with a relation symbol. Rows reporting anything else (Activity, Inhibition, Tissue Severity Score, ED50, GI50, percentage inhibition, haematology counts) are outside this protocol's endpoint scope; they are counted under outside_endpoint_family and never silently dropped.",
+    "standard_types": ["AC50", "EC50", "IC50", "Kd", "Ki"],
+    "standard_units": "nM",
+    "point_relation": "=",
+    "bound_relations": ["<", "<=", ">", ">="],
+    "relation_handling": "A row whose relation is '=' is a point measurement. A row whose relation is '>', '<', '>=' or '<=' is a bound: it says the value lies on one side of a threshold and it is never pooled with a point value. A row with no relation symbol at all is neither, and is excluded as missing_relation.",
+    "exclusion_priority": [
+      "outside_endpoint_family",
+      "non_nanomolar_units",
+      "non_standard_activity",
+      "potential_duplicate",
+      "data_validity_comment",
+      "missing_value",
+      "missing_structure",
+      "missing_relation"
+    ],
+    "exclusion_priority_note": "The first reason that matches a row is that row's reason, so the counts partition the input rows exactly. The order runs from what the row reports, to how ChEMBL curated it, to what the row says about its own independence, to its quality flags. ChEMBL's own schema documentation for the activities table defines STANDARD_FLAG as showing whether the standardised columns have been curated (1) or merely default to the published data (0), and POTENTIAL_DUPLICATE as marking a value that is likely to be a repeat citation of a value reported in a previous ChEMBL paper rather than a new, independent measurement."
+  },
+  "split_and_grouping": {
+    "split": "None. This protocol draws no train/test split and holds nothing out, because it fits no model and makes no prediction. The cohort is read end to end and every count is published.",
+    "grouping_unit": ["assay_chembl_id", "document_chembl_id", "standard_type"],
+    "experiment_unit": ["assay_chembl_id", "document_chembl_id"],
+    "grouping_note": "Two admitted point measurements are the same measurement when they share the assay, the document and the endpoint type: one experiment, one endpoint, one number. Rows that repeat a measurement inside one assay are replicates of that measurement, not additional evidence for it.",
+    "preprocessing_fit_scope": "Nothing is fitted, tuned, scaled or selected anywhere in this protocol. The only transformations are the declared exclusion order, the declared point/bound classification and the declared grouping key. No parameter of this lab was chosen by looking at an outcome, and there is no outcome to look at.",
+    "assay_artefact_scope": "The cached assay artefact holds the assay record of every assay that carries an admitted row (point or bound) for this cohort. That is what makes the assay organism and the confidence score of a measurement readable without a second download. The set is a consequence of the admission rule, so changing the rule changes the artefact and the frozen byte length check fails."
+  },
+  "selection_and_stop_policy": {
+    "calibration_rule": "Not applicable, and deliberately so: no score is calibrated here because no model is fitted. The only rule that decides anything is the declared admission order, which was fixed before any activity row was fetched and is not tuned against any outcome.",
+    "selection_budget": "Not applicable: there is no candidate selection, no hyperparameter search and no model to select. The cohort was declared once, before any activity row was fetched, and the download fetches a fixed list of thirteen artefacts.",
+    "stop_rule": "The run stops when the thirteen declared artefacts have been fetched and re-validated against their frozen byte lengths. There is no early stopping, no interim peeking and no decision to continue, because no number produced here is used to decide anything."
+  },
+  "baselines": [
+    "Baseline 1, the reported row count: the number of activity rows ChEMBL files under a parent molecule. This is the count a plain lookup returns, and it is the number this lab argues against.",
+    "Baseline 2, the assay count: the number of distinct assays a parent was measured in. It drops the document, so two entries of the same publication in different assays count separately while one assay entered twice from the same paper counts once.",
+    "The quantity under study, the independent measurement count: the number of distinct (assay, document, endpoint type) keys among the admitted point measurements."
+  ],
+  "metrics": [
+    "reported_row_count",
+    "admitted_point_count",
+    "admitted_bound_count",
+    "independent_measurement_count",
+    "independent_experiment_count",
+    "distinct_assay_count",
+    "distinct_document_count",
+    "distinct_target_count",
+    "parent_form_point_count",
+    "salt_form_point_count",
+    "exclusion_counts",
+    "admission_funnel",
+    "endpoint_type_counts",
+    "assay_type_counts",
+    "confidence_score_counts",
+    "assay_organism_counts",
+    "target_organism_counts",
+    "bound_relation_counts",
+    "toid_point_row_count"
+  ],
+  "artifacts": [
+    {
+      "path": "status.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/status.json",
+      "byte_length": 231
+    },
+    {
+      "path": "molecules.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/molecule/{molecule_chembl_id}.json",
+      "byte_length": 4003
+    },
+    {
+      "path": "activities-CHEMBL109.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL109",
+      "byte_length": 5440753
+    },
+    {
+      "path": "activities-CHEMBL1144.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL1144",
+      "byte_length": 1491763
+    },
+    {
+      "path": "activities-CHEMBL13829.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL13829",
+      "byte_length": 2030
+    },
+    {
+      "path": "activities-CHEMBL23393.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL23393",
+      "byte_length": 116508
+    },
+    {
+      "path": "activities-CHEMBL25.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL25",
+      "byte_length": 3504249
+    },
+    {
+      "path": "activities-CHEMBL275835.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL275835",
+      "byte_length": 23503
+    },
+    {
+      "path": "activities-CHEMBL441.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL441",
+      "byte_length": 97917
+    },
+    {
+      "path": "activities-CHEMBL588.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL588",
+      "byte_length": 218661
+    },
+    {
+      "path": "activities-CHEMBL593.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL593",
+      "byte_length": 730939
+    },
+    {
+      "path": "activities-CHEMBL906.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL906",
+      "byte_length": 3616
+    },
+    {
+      "path": "assays.json",
+      "source_url": "https://www.ebi.ac.uk/chembl/api/data/assay.json",
+      "byte_length": 248931
+    }
+  ],
+  "artifact_note": "byte_length is the length in bytes of the cached artefact file as written by this lab's deterministic serialisation (JSON, sorted keys, two-space indent, trailing newline). It is a content-identity check on the ChEMBL 37 release, not a claim about the length of any HTTP response. The activity artefacts are the merged, activity-id-sorted result of every page the parent-molecule query returned. A cold fetch on 2026-10-21 made 41 HTTP requests and moved 9,794,036 bytes over the wire, and reproduced all thirteen frozen byte lengths exactly.",
+  "excluded_by_design": [
+    "any model, any fitted parameter, any train/test split and any held-out evaluation: this protocol counts published measurements and predicts nothing",
+    "any claim about potency, efficacy, safety or clinical behaviour: the endpoint scope is a declared nanomolar potency family, and a count of measurements says nothing about how potent a compound is",
+    "any pooling of censored bounds with point values: a bound is counted as a bound and never averaged with a point measurement",
+    "any correction of ChEMBL's entity curation: where ChEMBL keeps a salt as its own parent, or stores a sulfate without the sulfate, this protocol reports what is stored and says so",
+    "any statement about how common salt reporting is in ChEMBL, or about any other cohort: the fifteen declared seeds were chosen to exercise the counting rules, and no rate over them estimates a population quantity",
+    "the ChEMBL bulk artefacts (the SQLite, MySQL and PostgreSQL dumps and the SDF): the REST API carries the measurement, the entity, the assay, the document, the target and the relation in one row, and the dumps are between 1.9 GiB and 5.4 GiB"
+  ]
+}

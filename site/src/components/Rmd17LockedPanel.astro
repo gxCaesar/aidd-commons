@@ -1,0 +1,52 @@
+---
+import summary from "../../../labs/rmd17_system_state/locked-summary.json";
+
+const models = [{ key: "train_mean", label: "Train mean" }, { key: "ridge", label: "Ridge" }] as const;
+const format = (value: number) => value.toFixed(6);
+const download = `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(summary, null, 2))}`;
+---
+
+<section class="locked-panel" aria-labelledby="rmd17-locked-title">
+  <h2 id="rmd17-locked-title">Completed rMD17 evaluations</h2>
+  <p>Benzene and uracil completed together; reviewed {summary.reviewed_on}.
+    Shared alpha={summary.selected_alpha} was fixed by development validation.
+    Each system has its own {summary.partitions_per_system.train} training,
+    {summary.partitions_per_system.validation} validation and
+    {summary.partitions_per_system.evaluation} evaluation frames.</p>
+  <p><strong>Ridge has lower MAE and RMSE than the training-mean control in both systems.</strong>
+    These are within-system evaluations with separately fitted models, not
+    transfer of one learned molecular model to a new system.</p>
+  <div class="table-scroll" role="region" aria-label="Completed rMD17 system scores" tabindex="0">
+    <table>
+      <caption>All {summary.partitions_per_system.evaluation} evaluation frames per system; errors and target ranges in kcal/mol</caption>
+      <thead><tr>
+        <th scope="col">System / model</th><th scope="col">MAE</th>
+        <th scope="col">RMSE</th><th scope="col">Target range</th>
+      </tr></thead>
+      <tbody>{Object.entries(summary.results).flatMap(([system, scores]) => models.map(({ key, label }) => (
+        <tr>
+          <th scope="row">{system} / {label}</th>
+          <td title={String(scores[key].mae)}>{format(scores[key].mae)}</td>
+          <td title={String(scores[key].rmse)}>{format(scores[key].rmse)}</td>
+          <td title={String(scores[key].target_range)}>{format(scores[key].target_range)}</td>
+        </tr>
+      )))}</tbody>
+    </table>
+  </div>
+  <p>The descriptive median of the {summary.system_count} system MAEs is
+    {" "}{format(summary.aggregates.ridge.median_mae)} for Ridge and
+    {" "}{format(summary.aggregates.train_mean.median_mae)} for train mean.
+    No evaluation frames were excluded. These summaries do not pool frames across systems.</p>
+  <ul>{summary.interpretation.map(note => <li>{note}</li>)}</ul>
+  <p>Tables are rounded to six decimal places.
+    <a href={download} download="rmd17-locked-summary.json">Download all rMD17 aggregate scores (JSON)</a>
+    {" "}for full precision. Coordinates, frame identities and individual energies are not distributed here.</p>
+</section>
+
+<style>
+  .locked-panel { min-width: 0; margin-block: 2rem; padding: 1rem; border: 1px solid var(--sl-color-gray-4); border-radius: .6rem; }
+  .table-scroll { max-width: 100%; overflow-x: auto; }
+  table { display: table; overflow: visible; width: 100%; font-variant-numeric: tabular-nums; }
+  th, td { padding: .5rem; white-space: nowrap; }
+  caption { text-align: left; white-space: normal; }
+</style>

@@ -1,0 +1,49 @@
+id: dataset-rmd17
+name: Revised MD17 dataset (rMD17), Figshare version 4
+kind: dataset
+summary: Versioned molecular-dynamics trajectories with energies, forces, coordinates, nuclear charges, and original indices for molecular energy-and-force learning.
+canonical_url: https://doi.org/10.6084/m9.figshare.12672038.v4
+identifiers:
+  - scheme: figshare-article
+    value: "12672038"
+    url: https://figshare.com/articles/dataset/Revised_MD17_dataset_rMD17_/12672038
+  - scheme: figshare-doi
+    value: 10.6084/m9.figshare.12672038.v4
+    url: https://doi.org/10.6084/m9.figshare.12672038.v4
+  - scheme: primary-paper-doi
+    value: 10.1088/2632-2153/abba6f
+    url: https://doi.org/10.1088/2632-2153/abba6f
+stages: [physics-based-modelling, evaluation]
+modalities: [molecular-trajectory, molecular-geometry]
+tasks: [molecular-energy-regression, force-learning]
+relations: []
+status: { value: unverified }
+access_level: { value: unverified }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC0
+    scope: rMD17 Figshare version-4 dataset files and record metadata only; not lesson prose, software, models, or other assets.
+    evidence: [figshare-v4-record]
+evidence:
+  - id: figshare-v4-record
+    url: https://doi.org/10.6084/m9.figshare.12672038.v4
+    label: rMD17 Figshare version-4 record
+    supports:
+      [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: rmd17-primary-paper
+    url: https://doi.org/10.1088/2632-2153/abba6f
+    label: Christensen and von Lilienfeld rMD17 primary paper
+    supports: [identifiers, summary]
+caveats:
+  - The official version-4 record supports the dataset and metadata licence only; it does not establish openness claims for code, weights, architectures, training recipes, or evaluation implementations.
+  - "The deposit could not be opened by an automated fetch on 2026-10-24: the Figshare article page and its API returned HTTP 403 to both a browser client and a plain HTTP client, and the DOI resolver reached the same refusal. The licence this record carries was read from the deposit on an earlier date, and the access level stays unverified rather than being inferred from the licence."
+  - Molecular-dynamics frames are time-correlated. The versioned files do not turn frames within one molecular system into independent generalisation units.
+acknowledgements: []
+last_verified: "2026-09-05"

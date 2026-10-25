@@ -1,0 +1,87 @@
+---
+title: 核查主张、证据与未知字段
+description: 用离线命令分类 13 个比较对象的基础主题单元，并检查已记录的主张条件。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[Audit claims against evidence and unknowns](/labs/claims-evidence-audit/)。
+
+## 准备与学习目标
+
+本实验对应 `t01-evidence-claim-unknown`。请先阅读[证据、主张与未解决字段](/learn/foundations/evidence-claims-and-unknowns/)和[来源与实体识读](/learn/foundations/source-and-entity-literacy/)。你将区分有证据支持的深度、区间、缺乏支持的深度，以及明确声明的未知字段。你还将比较项目自评与独立阅读，并检查两个最高级主张所附的条件。了解 YAML 会有所帮助，但不需要建模经验。
+
+## 模式与命令
+
+模式是依据冻结协议和已提交的比较记录进行全新独立计算。使用项目的 Python 3.11.15 环境、PyYAML 6.0.3 和 CPU。命令不需要网络、下载或加速器。请在仓库根目录运行。`check` 和 `show` 不写入文件。导出程序只在检查通过后覆盖精简汇总。
+
+```bash
+.venv/bin/python labs/claims_evidence_audit/run_lab.py check
+.venv/bin/python labs/claims_evidence_audit/inspect_claims_evidence_audit.py show
+.venv/bin/python labs/claims_evidence_audit/inspect_claims_evidence_audit.py check
+.venv/bin/python labs/claims_evidence_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/claims_evidence_audit -q
+```
+
+## 记录与状态规则
+
+协议选取 13 个比较对象在基础路径上的 4 个主题。加载器原位读取 YAML 条目、主题分类、独立阅读和比较导出文件。它核对整个目录在导出文件中声明的 1209 个单元，其中 591 个是显式观察，618 个来自声明的默认值。所选路径有 52 个单元。检查器逐项打印记录的深度、证据标识和注释，然后输出计数。
+
+| 状态 | 规则 | 读者可以怎样使用 |
+| --- | --- | --- |
+| `direct-observation` | 显式深度在相应记录中有可解析的证据。 | 报告已记录的深度及其审阅范围。 |
+| `bounded-inference` | 显式 `unverified` 深度保留证据，但存在下界与上界区间。 | 保留区间，不给出单点排名。 |
+| `unsupported-claim` | 显式深度没有证据、引用了未声明的条目，或指向不存在的本地文件。 | 修复引用后才能使用该深度。 |
+| `unresolved-field` | 单元来自该对象无证据的 `unverified` 默认值。 | 记录尚未解决的审阅，不把它当作缺失该主题的证据。 |
+
+有证据支持的 `absent` 深度是关于已审阅材料的直接观察，不能证明审阅范围之外也不存在。冻结规则允许区间状态，但所选单元中没有这种状态。
+
+## 各比较对象的状态计数
+
+下表复现保存于 2026-10-24 的计算快照。每行都统计相同的 4 个主题。`D`、`B`、`U` 和 `R` 对应上表中的四种状态，其中 `R` 专用于未解决字段。
+
+| 比较对象 | D | B | U | R |
+| --- | ---: | ---: | ---: | ---: |
+| `agil` | 0 | 0 | 0 | 4 |
+| `aidd-commons` | 4 | 0 | 0 | 0 |
+| `build-ai-drug-discovery-pipelines` | 4 | 0 | 0 | 0 |
+| `chembl-training` | 0 | 0 | 0 | 4 |
+| `deepchem-tutorials` | 0 | 0 | 0 | 4 |
+| `european-aidd-network` | 1 | 0 | 0 | 3 |
+| `ml4drug-book` | 0 | 0 | 0 | 4 |
+| `o3dc` | 1 | 0 | 0 | 3 |
+| `openmm-cookbook` | 0 | 0 | 0 | 4 |
+| `practical-cheminformatics` | 0 | 0 | 0 | 4 |
+| `rdkit-cookbook` | 0 | 0 | 0 | 4 |
+| `teachopencadd` | 4 | 0 | 0 | 0 |
+| `therapeutics-data-commons` | 0 | 0 | 0 | 4 |
+| 合计 | 14 | 0 | 0 | 38 |
+
+## 缺乏支持的深度与独立阅读差异
+
+所选记录中有 0 项缺乏支持的主张。这表示声明的引用在本地检查下可解析，并不表示外部来源的内容已得到独立核实。项目自评与独立阅读现在在每个被检主题上一致。在实验还不存在时它们并不一致：记录把来源审阅那个主题标为 `worked`，阅读把它标为 `assessed`；第二十七批盲评在这个实验让差异变得可核对之后把记录抬了上去。
+
+| 主题 | 项目记录的深度 | 独立阅读深度 | 方向 |
+| --- | --- | --- | --- |
+| `t01-source-review-scope` | `assessed` | `assessed` | 一致 |
+
+比较审计的序数规则把没有可运行材料的独立 `assessed` 阅读视作 `worked`。上表在比较深度前应用了这项规则。
+
+## 已记录的主张条件
+
+保存于 2026-10-24 的计算把两个状态都记录为 `not_established`。本实验重新计算数字边界条件，并报告本地比较导出文件中的更正窗口字段。这些字段描述有日期的快照。命令读取当前已提交的导出文件，不会实时查询公开网站；摘要的 `computed_on` 日期标识这次本地计算。后续导出文件可能记录不同的窗口状态，但这不会使任何主张自动成立。
+
+| 主张 | 测得的边界条件 | 记录状态 | 更正窗口条件 |
+| --- | --- | --- | --- |
+| 覆盖最全面 | 项目的 explained 下界 93 高于外部最高上界 92。边界条件已计算且满足。 | `not_established` | 需要公开 30 天更正窗口；这份发布前快照记录的状态为 `not_recorded`。 |
+| 内容最详细 | 18 条可运行或已评估路径超过所需的 12 条，其中 17 条基于真实数据。项目的 worked 下界 93 高于外部最高上界 91。边界条件已计算且满足。 | `not_established` | 需要公开 30 天更正窗口；这份发布前快照记录的状态为 `not_recorded`。 |
+
+## 材料局限
+
+`unresolved-field` 不表示该对象没有覆盖这个主题。项目自己的深度是其选择陈述的下限，不是教学效果的测量。这些记录是在特定日期对指定来源范围的审阅。本实验不重新打开外部网页，也不测量读者的学习结果。本地证据检查通过，不会使已记录的最高级主张自动成立。
+
+## 来源与条款
+
+本示例使用日期为 2026-10-24 的计算所读取的对象记录、主题分类、独立阅读和比较导出文件。证据标识与审阅注释保留在原记录中，也会由检查器打印。比较导出文件变化后，应重新生成实验摘要。原创指南文字采用 CC BY 4.0，实验代码采用 Apache-2.0。链接材料保留各自条款。

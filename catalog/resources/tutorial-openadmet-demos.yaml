@@ -1,0 +1,36 @@
+id: tutorial-openadmet-demos
+name: OpenADMET Demos
+kind: tutorial
+summary: Notebook walkthroughs for curating, training, comparing, and applying ADMET models in the OpenADMET ecosystem.
+canonical_url: https://github.com/OpenADMET/openadmet-demos
+identifiers: []
+stages: [dmpk-toxicology, evaluation]
+modalities: [small-molecule]
+tasks: [admet-prediction, model-training, model-evaluation]
+relations:
+  - type: demonstrates
+    target: tool-openadmet-models
+status: { value: unverified }
+access_level: { value: open_source, evidence: [repository] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: Apache-2.0
+    scope: source-code
+    evidence: [repository]
+evidence:
+  - id: repository
+    url: https://github.com/OpenADMET/openadmet-demos
+    label: OpenADMET Demos repository
+    supports:
+      [name, kind, summary, stages, modalities, tasks, relations, caveats]
+caveats:
+  - The showcased CYP3A4 workflow is a tutorial case and does not define a universal ADMET endpoint, split, or decision threshold.
+acknowledgements: []
+last_verified: "2026-09-09"

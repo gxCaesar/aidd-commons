@@ -1,0 +1,145 @@
+---
+title: 自由能循环、终点与收敛
+description: 在解释热力学循环、lambda 调度或收敛诊断前，先定义相对或绝对结合自由能问题。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Free-energy cycles, endpoints, and convergence](/learn/physics-based-modeling/free-energy-cycles-and-convergence/)。
+
+<LessonProgress lessonId="physics-based-modeling/free-energy-cycles-and-convergence" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将区分相对与绝对结合自由能终点，构造炼金循环的符号约定，并说明为何一个看似稳定的估计并不
+自动收敛或得到实验验证。请先读[力场、溶剂与采样](/zh-cn/learn/physics-based-modeling/force-fields-and-sampling/)。
+本课为手算概念教学，不运行炼金计算、不排序配体系列，也不主张实验亲和力。
+
+## 画循环前先命名终点
+
+在已声明的标准状态和模型下，两个状态之间的自由能差可写为
+`Delta G = -k_B T ln(Z_B/Z_A)`。符号隐藏了大量具体规定：分子体系、质子化和互变异构状态、
+约束、溶剂和离子、温度、标准状态约定，以及 `A` 与 `B` 的定义。热力学计算只有在这些定义与
+预期决策匹配时才有意义。
+
+**绝对结合自由能（absolute binding free energy）**询问模型化的结合终点，常可示意为
+`Delta G_bind = G_complex - G_protein - G_ligand`，同时明确标准状态和约束校正。**相对结合
+自由能（relative binding free energy）**则在匹配约定下比较两个配体：
+`DeltaDeltaG_bind = DeltaG_bind(L_B) - DeltaG_bind(L_A)`。相对终点可用于类似物决策，
+但它既不提供绝对实验效力，也不消除两个配体共有的误差。
+
+| 问题     | 必需定义                                         | 一项结果本身不能确立的内容   |
+| -------- | ------------------------------------------------ | ---------------------------- |
+| RBFE     | 有序配体转化、靶标状态、复合物与溶剂腿、符号约定 | 绝对亲和力或新的化学系列主张 |
+| ABFE     | 受约束/无约束状态、脱耦路径、标准状态与校正      | 已考虑所有构象或质子化状态   |
+| 实验比较 | 匹配的测定终点、单位、构建体与条件               | 模拟误差等于测定误差         |
+| 网络结果 | 图、边标识、循环策略与聚合规则                   | 每一条边都已混合或平衡       |
+
+## 循环是已声明路径的记账
+
+对配体转化 `L_A -> L_B`，一种常见约定是：
+
+`DeltaDeltaG_bind = DeltaG_complex(A -> B) - DeltaG_solvent(A -> B)`。
+
+复合物腿在已声明的蛋白质—配体环境中改变配体。溶剂腿在已声明的溶剂环境中改变它。它们的差值
+不是结合测量；它是该循环的力场、体系构建和采样下的相对自由能估计。反转配体顺序会反转预期
+符号。将一个靶标状态的复合物腿与另一分子表示的溶剂腿混合，是数据契约失败，不是巧妙近似。
+
+炼金实现常定义端点之间的混合 Hamiltonian `H_lambda`，其中 `lambda` 从 `0` 移到 `1`。热力学
+积分恒等式为 `Delta G = integral_0^1 <partial H_lambda/partial lambda>_lambda d lambda`。其他估计量
+使用跨窗口样本，但都需要连接状态之间有充分重叠。OpenFE 的 relative-hybrid-topology 文档描述了
+成对端点体系、混合拓扑、lambda 窗口，以及包括 MBAR 和收敛信息在内的分析选择
+[OpenFE relative hybrid topology](https://docs.openfree.energy/en/v1.0.0/guide/protocols/relativehybridtopology.html)。
+
+## 已发布的 OpenFE 网络：估计值而非测量值
+
+[OpenFE RBFE 基准结果](/atlas/dataset-openfe-rbfe-benchmark/)在
+[Zenodo](https://zenodo.org/records/21797903) 上以 CC BY 4.0 发布了 8 个蛋白质—配体体系的文件。
+每个网络文件都包含化学体系、标识网络边的配体原子映射、转化，以及逐次重复和逐代的估计值及其
+不确定性。这些数值是针对已声明路径计算的估计值，不是结合测量值。存档未在每个估计值旁附上
+实验数值，因此仅凭这份记录无法计算单条边的误差。沿这些边闭合循环，检查的是已声明网络的
+记账关系，不是实验准确性。
+
+[OpenFE 合作评估](/atlas/paper-openfe-collaborative-assessment/)记录描述了一篇涉及 15 家制药公司的
+文章。该记录将 58 个公开体系上 1.73 kcal/mol、37 个非公开体系上 2.44 kcal/mol 的加权 RMSE
+归于文章自身。这些是文章报告的数值，不是本项目所做的测量；该记录并未对照文章正文核实它们。
+已发布的网络文件支持重现公开部分，非公开部分未发布，无法从该存档重现。聚合误差数值不能补上
+某一条已存档边所缺少的实验值。
+
+## 收敛有多种失败形式
+
+一个估计可能看上去在数值上平坦，因为模拟停留在一个亚稳态。它可能在第一次访问缓慢的溶剂、
+蛋白质、配体或质子构型时漂移。它可能窗口内噪声低，却使邻近 lambda 状态缺少重叠。小的闭环
+误差可暴露不一致，但小值不能证明正确，因为相关误差可相互抵消。
+
+至少应检查时间分辨的估计、若有则重复或独立起点的一致性、重叠或状态空间混合诊断，以及固定
+协议下的正向/反向或循环差异。每一幅图都应采用精确的转化与腿标签。OpenFE 教程将 RBFE 表示为
+`ChemicalSystem` 对象之间的转化，并使分开的复合物与溶剂语境可见
+[OpenFE RBFE tutorial](https://docs.openfree.energy/en/stable/tutorials/rbfe_python_tutorial.html)。
+该明确图有助于解释，而不是某一具体转化已收敛的证书。
+
+[rMD17 观测量与收敛实验](/zh-cn/labs/rmd17-dynamics-observable/)在一整条真实的从头算轨迹上，
+恰好运行了上面四项最低要求中的第一项：时间分辨的估计，在若干帧数下对比朴素与分块平均标准误。
+其中一个分子在整条轨迹跑完之前就已经收敛；另一个则没有，在仅用十分之一帧数时，估计值仍与
+最终值相差若干个分块标准误。它没有独立起点的重复，也没有第二种力场可比较，因此跑不了另外
+三项最低要求；说清这条边界本身就是它想教的一部分。
+
+## 已解案例：带有已声明不确定性的估计
+
+本案例的全部数值均为**构造的教学数值**。本课的每个 `+/-` 数值均为构造的 standard error；复合物与
+溶剂估计仅为这些算术练习而假定独立。在一项冻结约定下，转化 `L_A -> L_B` 给出
+`DeltaG_complex = -3.4 +/- 0.6 kcal/mol` 和 `DeltaG_solvent = -1.1 +/- 0.5 kcal/mol`。以上循环约定给出
+`DeltaDeltaG_bind = -3.4 - (-1.1) = -2.3 kcal/mol`。传播 standard error 为
+`sqrt(0.6^2 + 0.5^2) = 0.78 kcal/mol`。
+
+在已声明的配体顺序下，负的构造数值在此模型化结合终点中有利于 `L_B` 相对于 `L_A`。它不意味着
+`L_B` 有实测效力，也不意味着符号会在另一质子化状态下成立，更不意味着 `0.78 kcal/mol` 包括
+全部模型误差。最诚实的标签是带有方法特异不确定性计算的条件估计。
+
+假定在同一已声明网络中另一条路径求和为 `-2.2 kcal/mol`。构造的闭环差异是
+`-2.3 - (-2.2) = -0.1 kcal/mol`。它值得记录，因为大的闭环差异会标记协议或采样担忧。但这不足以
+宣布直接边已收敛：两条路径可能共有不充分的水模型、状态定义或缓慢自由度。
+
+## 局限与独立练习
+
+绝对与相对路径会因不同原因失效。一个 RBFE 边可能匹配不良，ABFE 计算则可能受约束、构象或状态
+枚举支配。循环只在实际运行的图中诊断内部一致性。选择下一项计算前，应陈述哪种不确定性是统计性、
+哪种依赖模型，以及哪些状态变量尚未测试。
+
+**手算练习（不可运行、非实证）：** 在相同的构造独立 standard error 约定下，一条边有
+`DeltaG_complex = +1.2 +/- 0.4 kcal/mol` 和 `DeltaG_solvent = +0.5 +/- 0.3 kcal/mol`。计算
+`DeltaDeltaG_bind` 和传播 standard error。说出符号所暗示的方向，以及答案不是实验亲和力主张的一个理由。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+`DeltaDeltaG_bind = +1.2 - (+0.5) = +0.7 kcal/mol`。在构造 standard errors 的已声明独立假设下，
+传播 standard error 为 `sqrt(0.4^2 + 0.3^2) = 0.5 kcal/mol`。在 `L_A -> L_B` 和已声明约定下，正值预测 `L_B` 相对于
+`L_A` 在此模型中结合较不利。它不是实验亲和力，因为其解释仍取决于体系、力场、分子状态、采样、
+标准状态选择和未测量模型偏差的缺失。
+
+</details>
+
+## 来源与下一课
+
+下列 OpenFE 文档页面于 2026-09-09 打开。它们支持已命名协议对象和分析词汇，不支持构造数值或
+准确性主张。两条 Atlas 记录于 2026-10-23 审阅；论文记录将数值归于文章，但未对照文章正文核实。
+
+<div data-case-sources>
+
+- [OpenFE Relative Hybrid Topology Protocol](https://docs.openfree.energy/en/v1.0.0/guide/protocols/relativehybridtopology.html)
+- [OpenFE tutorial: setting up an RBFE network](https://docs.openfree.energy/en/stable/tutorials/rbfe_python_tutorial.html)
+- [OpenFE RBFE benchmark results](/atlas/dataset-openfe-rbfe-benchmark/)
+- [OpenFE collaborative binding free energy assessment](/atlas/paper-openfe-collaborative-assessment/)
+
+</div>
+
+当已声明问题包括固定拓扑力场无法表示的电子重组时，[相对自由能网络审计](/zh-cn/labs/free-energy-network-audit/)把八个已发布网络里的溶剂边与复合物边配对，
+报告哪些循环闭合、哪些不闭合、以及失败的循环差多少。
+
+继续阅读[QM/MM 边界与反应事件](/zh-cn/learn/physics-based-modeling/qm-mm-and-reactive-events/)。
+原创课程文字采用 CC BY 4.0；链接来源保留各自条款。
+
+最后审阅：2026-10-23。

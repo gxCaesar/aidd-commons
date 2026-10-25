@@ -1,0 +1,229 @@
+---
+title: Define the disease state before the target
+description: Record indication, phenotype, tissue, cell state, population and temporal context for a target hypothesis, and see one randomised trial give opposite answers once the cell state is defined.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="mechanism-targets/disease-state-definition" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After this lesson you should be able to write a six-field disease-state record for
+a target hypothesis, recompute what share of a reported population a subgroup
+result describes, and name the field whose absence lets one hypothesis be both
+supported and reversed. Read [From disease mechanism to
+target](/learn/mechanism-targets/disease-to-target/) first. [Target product
+profiles and chemical-series feedback](/learn/drug-discovery-foundations/product-profile-and-series/)
+and [Data contracts and licences](/learn/data-governance/data-contracts/) supply
+the decision context and the record discipline this lesson assumes.
+
+This is a reading-and-reasoning lesson. It uses published trial and case results
+as evidence about how a disease state is defined. It is not treatment guidance,
+adds no patient data, and claims nothing about any therapy beyond what the cited
+abstracts report.
+
+## Six fields of a disease state
+
+A target hypothesis has the form "changing target T in disease state D moves
+outcome Y in the intended direction". D is usually written as a disease name, and a
+disease name is not enough.
+
+| Field            | The question it answers                                                                | A record for the worked case                                                              |
+| ---------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Indication       | Which clinical condition, at what stage or line of treatment?                          | Advanced pulmonary adenocarcinoma with no prior treatment                                 |
+| Phenotype        | Which measurable disease outcome is the hypothesis about?                              | Tumour progression or death, read as progression-free survival                            |
+| Tissue           | Where must the target act for that outcome to change?                                  | The tumour                                                                                |
+| Cell state       | Which molecular state of the relevant cells does the hypothesis require?               | Tumour cells carrying a somatic EGFR kinase-domain mutation                               |
+| Population       | Who is the evidence about, as selected, and who will the decision be about?            | The trial's eligibility criteria, and the share of patients whose cell state was measured |
+| Temporal context | At what point in the disease course, and does the state change with time or treatment? | Before any treatment, as opposed to after relapse on a first inhibitor                    |
+
+The fields interact. The cell state is often what makes a hypothesis about a
+tissue true, and the temporal context is often what changes the cell state.
+
+Reference resources can fill some of these fields for their own samples, never for
+your intended patients directly. The GTEx Portal records tissue-specific expression
+in tissue from human donors, and DepMap records dependencies in cancer models. Each
+describes the tissue or cell state of its own samples. It becomes evidence for a
+field of your disease state only after those samples are shown to match it.
+
+## Worked case, step 1: a cell state is found
+
+Lynch and colleagues (2004) sequenced the EGFR gene in tumours from patients with
+non-small-cell lung cancer who had been treated with the EGFR inhibitor gefitinib.
+Somatic mutations in the tyrosine kinase domain were found in 8 of 9 patients whose
+cancer responded, and in none of the 7 patients with no response (P < 0.001).
+Before this, "gefitinib-responsive lung cancer" was an outcome with no cell state
+attached. Afterwards the cell state could be named and measured before treatment.
+
+## Worked case, step 2: one trial, two answers
+
+Mok and colleagues (2009) reported a phase 3, open-label trial in East Asia. It
+randomised previously untreated patients with advanced pulmonary adenocarcinoma
+who were non-smokers or former light smokers to gefitinib (609 patients) or to
+carboplatin plus paclitaxel (608 patients). The primary endpoint was
+progression-free survival, in which either disease progression or death counts as
+the event. A hazard ratio compares the instantaneous rate of such events in one arm
+with the rate in the other. It has no units, and it is neither a probability nor a
+ratio of proportions. A value below 1 means events occurred at a lower rate with
+gefitinib than with carboplatin plus paclitaxel.
+
+| Population as defined  | Patients | Hazard ratio for progression or death with gefitinib (95% CI) |
+| ---------------------- | -------: | ------------------------------------------------------------- |
+| Intention to treat     |    1,217 | 0.74 (0.65 to 0.85)                                           |
+| EGFR mutation positive |      261 | 0.48 (0.36 to 0.64)                                           |
+| EGFR mutation negative |      176 | 2.85 (2.05 to 3.98)                                           |
+
+Work the population field through before reading any effect.
+
+1. Randomised: `609 + 608 = 1,217`.
+2. Mutation status known: `261 + 176 = 437`, which is `437 / 1,217 = 35.9%` of the
+   trial. The other `1,217 − 437 = 780` patients, 64.1%, have no evaluable mutation
+   status reported in these subgroups.
+3. Among patients with a known status, `261 / 437 = 59.7%` were mutation positive.
+
+Now the effect. The two cell-state subgroups point in opposite directions, and
+their confidence intervals do not overlap: 0.36 to 0.64 against 2.05 to 3.98. The
+intention-to-treat estimate of 0.74 is not a property of "lung cancer" or of
+"EGFR". It describes a mixture fixed by the eligibility criteria, in which most
+patients had no evaluable mutation status reported. A hypothesis written without a
+cell-state field, such as "gefitinib delays progression or death compared with
+carboplatin plus paclitaxel in untreated advanced adenocarcinoma", is supported in
+one subgroup and reversed in the other within the same randomised trial.
+
+Note what the trial compares. Both arms are active treatments, so the negative
+subgroup shows that chemotherapy did better there. It does not show that gefitinib
+had no effect, or did harm, relative to no treatment, and nothing in this trial is a
+statement about EGFR inhibition in general.
+
+Two cautions keep this reading honest. These are subgroup estimates, and the lesson
+uses them to show a disease-state field, not to teach how subgroup analyses should
+be designed. The population field also still binds. The estimates describe
+patients chosen by these criteria in East Asia, which is not automatically every
+population with the same cell state.
+
+## Worked case, step 3: the disease state moves
+
+Temporal context is not a date stamped on the record. It can change the cell
+state, and with it the target state that a new molecule has to act on.
+
+Pao and colleagues (2005) found that in two of five patients with acquired
+resistance to gefitinib or erlotinib, the progressing tumours carried, in addition
+to the original drug-sensitive EGFR mutation, a second mutation that substitutes
+methionine for threonine at position 790 (T790M) in the kinase domain. Tumour
+cells from a sixth patient, whose tumour progressed on adjuvant gefitinib after
+complete resection, also carried T790M. Kobayashi and colleagues (2005) reported
+the same substitution in one patient whose EGFR-mutant, gefitinib-responsive cancer
+relapsed after two years of complete remission.
+
+Before treatment and after relapse, the gene, the tissue and the diagnosis are the
+same. The line of treatment and the cell state are not. A target hypothesis for the second setting has to name
+the resistant state, and evidence gathered in the first does not carry over to it
+by default.
+
+| Field            | Before treatment                                        | After acquired resistance                                                      |
+| ---------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Indication       | Advanced pulmonary adenocarcinoma, untreated            | The same diagnosis, relapsed on a first inhibitor                              |
+| Phenotype        | Progression or death, read as progression-free survival | Further progression or death, the outcome a next treatment would aim to change |
+| Tissue           | The tumour                                              | The progressing tumour                                                         |
+| Cell state       | A somatic EGFR kinase-domain mutation                   | The original mutation plus T790M, in the tumours where it was found            |
+| Population       | Trial eligibility, with status measured in 437 of 1,217 | One small case series and one case report                                      |
+| Temporal context | First treatment                                         | After an initial response, in one report after two years of remission          |
+
+The population cell on the right is deliberately thin. One small case series and
+one case report are enough to define a new cell state. They are far too little to
+estimate how often that state occurs.
+
+## What the deposited structures are evidence of
+
+The [EGFR structure evidence lab](/labs/egfr-structure-evidence/) reads three
+deposited crystal structures of the EGFR kinase domain. Its first command maps
+each file onto UniProt P00533 reference numbering and reports, for each
+crystallised construct, the residues it adds and any substitution against that
+sequence. It reports no substitution
+in 1M17 or 1XKK and one engineered substitution, V948R, in 4HJO. Position 790 is
+one of the five landmark positions whose residue the lab's check confirms, and it
+holds threonine in all three files, the residue that the T790M name says is
+replaced. Applying the lab's own 4 Å site definition to the committed files
+(computed on 2026-09-11) places position 790 inside all three ligand sites.
+
+So the resistant disease state changes a residue inside the binding site that
+these three structures define. They are evidence about the constructs that were
+crystallised. Using them for the resistant state is a modelling hypothesis, and it
+has to be stated as one. The lab's check says the same of itself: it verifies what
+the files say, not that any structure is the state that matters in a cell.
+
+## Independent exercise
+
+A **constructed** target proposal reads: "Inhibiting kinase K will slow colorectal
+cancer. In a panel of 30 colorectal cancer cell lines, knocking out K reduced
+growth in 12. We propose a trial in patients with metastatic colorectal cancer."
+The proposal also notes that all 12 dependent lines carry marker M and that none
+of the other 18 does. A separate, also constructed, record estimates that marker M
+is present in 10% of patients with metastatic colorectal cancer.
+
+1. Fill in the six fields as the proposal states them. Which are missing?
+2. Which field, once written down, could make the evidence support the hypothesis
+   in one group and not in another?
+3. Roughly what share of the proposed trial population carries the cell state in
+   which the panel showed dependency, and what does that share not tell you?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+**Fields.** The indication is metastatic colorectal cancer for the trial, but no
+line of treatment is given. The phenotype is unspecified in the proposal: "will slow
+colorectal cancer" names no measurable endpoint, while the evidence measures the
+growth of cultured cells. The tissue, colorectal cancer, is stated. The cell state is
+missing from the hypothesis, although the data point straight at it. The population
+is 30 cell lines for the evidence and unselected patients for the decision. The
+temporal context is missing: the cell lines' treatment history is unknown and the
+trial line is unstated.
+
+**The field that splits the answer** is the cell state. Growth dependency on K
+appeared in `12 / 30 = 40%` of lines, every one of them marker M positive, and in
+none of the 18 marker-negative lines. In these cell lines the knockout result
+supports a hypothesis about marker-M-positive disease and argues against dependency
+in marker-negative lines. It says nothing yet about an inhibitor, because a knockout
+is not a drug, or about patients, because cell lines are not patients. Written with
+a cell state, the hypothesis to test becomes "inhibiting K slows marker-M-positive
+colorectal cancer", with its clinical endpoint still to be named.
+
+**Share of the population.** If about 10% of patients carry marker M, the cell state
+in which the panel showed dependency is carried by roughly one patient in ten of an
+unselected trial. The other nine in ten fall outside it. That is a statement about
+who carries the state, not about who would benefit, which the cell lines cannot
+show. As in the worked trial, an estimate over an unselected mixture would average
+over subgroups that the evidence treats differently. The proportions are not the
+same as in that trial: here the marker is constructed to be rare, so an averaged
+result would be dominated by patients outside the only state the evidence concerns.
+
+</details>
+
+## Limits
+
+- The trial and case numbers are taken from the cited abstracts, opened on
+  2026-09-11. Full texts, later analyses and overall survival are not used.
+- Six fields are necessary for a disease-state record, not sufficient for causal
+  target evidence. For that, continue with [genetic
+  evidence](/learn/mechanism-targets/genetics-to-target-evidence/) and
+  [perturbation across contexts](/learn/mechanism-targets/perturbation-context-generalization/).
+- The structural statements are observations about three committed files, not
+  about the protein in any patient's tumour.
+
+<div data-case-sources>
+
+- [Lynch et al. (2004): activating EGFR mutations and response to gefitinib](https://pubmed.ncbi.nlm.nih.gov/15118073/)
+- [Mok et al. (2009): gefitinib or carboplatin–paclitaxel in pulmonary adenocarcinoma](https://pubmed.ncbi.nlm.nih.gov/19692680/)
+- [Pao et al. (2005): acquired resistance and a second mutation in the EGFR kinase domain](https://pubmed.ncbi.nlm.nih.gov/15737014/)
+- [Kobayashi et al. (2005): EGFR mutation and resistance to gefitinib](https://pubmed.ncbi.nlm.nih.gov/15728811/)
+
+</div>
+
+The abstracts were opened through PubMed on 2026-09-11. The kinase K proposal, its
+cell-line counts and the 10% marker estimate are constructed. Original lesson prose
+is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-11.

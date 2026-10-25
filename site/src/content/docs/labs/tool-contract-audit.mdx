@@ -1,0 +1,111 @@
+---
+title: Audit laboratory return contracts
+description: Check the project's committed laboratory returns against a six-part tool contract.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+Read [Retrieval, tools and feedback](/learn/scientific-agents/retrieval-tools-feedback/) first. This laboratory audits the project's own laboratory returns. You will check a return record against 6 declared obligations, identify the field behind each refusal, and distinguish a self-describing artefact from a verified measurement. Familiarity with JSON helps.
+
+The mode is fresh independent computation over a frozen protocol and committed local return records. Use the project Python 3.11 environment and CPU. No network, download or accelerator is needed. The `download` command verifies the local material and writes nothing. The inspection commands write nothing. The exporter overwrites only the compact summary after its checks pass.
+
+```bash
+.venv/bin/python labs/tool_contract_audit/run_lab.py download
+.venv/bin/python labs/tool_contract_audit/inspect_tool_contract_audit.py show
+.venv/bin/python labs/tool_contract_audit/inspect_tool_contract_audit.py check
+.venv/bin/python labs/tool_contract_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/tool_contract_audit -q
+```
+
+## Return-record contract
+
+Each counted unit is one laboratory return record. The audit covers every laboratory with a committed return record except this audit. Its own return record is the file the audit writes, so the frozen protocol excludes it from the input set. The protocol also names the companion files. The checker returns all failed fields for each record. Missing fields and present fields with empty or invalid values receive different reasons. Laboratory-specific result fields are allowed.
+
+| Contract part | Declared rule |
+| --- | --- |
+| Schema | Require `schema_version`, `protocol_id`, `computed_on`, `software`, `environment`, `side_effects`, `outcome_status` and `scientific_meaning` with declared types. The first 4 are shared by every observed return. The remaining fields make the full return contract explicit. |
+| Version | Nonempty `schema_version` and `protocol_id` identify a versioned artefact. Without either, the return cannot be read as one. |
+| Environment | Require `software.python`, nonempty `environment.requires` and `environment.unavailable`, and `environment.can_attest_external_execution` set to false. A return cannot attest where a process actually ran. |
+| Side effects | Require `side_effects.allowed_writes` as a list of repository-relative paths. An empty list declares no allowed writes and makes that claim checkable against a separate trace. |
+| Error states | `outcome_status` is `complete`, `no_result` or `halt`. `no_result` licenses no usable result. `halt` also requires stopping. The source laboratories have no uniform top-level error field, so missing status is not read as success. |
+| Scientific meaning | Require nonempty `scientific_meaning.licenses` and `scientific_meaning.does_not_license`. The audit separately counts existing explicit limit fields without treating them as a complete meaning statement. |
+
+## Field completeness
+
+The committed computation on 2026-10-23 used Python 3.11.15 and aidd-commons-labs 0.2.0rc1. It audited 20 local return records. The table counts fields named by the contract, including nested declarations, not every laboratory-specific result field. A field's presence does not validate its value.
+
+| Contract-named field | Records carrying it |
+| --- | ---: |
+| `schema_version` | 20 |
+| `protocol_id` | 20 |
+| `computed_on` | 20 |
+| `software` | 20 |
+| `environment` | 0 |
+| `side_effects` | 0 |
+| `outcome_status` | 0 |
+| `scientific_meaning` | 0 |
+| `software.python` | 20 |
+| `environment.requires` | 0 |
+| `environment.unavailable` | 0 |
+| `environment.can_attest_external_execution` | 0 |
+| `side_effects.allowed_writes` | 0 |
+| `scientific_meaning.licenses` | 0 |
+| `scientific_meaning.does_not_license` | 0 |
+| `boundary` | 0 |
+| `does_not_do` | 1 |
+| `does_not_show` | 1 |
+| `excluded_by_design` | 2 |
+| `interpretation_limits` | 2 |
+| `limit_statement` | 1 |
+| `limits` | 1 |
+| `run_status` | 0 |
+| `status` | 0 |
+| `error` | 0 |
+| `errors` | 0 |
+
+The limit search checked `boundary`, `does_not_do`, `does_not_show`, `excluded_by_design`, `interpretation_limits`, `limit_statement` and `limits`. It found at least one of them in 6 records and none in 14. These fields use different names and do not establish a common meaning statement. The separate search for existing top-level error fields found none under `run_status`, `status`, `error` or `errors`. A missing field is a metadata gap. It does not establish that the underlying laboratory failed or succeeded.
+
+Every one of the 20 audited laboratories has a protocol file and a README. The number missing a protocol is 0 and the number missing a README is 0. Laboratories without a committed return record are outside the counted unit.
+
+## Per-laboratory verdicts
+
+The full contract passes for 0 returns and rejects 20 as `invalid`. It assigns `no_result` to 0 and `halt` to 0. Every rejected return is missing the same 4 contract fields, shown as `E`, `S`, `R` and `M` below. `E` means `environment`, `S` means `side_effects`, `R` means `outcome_status` and `M` means `scientific_meaning`. Each is reported as `missing_required_field`. All records carry the 4 shared metadata fields. Companion files are present for every listed laboratory.
+
+| Laboratory | Verdict | Failed fields | Declared limit fields | Protocol | README |
+| --- | --- | --- | --- | --- | --- |
+| `applicability_domain_audit` | `invalid` | E, S, R, M | `does_not_do` | yes | yes |
+| `assay_endpoint_controls` | `invalid` | E, S, R, M | none | yes | yes |
+| `asset_openness_audit` | `invalid` | E, S, R, M | none | yes | yes |
+| `az_clearance_system` | `invalid` | E, S, R, M | none | yes | yes |
+| `claims_evidence_audit` | `invalid` | E, S, R, M | `interpretation_limits` | yes | yes |
+| `cyp_assay_system` | `invalid` | E, S, R, M | none | yes | yes |
+| `decision_unit_scope` | `invalid` | E, S, R, M | none | yes | yes |
+| `entity_glossary_audit` | `invalid` | E, S, R, M | `limits` | yes | yes |
+| `functional_validation_audit` | `invalid` | E, S, R, M | `limit_statement` | yes | yes |
+| `generalization_unit_audit` | `invalid` | E, S, R, M | none | yes | yes |
+| `l1000_perturbation_context` | `invalid` | E, S, R, M | none | yes | yes |
+| `multi_endpoint_tradeoff` | `invalid` | E, S, R, M | none | yes | yes |
+| `nomination_readiness_audit` | `invalid` | E, S, R, M | `does_not_show`, `excluded_by_design` | yes | yes |
+| `objective_ladder` | `invalid` | E, S, R, M | none | yes | yes |
+| `relational_graph_audit` | `invalid` | E, S, R, M | none | yes | yes |
+| `rosetta_cross_modality` | `invalid` | E, S, R, M | none | yes | yes |
+| `skempi_affinity` | `invalid` | E, S, R, M | none | yes | yes |
+| `source_review_scope_audit` | `invalid` | E, S, R, M | `excluded_by_design`, `interpretation_limits` | yes | yes |
+| `specificity_margin_audit` | `invalid` | E, S, R, M | none | yes | yes |
+| `split_leakage_audit` | `invalid` | E, S, R, M | none | yes | yes |
+
+## Independent check
+
+Compare `applicability_domain_audit` with `assay_endpoint_controls` in `show`. The former declares a `does_not_do` limit and the latter has no field in the limit search. Both still fail the full contract on E, S, R and M. An explicit limit is useful, but it does not supply an execution status or a write declaration.
+
+## Limits of the material
+
+This laboratory audits a contract, not a measurement. A passing return says that the artefact is self-describing and nothing more. The audit cannot establish that the laboratory measured anything true, that the tool ran where the return says it ran, or that a reader can reproduce the result from the return alone. A declared environment or allowed write is not an independent process trace. The verdicts do not rank the laboratories or measure their scientific quality. No reader learning outcome was observed.
+
+## Sources and terms
+
+The source is the project's committed laboratory returns, companion protocols and READMEs, read locally on 2026-10-23. No external page was opened for this computation. Original guide prose is CC BY 4.0 and original laboratory code is Apache-2.0. Last reviewed on 2026-10-23.

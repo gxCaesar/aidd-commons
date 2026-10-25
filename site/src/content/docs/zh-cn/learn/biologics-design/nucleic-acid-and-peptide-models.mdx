@@ -1,0 +1,86 @@
+---
+title: 核酸与肽设计的开放模型
+description: 根据任务约定、评估证据、资产可用性和许可范围，阅读五份注明日期的资源记录。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/nucleic-acid-and-peptide-models" />
+
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+学完[核酸、偶联物与降解剂](/zh-cn/learn/biologics-design/nucleic-acids-conjugates-degraders/)后，用这份注明日期的阅读材料判断五份公开资源记录究竟确立了什么。对于每份记录，找出输入与输出、计算目标、比较证据、评估实体、核查过的资产以及限制条件。本课是附带书面练习的来源阅读，没有运行或复现任何一种方法。[英文原版](/learn/biologics-design/nucleic-acid-and-peptide-models/)是规范版本。
+
+## 比较约定
+
+一个低成本的预测基线可以只在训练实体上拟合常数输出，再与所讨论模型使用相同的留出实体和指标。数据整理工具则需要固定输入集合与分割规则，才能比较输出。以下五份记录没有共同的任务、分割、指标或计算预算，因此不能据此给方法排名。资产被列出不等于基准测试已经执行。[相关资源指南](/zh-cn/learn/biologics-design/modality-resource-guide/)提供选择资源的框架，具体判断仍以各来源证据为准。
+
+## RNA-FM
+
+[RNA-FM代码仓库](https://github.com/ml4bio/RNA-FM)描述了一个序列编码器。输入是RNA序列，输出是可用于下游结构或功能任务的嵌入，表示使用核苷酸标记。[README](https://raw.githubusercontent.com/ml4bio/RNA-FM/main/README.md)记载了掩码标记预训练、名为RNAcentral100的语料和推断脚本，但没有固定语料快照，也没有指出训练脚本。记录没有给出可供本次阅读核查的匹配基线、分割、指标、评估实体清单或计算预算。仓库与检查点托管页面曾作为来源证据接受核查，本课没有执行代码、数据或权重。
+
+记录将推断代码、权重、架构、数据配方和训练数据标为可用，训练代码与评估代码仍是未核实。仓库源代码使用MIT许可。[下载检查点的托管页面](https://huggingface.co/cuhkaih/rnafm)为该副本声明Apache-2.0，而README也把模型标为MIT，但没有说明权重的适用范围。记录无法认证另一个权重链接的卡片。准确训练集及每份权重副本的许可仍未解决，因此嵌入演示不能证明下游比较可复现。[RNA-FM来源记录](https://github.com/ml4bio/RNA-FM)。
+
+## RibonanzaNet
+
+[RibonanzaNet代码仓库](https://github.com/Shujun-He/RibonanzaNet)描述了一个输入RNA序列、输出化学测绘、二级结构或降解任务结果的模型。README记载了基于Ribonanza测绘数据训练、再按任务拟合的网络。记录提到交叉验证使用6折中的第0折，并输出折外预测，但没有提供可由本课核查的匹配比较项、指标表、独立测试实体定义或计算预算。记录中，所链接的竞赛页面未显示可读的数据条款。仓库及所链接的证据页面曾接受核查，本课没有执行训练或推断。[README](https://raw.githubusercontent.com/Shujun-He/RibonanzaNet/main/README.md)。
+
+推断代码、训练代码、架构和训练数据标为可用，权重、数据配方与评估代码仍是未核实。仓库的MIT许可只涵盖源代码，不涵盖下载的竞赛数据或检查点。官方仓库本身没有发布权重。第三方[实现与权重](https://huggingface.co/multimolecule/ribonanzanet)声明AGPL-3.0，但不能据此确定官方权重状态或竞赛数据条款。这些边界阻止我们声称评估得到了独立复现。[RibonanzaNet来源记录](https://github.com/Shujun-He/RibonanzaNet)。
+
+## PepHAR
+
+[PepHAR代码仓库](https://github.com/Ced3-han/PepHAR)介绍了一个以目标上下文为条件的生成器。其输入约定包含目标上下文，输出是采样得到的肽候选表示。记录中的计算流程先由能量模型采样初始片段，再自回归地扩展。[README](https://raw.githubusercontent.com/Ced3-han/PepHAR/main/README.md)链接了训练与推断代码、检查点和评估代码目录，也说明模型对训练集过拟合，因此选择较早的检查点用于评估。记录没有提供可重建的训练语料、已说明的评估命令、匹配基线结果、分割、指标表或计算资源供独立比较。这些是来源记录中的限制，不是新的模型评估。本课没有运行代码、数据或权重。
+
+推断代码、训练代码、权重、架构和评估代码标为可用，数据配方与训练数据仍是未核实。MIT只涵盖仓库源代码。所链接的[检查点与数据文件夹](https://drive.google.com/drive/folders/1jJFPZbczI7Nxai-9X5UcNsv5U8rcBUEY)没有声明其中分发文件的条款。可用的检查点因此不能证明数据复用许可或结果已复现。[PepHAR来源记录](https://github.com/Ced3-han/PepHAR)。
+
+## HELM-BERT
+
+[HELM-BERT代码仓库](https://github.com/clinfo/HELM-BERT)描述了一个处理HELM记法中肽文本的编码器。其输出可以是表示，也可以是拟合后的性质或相互作用预测。[README](https://raw.githubusercontent.com/clinfo/HELM-BERT/main/README.md)记载了掩码语言预训练及后续任务拟合。对于相互作用任务，记录注明还使用了一个蛋白质编码器，因此不能把那些结果只归于HELM-BERT。README报告了指标，并附有随机、scaffold和aCSM分割文件，但没有指出单独的评估脚本或本课可核查的匹配比较项。这里也未确立评估实体的定义和计算预算。仓库与[权重托管页面](https://huggingface.co/Flansma/helm-bert)作为来源页面接受了核查，但没有运行任何内容。
+
+推断代码、训练代码、权重、架构、数据配方和训练数据标为可用，评估代码仍是未核实。MIT涵盖仓库源代码及托管权重。语料来源仍有歧义。README描述约75,000条肽，所链接的预印本却报告39,079条，托管权重没有说明来自哪个语料。README还描述了修改后的论文版本训练配方，却没有列出全部数据库。这些缺口阻止我们把权重准确对应到语料，或把结果准确对应到配方。[HELM-BERT来源记录](https://github.com/clinfo/HELM-BERT)。
+
+## ProteinFlow
+
+[ProteinFlow](https://github.com/adaptyvbio/ProteinFlow)是数据整理流程，不是预测模型。它接收源结构记录，产出带注释、经过聚类并分为训练、验证与测试的数据集。本记录中它没有模型训练目标、权重或推断预测。[文档](https://adaptyvbio.github.io/ProteinFlow/)给出了数据配方，但API默认测试比例为0.05，示例却传入0.5。要复现分割，就必须固定所选设置和来源快照。记录既没有确定匹配的下游模型比较，也没有核实指标入口。预先整理的数据发布版本截至2023-12-21。文档与仓库页面曾接受核查，本课没有运行数据处理。
+
+目录记录把该流程的推断或使用代码、数据配方与训练数据标为可用，训练代码、权重和架构为不适用，评估代码仍是未核实。仓库README称BSD-3-Clause适用于软件包和它发布的数据，但根许可文件没有单独的数据条款。上游PDB与SAbDab记录的条款也未重述。软件包的声明不能自动授予每项上游输入的使用条款。[ProteinFlow来源记录](https://github.com/adaptyvbio/ProteinFlow)。
+
+## 按维度记录开放状态
+
+以下七列保留目录中的不同维度。可用表示被引用的记录确立了访问或文档证据，不代表本课执行过资产。未核实表示记录没有确立该维度。不适用表示对于该资源，该维度不对应一个已训练模型。
+
+| 资源 | 推断代码 | 训练代码 | 权重 | 架构 | 数据配方 | 训练数据 | 评估代码 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| RNA-FM | 可用 | 未核实 | 可用 | 可用 | 可用 | 可用 | 未核实 |
+| RibonanzaNet | 可用 | 可用 | 未核实 | 可用 | 未核实 | 可用 | 未核实 |
+| PepHAR | 可用 | 可用 | 可用 | 可用 | 未核实 | 未核实 | 可用 |
+| HELM-BERT | 可用 | 可用 | 可用 | 可用 | 可用 | 可用 | 未核实 |
+| ProteinFlow | 可用 | 不适用 | 不适用 | 不适用 | 可用 | 可用 | 未核实 |
+
+## 推演案例
+
+一位读者看到RibonanzaNet和HELM-BERT记录都列有训练代码，就想据此建立共同基准。前者的官方权重和数据配方仍未核实。后者虽然列有可用权重，却无法确定其来自两份报告语料中的哪一份。两者的任务和输出也不同。可辩护的比较表应先固定共同终点、实体单元、留出分割、指标、基线、资产版本和各输入的使用许可。填补这些字段前，记录只支持两份有边界的资源说明，不支持性能排名。[RibonanzaNet仓库](https://github.com/Shujun-He/RibonanzaNet)、[HELM-BERT仓库](https://github.com/clinfo/HELM-BERT)。
+
+## 独立练习
+
+一位同事下载了ProteinFlow预先整理的数据发布版本，认为仅凭文档就能复现其分割，还将软件包许可套用到所有上游输入。请指出缺少的两项核查，并说出比较下游分数前需要记录哪些证据。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+首先必须固定分割设置，因为文档在不同位置给出0.05和0.5。还必须固定来源快照，因为预先整理的数据发布版本截至2023-12-21。软件包README的BSD-3-Clause声明没有重述PDB或SAbDab输入条款，需要分别核查。比较分数时，应记录相同的源实体、分割、指标、低成本基线和下游模型流程。本次阅读没有运行这种比较。[ProteinFlow文档](https://adaptyvbio.github.io/ProteinFlow/)、[仓库](https://github.com/adaptyvbio/ProteinFlow)。
+
+</details>
+
+## 适用范围
+
+这些记录确立的是截至2026-10-21所审阅的部分资产和许可声明。它们没有确立可执行的共同基准、已复现的模型、所有链接资产均可无限制复用，或已测得的读者学习成效。
+
+## 来源
+
+来源页面包括[RNA-FM README](https://raw.githubusercontent.com/ml4bio/RNA-FM/main/README.md)、[RibonanzaNet README](https://raw.githubusercontent.com/Shujun-He/RibonanzaNet/main/README.md)、[PepHAR README](https://raw.githubusercontent.com/Ced3-han/PepHAR/main/README.md)、[HELM-BERT README](https://raw.githubusercontent.com/clinfo/HELM-BERT/main/README.md)和[ProteinFlow文档](https://adaptyvbio.github.io/ProteinFlow/)。各链接来源保留自己的许可及适用范围。
+
+Last reviewed: 2026-10-21.

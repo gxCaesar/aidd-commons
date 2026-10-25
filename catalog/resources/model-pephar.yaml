@@ -1,0 +1,58 @@
+id: model-pephar
+name: PepHAR
+kind: model
+summary: Peptide design model that samples hotspot residues with an energy-based density model and then extends peptide fragments autoregressively while constraining peptide-bond geometry, published as a conference paper at ICLR 2025.
+canonical_url: https://github.com/Ced3-han/PepHAR
+identifiers:
+  - scheme: paper
+    value: "Hotspot-Driven Peptide Design via Multi-Fragment Autoregressive Extension; arXiv 2411.18463, published as a conference paper at ICLR 2025"
+    url: https://arxiv.org/abs/2411.18463
+  - scheme: model-weights
+    value: "Checkpoint folder linked by the repository README"
+    url: https://drive.google.com/drive/folders/1jJFPZbczI7Nxai-9X5UcNsv5U8rcBUEY
+stages: [design]
+modalities: [peptide, protein]
+tasks: [protein-design, target-conditioned-generation]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license, repository] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [readme, checkpoint-host] }
+  architecture: { value: available, evidence: [repository, paper] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: MIT
+    scope: repository source code, covered by the root LICENSE file, which reads "MIT License" and "Copyright (c) 2025 Cedlijh"; the README distributes checkpoints and data through a linked Google Drive folder that states no terms of its own
+    evidence: [license, repository]
+evidence:
+  - id: repository
+    url: https://github.com/Ced3-han/PepHAR
+    label: PepHAR repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/Ced3-han/PepHAR/main/README.md
+    label: PepHAR README (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/Ced3-han/PepHAR/main/LICENSE
+    label: PepHAR MIT licence file (reviewed 2026-10-21)
+    supports: []
+  - id: checkpoint-host
+    url: https://drive.google.com/drive/folders/1jJFPZbczI7Nxai-9X5UcNsv5U8rcBUEY
+    label: PepHAR checkpoint and data folder (reviewed 2026-10-21)
+    supports: [caveats]
+  - id: paper
+    url: https://arxiv.org/abs/2411.18463
+    label: PepHAR preprint abstract page (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks]
+caveats:
+  - The linked folder is publicly viewable and lists a ckpts folder and a data folder, but states no licence, attribution rule, or other terms for the distributed files, and the MIT licence above covers the repository source only.
+  - The README states that "the two models heavily overfitted the training set" and that early training steps are therefore selected for evaluation, so published numbers describe early checkpoints rather than converged ones.
+  - The repository tree contains eval and evaluate directories, but the README identifies no evaluation command, so the entry point for the evaluation code is not documented.
+  - The README names no training corpus, and the distributed data folder contents could not be listed beyond its name, so the training data dimension stays unverified.
+acknowledgements: []
+last_verified: "2026-10-21"

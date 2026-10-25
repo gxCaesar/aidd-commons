@@ -1,0 +1,34 @@
+id: bad-duplicate-topic
+name: Duplicate topic observations
+provider_class: specialist-reference
+canonical_url: https://example.org/duplicate-topic
+summary: A fixture containing two observations for one topic.
+audiences: [engineers]
+languages: [en]
+metadata_evidence: [overview]
+access:
+  content: { value: open, evidence: [overview] }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: not_applicable, evidence: [overview] }
+licenses: []
+coverage:
+  - topic_id: molecular-fingerprints
+    depth: unverified
+    evidence: []
+    reviewed_scope: Public reference index
+    note: Topic depth could not be established.
+  - topic_id: molecular-fingerprints
+    depth: unverified
+    evidence: []
+    reviewed_scope: Public reference index
+    note: This duplicate observation must be rejected.
+evidence:
+  - id: overview
+    url: https://example.org/duplicate-topic
+    title: Duplicate topic overview
+    observed_scope: System identity and public index.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

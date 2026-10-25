@@ -1,0 +1,24 @@
+id: bad-future-review
+name: Future-dated comparison review
+provider_class: tutorial-collection
+canonical_url: https://example.org/future-review
+summary: A fixture whose last review date is later than the validator date.
+audiences: [researchers]
+languages: [en]
+metadata_evidence: [overview]
+access:
+  content: { value: open, evidence: [overview] }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage: []
+evidence:
+  - id: overview
+    url: https://example.org/future-review
+    title: Future-dated tutorial overview
+    observed_scope: System identity and public content access.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-05

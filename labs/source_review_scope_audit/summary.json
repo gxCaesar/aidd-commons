@@ -1,0 +1,241 @@
+{
+  "schema_version": "aidd-commons.source-review-scope-audit-summary.v1",
+  "protocol_id": "aidd-commons.source-review-scope-audit-v1",
+  "computed_on": "2026-10-24",
+  "software": {
+    "python": "3.11.15",
+    "pyyaml": "6.0.3"
+  },
+  "examined_record_ids": [
+    "db-rcsb-pdb",
+    "db-uniprot",
+    "tool-rdkit",
+    "model-boltz-2"
+  ],
+  "independent_reading": {
+    "topic_id": "t01-source-review-scope",
+    "recorded_depth": "assessed",
+    "independent_depth": "assessed",
+    "independent_run_basis": "authored"
+  },
+  "records": [
+    {
+      "id": "db-rcsb-pdb",
+      "evidence_entries": 3,
+      "part_counts": {
+        "surface": {
+          "carried": 3,
+          "named-in-text": 0,
+          "absent": 0
+        },
+        "version": {
+          "carried": 0,
+          "named-in-text": 0,
+          "absent": 3
+        },
+        "date": {
+          "carried": 0,
+          "named-in-text": 2,
+          "absent": 1
+        },
+        "scope": {
+          "carried": 0,
+          "named-in-text": 1,
+          "absent": 2
+        }
+      },
+      "special_counts": {
+        "all_four": 0,
+        "date_surface_no_version": 0,
+        "name_only": 0
+      },
+      "claim_counts": {
+        "claims": 10,
+        "claims_with_reference": 2,
+        "claims_without_reference": 8,
+        "claims_with_dated_reference": 0,
+        "claims_with_unresolved_reference": 0
+      }
+    },
+    {
+      "id": "db-uniprot",
+      "evidence_entries": 2,
+      "part_counts": {
+        "surface": {
+          "carried": 2,
+          "named-in-text": 0,
+          "absent": 0
+        },
+        "version": {
+          "carried": 0,
+          "named-in-text": 1,
+          "absent": 1
+        },
+        "date": {
+          "carried": 0,
+          "named-in-text": 1,
+          "absent": 1
+        },
+        "scope": {
+          "carried": 0,
+          "named-in-text": 0,
+          "absent": 2
+        }
+      },
+      "special_counts": {
+        "all_four": 0,
+        "date_surface_no_version": 0,
+        "name_only": 0
+      },
+      "claim_counts": {
+        "claims": 9,
+        "claims_with_reference": 1,
+        "claims_without_reference": 8,
+        "claims_with_dated_reference": 0,
+        "claims_with_unresolved_reference": 0
+      }
+    },
+    {
+      "id": "tool-rdkit",
+      "evidence_entries": 3,
+      "part_counts": {
+        "surface": {
+          "carried": 3,
+          "named-in-text": 0,
+          "absent": 0
+        },
+        "version": {
+          "carried": 0,
+          "named-in-text": 0,
+          "absent": 3
+        },
+        "date": {
+          "carried": 0,
+          "named-in-text": 2,
+          "absent": 1
+        },
+        "scope": {
+          "carried": 0,
+          "named-in-text": 1,
+          "absent": 2
+        }
+      },
+      "special_counts": {
+        "all_four": 0,
+        "date_surface_no_version": 0,
+        "name_only": 0
+      },
+      "claim_counts": {
+        "claims": 10,
+        "claims_with_reference": 8,
+        "claims_without_reference": 2,
+        "claims_with_dated_reference": 0,
+        "claims_with_unresolved_reference": 0
+      }
+    },
+    {
+      "id": "model-boltz-2",
+      "evidence_entries": 5,
+      "part_counts": {
+        "surface": {
+          "carried": 5,
+          "named-in-text": 0,
+          "absent": 0
+        },
+        "version": {
+          "carried": 0,
+          "named-in-text": 0,
+          "absent": 5
+        },
+        "date": {
+          "carried": 0,
+          "named-in-text": 5,
+          "absent": 0
+        },
+        "scope": {
+          "carried": 0,
+          "named-in-text": 2,
+          "absent": 3
+        }
+      },
+      "special_counts": {
+        "all_four": 0,
+        "date_surface_no_version": 0,
+        "name_only": 0
+      },
+      "claim_counts": {
+        "claims": 10,
+        "claims_with_reference": 7,
+        "claims_without_reference": 3,
+        "claims_with_dated_reference": 0,
+        "claims_with_unresolved_reference": 0
+      }
+    }
+  ],
+  "totals": {
+    "records": 4,
+    "evidence_entries": 13,
+    "parts": {
+      "surface": {
+        "carried": 13,
+        "named-in-text": 0,
+        "absent": 0
+      },
+      "version": {
+        "carried": 0,
+        "named-in-text": 1,
+        "absent": 12
+      },
+      "date": {
+        "carried": 0,
+        "named-in-text": 10,
+        "absent": 3
+      },
+      "scope": {
+        "carried": 0,
+        "named-in-text": 4,
+        "absent": 9
+      }
+    },
+    "special": {
+      "all_four": 0,
+      "date_surface_no_version": 0,
+      "name_only": 0
+    },
+    "claims": {
+      "claims": 39,
+      "claims_with_reference": 18,
+      "claims_without_reference": 21,
+      "claims_with_dated_reference": 0,
+      "claims_with_unresolved_reference": 0
+    }
+  },
+  "unresolved_claim_references": [],
+  "unmeasurable_routes": [
+    {
+      "route": "linked-page-content",
+      "reason": "The audit reads the evidence entry but does not open the linked page, so it cannot verify the page's content."
+    },
+    {
+      "route": "moving-url-revision",
+      "reason": "A moving URL without an entry-level release or tag does not identify the exact revision reviewed."
+    },
+    {
+      "route": "review-thoroughness",
+      "reason": "Catalogue fields do not record the completeness of a human review."
+    },
+    {
+      "route": "licence-permission",
+      "reason": "A reference and a scope note do not determine the legal permission for a particular use."
+    }
+  ],
+  "excluded_by_design": [
+    "Any claim that a linked page says what its entry says it says",
+    "Any legal reading of what a licence permits",
+    "Any judgement about whether a review was thorough"
+  ],
+  "interpretation_limits": [
+    "The audit does not open linked pages and cannot confirm what they say.",
+    "An entry without a date does not establish that it is unreliable."
+  ]
+}

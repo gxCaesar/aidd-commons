@@ -1,0 +1,47 @@
+id: tool-openmm
+name: OpenMM
+kind: software
+summary: Molecular simulation toolkit.
+canonical_url: https://github.com/openmm/openmm
+identifiers:
+  - scheme: documentation
+    value: "Official documentation"
+    url: https://docs.openmm.org/
+stages: [physics-based-modelling, lead-optimization]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [molecular-dynamics]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [readme-licence] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: not_applicable, evidence: [repository] }
+  weights: { value: not_applicable, evidence: [repository] }
+  architecture: { value: not_applicable, evidence: [repository] }
+  data_recipe: { value: not_applicable, evidence: [repository] }
+  training_data: { value: not_applicable, evidence: [repository] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: covers most of the source code, per the repository README's licence information section
+    evidence: [readme-licence]
+  - name: LGPL-2.1
+    scope: covers most of the source code, per the repository README's licence information section, which names the MIT licence and the LGPL without saying which covers which part
+    evidence: [readme-licence]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/openmm/openmm
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/openmm/openmm
+    label: OpenMM repository
+    supports: [caveats, kind, modalities, name, stages, summary, tasks]
+  - id: readme-licence
+    url: https://raw.githubusercontent.com/openmm/openmm/master/README.md
+    label: Repository README licence information section (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The repository README states that several licences cover different parts of the distribution, that most of the source code is covered by the MIT licence or the LGPL, and that the file Licenses.txt holds the details, which was not read.
+acknowledgements: []
+last_verified: "2026-10-23"

@@ -1,0 +1,60 @@
+id: dataset-toxcast
+name: ToxCast
+kind: dataset
+summary: US EPA in vitro medium- and high-throughput screening assay data for chemical prioritization and hazard characterization.
+canonical_url: https://www.epa.gov/comptox-tools/exploring-toxcast-data
+identifiers:
+  - scheme: code
+    value: "toxcast pipeline, the open-source R package tcpl that stores, manages, curve-fits and visualizes ToxCast data and populates the invitrodb database"
+    url: https://github.com/USEPA/CompTox-ToxCast-tcpl
+  - scheme: code
+    value: "tcplfit2, the EPA's concentration-response modelling utility"
+    url: https://github.com/USEPA/CompTox-ToxCast-tcplFit2
+stages: [dmpk-toxicology, data-intake, evaluation]
+modalities: [small-molecule, bioassay]
+tasks: [toxicity-prediction, assay-data-analysis]
+relations:
+  - type: surfaced-by
+    target: db-comptox-chemicals-dashboard
+status: { value: active, evidence: [official-page] }
+access_level: { value: open_source, evidence: [epa-open-data-statement] }
+openness:
+  inference_code: { value: not_applicable, evidence: [official-page] }
+  training_code: { value: not_applicable, evidence: [official-page] }
+  weights: { value: not_applicable, evidence: [official-page] }
+  architecture: { value: not_applicable, evidence: [official-page] }
+  data_recipe: { value: available, evidence: [generation-page] }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [generation-page, tcpl-package] }
+licenses:
+  - name: United States Government work, public domain
+    scope: The agency's own statement that all of its computational toxicology data is considered open data, that it is free of all copyright restrictions, and that it is fully and freely available for both non-commercial and commercial use. The grant reaches the data the agency publishes; it says nothing about a third party who redistributes a derived product.
+    evidence: [epa-open-data-statement]
+evidence:
+  - id: official-page
+    url: https://www.epa.gov/comptox-tools/exploring-toxcast-data
+    label: US EPA Exploring ToxCast Data, re-opened 2026-10-24, which names the assay annotations, the target mappings, the cytotoxicity burst output, the analytical QC files and the database package
+    supports: [name, kind, summary, stages, modalities, tasks, relations, caveats]
+  - id: epa-open-data-statement
+    url: https://www.epa.gov/comptox-tools/downloadable-computational-toxicology-data
+    label: The EPA's statement that its computational toxicology data is open data free of copyright restrictions, read 2026-10-24
+    supports: [caveats]
+  - id: generation-page
+    url: https://www.epa.gov/comptox-tools/generating-toxcast-data
+    label: The EPA's description of how ToxCast data are generated, from vendor formats through the tcpl pipeline into the invitrodb database, read 2026-10-24
+    supports: [caveats]
+  - id: tcpl-package
+    url: https://github.com/USEPA/CompTox-ToxCast-tcpl
+    label: The EPA's open-source ToxCast pipeline repository, which resolves on 2026-10-24
+    supports: [identifiers, caveats]
+  - id: terms-page
+    url: https://www.epa.gov/comptox-tools/exploring-toxcast-data
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one. The agency's own downloadable-data page was read on 2026-10-24 and states the open-data position directly.
+  - ToxCast records are heterogeneous in vitro assays; assay endpoint, concentration-response processing, and biological interpretation must remain attached to each use.
+  - "The agency's generation page states that the assay data arrive from numerous vendors in heterogeneous formats, that vendor-specific R scripts transform them into a standard computable format and load them into the tcpl database, and that generalized processing functions then process, normalize, model, qualify and visualize them. That is the documented recipe; the record did not run the pipeline."
+  - "The most recent release the agency names is invitrodb v4.3, released in August 2025, with the tcpl and tcplfit2 packages published alongside it. The record did not open the versioned deposit itself, so it carries the release name and the agency's terms rather than a check of the files."
+acknowledgements: []
+last_verified: "2026-10-24"

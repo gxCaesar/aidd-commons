@@ -1,0 +1,43 @@
+id: benchmark-o3dc
+name: O3DC Drug Discovery Benchmark Index
+kind: benchmark
+summary: Open 3D drug-discovery benchmark index.
+canonical_url: https://o3dc.org/
+identifiers:
+  - scheme: catalogue
+    value: "The index's benchmark catalogue, a JSON file holding 194 benchmark entries in 10 categories, read 2026-10-24"
+    url: https://o3dc.org/data/benchmarks.json
+stages: [benchmark-discovery, evaluation]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [benchmark-discovery]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [official-page, benchmarks-json] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: benchmarks-json
+    url: https://o3dc.org/data/benchmarks.json
+    label: The index's own benchmark catalogue, read 2026-10-24, which lists the entries with their authors, sites, repositories, categories, descriptions and caveats
+    supports: [identifiers, caveats]
+  - id: official-page
+    url: https://o3dc.org/
+    label: O3DC official page
+    supports: [caveats, kind, modalities, name, stages, summary, tasks]
+  - id: terms-page
+    url: https://o3dc.org/
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one.
+  - "The page was re-opened on 2026-10-24 and still states no licence. The site's own resources are a stylesheet, the application bundle, the benchmark catalogue at data/benchmarks.json, a contact address and a Cloudflare challenge widget, and the application bundle contains no occurrence of licence, copyright, terms of use or attribution. The index is therefore readable and reusable, and it states no terms of its own."
+  - "The catalogue lists entries with a name, a category, an author or maintainer, a repository, a citable site, a description, task labels, a required caveat and a live leaderboard or submission URL. Each entry names the project that owns the benchmark, and the index is a directory of other people's resources rather than a distribution of them."
+acknowledgements: []
+last_verified: "2026-10-24"

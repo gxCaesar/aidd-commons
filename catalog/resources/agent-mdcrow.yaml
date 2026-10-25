@@ -1,0 +1,79 @@
+id: agent-mdcrow
+name: MDCrow
+kind: agent
+summary: LLM-agent toolset for molecular dynamics, built on Langchain, that configures and runs OpenMM simulations from a natural-language instruction and computes the requested analysis over the trajectory.
+canonical_url: https://github.com/ur-whitelab/MDCrow
+identifiers:
+- scheme: code
+  value: MDCrow source repository, ur-whitelab/MDCrow
+  url: https://github.com/ur-whitelab/MDCrow
+stages:
+- evaluation
+modalities:
+- protein-structure
+- text
+tasks:
+- simulation-setup
+- simulation-execution
+- trajectory-analysis
+relations: []
+status:
+  value: unverified
+access_level:
+  value: gated
+  evidence:
+  - mdcrow-license
+openness:
+  inference_code:
+    value: available
+    evidence:
+    - mdcrow-readme
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: available
+    evidence:
+    - mdcrow-readme
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: MIT
+  scope: The repository is public and carries the MIT licence its record names, but the README states that a language-model provider key is necessary and names four supported providers, so a reader without a key cannot run it.
+  evidence:
+  - mdcrow-license
+evidence:
+- id: mdcrow-repository
+  url: https://github.com/ur-whitelab/MDCrow
+  label: MDCrow repository (reviewed 2026-10-23)
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - caveats
+- id: mdcrow-readme
+  url: https://raw.githubusercontent.com/ur-whitelab/MDCrow/master/README.md
+  label: MDCrow README (reviewed 2026-10-23)
+  supports:
+  - identifiers
+  - caveats
+- id: mdcrow-license
+  url: https://raw.githubusercontent.com/ur-whitelab/MDCrow/master/LICENSE
+  label: MDCrow MIT licence file (reviewed 2026-10-23)
+  supports:
+  - caveats
+caveats:
+- The README states that an API key for a language-model provider is necessary, and it names OpenAI, TogetherAI, Fireworks and Anthropic as the supported providers, so a reader without a provider key cannot run it and the record carries no verified access level.
+- The repository hosts no pretrained checkpoint and gives no weights-download procedure. The language models are provider-hosted, and the simulation engine is OpenMM, whose licence is its own.
+- The README carries no data-availability statement, names no dataset and gives no repository-hosted data download procedure.
+- The README states the licence nowhere; the grant is read from the LICENSE file, which a reader of the README alone would not find.
+acknowledgements: []
+last_verified: '2026-10-23'

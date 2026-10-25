@@ -1,0 +1,341 @@
+---
+import AtlasFigure from "../../../components/AtlasFigure.astro";
+import SiteShell from "../../../components/SiteShell.astro";
+const labs = [
+  {
+    slug: "lipophilicity-notebook",
+    title: "亲脂性：划分、拟合与检查",
+    description: "从可修改 notebook 开始，在公开实测 logD 数据上检查分子，保持 scaffold 组完整，用验证集选择简单基线，并解释图和误差。每位读者的运行产生新的练习结果，不会替代任何冻结实验评估。",
+  },
+  {
+    slug: "molecule-representation-inspector",
+    title: "无标签分子表示检查器",
+    description: "比较 SMILES、标识符、描述符、Morgan 指纹、骨架、立体化学和分离盐组分，不加载标签，不拟合模型。",
+  },
+  {
+    slug: "chembl-egfr-representation-baselines",
+    title: "ChEMBL 37 EGFR 表示基线",
+    description: "在相同母体分子契约和骨架互斥划分下比较 RDKit 描述符与手性感知 Morgan 指纹。主实验和另一项实验的评估均已完成，保留 Morgan 迁移失败与共享标签限制。",
+  },
+  {
+    slug: "chembl-contract-inspection",
+    title: "先读冻结契约，再看模型",
+    description: "用一条只读已提交文件的离线命令，打印该冻结实验的筛选单元、终点定义与准入算术，并重新核对协议、开发与锁定产物是否仍然一致。不下载、不联网、不训练。",
+  },
+  {
+    slug: "pool-budget-contract-inspection",
+    title: "种子不是什么",
+    description: "从原始检查点序列重算预算算术与报出的回收 AUC，读懂每个策略被允许看到什么，并看清为什么五个固定种子不是误差棒。与方法预期相反的那个结果被直接打印，而不是留给读者推断。",
+  },
+  {
+    slug: "design-space",
+    title: "规模买不到可达性",
+    description: "精确枚举三个候选空间并用四个分子测试：把空间涨到四倍只多够到一个分子，而一个只差一个环原子的靶分子仍然完全不可达；两个规模相同的空间没有任何共同成员。",
+  },
+  {
+    slug: "docking-protocol",
+    title: "同样的单位，不同的标度",
+    description: "把一个对接分数所来自的七个组件分开：只差一个组件的两份协议在同一个配体上报出 -8.2 与 -10.7，这一组里没有任何一对可以比较，而一份没有验证的协议照样产出满满一列数字。",
+  },
+  {
+    slug: "egfr-structure-evidence",
+    title: "三个结构，当作证据来读",
+    description: "从 PDB 读取三个 EGFR 晶体结构：同一个铰链区甲硫氨酸在两个文件里是 769 号残基、在第三个里是 793 号；一个拉帕替尼位姿放进一种受体状态有 6 个原子冲突，放进另一种则没有；两个人工构造的位姿都通过 2 A 的 RMSD 约定，其中一个丢了铰链接触，另一个发生冲突。",
+  },
+  {
+    slug: "safety-evidence",
+    title: "警报不是发现",
+    description: "把结构警报与测定结果、器官毒性、剂量语境、整体动物证据分开：十二个化合物里七个触发警报，其中五个从未被测量过，而带有整体动物层面证据的只有一个。",
+  },
+  {
+    slug: "binder-definition",
+    title: "同一批分子，好几份数据集",
+    description: "把分子固定住、只挪动定义：阳性计数在一组阈值之间变化超过一倍，十二个化合物里有四个是被噪声归的类，被扩大的阴性类里三分之二从未被测量，而六个阳性只坐落在三个骨架上。",
+  },
+  {
+    slug: "sar-attribution",
+    title: "解释指错了原子",
+    description: "在生成规则已知的数据上拟合模型再去解释它：混杂因子在 8 个活跃分子里有 7 个得分高于真正的成因，而打破相关的那对匹配分子被排成了相反的顺序。",
+  },
+  {
+    slug: "retro-disconnection",
+    title: "同一个分数，三种不同的成因",
+    description: "在一组构造路线集上比较规则、检索与模板三类断键：三者在先例集内部都是满分，出了它则完全分开，而且成因各不相同；任何回收率都说不出这条路线能不能被跑出来。",
+  },
+  {
+    slug: "screening-transport",
+    title: "重复不等于迁移",
+    description: "用回收到的目标数作单位读一份已完成的双测定筛选回放：两个语境的测量步长相差 4.92 倍，整条基线跨度在两处都不到两个目标，而那个一个目标都没回收到的策略只输了八分之一个目标。",
+  },
+  {
+    slug: "property-decision-threshold",
+    title: "你无法决定的那条带",
+    description: "把一条冻结的阈值规则施加到已校准的 FreeSolv 区间上，读出点估计会藏起来的那条弃权带：四个组合里只有一个达到了它被构造出来要达到的覆盖率，而它恰恰是带最宽、弃权最多的那个。",
+  },
+  {
+    slug: "generation-gate",
+    title: "先冻结目标，再数清分母",
+    description: "声明一个真正可施加的设计目标，然后让二十个候选物穿过六道分母逐级相扣的闸门：看清头条有效率与幸存数为何相差悬殊、记忆为何只是对更窄参照集施加的新颖性闸门、以及合成代理永远确立不了什么。不运行任何生成模型。",
+  },
+  {
+    slug: "counterevidence-dossier",
+    title: "一份\"干净\"的摘要会删掉什么",
+    description: "清点已完成实验产物中保留下来的六类反证，并重算那个只报一个比较就会被掩盖的迁移失败：在一个评估上误差最低的模型，在另一个评估上是基线误差的数倍。",
+  },
+  {
+    slug: "cofolding-claim-separation",
+    title: "装在同一个文件里的五种主张",
+    description: "用一条离线命令，在二十个登记系统上把单体预测、复合物预测、共折叠、位姿生成与实验结合证据分开，并看清模态标签、同时做两种主张的模型、以及缺失的测量记录如何诱使你把其中一项当作另一项的证据。",
+  },
+  {
+    slug: "rmd17-contract-inspection",
+    title: "误差是相对什么而言的误差",
+    description: "打印观测量、被禁用的特征数组、帧采样及其实测间隔，并把每个误差与它所依据的范围并排显示，再重新核对冻结 rMD17 产物之间的十四项关系。不下载、不联网、不拟合。",
+  },
+  {
+    slug: "rmd17-system-state-energy-baselines",
+    title: "rMD17 体系状态能量基线",
+    description: "从原始索引划分追溯到各体系的距离直方图和独立拟合的 Ridge。苯与尿嘧啶评估已完成；每个模型使用自身体系的训练帧，明确披露未保留逐帧 Ridge 预测的限制。",
+  },
+  {
+    slug: "rmd17-dynamics-observable",
+    title: "一条轨迹的可观测量，需要多少才够",
+    description: "从能量实验已用的同一份 rMD17 轨迹计算质量加权回转半径，回答一个不同的问题：朴素标准误低估了乙醇不确定性 3.30 倍、丙二醛 6.26 倍；在 10,000 帧处，丙二醛的累积均值虽已匹配到小数点后两位，却仍偏离收敛值四到九个分块标准误。",
+  },
+  {
+    slug: "pool-budget-campaign",
+    title: "池预算实验模拟器",
+    description: "在相同整数预算下比较标签盲 MaxMin 与固定种子随机选择。人工构造示例与已完成的真实 ChEMBL 回放分开，并保留负结果。",
+  },
+  {
+    slug: "pool-budget-uncertainty-acquisition",
+    title: "一个会读自己模型分歧的采集策略",
+    description: "给已完成的池预算活动加上第七个策略：按跨折 Ridge 预测方差采集，而不是按化学距离或随机。它在两个测定上都领先 MaxMin 与全部五个固定随机种子——主测定 0.1133 对 MaxMin 的 0.0508，独立测定 0.1635 对 0.0000——均来自复用同一份真实划分与预算的一次确定性回放。",
+  },
+  {
+    slug: "cyp-assay-system",
+    title: "一个 CYP 抑制数字能预测另一个吗？",
+    description: "读取两个整体细胞色素 P450 靶点的真实 ChEMBL 37 IC50 记录，而不是两个具名测定：CYP3A4 准入 5,251 个母体分子，CYP2D6 准入 2,781 个，重叠 1,195 个。对一个酶的效力只能弱预测对另一个酶的效力（Spearman rho 约 0.30），仅奎尼丁一个化合物就有 32 条 CYP2D6 记录彼此相差超过 10,000 倍，对应的 CYP3A4 记录却只有一条。",
+  },
+  {
+    slug: "decision-unit-scope",
+    title: "一个报告值是一行带着上下文的记录",
+    description: "把十五个声明化合物放进 ChEMBL 37，数清一个报告值究竟建立在什么之上。13,305 条活性行经过终点族、单位、标准标志、重复、数据有效性备注与关系符的逐条准入后只剩 1,004 条准入测量，十五个种子解析为十个不同的母体分子。实验随后报告每条存活测量所携带的测定、文献、靶点、物种、测定类型、置信分与关系符，因为正是这些上下文让一次比较有意义。",
+  },
+  {
+    slug: "assay-endpoint-controls",
+    title: "一个测定里究竟有什么",
+    description: "读取六份归档的 PubChem BioAssay 剂量-反应测定并报告各自的内容。1,529 条准入终点值分布在五种终点标签上；1,257 条带明确关系符的值里，832 条是等式，406 条是只给出方向的界值。置信分有三分之一落在零。每个测定还报告自己声明的重复结构、对照体系、参考孔与归一化方程，因为一个测定只在它的对照记录支持的范围内许可结论。",
+  },
+  {
+    slug: "rosetta-cross-modality",
+    title: "同一次扰动的两种读出",
+    description: "五次��二十八个扰动同时有转录组与成像两种读出，各跨十六块板，看上去强相关：特征层 r 0.83、扰动层 r 0.82。按批次阻断后降到 0.63 与 0.69，而按规模匹配的随机对照达到 0.79 到 0.81。表面上的大部分一致来自结构而不是生物学，实验测量的是其中多少能存活下来。",
+  },
+  {
+    slug: "az-clearance-system",
+    title: "同一种清除率，三种测法",
+    description: "用一份真实的 AstraZeneca ChEMBL 数据集存档，比较人肝微粒体、大鼠肝细胞与人肝细胞三种体外清除率：准入母体分子分别为 743、592、288 个，两两 Spearman rho 落在 0.39 到 0.49 之间。微粒体数值以每克蛋白计，肝细胞数值以每百万细胞计，跨基质比较只有相关系数有效，原始倍数不行。",
+  },
+  {
+    slug: "l1000-perturbation-context",
+    title: "相关性是真的，只是虚高了十倍",
+    description: "在一份真实 LINCS L1000 数据里，比较 MCF7 与 PC3 之间共享的 1,721 个化合物扰动基因表达谱。原始表达值下，匹配与错配化合物的相关性几乎一样，rho 0.79 对 0.70；先减去每份表达谱自身同板载体对照基线后，才显出真实信号：0.175 对零假设的 0.034（p ≈ 8 × 10⁻⁸²）。",
+  },
+  {
+    slug: "freesolv-honest-baselines",
+    title: "FreeSolv v0.52 诚实基线",
+    description: "查看已完成的冻结测试评估、骨架划分基线与局限。这是教学基线，不是 SOTA 结论；完整指标见实验页面。",
+  },
+  {
+    slug: "objective-ladder",
+    title: "公共蛋白质记录的目标阶梯",
+    description: "针对 6 个受检实体和 6 项目标，读取序列、结构、亲和力与注释记录。实验核对各来源能够支持哪些单元格，在 36 个单元格中有 31 个带记录，并保留空白单元格对应来源的缺失原因。",
+  },
+  {
+    slug: "skempi-affinity",
+    title: "亲和力表里的独立观测",
+    description: "数清 SKEMPI 2.0 镜像里的复合物、蛋白组与完整配对，并审计归档保留在旁边的部分记录。随后按整复合物留出，比较按复合物留出与按行留出的基线，这正是“新复合物”与“新的一行”的区别。",
+  },
+  {
+    slug: "asset-openness-audit",
+    title: "七个开放度字段，分开审计",
+    description: "读资源图谱，检查每条记录是否把推理代码、训练代码、权重、架构、数据配方、训练数据与评测代码分七个字段记下、各带自己的证据，以及每条 licence 写明授权不覆盖什么。被检的记录里 52 个断言可得、26 个不适用、88 个未核实、2 个记为不可得，191 条记录都把七个字段分开。",
+  },
+  {
+    slug: "split-leakage-audit",
+    title: "哪些身份跨过了行划分",
+    description: "取 decision-unit 实验从十五个 ChEMBL 种子准入的 486 次独立测量，随机划分后统计有多少测试测量与训练集共享同一母体、同一骨架、同一测定、同一靶点或同一标准形式。98 条测试测量全部与训练集共享母体，而时间、供体、病人与采样位点这四条路径在这张表上无法测量。",
+  },
+  {
+    slug: "relational-graph-audit",
+    title: "类型化关系与它的证据",
+    description: "把 atlas 建成一张类型化图，检查它有什么、缺什么。191 条记录声明了 32 条七种类型的关系，每条都由声明它的记录提供证据；一个关系都不声明的记录被列出来。共享同一任务却不声明关系的候选对被计数，而图上的一条路径不是机制。",
+  },
+  {
+    slug: "claims-evidence-audit",
+    title: "记录可能处的四种状态",
+    description: "把比较记录的单元格分成四种状态：直接观测、有界推断、无效主张与未解决字段。十三个受审提供方与一条 track 的四个 topic 上，14 格是直接观测、0 格是有界推断、0 格是无效主张、38 格是未解决字段，与独立阅读的一处分歧被点名。",
+  },
+  {
+    slug: "multi-endpoint-tradeoff",
+    title: "终点家族，分开摆着",
+    description: "取 decision-unit 实验准入的 486 次独立测量，按终点家族分开，每族带自己的单位、测量数与离散度。十个母体里 462 次属效力相关，24 次属其他亲和力，没有任何化合物有毒性或暴露测量，因此这两族在这里无法整合。",
+  },
+  {
+    slug: "functional-validation-audit",
+    title: "一次测量、一次响应、一个结局",
+    description: "读 ChEMBL 37 的活性行与归档的 PubChem BioAssay 剂量响应记录，按每条记录能支撑哪一类主张来分类。ChEMBL 表有 1004 条记录、488 次点测量、516 个区间；PubChem 表有 1257 条记录、1204 张浓度响应表、38 个区间与 15 条不支撑任何主张的记录。临床结局在两张表里都测不到。",
+  },
+  {
+    slug: "source-review-scope-audit",
+    title: "可核对的主张绑定在什么上",
+    description: "读 atlas 自己的证据条目，按它们带的部分分类：来源表面、版本、日期与所审阅的确切材料。十二条被检记录里十二条证据条目没有一条带齐四部分，也没有一条带日期与表面而缺版本，所以这份 atlas 里的主张绑定在表面与日期上，而不是版本上。",
+  },
+  {
+    slug: "entity-glossary-audit",
+    title: "一张表命名了哪些实体类别",
+    description: "取准入的 ChEMBL 37 活性行，按每个标识符命名的实体类别分类：分子记录、母体分子、测定、靶点与文献。表命名了五类，却没有复杂物、细胞状态、病人或治疗候选物的标识符，实验把命名不了的类别报出来，而不是略过不提。",
+  },
+  {
+    slug: "generalization-unit-audit",
+    title: "一个数字在哪个单位上泛化",
+    description: "取 486 次准入测量，按划分可能落在的每个单位计数：分子记录、母体分子、骨架、测定、靶点与文献。同一批测量横跨 481 个测定、221 篇文献、100 个靶点与 9 个观测到的母体，因此“98 行的测试集”与“6 个未见母体”是同一张表上的两种不同主张。",
+  },
+  {
+    slug: "applicability-domain-audit",
+    title: "一个分子离训练数据有多远",
+    description: "在 FreeSolv v0.52 的水合自由能上拟合最便宜的基线，按骨架留出，测量每个留出分子到最近训练邻居的距离与误差大小。距离较小的一半里中位绝对误差为 0.59 kcal/mol，距离较大的一半里为 0.80，这是一个诊断而不是一条判定规则。",
+  },
+  {
+    slug: "nomination-readiness-audit",
+    title: "在计数之前定下的规则",
+    description: "把一条在计数之前就写好的就绪规则，套到 decision-unit 实验准入的十个母体上。规则要求五次独立测量、三个不同测定、两篇不同文献。六个化合物 go、两个 hold、两个 stop；对每个没 go 的，实验都点名它还缺哪一次测量。",
+  },
+  {
+    slug: "specificity-margin-audit",
+    title: "一个边际需要哪一次测量",
+    description: "在亲和力归档里数每个蛋白与几个伙伴一起被测过。171 个蛋白标签中有 154 个只对着一个伙伴被测过，只有 9 对计数配对的双方都观察到多于一个伙伴。这张表对一个从未被测过的替代物什么也没说。",
+  },
+  {
+    slug: "pkpd-translation-audit",
+    title: "从实测清除率到被假设的效应",
+    description: "把实测的内在清除率带过一个显式的暴露量、占有率与效应模型，材料是清除率实验准入的人体与大鼠肝细胞测量。1,120 个不同的准入母体里，106 个能被成对物种模型带上，1,014 个不能，每个都有具体原因。模型给出的浓度、占有率与效应是声明的未测参数下的输出，不是测量值。",
+  },
+  {
+    slug: "free-energy-network-audit",
+    title: "闭不上的那些循环",
+    description: "把八个已发布的相对结合自由能网络里的溶剂边与复合物边配对,检验每个循环是否闭合。92 个循环里 87 个闭合、5 个不闭合,最大的一个差 7.87 kcal/mol。实验按名字与大小保留失败的循环,而不是丢掉它们。",
+  },
+  {
+    slug: "biologic-construct-audit",
+    title: "模态不是构建体",
+    description: "检查六种具名药物的记录在模态、构建体、生产宿主与预期功能这四项上写明了什么。六个都写了模态，五个写了构建体，三个写了宿主，四个写了功能。三个有构建体却没有宿主，一个有宿主却没有构建体，因此只有三个把四项都写全。",
+  },
+  {
+    slug: "mechanism-consistency",
+    title: "是随靶点而来的响应，还是任何响应",
+    description: "用固定的错配化合物作对照，检验靶点介导的解释能否成立，材料是 1,721 个在两个细胞系里都有测量的化合物。678 个符合中介特异模式，123 个符合泛应激模式，920 个无法判定，其中 490 个是因为错配对照比化合物与自身还更一致。",
+  },
+  {
+    slug: "candidate-evidence-chain",
+    title: "一个候选的证据链停在哪里",
+    description: "把一个化合物的机制、靶点、活性、选择性、暴露、安全、合成与可复现连成一条链，并报告第一个没有被测量的环节。对三个环节最多的化合物，八环里有五环根本没有覆盖，没有一条链能到达主张。实验不填补缺失的环节。",
+  },
+  {
+    slug: "agent-evaluation-taskset",
+    title: "一个还没通过的固定任务集",
+    description: "把本项目自己的三个实验室当作固定评价任务，在来源解析、执行正确性、失败恢复、主张准确性与动作授权五个维度上逐项检查。没有任务五项全过:动作授权三个都不过,而那正是课文说人的复核该在的位置。",
+  },
+  {
+    slug: "target-product-profile",
+    title: "一个能被后来结果推翻的 profile",
+    description: "把一份在读测量之前就定下的、由硬性门槛与偏好组成的 profile,套到三个终点族共有的化合物上。没有化合物满足完整 profile：清除率门槛 24 个通过、5 个失败，CYP3A4 门槛 19 个通过、20 个失败，而临床反应与免疫原性在这里根本没有测量。",
+  },
+  {
+    slug: "open-question-audit",
+    title: "记录是否仍写明了什么能定论",
+    description: "给比较记录里的每个问题分类状态，并检查每个仍开放的问题是否写明了可反驳的观测或缺失的测量。28 个问题处于开放状态，28 个都写明了。审计读的是记录写了什么，不是那次测量做没做。",
+  },
+  {
+    slug: "claim-chain-audit",
+    title: "最弱的一环有多弱",
+    description: "把一个提名的各主题连成一条链，并按每条记录自己点名的证据核对每一环。审计两条各八环的链。最弱的一环都停在 worked 层，其中一条链有六环、另一条有五环低于该链达到的最强状态，另有七环与独立盲评不一致。",
+  },
+  {
+    slug: "biologic-construct-audit",
+    title: "记录实际写明了哪些字段",
+    description: "按模态、构建体类型、表达宿主与预期功能四个字段,核对每条 catalogue 记录写明了什么。46 条提到生物模态的记录里,46 条写明了模态,4 条写明了构建体类型,没有一条写明表达宿主或预期功能。模态不是构建体。",
+  },
+  {
+    slug: "crossdomain-tradeoff",
+    title: "哪一个必需输入阻断了每个提名",
+    description: "在工作簿自己的教学表与 58 个实测 ChEMBL 母体上执行工作簿的规则。教学表上算出的答案与课文一致：N1 被选择性比阻断，N2 被暴露比阻断，N3 被缺失的安全包阻断，三个都不满足完整要求。实测队列上这条规则根本提不出来：库里最充裕的族不是规则要的输入，于是每个候选都在效价输入处被阻断，没有一个完成提名。",
+  },
+  {
+    slug: "multi-endpoint-integration",
+    title: "哪些化合物带着不止一个终点",
+    description: "只按母体分子去连接读者真正有的实测终点族。7,908 个化合物里，58 个带两个族，没有一个带三个；而 1,062 个只带暴露、6,780 个只带相互作用、8 个只带效力。这里没有实测的毒性快照，所以那一族被报为未测，而不是被填上。",
+  },
+  {
+    slug: "oracle-exploitation-audit",
+    title: "一个选择规则读回了什么",
+    description: "用拟合好的模型把自己的训练分子按预测排序，比较它预测的值与实测的值。某个被选分子的差距达到 8.06 kcal/mol，而从同一池子里随机选的一组差距不超过 1.03。它为独立评估提出的批次来自划分的留出部分，每个成员都带一个验证目标。",
+  },
+  {
+    slug: "tool-contract-audit",
+    title: "一个工具的返回记录是否描述了它自己",
+    description: "拿本项目自己提交的 21 份返回记录去核一份有六个部分的契约。21 份都带 schema 版本、协议标识、计算日期与软件版本，7 份用 7 个不同的字段名声明了自己的限制。只有 1 份声明了契约要求的环境、副作用、运行状态与科学含义，另外 20 份没有——这是元数据的缺口，不是对测量结果的判断。",
+  },
+];
+---
+
+<SiteShell lang="zh-CN" title="实验室" description="AIDD notebook 实践路线、中文说明、下载入口与证据边界。">
+  <section aria-labelledby="labs-title">
+    <p class="eyebrow">可复现教学实验</p>
+    <h1 id="labs-title" class="page-heading">实验室</h1>
+    <p class="page-intro">每个实验说明输入、输出、版本和限制；预测实验还声明划分、指标与基线。四项练习提供中英文 notebook。既有冻结评估用于证据解读，译文不构成新增实验结果。</p>
+    <p><a href="/labs/">English canonical index</a> · <a href="/zh-cn/learn/foundations/first-session/">第一次学习</a></p>
+  </section>
+  <section class="section" aria-labelledby="notebook-route-title">
+    <article class="detail-panel">
+      <p class="meta-label">从这里开始 · 四项 notebook 练习</p>
+      <h2 id="notebook-route-title">从分子表示走到性质与引用证据</h2>
+      <p>先检查七个分子，再用虚构数据理解拟合，接着完成实测 logD 练习，并对照原文检查已保存的 PaperQA 答案。PaperQA 默认离线，新推理需另行开启。指南解释 Colab 上传、执行顺序、保存结果，以及已有证据 notebook 的不同用途。</p>
+      <a class="button-secondary" href="/zh-cn/labs/notebook-guide/">进入 notebook 实践路线</a>
+    </article>
+    <p class="section-intro">
+      看这个顺序：协议在看到留出结果之前就已写好并冻结，测试集只打开一次，而在打开之后才发现的缺陷
+      会让协议作废，而不是变成一个结果。
+    </p>
+    <AtlasFigure id="frozen-lifecycle" />
+  </section>
+  <section class="section" aria-labelledby="zh-representation-title">
+    <article class="detail-panel">
+      <p class="meta-label">读结果的方式</p>
+      <h2 id="zh-representation-title">同一次冻结评估里，两个排名会不一样</h2>
+      <p>
+        主划分上胜出的基线，在另一项实验的复制上以很大差距落败。这正是失败被保留在结果旁边、
+        而不是藏在结果背后的原因。
+      </p>
+    </article>
+    <AtlasFigure id="representation-flips" />
+  </section>
+  <section class="section" aria-labelledby="student-lab-title">
+    <article class="detail-panel">
+      <p class="meta-label">可修改学生练习 · 合成数据</p>
+      <h2 id="student-lab-title">拟合、选择与解释一个基线</h2>
+      <p>打开自包含 notebook，在十个虚构实体上检查拟合、验证与误差。不触碰已有冻结真实数据实验，无需下载数据、额外建模库或 GPU；仍保留标准库命令行版本。</p>
+      <a class="button-secondary" href="/zh-cn/learn/machine-learning/student-modelling-sandbox/">打开学生沙箱</a>
+    </article>
+  </section>
+  {labs.map((lab) => (
+    <section class="section" aria-labelledby={lab.slug}>
+      <article class="detail-panel">
+        <h2 id={lab.slug}>{lab.title}</h2>
+        <p>{lab.description}</p>
+        <a class="button-secondary" href={`/zh-cn/labs/${lab.slug}/`}>阅读中文实验说明</a>
+      </article>
+    </section>
+  ))}
+</SiteShell>

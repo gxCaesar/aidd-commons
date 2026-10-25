@@ -1,0 +1,66 @@
+---
+title: Structure, pockets, and co-folding
+description: Read structural predictions as bounded evidence for a specific molecular question.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="structure-and-pockets/cofolding-frontier" />
+
+## Foundations
+
+Structure prediction, pocket identification, and co-folding are related but
+different tasks. A predicted complex can support a structural hypothesis; it
+does not by itself establish binding, selectivity, cellular activity, or a
+therapeutic mechanism. The objects, input state, and intended experimental
+decision need to be recorded before interpreting an output.
+
+## Practical workflow
+
+Start with the experimentally known sequence, construct, ligand state, and
+assay context. Inspect whether the selected system actually releases the
+inference code, weights, training material, and evaluation material needed for
+the intended use. The [open co-folding frontier Atlas](/atlas/open-cofolding-frontier/)
+keeps those dimensions separate rather than treating a repository as a blanket
+openness claim.
+
+## Evaluation
+
+Use a held-out structural or biochemical question matched to the decision, and
+check physical plausibility, alternative states, calibration, and overlap with
+training-like examples when that information is available. Confirm a
+decision-relevant prediction with an assay, structure, or perturbation rather
+than a model score alone.
+
+Before comparing systems, separate the claims. A monomer prediction, a complex
+prediction, a co-folded pose, a docked pose and an experimental binding
+measurement are five different things that arrive in the same file format, and
+the [claim separation lab](/labs/cofolding-claim-separation/) prints which one
+each registered system actually supports, in one offline command.
+
+## Frontier and open questions
+
+[AlphaFold 3](https://www.nature.com/articles/s41586-024-07487-w),
+[Chai-1](https://github.com/chaidiscovery/chai-lab),
+[Boltz](https://github.com/jwohlwend/boltz),
+[OpenFold](https://github.com/aqlaboratory/openfold), and
+[Protenix](https://github.com/bytedance/Protenix) expose different combinations
+of assets and documentation. Reported accuracy is therefore not a substitute
+for an asset-level reproducibility audit.
+
+## What v0.1 does not yet teach
+
+v0.1 does not make a universal ranking of co-folding systems, offer a
+prospective validation dataset, or infer availability where primary evidence
+does not state it.
+
+## Core-source path
+
+Read the [AlphaFold 3 article](https://www.nature.com/articles/s41586-024-07487-w),
+then the implementation and licence materials for
+[Chai-1](https://github.com/chaidiscovery/chai-lab) and
+[Boltz](https://github.com/jwohlwend/boltz). Use the
+[Atlas inventory](/atlas/open-cofolding-frontier/) to identify which questions
+remain unverified for every record.
+
+Last reviewed: 2026-09-04.

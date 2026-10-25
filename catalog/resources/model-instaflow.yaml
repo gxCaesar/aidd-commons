@@ -1,0 +1,58 @@
+id: model-instaflow
+name: InstaFlow
+kind: model
+summary: "InstaFlow is a one-step text-to-image generator built with rectified flow, trained on text, noise and image triplets generated from pre-trained Stable Diffusion 1.5."
+canonical_url: https://github.com/gnobitab/InstaFlow
+identifiers:
+  - scheme: paper
+    value: "InstaFlow: One Step Is Enough for High-Quality Diffusion-Based Text-to-Image Generation; arXiv 2309.06380"
+    url: https://arxiv.org/abs/2309.06380
+stages: [model-development]
+modalities: [image, text]
+tasks: [model-training]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [hf-instaflow] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: "repository source code only, with the notice to be retained; the licence does not extend to the pre-trained models"
+    evidence: [license]
+  - name: CC BY-NC 4.0
+    scope: "pre-trained model weights, non-commercial use only, and additionally subject to the CreativeML Open RAIL-M licence inherited from Stable Diffusion 1.5, so neither commercial use nor removal of the inherited use restrictions is granted"
+    evidence: [code-readme, hf-instaflow]
+evidence:
+  - id: repository
+    url: https://github.com/gnobitab/InstaFlow
+    label: gnobitab/InstaFlow repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: paper
+    url: https://arxiv.org/abs/2309.06380
+    label: arXiv abstract for the InstaFlow paper (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: code-readme
+    url: https://raw.githubusercontent.com/gnobitab/InstaFlow/main/code/README.md
+    label: InstaFlow code README
+    supports: [caveats, acknowledgements]
+  - id: hf-instaflow
+    url: https://huggingface.co/XCLIU/instaflow_0_9B_from_sd_1_5
+    label: InstaFlow 0.9B Hugging Face model card
+    supports: [caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/gnobitab/InstaFlow/main/LICENSE
+    label: InstaFlow MIT LICENSE
+    supports: []
+caveats:
+  - The pre-trained weights are released under CC BY-NC 4.0 and inherit the CreativeML Open RAIL-M terms of Stable Diffusion 1.5, so the MIT source licence does not extend to them.
+  - The README names no training corpus for the text, noise and image triplets, so training-data provenance is unverified.
+  - The README asks users to disable the safety checker when reproducing the paper's MS COCO FID numbers, so those numbers are not produced under the default sampling path.
+acknowledgements:
+  - The README asks users to cite the InstaFlow ICLR 2024 paper and provides the corresponding BibTeX entry.
+last_verified: "2026-10-21"

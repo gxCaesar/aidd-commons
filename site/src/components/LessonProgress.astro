@@ -1,0 +1,72 @@
+---
+import LessonResources from "./LessonResources.astro";
+import { withoutSiteBase } from "../lib/site-paths";
+interface Props {
+  lessonId: string;
+}
+
+const { lessonId } = Astro.props;
+const chinese = withoutSiteBase(Astro.url.pathname, import.meta.env.BASE_URL).startsWith("/zh-cn/");
+---
+
+<lesson-progress data-lesson-id={lessonId} data-complete-label={chinese ? "已完成" : "Completed"} data-incomplete-label={chinese ? "未完成" : "Not completed"}>
+  <button class="lesson-progress__button" type="button" aria-pressed="false">{chinese ? "标记本课完成" : "Mark lesson complete"}</button>
+  <p data-progress-status aria-live="polite">{chinese ? "未完成" : "Not completed"}</p>
+</lesson-progress>
+
+<LessonResources lessonId={lessonId} />
+
+<script>
+  import {
+    progressStorageKey,
+    readLessonProgress,
+    toggleLessonProgress,
+  } from "../lib/atlas-state";
+
+  class LessonProgress extends HTMLElement {
+    private button?: HTMLButtonElement;
+    private status?: HTMLElement;
+    private completed: string[] = [];
+
+    connectedCallback() {
+      this.button = this.querySelector("button") ?? undefined;
+      this.status = this.querySelector("[data-progress-status]") ?? undefined;
+      if (!this.button || !this.status || !this.dataset.lessonId) return;
+
+      try {
+        this.completed = readLessonProgress(localStorage);
+      } catch {
+        this.completed = [];
+      }
+      this.render();
+      this.button.addEventListener("click", () => this.toggle());
+    }
+
+    private toggle() {
+      const lessonId = this.dataset.lessonId;
+      if (!lessonId) return;
+      this.completed = toggleLessonProgress(this.completed, lessonId);
+      try {
+        localStorage.setItem(
+          progressStorageKey,
+          JSON.stringify({ completed: this.completed }),
+        );
+      } catch {
+        // Progress is optional; the lesson remains readable if storage is unavailable.
+      }
+      this.render();
+    }
+
+    private render() {
+      const complete = this.completed.includes(this.dataset.lessonId ?? "");
+      this.button?.setAttribute("aria-pressed", String(complete));
+      if (this.status) this.status.textContent = complete
+        ? this.dataset.completeLabel ?? "Completed"
+        : this.dataset.incompleteLabel ?? "Not completed";
+    }
+  }
+
+  if (!customElements.get("lesson-progress")) {
+    customElements.define("lesson-progress", LessonProgress);
+  }
+</script>

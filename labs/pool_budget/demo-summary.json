@@ -1,0 +1,61 @@
+{
+  "data_kind": "synthetic-teaching-example",
+  "real_campaign": "not_run",
+  "scope": "Authored graphs and artificial scores; no evidence of assay performance.",
+  "software": {
+    "numpy": "2.4.6",
+    "rdkit": "2025.09.6"
+  },
+  "partitions": {
+    "initial": {
+      "molecules": 6,
+      "groups": 6
+    },
+    "pool": {
+      "molecules": 42,
+      "groups": 24
+    },
+    "evaluation": {
+      "molecules": 12,
+      "groups": 12
+    }
+  },
+  "budget": {
+    "checkpoints": [0, 2, 4, 6, 8],
+    "batch_size": 2,
+    "acquired_fraction": 0.19047619047619047,
+    "top_decile_size": 5
+  },
+  "maxmin": {
+    "recovery": [0.0, 0.0, 0.0, 0.2, 0.4],
+    "normalized_auc": 0.1
+  },
+  "random_runs": [
+    {
+      "seed": 0,
+      "recovery": [0.0, 0.0, 0.2, 0.2, 0.2],
+      "normalized_auc": 0.125
+    },
+    {
+      "seed": 1,
+      "recovery": [0.0, 0.2, 0.2, 0.4, 0.4],
+      "normalized_auc": 0.25
+    },
+    {
+      "seed": 2,
+      "recovery": [0.0, 0.0, 0.0, 0.0, 0.0],
+      "normalized_auc": 0.0
+    },
+    {
+      "seed": 3,
+      "recovery": [0.0, 0.0, 0.0, 0.0, 0.0],
+      "normalized_auc": 0.0
+    },
+    {
+      "seed": 4,
+      "recovery": [0.0, 0.0, 0.0, 0.2, 0.4],
+      "normalized_auc": 0.1
+    }
+  ],
+  "evaluation": "not_scored; no predictive model is fitted"
+}

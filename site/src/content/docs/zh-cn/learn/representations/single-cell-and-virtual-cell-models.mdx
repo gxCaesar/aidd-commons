@@ -1,0 +1,169 @@
+---
+title: 单细胞基础模型与虚拟细胞
+description: 通过任务约定、表示、开放维度、许可范围，以及细胞嵌入与扰动结果预测之间的界线，阅读 10 份注明日期的资源记录。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="representations/single-cell-and-virtual-cell-models" />
+
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+学完[蛋白、复合物、细胞状态与知识图谱表示](/zh-cn/learn/representations/complex-cell-and-knowledge-graphs/)后，用这份注明日期的阅读材料判断关于单细胞基础模型与虚拟细胞的 10 份目录记录究竟确立了什么。上一课讲的是细胞状态如何编码，以及这种编码丢失了什么。本课向上走一层，讲的是在大规模上学习细胞状态嵌入的模型，以及声称能预测扰动会如何改变细胞的模型。
+
+学完本课，你应能做到：
+
+1. 说出细胞表示与扰动结果预测各自的输入输出约定，并指出二者的分界；
+2. 逐条阅读七个开放维度，不把它们合并成单一的开放标签；
+3. 在代码与权重条款不同的时候，把许可对应到它实际覆盖的资产；
+4. 区分有组织的生物学特征与调控响应的证据，并说明本家族中哪一条证据挡住了更宽的结论，或仍然缺失。
+
+本课是附带书面练习的来源阅读。没有运行、复现或重新实现本家族中的任何方法，没有加载检查点，也没有下载数据集。这些记录没有跨家族的匹配比较，因此本阅读不支持任何排名。[英文原版](/learn/representations/single-cell-and-virtual-cell-models/)是规范版本。
+
+## 两种任务约定
+
+第一种约定以一个细胞为输入，返回一个向量。输入是某个细胞在既定测量与预处理流程下的表达谱。输出是共享潜空间中的一个嵌入，在若干记录中还带有被测基因的第二个嵌入。它的用处是迁移。语料中从未包含的组织、平台或物种的细胞仍可放进同一空间，因为编码器产生坐标不需要标签、不需要重新训练，也不需要微调。[UCE](https://github.com/snap-stanford/UCE)以最强的方式陈述了这一性质，把新组织和新物种的新细胞映射进一个潜空间。这一约定不预测任何结果。嵌入说明一个细胞相对其他细胞处在什么位置，而坐标轴是从相关性而非干预中学出来的。
+
+第二种约定以一次干预为输入，返回一个反事实。输入是基线细胞状态、声明过的扰动（一个基因、一个基因集或一种化合物），以及语境（细胞类型、剂量或条件）。输出是预测的扰动后表达谱，或相对对照的变化。它的用处是一个可以被实测筛选推翻的反事实。
+
+两种约定之间的落差正是本课的重点。细胞表示不是关于干预的预测，而一个善于嵌入细胞的模型，并不能给出它能预测某个药物作用的证据。本家族记录对第一种约定的确立远多于第二种。还有两条界线要让阅读保持诚实。目录中的任务标签，例如 cell-context-inspection 或 out-of-distribution-evaluation，是对项目声称覆盖范围的分类，不是实测结果，也不携带指标、分割或评估集。模型名不是能力。某件资产是做什么的、其证据到哪里为止，都必须从记录中读出。
+
+Tahoe-x1 加入了预训练规模主张，但其记录没有数值基准结果。特征图谱则检验学得的表示包含什么：表示具有组织化特征，并不能确立模型表征了调控响应。它的 CRISPRi 结果必须与特征图谱一起读。
+
+## scGPT
+
+[scGPT代码仓库](https://github.com/bowang-lab/scGPT)描述了一个面向单细胞多组学的生成式预训练Transformer，它把基因表达嵌入为细胞表示与基因表示，记录列出的用途包括细胞注释、批次整合、调控网络推断和扰动效应预测。[README](https://raw.githubusercontent.com/bowang-lab/scGPT/main/README.md)指向一个预训练模型库，覆盖 whole-human、brain、blood、heart、lung、kidney、pan-cancer 和 continual pretrained 检查点，托管在 Google Drive。架构证据是预印本记录 [bioRxiv DOI 10.1101/2023.04.30.538439](https://doi.org/10.1101/2023.04.30.538439) 与期刊版本 [Nature Methods 21(8):1470-1480 (2024)](https://pubmed.ncbi.nlm.nih.gov/38409223/)。记录没有给出读者可核查的训练目标、训练方案或指标。
+
+推断代码、权重和架构标为可用。训练代码、数据配方、训练数据和评估代码是未核实。README 自己把预训练代码列为待办项，并把一个独立的 integrate-huggingface-model 分支描述为对预训练流程的初步支持，因此所打开的页面无法确定训练代码的发布状态。[MIT许可文件](https://raw.githubusercontent.com/bowang-lab/scGPT/main/LICENSE)覆盖仓库源代码，写着 "Copyright (c) 2022 suber"，持有人与年份都与 scGPT 作者不符；README 对 Google Drive 上的检查点没有另设条款。模型库按人群列出细胞数，论文摘要报告语料超过 33 million 个细胞，但没有指名任何公开语料作为预训练数据。CellxGene 只在 README 中作为参考映射功能的来源出现。因此这一规模数字只界定了语料大小，没有确定语料里有哪些细胞。
+
+## scFoundation
+
+[scFoundation代码仓库](https://github.com/biomap-research/scFoundation)描述了一个非对称Transformer，在超过 50 million 个人类单细胞转录组上预训练，产出细胞与基因嵌入，用于细胞类型注释、药物响应预测和扰动预测。[README](https://raw.githubusercontent.com/biomap-research/scFoundation/main/README.md)随收集流程发布 DataSupplement1.xlsx 与 DataSupplement2.xlsx，记录因此把数据配方标为可用；架构证据是 [Nature Methods DOI 10.1038/s41592-024-02305-7](https://doi.org/10.1038/s41592-024-02305-7)。README 没有指明来源数据集，因此从所打开的页面无法核实语料组成。记录还说明 README 用 GEARS 做扰动预测，该关系的状态为未核实。
+
+推断代码、权重、架构和数据配方标为可用，训练代码、训练数据与评估代码是未核实。访问级别为仅限研究，记录用两份而非一份许可解释了原因。仓库源代码为 Apache-2.0，而[模型许可文件](https://raw.githubusercontent.com/biomap-research/scFoundation/main/MODEL_LICENSE)只管权重，仅授予非商业研究用途，禁止为任何商业、军事或非法目的使用、复制、修改、发布、分发、复制或制作参数衍生物，并受中华人民共和国法律管辖。把 Apache-2.0 条款套到权重上的读者，拿错了许可。在线推断与命令行工具托管在 [aigp.biomap.com](https://aigp.biomap.com/)，所打开的页面没有给出其条款。
+
+## CellFM
+
+[CellFM代码仓库](https://github.com/biomed-AI/CellFM)描述了一个基于 RetNet 的基础模型，在约 100 million 个人类细胞的转录组上预训练，用于细胞注释、扰动预测、基因功能预测、批次校正以及细胞类型特异的 lncRNA 鉴定。[模型卡](https://huggingface.co/ShangguanNingyuan/CellFM)报告 19,914 个样本，包含 102,304,686 个人类细胞；[Zenodo记录](https://zenodo.org/records/15138665)保存 CellFM 所用数据集的 CellFM_data.zip 归档，约 5.3 GB。架构证据是 [Nature Communications 16:4679 (2025)](https://doi.org/10.1038/s41467-025-59926-5)。这是本家族中唯一指明数据归档的记录，而归档说明与模型卡都没有列出来源图谱或逐样本的来源。
+
+CellFM 的训练代码也依据 README 标为可用，推断代码、权重、架构和训练数据同样标为可用，数据配方与评估代码仍是未核实。它的条款按资产拆分，并改变了读者能做什么。仓库源代码与模型卡采用 CC-BY-NC-ND-4.0，它为非商业目的授予被许可材料的复制与分享，允许为非商业目的制作和再现改编材料，但禁止分享该改编材料。因此微调得到的衍生模型可以在组内存在，却不能公开发布。[Zenodo归档](https://zenodo.org/records/15138665)另行采用 CC-BY-4.0，[许可文件](https://raw.githubusercontent.com/biomed-AI/CellFM/main/LICENSE-cc-by-nc-nd-4.0)也按其非商业、禁止衍生的授权命名。数据条款与模型条款并不一致，而命名归档的许可对读取它的代码只字未提。
+
+## UCE
+
+[UCE代码仓库](https://github.com/snap-stanford/UCE)描述了一个自监督模型，把单细胞转录组映射进同一个生物学潜空间，使来自新组织和新物种的新细胞无需标签、无需重新训练、无需微调即可嵌入。[Nature记录](https://doi.org/10.1038/s41586-026-10689-z)报告了一个包含 36 million 个细胞与超过 1,000 个具名细胞类型的 Integrated Mega-scale Atlas，记录指出摘要并未声明该图谱就是训练集。[README](https://raw.githubusercontent.com/snap-stanford/UCE/main/README.md)指向 [Figshare文章 24320806](https://figshare.com/articles/dataset/Universal_Cell_Embedding_Model_Files/24320806) 上的 33 层模型文件，并说明评估脚本会自动下载四层模型文件，却没有给出其位置。
+
+推断代码、权重和架构标为可用，训练代码、数据配方、训练数据与评估代码是未核实。[MIT许可文件](https://raw.githubusercontent.com/snap-stanford/UCE/main/LICENSE)覆盖仓库源代码，写着 "Copyright (c) 2023 Yanay Rosen, Yusuf Roohani, Jure Leskovec"。Figshare 上的 33 层权重与整理好的数据集都没有声明条款，而该 Figshare 记录在 2026-10-21 打开时返回 HTTP 403，因此已发布权重的条款从未被读到。评估脚本取用的四层检查点同样没有可追溯的来源。这条记录里没有任何内容确定预训练语料的组成，而具名细胞类型图谱是模型的产物，不是模型的输入记录。
+
+## Tahoe-x1
+
+[Tahoe-x1 仓库](https://github.com/tahoebio/tahoe-x1)描述了一个经过扰动训练的单细胞基础模型家族，参数规模从 70 million 到 3 billion，已发布权重，并适配癌症相关下游任务。其 [README](https://raw.githubusercontent.com/tahoebio/tahoe-x1/main/README.md)将预训练规模概述为约 266 million 份单细胞表达谱，但列出的 CellxGene 2025-01、scBaseCamp 2025-02 和 Tahoe-100M 各自未过滤与已过滤版本共 6 行，合计约 269 million。页面没有调和两项数字，记录因此保留两者。已过滤语料丢弃检测到基因最少的细胞，页面指出这会影响队列选择。因此第 2 阶段预训练使用的细胞群体与第 1 阶段不同。页面描述了 2 阶段预训练与下游适配，但没有给出形式化的预训练目标、损失或掩码流程。
+
+记录列出 DepMap 基因必需性、MSigDB hallmarks、跨 5 种组织的细胞类型分类，以及未见语境中的扰动预测等评估，但没有数值基准结果或匹配比较。[bioRxiv 预印本](https://www.biorxiv.org/content/10.1101/2025.10.23.683759v1)是该模型的来源，并不等于这条记录提供了数值结果。当前代码库只支持关闭注意力掩码的 flash attention 实现；用于训练 2 个较小模型的 Triton 后端和自定义注意力掩码已不再受支持。因此已发布的推断路径不是这些模型的训练路径。
+
+推断代码、训练代码、权重、架构、数据配方和训练数据均标为可用；评估代码未核实。仓库的 Apache-2.0 许可标记覆盖源码和已发布检查点。部分训练语料不能公开下载，需要提出访问申请，所以拿到权重不等于能拿到支撑它的全部语料。各语料仍适用其自身许可。预训练规模和已发布权重既不能确立细胞类型覆盖，也不能确立实测的扰动预测性能。
+
+## scGPT 与 Geneformer 的稀疏自编码器特征图谱
+
+[特征图谱预印本](https://arxiv.org/abs/2603.02952)描述了从 scGPT 与 Geneformer 每一层提取稀疏自编码器特征后构建的交互式图谱，分别有 [scGPT](https://github.com/biodyn-ai/scgpt-atlas) 和 [Geneformer](https://github.com/biodyn-ai/geneformer-atlas) 的网页应用仓库。论文标题指出，表示中有组织的生物学知识，但调控逻辑很少。在全基因组规模的 CRISPRi 测试中，只有 48 个转录因子中的 3 个，即 6.2%，显示出转录因子特异的特征响应。多组织对照将其提高到 10.4%，即 48 个中的 5 个。因此，能够区分细胞类型的表示，本身并不是模型表征了调控的证据。
+
+论文还报告了包含 82,525 与 24,527 个特征的两份图谱；99.8% 的特征无法被奇异值分解发现；29–59% 的特征可注释到 Gene Ontology、KEGG、Reactome、STRING 或 TRRUST 这些具名数据库中的通路。论文还报告了 141 与 76 个共激活模块，中位因果特异性为 2.36 倍，跨层信息高速通道覆盖 63–99.8%。这些数字来自目录记录所读的预印本摘要与概要，并非对全文的重新分析。应带走的是 CRISPRi 结果对结论的限制，而不是把图谱规模当作能力结果。
+
+这篇论文是 2026-03-03 提交的 arXiv 预印本，没有列出期刊或会议发表场所。记录将推断代码标为可用，其他 6 个开放维度标为未核实；访问级别也是未核实，且没有列出许可。两个仓库都是没有 README 和许可文件的网页应用源码树，因此读者通过托管页面访问图谱，而非通过已发布的软件包。仓库包含应用源码，却不包含提取出的特征、训练好的稀疏自编码器、注释表或逐层结果，因此只靠仓库无法重新计算图谱。
+
+## GEARS
+
+[GEARS代码仓库](https://github.com/snap-stanford/GEARS)描述了一个基于图的深度学习模型，把基因嵌入与基因间关系的知识图谱结合，预测单基因和多基因扰动的转录响应。这属于第二种约定，而知识图谱正是承载它的输入结构，图的质量也就限定了预测的质量。[README](https://raw.githubusercontent.com/snap-stanford/GEARS/master/README.md)把 Norman 等人 2019 指为所链接模型的训练集，[数据集加载器](https://raw.githubusercontent.com/snap-stanford/GEARS/master/gears/pertdata.py)从公开的 Harvard Dataverse 端点下载 norman、adamson 和 dixit 三个处理后归档。架构证据是 [Nature Biotechnology 42(6):927-935 (2024)](https://doi.org/10.1038/s41587-023-01905-6)。README 没有说明数据集版本、分割或更进一步的预训练语料，记录也不含指标表，因此无法从中读出头空间，也无法读出匹配比较。
+
+训练数据标为可用，推断代码与评估代码可用，训练代码、权重和数据配方是未核实。权重是最显眼的缺口。README 没有给出预训练模型的下载地址，它提到的通往已训练 Norman 模型的唯一路径是一个需要 Colab Pro 的笔记本，因此已发布权重的可用性未核实。[MIT许可文件](https://raw.githubusercontent.com/snap-stanford/GEARS/master/LICENSE)覆盖仓库源代码，写着 "Copyright (c) 2022 Yusuf Roohani, Kexin Huang, Jure Leskovec"；README 没有许可章节，对已训练模型以及软件包加载的数据集也没有声明条款。目录还给这条记录标上了 benchmark-evaluation 任务，它命名的是一项活动，而不是一次实测结果。
+
+## CPA
+
+[CPA代码仓库](https://github.com/theislab/cpa)描述了一个组合式扰动自编码器，把单细胞转录响应分解为基线、药物和扰动三类效应，从而可以把剂量、细胞类型与遗传干预外推到未见组合。[Molecular Systems Biology 19(6):e11517 (2023)](https://doi.org/10.15252/msb.202211517) 记录报告遗传筛选使用了 Perturb-seq 实验并使用了新生成的组合数据，却没有指明数据集，也没有给出分割。[README](https://raw.githubusercontent.com/theislab/cpa/main/README.md)以 combosciplex、Norman 和 Kang 作为链接标签来命名教程，却没有说明任何已发布检查点是在哪个数据集上训练的。
+
+推断代码、权重和架构标为可用，训练代码、数据配方、训练数据与评估代码是未核实。[BSD-3-Clause许可文件](https://raw.githubusercontent.com/theislab/cpa/main/LICENSE)覆盖仓库源代码，写着 "Copyright (c) 2023, Mohammad Lotfollahi, Theislab"。README 没有许可章节，对同一 [Google Drive集合](https://drive.google.com/drive/folders/1yFB0gBr72_KLLp1asojxTgTqgz6cwpju?usp=drive_link)中的预训练模型和数据集也没有声明条款。因此已发布的检查点与已发布的数据集，其条款需要从该集合取得，而不是从许可文件取得。记录的任务分类包含 cell-context-inspection 和 out-of-distribution-evaluation，描述的是项目声称覆盖的范围，而不是实测的泛化结果。
+
+## PertFormer
+
+[PertFormer代码仓库](https://github.com/alibaba/damo-pertformer)描述了一个 3 billion 参数的多模态Transformer，它从未扰动序列预测遗传、转录和序列扰动对基因表达与细胞命运的影响，并提名扰动靶点。[预印本记录](https://doi.org/10.1101/2024.12.19.629561)只给出模态计数，即九种数据类型、55 billion 个碱基对的 bulk 数据，以及来自一百万个细胞的 1.5 billion 对配对多组学观测，没有指明基准数据集、分割或指标。[模型卡](https://huggingface.co/GenomicIntelligenceDamoAcademy/pertformer)托管检查点，约 13 GB。
+
+推断代码、权重和架构标为可用，训练代码、数据配方、训练数据与评估代码是未核实。访问级别为仅限研究。仓库源代码与模型卡采用 CC-BY-NC-ND-4.0，[许可文件](https://raw.githubusercontent.com/alibaba/damo-pertformer/main/LICENSE)没有给出针对模型权重或数据的专门条款，因此检查点的条款就是源代码与模型卡的条款，而不是另一份权重许可。README、模型卡与摘要都没有指明预训练语料。记录还指出一处标题不一致。README 把稿件命名为 "PertFormer: Zero-shot perturbation prediction and target discovery from wild-type biology"，并说明稿件正在评审，而所引 DOI 上的 bioRxiv 记录标题是 "Multimodal foundation model predicts zero-shot functional perturbations and cell fate dynamics"。引用该模型的读者必须选定一个标题，并记录这一分歧。
+
+## 零样本评估研究
+
+[零样本评估仓库](https://github.com/microsoft/zero-shot-scfoundation)是一个基准而不是模型，并以匹配协议评估其表示任务终点。其 [README](https://raw.githubusercontent.com/microsoft/zero-shot-scfoundation/main/README.md)指明两项任务，即细胞类型聚类与批次整合，以及两个基线，即 scVI 与高变基因启发式方法，并用已发布的笔记本与已发布的数据归档来评估 scGPT 与 Geneformer。[预印本记录](https://doi.org/10.1101/2023.10.16.561085)报告零样本场景下可靠性有限，没有指明基线、数据集、分割或指标，因此已发布的笔记本是唯一能看到基线实现的地方。
+
+推断代码与评估代码标为可用，训练代码、权重和架构为不适用，这对一项不训练任何东西的研究是恰当的分类。数据配方是未核实，README 没有指明 [Figshare归档](https://doi.org/10.6084/m9.figshare.24747228)内部的各个数据集，因此从所打开的页面无法核实评估集的组成。[MIT许可文件](https://raw.githubusercontent.com/microsoft/zero-shot-scfoundation/main/LICENSE)覆盖本仓库的笔记本，写着 "Copyright (c) Microsoft Corporation." 且没有年份，而它加载的权重来自 scGPT 与 Geneformer 仓库，其条款适用。这些笔记本按同一协议评估他人的检查点，但记录仍不携带任何指标数值。
+
+## 按维度记录开放状态
+
+以下七列保留目录中的不同维度。可用表示被引用的记录确立了访问或文档证据，不代表本课执行过资产。未核实表示记录没有确立该维度。不适用表示该资源没有这个维度，对一个基准而言这正是诚实的答案。
+
+| 记录 | 推断代码 | 训练代码 | 权重 | 架构 | 数据配方 | 训练数据 | 评估代码 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| scGPT | 可用 | 未核实 | 可用 | 可用 | 未核实 | 未核实 | 未核实 |
+| scFoundation | 可用 | 未核实 | 可用 | 可用 | 可用 | 未核实 | 未核实 |
+| CellFM | 可用 | 可用 | 可用 | 可用 | 未核实 | 可用 | 未核实 |
+| UCE | 可用 | 未核实 | 可用 | 可用 | 未核实 | 未核实 | 未核实 |
+| Tahoe-x1 | 可用 | 可用 | 可用 | 可用 | 可用 | 可用 | 未核实 |
+| 稀疏自编码器特征图谱 | 可用 | 未核实 | 未核实 | 未核实 | 未核实 | 未核实 | 未核实 |
+| GEARS | 可用 | 未核实 | 未核实 | 可用 | 未核实 | 可用 | 可用 |
+| CPA | 可用 | 未核实 | 可用 | 可用 | 未核实 | 未核实 | 未核实 |
+| PertFormer | 可用 | 未核实 | 可用 | 可用 | 未核实 | 未核实 | 未核实 |
+| 零样本评估 | 可用 | 不适用 | 不适用 | 不适用 | 未核实 | 不适用 | 可用 |
+
+决定多数下游选择的是权重一列。7 条记录把权重标为可用，2 条标为未核实，零样本基准则标为不适用。特征图谱这一行描述的是网页应用代码，不是已发布的稀疏自编码器权重。Tahoe-x1 显示出另一种缺口：权重可用，但部分训练语料需要提出访问申请。可用模型权重所附的条款从只覆盖源代码的 MIT，到非商业且禁止衍生、因而禁止分享改编模型的授权，跨度很大。计划微调、再分发或对外提供这些模型的读者，必须读资产的许可，而不是读仓库的许可。
+
+## 训练语料与细胞类型覆盖
+
+另两条相关的序列模型记录把这条边界显得更清楚。[tGPT](https://github.com/deeplearningplus/tGPT) 是自回归 GPT 模型，把细胞内部的基因表达排序作为生成式预训练任务，并为单细胞与 bulk 组织分析产生细胞层面特征。其 README 和[论文摘要](https://doi.org/10.1101/2022.01.31.478596)给出 22.3 million 个单细胞转录组的规模，却没有指明来源语料，因此训练数据仍为未核实。预训练 tokenizer 与检查点从一张未声明许可的[模型卡](https://huggingface.co/lixiangchun/transcriptome-gpt-1024-8-16-64)载入。仓库的 GPL 3.0 条款来自其 [LICENSE 文件](https://raw.githubusercontent.com/deeplearningplus/tGPT/main/LICENSE)，而非 README 的许可章节或权重模型卡。本课已经提到的 [Geneformer](https://github.com/jkobject/geneformer)则有另一种资产边界。检查时其仓库没有显示许可，LICENSE 路径在 2026-10-21 返回 HTTP 404，而 Apache 2.0 出现在所链接的[模型卡](https://huggingface.co/ctheodoris/Geneformer)上，尚未显示该条款覆盖仓库源码。
+
+5 条模型记录把训练语料留为未核实，即 scGPT、scFoundation、UCE、CPA 和 PertFormer。CellFM 指明了一个归档，却没有列出其中的来源图谱。GEARS 指明 Norman 等人 2019 是某个所链接模型的训练集，却没有给出版本或分割。Tahoe-x1 指明预训练语料，但部分语料需要申请访问，而且过滤改变了进入第 2 阶段的细胞群体。零样本研究不训练任何东西，因此该维度不适用。特征图谱检查 scGPT 与 Geneformer 的表示，但应用仓库不包含提取出的特征或逐层结果，也无法补齐 scGPT 缺失的语料组成信息。
+
+这些记录里的规模数字很容易被读成覆盖保证，而它们不是。scGPT 摘要报告超过 33 million 个细胞。scFoundation 的 README 给出超过 50 million 个人类单细胞转录组。CellFM 模型卡报告 19,914 个样本，包含 102,304,686 个人类细胞，README 给出的预训练规模约为 100 million 个人类细胞。UCE 论文报告的图谱含 36 million 个细胞与超过 1,000 个具名细胞类型。PertFormer 摘要给出九种数据类型、55 billion 个碱基对的 bulk 数据，以及来自一百万个细胞的 1.5 billion 对配对多组学观测。对这些记录而言，每个数字都界定了某个量，却不是能对照具名预训练语料核查的细胞类型清单。Tahoe-x1 指明了语料，但其约 266 million 份表达谱的概述数字，与 6 行合计约 269 million 的数字仍未调和，访问申请和过滤也限制了读者能核查多少细胞类型覆盖信息。
+
+这就是读者必须带走的实际后果。不能假定模型覆盖了语料中从未包含的细胞类型，而仅凭这些记录，读者无法判断某个细胞类型是否属于相关的训练细胞群体。对 scGPT 而言，模型库给出 whole-human 和 pan-cancer 这样的人群名称，那是检查点标签，不是被记录的训练集，因为记录说明没有任何公开语料被指认为预训练数据。从未见过某类细胞的预测器仍然能对它给出笃定的表达谱，而这份笃定不是覆盖的证据。
+
+## 推演案例
+
+一个团队计划用 CPA 预测某化合物在原代人肝细胞中的转录响应，并打算以 scFoundation 的基因嵌入作为输入。团队引用 CPA 记录中包含 cell-context-inspection 与 out-of-distribution-evaluation 的任务分类，并把 scFoundation 超过 50 million 个人类单细胞转录组这一规模数字当作肝细胞已被覆盖的证据。这份核查分四步。
+
+1. 任务标签。目录的任务字段分类的是项目声称覆盖的范围，不是实测的分布外结果，CPA 记录也不带指标、分割和具名的评估数据集。
+2. 语料。scFoundation 的 README 没有指明来源数据集，因此该数字界定的是语料大小而非语料组成。两份记录都没有说明肝细胞在其中。团队需要真实训练语料中的逐细胞类型计数，而记录不提供这一项。
+3. 许可。CPA 的代码是 BSD-3-Clause，而 Google Drive 集合中的预训练模型和数据集没有声明逐文件条款。scFoundation 的代码是 Apache-2.0，其权重仅限非商业研究，因此团队想复用的基因嵌入才是受限资产，代码不是。
+4. 比较。要声称 CPA 预测了该化合物的作用，团队需要一次实测筛选、一个声明过的留出集、一项指标和一个同协议的基线。本家族没有任何记录为扰动预测同时提供这四样。
+
+团队今天能陈述的范围很窄。这些资产存在，许可如此，语料未经核实，而本家族没有任何记录测量过这一预测。这是一份来源描述，也正是阅读应有的交付物。
+
+特征图谱让团队的问题更明确，却没有提供团队缺少的结果。它的 CRISPRi 发现针对 scGPT 与 Geneformer，不能作为 CPA 或 scFoundation 的实测结果移用。它表明了为什么细胞嵌入不能代替调控响应的证据。
+
+## 独立练习
+
+一位同事读到 scGPT 模型库中的 pan-cancer 检查项，便断定某肝癌细胞系在该模型的训练覆盖之内。这位同事还打算把 CPA 记录中的 perturbation-comparison 任务与零样本评估研究中的批次整合任务并列，视作测量同一终点，并打算再分发一个在新宿主细胞类型上微调的 CellFM 检查点。最后，这位同事把嵌入中的细胞类型分离当作 scGPT 表征了调控响应的证明。请指出这段推理跳过了哪 4 项核查，以及每项核查需要什么证据。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+覆盖范围的断言跳过了语料清单的核查。模型库按人群列出检查点并给出每类细胞数，但记录说明没有任何公开语料被指认为预训练数据，因此检查点标签不是训练集清单。所需证据是一份具名语料及其逐细胞类型计数，而记录不提供这一项。
+
+终点的断言跳过了协议。细胞类型聚类与批次整合是表示层面的终点，扰动响应则是另一个终点，有不同的单元、不同的留出结构和不同的指标。两项研究不共享协议，因此不得把任何数值并列。所需证据是把同一套协议施加到两者，并指明数据集、分割与指标。
+
+再分发的断言跳过了许可。CC-BY-NC-ND-4.0 允许为非商业目的制作和再现改编材料，并禁止分享它，因此微调后的 CellFM 检查点可以在组内存在，却不能发布。Zenodo 训练数据归档另行采用 CC-BY-4.0，所以数据条款与模型条款并不一致。所需证据就是许可文本本身，而记录已经确立了它。
+
+调控断言跳过了干预测试。特征图谱预印本报告了有组织的特征，但全基因组规模的 CRISPRi 测试中，只有 48 个转录因子中的 3 个，即 6.2%，显示出转录因子特异的特征响应；多组织对照达到 10.4%，即 48 个中的 5 个。若要提出更宽的调控主张，需要声明干预终点并按适当协议测量响应，而不能只凭细胞类型分离。
+
+</details>
+
+## 适用范围与材料未展示的内容
+
+这 10 条记录确立的是资产、许可与任务声明：原来的 8 条于 2026-10-21 审阅，Tahoe-x1 与特征图谱记录于 2026-10-23 审阅。它们没有确立可执行的共同基准、已复现的模型、推演案例所需的实测扰动预测、每一项链接资产都可无限制复用，或已测得的读者学习成效。5 条模型记录把训练语料留为未核实，因此无法作出关于细胞类型覆盖的宽泛结论；Tahoe-x1 指明语料，但有访问和过滤限制，其记录也没有数值基准结果。特征图谱报告了 CRISPRi 下有限的调控响应。这项结果来自预印本，应用仓库也无法重算图谱。零样本评估研究的匹配协议在记录中不带任何指标数值，也没有指明其归档中的数据集。本课没有运行这些模型。
+
+## 来源
+
+本家族的规范页面包括 [scGPT仓库](https://github.com/bowang-lab/scGPT)及其 [README](https://raw.githubusercontent.com/bowang-lab/scGPT/main/README.md)与[预印本记录](https://doi.org/10.1101/2023.04.30.538439)，[scFoundation仓库](https://github.com/biomap-research/scFoundation)及其 [README](https://raw.githubusercontent.com/biomap-research/scFoundation/main/README.md)与 [Nature Methods 记录](https://doi.org/10.1038/s41592-024-02305-7)，[CellFM仓库](https://github.com/biomed-AI/CellFM)及其[模型卡](https://huggingface.co/ShangguanNingyuan/CellFM)与 [Zenodo 数据记录](https://zenodo.org/records/15138665)，[UCE仓库](https://github.com/snap-stanford/UCE)及其 [README](https://raw.githubusercontent.com/snap-stanford/UCE/main/README.md)与 [Nature 记录](https://doi.org/10.1038/s41586-026-10689-z)，[GEARS仓库](https://github.com/snap-stanford/GEARS)及其 [README](https://raw.githubusercontent.com/snap-stanford/GEARS/master/README.md)与 [Nature Biotechnology 记录](https://doi.org/10.1038/s41587-023-01905-6)，[CPA仓库](https://github.com/theislab/cpa)及其 [README](https://raw.githubusercontent.com/theislab/cpa/main/README.md)与 [Molecular Systems Biology 记录](https://doi.org/10.15252/msb.202211517)，[PertFormer仓库](https://github.com/alibaba/damo-pertformer)及其[模型卡](https://huggingface.co/GenomicIntelligenceDamoAcademy/pertformer)与[预印本记录](https://doi.org/10.1101/2024.12.19.629561)，以及[零样本评估仓库](https://github.com/microsoft/zero-shot-scfoundation)及其 [README](https://raw.githubusercontent.com/microsoft/zero-shot-scfoundation/main/README.md)与[预印本记录](https://doi.org/10.1101/2023.10.16.561085)。每个链接来源都保留自己的许可与适用范围。
+
+Tahoe-x1 的来源是其[仓库](https://github.com/tahoebio/tahoe-x1)、[README](https://raw.githubusercontent.com/tahoebio/tahoe-x1/main/README.md)与 [bioRxiv 预印本](https://www.biorxiv.org/content/10.1101/2025.10.23.683759v1)。特征图谱的来源是 [arXiv 预印本](https://arxiv.org/abs/2603.02952)，以及 [scGPT](https://github.com/biodyn-ai/scgpt-atlas) 与 [Geneformer](https://github.com/biodyn-ai/geneformer-atlas) 应用仓库。记录没有列出图谱仓库的许可。
+
+Last reviewed: 2026-10-23.

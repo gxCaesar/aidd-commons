@@ -1,0 +1,78 @@
+id: model-torchani
+name: TorchANI
+kind: model
+summary: TorchANI is a PyTorch library for building, training and running ANI-style neural network interatomic potentials, with pretrained ANI-2x weights published on the Hugging Face Hub.
+canonical_url: https://github.com/aiqm/torchani
+identifiers:
+  - scheme: paper
+    value: "TorchANI 2.0: An extensible, high performance library for the design, training, and use of NN-IPs; DOI 10.1021/acs.jcim.5c01853"
+    url: https://doi.org/10.1021/acs.jcim.5c01853
+  - scheme: model-weights
+    value: "roitberg-group/ani2x on the Hugging Face Hub"
+    url: https://huggingface.co/roitberg-group/ani2x
+  - scheme: documentation
+    value: "TorchANI documentation"
+    url: https://aiqm.github.io/torchani/
+stages: [physics-based-modelling, model-development, evaluation]
+modalities: [molecular-geometry, molecular-conformation, small-molecule]
+tasks: [molecular-energy-regression, force-learning, molecular-dynamics, model-training]
+relations: []
+status: { value: active, evidence: [github-api] }
+access_level: { value: open_source, evidence: [code-license] }
+openness:
+  inference_code: { value: available, evidence: [repository, docs] }
+  training_code: { value: available, evidence: [repository, training-example] }
+  weights: { value: available, evidence: [hf-model] }
+  architecture: { value: available, evidence: [repository] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified, evidence: [builtin-datasets] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: the TorchANI source code in this repository, per LICENSE (Copyright 2018 Xiang Gao and other ANI developers), with the requirement that the notice be retained in copies. The pretrained ANI-2x state dict carries its own licence tag, mit, on the Hugging Face Hub model record, so the terms for that weight rest on the tag rather than on the repository file.
+    evidence: [code-license, hf-model]
+evidence:
+  - id: repository
+    url: https://github.com/aiqm/torchani
+    label: TorchANI repository
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: readme
+    url: https://raw.githubusercontent.com/aiqm/torchani/main/README.md
+    label: TorchANI README
+    supports: [identifiers, caveats]
+  - id: docs
+    url: https://aiqm.github.io/torchani/
+    label: TorchANI documentation
+    supports: []
+  - id: training-example
+    url: https://raw.githubusercontent.com/aiqm/torchani/main/examples/training.py
+    label: TorchANI example script that trains an ANI network
+    supports: []
+  - id: builtin-datasets
+    url: https://raw.githubusercontent.com/aiqm/torchani/main/torchani/datasets/builtin_datasets.json
+    label: TorchANI register of built-in datasets
+    supports: [caveats]
+  - id: model-loading
+    url: https://raw.githubusercontent.com/aiqm/torchani/main/torchani/arch.py
+    label: TorchANI loader that fetches built-in state dicts from the Hugging Face Hub
+    supports: [caveats]
+  - id: hf-model
+    url: https://huggingface.co/roitberg-group/ani2x
+    label: Hugging Face Hub model record for roitberg-group/ani2x
+    supports: [identifiers, caveats]
+  - id: code-license
+    url: https://raw.githubusercontent.com/aiqm/torchani/main/LICENSE
+    label: TorchANI licence file
+    supports: []
+  - id: github-api
+    url: https://api.github.com/repos/aiqm/torchani
+    label: GitHub repository metadata for aiqm/torchani
+    supports: []
+caveats:
+  - The Hugging Face Hub record for roitberg-group/ani2x carries the licence tag mit, but its model card body is empty, so the terms for that weight are known only from the tag. The record holds the file ani2x_state_dict.pt, and the package loads built-in models from Hugging Face repositories under the roitberg-group organisation.
+  - The register of built-in datasets records the DOI and article for the ANI-2x corpus as TODO, and only the related ANI-1x and ANI-1ccx datasets carry a DOI, 10.1038/s41597-020-0473-z. No opened page states the licence or the redistribution terms for the ANI-2x corpus, so the openness of the training data is unverified.
+  - The same register warns that the IonsLight, IonsHeavy and IonsVeryHeavy datasets may have incorrect energies or forces and that they are not meant to be trained on alone.
+  - The README states that TorchANI 2.0 is tested against PyTorch 2.13 and CUDA 13.0, that the conda package is not maintained, and that users of a previous major version can pin version 2.2.4 to avoid the breaking changes.
+  - The publisher page for the Journal of Chemical Information and Modeling article was not opened during this review, so the citation is recorded as the README states it and not from the article itself.
+acknowledgements: []
+last_verified: "2026-10-21"

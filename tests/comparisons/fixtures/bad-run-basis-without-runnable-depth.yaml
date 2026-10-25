@@ -1,0 +1,68 @@
+id: example-system
+name: Example AIDD tutorial system
+provider_class: tutorial-collection
+canonical_url: https://example.org/aidd-tutorials
+summary: A small public tutorial collection used to exercise the comparison contract.
+audiences: [graduate-students, researchers]
+languages: [en]
+metadata_evidence: [official-overview]
+access:
+  content:
+    value: open
+    evidence: [official-overview]
+  code:
+    value: open
+    evidence: [official-overview]
+  data:
+    value: unverified
+  solutions:
+    value: mixed
+    evidence: [official-overview]
+licenses:
+  - name: Example content licence
+    scope: Tutorial prose and notebooks
+    evidence: [official-overview]
+correction_url: https://example.org/aidd-tutorials/issues
+correction_evidence: [official-overview]
+coverage:
+  - topic_id: t05-small-molecule-representation
+    depth: executable
+    run_basis: real-data
+    evidence: [fingerprint-tutorial]
+    reviewed_scope: Public tutorial index and fingerprint notebook
+    note: The reviewed notebook supplies runnable inputs and expected outputs.
+  - topic_id: t13-sequence-structure-function-objective
+    depth: absent
+    run_basis: authored
+    evidence: [official-overview]
+    reviewed_scope: Complete public tutorial index
+    note: No antibody-design item was found in the reviewed index.
+  - topic_id: t18-nomination-readiness-next-experiment
+    depth: unverified
+    evidence: [restricted-syllabus]
+    reviewed_scope: Linked course syllabus
+    note: The linked syllabus could not be opened during review.
+evidence:
+  - id: official-overview
+    url: https://example.org/aidd-tutorials
+    title: Example AIDD tutorial index
+    observed_scope: Identity, audience, language, access, licence, correction route, and complete public topic index.
+    access: opened
+    reviewed_on: 2026-09-04
+    version: "2026.09"
+  - id: fingerprint-tutorial
+    url: https://example.org/aidd-tutorials/fingerprints
+    title: Molecular fingerprint tutorial
+    observed_scope: Runnable fingerprint exercise with declared inputs and expected outputs.
+    access: opened
+    reviewed_on: 2026-09-04
+    version: "2026.09"
+  - id: restricted-syllabus
+    url: https://example.org/aidd-tutorials/restricted-syllabus
+    title: Restricted course syllabus
+    observed_scope: The URL resolved to an access gate and its topic coverage was not visible.
+    access: inaccessible
+    reviewed_on: 2026-09-04
+caveats:
+  - This is a synthetic validation fixture, not a real comparison-system claim.
+last_verified: 2026-09-04

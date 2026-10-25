@@ -1,0 +1,102 @@
+---
+title: 公共记录中的结合、响应与结局主张
+description: 用两个实测数据表判断字段能支持哪些陈述，并找出证据的边界。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/binding-functional-and-clinical-claims" />
+<ScrollableRegions />
+
+英文原文：[Binding, response and outcome claims in public records](/learn/biologics-design/binding-functional-and-clinical-claims/)。
+
+## 学习目标与预备知识
+
+学完后，你应能指出终点测量所需的记录，区分该记录与浓度响应记录，并解释两者为何都不能
+确立临床结局。先读[可开发性与验证](/learn/biologics-design/developability-and-validation/)和
+[独立单元课程](/learn/foundations/decision-unit-scope/)。
+[功能验证审核](/labs/functional-validation-audit/)是可运行的配套实验。下面的计数来自它的
+冻结协议和两个已缓存的公共数据表。
+
+## 三种主张及其记录
+
+结合测量是在指定测定下对报告终点的陈述。本审核要求 ChEMBL 结合测定、Kd 或 Ki 类型、
+单位及明确的关系符，才许可这一陈述。等号允许报告一个点数值，界限符只允许说明数值位于
+阈值的哪一侧。其他 ChEMBL 终点类型可能是有效测量，但不能因此成为直接结合记录。
+
+功能响应陈述需要响应记录。在本审核中，记录必须包含多个浓度上的数值读数，测定描述还须
+明确写出响应定义。单独的终点数字不是响应序列。反过来，即使响应记录还带有一个终点数字，
+该序列也不会自动成为直接结合测量。
+
+临床结局陈述需要结局终点、产生结局的观察人群和程序，以及将该记录与所述主张相连的证据。
+两个数据表都没有临床终点。这是这些数据表的路径缺口，不能据此断言其他地方不存在相应记录。
+
+## 记录规则
+
+[ChEMBL 37 源实验](/labs/decision-unit-scope/)先按冻结规则接收以 nM 为单位的终点行。
+[PubChem 源实验](/labs/assay-endpoint-controls/)保留指定测定的化合物行。然后，
+本审核依记录明确写出的字段分配类型，不因为某条记录有利于预设结论而选入。
+结果于 2026-10-23 使用 Python 3.11.15 和 RDKit 2025.09.6 计算，
+所用快照读取于 2026-10-21。
+
+| 数据表 | 点测量 | 界限值 | 浓度响应表 | 不许可任何主张 | 记录总数 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| ChEMBL 37 | 488 | 516 | 0 | 0 | 1004 |
+| PubChem BioAssay | 0 | 38 | 1204 | 15 | 1257 |
+
+按额外的测定类型和终点规则，ChEMBL 数据表中有 22 条结合点值主张和 10 条结合界限主张。
+这些是接收行数，不是独立实验数，也不是对整个 ChEMBL 的估计。界限行绝不按精确结合数值
+计数。所有记录都不许可临床结局主张。
+
+## 完整示例
+
+测定 519 保留 272 条化合物行。每行有一个 IC50 字段和一个 Ki 字段，因此共有
+544 个终点数值。响应表记录仍只有 272 条，因为一条化合物行仍是一条记录。不能把
+544 个数值称为 544 次独立响应。数值浓度序列支持关于该测定所定义响应的观察。
+单凭 Ki 列，本审核不能把该序列认作直接结合测量，因为该主张需要 ChEMBL 结合测定记录。
+这些计数都不提供临床结局。
+
+证据不完整的边缘情形也重要。测定 691 有 53 条保留行，带有 MIC 数值，但没有数值浓度
+序列。其中 38 条明确给出界限，15 条未声明关系。前者只支持界限终点陈述。
+后者虽然带有数字，按本规则仍不许可点值或界限陈述。记录了数字不等于支持了一项主张。
+
+## 独立练习
+
+一份报告找到一条 ChEMBL 记录，其测定类型为 B，终点类型为 Ki，单位为 nM，关系符为大于号。
+报告还找到一条无关的 PubChem 记录，后者有数值响应序列。报告把 ChEMBL 数值称为精确结合
+数值，把两条记录当成配对的功能验证，并说临床结局已经随之确立。指出每一步缺少什么证据，
+以及检验它所需的记录。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+ChEMBL 的关系符只许可结合界限，不能许可精确点值。点值主张需要在相同的指定类型和单位下
+得到等号测量。PubChem 行只许可对其自身测定中观察到的响应作出陈述。要检验结合向响应的联系，
+须有同一实体在匹配实验下的配对记录，而这些快照没有提供。要检验临床陈述，须有临床终点记录
+及其观察程序。两个数据表都没有。本审核因此将结合向响应的迁移、响应向临床的迁移，以及临床
+结局列为无法测量的路径。
+
+</details>
+
+## 本材料未显示的内容
+
+这是对指定公共快照的计数，不是对所有测定或患者的随机抽样。它不检验测量能否跨测定迁移、
+响应能否迁移到临床环境，也不判断任何特定实体是否产生临床作用。它不拟合预测模型，
+也没有报告读者成效。测量和响应是不同的主张，响应不是结局。
+
+## 运行审核
+
+[实验指南](/labs/functional-validation-audit/)在命令之前说明全新独立计算模式，
+并列出源缓存准备、检查以及已提交的小型摘要。
+
+## 来源与署名
+
+<div data-case-sources>
+
+- [ChEMBL 37 发布状态](https://www.ebi.ac.uk/chembl/api/data/status.json)及[发布许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)，读取于 2026-10-21。ChEMBL 37 数据采用 Creative Commons Attribution-ShareAlike 3.0 Unported。[发布 README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README)要求标注 ChEMBL 和版本。
+- [PubChem BioAssay 归档](https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/)及 [NCBI 政策](https://www.ncbi.nlm.nih.gov/home/about/policies/)，读取于 2026-10-21。专门适用于归档测定记录的条款仍未核实。
+
+</div>
+
+原创课程文字采用 CC BY 4.0，原创实验代码采用 Apache-2.0。最后复核于 2026-10-23。

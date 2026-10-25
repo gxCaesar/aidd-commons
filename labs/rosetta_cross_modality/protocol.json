@@ -1,0 +1,161 @@
+{
+  "schema_version": "aidd-commons.rosetta-cross-modality-protocol.v1",
+  "protocol_id": "cpg0003-rosetta-luad-cross-modality-v1",
+  "issued_on": "2026-10-21",
+  "declared_question": "For the same genetic perturbation measured in both the L1000 transcriptomic readout and the Cell Painting imaging readout, how strongly do the two readouts agree, and how much of that agreement survives when the plate and batch structure of the measurement is accounted for?",
+  "data_version": {
+    "study_id": "cpg0003-rosetta",
+    "batch_id": "LUAD-BBBC041-Caicedo",
+    "cell_line": "A549",
+    "release_kind": "Cell Painting Gallery preprocessed_data, replicate level",
+    "study_publication": "Haghighi et al. (2022), https://doi.org/10.1038/s41592-022-01667-0",
+    "gallery_publication": "Weisbart et al. (2024), https://doi.org/10.1038/s41592-024-02399-z"
+  },
+  "source": {
+    "host": "https://cellpainting-gallery.s3.amazonaws.com",
+    "prefix": "cpg0003-rosetta/broad/workspace/preprocessed_data/LUAD-BBBC041-Caicedo",
+    "files": [
+      {
+        "key": "transcriptome_replicate",
+        "url": "https://cellpainting-gallery.s3.amazonaws.com/cpg0003-rosetta/broad/workspace/preprocessed_data/LUAD-BBBC041-Caicedo/L1000/replicate_level_l1k.csv.gz",
+        "relative_path": "L1000/replicate_level_l1k.csv.gz",
+        "byte_length": 11448797,
+        "s3_etag": "cca1d0129f0a8f94f322d0fded461225",
+        "role": "transcriptomic readout"
+      },
+      {
+        "key": "imaging_replicate",
+        "url": "https://cellpainting-gallery.s3.amazonaws.com/cpg0003-rosetta/broad/workspace/preprocessed_data/LUAD-BBBC041-Caicedo/CellPainting/replicate_level_cp_normalized_variable_selected.csv.gz",
+        "relative_path": "CellPainting/replicate_level_cp_normalized_variable_selected.csv.gz",
+        "byte_length": 15858878,
+        "s3_etag": "c79982a1d6eca9480e707c8d64c50b43",
+        "role": "imaging readout"
+      }
+    ],
+    "total_byte_length": 27307675,
+    "byte_length_measured_on": "2026-10-21, from the bucket's own object listing",
+    "not_used": {
+      "object": "cpg0003-rosetta/broad/workspace/preprocessed_data/LUAD-BBBC041-Caicedo/CellPainting/replicate_level_cp_normalized.csv.gz",
+      "byte_length": 84400417,
+      "why_not": "the gallery also publishes a full-feature imaging release for this batch. This protocol uses the variable-selected release because every imaging feature in it has a finite value in every well, so the feature set needs no further selection rule of its own, and because it keeps the lab inside a CPU-first budget. The lab makes no claim that its numbers transfer to the full feature set."
+    },
+    "licence": {
+      "name": "CC0 1.0 Universal",
+      "scope": "all data in the Cell Painting Gallery",
+      "read_on": "2026-10-21",
+      "evidence": "the 'Citation/license' section of the Cell Painting Gallery README states: 'All the data is released with CC0 1.0 Universal (CC0 1.0).'"
+    }
+  },
+  "entity": {
+    "unit": "one genetic perturbation measured in both readouts",
+    "join_key": {
+      "transcriptome": "pert_iname",
+      "imaging": "Metadata_pert_name"
+    },
+    "join_rule": "the two readouts carry the same perturbation identifier space; an entity is a perturbation name that has at least one treated well in each readout",
+    "transcriptome_required_columns": [
+      "id",
+      "pert_iname",
+      "pert_type",
+      "det_plate",
+      "allele",
+      "pert_mfc_desc"
+    ],
+    "imaging_required_columns": [
+      "Metadata_pert_name",
+      "Metadata_Plate",
+      "Metadata_Well",
+      "Metadata_Plate_Map_Name",
+      "pert_type"
+    ],
+    "transcriptome_label_columns": ["allele", "pert_mfc_desc"],
+    "control_pert_type": "control",
+    "profile_aggregation": "median across replicate wells",
+    "controls": "wells whose `pert_type` is `control` are read, counted and reported, and are never entities"
+  },
+  "label_contract": {
+    "endpoint": "cross-modality agreement: how well the transcriptomic profile of a perturbation predicts its imaging profile",
+    "transcriptome_unit": "978 Affymetrix landmark probe sets, in the gallery's preprocessed L1000 release",
+    "imaging_unit": "291 Cell Painting features, in the gallery's preprocessed variable-selected normalized release",
+    "units": "both readouts are the source's own dimensionless profile values; no further unit is asserted and no unit is converted",
+    "transcriptome_feature_pattern": "^\\d+(?:_[a-z])?_at$",
+    "imaging_feature_pattern": "^(?:Cells|Nuclei|Cytoplasm)_",
+    "feature_selection": "a column is a feature if and only if its name matches the readout's naming rule; every other column is annotation"
+  },
+  "preprocessing": {
+    "fit_scope": "the ridge map standardises the transcriptomic features using its own training rows only, and selects its penalty by an inner cross-validation on those same training rows; no held-out row influences its own map or penalty",
+    "source_normalisation": "the gallery's own preprocessed releases are used as published; this protocol adds no baseline subtraction, because the transcriptomic readout has plate-matched negative controls on only 6 of its 16 plates and subtracting a plate's median over treated wells would remove biology rather than an offset",
+    "no_imputation": "a cell that is not a finite number is a contract violation and stops the read, not a value to fill in"
+  },
+  "split_and_grouping": {
+    "unit_of_inference": "one perturbation entity",
+    "grouping_unit": "the imaging assay plate (Metadata_Plate) and the imaging batch (Metadata_Plate_Map_Name) on the imaging side; the L1000 assay plate (det_plate) on the transcriptomic side",
+    "replication": "each perturbation is measured on 8 of the 16 plates in each readout, so a plate cannot be held out at the level of a single perturbation; the blocked evaluations hold out every perturbation measured on a plate and train on every perturbation never measured on it",
+    "batch_purity": "a perturbation measured in more than one batch is excluded from the batch-blocked evaluation rather than assigned to one of them"
+  },
+  "baselines": [
+    {
+      "name": "apparent",
+      "definition": "a random five-fold split over perturbations with a fixed seed; this is the agreement an analysis that ignores the design reports"
+    },
+    {
+      "name": "size_matched_random",
+      "definition": "a random split with the same training and test sizes and the same population as a blocked evaluation, so that a loss of performance can be read as a design effect rather than as a smaller training set"
+    },
+    {
+      "name": "null_within_batch_permuted",
+      "definition": "the apparent split with each perturbation's imaging profile replaced by another perturbation's imaging profile from the same batch; the plate and batch structure is kept and the pairing between the two readouts is destroyed, so this is the agreement the design alone can produce"
+    }
+  ],
+  "evaluations": [
+    "apparent",
+    "null_within_batch_permuted",
+    "batch_blocked",
+    "size_matched_random_batch",
+    "plate_blocked_imaging",
+    "size_matched_random_imaging_plate",
+    "plate_blocked_transcriptome",
+    "size_matched_random_transcriptome_plate"
+  ],
+  "metrics": {
+    "primary": "perturbation_r: the mean over held-out entities of the Pearson correlation between the predicted and the observed imaging profile",
+    "secondary": "feature_r: the mean over imaging features of the Pearson correlation between predicted and observed values across the held-out entities of a fold, averaged over folds",
+    "survival_ratio": "(blocked_feature_r - null_feature_r) / (apparent_feature_r - null_feature_r)",
+    "design_cost": "blocked_feature_r - size_matched_random_feature_r",
+    "model_free_check": "the median over entities of the Spearman correlation between the transcriptomic and the imaging similarity rankings of all the other entities"
+  },
+  "model": {
+    "kind": "multi-output ridge regression from the transcriptomic profile to the imaging profile",
+    "penalty_grid": [1.0, 10.0, 100.0, 1000.0, 10000.0],
+    "penalty_selection": "inner five-fold cross-validation on the training rows, scored by the mean per-feature correlation",
+    "inner_folds": 5,
+    "no_other_hyperparameter_is_fitted": true
+  },
+  "seed": 20261021,
+  "outer_folds": 5,
+  "example_count": 3,
+  "run_basis": {
+    "kind": "runnable",
+    "task": "a real-data descriptive comparison over two published objects; no model is selected for deployment and no prediction is offered as a product",
+    "network_required": "only for the one-time download of the two published objects",
+    "cache_directory": ".cache/rosetta_cross_modality",
+    "outputs": {
+      "run_artefact": "labs/rosetta_cross_modality/results/computed-summary.json, git-ignored, carries the agreement value of every individual perturbation",
+      "committed_record": "labs/rosetta_cross_modality/summary.json, the small projection with no per-perturbation values and no raw rows"
+    },
+    "reproduce": [
+      "python labs/rosetta_cross_modality/run_lab.py download",
+      "python labs/rosetta_cross_modality/export_summary.py",
+      "python labs/rosetta_cross_modality/inspect_rosetta_cross_modality.py check"
+    ],
+    "one_time_evaluation": "the summary is computed once from the cached objects and committed; the check subcommand recomputes it from the same cache and compares the two, so a drift between the committed summary and the cached data is a failure rather than a silent update"
+  },
+  "excluded_by_design": [
+    "any claim that a perturbation signature is a mechanism: this protocol measures agreement between two readouts and its survival under the measurement design, and nothing else",
+    "any claim that the cross-modal map predicts a phenotype, a target or a clinical outcome: the imaging readout is the target and no third measurement is brought in",
+    "any causal or mechanistic reading of a named perturbation: the named examples are the ends of an agreement distribution, not evidence about the gene",
+    "the other four batches of this study, the other 46 studies of the gallery, and the JUMP pilot: this protocol fixes one batch of one study",
+    "any read of the transcriptomic readout's own negative controls as a baseline: that readout carries plate-matched controls on 6 of its 16 plates, so a control-based baseline would silently cover only part of the design",
+    "the full-feature imaging release and any transfer of this protocol's numbers to it"
+  ]
+}

@@ -1,0 +1,105 @@
+---
+title: 从扰动到靶点验证
+description: 构建能区分扰动响应、靶点证据、语境依赖性和可成药性的机制主张。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[From perturbation to target validation](/learn/mechanism-targets/perturbation-to-target-validation/)。
+
+<LessonProgress lessonId="mechanism-targets/perturbation-to-target-validation" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将写出含明确竞争模型的机制假设，说明 CRISPR 与 Perturb-seq 实际观察什么，并把靶点证据与可成药性和风险分开。请先读[从疾病到靶点](/zh-cn/learn/mechanism-targets/disease-to-target/)和[从遗传学到靶点证据](/zh-cn/learn/mechanism-targets/genetics-to-target-evidence/)。本课为概念教学，不提供基因编辑条件、guide 设计、细胞培养步骤或临床建议。
+
+## 机制主张需要对象、对照与会失败的替代解释
+
+令 `X` 为明确扰动，`C` 为细胞语境，`Y` 为测量终点，`H` 为从 `X` 到 `Y` 的已说明路径。简洁假设是：“在语境 C 中，改变 X 通过中介 M 改变 Y。”反证不是附录：必须写出 `H_alt`，例如一般应激、细胞组成变化、脱靶扰动、测定干扰或平行通路，再选择让 `H` 和 `H_alt` 预测不同输出的比较。
+
+只有声明比较单位、对照、汇总和归一化后，`Δ = mean(Y | X, C) − mean(Y | control, C)` 才是描述性 estimand；它不会自动成为预期基因的因果效应。单细胞是嵌套于扰动、样本和语境内的测量，不是独立个体。池化设计还必须有 guide 身份与分配质量契约。
+
+## 扰动读数能做什么，不能验证什么
+
+CRISPR 按选定系统改变基因座或表达，但它本身不命名分子中介。bulk screen 可报告选定群体的富集或耗竭；Perturb-seq 将已分配扰动与高维单细胞 RNA 读数关联。它能使响应模式和细胞状态异质性可检查，但 RNA signature 既不是直接蛋白活性，也不证明另一语境会响应。全基因组 CRISPRi Perturb-seq 已在超过 2.5 million cells 上展示；规模改变可得到的证据量，不改变未检验替代解释的因果含义 [Replogle et al.](https://pubmed.ncbi.nlm.nih.gov/35688146/)。
+
+对预先指定的基因集 `G`，透明摘要为有符号模块分数 `S_i = (1/|G|) Σ_{g∈G} z_{ig}`，其中 `z_{ig}` 是细胞 `i` 中基因 `g` 的已声明归一化表达。`S_i` 在该尺度上无量纲。比较分配扰动间的 `S_i` 分布时，还要检查 guide 一致性、存活细胞代表性和阴性对照扰动是否也出现变化。显著分数只是在该分数上的证据，不是靶点验证证书。
+
+## 可成药性是另一项决策
+
+靶点有效性问：改变一个生物对象是否通过明确机制改变相关结局。可成药性问：某模态能否形成足够选择性且暴露可接受的干预。风险包括非目标语境表达与通路作用、同源蛋白、人类遗传证据和可能击败 TPP 的不确定性。因此有力扰动证据的靶点仍可能不是好项目；可结合但缺少疾病因果证据的靶点也未获验证。
+
+<table>
+  <thead>
+    <tr>
+      <th>主张</th>
+      <th>最低证据对象</th>
+      <th>邻近但不等价的主张</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>扰动响应</td>
+      <td>C 中已分配扰动与声明对照的比较</td>
+      <td>药物样靶点结合</td>
+    </tr>
+    <tr>
+      <td>机制支持</td>
+      <td>挑战指定 `H_alt` 的对照</td>
+      <td>机制的穷尽证明</td>
+    </tr>
+    <tr>
+      <td>语境迁移</td>
+      <td>新且预设的 C 与匹配决策终点</td>
+      <td>熟悉细胞系的重复</td>
+    </tr>
+    <tr>
+      <td>可成药性</td>
+      <td>模态特异的机会和风险评价</td>
+      <td>疾病因果验证</td>
+    </tr>
+  </tbody>
+</table>
+
+## 已构造案例：保留反例
+
+此为**构造**案例。在模型语境 C1，基因沉默扰动 `X` 在三个独立制备中的平均通路分数为 `−0.60`，匹配 non-targeting control 平均为 `−0.10`，故 `Δ = −0.60 − (−0.10) = −0.50` score units。两个预先指定 guide 方向相同。这支持“X 在 C1 中与更低分数相关”，不证明该目标机制导致分数。
+
+团队预测 `H`：X 经中介 M 降低分数，并登记恢复 M 的 rescue 比较。构造 rescue 平均为 `−0.16`，更接近对照；一般应激扰动为 `−0.55`。rescue 与 H 一致，stress 结果令 `H_alt` 仍合理。诚实结论应为：“观察到的分数可能与 M 相关但对 M 仍不特异；需要正交靶点近端测量和第二相关语境。”若同一表中有可接近口袋、非目标组织高表达、却未评估同源家族选择性，则应记为“机会存在；安全性和选择性风险未解决”，而非推进或否决。
+
+## 替代方法、局限与独立练习
+
+isogenic rescue、第二扰动模态、正交蛋白层读数或另一疾病相关语境各改变因果链中的不同一环。它们都不是万能：rescue 可错表达，第二 guide 可共享系统性伪影，蛋白读数仍可能是下游。因果证据来自能按预测区分 H 与可信替代解释的对照，而不是累积相关测定。
+
+**手算练习（不可运行、非实证）：** 在构造 C2 中，对照平均模块分数 `0.12`，扰动 Q 为 `−0.18`，Q 的另一 guide 为 `−0.16`，一般生长减慢对照为 `−0.20`。计算两个 Q 对比；写一句被支持的话，指出最强替代解释，选择一个可与 Q 特异机制区分的下一测量。当前“因果靶点”“可成药模态”“语境特异扰动响应”哪一项获支持？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+对比为 `−0.18 − 0.12 = −0.30` 和 `−0.16 − 0.12 = −0.28` score units。可支持句子为：“两个构造 Q guides 在 C2 中与更低模块分数相关。”一般生长减慢仍是强替代解释，因为其分数为 `−0.20`。靶点近端读数或在两种解释下有不同预测的 isogenic rescue 有帮助。当前只支持语境特异扰动响应；因果靶点与可成药模态未建立。
+
+</details>
+
+## 来源与下一课
+
+以下页面于 2026-09-09 打开，支持范围与定义，不支持构造数字。
+
+<div data-case-sources>
+
+- [Mapping information-rich genotype-phenotype landscapes with genome-scale Perturb-seq](https://pubmed.ncbi.nlm.nih.gov/35688146/)
+- [Massively parallel phenotyping of coding variants in cancer with Perturb-seq](https://pubmed.ncbi.nlm.nih.gov/35058622/)
+- [Genome-scale CRISPR-Cas9 knockout screening in human cells](https://pubmed.ncbi.nlm.nih.gov/24336571/)
+
+</div>
+
+[机制一致性实验](/zh-cn/labs/mechanism-consistency/)用固定的错配化合物作对照，检验靶点介导的解释，
+材料是 1,721 个在两个细胞系里都有测量的化合物，并把它判不了的那些留在未决。
+
+[开放问题审计](/zh-cn/labs/open-question-audit/)检验一条比较记录是否仍写明了可反驳的观测，或它仍需��的测量，
+并报告它留下哪些开放问题。
+
+继续读[扰动语境泛化](/zh-cn/learn/mechanism-targets/perturbation-context-generalization/)，再把语境内结果解释为可迁移预测。原始课程文字为 CC BY 4.0；链接来源保留其自身条款。
+
+译文更新：2026-09-09。

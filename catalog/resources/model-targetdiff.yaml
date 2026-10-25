@@ -1,0 +1,90 @@
+id: model-targetdiff
+name: TargetDiff
+kind: model
+summary: Target-aware diffusion model for molecular generation.
+canonical_url: https://github.com/guanjq/targetdiff
+identifiers:
+- scheme: paper
+  value: TargetDiff OpenReview paper
+  url: https://openreview.net/pdf?id=kJqXEPXMsE0
+stages:
+- hit-discovery
+- design
+- evaluation
+modalities:
+- small-molecule
+- protein-pocket
+tasks:
+- target-conditioned-generation
+relations: []
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - model-targetdiff-readme
+  - targetdiff-license
+openness:
+  inference_code:
+    value: available
+    evidence:
+    - repository
+  training_code:
+    value: available
+    evidence:
+    - repository
+  weights:
+    value: unverified
+  architecture:
+    value: available
+    evidence:
+    - repository
+  data_recipe:
+    value: available
+    evidence:
+    - model-targetdiff-readme
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: available
+    evidence:
+    - repository
+licenses:
+- name: MIT
+  scope: The repository's LICIENCE file grants use, modification, redistribution and sale of TargetDiff software and associated documentation with preservation of its notices. It does not establish a licence for CrossDocked2020, the separately hosted Google Drive data and checkpoints, or PDBBind. The README requires those assets through separate download routes, including PDBBind's own portal.
+  evidence:
+  - targetdiff-license
+  - model-targetdiff-readme
+evidence:
+- id: resource-links-2026-09-08
+  url: https://github.com/guanjq/targetdiff
+  label: Official source for additional resource links (reviewed 2026-09-08)
+  supports:
+  - identifiers
+- id: repository
+  url: https://github.com/guanjq/targetdiff
+  label: TargetDiff repository
+  supports:
+  - caveats
+  - kind
+  - modalities
+  - name
+  - stages
+  - summary
+  - tasks
+- id: model-targetdiff-readme
+  url: https://raw.githubusercontent.com/guanjq/targetdiff/HEAD/README.md
+  label: The project page the training-data statement was read from (reviewed 2026-10-23)
+  supports:
+  - caveats
+- id: targetdiff-license
+  url: https://raw.githubusercontent.com/guanjq/targetdiff/main/LICIENCE
+  label: TargetDiff MIT licence in the repository's LICIENCE file — The misspelled LICIENCE file contains the MIT grant for software and associated documentation. It does not name separate data or checkpoint grants.
+  supports:
+  - caveats
+caveats:
+- The README states that the available supervised checkpoint was trained on PDBBind 2016 and directs readers to PDBBind's own portal for its data. CrossDocked training and evaluation files and model checkpoints follow separate Google Drive links, with the original CrossDocked2020 data available from the linked Pittsburgh server. The MIT software grant does not establish the terms of those external assets.
+- The openness claims here rest on the repository's own file listing and README, read on 2026-10-23; the code was not run, and no claim is made that the released scripts reproduce the published numbers.
+- The repository's licence file is named LICIENCE. Reading that file establishes MIT terms for the source and documentation; separately obtaining the data and model assets remains necessary, so the access level is source_available.
+acknowledgements: []
+last_verified: '2026-10-23'

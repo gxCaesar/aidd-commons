@@ -1,0 +1,47 @@
+id: model-biogpt
+name: BioGPT
+kind: model
+summary: Biomedical language model repository.
+canonical_url: https://github.com/microsoft/BioGPT
+identifiers:
+  - scheme: paper
+    value: "BioGPT: generative pre-trained transformer for biomedical text generation and mining"
+    url: https://academic.oup.com/bib/article/23/6/bbac409/6713511
+  - scheme: model-weights
+    value: "microsoft/biogpt"
+    url: https://huggingface.co/microsoft/biogpt
+stages: [evidence-synthesis, analysis]
+modalities: [biomedical-text]
+tasks: [scientific-language-modelling]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license-file] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: covers the source code in the repository, per the repository's LICENSE file, which states no narrower scope
+    evidence: [license-file]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/microsoft/BioGPT
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/microsoft/BioGPT
+    label: BioGPT repository
+    supports: [caveats, kind, modalities, name, stages, summary, tasks]
+  - id: license-file
+    url: https://raw.githubusercontent.com/microsoft/BioGPT/HEAD/LICENSE
+    label: Repository LICENSE file (reviewed 2026-10-23)
+    supports: []
+caveats:
+  - The openness claims here rest on the repository's own file listing and README, read on 2026-10-23; the code was not run, and no claim is made that the released scripts reproduce the published numbers.
+acknowledgements: []
+last_verified: "2026-10-23"

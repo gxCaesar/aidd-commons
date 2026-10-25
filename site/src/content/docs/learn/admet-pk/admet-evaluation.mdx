@@ -1,0 +1,55 @@
+---
+title: ADMET evaluation
+description: Evaluate exposure, toxicity, DMPK, and PK/PD evidence as linked decision streams.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="admet-pk/admet-evaluation" />
+
+## Foundations
+
+ADMET covers absorption, distribution, metabolism, excretion, and toxicity;
+PK/PD adds exposure-response relationships. These are distinct endpoints with
+different experimental systems and uncertainty. A predicted toxicity probability
+is not a safety conclusion.
+
+## Practical workflow
+
+For each proposed molecule, list the decision, relevant assay, species and
+matrix, uncertainty, and the next experiment. Use
+[ADMET-AI](https://github.com/swansonk14/admet_ai) or a simple descriptor model
+as a reproducible comparison only after checking the task source and splits.
+
+## Evaluation
+
+Audit label definitions, assay censoring, chemical series leakage, and the
+translation gap from in vitro to in vivo exposure. Evaluate calibration and
+decision thresholds on validation data, not after candidate selection.
+
+## Frontier and open questions
+
+Physical-property tools such as the
+[OpenFF Evaluator](https://github.com/openforcefield/openff-evaluator) may
+constrain a hypothesis, but they do not replace metabolism, transporter, or
+toxicology experiments.
+
+## What v0.1 does not yet teach
+
+This lesson does not provide a clinical pharmacology program, regulatory advice,
+or a validated human safety model.
+
+## Continue with a concentration-time model
+
+[Clearance, exposure and PK/PD](/learn/admet-pk/exposure-clearance-pkpd/)
+derives a small concentration curve and explains why total exposure, unbound
+exposure and response cannot be used interchangeably. The worked values are
+invented; no animal experiment, human dose or safety conclusion is supplied.
+
+## Core-source path
+
+Compare task-level material in [TDC](https://tdcommons.ai/) with the
+[DrugBank](https://go.drugbank.com/) evidence context, retaining unverified
+access and licence fields where the source page is insufficient.
+
+Last reviewed: 2026-09-04.

@@ -1,0 +1,62 @@
+id: db-depmap
+name: DepMap
+kind: database
+summary: Cancer dependency map portal for linked cancer model evidence.
+canonical_url: https://depmap.org/portal/
+identifiers: []
+stages:
+- disease-mechanism
+- target-discovery
+modalities:
+- perturbational-omics
+tasks:
+- target-prioritization
+relations: []
+status:
+  value: unverified
+access_level:
+  value: research_only
+  evidence:
+  - official-page
+  - current-data-terms
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: DepMap Portal Data Terms and Conditions
+  scope: Current portal data are freely available for internal or non-profit research; commercial use, including sale or product use of models trained on the data, requires a separate licence. Other hosted projects may have their own terms.
+  evidence:
+  - current-data-terms
+evidence:
+- id: official-page
+  url: https://depmap.org/portal/
+  label: DepMap portal
+  supports:
+  - caveats
+  - kind
+  - modalities
+  - name
+  - stages
+  - summary
+  - tasks
+- id: current-data-terms
+  url: https://forum.depmap.org/t/provide-an-open-endpoint-for-latest-version-retrieval/4652
+  label: DepMap team statement quoting current portal data terms — Current data are free for research; commercial and clinical uses require a separate licence, including specified AI model uses.
+  supports:
+  - caveats
+caveats:
+- The current DepMap data terms permit research use but require a separate licence for commercial use; older CC BY releases and other hosted projects may carry different terms.
+acknowledgements: []
+last_verified: '2026-10-23'

@@ -1,0 +1,180 @@
+---
+title: Chemical series, representation choice and applicability domains
+description: Connect chemical standardization and matched molecular changes to split design, similarity diagnostics and the limits of SAR explanations.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="qsar-properties/chemical-series-and-domains" />
+<ScrollableRegions />
+
+## Predict a defined property for a defined chemical object
+
+Read [small-molecule representations](/learn/representations/small-molecule-representations/)
+and [regression and classification errors](/learn/qsar-properties/regression-classification-errors/).
+This lesson connects molecular identity to a QSAR model's intended use. By the
+end, you should be able to choose a split for a scientific question, calculate
+a similarity diagnostic, and distinguish predictive SAR from a causal explanation.
+The examples are constructed; they do not introduce a new empirical result.
+
+Chemical standardization is not cosmetic cleaning. Removing counterions, selecting
+a tautomer, assigning a charge state or retaining stereochemistry can change which
+objects a model regards as identical. Define a policy in relation to the endpoint.
+A neutral parent representation may be useful for a particular comparison but
+does not preserve every pH-dependent state or salt-specific measurement.
+The [RDKit Cookbook](https://www.rdkit.org/docs/Cookbook.html) gives concrete
+operations for manipulating molecular objects. The availability of an operation
+does not establish that it preserves your assay's meaning.
+
+Keep the submitted structure, standardized structure, grouping identity and
+transformation reason distinguishable. Deduplicate at the correct level before
+splitting. Two records that become the same parent should not cross the train/test
+boundary in a claim about new parent compounds. Conversely, two stereoisomers
+with different measurements should not receive an averaged label merely because
+a chirality-blind fingerprint maps them alike.
+
+A mixture without a defined assayed component is not resolved by choosing its
+largest fragment. State whether mixtures are in scope, how component proportions
+are represented, or why they are excluded. Conflicting repeated endpoints should
+retain their context and the prespecified aggregation or exclusion rule; selecting
+the most convenient value changes the label. Record an unresolved conflict when
+the available source cannot justify a single value.
+
+## Choose a representation that can carry the relevant variation
+
+Descriptors expose chosen summaries such as size and polarity. Fingerprints encode
+substructures or environments. A molecular graph retains connectivity and chosen
+atom/bond features. A 3D representation adds a specified conformation, not the
+entire equilibrium ensemble. Each has a failure mode: a descriptor can collapse
+distinct structures, a hashed fingerprint can collide, a graph can omit stereochemical
+or charge features, and a single conformer can misrepresent an environment-dependent
+property. See the [representation inspector](/labs/molecule-representation-inspector/)
+for an existing editable, label-free exercise.
+
+Select candidate representations with training and validation data under the
+same endpoint, eligible population, split and selection budget. A larger model
+trained on additional labels is not a representation-only ablation. A pretrained
+encoder also adds data exposure and a fitting history; disclose that difference.
+Begin with a train-mean or relevant identity baseline and a competent descriptor
+or fingerprint model. The [existing ChEMBL comparison](/labs/chembl-egfr-representation-baselines/)
+is a worked empirical reference, not evidence that one representation wins every
+assay. Preserve its actual outcome rather than deriving an expected hierarchy
+from model complexity.
+
+## Three splits answer different questions
+
+Construct a table with two compounds per series, measured at two times:
+
+| Compound | Series | Measurement time |
+| -------- | ------ | ---------------- |
+| A1       | A      | early            |
+| A2       | A      | late             |
+| B1       | B      | early            |
+| B2       | B      | late             |
+| C1       | C      | early            |
+| C2       | C      | late             |
+
+A row-random split can place close analogues on both sides. That can match a
+within-series interpolation question, but it cannot establish transfer to a new
+series. A group split holding out C1 and C2 probes the designated unseen series.
+A time split training on A1/B1/C1 and testing on A2/B2/C2 probes later measurements,
+while retaining series overlap. A scaffold grouping is one operational definition
+of related chemistry; its grouping algorithm is not identical to every medicinal
+chemist's series definition. The [scikit-learn cross-validation guide](https://scikit-learn.org/stable/modules/cross_validation.html)
+describes group and temporal separation tools, not which scientific question to choose.
+
+For a future new-series question, neither a plain time split nor a plain series
+split alone necessarily suffices. Specify the joint eligibility rule and inspect
+how many groups remain. Do not advertise an impossible combination of strong
+holdout claims when the available data support only one. Repeated measurements
+of the same compound or shared assay sources also require their stated grouping.
+All learned preprocessing belongs inside the relevant training fold.
+
+## Worked similarity diagnostic
+
+For binary fingerprint bit sets, Tanimoto similarity is the intersection size
+divided by the union size. Let query Q have bits `[1,2,3]`. Training compound A
+has `[2,3,4]`, and B has `[1,2,3,5]`. Then
+
+```text
+T(Q,A) = 2/4 = 0.50
+T(Q,B) = 3/4 = 0.75
+nearest training similarity = 0.75
+```
+
+This is a property of the selected fingerprint, not a universal distance between
+chemical mechanisms. A maximum similarity of 0.75 cannot be converted directly
+into “75% prediction confidence.” A one-bit change can coincide with a large
+activity change, and a similar structure measured in a different assay can have
+a different target interpretation.
+
+An applicability-domain diagnostic asks whether the intended prediction is
+supported by the training population. Inspect nearest neighbors, descriptor
+ranges, series and assay/context support together. Calibrate any warning threshold
+on a declared development procedure. For example, a predeclared warning at
+similarity below 0.40 would not flag Q above, but passing this warning does not
+certify correctness. A query can be structurally familiar and biologically
+out of context. Report subgroup error and sample counts where measured; do not
+manufacture confidence intervals for a handful of selected favorable neighbors.
+
+## SAR explanations and counterfactuals
+
+In a constructed matched assay, compound M has pActivity 6.0 and its analogue N
+has 7.0. If pActivity is `−log10(activity in molar units)` for the same endpoint,
+the corresponding activities are 1 µM and 0.1 µM. The numerical difference is
+one log unit, or a tenfold concentration ratio in the stated direction. That is
+an observed pairwise SAR contrast **within this invented example**, not proof
+that the modified group alone causes the difference in every scaffold.
+
+A matched molecular pair narrows structural differences, but assay variation,
+solubility, aggregation, binding mode and other context can still affect the
+interpretation. An attribution map explains a fitted model's response under a
+chosen method; it does not identify a biological mechanism by itself. A model
+counterfactual additionally needs a valid structure, feasible intervention and
+relevant measurement context. Optimizing an attribution score can produce a
+model-favored object outside the domain in which its prediction was useful.
+
+Turn an explanation into a testable hypothesis: specify the local chemical change,
+which endpoint should move, what alternative explanation remains, and what
+independent measurement would distinguish it. Keep the claim local until new
+series and contexts actually support transfer.
+
+## Watch an explanation miss the cause
+
+The [SAR attribution lab](/labs/sar-attribution/) fits a model to data whose
+generating rule is stated in the file, so the cause is known rather than
+inferred. A confounder correlated with that cause takes the larger share of atom
+credit on seven of eight actives, and the matched pair that breaks the
+correlation is ranked backwards. It is the check that real activity data never
+allows.
+
+## Independent exercises
+
+1. Query bits are `[1,3,5]` and neighbor bits are `[1,2,3,4]`. Calculate Tanimoto
+   similarity. Does it equal a probability of prediction success?
+2. Which split in the six-compound table directly holds out series C? Which
+   directly separates later measurements? Explain why these are different.
+3. A chirality-blind representation assigns identical features to two measured
+   stereoisomers with different endpoints. Can a deterministic predictor using
+   only those features output both labels correctly?
+4. A model highlights a substituent and predicts a one-log-unit improvement.
+   What is missing before calling this a validated tenfold biological improvement?
+
+<details data-worked-answer>
+<summary>Worked answers — keep representation, task and claim aligned</summary>
+
+The intersection has 2 bits and union 5, so similarity is 0.40, not a success
+probability. Holding out C1/C2 separates series C; training on the early rows
+and testing on the late rows separates time but leaves all three series shared.
+Identical input features force an ordinary deterministic predictor to return
+the same output, so it cannot recover both different labels from those features
+alone. A predicted change needs compatible endpoint units, a valid realizable
+analogue, matched measurement and suitable independent confirmation. A highlighted
+substituent is model evidence, not that confirmation.
+
+</details>
+
+Continue to [uncertainty and decisions](/learn/qsar-properties/uncertainty-to-decisions/).
+
+Original examples and prose: CC BY 4.0. Sources reviewed: 2026-09-09.

@@ -1,0 +1,171 @@
+---
+title: Student sandbox — fit, select, inspect, explain
+description: Run an editable CPU-only teaching exercise without touching frozen real-data experiments.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../../components/LabDownloads.astro";
+
+<LessonProgress lessonId="machine-learning/student-modelling-sandbox" />
+<ScrollableRegions />
+
+<LabDownloads lab="student-modelling" />
+
+## Before you run
+
+Complete [regression, classification and error analysis](/learn/qsar-properties/regression-classification-errors/).
+The aim is to connect code to the preceding hand calculations, inspect a genuine
+local fit, and explain a failure. Browser-only readers can use the reference
+output below. Start with the self-contained English or Chinese notebook above:
+upload it in [Colab](https://colab.research.google.com/) using **File → Upload notebook**,
+or open it in a local Python 3.11+ Jupyter kernel. The
+[notebook practice guide](/labs/notebook-guide/) explains execution order and saving.
+No source checkout or modelling package is needed for the notebook. The optional
+CLI below requires Python 3.11 or 3.12 on macOS/Linux with POSIX file support;
+that CLI, not the notebook, refuses report writing on other platforms.
+
+This is an **editable synthetic student exercise**, not a frozen author's
+reproduction. Ten invented entities have a scalar feature, a continuous response
+and a separately constructed binary `hit` target. They are not molecules or
+assay measurements. No dataset download, additional modelling package or GPU is
+needed; only hosted Colab requires your Google account. The fitting code is
+normally under one second on a CPU, with a JSON report under
+0.01 MB; these are small-exercise expectations, not a hardware benchmark.
+
+The notebook creates a fresh temporary output folder. Its export cell rejects an
+existing report; save the JSON, SVG and your notebook before the runtime ends.
+For the CLI, outputs must stay in `tmp/student-modelling/`. That runner rejects existing files
+and symlink output paths. It never imports or modifies FreeSolv, ChEMBL, rMD17 or
+pool-budget code and results. Real-data reproduction and reading existing results
+remain distinct activities.
+
+## Inspect the complete input before fitting
+
+The source `labs/student_modelling/run_lab.py` declares these rows in
+`teaching_rows()`. Every entity is unique across partitions. The partition is
+fixed for the exercise; it is neither a scaffold split nor a sampled deployment
+population.
+
+| Entities         | Feature          | Continuous response | Binary hit       | Partition  |
+| ---------------- | ---------------- | ------------------- | ---------------- | ---------- |
+| toy-01 to toy-06 | 0, 1, 2, 3, 4, 5 | 1, 3, 5, 7, 9, 11   | 0, 0, 0, 1, 1, 1 | training   |
+| toy-07, toy-08   | 1.5, 3.5         | 4, 8                | 0, 1             | validation |
+| toy-09, toy-10   | 6, 7             | 10, 9               | 1, 0             | test       |
+
+Notice that the training responses follow a line but the test responses do not.
+The last binary target also contradicts continuation of the training ordering.
+These choices deliberately create failure outside the training range. No
+biological conclusion should be drawn from their frequency or magnitude.
+
+## Follow the code, not only the command
+
+`run` checks unique entities, finite values, binary labels and nonempty
+partitions before fitting. `fit_ridge` uses the closed-form unpenalized-intercept
+solution from the previous lesson. `fit_logistic` uses training mean/scale and
+500 full-batch steps with learning rate 0.1. Both consider alpha 0, 1 and 10.
+Ridge uses sum squared error plus `alpha*w²`; logistic uses mean cross-entropy
+plus `alpha*w²/2`. These are not interchangeable penalty conventions.
+
+Validation selects regression by MAE and classification by log loss, breaking
+ties toward smaller alpha. The threshold remains 0.5, including equality as
+positive. There is no refit using validation labels after selection. Test
+targets only enter scoring. The report retains all candidate parameters and
+validation scores so you can trace the choice.
+
+With separable training labels and alpha 0, unregularized logistic likelihood
+has no finite maximum. The fixed 500 steps specify an instructional iterate,
+not convergence or calibrated probabilities. For scoring only, probabilities
+are clipped to `[1e-15, 1−1e-15]`; undefined precision/recall is `null`.
+
+## Optional command-line route
+
+Open a terminal in the repository root, the folder containing `labs/` and
+`pyproject.toml`. Website dependencies and `uv sync` are unnecessary for this lab.
+
+```sh
+python3 --version
+python3 labs/student_modelling/run_lab.py
+```
+
+The terminal prints `Synthetic student report written:` and the destination.
+Open `tmp/student-modelling/report.json`. For a second run, select a new filename:
+
+```sh
+python3 labs/student_modelling/run_lab.py --output tmp/student-modelling/attempt-02.json
+```
+
+If Python is unavailable or outside the stated versions, continue with the
+reference output; do not substitute a frozen experiment command. If the project
+environment already exists, `.venv/bin/python` is an alternative interpreter.
+
+## Read the actual reference output
+
+The unmodified script was run with Python 3.11.15 on 2026-09-09. Both selected
+alphas were 0. Regression fitted intercept 1 and slope 2. These are observed
+software outputs on invented data, not scientific measurements.
+
+| Quantity                       | Reference value                        |
+| ------------------------------ | -------------------------------------- |
+| Regression validation MAE      | 0                                      |
+| Test predictions / targets     | 13, 15 / 10, 9                         |
+| Test residuals                 | 3, 6                                   |
+| Regression test MAE            | 4.5                                    |
+| Training-mean test MAE         | 3.5                                    |
+| Logistic / prevalence accuracy | 0.5 / 0.5                              |
+| Logistic / prevalence log loss | 5.359325802153142 / 0.6931471805599453 |
+
+The fitted line loses to the training mean on these two test rows. The
+classifier and prevalence baseline have identical thresholded accuracy but very
+different probability losses. The learned classifier is highly confident on a
+negative test entity. A successful script and perfect validation fit therefore
+do not establish a useful predictor.
+
+## Independent exercise — predict the effect before changing data
+
+In your own notebook copy, edit only the constructed records in `teaching_rows()`
+and restart from the top for a fresh result. In the CLI version, choose a new
+sandbox filename for each attempt. Do not change any existing real-data lab.
+
+1. Add 100 to both test responses. Which parameters, selected settings,
+   predictions and scores must stay unchanged, and which can change?
+2. Restore the original data, then replace both validation responses with 6.
+   Do any candidate fitted parameters change? Which alpha wins now?
+3. Restore the data, then duplicate the first entity ID on the final record.
+   Should the runner fit a model anyway?
+4. Write two sentences explaining why zero validation MAE did not guarantee
+   a test improvement. Include the comparison with the constant baseline.
+
+<details data-worked-answer>
+<summary>Worked answer — information flow and interpretation</summary>
+
+Changing only test responses preserves every fitted candidate, both selected
+alphas, and both sets of predictions. Regression residuals and scores change;
+classification scores do not, because its labels were not changed. With both
+validation responses set to 6, candidates remain unchanged but regression alpha
+10 wins: shrinkage brings its validation predictions nearest to the training
+mean 6. A duplicated ID is rejected before fitting.
+
+The original training and validation responses follow the same line, but the
+test feature range extends beyond training and its responses deliberately break
+that relation. Test MAE 4.5 exceeds the training-mean baseline's 3.5. This explains
+the constructed case, not how often such a failure occurs in molecular data.
+Changing a teaching test label is a diagnostic; it is not a valid route to
+improving a reportable research test score.
+
+</details>
+
+## Transfer to a real study
+
+Read [FreeSolv's completed baseline comparison](/labs/freesolv-honest-baselines/)
+and identify what this sandbox lacks: real structures and descriptors,
+measurement units, group-aware splitting, larger independent samples and a
+scientifically specified applicability domain. The mechanism is transferable;
+these synthetic scores are not. To execute the next practice stage, use the
+[real-data lipophilicity notebook](/labs/lipophilicity-notebook/) after the
+[label-free molecule inspector](/labs/molecule-representation-inspector/).
+Use the [curriculum map](/learn/foundations/curriculum-map/)
+to choose a specialist route after completing the core line.
+
+Original software: Apache-2.0. Original prose and invented data: CC BY 4.0.
+Last reviewed: 2026-09-09.

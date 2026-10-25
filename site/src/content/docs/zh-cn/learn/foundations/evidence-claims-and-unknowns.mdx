@@ -1,0 +1,84 @@
+---
+title: 证据、主张与未解决字段
+description: 判断记录的比较深度在证据充分、有边界、引用失效或材料缺失时允许怎样表述。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="foundations/evidence-claims-and-unknowns" />
+<ScrollableRegions />
+
+英文原文：[Evidence, claims and unresolved fields](/learn/foundations/evidence-claims-and-unknowns/)。
+
+## 学习目标与先修内容
+
+请先阅读[来源与实体识读](/learn/foundations/source-and-entity-literacy/)。你将把深度判断追溯到该主题所声明的证据，在深度未定时保留区间，识别证据失效的主张，并避免把未审阅字段变成否定性发现。[离线审计指南](/labs/claims-evidence-audit/)可复现下面的案例。
+
+比较记录表述的是审阅者在限定来源范围内看到了什么，它本身不是教学效果的测量。当一个对象有详细条目，而另一个没有特定主题条目时，这一区别尤其关键。
+
+## 记录支持表述的四种方式
+
+`direct-observation` 从显式深度和可解析的证据条目开始。记录指明所审阅的来源，并说明该来源支持什么。你可以连同范围和日期报告已记录的深度，但不能把对某一课的观察扩展到该对象可能持有的全部材料。
+
+`bounded-inference` 给出深度下界和上界，而不是已确定的单一深度。本协议把带有可解析引用的显式 `unverified` 单元视为这种区间。可能达到的上界不是已经测得的下界。双方边界明确时可以比较边界，但若区间与另一方重叠，就不能宣布胜者。
+
+`unsupported-claim` 是证据缺失、引用了记录中从未声明的条目，或指向不存在的本地文件的显式深度。这个深度可能真实，但记录尚不能支持使用它。下一步应修复并审阅证据引用，再引用该深度。引用在结构上可解析后，仍需阅读实际来源内容才能支撑科学主张。
+
+`unresolved-field` 没有主题专属证据。比较记录会提供声明的 `unverified` 默认值。它表示这次有日期的审阅没有记录该主题的判断，不表示对象没有覆盖该主题。显式且有证据的 `absent` 判断不同，因为它描述了已审阅范围，但结论仍受该范围限制。
+
+| 状态 | 读者可以保留的内容 | 仍未解决的内容 |
+| --- | --- | --- |
+| `direct-observation` | 已记录的深度及证据范围 | 未审阅材料和读者学习结果 |
+| `bounded-inference` | 声明的下界与上界 | 区间内的准确深度 |
+| `unsupported-claim` | 证据契约失效这一事实 | 支持修复前的深度主张 |
+| `unresolved-field` | 没有记录主题专属审阅这一事实 | 对象是否覆盖该主题 |
+
+这四种状态并不是比较矩阵独有的。atlas 自己的记录也带着同样的结构。RCSB Protein Data Bank
+的记录为它提供的数据声明了公有领域贡献，并指明说这句话的页面，这是一条带范围的直接观测。
+SKEMPI 的记录带两条 licence，其 scope 说明授权覆盖上游数据集而不覆盖镜像自己的卡片，
+这是一条有界推断。OpenMM 的记录写明模型训练维度不适用于一个经典分子动力学引擎，
+这与"不知道"不是同一句话。而一条声称引用了记录里并不存在的证据条目的记录，就是 atlas
+自己版本的无效主张。
+
+## 案例推演
+
+冻结的基础路径审计把 13 个对象与 4 个主题交叉，得到 52 个单元。它读取对象记录并核查引用，不下载任何内容。2026-10-23 提交的计算把 14 个单元归为直接观察，0 个归为有边界推断，0 个归为缺乏支持的主张，38 个归为未解决字段。
+
+| 记录 | 直接观察 | 未解决字段 | 允许的解读 |
+| --- | ---: | ---: | --- |
+| `aidd-commons` | 4 | 0 | 其记录深度有可解析条目。 |
+| `agil` | 0 | 4 | 其默认值使这些主题仍无法判定。 |
+| `build-ai-drug-discovery-pipelines` | 4 | 0 | 其显式深度对应已审阅条目。 |
+| `teachopencadd` | 4 | 0 | 其显式深度对应已审阅条目。 |
+
+这些行描述证据状态，不是排名。尤其不能把 `agil` 的未解决单元解读成缺少课程。项目自己的记录是其选择陈述的下限，不是读者学习效果的测量。独立阅读在所选主题中的 2 项上比项目记录更深。已发布的记录保留较浅的深度，没有悄悄采用较高分数。
+
+同样的原则适用于广泛的公开主张。比较记录中的数字边界满足两项已声明的边界条件，但两个状态仍是 `not_established`，因为公开更正窗口条件为 `not_recorded`。计算所得的不等式与已经成立的最高级主张是两种不同的陈述。
+
+## 独立练习
+
+设想新审计中的四个构造单元。单元 A 声明 `explained`，并引用可解析的证据条目。单元 B 显式记录 `unverified`，带有可解析条目和开放的深度区间。单元 C 声明 `worked`，但证据条目指向的本地文件不存在。单元 D 没有主题条目，继承了无证据的 `unverified` 默认值。请分类各单元，为单元 D 写出最强且站得住脚的一句话，并指出哪个单元必须修复记录后才能使用其深度。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+单元 A 是 `direct-observation`，应连同已审阅来源范围报告其 `explained` 深度。单元 B 是 `bounded-inference`，应保留区间，不能把可能的上界替换成单点分数。单元 C 是 `unsupported-claim`，使用其 `worked` 深度前须修复并审阅文件引用。单元 D 是 `unresolved-field`。合适的表述是这次已记录的审阅没有该对象的主题专属证据。这句话不表示该对象缺少这个主题。
+
+</details>
+
+## 材料没有展示的内容
+
+状态标签检查记录的证据契约，不重新打开外部网页、重评对象、测量教学质量或展示学生表现。提交的所选路径没有有边界推断或缺乏支持的单元，因此练习使用构造案例说明这些状态。独立阅读是对来源材料的第二次自动解释，不是人类学习研究。
+
+## 运行审计
+
+模式是依据冻结协议和已提交的本地记录进行全新独立计算。项目 Python 环境和 CPU 即可使用。无需网络、下载或加速器。下列命令不写入文件，会打印所有所选单元及状态计数。[指南](/labs/claims-evidence-audit/)还提供检查与汇总导出命令。
+
+```bash
+.venv/bin/python labs/claims_evidence_audit/inspect_claims_evidence_audit.py show
+```
+
+## 来源与署名
+
+本案例读取 `aidd-commons`、`agil`、`build-ai-drug-discovery-pipelines` 和 `teachopencadd` 对象记录、独立阅读 `aidd-commons-blind-2026-09-11`、主题分类以及比较导出文件。已提交结果于 2026-10-23 核查。原创文字采用 CC BY 4.0，实验代码采用 Apache-2.0。链接材料保留各自条款。

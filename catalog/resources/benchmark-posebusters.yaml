@@ -1,0 +1,63 @@
+id: benchmark-posebusters
+name: PoseBusters
+kind: benchmark
+summary: Pose plausibility checks for structure-based molecular modelling.
+canonical_url: https://github.com/maabuu/posebusters
+identifiers:
+  - scheme: documentation
+    value: "PoseBusters documentation"
+    url: https://posebusters.readthedocs.io/en/latest/
+  - scheme: paper
+    value: "PoseBusters"
+    url: https://arxiv.org/abs/2308.05777
+stages: [hit-discovery, evaluation]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [pose-validation]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [repository, license-file, paper-data, paper-data-license] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: PoseBusters repository software; does not cover the separately hosted paper benchmark data or upstream structure sources.
+    evidence: [license-file]
+  - name: CC BY 4.0
+    scope: PoseBusters paper data and results files deposited on Zenodo; does not relicense upstream PDB or Astex source material.
+    evidence: [paper-data-license]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/maabuu/posebusters
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/maabuu/posebusters
+    label: PoseBusters repository
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: posebusters-paper-2026-09-12
+    url: https://arxiv.org/abs/2308.05777
+    label: "Fetched 2026-09-12 for the reported combined RMSD<=2A + validity pass rates: Gold 64%, AutoDock Vina 56%, DiffDock 47% on the Astex Diverse set; AutoDock Vina 58%, Gold 55%, DiffDock 12% on the PoseBusters Benchmark set"
+    supports: [caveats]
+  - id: license-file
+    url: https://raw.githubusercontent.com/maabuu/posebusters/HEAD/LICENSE
+    label: Repository LICENSE file (reviewed 2026-10-23)
+    supports: []
+  - id: paper-data
+    url: https://zenodo.org/records/8278563
+    label: "Reviewed 2026-10-23: linked Zenodo record offers PoseBusters paper data and result files for direct download"
+    supports: [caveats]
+  - id: paper-data-license
+    url: https://zenodo.org/api/records/8278563
+    label: "Reviewed 2026-10-23: Zenodo record metadata states open access and CC BY 4.0 for deposited files"
+    supports: [caveats]
+caveats:
+  - Paper benchmark data are downloaded from the separate Zenodo record under CC BY 4.0; the MIT repository licence covers code, and neither grant settles upstream structure-source terms.
+  - "DiffDock's RMSD-only success rate on the Astex Diverse set (72%, poses within 2A of the crystallographic ligand, no validity requirement) is not the same statistic as the combined RMSD<=2A-and-PB-valid rate the paper reports for the same method on the same set (47%); reporting only the first number overstates what the second establishes. The gap between classical docking (Gold, AutoDock Vina) and the best deep-learning method (DiffDock) on the combined metric also widens sharply on the paper's own harder, less-overlapping PoseBusters Benchmark set (47%->12% for DiffDock, versus a much smaller shift for the two classical tools), which the paper's own text attributes to generalisation rather than to physical validity alone. Verified by fetching the paper directly (arXiv abstract and full HTML text), not from a search snippet."
+acknowledgements: []
+last_verified: "2026-10-23"

@@ -1,0 +1,146 @@
+---
+title: Retrieval, typed tools, and feedback loops
+description: Trace what a scientific workflow retrieved, called, observed, and updated without confusing a tool trace with a wet experiment.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="scientific-agents/retrieval-tools-feedback" />
+<ScrollableRegions />
+
+## Learning goals
+
+After this lesson, you should be able to distinguish retrieval context from
+parameter training, a typed tool result from a textual promise, a fixed pipeline
+from an adaptive plan, and a tool call from a completed wet experiment. You
+should also be able to state what a verifier can and cannot establish.
+
+## Prerequisites and task boundary
+
+Read [Scientific agents and tools](/learn/scientific-agents/agents-and-tools/)
+first. Represent a workflow state as `S_t`, retrieved evidence as `E_t`, an
+action plan as `a_t`, and a tool observation as `o_t`. A retrieval step appends
+selected evidence to the current context. It does not, by itself, update model
+parameters. Parameter training instead changes a parameter state, for example
+from `theta` to `theta_prime`, under a separate data and optimization contract.
+
+The [ReAct paper](https://arxiv.org/abs/2210.03629) presents interleaved
+reasoning traces and task-specific actions. Its mechanism motivates a useful
+state distinction: a plan can use an observation to revise the next action, but
+the trace still needs an authority boundary and an interpretable record of what
+was actually observed.
+
+## Typed tools carry a different kind of evidence
+
+A textual statement such as “I checked the assay” is not an execution record.
+A typed interface can make the request and its return value inspectable, for
+example:
+
+```text
+request:  { assay_id: "A17", readout: "marker_M", specimen_id: "S4" }
+response: { status: "qc_failed", data_ref: "run-19", control_pass: false }
+```
+
+The schema does not make the response true, but it makes its meaning testable:
+which assay, which specimen, which readout, and whether the controls passed.
+A verifier may check that a JSON object conforms to this schema, that a parser
+used the stated file, or that a required control field is present. It cannot,
+from those checks alone, establish that a biological claim is true, that the
+instrument was calibrated, or that a wet experiment occurred as described.
+
+## Fixed pipeline versus adaptive plan
+
+A fixed pipeline has a predeclared action sequence, for example retrieve,
+summarize, call a reader, and write a report. A competent fixed pipeline can
+also include a frozen safety branch:
+`if control_pass is false: halt and route to review`. An adaptive plan chooses
+its next permitted action conditional
+on a returned state: `S_(t+1) = update(S_t, o_t)`. Adaptation is not
+automatically good. The update rule must state which observations can change a
+plan, who can authorize a write-capable action, and when a failed quality control
+invalidates an intended conclusion.
+
+## Worked failure trace: a tool call is not a result
+
+This is a **constructed teaching trace**, not an executed workflow or laboratory
+record.
+
+| Step | Recorded state | Correct next interpretation |
+| --- | --- | --- |
+| Evidence | `E0` is a retrieved source whose provenance and scope are recorded. | It motivates a hypothesis; it is not a new measurement. |
+| Plan | Request an assay for `marker_M` with a positive control and a negative control. | The plan is a proposal, not an experiment. |
+| Tool / readout | The typed response above has `status: qc_failed` and `control_pass: false`. | The tool returned a QC failure; no valid biological readout is available. |
+| Revision | Record the failure, retain the unresolved hypothesis, and halt for authorized human review or a valid alternative source. | A competent fixed script and an adaptive plan both stop here; do not update the hypothesis as if `marker_M` had been measured. |
+
+The update is therefore about workflow state, not a biological effect. A tool
+call may schedule, simulate, parse, or reject an action. It becomes evidence for
+a wet experiment only when the authorized experimental record and its controls
+support that interpretation.
+
+## Scope of a semi-autonomous laboratory loop
+
+The primary [Robin article](https://www.nature.com/articles/s41586-026-10652-y)
+describes a semi-autonomous workflow that generates hypotheses and analyzes
+experimental data. In its reported loop, humans reviewed candidate rankings,
+executed a human-generated experimental protocol, and provided resulting data
+for analysis. It is therefore not a basis to claim autonomous wet-lab execution
+from an agent trace or from a software tool call.
+
+## Independent exercise
+
+Using the same `E0`, sources, tools, permission boundary, budget, and
+`qc_failed` response, compare a competent fixed script with the frozen branch
+`if control_pass is false: halt and route to review` against an adaptive plan
+that reaches the same branch. Which facts are shared, which output is
+unsupported, and does this case demonstrate a value for adaptivity? Then state
+what genuinely unanticipated future evidence would require a measured
+comparison rather than an architectural claim.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Both designs share the retrieved evidence, proposed assay, typed call, failed
+control, tools, authority boundary, and budget. The positive conclusion is
+unsupported in either design because there is no valid readout. Both should
+record the exact failure state, halted inference, and the authorized reviewer or
+alternative evidence required before a new action. This case shows no measured
+value for adaptivity: a competent fixed branch handles it equally. A future
+comparison would need authorized, held-out workflow traces containing a valid,
+provenance-resolved observation outside the fixed script's declared branches,
+with sources, tools, permissions, budget, outcomes, and human review criteria
+frozen before inspection. That comparison is not run here. Neither record says
+that a wet experiment was completed successfully.
+
+</details>
+
+## Failure boundaries and source path
+
+Retrieval can be incomplete or mis-scoped; typed I/O can be well formed yet
+wrong; adaptive behavior can propagate a bad observation; and a verifier can
+miss the scientific premise it was never designed to test. Preserve source,
+query, tool schema, returned status, action authority, and the distinction
+between an observation and an inferred conclusion.
+
+<div data-case-sources>
+
+- [ReAct: interleaved reasoning and task-specific actions](https://arxiv.org/abs/2210.03629)
+- [Robin: multi-agent scientific discovery workflow](https://www.nature.com/articles/s41586-026-10652-y)
+- [Scientific agents and tools](/learn/scientific-agents/agents-and-tools/)
+
+</div>
+
+The [laboratory return-contract audit](/labs/tool-contract-audit/) tests whether a
+tool return is self-describing while showing why a valid contract cannot
+verify the underlying measurement.
+
+The [agent evaluation task set](/labs/agent-evaluation-taskset/) checks this
+repository's own laboratories as fixed tasks, across source resolution,
+execution correctness, recovery, claim accuracy and action authorisation.
+
+The tool payload and failure trace are constructed examples. This lesson makes
+no software-execution, autonomous-laboratory, or experimental-result claim.
+Original lesson prose is CC BY 4.0; linked software and sources retain their
+own terms.
+
+Last reviewed: 2026-09-09.

@@ -1,0 +1,53 @@
+id: db-pubchem
+name: PubChem
+kind: database
+summary: Official chemistry and bioassay information resource.
+canonical_url: https://pubchem.ncbi.nlm.nih.gov/
+identifiers:
+  - scheme: documentation
+    value: "PubChem PUG REST (JavaScript required)"
+    url: https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest
+stages: [target-discovery, hit-discovery]
+modalities: [small-molecule, bioassay]
+tasks: [chemical-information-retrieval]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [terms-of-use] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: United States Government work, public domain
+    scope: The molecular data on the site. The National Library of Medicine states that information created by or for the United States government on the site is within the public domain, that the Library itself places no restrictions on the use or distribution of the data in its molecular databases, and that appropriate acknowledgment is requested in any subsequent use.
+    evidence: [terms-of-use]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://pubchem.ncbi.nlm.nih.gov/pcfe/docs/markdown/neighbor-discontinuation.md
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: official-page
+    url: https://pubchem.ncbi.nlm.nih.gov/
+    label: PubChem official page
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: downloads-page
+    url: https://pubchem.ncbi.nlm.nih.gov/docs/downloads
+    label: PubChem downloads page, re-opened 2026-10-21, which returned an automated-access check instead of a copyright or licence statement
+    supports: [caveats]
+  - id: terms-page
+    url: https://pubchem.ncbi.nlm.nih.gov/
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+  - id: terms-of-use
+    url: https://www.ncbi.nlm.nih.gov/home/about/policies/
+    label: NCBI policies read 2026-10-23
+    supports: [caveats]
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one.
+  - "No terms statement for the PubChem data could be read on 2026-10-21. The usage-policy and download pages render their content in the browser or sit behind an automated-access check, so the licence and the redistribution terms stay unverified here rather than being asserted from a summary."
+acknowledgements: []
+last_verified: "2026-10-23"

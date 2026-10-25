@@ -1,0 +1,119 @@
+---
+title: 选择分子生成工具与评价任务
+description: 区分生成器、搜索目标、分布基准和后续评价，并核对候选列表中各项比例的分母。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+import ResourceGuideTables from "../../../../../components/ResourceGuideTables.astro";
+
+<LessonProgress lessonId="molecular-generation/generation-resource-guide" />
+<ScrollableRegions />
+<ResourceGuideTables />
+
+英文原文：[Choosing generation tools and evaluation tasks](/learn/molecular-generation/generation-resource-guide/)。
+
+## 学习目标与前置知识
+
+读完本页，应能按输入和输出选择生成资源，区分分布学习与目标驱动优化，并在解释
+候选列表时保留无效和重复输出。先读[生成与搜索](/zh-cn/learn/molecular-generation/generation-and-search/)
+和[流模型与受约束搜索](/zh-cn/learn/molecular-generation/flows-and-constrained-search/)。
+本页是阅读与手算练习，不运行生成器，也不选择真实化合物进入合成。
+
+## 先判断缺少哪个组件
+
+“生成更好的分子”没有定义任务和比较对象。生成器提出对象，评分器附加数值，搜索
+策略消耗查询预算，评价器检查保留及排除的输出。一个软件可以承担多个角色，但这些
+角色仍然不同。
+
+| 缺少的组件                 | 资源与官方入口                                                                             | 要检查的输入和输出                                                                       |
+| -------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| 可配置的提案与优化流程     | [REINVENT 4](/atlas/tool-reinvent-4/)（[仓库](https://github.com/MolecularAI/REINVENT4)）  | prior 模型、运行模式与配置，输出采样或优化的分子提案；迁移学习与强化学习是不同运行选择。 |
+| 分布学习评价               | [MOSES](/atlas/benchmark-moses/)（[仓库](https://github.com/molecularsets/moses)）         | 生成的 SMILES 和明确的训练/参考集合，输出有效率、唯一性、新颖性及分布比较。              |
+| 在分布任务与目标任务间选择 | [GuacaMol](/atlas/benchmark-guacamol/)（[仓库](https://github.com/BenevolentAI/guacamol)） | 分布匹配或目标驱动的生成器接口，输出相应评价函数的结果。                                 |
+| 可配置评分与后续评价       | [MolScore](/atlas/tool-molscore/)（[仓库](https://github.com/MorganCThomas/MolScore)）     | 目标配置与候选 SMILES 用于评分；生成集合与参考集合用于后续 `moleval` 分析。              |
+
+若问题是给定训练/参考设置下的样本分布，可选择 MOSES 类评价。若问题是针对指定
+评分函数搜索，应选择目标驱动任务。一个模型可以改善其中一种，同时恶化另一种；
+两者都不确立靶点活性。
+
+GuacaMol 的两组接口是 `DistributionMatchingGenerator` 配合
+`assess_distribution_learning`，以及 `GoalDirectedGenerator` 配合
+`assess_goal_directed_generation`。换评价函数就是换任务，不只是换报表。
+MolScore 能整合多个评分器，但其内置 benchmark presets 属于重新实现；只有检查
+版本和设置后，才能判断它们是否与原始协议一致。
+
+## 软件版本与资产必须对应
+
+[REINVENT 3.2 仓库](https://github.com/MolecularAI/Reinvent)于 2025-05-24 归档，
+并明确将后续开发指向 REINVENT 4。Atlas 保留其[历史条目](/atlas/model-reinvent-3/)。
+使用版本 4 时，应配套版本 4 的配置和 notebook 说明；其 notebook 目录采用
+Jupytext 脚本。旧环境、新配置与身份不明的 prior 组合起来，不能称为复现。
+
+REINVENT 4 当前源代码许可为 Apache-2.0，可选 OpenEye 组件及部分测试需要另行
+取得专有许可。README 链接了 prior 归档，但本轮未成功检查该归档；一个链接不等于
+所有权重、训练语料或资产许可均已核实。完成本页不需要安装、训练或生成命令。
+
+## 推导案例：完整读取候选筛选过程
+
+以下计数全部为**教学构造**，不是基准结果。计数前固定一种规范化分子身份规则和
+训练参考集。一次运行提出 100 个候选，其中 80 个通过指定有效性检查；这 80 个输出
+去重后对应 50 个唯一身份，其中 30 个不在训练参考集中。这 30 个里有 12 个还通过了
+预先声明的代理评分筛选。
+
+| 本例中的量                             | 计算              | 分母表示什么                                                  |
+| -------------------------------------- | ----------------- | ------------------------------------------------------------- |
+| 有效率                                 | `80 / 100 = 80%`  | 所有提案，包括无效输出                                        |
+| 有效输出中的唯一比例                   | `50 / 80 = 62.5%` | 去重前的有效输出                                              |
+| 唯一有效身份中的新颖比例               | `30 / 50 = 60%`   | 与训练参考集比较的唯一身份                                    |
+| 每次提案得到的新颖且代理筛选通过身份数 | `12 / 100 = 12%`  | 所有尝试；这是本例明确定义的产出比例，不是标准 benchmark 分数 |
+
+报告“60% 新颖”不表示产生了 60 个有用化合物。通过筛选的 12 个身份仍是提案；
+代理筛选不证明合成路线、结合、选择性或实测 ADMET 性质。互变异构、立体化学或盐
+处理规则不同，可以改变计数，因此规则必须随结果保留。
+
+[MOSES 指标实现](https://github.com/molecularsets/moses/blob/master/moses/metrics/metrics.py)
+说明了为何要检查分母：先计算有效率，再移除无效输出；novelty 比较唯一有效身份
+与训练身份。`unique@k` 还会限制为有效序列中的前 `k` 个。本例的全列表唯一比例
+不能自动称为 `unique@1000`。指标名称含糊时，应检查实现。
+
+## 在明确预算下比较搜索
+
+若一个优化器调用评分器 1,000 次，另一个调用 50,000 次，仅比较最佳分数不能分离
+方法优势。公平比较前应明确评分调用、重复/缓存命中、评价失败和停止怎样计数；
+保留分数随预算变化的记录以及完整候选筛选过程，并设置具有相同访问与预算的廉价
+检索或简单搜索基线。反复自适应查询后选出的最佳提案，不是评分器泛化能力的独立
+证据。
+
+## 独立练习
+
+第二次**构造运行**提出 80 个候选：60 个有效输出、40 个唯一身份，其中 10 个不在
+同一训练参考集中。计算上表前三项比例。更高的唯一比例是否证明设计更好？比较
+两次运行的最佳分数前，必须匹配什么？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+有效率为 `60 / 80 = 75%`，有效输出中的唯一比例为 `40 / 60 ≈ 66.7%`，唯一有效
+身份中的新颖比例为 `10 / 40 = 25%`。唯一比例高于 62.5%，但有效率和新颖比例
+较低；没有明确决策规则就没有总体胜者，这些比例也不证明化学用途。比较搜索结果
+前，需匹配身份处理、训练和参考集访问、评分器与目标定义、评分预算、停止及失败
+计数方式。
+
+</details>
+
+## 把空间枚举出来，而不是引用它的规模
+
+[设计空间实验](/zh-cn/labs/design-space/)把三种已声明构造精确地构建出来，
+并用四个分子测试它们。把其中一个空间放大到四倍只多够到一个分子，
+而一个只差一个环原子的靶分子仍然完全一样地不可达；
+两个规模相同的空间最终没有任何共同成员。
+
+## 从提案走向证据
+
+合成问题继续读[路线可行性与反馈](/zh-cn/learn/synthesis-and-automation/route-feasibility-and-feedback/)，
+终点相关证据继续读[ADMET 资源选择](/zh-cn/learn/admet-pk/admet-resource-guide/)。
+本页上游链接审阅于 2026-09-09，软件、数据与模型资产保留各自条款。本轮未运行
+上游工作流或性能比较。
+
+译文更新：2026-09-09。

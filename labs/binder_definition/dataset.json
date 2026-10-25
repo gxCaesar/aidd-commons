@@ -1,0 +1,55 @@
+{
+  "schema_version": "aidd-commons.binder-definition-dataset.v1",
+  "artifact_type": "constructed-binder-dataset",
+  "authored_on": "2026-09-11",
+  "provenance": "Authored by hand for teaching. No value here is a real measurement, no molecule was assayed, and nothing is a screening proposal. The numbers are plausible in shape so the arithmetic is legible, and they are not data.",
+  "stores": "Measurements and declared rules. No molecule carries a class label, because a class is produced by a choice and this lab is about the choices.",
+  "endpoint": {
+    "quantity": "negative log of a hypothetical binding constant, in the shape of a pChEMBL value",
+    "assay_uncertainty": 0.3,
+    "what_the_uncertainty_means": "A repeat measurement of the same compound is expected to move by about this much. A compound within this distance of a cutoff has not been placed on either side of it by the measurement."
+  },
+  "primary_threshold": {
+    "value": 6.0,
+    "declared_before_analysis": true,
+    "statement": "Compounds at or above this value are called positives. The value is a choice. Nothing in the measurement selects it."
+  },
+  "threshold_grid": [5.0, 5.5, 6.0, 6.5, 7.0],
+  "measured": [
+    { "id": "m01", "smiles": "O=C(Nc1ccccc1)c1ccccc1", "value": 8.4 },
+    { "id": "m02", "smiles": "O=C(Nc1ccc(C)cc1)c1ccccc1", "value": 7.9 },
+    { "id": "m03", "smiles": "O=C(Nc1ccc(Cl)cc1)c1ccccc1", "value": 6.1 },
+    { "id": "m04", "smiles": "O=C(Nc1ccc(F)cc1)c1ccccc1", "value": 5.9 },
+    { "id": "m05", "smiles": "c1ccc(-c2ccccn2)cc1", "value": 7.5 },
+    { "id": "m06", "smiles": "Cc1ccc(-c2ccccn2)cc1", "value": 6.0 },
+    { "id": "m07", "smiles": "Clc1ccc(-c2ccccn2)cc1", "value": 5.2 },
+    { "id": "m08", "smiles": "c1ccc(N2CCNCC2)cc1", "value": 8.1 },
+    { "id": "m09", "smiles": "Cc1ccc(N2CCNCC2)cc1", "value": 5.8 },
+    { "id": "m10", "smiles": "COc1ccc(N2CCNCC2)cc1", "value": 4.9 },
+    { "id": "m11", "smiles": "CCCCCCCCO", "value": 4.2 },
+    { "id": "m12", "smiles": "CC(C)Cc1ccccc1", "value": 4.5 }
+  ],
+  "decoys": {
+    "what_they_are": "Molecules assumed not to bind because they were property-matched to the positives and never tested. They carry no measurement of any kind.",
+    "assumption": "Selected under the assumption that a property-matched untested molecule is inactive. That assumption is not evidence, and every decoy below would become a measured compound the moment anyone ran the assay.",
+    "members": [
+      { "id": "d01", "smiles": "O=C(Nc1ccccc1)C1CCCCC1" },
+      { "id": "d02", "smiles": "O=C(NCc1ccccc1)c1ccccc1" },
+      { "id": "d03", "smiles": "c1ccc(-c2ccccc2)cc1" },
+      { "id": "d04", "smiles": "c1ccc(-c2cccnc2)cc1" },
+      { "id": "d05", "smiles": "c1ccc(N2CCOCC2)cc1" },
+      { "id": "d06", "smiles": "c1ccc(N2CCCCC2)cc1" },
+      { "id": "d07", "smiles": "CCCCOc1ccccc1" },
+      { "id": "d08", "smiles": "CCCCCc1ccccc1" },
+      { "id": "d09", "smiles": "O=C(Nc1ccccc1)CC1CCCC1" },
+      { "id": "d10", "smiles": "Cc1ccc(-c2ccccc2)cc1" },
+      { "id": "d11", "smiles": "COc1ccc(N2CCOCC2)cc1" },
+      { "id": "d12", "smiles": "CCOc1ccc(C)cc1" }
+    ]
+  },
+  "generalization_units": {
+    "molecule": "Each compound counts once.",
+    "scaffold": "Compounds sharing a Bemis-Murcko scaffold count once, because a split that separates molecules but not scaffolds puts near-copies on both sides.",
+    "acyclic_note": "An acyclic molecule has no Bemis-Murcko scaffold. The unit is not merely coarser for such a compound, it is undefined, and the lab reports how many are in that state rather than quietly assigning them one."
+  }
+}

@@ -1,0 +1,67 @@
+id: model-graphdta
+name: GraphDTA
+kind: model
+summary: Graph neural network drug-target affinity model repository.
+canonical_url: https://github.com/thinng/GraphDTA
+identifiers:
+- scheme: paper
+  value: 'GraphDTA: predicting drug-target binding affinity with graph neural networks; DOI 10.1093/bioinformatics/btaa921'
+  url: https://doi.org/10.1093/bioinformatics/btaa921
+stages:
+- hit-discovery
+- evaluation
+modalities:
+- small-molecule
+- protein
+tasks:
+- drug-target-affinity-prediction
+relations: []
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - repository
+openness:
+  inference_code:
+    value: available
+    evidence:
+    - repository
+  training_code:
+    value: available
+    evidence:
+    - repository
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses: []
+evidence:
+- id: resource-links-2026-09-08
+  url: https://github.com/thinng/GraphDTA
+  label: Official source for additional resource links (reviewed 2026-09-08)
+  supports:
+  - identifiers
+- id: repository
+  url: https://github.com/thinng/GraphDTA
+  label: GraphDTA repository
+  supports:
+  - caveats
+  - kind
+  - modalities
+  - name
+  - stages
+  - summary
+  - tasks
+caveats:
+- The openness claims here rest on the repository's own file listing and README, read on 2026-10-23; the code was not run, and no claim is made that the released scripts reproduce the published numbers.
+- The opened README exposes a test-set model-selection path alongside a validation alternative; do not use test-selected checkpoints in new labs.
+- The repository is public and clonable and carries no licence file, so the code is obtainable while the terms under which it may be reused are unstated. The repository has not been pushed to since 2021.
+acknowledgements: []
+last_verified: '2026-10-23'

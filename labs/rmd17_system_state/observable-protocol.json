@@ -1,0 +1,30 @@
+{
+  "protocol_id": "rmd17-observable-convergence-v1",
+  "declared_question": "What is the equilibrium mass-weighted radius of gyration of this molecule under its ab initio molecular-dynamics trajectory, and how much of the trajectory is needed to estimate it to a stated precision?",
+  "relation_to_sibling_protocol": "This protocol shares its data source with rmd17-system-state-v1 and touches neither its split, its selected alphas, nor its locked benzene/uracil evaluation. It reads only the two development-role systems.",
+  "source": {
+    "figshare_article": "12672038",
+    "doi": "10.6084/m9.figshare.12672038.v4",
+    "version": 4,
+    "licence": "CC0",
+    "primary_paper_doi": "10.1088/2632-2153/abba6f"
+  },
+  "systems": ["ethanol", "malonaldehyde"],
+  "frame_ordering": {
+    "rule": "stable ascending sort on old_indices",
+    "meaning": "restores the frame order of the original ab initio trajectory; rMD17's own array order is unrelated to simulation time"
+  },
+  "observable": {
+    "name": "mass-weighted radius of gyration",
+    "formula": "Rg(frame) = sqrt( sum_a m_a * |r_a - r_com|^2 / sum_a m_a )",
+    "units": "Angstrom",
+    "atomic_masses_amu": { "1": 1.008, "6": 12.011, "7": 14.007, "8": 15.999 }
+  },
+  "block_sizes": [10, 100, 1000],
+  "convergence_checkpoints": [100, 1000, 10000, 100000],
+  "excluded_by_design": [
+    "replicate-trajectory dependence: rMD17 provides exactly one ab initio trajectory per molecule",
+    "force-field sensitivity: the reference level is a single DFT method, not a family of classical force fields",
+    "any new simulation: this reads an existing, already-completed trajectory only"
+  ]
+}

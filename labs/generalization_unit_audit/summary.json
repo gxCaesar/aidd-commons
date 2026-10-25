@@ -1,0 +1,102 @@
+{
+  "admitted_measurement_count": 486,
+  "admitted_point_row_count": 488,
+  "cohort": {
+    "declared_seeds": 15,
+    "resolved_parents": 10
+  },
+  "computed_on": "2026-10-23",
+  "measurement_rule": {
+    "comparison": "Compare the candidate units with the most and fewest distinct values. Ties follow declared unit order.",
+    "counts": "For each candidate unit count distinct values, measurement memberships, median, inclusive-interpolated first and third quartiles of memberships per value, and values with exactly one measurement.",
+    "measurement": "Admitted point rows sharing parent, assay, document and endpoint type form one independent measurement.",
+    "membership": "Every distinct unit value on a measurement's source rows carries that measurement once. One measurement may belong to multiple molecule or scaffold values."
+  },
+  "protocol_id": "chembl37-generalization-unit-v1",
+  "schema_version": "aidd-commons.generalization-unit-audit-summary.v1",
+  "software": {
+    "python": "3.11.15",
+    "rdkit": "2025.09.6"
+  },
+  "source": {
+    "database": "ChEMBL_37",
+    "release_date": "2026-05-01"
+  },
+  "two_unit_comparison": {
+    "fewest_values": "parent_molecule",
+    "most_values": "assay",
+    "units": {
+      "assay": {
+        "measurement_count": 486,
+        "median_measurements_per_value": 1.0,
+        "q1_measurements_per_value": 1.0,
+        "q3_measurements_per_value": 1.0,
+        "single_measurement_values": 476,
+        "value_count": 481
+      },
+      "parent_molecule": {
+        "measurement_count": 486,
+        "median_measurements_per_value": 27.0,
+        "q1_measurements_per_value": 4.0,
+        "q3_measurements_per_value": 51.0,
+        "single_measurement_values": 1,
+        "value_count": 9
+      }
+    }
+  },
+  "units": {
+    "assay": {
+      "measurement_count": 486,
+      "median_measurements_per_value": 1.0,
+      "q1_measurements_per_value": 1.0,
+      "q3_measurements_per_value": 1.0,
+      "single_measurement_values": 476,
+      "value_count": 481
+    },
+    "bemis_murcko_scaffold": {
+      "measurement_count": 486,
+      "median_measurements_per_value": 18.5,
+      "q1_measurements_per_value": 2.5,
+      "q3_measurements_per_value": 47.25,
+      "single_measurement_values": 1,
+      "value_count": 10
+    },
+    "document": {
+      "measurement_count": 486,
+      "median_measurements_per_value": 1.0,
+      "q1_measurements_per_value": 1.0,
+      "q3_measurements_per_value": 2.0,
+      "single_measurement_values": 136,
+      "value_count": 221
+    },
+    "molecule_record": {
+      "measurement_count": 487,
+      "median_measurements_per_value": 9.0,
+      "q1_measurements_per_value": 4.5,
+      "q3_measurements_per_value": 29.5,
+      "single_measurement_values": 1,
+      "value_count": 15
+    },
+    "parent_molecule": {
+      "measurement_count": 486,
+      "median_measurements_per_value": 27.0,
+      "q1_measurements_per_value": 4.0,
+      "q3_measurements_per_value": 51.0,
+      "single_measurement_values": 1,
+      "value_count": 9
+    },
+    "target": {
+      "measurement_count": 486,
+      "median_measurements_per_value": 1.0,
+      "q1_measurements_per_value": 1.0,
+      "q3_measurements_per_value": 2.25,
+      "single_measurement_values": 57,
+      "value_count": 100
+    }
+  },
+  "units_table_cannot_name": {
+    "patient": "The activity snapshot has no patient identifier.",
+    "site": "The activity snapshot has no collection site identifier.",
+    "time_point": "The activity snapshot has no measurement time point."
+  }
+}

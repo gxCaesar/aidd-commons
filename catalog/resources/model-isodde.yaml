@@ -1,0 +1,43 @@
+id: model-isodde
+name: IsoDDE
+kind: model
+summary: Proprietary AI and data engine described by Isomorphic Labs for drug discovery.
+canonical_url: https://www.isomorphiclabs.com/press/isomorphic-labs-funding
+identifiers:
+  - scheme: project-homepage
+    value: "Isomorphic Labs official homepage"
+    url: https://www.isomorphiclabs.com/
+stages:
+  [target-discovery, hit-discovery, lead-optimization, candidate-nomination]
+modalities: [small-molecule, protein]
+tasks: [drug-design]
+relations: []
+status: { value: unverified }
+access_level: { value: closed, evidence: [company-page] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://www.isomorphiclabs.com/press/isomorphic-labs-funding
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: company-page
+    url: https://www.isomorphiclabs.com/press/isomorphic-labs-funding
+    label: Isomorphic Labs funding announcement
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: terms-page
+    url: https://www.isomorphiclabs.com/press/isomorphic-labs-funding
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one.
+  - The opened page describes proprietary AI and data but does not provide asset-level openness or licence evidence.
+acknowledgements: []
+last_verified: "2026-10-23"

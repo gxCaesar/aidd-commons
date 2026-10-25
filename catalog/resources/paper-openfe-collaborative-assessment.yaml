@@ -1,0 +1,43 @@
+id: paper-openfe-collaborative-assessment
+name: OpenFE collaborative binding free energy assessment
+kind: paper
+summary: Report of a collaborative assessment of relative binding free energy calculations for drug discovery, run by fifteen pharmaceutical companies over more than seventeen hundred ligands, with a public set of fifty-eight systems and a private set of thirty-seven.
+canonical_url: https://doi.org/10.1021/acs.jcim.6c00089
+identifiers:
+  - scheme: paper
+    value: "Large-Scale Collaborative Assessment of Binding Free Energy Calculations for Drug Discovery Using OpenFE; Journal of Chemical Information and Modeling 66(11):6429-6452, published 2026-05-21"
+    url: https://doi.org/10.1021/acs.jcim.6c00089
+  - scheme: dataset
+    value: "The released network files for the public systems, Zenodo record 21797903"
+    url: https://zenodo.org/records/21797903
+stages: [evaluation]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [relative-binding-free-energy, benchmark]
+relations:
+  - type: measured-by
+    target: dataset-openfe-rbfe-benchmark
+status: { value: unverified }
+access_level: { value: open_source, evidence: [zenodo-record] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: available, evidence: [zenodo-record] }
+  training_data: { value: available, evidence: [zenodo-record] }
+  evaluation_code: { value: available, evidence: [zenodo-record] }
+licenses:
+  - name: "CC BY-4.0"
+    scope: "The Zenodo record that carries the released network files states the Creative Commons Attribution 4.0 International licence. The article itself is the publisher's own article, and the record does not carry a separate licence for the article's text."
+    evidence: [zenodo-record]
+evidence:
+  - id: zenodo-record
+    url: https://zenodo.org/api/records/21797903
+    label: The Zenodo record for the released OpenFE RBFE files (reviewed 2026-10-23)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, relations, caveats]
+caveats:
+  - "The article's own text was not opened, and the figures the search result reported for this paper, a weighted RMSE of 1.73 kilocalorie per mole on the public set and 2.44 on the private set over fifteen companies, more than seventeen hundred ligands, fifty-eight public systems and thirty-seven private ones, are recorded here as the article's own reported figures rather than as a measurement this project made."
+  - "The public systems' network files are released under CC BY 4.0, and the private set is not released, so a reader can reproduce the public side of the assessment and not the private side."
+  - "The assessment is a benchmark of calculations rather than a measurement of binding, and the record carries no experimental value beside each computed estimate."
+acknowledgements: []
+last_verified: "2026-10-23"

@@ -1,0 +1,96 @@
+---
+title: 保留各终点的多维化合物档案
+description: 按母体分子连接反应效力、内在清除率和 CYP 抑制测量，同时保留未测量的终点类别。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+[English canonical version](/labs/multi-endpoint-integration/)
+
+## 准备与学习目标
+
+先阅读[多终点课程](/learn/admet-pk/multi-endpoint-integration/)和[终点覆盖实验](/labs/multi-endpoint-tradeoff/)。本实验检验哪些真实母体分子在多个终点类别中有测量记录。读者将按母体标识符连接记录，连同测定体系或靶标及单位检查每项测量，描述观察到的离散程度，并将未测量的类别保持为空。
+
+## 全新独立计算
+
+此模式是在冻结的 ChEMBL 37 协议下进行全新独立计算。使用项目的 Python 3.11 环境。首条命令仅验证已有缓存，不写入数据。快照已缓存后，所有命令均不需要网络或加速器。导出命令只有在协议与摘要检查全部通过后才会覆盖已提交的摘要。
+
+```bash
+.venv/bin/python labs/multi_endpoint_integration/run_lab.py download
+.venv/bin/python labs/multi_endpoint_integration/inspect_multi_endpoint_integration.py show
+.venv/bin/python labs/multi_endpoint_integration/inspect_multi_endpoint_integration.py check
+.venv/bin/python labs/multi_endpoint_integration/export_summary.py
+.venv/bin/python -m pytest labs/tests/multi_endpoint_integration -q
+```
+
+## 已测量类别与单位
+
+本实验连接母体标识符之前，各来源读取器分别执行其冻结的纳入规则。决策单元读取器纳入 486 项独立活性测量。现有类别映射将其中 462 项精确的 `AC50`、`EC50` 和 `IC50` 测量归入反应效力代理指标。其余 24 项 `Kd` 和 `Ki` 亲和力测量不归入该类别。反应效力本身不能证明治疗有效性。
+
+| 类别 | 纳入的测量 | 报告单位 | 计数含义 |
+| --- | --- | --- | --- |
+| 有效性代理指标 | 按母体、测定、文献和类型区分的 `AC50`、`EC50` 与 `IC50` | `nM` | 462 项独立测量 |
+| 暴露代理指标 | 按母体和具名测定体系区分的内在清除率 | 人肝微粒体为 `mL.min-1.g-1`，肝细胞为 `uL.min-1.(10^6cells)-1` | 1,623 条母体与测定体系记录 |
+| 相互作用代理指标 | 按母体和靶标区分的 CYP3A4 或 CYP2D6 精确 `IC50` | `pChEMBL (dimensionless)` | 8,032 条母体与靶标记录 |
+| 毒性 | 没有实测快照 | 无单位 | 0 项测量 |
+
+人肝微粒体清除率以每克蛋白计，肝细胞清除率以每百万个细胞计。这两种基准不能相除并解释为具有物理意义的倍数变化。档案分别保留测定体系及其单位。报告范围描述纳入值或参与汇总的活性记录之间的变化，不是置信区间。单个值形成的零范围也不能证明没有测量误差。
+
+## 类别覆盖
+
+计算取三个实测读取器所纳入 ChEMBL 母体标识符的并集，并按每个母体实际具有测量的类别组合计数。得到的 7,908 个母体是不同选择方式的数据集形成的观察并集，并非前瞻性设计的同一化合物面板。
+
+| 已测量类别组合 | 母体数 |
+| --- | ---: |
+| 仅有效性代理指标 | 8 |
+| 仅内在清除率 | 1,062 |
+| 仅 CYP 抑制 | 6,780 |
+| 有效性代理指标和内在清除率 | 1 |
+| 有效性代理指标和 CYP 抑制 | 0 |
+| 内在清除率和 CYP 抑制 | 57 |
+| 三个实测类别均有记录 | 0 |
+
+在 7,908 个母体中，7,850 个仅有一个实测类别，因而无法支持跨类别权衡。另有 58 个具有两个类别，0 个具有三个类别。反应效力代理指标覆盖 9 个母体，内在清除率覆盖 1,120 个，CYP 抑制覆盖 6,837 个。按记录数，反应效力是最稀疏的实测类别，比清除率少 1,161 条，比 CYP 抑制少 7,570 条。不过，这些读取器计数的纳入记录类型不同。
+
+在同一并集中，7,899 个母体缺少反应效力数据，6,788 个缺少内在清除率，1,071 个缺少 CYP 抑制，尽管其他母体存在这些类别的测量。全部 7,908 个母体都缺少实测毒性。已提交的摘要按标识符列出所有仅有一个类别的母体，并保存完整的 58 个并列档案。`show` 命令打印每个档案的测量与离散程度。
+
+## 单化合物档案
+
+表中选取的档案展示了连接结果的三种不同边界。数值来自缓存中的 ChEMBL 37 记录，经过各来源读取器的纳入与母体内汇总。完整档案保留测定和文献标识符、参与汇总的活性记录数以及测定内或靶标内范围。
+
+| 母体 | 有效性代理指标 | 内在清除率 | CYP 抑制 | 缺失类别 |
+| --- | --- | --- | --- | --- |
+| `CHEMBL1144` 普伐他汀 | 33 项测量。`EC50` 有 3 项，均为 7800 `nM`。`IC50` 有 30 项，范围为 4.2–62000 `nM`。 | 大鼠肝细胞，26.98 `uL.min-1.(10^6cells)-1` | 缺失 | 相互作用与毒性 |
+| `CHEMBL1232461` | 缺失 | 人肝微粒体，14.13 `mL.min-1.g-1`。大鼠肝细胞，10.23 `uL.min-1.(10^6cells)-1` | CYP2D6，6.89 `pChEMBL` | 有效性代理指标与毒性 |
+| `CHEMBL1294` | 缺失 | 大鼠肝细胞，72.44 `uL.min-1.(10^6cells)-1`。人肝细胞，6.17 `uL.min-1.(10^6cells)-1`。在该单位下，两体系范围为 6.17–72.44。 | CYP2D6，7.37 `pChEMBL`，来自 32 条活性记录，靶标内范围为 4.1。CYP3A4，4.55 `pChEMBL`。两靶标中位数范围为 4.55–7.37。 | 有效性代理指标与毒性 |
+
+普伐他汀档案对同一母体记录了反应效力和清除率，却没有 CYP 或毒性结果。它可用于检查这两个实测维度，不能说明该化合物的相互作用风险较低。`CHEMBL1232461` 的微粒体数值和肝细胞数值也不能组成一个清除率比值，它们的分母代表不同的生物材料。
+
+## 测量边界
+
+本实验不报告复合值、加权分数或总体优劣排序。将反应效力、体外内在清除率和 CYP 抑制合成一个数字，会掩盖测定含义、单位、研究情境以及缺失情况的差异。缺失类别保持为空，不能默认赋予有利的暴露或风险值。因此，双类别档案支持检查已有证据，同时明确指出决策仍需测量的第三个类别。
+
+[安全证据实验](/labs/safety-evidence/)使用构造的教学数据，并说明其中的化合物没有接受测试。这些记录不能填补本队列的毒性列。内在清除率不等于全身暴露，CYP 抑制不能证明临床药物相互作用，反应效力不能证明治疗有效性。所选 ChEMBL 子集还采用不同的纳入规则，并非按同一研究设计进行配对。
+
+## 独立练习
+
+检查 `CHEMBL1232461` 的档案。指出已测量和缺失的类别，并解释 14.13 除以 10.23 能否解释为清除率的倍数变化。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+内在清除率和 CYP 抑制已测量。反应效力代理指标与毒性缺失。14.13 以每克微粒体蛋白计，而 10.23 以每百万个大鼠肝细胞计。两者相除的物理基准不一致，不能解释为清除率的倍数变化。CYP2D6 的 6.89 `pChEMBL` 仍是单独的抑制测量。
+
+</details>
+
+## 来源与署名
+
+| 快照 | 来源与许可 | 快照读取日期 |
+| --- | --- | --- |
+| 决策单元活性数据 | [ChEMBL 37 版本](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/)及 [CC BY-SA 3.0 许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-10-21 |
+| 内在清除率 | ChEMBL 37 中的[AstraZeneca 数据集 CHEMBL3301361](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361)，遵循相同的 [CC BY-SA 3.0 许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+| CYP 抑制 | [ChEMBL 37 版本](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/)遵循相同的 [CC BY-SA 3.0 许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+
+原创课程文字采用 CC BY 4.0，原创实验代码采用 Apache-2.0。最后审阅于 2026-10-23。

@@ -1,0 +1,24 @@
+id: bad-metadata-inaccessible-evidence
+name: Inaccessible metadata support
+provider_class: curriculum
+canonical_url: https://example.org/inaccessible-metadata
+summary: A fixture whose displayed metadata is supported only by an inaccessible page.
+audiences: [graduate-students]
+languages: [en]
+metadata_evidence: [restricted-overview]
+access:
+  content: { value: unverified }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage: []
+evidence:
+  - id: restricted-overview
+    url: https://example.org/inaccessible-metadata
+    title: Restricted overview
+    observed_scope: The page required credentials and displayed no course metadata.
+    access: inaccessible
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

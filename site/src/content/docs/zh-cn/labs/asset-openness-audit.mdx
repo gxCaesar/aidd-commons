@@ -1,0 +1,86 @@
+---
+title: 核查资产开放性的七个字段
+description: 在 24 条资源记录中分别检查开放性主张、证据、访问级别和许可证范围。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[Audit the seven asset-openness fields](/labs/asset-openness-audit/)。
+
+## 准备与学习目标
+
+本实验对应 `t10-asset-openness-reproducibility`。你将分别阅读推理代码、训练代码、权重、架构、数据配方、训练数据和评测代码的主张，并追溯各主张的证据条目。你还将区分访问级别与许可证范围，找出范围文字中限制授权的记录。请先阅读[资产开放性与复用](/zh-cn/learn/structure-and-pockets/asset-openness-and-reuse/)。了解 YAML 会有所帮助。
+
+模式是依照冻结协议，对已提交目录进行全新独立计算。使用项目的 Python 3.11 环境和 CPU。命令无需网络、下载或加速器。`check` 与 `show` 不写入文件。导出程序仅在全部检查通过后覆盖已提交的精简汇总。
+
+```bash
+.venv/bin/python labs/asset_openness_audit/run_lab.py check
+.venv/bin/python labs/asset_openness_audit/inspect_asset_openness_audit.py show
+.venv/bin/python labs/asset_openness_audit/inspect_asset_openness_audit.py check
+.venv/bin/python labs/asset_openness_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/asset_openness_audit -q
+```
+
+## 来源记录与检查
+
+输入是于 2026-10-25 重新计算的资源目录快照中已提交的 228 条 YAML 记录。协议按顺序声明所检查的 24 个标识符。加载器拒绝不存在的标识符或无效的日历日期。检查器逐项输出开放性字段的记录值、证据标识符和复核日期，也输出许可证名称及原文范围、访问证据和注意事项。任何非 `unverified` 的主张都必须引用本记录中的证据条目。每份许可证都必须有名称、范围和可解析的证据引用。
+
+范围标记对 `only`、`not`、`no separate terms` 或 `does not` 作忽略大小写的完整词匹配。这是教学用的文本筛选，不判断许可证在法律上准许什么。缺少 7 个开放性字段中的任何一个是缺陷，不能自行补作 `unverified`。
+
+## 检查的记录
+
+下表来自已提交的 2026-10-25 计算，使用 Python 3.11.15 和 PyYAML 6.0.3。`A` 表示 `available`，`N` 表示 `not_available`，`NA` 表示 `not_applicable`，`U` 表示 `unverified`。`IC`、`TC`、`W`、`AR`、`DR`、`TD` 与 `EC` 按协议中 7 个字段的顺序排列。许可证名称与访问值都是已记录的主张。末列是范围文字的字面标记。检查器提供每行的证据标识符、完整范围文字和注意事项。
+
+| 记录 | IC | TC | W | AR | DR | TD | EC | 访问级别 | 许可证名称 | 复核日期 | 范围限制 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `db-alphafold-db` | U | U | A | U | U | U | U | source_available | CC-BY-4.0 | 2026-10-22 | no |
+| `model-alphafold-2` | A | U | U | A | U | U | U | open_source | Apache-2.0 | 2026-10-23 | no |
+| `model-alphafold-3-inference` | A | U | U | U | U | U | U | source_available | Apache-2.0 | 2026-09-04 | no |
+| `model-boltz-1` | A | A | A | A | A | A | U | open_source | MIT | 2026-10-21 | no |
+| `model-boltz-2` | A | U | A | A | A | A | U | open_source | MIT | 2026-10-23 | yes |
+| `model-chai-1` | A | U | A | A | U | U | U | open_source | Apache-2.0 | 2026-10-21 | yes |
+| `model-chai-2` | U | U | U | U | U | U | U | gated | none | 2026-10-23 | no |
+| `model-protenix` | A | A | A | A | A | A | U | open_source | Apache-2.0, Proprietary, no open-source licence | 2026-10-21 | yes |
+| `model-openfold` | A | U | A | U | U | U | U | open_source | Apache-2.0, CC-BY-4.0 | 2026-09-04 | no |
+| `model-rfdiffusion` | A | A | A | A | U | U | A | open_source | BSD-3-Clause | 2026-10-23 | no |
+| `model-rfdiffusion2` | A | U | A | A | U | U | U | open_source | BSD-3-Clause | 2026-10-21 | no |
+| `model-esm-c` | A | U | A | A | A | A | U | open_source | MIT | 2026-10-23 | yes |
+| `model-esmc` | A | U | A | A | A | A | U | open_source | MIT | 2026-10-23 | yes |
+| `model-boltzgen` | A | A | A | A | A | A | U | open_source | MIT | 2026-10-23 | yes |
+| `model-alphaproteo` | N | U | N | U | U | U | U | gated | Apache-2.0, CC-BY-4.0 | 2026-10-21 | yes |
+| `tool-bindcraft` | A | U | NA | A | U | U | U | open_source | MIT | 2026-10-21 | yes |
+| `tool-gnina` | A | U | U | U | U | U | U | open_source | Apache-2.0, GPL-2.0 | 2026-10-23 | no |
+| `tool-smina` | A | NA | NA | NA | NA | NA | U | open_source | Apache-2.0, GPL-2.0 | 2026-10-23 | no |
+| `tool-openmm` | A | NA | NA | NA | NA | NA | U | open_source | MIT, LGPL-2.1 | 2026-10-23 | no |
+| `tool-rdkit` | A | NA | NA | NA | NA | NA | U | open_source | BSD-3-Clause | 2026-10-23 | yes |
+| `tool-psi4` | A | NA | NA | NA | NA | NA | U | open_source | GPL-3.0 | 2026-10-23 | no |
+| `db-rcsb-pdb` | U | U | U | U | U | U | U | source_available | CC0 1.0 | 2026-10-23 | no |
+| `db-uniprot` | U | U | U | U | U | U | U | source_available | none | 2026-10-23 | no |
+| `db-skempi` | NA | NA | NA | NA | U | U | NA | source_available | CC-BY-4.0 | 2026-10-21 | no |
+
+## 主张计数
+
+程序先计数 7 个开放性字段在 24 条记录中的值，再计数带许可证、没有已核实访问级别，以及范围文字含有限制词的记录。随后单独检查整个目录中每条记录是否都保留 7 个字段。
+
+| 总体 | 计数对象 | 数量 |
+| --- | --- | ---: |
+| 24 条检查记录 | `available` 单元 | 57 |
+| 24 条检查记录 | `not_applicable` 单元 | 26 |
+| 24 条检查记录 | `unverified` 单元 | 83 |
+| 24 条检查记录 | `not_available` 单元 | 2 |
+| 24 条检查记录 | 带许可证的记录 | 22 |
+| 24 条检查记录 | 没有已核实访问级别的记录 | 0 |
+| 24 条检查记录 | 范围文字含限制词的记录 | 9 |
+| 228 条目录记录 | 保留 7 个独立字段的记录 | 228 |
+
+## 材料局限
+
+本实验核查目录记录的陈述和内部证据引用是否可解析。它不会重新打开每个外部链接、运行模型，或判定某项资源是否可用于特定目的。`unverified` 只反映相应字段已记录的来源审阅及日期，不证明资产不存在。`not_applicable` 是关于资源类型的另一种判断，并保留它的证据条目。冻结选集用于说明区别，并非全部资源的代表性样本。
+
+## 来源与条款
+
+本地目录快照于 2026-10-25 重新计算。各来源的复核日期见表格。具有代表性的链接来源包括 [Boltz 仓库](https://github.com/jwohlwend/boltz)，其记录把 MIT 指向代码与权重，并在范围中排除已命名的评测集；[AlphaFold 3 推理仓库](https://github.com/google-deepmind/alphafold3)，其记录把 Apache-2.0 指向推理代码；[RDKit 仓库](https://github.com/rdkit/rdkit)，其记录把 BSD-3-Clause 指向源代码；以及 [RCSB PDB 使用政策](https://www.rcsb.org/pages/usage-policy)，其记录把 CC0 1.0 指向所提供的数据。这些都是目录中记录的许可证主张。实际复用前应沿各证据 URL 和范围文字核查。
+
+原创指南文字采用 CC BY 4.0，实验代码采用 Apache-2.0。链接资源保留各自条款。最后复核于 2026-10-25。

@@ -1,0 +1,63 @@
+---
+title: 计数活性数据表背后的单位
+description: 按分子、母体、骨架、测定、靶点和文献重新计数 ChEMBL 37 的纳入测量。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[Count the units behind an activity table](/labs/generalization-unit-audit/)。
+
+## 准备与学习目标
+
+本实验对应 `t17-generalization-unit`。请先阅读[决策单元课程](/zh-cn/learn/foundations/decision-unit-scope/)和[泛化单位与估计量](/zh-cn/learn/evaluation-and-reproducibility/generalization-unit-and-estimand/)。你将区分报告记录与纳入的独立测量，计数各候选单位下可用的取值，并解释为何泛化主张必须同时说明单位。了解 ChEMBL 标识符和分组评估的概念会有所帮助。
+
+模式是依照冻结协议，对缓存的 ChEMBL 37 快照进行全新独立计算。使用项目的 Python 3.11 环境和 CPU。快照已在本地缓存，因此这些命令无需网络或加速器。下载命令只把经验证的工件复制到独立缓存。`show` 和 `check` 不写入文件。导出程序仅在所有检查通过后覆盖精简汇总。
+
+```bash
+.venv/bin/python labs/generalization_unit_audit/run_lab.py download
+.venv/bin/python labs/generalization_unit_audit/inspect_generalization_unit_audit.py show
+.venv/bin/python labs/generalization_unit_audit/inspect_generalization_unit_audit.py check
+.venv/bin/python labs/generalization_unit_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/generalization_unit_audit -q
+```
+
+## 测量与单位规则
+
+声明的队列包含 15 个种子分子，归并为 10 个母体。决策单元实验的纳入规则在按顺序排除后，保留 AC50、EC50、IC50、Kd 或 Ki 的纳摩尔点值，得到 488 条点值记录。母体、测定、文献和终点类型均相同的记录归并为 486 个独立测量。界限值不进入这个计数。审计把每个测量分配给其来源记录中出现的每个候选取值，再计算每个取值承载的测量数。第一和第三四分位数采用包含端点的线性插值。恰有 1 个测量的取值数，表示留下该测量后失去唯一同值观测的取值数。
+
+## 各单位计数
+
+下表是 2026-10-23 使用 Python 3.11.15 和 RDKit 2025.09.6 得到的已提交计算。一个测量可能对应超过 1 个受测分子标识。因此，分子记录的成员计数是 487，尽管不同测量只有 486 个。声明的队列有 10 个母体，但只有 9 个承载纳入的点值测量。剩余母体在这张按测量计数的表中没有取值。
+
+| 候选单位 | 不同取值 | 测量成员计数 | 每值中位数 | 每值 Q1–Q3 | 恰有 1 个测量的取值 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 分子记录 | 15 | 487 | 9 | 4.5–29.5 | 1 |
+| 母体分子 | 9 | 486 | 27 | 4–51 | 1 |
+| Bemis-Murcko 骨架 | 10 | 486 | 18.5 | 2.5–47.25 | 1 |
+| 测定 | 481 | 486 | 1 | 1–1 | 476 |
+| 靶点 | 100 | 486 | 1 | 1–2.25 | 57 |
+| 文献 | 221 | 486 | 1 | 1–2 | 136 |
+
+骨架键是 RDKit 计算的手性感知 Bemis-Murcko 骨架。对于 RDKit 返回空骨架的非环结构，键改用其规范异构分子形式。这样可以保留可命名的取值，而不会把所有非环结构并成一个骨架。
+
+## 数据表无法命名的单位
+
+| 单位 | 缺失字段 |
+| --- | --- |
+| 时间点 | 没有测量时间点。 |
+| 站点 | 没有采集站点标识。 |
+| 患者 | 没有患者标识。 |
+
+## 两种单位的比较
+
+在声明的候选单位中，测定与母体分子的不同取值数相差最大。两种视角都包含同样的 486 个测量。按测定计数有 481 个取值，每值中位数为 1，Q1–Q3 为 1–1，有 476 个单次测量取值。按母体计数有 9 个取值，每值中位数为 27，Q1–Q3 为 4–51，有 1 个单次测量取值。因此，一组记录的行数不是独立母体数。这些计数描述可用队列，不选择划分，也不确立对未见单位的预测性能。
+
+## 材料局限
+
+种子是为了覆盖纳入规则而特意选取的。其单位分布不是对整个 ChEMBL 的估计。骨架是结构分组规则，并非完整的类似物关系度量。测定标识不能揭示所有实验室条件。数据表不能支持跨时间、站点或患者的泛化主张。本实验不拟合模型、不评分预测，也不宣称某个单位正确。按单位留一的划分按定义会使每个留出单位都没有同单位训练观测。单次测量取值数描述的则是取值层面的按测量留一。
+
+## 来源与条款
+
+计数使用 [ChEMBL 37 活性记录](https://www.ebi.ac.uk/chembl/api/data/activity.json)和[发布状态](https://www.ebi.ac.uk/chembl/api/data/status.json)，冻结快照于 2026-10-21 取得，并于 2026-10-23 重新计数。ChEMBL 37 发布于 2026-05-01，采用 [Creative Commons Attribution-ShareAlike 3.0 Unported](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)。[RDKit 源码许可](https://github.com/rdkit/rdkit/blob/master/license.txt)于 2026-09-09 记录为 BSD 3-Clause。原创指南文字采用 CC BY 4.0，实验代码采用 Apache-2.0。最后复核于 2026-10-23。

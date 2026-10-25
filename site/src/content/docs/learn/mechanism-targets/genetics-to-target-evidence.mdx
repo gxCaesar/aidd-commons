@@ -1,0 +1,176 @@
+---
+title: From genetic evidence to a target hypothesis
+description: Separate loci, fine-mapped variants, effector genes, colocalisation, and Mendelian-randomization evidence when reasoning about target direction.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="mechanism-targets/genetics-to-target-evidence" />
+<ScrollableRegions />
+
+## Learning goals
+
+After this lesson, you should be able to distinguish a GWAS locus, fine-mapped
+variant, and effector-gene hypothesis; state assumptions behind a credible set,
+colocalisation result, and single-variant MR ratio; and explain why they inform
+but do not determine target direction.
+
+## Prerequisites and boundary
+
+Read [From disease mechanism to target](/learn/mechanism-targets/disease-to-target/)
+and [Biological representations](/learn/representations/biological-representations/)
+first. This reading-and-reasoning lesson supplies no workflow, real genetic
+data, clinical interpretation, or causal proof.
+
+## Three objects that must not be merged
+
+A GWAS association says a tested marker or locus is associated with a phenotype
+in a declared population. It does not identify the causal DNA change, gene, or
+drug target; a lead marker can merely tag the causal change.
+
+Linkage disequilibrium (LD) means nearby co-inherited variants can correlate.
+Fine mapping uses the association pattern and LD to distribute support. Its PIP
+is the model-conditional posterior that a candidate variant is causal; in the
+one-causal-variant setting used here, a credible set collects candidates to a
+declared mass, often 95%. Neither is a gene list or functional certificate.
+[Maller et al.](https://pmc.ncbi.nlm.nih.gov/articles/PMC3791416/) illustrate
+credible sets and a single typed causal-variant limitation.
+
+An effector gene is a further hypothesis: a variant changes a gene-related
+molecular process that contributes in a relevant context. Proximity is not
+enough; a locus can contain several genes, affect a distal gene, or carry signals.
+
+### Worked case: PIP mass is not a gene claim
+
+This **constructed teaching example** assumes one causal variant among five
+represented candidates. Its PIPs are:
+
+| Variant |  PIP |
+| ------- | ---: |
+| `v1`    | 0.44 |
+| `v2`    | 0.27 |
+| `v3`    | 0.16 |
+| `v4`    | 0.08 |
+| `v5`    | 0.05 |
+
+The mass is `0.44 + 0.27 + 0.16 + 0.08 + 0.05 = 1.00`. `v1` through `v4` sum to
+`0.95`, the smallest 95% credible set. This does **not** make all four causal
+or name an effector gene. It is conditional on the candidate set, LD, model,
+and prior, and fails or becomes incomplete if the causal variant is absent,
+poorly imputed, or multiple when the model allows one.
+
+LD and allele frequencies differ across ancestry groups. A PIP or credible set
+is not automatically transportable to another population or molecular-QTL
+dataset with different ancestry. This is an inference condition.
+
+## Colocalisation asks a narrower question
+
+Colocalisation compares two association patterns. A disease phenotype and
+expression trait may be consistent with distinct causal variants or one shared
+variant. The classic summary-statistic formulation separates these hypotheses:
+`H3` supports distinct variants and `H4` a shared variant.
+[Giambartolomei et al.](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004383)
+make the distinction explicit.
+
+High shared-variant support is model-conditional evidence for a shared
+association signal, not named-gene expression mediating disease. One variant
+could affect both traits through another route or unmeasured intermediate; it
+does not set intervention direction. The original formulation assumes comparable
+allele frequencies and LD, a represented causal variant, and at most one signal
+per trait. Multiple signals, incomplete coverage, ancestry mismatch, or
+inconsistent allele/build definitions need analysis, not visual overlap.
+
+## MR is an instrument argument, not a target verdict
+
+MR uses genetic variation `G` as an instrument for exposure `X` and outcome
+`Y`. It needs relevance (`G` is associated with `X`), independence (`G` is not
+associated with `X`--`Y` confounders), and exclusion (`G` affects `Y` only
+through `X`, conditional on stated confounders). Horizontal pleiotropy can
+violate exclusion.
+[Burgess, Butterworth, and Thompson](https://onlinelibrary.wiley.com/doi/10.1002/gepi.21758)
+state these conditions and a ratio construction for linear, continuous traits.
+
+Before a ratio, allele harmonisation is essential: `beta_GX` and `beta_GY` must
+describe the same variant and effect allele. Flip a sign only when reported
+alleles are known opposites; phenotype definitions and effect scales must match.
+An ambiguous or unrecorded effect allele is unresolved, not a reason to guess.
+
+### Worked case: a linear Wald ratio with stated units
+
+This second **constructed teaching example** uses continuous, linear phenotypes
+only. For one effect allele, let `beta_GX = +0.20 X units per allele` and
+`beta_GY = -0.06 Y units per allele`. The single-variant Wald ratio is
+`beta_GY / beta_GX = -0.06 / 0.20 = -0.30 Y units per X unit`.
+
+Under the stated instrumental-variable and linear-model assumptions, the ratio
+has a negative direction on these measurement scales. It is not a clinical risk,
+diagnosis, therapeutic effect, or dose. There is no confidence interval because
+this is arithmetic, not an analysis of observed data.
+
+## From genetic direction to a testable target hypothesis
+
+A target-direction argument preserves its object chain: variant/effect allele;
+molecular trait/putative effector gene; phenotype; relevant tissue or cell
+context; and perturbation/readout. The worked `-0.30 Y units per X unit` ratio
+means, under its assumptions, that higher `X` corresponds to lower `Y`. If lower
+`Y` were a stated experimental objective, this could motivate testing higher
+`X`—not inhibition—as a hypothesis. `X` is an unspecified molecular trait, not
+automatically protein activity; map expression to protein and function before
+proposing an intervention. This is not a claim of clinical benefit. It still
+needs a perturbation with stated identity, specificity, duration, baseline, and
+readout in the relevant disease context. [Perturbation prediction across cellular
+contexts](/learn/mechanism-targets/perturbation-context-generalization/) explains
+why that context cannot be silently averaged away.
+
+Genetic variation can act across development and life; a perturbation is timed,
+finite, and may act on one molecular species. Feedback, compensation, tissue
+exposure, and magnitude can differ. Genetic direction is not dose equivalence
+or proof that one protein change gives the same phenotype. Convergent evidence
+makes a hypothesis more testable, not proven.
+
+## Independent exercise
+
+A different **constructed** locus is analysed under the same one-causal-
+variant-in-the-candidate-set assumption. Its PIPs are `u1 = 0.51`, `u2 = 0.31`,
+`u3 = 0.12`, and `u4 = 0.06`. Separately, for continuous linear traits and one
+already harmonised effect allele, `beta_GX = -0.15 X units per allele` and
+`beta_GY = +0.045 Y units per allele`.
+
+1. What is the smallest 90% credible set?
+2. What is the Wald-ratio value and unit?
+3. Name one inference condition that could fail for the credible set and one
+   reason why the ratio does not prove an intervention direction.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+`u1 + u2 = 0.82`; adding `u3` gives `0.94`, so the 90% set is `{u1, u2, u3}`.
+The ratio is `0.045 / -0.15 = -0.30 Y units per X unit`. The set can fail if the
+causal variant is absent, LD mismatches the population, or several causal
+variants exist. The ratio does not prove direction: pleiotropy can break an IV
+premise and a life-long genetic shift is not a timed perturbation or dose.
+
+</details>
+
+## Failure boundaries and source path
+
+Do not rename a locus as a gene, a credible set as a mechanism, a shared variant
+as mediation, or an MR ratio as a drug effect. Record population, variant/build/
+effect allele, coverage, LD/model assumptions, molecular context, and
+perturbation contract before making a target hypothesis.
+
+<div data-case-sources>
+
+- [Maller et al. (2012): Bayesian refinement and credible sets](https://pmc.ncbi.nlm.nih.gov/articles/PMC3791416/)
+- [Giambartolomei et al. (2014): Bayesian colocalisation hypotheses](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004383)
+- [Burgess, Butterworth, and Thompson (2013): summary-data MR](https://onlinelibrary.wiley.com/doi/10.1002/gepi.21758)
+
+</div>
+
+All numerical values in the worked cases and exercise are constructed. This
+lesson adds no real genetic analysis, target nomination, intervention protocol,
+clinical recommendation, or causal finding. Original lesson prose is CC BY 4.0;
+linked sources retain their own terms.
+
+Last reviewed: 2026-09-09.

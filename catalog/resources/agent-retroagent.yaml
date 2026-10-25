@@ -1,0 +1,69 @@
+id: agent-retroagent
+name: RetroAgent
+kind: agent
+summary: Language-model agent for multi-step retrosynthesis planning that treats the problem as a search over a structured AND-OR graph memory held by a tool server, and is trained with reinforcement learning on search-budget efficiency rather than on final success alone.
+canonical_url: https://github.com/SXKDZ/RetroAgent
+identifiers:
+  - scheme: paper
+    value: "RetroAgent: Harnessing LLMs to Search Over Structured Memory for Agentic Retrosynthesis Planning; Zhu, Gan, Sun, Sun, Shi, Islam, Shang, Gao, Coley, Sun and Wang, Conference on Language Modeling (COLM) 2026"
+    url: https://github.com/SXKDZ/RetroAgent#citation
+  - scheme: code
+    value: "RetroAgent source repository, SXKDZ/RetroAgent"
+    url: https://github.com/SXKDZ/RetroAgent
+  - scheme: model-weights
+    value: "RetroAgent released weights, Hugging Face repository SXKDZ/RetroAgent, 4B parameters, BF16, safetensors"
+    url: https://huggingface.co/SXKDZ/RetroAgent
+stages: [make, model-development]
+modalities: [reaction, small-molecule]
+tasks: [retrosynthesis-planning, route-search, agentic-planning]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [retroagent-license] }
+openness:
+  inference_code: { value: available, evidence: [retroagent-readme] }
+  training_code: { value: available, evidence: [retroagent-readme] }
+  weights: { value: available, evidence: [retroagent-weights] }
+  architecture: { value: available, evidence: [retroagent-readme] }
+  data_recipe: { value: available, evidence: [retroagent-readme] }
+  training_data: { value: available, evidence: [retroagent-readme] }
+  evaluation_code: { value: available, evidence: [retroagent-readme] }
+licenses:
+  - name: MIT
+    scope: "The repository carries an MIT licence file for the code. The NOTICE file states that the single-step retrosynthesis model vendored under external/desp/ is derived from DESP, from Yu et al., Double-Ended Synthesis Planning with Goal-Constrained Bidirectional Search, NeurIPS 2024, that it remains subject to that project's original licence and attribution, and that the notice points to the upstream repositories for their terms rather than naming a licence. The MIT grant therefore does not reach that vendored component."
+    evidence: [retroagent-license, retroagent-notice]
+  - name: "Apache-2.0"
+    scope: "The Hugging Face weights repository states the Apache License 2.0 and says it is inherited from the Qwen3-4B-Instruct-2507 base model, and it states that the code is released separately under the MIT licence. The Apache grant covers the released weights and the base model it inherits from, not the repository's code."
+    evidence: [retroagent-weights]
+  - name: "CC BY 4.0"
+    scope: "The weights repository labels the DESP-sourced data as CC BY 4.0."
+    evidence: [retroagent-weights]
+evidence:
+  - id: retroagent-repository
+    url: https://github.com/SXKDZ/RetroAgent
+    label: RetroAgent repository (reviewed 2026-10-24)
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: retroagent-readme
+    url: https://raw.githubusercontent.com/SXKDZ/RetroAgent/main/README.md
+    label: RetroAgent README (reviewed 2026-10-24)
+    supports: [identifiers, caveats]
+  - id: retroagent-license
+    url: https://github.com/SXKDZ/RetroAgent/blob/main/LICENSE
+    label: RetroAgent MIT licence file (reviewed 2026-10-24)
+    supports: [caveats]
+  - id: retroagent-notice
+    url: https://raw.githubusercontent.com/SXKDZ/RetroAgent/main/NOTICE
+    label: RetroAgent NOTICE file (reviewed 2026-10-24)
+    supports: [caveats]
+  - id: retroagent-weights
+    url: https://huggingface.co/SXKDZ/RetroAgent
+    label: RetroAgent weights repository on Hugging Face (reviewed 2026-10-24)
+    supports: [identifiers, caveats]
+caveats:
+  - "The README states that the agent is trained end to end with reinforcement learning on the Qwen3-4B-Instruct-2507 base model using the slime framework (Megatron plus SGLang) on a single eight-GPU H200 node, with the policy optimised by GSPO under sequence-level clipping. The record did not run the training, and the released configuration targets that one node."
+  - "The README specifies the reward as a base of +1 for a completed route, reduced by a budget penalty of 0.02 per single-step model call beyond twenty calls and a depth penalty of 0.02 per step beyond depth twenty, each capped at 0.3, and by 0.05 per turn with a failed or unparseable tool call, with -1.0 for an incomplete route and -1.5 when a trajectory produced no valid tool call. These are the released constants; a reader who changes them is no longer running the released configuration."
+  - "The README states that the weights are published on a Hugging Face repository that holds the weights only, and that repository is published under the Apache License 2.0. The repository also says the building-block and reaction-template data are distributed under the terms stated on the dataset card, and the card labels the DESP-sourced data CC BY 4.0 and the SCScore data MIT."
+  - "The README names the data sources the preparation script fetches: a DESP archive on figshare under doi 10.6084/m9.figshare.25956076, an LLM-Syn-Planner dataset, a PDVN archive, the SCScore model, and building blocks originating from eMolecules with route data derived from Retro*. The record did not run the script, so the corpora the model was actually trained on are not established here."
+  - "The README describes the evaluation target sets as uspto-190 and chembl-1000, and states that targets appearing in either evaluation set are excluded from the training pool. The record did not check that exclusion against the released files."
+  - "A route the agent proposes is a proposal. The record establishes the method, its training recipe and how it may be obtained; it does not establish that a synthesised route is executable or correct."
+acknowledgements: []
+last_verified: "2026-10-24"

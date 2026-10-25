@@ -1,0 +1,37 @@
+id: paper-alphafold-3
+name: AlphaFold 3 primary article
+kind: paper
+summary: Primary article describing AlphaFold 3 for biomolecular structure prediction.
+canonical_url: https://www.nature.com/articles/s41586-024-07487-w
+identifiers: []
+stages: [structure-prediction, evaluation]
+modalities: [biomolecular-complex]
+tasks: [structure-prediction]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [terms-page] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC-BY-4.0
+    scope: covers the article, per the rights and permissions statement on the article page; third-party material named in a credit line is excluded from it
+    evidence: [terms-page]
+evidence:
+  - id: article
+    url: https://www.nature.com/articles/s41586-024-07487-w
+    label: AlphaFold 3 primary article
+    supports: [caveats, kind, modalities, name, stages, summary, tasks]
+  - id: terms-page
+    url: https://www.nature.com/articles/s41586-024-07487-w
+    label: Nature article page, rights and permissions (reviewed 2026-10-23)
+    supports: []
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one.
+acknowledgements: []
+last_verified: "2026-10-23"

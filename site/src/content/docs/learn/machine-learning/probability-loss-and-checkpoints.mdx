@@ -1,0 +1,145 @@
+---
+title: Probability models, loss functions and validation checkpoints
+description: Derive the connection between an endpoint and its loss, calculate a Gaussian-process prediction, and select a checkpoint without moving the test boundary.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="machine-learning/probability-loss-and-checkpoints" />
+<ScrollableRegions />
+
+## Decide what uncertainty is about
+
+Start with [regression and classification errors](/learn/qsar-properties/regression-classification-errors/).
+You need logarithms and basic covariance. This lesson connects endpoint, likelihood,
+loss, prior and checkpoint selection. Its arithmetic is constructed; it is not
+an empirical comparison of models.
+
+An endpoint is not chosen by looking at which loss is easiest to optimize. An
+exact continuous measurement, a positive/negative label, an interval-censored
+measurement and a time-to-event observation carry different information.
+The prediction must describe the observation you will actually receive. For
+example, an assay's “greater than 10” result is not an exact measurement of 10.
+
+## A loss is a statement about observations
+
+Suppose `yᵢ=fθ(xᵢ)+εᵢ`, with independent Gaussian noise of fixed variance `σ²`.
+The negative log likelihood, apart from a constant, is
+
+```text
+L(θ) = Σᵢ (yᵢ − fθ(xᵢ))² / (2σ²)
+```
+
+For this assumption, maximizing likelihood and minimizing squared error select
+the same mean function. A Laplace observation model instead gives absolute-error
+loss for its location. If variance is predicted too, Gaussian loss also contains
+`log σᵢ`; dropping that term lets a model avoid residual penalties by inflating
+its claimed uncertainty. “Predicting uncertainty” therefore changes the fitted
+object, not just the plot around a point estimate.
+
+For recorded class `y∈{0,1}` and predicted probability `p`, Bernoulli negative log
+likelihood is `−y log p − (1−y) log(1−p)`. A confident wrong prediction receives
+a large penalty. A classification threshold is a later decision and is not
+learned merely by minimizing this probability loss. The
+[scikit-learn linear-model documentation](https://scikit-learn.org/stable/modules/linear_model.html)
+defines the objectives of ordinary least squares, Ridge and logistic models;
+their penalty conventions are not interchangeable.
+
+For two invented residuals `[1,3]`, mean squared error is 5 and mean absolute
+error is 2. For a recorded positive with `p=0.8`, log loss is about 0.2231;
+changing only the prediction to `p=0.2` gives about 1.6094. A class-weighted loss
+reweights which errors fitting prioritizes. Its output probabilities may need
+calibration for the intended population; a training weight is not new evidence
+about the population's prevalence.
+
+## Gaussian processes make similarity explicit
+
+A Gaussian process places a joint Gaussian distribution on latent function
+values. A kernel `k(x,x′)` specifies covariance; it is not automatically a
+chemically valid similarity just because it is positive semidefinite. For a
+zero-mean GP, training covariance matrix `K`, independent observation variance
+`σn²`, and query-to-training covariance vector `k*`,
+
+```text
+μ* = k*ᵀ (K + σn² I)⁻¹ y
+v* = k(x*,x*) − k*ᵀ (K + σn² I)⁻¹ k*
+```
+
+`v*` concerns the latent function. Predictive variance for a new noisy observation
+adds its observation-noise variance. Implementations solve a linear system rather
+than explicitly form the inverse. These conditional Gaussian expressions are
+derived in [Gaussian Processes for Machine Learning, chapter 2](https://gaussianprocess.org/gpml/chapters/RW2.pdf).
+Kernel hyperparameters can be fitted using training evidence; they are not an
+excuse to inspect held-out answers.
+
+Construct one training observation `y=2`, `K=[1]`, `σn²=0.25`, query prior variance
+1 and query covariance `k*=0.5`. Then `μ*=0.5×2/1.25=0.8` and
+`v*=1−0.25/1.25=0.8`. The new-observation variance is 1.05. A query with covariance
+zero has mean zero and latent variance 1: it returns to this **chosen** prior,
+not to a discovered universal chemical baseline.
+
+The kernel, mean function and likelihood carry assumptions. A narrow posterior
+under a wrong representation can still be wrong. Exact dense GP algebra has
+cubic training cost in the number of observations and quadratic storage; sparse
+approximations change the computation. Neither approximation nor posterior
+variance substitutes for an independent calibration check.
+
+## A checkpoint is part of the model recipe
+
+Model fitting produces a sequence of parameter states. Choosing an epoch, early
+stopping point, regularization strength or feature representation is selection.
+Validation data can support that choice; the test data cannot remain untouched
+if it supplies the choice. Learned preprocessing must be fitted inside the
+training partition, as the
+[official leakage examples](https://scikit-learn.org/stable/common_pitfalls.html)
+demonstrate.
+
+Use these invented checkpoint errors with **validation MAE as the declared
+selection criterion**:
+
+| Epoch | Training MAE | Validation MAE |
+| ----- | ------------ | -------------- |
+| 5     | 0.40         | 0.52           |
+| 10    | 0.25         | 0.45           |
+| 20    | 0.12         | 0.49           |
+
+Select epoch 10, not the smallest training error. If the test later disappoints,
+epoch 20 cannot replace it while preserving the original test claim. A future
+study may change the recipe and use new evaluation data. A fixed-model confidence
+or prediction interval does not include the uncertainty of trying many recipes
+and picking the most favorable reported result.
+
+Repeated validation queries can themselves overfit a small validation set. Fix
+a reasonable candidate family and selection rule before inspecting outcomes;
+use nested resampling when estimating a selection procedure rather than a single
+frozen model. Related molecules or repeated subjects still need to stay grouped
+inside every relevant fold.
+
+## Independent exercises
+
+1. In the one-observation GP example, use query covariance 1 and keep everything
+   else fixed. Find the mean, latent variance and new-observation variance.
+2. An assay reports `y > 10`. Why is replacing it by 10 a change to the task?
+   Under a continuous observation model, what probability should its likelihood use?
+3. A fourth checkpoint has validation MAE 0.44 but was created only after seeing
+   the original test errors. What can and cannot be claimed about it?
+
+<details data-worked-answer>
+<summary>Worked answers — preserve the observation and selection history</summary>
+
+The GP mean is `2/1.25=1.6`, latent variance `1−1/1.25=0.2`, and observation
+variance 0.45. Noise prevents the latent variance from becoming zero even at
+the observed input in this example. A lower bound contributes `P(Y>10|x)` to
+the likelihood, not the density at 10; treating it as exact manufactures an
+observation. The fourth checkpoint is a retrospectively motivated candidate.
+Its validation score may be reported with that history, but testing it on the
+already consulted test set is not untouched confirmation.
+
+</details>
+
+Continue to [uncertainty and decisions](/learn/qsar-properties/uncertainty-to-decisions/)
+for calibration and to [acquisition under delayed feedback](/learn/active-learning/acquisition-delays-and-stopping/)
+for using a predictive distribution to choose an experiment.
+
+Original examples and prose: CC BY 4.0. Sources reviewed: 2026-09-09.

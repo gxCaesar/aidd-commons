@@ -1,0 +1,112 @@
+---
+title: QM/MM 边界与反应事件
+description: 在用 QM/MM 计算讨论反应性分子事件前，定义量子区域、其环境和边界测试。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[QM/MM boundaries and reactive events](/learn/physics-based-modeling/qm-mm-and-reactive-events/)。
+
+<LessonProgress lessonId="physics-based-modeling/qm-mm-and-reactive-events" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将解释为何固定拓扑力场对一项已声明反应事件可能不充分，定义 QM/MM 划分的组分，并识别一个
+报告的势垒何时对该划分敏感。请先读[力场、溶剂与采样](/zh-cn/learn/physics-based-modeling/force-fields-and-sampling/)
+和[自由能循环、终点与收敛](/zh-cn/learn/physics-based-modeling/free-energy-cycles-and-convergence/)。本课为概念和手算教学，
+不提供反应方案，也不为真实分子体系计算机制。
+
+## 为什么把体系拆成 QM 与 MM 区域？
+
+经典分子力学可高效表示许多成键和非键运动，但其固定原子类型与电荷通常不能描述电子结构改变的
+事件。成键或断键、电荷重分布、电子状态变化，以及某些金属中心过程，都是提出量子力学问题的
+常见原因。对每个原子使用 QM 可能昂贵，而对改变中的化学区域使用 MM 则可能使问题定义不良。
+
+QM/MM 将**整个体系**划分为主 QM 子体系 `Q` 和 MM 子体系 `M`。有用的示意能量为
+`E_QM/MM = E_QM(Q) + E_MM(M) + E_int(Q,M)`。相互作用项并非可选的记账：它决定局部电子问题
+如何感受位阻和静电环境。原始 Warshel 与 Levitt 研究明确考虑了底物、酶和周围溶剂，同时分开了
+量子与经典能量因素 [Warshel and Levitt](https://weizmann.elsevierpure.com/en/publications/theoretical-studies-of-enzymic-reactions-dielectric-electrostatic/)。
+
+这种划分是一项建模假设。它应从已声明事件的化学性质中选择，而非出于得到更小原子数的愿望。
+应纳入其键、形式电荷、质子化、配位或电子状态预期改变的原子，以及表示直接电子或位阻耦合
+所需的邻近基团。当远端环境的主要作用是环境性时，应将其保留在 `M`。正确边界通过敏感性测试
+评估，而不是仅凭残基标签猜测。
+
+| 选择        | 应说明的内容                                   | 为何它会改变结果             |
+| ----------- | ---------------------------------------------- | ---------------------------- |
+| QM 区域 `Q` | 原子列表、电荷、自旋、电子方法和基组           | 电子重组只可在定义区域内发生 |
+| MM 区域 `M` | 力场、质子化、溶剂/离子、约束和边界条件        | 环境可稳定几何与电荷分布     |
+| 嵌入        | mechanical、electrostatic 或另一种命名耦合方案 | 它决定 `M` 如何作用于 `Q`    |
+| 截断键      | 封端/link 处理、电荷处理和原子标识             | 人工边界项可扰动能量         |
+| 事件坐标    | 几何/电子集体变量和参考状态                    | 势垒只沿已命名路径才有意义   |
+
+## 边界处理是该假设的一部分
+
+共价边界可在 QM 计算中留下未配对价。常见修补使用 link atom 或其他封端构造，但其位置及附近 MM
+电荷处理都是可影响结果的假设。Mechanical embedding 以经典式耦合评估 QM 与 MM 部分。Electrostatic
+embedding 让 MM 电荷进入 QM Hamiltonian，因此 QM 电子密度响应环境。任一标签都不使答案普遍可靠。
+
+Lin 与 Truhlar 综述将同一划分写为主体系、次体系及其相互作用，并区分 mechanical 与 electrostatic
+embedding 及多种边界处理 [Lin and Truhlar](https://comp.chem.umn.edu/qmmmreview/QMMMreview05.htm)。
+其核心实践教训仍然适用：报告边界所在、它截断什么，以及如何测试其影响。当一个相邻基团跨越边界
+时计算显著改变，发现的是不确定性，而不是机制结论。
+
+## 必须命名反应坐标
+
+“反应发生了”不是数值终点。一个简单构造坐标可以是 `xi(x) = r_form - r_break`，其中 `r_form` 和
+`r_break` 是两个已声明的原子间距离。它可定位路径假设，但可能无法描述质子转移、溶剂重排、替代
+构象或自旋状态变化。报告量必须说明它们是优化路径能量、采样自由能，还是另一已定义对象。短优化
+中的过渡式几何本身不是速率预测。
+
+对任一结果，应保留整个体系坐标、QM 原子列表与电荷、电子方法、MM 模型、嵌入、边界处理、约束与
+采样协议、反应坐标定义和参考状态。该记录使读者能区分有信息量的 QM/MM 敏感性分析与仅有着色
+活性位点的图。
+
+## 已解案例：边界敏感性发现
+
+本案例的全部数值均为**构造的教学数值**。一个团队定义反应坐标假设
+`xi(x) = r_form - r_break`。其第一划分 `Q_24` 含 `24` 个原子，给出优化路径势垒
+`17.4 kcal/mol`。第二划分 `Q_38` 加入一个附近带电基团及其共价邻居，采用相同命名的电子方法和
+环境，给出 `19.1 kcal/mol`。差异为 `19.1 - 17.4 = 1.7 kcal/mol`。
+
+可辩护的结论是，这个构造势垒至少在 `Q_24` 与 `Q_38` 之间对边界敏感。它不是 `19.1 kcal/mol`
+是真实势垒、所加基团“导致催化”，或任一计算预测实测速率。下一项有用工作是检查改变基团周围的
+电荷、几何与边界处理；若科学决策依赖小于 `1.7 kcal/mol`，划分不确定性已经与决策相关。
+
+## 局限与独立练习
+
+QM/MM 可遗漏相关状态、使用不充分电子方法，或对周围环境采样不佳。增大 `Q` 可降低一种边界误差，
+却可能增加成本到减少采样。两个选择的一致不能消除共有假设。应把负面敏感性结果作为结果报告；
+不要通过选择数字更方便的划分来隐藏它。
+
+**手算练习（不可运行、非实证）：** 一个构造事件使用 `Q_small = 18` 个原子和 `Q_large = 32` 个
+原子。同一已声明路径分别给出 `DeltaE‡ = 12.0 kcal/mol` 与 `DeltaE‡ = 13.8 kcal/mol`。计算变化。
+说出另一读者解释它所需的两项记录，并写出一项超出证据的主张。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+变化为 `13.8 - 12.0 = 1.8 kcal/mol`。必需记录包括 `Q` 的原子列表、电荷/自旋和电子方法，MM 力场与
+环境、嵌入和封端处理、完整坐标、约束，以及 `DeltaE‡` 的定义。结果支持构造协议下的边界敏感性
+观察。它不确立实验活化自由能、反应速率，或所加原子的因果性作用。
+
+</details>
+
+## 来源与下一课
+
+下列来源于 2026-09-09 打开。第一篇是奠基性的 QM/MM 文章，第二篇综述划分、嵌入和边界问题；
+二者均不支持构造势垒。
+
+<div data-case-sources>
+
+- [Theoretical studies of enzymic reactions: dielectric, electrostatic and steric stabilization](https://weizmann.elsevierpure.com/en/publications/theoretical-studies-of-enzymic-reactions-dielectric-electrostatic/)
+- [QM/MM: What have we learned, where are we, and where do we go from here](https://comp.chem.umn.edu/qmmmreview/QMMMreview05.htm)
+
+</div>
+
+继续阅读[反应映射与路线搜索](/zh-cn/learn/synthesis-and-automation/reaction-mapping-and-route-search/)，以区分模型化的反应事件与提出的合成转化。
+原创课程文字采用 CC BY 4.0；链接来源保留各自条款。
+
+最后审阅：2026-09-09。

@@ -1,0 +1,157 @@
+{
+  "schema_version": "aidd-commons.egfr-structures.v1",
+  "artifact_type": "committed-experimental-structures",
+  "retrieved_on": "2026-09-11",
+  "licence": {
+    "name": "CC0 1.0 Universal Public Domain Dedication",
+    "scope": "Data files contained in the PDB archive",
+    "evidence_url": "https://www.wwpdb.org/about/usage-policies",
+    "evidence_reviewed_on": "2026-09-11",
+    "attribution": "wwPDB encourages attributing the original authors of each structure; the primary citation read from each file is printed by both labs."
+  },
+  "provenance": "Three X-ray structures of the human EGFR kinase domain, downloaded on the retrieval date as gzipped PDBx/mmCIF from the RCSB PDB file service and stored decompressed, so that every category the labs read can be opened in a text editor. Decompression is the only step; no character of any file was edited, and nothing in these files was authored for teaching. The labs read them and compute distances, contacts and superpositions; no structure was prepared, protonated, minimised or docked.",
+  "reference_sequence": {
+    "database": "UniProt",
+    "accession": "P00533",
+    "note": "Residues are compared across entries only after mapping each entry's own numbering to this reference through its _struct_ref_seq alignment."
+  },
+  "declared_parameters": {
+    "reference_entry": "1M17",
+    "site_cutoffs_angstrom": [
+      4.0,
+      5.0,
+      6.0
+    ],
+    "superposition_site_cutoff_angstrom": 5.0,
+    "box_paddings_angstrom": [
+      0.0,
+      2.0,
+      4.0,
+      5.0
+    ],
+    "polar_contact_angstrom": 3.5,
+    "hydrophobic_contact_angstrom": 4.0,
+    "water_bridge_angstrom": 3.5,
+    "clash_angstrom": 2.2,
+    "hinge_contact_angstrom": 3.5,
+    "pose_rmsd_convention_angstrom": 2.0,
+    "constructed_translation_angstrom": 1.5,
+    "constructed_rotation_degrees": 20.0,
+    "why": "Every cutoff here is a convention chosen before the numbers were read, not a property of the structures. The labs report how their outputs move when a cutoff moves."
+  },
+  "ligand_roles": {
+    "assumption": "Neither structure resolves hydrogen atoms, so donor and acceptor roles are assumptions. Quinazoline ring nitrogens are taken as unprotonated acceptors, anilino and secondary-amine nitrogens as donors, ether, furan and sulfonyl oxygens as acceptors. A different protonation or tautomer changes which contacts can be hydrogen bonds.",
+    "AQ4": {
+      "N2": {
+        "role": "acceptor",
+        "kind": "quinazoline ring nitrogen"
+      },
+      "N3": {
+        "role": "acceptor",
+        "kind": "quinazoline ring nitrogen"
+      },
+      "N1": {
+        "role": "donor",
+        "kind": "anilino nitrogen"
+      },
+      "O1": {
+        "role": "acceptor",
+        "kind": "ether oxygen"
+      },
+      "O2": {
+        "role": "acceptor",
+        "kind": "ether oxygen"
+      },
+      "O3": {
+        "role": "acceptor",
+        "kind": "ether oxygen"
+      },
+      "O4": {
+        "role": "acceptor",
+        "kind": "ether oxygen"
+      }
+    },
+    "FMM": {
+      "N18": {
+        "role": "acceptor",
+        "kind": "quinazoline ring nitrogen"
+      },
+      "N20": {
+        "role": "acceptor",
+        "kind": "quinazoline ring nitrogen"
+      },
+      "N22": {
+        "role": "donor",
+        "kind": "anilino nitrogen"
+      },
+      "N7": {
+        "role": "donor",
+        "kind": "secondary amine nitrogen"
+      },
+      "O3": {
+        "role": "acceptor",
+        "kind": "sulfonyl oxygen"
+      },
+      "O4": {
+        "role": "acceptor",
+        "kind": "sulfonyl oxygen"
+      },
+      "O13": {
+        "role": "acceptor",
+        "kind": "furan oxygen"
+      },
+      "O27": {
+        "role": "acceptor",
+        "kind": "ether oxygen"
+      }
+    }
+  },
+  "entries": [
+    {
+      "id": "1M17",
+      "file": "structures/1M17.cif",
+      "source_url": "https://files.rcsb.org/download/1M17.cif.gz",
+      "ligand": "AQ4",
+      "ligand_name": "erlotinib",
+      "role": "Erlotinib bound to the kinase domain; the reference frame for superposition.",
+      "size_bytes": 307709,
+      "deposited_on": "2002-06-17",
+      "latest_revision": {
+        "major_revision": "1",
+        "minor_revision": "3",
+        "revision_date": "2024-02-14"
+      }
+    },
+    {
+      "id": "4HJO",
+      "file": "structures/4HJO.cif",
+      "source_url": "https://files.rcsb.org/download/4HJO.cif.gz",
+      "ligand": "AQ4",
+      "ligand_name": "erlotinib",
+      "role": "The same ligand bound to a kinase domain the depositors describe as inactive.",
+      "size_bytes": 279934,
+      "deposited_on": "2012-10-13",
+      "latest_revision": {
+        "major_revision": "1",
+        "minor_revision": "2",
+        "revision_date": "2023-09-20"
+      }
+    },
+    {
+      "id": "1XKK",
+      "file": "structures/1XKK.cif",
+      "source_url": "https://files.rcsb.org/download/1XKK.cif.gz",
+      "ligand": "FMM",
+      "ligand_name": "lapatinib",
+      "role": "A different quinazoline inhibitor with a larger substituent.",
+      "size_bytes": 296182,
+      "deposited_on": "2004-09-29",
+      "latest_revision": {
+        "major_revision": "1",
+        "minor_revision": "3",
+        "revision_date": "2023-08-23"
+      }
+    }
+  ],
+  "file_validation": "Before reporting a check verdict, require each input to be a regular file with the declared byte size, PDB entry identifier, deposition date and latest deposited revision. The checks reject missing or nonregular inputs, size changes and differing accession, deposition or revision metadata. They do not certify byte-for-byte identity."
+}

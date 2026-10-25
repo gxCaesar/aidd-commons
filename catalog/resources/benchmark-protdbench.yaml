@@ -1,0 +1,54 @@
+id: benchmark-protdbench
+name: ProtDBench
+kind: benchmark
+summary: Throughput-aware benchmark for protein binder design that fixes the tasks, the protocol and the success criteria, evaluates structure-prediction models as verifiers on wet-lab annotated data, and reports that the choice of verifier biases the result.
+canonical_url: https://arxiv.org/abs/2605.04118
+identifiers:
+  - scheme: paper
+    value: "ProtDBench: A Unified Benchmark of Protein Binder Design and Evaluation; Liu, Ren, Guan, Gong, Sun, Chen and Xiao, arXiv 2605.04118, submitted 5 May 2026, revised 22 May 2026"
+    url: https://arxiv.org/abs/2605.04118
+  - scheme: code
+    value: ProtDBench evaluation toolkit
+    url: https://github.com/congliuUvA/ProtDBench
+stages: [evaluation, biologics-design]
+modalities: [protein, protein-protein-complex]
+tasks: [protein-generation, structure-prediction, benchmark-evaluation]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: open_source, evidence: [repository, license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: not_applicable, evidence: [paper-fulltext] }
+  weights: { value: not_applicable, evidence: [repository] }
+  architecture: { value: not_applicable, evidence: [paper-fulltext] }
+  data_recipe: { value: available, evidence: [paper-fulltext] }
+  training_data: { value: not_applicable, evidence: [paper-fulltext] }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: Apache-2.0
+    scope: The ProtDBench repository code. External model weights and source datasets retain their own terms.
+    evidence: [license]
+evidence:
+  - id: paper-record
+    url: https://arxiv.org/abs/2605.04118
+    label: The arXiv record, re-opened on 2026-10-25, with its title, author list, dates and abstract
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: paper-fulltext
+    url: https://arxiv.org/html/2605.04118v2
+    label: Full text read on 2026-10-25, including the code link, Cao-data verifier analysis and generative-method comparisons
+    supports: [summary, modalities, caveats]
+  - id: repository
+    url: https://github.com/congliuUvA/ProtDBench
+    label: Public repository README read on 2026-10-25, including evaluation pipelines, external-model wrappers and weight-download instructions
+    supports: [identifiers, caveats]
+  - id: license
+    url: https://github.com/congliuUvA/ProtDBench/blob/main/LICENSE
+    label: Apache-2.0 licence file read on 2026-10-25
+    supports: []
+caveats:
+  - "The full text links a public Apache-2.0 evaluation toolkit. Its external pretrained model weights are downloaded separately. This record has not established that the repository packages every input and output needed to reproduce the paper."
+  - "The benchmark evaluates structure-prediction models used as verifiers and compares representative open-source generative methods on ten protein targets under one fixed protocol, with metrics for per-sequence success, performance inside a fixed 24-hour budget and cluster-level success for structural diversity."
+  - "The paper's own central finding is that filtering rules, success definitions and throughput-aware evaluation produce different conclusions about efficiency, success rate and diversity, and that the choice of verifier carries substantial verifier-dependent bias with limited agreement even under identical filtering protocols."
+  - "The paper reports per-method comparisons. Its generative-method success criteria are computational filters, not newly measured wet-lab hit rates. Verifier analysis on the Cao energy-designed binder dataset may not fully generalize to deep generative designs. This record did not run the benchmark."
+acknowledgements: []
+last_verified: "2026-10-25"

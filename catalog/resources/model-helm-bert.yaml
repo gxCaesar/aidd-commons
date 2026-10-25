@@ -1,0 +1,67 @@
+id: model-helm-bert
+name: HELM-BERT
+kind: model
+summary: Peptide language model that encodes peptides written in HELM notation with an encoder-only transformer, pretrained by masked language modelling and fine-tuned for membrane permeability regression and peptide-protein interaction prediction.
+canonical_url: https://github.com/clinfo/HELM-BERT
+identifiers:
+  - scheme: paper
+    value: "HELM-BERT: Topology-Aware Representations for Chemically Modified Peptides; Journal of Chemical Information and Modeling, DOI 10.1021/acs.jcim.6c00451"
+    url: https://doi.org/10.1021/acs.jcim.6c00451
+  - scheme: model-weights
+    value: "Flansma/helm-bert, also used for the paper revision"
+    url: https://huggingface.co/Flansma/helm-bert
+  - scheme: paper
+    value: "HELM-BERT: A Transformer for Medium-sized Peptide Property Prediction; arXiv 2512.23175"
+    url: https://arxiv.org/abs/2512.23175
+stages: [representation-learning, property-prediction]
+modalities: [peptide, protein, protein-interaction]
+tasks: [protein-representation-learning, molecular-property-prediction]
+relations:
+  - type: uses
+    target: model-esm
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license, repository] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [weights-host] }
+  architecture: { value: available, evidence: [repository, weights-host] }
+  data_recipe: { value: available, evidence: [repository] }
+  training_data: { value: available, evidence: [repository] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: repository source code, covered by the root LICENSE file, which reads "MIT License" and "Copyright (c) 2025 clinfo", and the hosted weights, whose model metadata declares license mit
+    evidence: [license, repository, weights-host]
+evidence:
+  - id: repository
+    url: https://github.com/clinfo/HELM-BERT
+    label: HELM-BERT repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, relations, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/clinfo/HELM-BERT/main/README.md
+    label: HELM-BERT README (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, relations, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/clinfo/HELM-BERT/main/LICENSE
+    label: HELM-BERT MIT licence file (reviewed 2026-10-21)
+    supports: []
+  - id: weights-host
+    url: https://huggingface.co/Flansma/helm-bert
+    label: HELM-BERT weights on Hugging Face (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: paper-record
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:%2210.1021/acs.jcim.6c00451%22&resultType=core&format=json"
+    label: Europe PMC record for the HELM-BERT journal article (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+  - id: preprint
+    url: https://arxiv.org/abs/2512.23175
+    label: HELM-BERT arXiv preprint abstract page (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+caveats:
+  - "Two sources use the name HELM-BERT with different pretraining corpora: the repository README describes about 75,000 peptides from ChEMBL, CREMP, CycPeptMPDB and Propedia, while the arXiv preprint reports 39,079 peptides. The hosted weights do not state which corpus they used."
+  - The README states that the paper revision of the weights was pretrained on three databases with CREMP and the Warmup-Stable-Decay schedule omitted, without naming the three databases.
+  - For the peptide-protein interaction task the README uses facebook/esm2_t33_650M_UR50D as the protein encoder, so the reported interaction numbers are not produced by HELM-BERT alone.
+  - The README reports benchmark metrics and ships random, scaffold and aCSM split files, but names no separate evaluation script, so the evaluation dimension stays unverified.
+acknowledgements: []
+last_verified: "2026-10-21"

@@ -1,0 +1,53 @@
+---
+title: Biologics and multimodal design
+description: Separate designed sequences and structures from evidence of biological function.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="biologics-design/multimodal-design" />
+
+## Foundations
+
+Protein, peptide, antibody, and nucleic-acid design operates on biological
+objects whose sequence, structure, expression, stability, specificity, and
+function can disagree. A plausible design is not evidence that it expresses,
+folds, binds, or acts as intended.
+
+## Practical workflow
+
+Specify the construct, desired function, negative selection conditions,
+expression system, and assay panel. Generate a small auditable candidate set,
+then use experimental feedback to update the design rule. Sources such as
+[ProteinMPNN](https://github.com/dauparas/ProteinMPNN) and
+[RFdiffusion](https://github.com/RosettaCommons/RFdiffusion) should be read
+alongside their stated input and output assumptions.
+
+## Evaluation
+
+Separate computational plausibility from sequence recovery, expression,
+biophysical binding, specificity, cellular function, and in vivo relevance.
+Hold out related families or structural contexts when assessing generalization,
+and record failures rather than retaining only successful designs.
+
+## Frontier and open questions
+
+[LigandMPNN](https://github.com/dauparas/LigandMPNN) and
+[Chroma](https://github.com/generatebio/chroma) broaden design inputs, but do
+not erase uncertainty in complexes, antigen state, or downstream function.
+The appropriate model depends on the decision and available assay feedback.
+
+## What v0.1 does not yet teach
+
+v0.1 does not prescribe an antibody or therapeutic protein development
+program, claim functional validation from structure alone, or rank design
+systems by a synthetic aggregate score.
+
+## Core-source path
+
+Begin with [ProteinMPNN](https://github.com/dauparas/ProteinMPNN) and
+[RFdiffusion](https://github.com/RosettaCommons/RFdiffusion), then revisit the
+[co-folding Atlas](/atlas/open-cofolding-frontier/) when a design decision
+depends on a predicted complex.
+
+Last reviewed: 2026-09-04.

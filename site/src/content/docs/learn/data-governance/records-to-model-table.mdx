@@ -1,0 +1,123 @@
+---
+title: From assay records to a modelling table
+description: Preserve the meaning of a measurement while aligning entities, units and repeat observations.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="data-governance/records-to-model-table" />
+<ScrollableRegions />
+
+## What you will learn
+
+After [data contracts](/learn/data-governance/data-contracts/), work through one
+small table before choosing a model. You should be able to identify the object
+being predicted, distinguish a measurement from an entity, transform units without
+changing the endpoint, and explain every row that does not enter training.
+Basic logarithms are enough; no installation is needed.
+
+A modelling table is not simply a spreadsheet with empty cells removed. Its row
+definition decides what one prediction means. An assay record, a standardized
+parent molecule and a molecule–assay pair are different units. Combining them
+carelessly changes the question even if the code still runs.
+
+## A complete constructed example
+
+The following records are invented for arithmetic, not exported ChEMBL data.
+The exercise stipulates an already reviewed mapping from A-salt to parent A;
+it does **not** recommend universal salt stripping or neutralization. The task
+is to predict exact IC50 on assay E, aggregated per parent. Assay F has a different
+experimental context and is not a technical replicate of E.
+
+| Record  | Parent     | Assay | Relation | IC50 | Unit | Note                        |
+| ------- | ---------- | ----- | -------- | ---- | ---- | --------------------------- |
+| r1      | A          | E     | =        | 100  | nM   | accepted structure          |
+| r2      | A          | E     | =        | 1000 | nM   | independent recorded repeat |
+| r3      | B          | E     | =        | 0.2  | µM   | accepted structure          |
+| r4      | C          | E     | >        | 10   | µM   | censored readout            |
+| r5      | D          | F     | =        | 10   | nM   | different assay             |
+| r6      | unresolved | E     | =        | 50   | nM   | invalid structure           |
+| r1-copy | A          | E     | =        | 100  | nM   | duplicated export of r1     |
+
+An export duplicate is removed once; it is not an extra experiment. An actual
+repeat stays until the declared aggregation step. Invalid structure is a failed
+entity mapping, not evidence of no biological activity. Censoring is information
+about a bound, not a missing value to replace with the bound itself.
+
+## Units, transformations and aggregation
+
+For a positive exact IC50 measured in mol/L, define
+`pIC50 = −log10(IC50 in mol/L)`. For nM values this is `9 − log10(IC50 in nM)`.
+A larger pIC50 represents a smaller IC50. This does not make IC50 a universal
+binding free energy or a context-free affinity constant. The
+[ChEMBL data FAQ](https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/chembl-data-questions)
+explains that pChEMBL combines eligible standardized activity types; our example
+deliberately uses only one endpoint and one assay.
+
+Here r1 and r2 become 7 and 6. Record r3 becomes 200 nM, then approximately
+6.69897. Aggregate A by the median **after** the log transform: its target is
+6.5. This equals the negative log of the geometric midpoint for these two
+values, not the negative log of the raw arithmetic median, 550 nM. Those two
+operations answer different aggregation questions; neither ordering should be
+chosen after inspecting model performance.
+
+Record r4 implies pIC50 **less than 5**, because the negative logarithm reverses
+the inequality. Our exact-value regression excludes it and retains the reason.
+A censored-likelihood model could use the bound, but that would be a separately
+defined task rather than a quiet substitution. Record r5 remains available for
+a possible context-shift question, not pooled with assay E by default.
+
+The audit trail is short: 7 raw rows → 1 export duplicate, 1 unresolved structure,
+1 other-assay row and 1 censored row excluded → 3 exact records → 2 parent rows.
+The final table is A: 6.5 and B: 6.69897. The raw records and exclusion reasons
+remain separate from this model-ready view.
+
+## What enters X and y?
+
+`X` contains information available when a future prediction would be made, such
+as descriptors computed from a chemical structure. `y` contains the endpoint
+to be predicted. The measured IC50, its logarithm, an activity-class annotation
+derived from that measurement, and a future assay result cannot also be input
+features for this prospective prediction task.
+
+Keep entity ID, assay ID, source record ID and partition membership as metadata,
+not blindly as numeric predictors. Fit learned preprocessing on training data
+only. A deterministic structure representation is different from a scaler or
+feature selector fitted across all rows. The
+[scikit-learn leakage examples](https://scikit-learn.org/stable/common_pitfalls.html)
+show why even preprocessing can cross the training boundary.
+
+This two-parent table is too small for a meaningful predictive benchmark. The
+point is to account for meaning and counts before expanding the dataset. A real
+study also needs assay context, permissible use, an entity/group split and enough
+independent units. Counting more repeated measurements does not supply them.
+
+## Independent exercise
+
+Another export contains parent Q twice in assay E: exact IC50 of 10 nM and
+0.1 µM. It also contains `IC50 > 1 µM` for parent R. Use the same task rules.
+What target enters for Q? What inequality follows for R? May the Q records go
+into different train and test partitions?
+
+<details data-worked-answer>
+<summary>Worked answer — derive values and preserve the unit</summary>
+
+Q becomes pIC50 8 and 7, then median 7.5. R implies pIC50 less than 6 and is
+excluded from this exact-value regression, with its bound preserved separately.
+Q's records belong to the same parent and cannot straddle an entity-disjoint
+split. In a scaffold-disjoint task, Q must also stay with its scaffold group.
+A complete answer includes the inequality direction and the partitioning unit,
+not only the two transformed numbers.
+
+</details>
+
+## Connect this to real evidence
+
+The [ChEMBL representation lab](/labs/chembl-egfr-representation-baselines/)
+documents its actual filtering, parent aggregation and scaffold split. It is
+not the seven-row example above. The [label-free inspector](/labs/molecule-representation-inspector/)
+shows representation identity without manufacturing an activity label.
+Continue to [baseline training and validation](/learn/machine-learning/baseline-training-validation/).
+
+Original teaching example and prose: CC BY 4.0. Last reviewed: 2026-09-09.

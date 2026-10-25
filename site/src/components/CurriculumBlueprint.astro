@@ -1,0 +1,300 @@
+---
+import { parse } from "yaml";
+
+import {
+  capabilitiesForLesson,
+  type Curriculum,
+} from "../../../scripts/curriculum/curriculum.js";
+import curriculumSource from "../../../catalog/curriculum/tracks.yaml?raw";
+
+interface Props {
+  chinese?: boolean;
+}
+
+const { chinese = false } = Astro.props;
+const curriculum = parse(curriculumSource) as Curriculum;
+const unitsByTrack = new Map(
+  curriculum.tracks.map((track) => [
+    track.id,
+    curriculum.units.filter((unit) => unit.track_id === track.id),
+  ]),
+);
+const unitsById = new Map(curriculum.units.map((unit) => [unit.id, unit]));
+const lessonsById = new Map(
+  curriculum.tracks.flatMap((track) =>
+    track.lessons.map((lesson) => [
+      `${track.id}/${lesson.id}`,
+      { lesson, track },
+    ]),
+  ),
+);
+
+const labels = chinese
+  ? {
+      available: "已提供",
+      capability: "教学能力",
+      core: "核心",
+      historicalMapping: "历史分类映射",
+      lesson: "打开课程",
+      objective: "学习目标",
+      planned: "计划中",
+      prerequisites: "先修单元",
+      practice: "实践",
+      research: "研究",
+      track: "课程轨道",
+    }
+  : {
+      available: "Available",
+      capability: "Capabilities",
+      core: "Core",
+      historicalMapping: "Historical taxonomy mapping",
+      lesson: "Open lesson",
+      objective: "Learning objective",
+      planned: "Planned",
+      prerequisites: "Prerequisite units",
+      practice: "Practice",
+      research: "Research",
+      track: "Track",
+    };
+
+const capabilityLabels = chinese
+  ? {
+      orientation: "导览",
+      explanation: "讲解",
+      "worked-example": "示例",
+      exercise: "练习",
+      runnable: "可运行",
+    }
+  : {
+      orientation: "Orientation",
+      explanation: "Explanation",
+      "worked-example": "Worked example",
+      exercise: "Exercise",
+      runnable: "Runnable",
+    };
+
+function lessonHref(lessonId: string): string {
+  return chinese ? `/zh-cn/learn/${lessonId}/` : `/learn/${lessonId}/`;
+}
+
+function unitTitle(unit: Curriculum["units"][number]): string {
+  return chinese ? unit.title_zh : unit.title;
+}
+---
+
+<section class="curriculum-blueprint" aria-label={chinese ? "课程蓝图" : "Curriculum blueprint"} data-curriculum-blueprint>
+  <p class="curriculum-blueprint__intro">
+    {chinese
+      ? "每个单元明确显示当前交付状态。计划单元是课程蓝图的一部分，但没有课程链接，也不计作已提供教学。"
+      : "Each unit shows its current delivery state. Planned units belong to the curriculum blueprint, but have no lesson link and do not count as delivered teaching."}
+  </p>
+
+  <div class="curriculum-blueprint__legend" aria-label={chinese ? "状态图例" : "Delivery-state legend"}>
+    <span class="curriculum-blueprint__status curriculum-blueprint__status--available">{labels.available}</span>
+    <span class="curriculum-blueprint__status curriculum-blueprint__status--planned">{labels.planned}</span>
+  </div>
+
+  {curriculum.tracks.map((track) => {
+    const units = unitsByTrack.get(track.id) ?? [];
+    return (
+      <details class="curriculum-blueprint__track" open={track.id === "foundations"}>
+        <summary>
+          <span>{labels.track} {track.order}</span>
+          <strong>{chinese ? track.title_zh : track.title}</strong>
+          <span>{units.length}</span>
+        </summary>
+        <div class="curriculum-blueprint__units">
+          {units.map((unit) => {
+            const deliveredLesson = unit.lesson_id
+              ? lessonsById.get(unit.lesson_id)
+              : undefined;
+            const capabilities = deliveredLesson
+              ? capabilitiesForLesson(deliveredLesson.lesson)
+              : [];
+            return (
+              <article
+                class="curriculum-blueprint__unit"
+                data-curriculum-unit={unit.id}
+                data-unit-state={deliveredLesson ? "available" : "planned"}
+                id={`unit-${unit.id}`}
+              >
+                <div class="curriculum-blueprint__unit-heading">
+                  <span class={`curriculum-blueprint__status curriculum-blueprint__status--${deliveredLesson ? "available" : "planned"}`}>
+                    {deliveredLesson ? labels.available : labels.planned}
+                  </span>
+                  <span class="curriculum-blueprint__layer">{labels[unit.layer]}</span>
+                </div>
+                <h3>{unitTitle(unit)}</h3>
+                <p><strong>{labels.objective}.</strong> {chinese ? unit.learning_objective_zh : unit.learning_objective}</p>
+                <p class="curriculum-blueprint__prerequisites">
+                  <strong>{labels.prerequisites}.</strong>{" "}
+                  {unit.prerequisites.length > 0
+                    ? unit.prerequisites.map((prerequisite, index) => (
+                        <Fragment>
+                          {index > 0 ? ", " : ""}
+                          <a href={`#unit-${prerequisite}`}>{unitTitle(unitsById.get(prerequisite)!)}</a>
+                        </Fragment>
+                      ))
+                    : chinese ? "无" : "None"}
+                </p>
+                <p class="curriculum-blueprint__historical-mapping">
+                  <strong>{labels.historicalMapping}.</strong>{" "}
+                  {unit.historical_topic_ids.map((topicId, topicIndex) => (
+                    <Fragment>
+                      {topicIndex > 0 ? ", " : ""}
+                      <code>{topicId}</code>
+                    </Fragment>
+                  ))}
+                </p>
+                {deliveredLesson && unit.lesson_id ? (
+                  <div class="curriculum-blueprint__delivery">
+                    <a data-unit-lesson href={lessonHref(unit.lesson_id)}>{labels.lesson}</a>
+                    {capabilities.length > 0 && (
+                      <span>
+                        <strong>{labels.capability}.</strong>{" "}
+                        {capabilities.map((capability) => capabilityLabels[capability]).join(", ")}
+                      </span>
+                    )}
+                  </div>
+                ) : null}
+              </article>
+            );
+          })}
+        </div>
+      </details>
+    );
+  })}
+</section>
+
+<script>
+  const revealUnitTrack = () => {
+    const targetId = decodeURIComponent(window.location.hash.slice(1));
+    if (!targetId) return;
+    const target = document.getElementById(targetId);
+    const track = target?.closest("details.curriculum-blueprint__track");
+    if (track instanceof HTMLDetailsElement) track.open = true;
+  };
+
+  revealUnitTrack();
+  document.addEventListener("astro:page-load", revealUnitTrack);
+  window.addEventListener("hashchange", revealUnitTrack);
+</script>
+
+<style>
+  .curriculum-blueprint {
+    display: grid;
+    gap: 1rem;
+    margin-block: 1.5rem;
+  }
+
+  .curriculum-blueprint__intro {
+    margin: 0;
+    color: var(--sl-color-gray-3);
+  }
+
+  .curriculum-blueprint__legend,
+  .curriculum-blueprint__unit-heading,
+  .curriculum-blueprint__delivery {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .curriculum-blueprint__track {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.35rem;
+    background: var(--sl-color-bg-nav);
+  }
+
+  .curriculum-blueprint__track summary {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.9rem 1rem;
+    cursor: pointer;
+  }
+
+  .curriculum-blueprint__track summary > span {
+    color: var(--sl-color-gray-3);
+    font-size: 0.84rem;
+  }
+
+  .curriculum-blueprint__units {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    padding: 0 1rem 1rem;
+  }
+
+  .curriculum-blueprint__unit {
+    min-width: 0;
+    padding: 0.9rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.3rem;
+    background: var(--sl-color-bg);
+  }
+
+  .curriculum-blueprint__unit[data-unit-state="planned"] {
+    border-style: dashed;
+  }
+
+  .curriculum-blueprint__unit h3 {
+    margin: 0.65rem 0 0.4rem;
+    font-size: 1rem;
+  }
+
+  .curriculum-blueprint__unit p {
+    margin: 0.45rem 0;
+    font-size: 0.92rem;
+  }
+
+  .curriculum-blueprint__historical-mapping code {
+    overflow-wrap: anywhere;
+  }
+
+  .curriculum-blueprint__status,
+  .curriculum-blueprint__layer {
+    display: inline-flex;
+    width: fit-content;
+    padding: 0.12rem 0.45rem;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+
+  .curriculum-blueprint__status--available {
+    background: color-mix(in srgb, var(--atlas-teal) 16%, transparent);
+    color: var(--atlas-teal-deep);
+  }
+
+  .curriculum-blueprint__status--planned {
+    background: color-mix(in srgb, var(--atlas-rule) 45%, transparent);
+    color: var(--atlas-muted);
+  }
+
+  .curriculum-blueprint__layer {
+    background: color-mix(in srgb, var(--atlas-coral) 15%, transparent);
+    color: var(--atlas-ink);
+  }
+
+  .curriculum-blueprint__delivery {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 44rem) {
+    .curriculum-blueprint__units {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .curriculum-blueprint__track summary {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .curriculum-blueprint__track summary > span:first-child {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

@@ -1,0 +1,154 @@
+id: deepchem-tutorials
+name: DeepChem Step-by-Step Tutorials
+provider_class: tutorial-collection
+canonical_url: https://github.com/deepchem/deepchem/tree/master/examples/tutorials
+summary: A beginner-oriented tutorial series spanning molecular machine learning, proteins, chemistry, bioinformatics, generation, and scientific ML with DeepChem.
+audiences: [beginners]
+languages: [en]
+metadata_evidence: [tutorial-index, project-readme]
+access:
+  content: { value: open, evidence: [tutorial-index] }
+  code: { value: open, evidence: [tutorial-index, project-readme] }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses:
+  - name: MIT License
+    scope: DeepChem software and associated documentation; external tutorial datasets retain separate terms
+    evidence: [repository-license]
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence was encoded for omitted taxonomy topics in this dated review.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t03-training-validation-selection
+    depth: executable
+    run_basis: unverified
+    evidence: [splitters-tutorial]
+    reviewed_scope: Working With Splitters notebook
+    note: The notebook provides a runnable Colab workflow for selecting and applying dataset splitters.
+  - topic_id: t07-property-task-split-design
+    depth: executable
+    run_basis: unverified
+    evidence: [splitters-tutorial]
+    reviewed_scope: Random, scaffold, and fingerprint split explanations, code, and outputs
+    note: The notebook compares several molecular split mechanisms on a defined dataset.
+  - topic_id: t17-split-leakage-audit
+    depth: worked
+    evidence: [splitters-tutorial]
+    reviewed_scope: Splitter rationale and molecular partition examples
+    note: The notebook demonstrates how similarity-aware partitions change evaluation, but it is not treated as proof that every leakage route is closed.
+  - topic_id: t09-binding-mode-pose-hypothesis
+    depth: executable
+    run_basis: real-data
+    evidence: [protein-ligand-tutorial]
+    reviewed_scope: Protein-ligand interaction notebook complex inputs, docking, and outputs
+    note: The notebook constructs protein-ligand inputs and executes a defined docking workflow.
+  - topic_id: t09-affinity-ranking
+    depth: executable
+    run_basis: unverified
+    evidence: [protein-ligand-tutorial]
+    reviewed_scope: Protein-ligand affinity fitting and held-out predictions
+    note: The notebook trains an interaction model and reports predictions for held-out examples.
+  - topic_id: t12-candidate-design-space
+    depth: executable
+    run_basis: unverified
+    evidence: [molgan-tutorial]
+    reviewed_scope: MolGAN molecular graph generation notebook
+    note: The notebook supplies a runnable Colab route for a bounded graph-based molecular-generation task.
+  - topic_id: t05-omics-perturbation-representation
+    depth: executable
+    run_basis: unverified
+    evidence: [single-cell-notebook]
+    reviewed_scope: A tutorial running an scvi-tools workflow over an AnnData single-cell object, learning a probabilistic latent representation of cells from counts downstream of quality-control preprocessing, with the package positioned beside Scanpy for the surrounding analysis
+    note: The cell is the modelled unit and the representation is inferred rather than hand-built. The tutorial states that it sits downstream of quality control and adapts an upstream package tutorial, so the preprocessing decisions are inherited rather than taught here.
+  - topic_id: t13-biologic-modality-construct
+    depth: worked
+    evidence: [adc-notebook]
+    reviewed_scope: A tutorial defining an antibody-drug conjugate as a monoclonal antibody joined to a cytotoxic payload through a chemical linker, with sections on design and optimisation and on computational approaches, and runnable cells using cheminformatics and structure viewers
+    note: The construct is defined by its three parts and the function each serves, which is the topic. The expression system is not addressed and the runnable cells inspect components rather than assemble a construct.
+  - topic_id: t13-expression-developability-manufacturability
+    depth: explained
+    evidence: [adc-notebook]
+    reviewed_scope: The same tutorial treating the drug-to-antibody ratio as a property that governs design and optimisation of the conjugate
+    note: One developability quantity is explained as a design variable. Stability, aggregation, immunogenicity and manufacturing route are not addressed.
+  - topic_id: t18-evidence-package-claim-chain
+    depth: absent
+    evidence: [tutorial-index]
+    reviewed_scope: The complete tutorial index of 73 notebooks reviewed on 2026-09-11 at examples/tutorials in the DeepChem repository
+    note: No notebook in the reviewed index addresses any topic in the candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t18-crossdomain-tradeoff-decision
+    depth: absent
+    evidence: [tutorial-index]
+    reviewed_scope: The complete tutorial index of 73 notebooks reviewed on 2026-09-11 at examples/tutorials in the DeepChem repository
+    note: No notebook in the reviewed index addresses any topic in the candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t18-counterevidence-failure-analysis
+    depth: absent
+    evidence: [tutorial-index]
+    reviewed_scope: The complete tutorial index of 73 notebooks reviewed on 2026-09-11 at examples/tutorials in the DeepChem repository
+    note: No notebook in the reviewed index addresses any topic in the candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t18-nomination-readiness-next-experiment
+    depth: absent
+    evidence: [tutorial-index]
+    reviewed_scope: The complete tutorial index of 73 notebooks reviewed on 2026-09-11 at examples/tutorials in the DeepChem repository
+    note: No notebook in the reviewed index addresses any topic in the candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t18-openness-biosecurity-governance-boundary
+    depth: absent
+    evidence: [tutorial-index]
+    reviewed_scope: The complete tutorial index of 73 notebooks reviewed on 2026-09-11 at examples/tutorials in the DeepChem repository
+    note: No notebook in the reviewed index addresses any topic in the candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+evidence:
+  - id: tutorial-index
+    url: https://raw.githubusercontent.com/deepchem/deepchem/master/examples/tutorials/README.md
+    title: DeepChem Step-by-Step Tutorial index
+    observed_scope: Beginner orientation and tutorial inventory across molecular ML, proteins, generation, quantum chemistry, bioinformatics, and related methods. Re-reviewed on 2026-09-11 against the complete directory listing of 73 tutorial notebooks in examples/tutorials, which adds antibodies, antibody-drug conjugates, PROTACs, binding sites, polymers, materials, single-cell data and synthetic feasibility to the observed inventory.
+    access: opened
+    reviewed_on: 2026-09-11
+  - id: project-readme
+    url: https://raw.githubusercontent.com/deepchem/deepchem/master/README.md
+    title: DeepChem project README
+    observed_scope: Public project identity, local and Colab tutorial execution routes, installation, and repository scope.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: repository-license
+    url: https://raw.githubusercontent.com/deepchem/deepchem/master/LICENSE
+    title: DeepChem repository licence
+    observed_scope: MIT terms for the software and associated documentation.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: splitters-tutorial
+    url: https://raw.githubusercontent.com/deepchem/deepchem/master/examples/tutorials/Working_With_Splitters.ipynb
+    title: Working With Splitters
+    observed_scope: Colab route, molecular dataset, random, scaffold, and fingerprint split explanations, runnable code, and notebook outputs.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: protein-ligand-tutorial
+    url: https://raw.githubusercontent.com/deepchem/deepchem/master/examples/tutorials/Modeling_Protein_Ligand_Interactions.ipynb
+    title: Modeling Protein-Ligand Interactions
+    observed_scope: Protein-ligand complex inputs, docking, affinity model fitting, held-out evaluation, code, and notebook outputs.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: molgan-tutorial
+    url: https://raw.githubusercontent.com/deepchem/deepchem/master/examples/tutorials/Generating_molecules_with_MolGAN.ipynb
+    title: Generating Molecules with MolGAN
+    observed_scope: Colab route, molecular graph generation objective, runnable workflow, and generated-output surface.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: single-cell-notebook
+    url: https://github.com/deepchem/deepchem/blob/master/examples/tutorials/Deep_probabilistic_analysis_of_single-cell_omics_data.ipynb
+    title: Deep probabilistic analysis of single-cell omics data
+    observed_scope: Read in full through the repository API. An scvi-tools workflow over AnnData, positioned downstream of quality control and beside Scanpy, with 69 cells of which 37 are explanatory. Adapted from the upstream package tutorial. No exercises observed.
+    access: opened
+    reviewed_on: 2026-09-10
+  - id: adc-notebook
+    url: https://github.com/deepchem/deepchem/blob/master/examples/tutorials/Introduction_to_Antibody_Drug_Conjugates.ipynb
+    title: Introduction to antibody-drug conjugates
+    observed_scope: Read in full through the repository API. Seventy cells of which 46 are explanatory, covering ADC composition as antibody, linker and cytotoxic payload, design and optimisation with the drug-to-antibody ratio as a recurring design variable, computational approaches, a Colab route and a stated CPU-only requirement. No exercises observed.
+    access: opened
+    reviewed_on: 2026-09-10
+caveats:
+  - The tutorial directory lists more than fifty notebooks, spanning areas no other provider in this set covers, including antibodies, antibody-drug conjugates, PROTACs, single-cell omics, protein language models, binding-site druggability, quantum chemistry, materials and polymers. Eight have been reviewed, so this record substantially understates the provider and omitted topics stay unverified rather than absent.
+  - The two notebooks read on 2026-09-10 carry substantial explanatory prose, unlike the code-only companion repositories elsewhere in this set, but neither contains an exercise, so neither is scored at assessed.
+  - Tutorial notebooks retrieve or rely on external datasets such as PDBbind and Tox21; no blanket data licence or redistribution claim is made.
+  - No separate solution or formal assessment surface was verified, and the notebooks were inspected but not executed during this audit.
+last_verified: 2026-09-11

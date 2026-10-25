@@ -1,0 +1,75 @@
+id: model-molfm
+name: MolFM
+kind: model
+summary: MolFM implements equivariant flow matching with hybrid probability transport for 3D molecule generation, with training and sampling code under docker and sampling directories.
+canonical_url: https://github.com/GenSI-THUAIR/MolFM
+identifiers:
+- scheme: paper
+  value: Equivariant Flow Matching with Hybrid Probability Transport for 3D Molecule Generation, NeurIPS 2023; OpenReview hHUZ5V9XFu
+  url: https://openreview.net/forum?id=hHUZ5V9XFu
+stages:
+- design
+modalities:
+- small-molecule
+- molecular-geometry
+tasks:
+- molecular-generation
+relations: []
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - repository
+openness:
+  inference_code:
+    value: available
+    evidence:
+    - repository
+  training_code:
+    value: available
+    evidence:
+    - repository
+  weights:
+    value: not_available
+    evidence:
+    - readme
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses: []
+evidence:
+- id: repository
+  url: https://github.com/GenSI-THUAIR/MolFM
+  label: GenSI-THUAIR/MolFM repository (reviewed 2026-10-21)
+  supports:
+  - caveats
+  - kind
+  - modalities
+  - name
+  - stages
+  - summary
+  - tasks
+- id: paper
+  url: https://neurips.cc/virtual/2023/poster/70795
+  label: NeurIPS 2023 poster page for the MolFM paper (reviewed 2026-10-21)
+  supports:
+  - identifiers
+- id: readme
+  url: https://raw.githubusercontent.com/GenSI-THUAIR/MolFM/master/README.md
+  label: MolFM README
+  supports:
+  - caveats
+caveats:
+- The repository lists no LICENSE file and states no licence string, so access level and licence terms stay unverified.
+- The README names no training dataset and no checkpoint, so neither the training corpus nor any released weights can be established from the opened page.
+- The README's clone command points at github.com/AlgoMole/MolFM rather than this repository, and the two paths were not compared here.
+- The OpenReview entry asks for browser verification and was not opened, so the venue attribution rests on the repository README and the NeurIPS poster page.
+- The repository is public and clonable and carries no licence file, so the code is obtainable while the terms under which it may be reused are unstated. The repository has not been pushed to since 2024.
+acknowledgements: []
+last_verified: '2026-10-21'

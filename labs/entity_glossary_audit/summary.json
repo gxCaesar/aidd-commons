@@ -1,0 +1,99 @@
+{
+  "admitted_measurement_count": 486,
+  "admitted_point_row_count": 488,
+  "assay_target_coverage": {
+    "distinct_assays": 481,
+    "distinct_targets": 100,
+    "targets_with_multiple_molecule_records": 21
+  },
+  "cohort": {
+    "declared_seeds": 15,
+    "resolved_parents": 10
+  },
+  "computed_on": "2026-10-23",
+  "limits": "The audit does not merge two identifiers, infer what a compound does, call a target a disease, or treat a document as proof that a measurement is true.",
+  "molecule_parent_disagreement": {
+    "admitted_rows": 71,
+    "declared_salt_ids": [
+      "CHEMBL1026",
+      "CHEMBL109745",
+      "CHEMBL433",
+      "CHEMBL690",
+      "CHEMBL929"
+    ],
+    "declared_salt_rows": 65,
+    "distinct_molecule_records": 6,
+    "molecule_record_ids": [
+      "CHEMBL1026",
+      "CHEMBL109745",
+      "CHEMBL1256646",
+      "CHEMBL433",
+      "CHEMBL690",
+      "CHEMBL929"
+    ],
+    "other_child_ids": [
+      "CHEMBL1256646"
+    ]
+  },
+  "per_kind": {
+    "assay": {
+      "distinct_identifiers": 481,
+      "field": "assay_chembl_id",
+      "row_uses": 488
+    },
+    "document": {
+      "distinct_identifiers": 221,
+      "field": "document_chembl_id",
+      "row_uses": 488
+    },
+    "molecule_record": {
+      "distinct_identifiers": 15,
+      "field": "molecule_chembl_id",
+      "row_uses": 488
+    },
+    "parent_molecule": {
+      "distinct_identifiers": 9,
+      "field": "parent_molecule_chembl_id",
+      "row_uses": 488
+    },
+    "target": {
+      "distinct_identifiers": 100,
+      "field": "target_chembl_id",
+      "row_uses": 488
+    }
+  },
+  "protocol_id": "chembl37-entity-glossary-v1",
+  "row_rule": "This laboratory reads each admitted point row as a measurement of its molecule record, grouped under the parent to which that record resolves. Its assay names the measurement system, its target names what was measured against, and its document names the publication. Independent measurements use the decision-unit (parent, assay, document, endpoint) key; one such group may contain more than one molecule record.",
+  "schema_version": "aidd-commons.entity-glossary-audit-summary.v1",
+  "software": {
+    "python": "3.11.15",
+    "rdkit": "2025.09.6"
+  },
+  "source": {
+    "database": "ChEMBL_37",
+    "release_date": "2026-05-01"
+  },
+  "totals": {
+    "distinct_identifiers_across_kinds": 826,
+    "identifier_uses": 2440,
+    "measurements_with_multiple_molecule_records": 1
+  },
+  "unnamed_kinds": {
+    "cell_state": {
+      "admitted_rows_without_identifier": 488,
+      "reason": "No cell-state identifier occurs in the cached activity rows."
+    },
+    "complex": {
+      "admitted_rows_without_identifier": 488,
+      "reason": "No complex identifier occurs in the cached activity rows."
+    },
+    "patient": {
+      "admitted_rows_without_identifier": 488,
+      "reason": "No patient identifier occurs in the cached activity rows."
+    },
+    "therapeutic_candidate": {
+      "admitted_rows_without_identifier": 488,
+      "reason": "No candidate designation occurs in the cached activity rows; activity is not nomination."
+    }
+  }
+}

@@ -1,0 +1,137 @@
+---
+title: 开放结构预测技术栈
+description: 沿序列搜索、折叠和配体复合物预测逐步辨认不同资源及其证据边界。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="structure-and-pockets/open-structure-stack" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+学完[结构、口袋与共折叠](/learn/structure-and-pockets/cofolding-frontier/)和
+[结构、亲和力与预测对象](/learn/structure-and-pockets/structure-affinity-mechanisms/)后，
+沿序列搜索、坐标集生成，以及考虑配体时的复合物预测，追踪一个候选结构。辨认各资源
+提供的资产和每一步结论的边界。本课是带有书面练习的阅读课，不提供把四项资源接成
+可运行流程的操作说明。[英文原版](/learn/structure-and-pockets/open-structure-stack/)
+是规范版本。
+
+## 比较约定
+
+四份目录记录描述技术栈中的不同步骤，不是对预测结果的匹配比较。MMseqs2 的任务是
+`sequence-search`，ColabFold 和 RoseTTAFold All-Atom 的任务是
+`structure-prediction`，DynamicBind 的任务是 `complex-prediction`。
+它们的输出不能作为同一生物学问题的可互换答案。候选模板还需要独立确认身份与来源。
+这些记录都未确立一条经过联合测试的流程、选定的模板或这条链的固定运行版本。
+
+## 结构获得的步骤
+
+| 步骤 | 这些记录中的资源 | 该步骤可提供什么 | 结论止于何处 |
+| --- | --- | --- | --- |
+| 序列搜索 | MMseqs2 | 可用于寻找同源序列的序列命中或聚类 | 命中序列不是经核实的结构模板 |
+| 模板核查 | 四项资源均不涵盖 | 只有另行核查结构及其与目标的关系，才能提出候选参考结构 | 四份记录没有确立模板来源或使用条款 |
+| 折叠 | ColabFold 或 RoseTTAFold All-Atom | 针对指定分子输入的模型坐标提案 | 预测坐标集不是实验结构 |
+| 结合 | DynamicBind | 配体特异性蛋白质复合物提案 | 候选姿态不是结合或亲和力测量 |
+
+这个顺序标明不同的决策，不表示这些仓库提供一条整合好的流程。在本课的阅读约定中，
+两条折叠路线是备选路线。即使两者结果一致，也不能仅凭这一点视为独立的生物学验证。
+
+## MMseqs2
+
+MMseqs2 是序列搜索与聚类软件，处于折叠之前，可以帮助识别序列命中。但它的
+`sequence-search` 任务不能保证命中序列是目标状态的合适结构模板。记录确立了仓库
+中的推断代码，没有确立训练代码或权重。这些未核实字段既不能变成资产必需的主张，
+也不能变成资产不存在的主张。记录将仓库的 MIT 许可解读为涵盖源代码。记录没有
+确立从别处取得的模板的许可、经核实的模板选择或运行版本。
+
+## ColabFold
+
+ColabFold 是折叠步骤中的公开蛋白质结构预测工作流。记录列出它与 AlphaFold 2 的
+`uses` 关系。记录确立仓库中的推断代码，而该记录中的训练代码和权重仍未核实。
+因此，能够取得工作流不等于能取得其可能使用的全部资产。记录中的 MIT 许可涵盖
+仓库源代码，并未另行确立权重许可。文档链接标出 `v1.6.2`，但记录没有固定经测试
+的运行版本，也没有确立所得坐标集与实验结构一致。
+
+## RoseTTAFold All-Atom
+
+RoseTTAFold All-Atom 是全原子生物分子结构预测模型仓库。它针对
+`biomolecular-complex` 模态提供另一条折叠路线，并非另一个序列搜索步骤。记录确立
+仓库中的推断代码、训练代码和权重。可用的训练代码允许检查发布的代码，但不能
+确立运行后可复现论文结果。记录将 BSD-3-Clause 许可解读为涵盖仓库源代码。记录
+没有确立权重的单独条款、训练数据或数据配方、经测试的运行版本，也没有确立预测
+在实验上的正确性。
+
+## DynamicBind
+
+DynamicBind 是结合步骤中的配体特异性蛋白质复合物建模仓库。它的
+`complex-prediction` 任务涉及候选复合物，而非实测亲和力。记录确立仓库中的推断
+代码和训练代码。记录列有模型权重记录的链接，但权重字段仍是未核实，因此仅凭链接
+不能确立可用权重。记录将 MIT 许可解读为涵盖仓库源代码。该许可既未确立权重可用，
+也未确立权重的单独条款。记录亦未确立经测试的运行版本、实测结合或论文结果的复现。
+
+## 按维度记录开放状态
+
+以下七列保留目录中的不同维度。可用表示被引用的记录确立了访问或文档证据，不代表
+本课执行过资产。未核实表示记录没有确立该维度。
+
+| 资源 | 推断代码 | 训练代码 | 权重 | 架构 | 数据配方 | 训练数据 | 评估代码 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| MMseqs2 | 可用 | 未核实 | 未核实 | 未核实 | 未核实 | 未核实 | 未核实 |
+| ColabFold | 可用 | 未核实 | 未核实 | 可用 | 未核实 | 未核实 | 未核实 |
+| RoseTTAFold All-Atom | 可用 | 可用 | 可用 | 可用 | 未核实 | 未核实 | 可用 |
+| DynamicBind | 可用 | 可用 | 未核实 | 未核实 | 未核实 | 未核实 | 未核实 |
+
+## 推演案例
+
+考虑一个为阅读而构造的案例。读者从目标序列出发，得到 MMseqs2 命中，并提议把
+与该命中相关的一份结构作为模板。随后，ColabFold 或 RoseTTAFold All-Atom 给出
+坐标提案。读者又考虑用 DynamicBind 获得配体特异性复合物。每一步之后能说什么，
+推论链又止于何处？在依赖这条链之前，记录中的哪些字段提示还需核查资产或条款？
+
+搜索只支持关于序列命中的陈述，不支持关于目标结构的陈述。候选模板需要独立确认
+来源及其与目标的关系。折叠输出是模型产生的坐标集。DynamicBind 的输出若产生，
+也是候选复合物，并非结合观察。不能从这条链推出目标具有该实验结构或配体确实
+结合。ColabFold 和 DynamicBind 的 `weights` 字段未核实，尽管 DynamicBind
+列有模型权重链接。RoseTTAFold All-Atom 的权重标为可用，但所记录的 BSD-3-Clause
+许可范围是源代码。读者还需确立有关资产的取得方式和条款、模板来源及实际版本，
+才可把它当成可复现工作流。本案例没有产生命中、结构、姿态或实验结果。
+
+## 独立练习
+
+一位同事看到 DynamicBind 的模型权重链接及其 MIT 源代码许可，便把权重及其许可
+都标为可用。请纠正这一判断。哪项折叠资源的权重被标为可用？其记录中的许可涵盖
+什么？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+DynamicBind 的 `weights` 字段是 `unverified`。模型权重标识符不会改变该字段，
+而 MIT 许可的 `scope` 涵盖仓库源代码。记录没有确立单独的权重许可。
+RoseTTAFold All-Atom 的 `weights` 标为 `available`，但其 BSD-3-Clause 许可
+范围同样是源代码。权重可用不意味着所记录的许可自动涵盖权重。
+
+</details>
+
+## 适用范围
+
+本课没有运行四项资源，也没有计算结构。折叠模型的坐标集不是实验结构，对接姿态
+不是实测亲和力。序列搜索、折叠和复合物预测都不能确立关于目标或配体的生物学
+结论。各资源保留各自的许可，本课仅传达记录对每项源代码许可的解读。模板条款、
+权重的单独条款及经联合测试的固定版本流程仍未确立。阅读开放状态字段不等于执行
+资产或复现结果。
+
+## 来源
+
+以下目录记录最后核实于 2026-10-23。其仓库文件列表、README 和许可文件均于
+2026-10-23 查阅。记录中的访问、开放状态、许可范围和限制定义了本课的适用范围。
+
+- `tool-mmseqs2` 记录 [MMseqs2 仓库](https://github.com/soedinglab/MMseqs2)和 [LICENSE.md](https://raw.githubusercontent.com/soedinglab/MMseqs2/HEAD/LICENSE.md)。
+- `tool-colabfold` 记录 [ColabFold 仓库](https://github.com/sokrypton/ColabFold)和 [LICENSE](https://raw.githubusercontent.com/sokrypton/ColabFold/HEAD/LICENSE)。
+- `model-rosettafold-all-atom` 记录 [RoseTTAFold All-Atom 仓库](https://github.com/baker-laboratory/RoseTTAFold-All-Atom)和 [LICENSE](https://raw.githubusercontent.com/baker-laboratory/RoseTTAFold-All-Atom/HEAD/LICENSE)。
+- `model-dynamicbind` 记录 [DynamicBind 仓库](https://github.com/luwei0917/DynamicBind)和 [LICENSE](https://raw.githubusercontent.com/luwei0917/DynamicBind/HEAD/LICENSE)。
+
+原创课程文字采用 CC BY 4.0，链接来源保留各自的条款。
+
+Last reviewed: 2026-10-23.

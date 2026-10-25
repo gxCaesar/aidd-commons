@@ -1,0 +1,50 @@
+id: benchmark-plinder
+name: PLINDER
+kind: benchmark
+summary: Protein-ligand interaction dataset and evaluation resource that versions its data by month and publishes pre-set train, validation and test splits curated to minimise information leakage, with test subsets of novel proteins, pockets, interactions and ligands.
+canonical_url: https://www.plinder.sh
+identifiers:
+  - scheme: code
+    value: "the plinder package and dataset generator, plinder-org/plinder"
+    url: https://github.com/plinder-org/plinder
+  - scheme: dataset
+    value: "the monthly public release directory, currently the 2026-09 release"
+    url: https://cameo3d.org/plinder/PLINDER-2026-09/
+  - scheme: paper
+    value: "PLINDER: The Protein-Ligand Interactions Dataset and Evaluation Resource; Durairaj and twenty-five further authors, bioRxiv 2024, DOI 10.1101/2024.07.17.603955, with the ICML 2024 ML4LMS workshop version at OpenReview id 7UvbaTrNbP"
+    url: https://doi.org/10.1101/2024.07.17.603955
+stages: [evaluation, data-intake]
+modalities: [protein-ligand-complex, protein-pocket]
+tasks: [affinity-prediction, benchmark-evaluation, structure-retrieval]
+relations: []
+status: { value: active, evidence: [repository-readme] }
+access_level: { value: source_available, evidence: [repository-readme, site] }
+openness:
+  inference_code: { value: available, evidence: [repository-readme] }
+  training_code: { value: not_applicable, evidence: [repository-readme] }
+  weights: { value: not_applicable, evidence: [repository-readme] }
+  architecture: { value: not_applicable, evidence: [repository-readme] }
+  data_recipe: { value: available, evidence: [repository-readme] }
+  training_data: { value: available, evidence: [repository-readme] }
+  evaluation_code: { value: available, evidence: [repository-readme] }
+licenses:
+  - name: Apache-2.0
+    scope: "The Apache-2.0 licence the repository carries, which its README says was changed from GPL-2.0 because the copyleft requirement came only from PLIP and that dependency is gone. The grant covers the code and the dataset generator. The dataset itself is served as a public monthly release directory and the project site states no separate terms for it."
+    evidence: [repository-readme]
+evidence:
+  - id: repository-readme
+    url: https://raw.githubusercontent.com/plinder-org/plinder/main/README.md
+    label: The plinder repository README, read on 2026-10-24, which states the versioning scheme, the split construction, the download route and the licence change
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: site
+    url: https://www.plinder.sh
+    label: The PLINDER project site, read on 2026-10-24, which states the dataset's size and composition and the split design
+    supports: [name, kind, summary, caveats]
+caveats:
+  - "The site states the dataset as more than 400,000 protein-ligand interaction systems across more than 11,000 SCOP domains and more than 50,000 unique small molecules, with paired unbound and AlphaFold2 predicted structures and more than 500 annotations produced by an automated curation pipeline. The record carries these as the site's own statements."
+  - "The README states that the splits are pre-set and curated to minimise leakage, with test subsets of novel proteins, pockets, interactions and ligands, and it records the change from a similarity-based redundancy removal to one by protein pocket and ligand similarity. The record did not run the splits."
+  - "The project site states no licence or terms of use for the dataset, so the record's access level is source available rather than open: the code is openly licensed and the data are publicly downloadable, but the grant the reader relies on for the data is not the one the site states."
+  - "The dataset is versioned by the month stamp of the release, so a number reported against one release is a statement about that release and a reader who wants a comparable number has to name the version."
+  - "The dataset was introduced at a workshop challenge at NeurIPS in 2024 and its paper is a preprint, so the record carries the preprint identifier and the workshop venue rather than a journal citation."
+acknowledgements: []
+last_verified: "2026-10-24"

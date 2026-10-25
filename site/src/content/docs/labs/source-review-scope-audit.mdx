@@ -1,0 +1,63 @@
+---
+title: Audit source review and claim scope
+description: Measure how four Atlas records bind claims to source surfaces, versions, review dates and reviewed material.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+This laboratory serves `t01-source-review-scope`. You will distinguish an evidence entry's URL from a source name, locate entry-level version, date and reviewed material fields, and trace structured claims to entries in the same record. Read [Source review and claim scope](/learn/foundations/source-review-and-claim-scope/) first. Familiarity with YAML helps.
+
+Mode is fresh independent computation over a frozen protocol. The inputs are the committed Atlas catalogue and the independent reading. Use the project Python 3.11 environment and CPU. No network, download or accelerator is needed. The `check` and `show` commands write nothing. The exporter overwrites only the committed compact summary after validation passes.
+
+```bash
+.venv/bin/python labs/source_review_scope_audit/run_lab.py check
+.venv/bin/python labs/source_review_scope_audit/inspect_source_review_scope_audit.py show
+.venv/bin/python labs/source_review_scope_audit/inspect_source_review_scope_audit.py check
+.venv/bin/python labs/source_review_scope_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/source_review_scope_audit -q
+```
+
+## Source records and procedure
+
+The protocol names 4 records in order. The loader refuses an identifier the catalogue does not hold. For each evidence entry, a valid URL carries a page or repository surface. Dedicated `version`, `reviewed_on` and `reviewed_scope` fields carry the other parts. A date or document type in a label is reported as `named-in-text`. A generic project or repository name does not identify reviewed material. The record-level `last_verified` date does not date each entry. The `supports` list maps claims to an entry but does not identify the exact source material reviewed.
+
+The inspector examines status, access, the 7 openness dimensions and each licence as separate claims. It reports each reference, whether it resolves within that record and whether the referenced entry carries its own date. An `unverified` claim may lack a reference. Other claims require one. A resolving reference is an internal link, not confirmation of the linked page's content.
+
+## Examined records
+
+The table gives the committed computation on 2026-10-23. Surface, version, date and scope columns count dedicated fields carried by entries. Text-date counts labels that name a date without an entry-level date field. Text-scope counts labels that name a document type without reviewed material in its own field. Linked claims have at least one evidence reference. The inspector supplies each entry and reference separately.
+
+| Record | Entries | Surface | Version | Date | Text-date | Scope | Text-scope | Claims | Linked claims | Unresolved claims | `last_verified` |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| `db-rcsb-pdb` | 3 | 3 | 0 | 0 | 2 | 0 | 1 | 10 | 2 | 0 | 2026-10-23 |
+| `db-uniprot` | 2 | 2 | 0 | 0 | 1 | 0 | 1 | 9 | 0 | 0 | 2026-10-23 |
+| `tool-rdkit` | 3 | 3 | 0 | 0 | 2 | 0 | 1 | 10 | 8 | 0 | 2026-10-23 |
+| `model-boltz-2` | 4 | 4 | 0 | 0 | 4 | 0 | 2 | 10 | 5 | 0 | 2026-10-21 |
+| Total | 12 | 12 | 0 | 0 | 9 | 0 | 5 | 39 | 15 | 0 |  |
+
+## Totals and independent reading
+
+Across the 4 records, all 12 entries carry a surface. None carries a dedicated version, review date or reviewed material field. Nine labels name a date and 5 name a document type, so those parts are `named-in-text`. The other 7 labels do not name reviewed material. The counts for all four parts carried, date plus surface without version, and name only are each 0. Of 39 claims, 15 have references, 24 have none, 0 have an unresolved reference and 0 cite an entry with a dedicated review date.
+
+The project's comparison record and its independent reading now call this topic `assessed` with an `authored` run basis, and they agree. They disagreed when the laboratory did not exist: the record called the earlier topic coverage `worked` and the reading called the material `assessed`. The laboratory is what made the difference checkable, and the record caught up with the reading. This new laboratory has not itself been independently scored.
+
+## Routes beyond the audit
+
+| Route | Why the audit cannot measure it |
+| --- | --- |
+| `linked-page-content` | The audit reads the entry and never opens the linked page. |
+| `moving-url-revision` | A moving URL without an entry-level release or tag does not identify the viewed revision. |
+| `review-thoroughness` | The records do not measure the completeness of a human review. |
+| `licence-permission` | A recorded reference cannot settle legal permission for a particular use. |
+
+## Limits of the material
+
+The audit cannot say that a linked page says what its entry claims. A missing entry-level date means that the entry does not document when that source was reviewed for the claim. It does not establish that the claim is wrong, that nobody read the page, or that the entry is unreliable. A label and a record caveat can also describe review access differently. This field audit cannot reconcile them without opening the source. The frozen selection illustrates the rule and is not a representative sample of the whole Atlas.
+
+## Sources and terms
+
+The committed catalogue, the project's comparison record and the independent reading were read locally on 2026-10-23. Individual catalogue review dates appear in the table. The records name the [RCSB usage policy](https://www.rcsb.org/pages/usage-policy), [UniProt terms page](https://www.uniprot.org/help/license), [RDKit licence file](https://github.com/rdkit/rdkit/blob/master/license.txt) and [Boltz README](https://raw.githubusercontent.com/jwohlwend/boltz/main/README.md). Their linked content was not opened for this computation. The guide prose is CC BY 4.0 and original laboratory code is Apache-2.0. Last reviewed on 2026-10-23.

@@ -1,0 +1,50 @@
+id: benchmark-beyond-affinity
+name: Beyond Affinity
+kind: benchmark
+summary: Benchmark that compares fifteen molecule-generation methods across one-dimensional, two-dimensional and three-dimensional paradigms on pharmaceutical properties, docking affinity and pose consistency, and reports that the paradigms trade validity against affinity rather than ranking one above the other.
+canonical_url: https://arxiv.org/abs/2601.14283
+identifiers:
+  - scheme: paper
+    value: "Beyond Affinity: A Benchmark of 1D, 2D, and 3D Methods Reveals Critical Trade-offs in Structure-Based Drug Design; Zheng, Zhang, Tan, Chen, Lu, Zhang, Sun, Zitnik, Fu and Liang, arXiv 2601.14283, submitted 13 January 2026"
+    url: https://arxiv.org/abs/2601.14283
+  - scheme: code
+    value: "the benchmark code, zkysfls/2025-sbdd-benchmark"
+    url: https://github.com/zkysfls/2025-sbdd-benchmark
+stages: [evaluation, molecular-generation]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [molecular-generation, docking, benchmark-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [repository] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: not_applicable, evidence: [repository] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: CC BY 4.0
+    scope: "The Creative Commons Attribution 4.0 licence arXiv records for the article itself. It covers the article, not the code: the benchmark repository carries no licence file, so the code is used here without a stated grant."
+    evidence: [paper-record]
+evidence:
+  - id: paper-record
+    url: https://arxiv.org/abs/2601.14283
+    label: The arXiv record of the paper, read on 2026-10-24, with its title, author list and submission date
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: paper-html
+    url: https://arxiv.org/html/2601.14283v1
+    label: The article's own HTML, read on 2026-10-24, which names the released code repository
+    supports: [identifiers, caveats]
+  - id: repository
+    url: https://github.com/zkysfls/2025-sbdd-benchmark
+    label: The benchmark code repository, which is public and carries no licence file, read on 2026-10-24
+    supports: [identifiers, caveats]
+caveats:
+  - "The paper's own reported pattern is that three-dimensional methods generally produce stronger affinities but may have weaker chemical validity or pose consistency, that one-dimensional methods are dependable on conventional molecular metrics but seldom reach the best affinities, and that two-dimensional methods offer a middle ground. The paper's own argument is that affinity is not a complete success criterion, because a favourable binding score can coexist with invalid chemistry or an inaccurate docking pose."
+  - "The affinity the benchmark measures is a docking oracle score rather than an experimental measurement, so the ranking inherits the known biases of docking scores. The record carries the paper's framing and does not turn the oracle into a measurement."
+  - "The code repository carries no licence file, so the code is openly readable without a stated grant. The repository was created in July 2025 and last updated in August 2025, while the article is a January 2026 preprint, so the record notes the two dates rather than assuming they describe the same artefact."
+  - "The article states that all the code used for the benchmark is available through that repository. The record did not run it."
+acknowledgements: []
+last_verified: "2026-10-24"

@@ -1,0 +1,514 @@
+---
+title: The ADMET and DMPK tool frontier
+description: Read the open ADMET and DMPK tooling as dated evidence, and see what each artefact offers, what its licence permits, and where the records stop.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="admet-pk/admet-and-dmpk-tool-frontier" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+The track already teaches what exposure, metabolism, and safety mean. This
+reading moves one step along the same boundary, to the open tooling that turns
+those concepts into predictions, and to what each released artefact actually
+makes available. Read [From metabolism to safety decisions](/learn/admet-pk/metabolism-to-safety/)
+and [Choosing ADMET and PK resources](/learn/admet-pk/admet-resource-guide/)
+first. Neither of them is repeated here, and nothing below supplies dosing
+advice, a regulatory interpretation, or a laboratory protocol.
+
+After this lesson you should be able to:
+
+1. state the input and output contract of each tool in the family;
+2. say what the records do and do not establish about representation,
+   objective, training, and inference;
+3. read the seven openness dimensions of a record and say which one a given
+   claim depends on;
+4. separate a licence question from an access question and from a scientific
+   question;
+5. say why a published endpoint count does not establish that a prediction was
+   made on a compound like yours; and
+6. say what a matched comparison would need before two of these tools could be
+   placed next to each other.
+
+The work is reading. No tool in this lesson was installed, run, or reproduced,
+and no prediction was produced. The four software and platform records were
+last verified on 2026-10-21, the Therapeutics Data Commons record on
+2026-09-04, and the Contrastive KERMT record on 2026-10-23. Every number on
+this page is a number those records state.
+
+## Task and input-output contract
+
+Six artefacts sit in this family. They differ in what they take in, what they
+return, and what they leave to the reader.
+
+| Artefact | What it operates | Input | Output |
+| --- | --- | --- | --- |
+| ADMET-AI | A small molecule and a set of ADME endpoints | A molecule structure | Predicted ADME endpoint values |
+| ADMETlab | A small molecule and a catalogue of ADME and toxicity endpoints | A molecule structure | Predicted physicochemical, ADME and toxicity values, and toxicophore rule calls |
+| Polaris | A dataset, a benchmark split and a method | A method and a benchmark | A score against a split that somebody else curated |
+| Therapeutics Data Commons | Datasets, tasks and benchmarks | A dataset name | The data and the split, not a prediction |
+| OpenADMET Models | A dataset, a representation and a training routine | A dataset and a training routine | A predictor that the user still has to evaluate |
+| Contrastive KERMT | A pretrained molecular representation for ADMET and DMPK tasks | Molecules and the user's labelled endpoint data for fine-tuning | A backbone to fine-tune, not a ready-made endpoint prediction |
+
+[ADMET-AI](https://github.com/swansonk14/admet_ai) is a Python package, a
+command-line tool, and a hosted web service that predicts ADME endpoints with
+Chemprop models trained on Therapeutics Data Commons (TDC) datasets. A
+separate archive on Zenodo holds the version 1 Chemprop and Chemprop-RDKit
+models, the TDC ADMET data, RDKit features, and five-split benchmark files.
+
+[ADMETlab](https://admetlab3.scbdd.com/) is a web platform that predicts
+physicochemical, ADME, and toxicity properties of small molecules. The hosted
+ADMETlab 3.0 service is built on DMPNN models, which the site describes as the
+Directed Message Passing Neural Network framework. A separate repository
+distributes the earlier model archives described in the 2018 paper together with
+the code needed to run them locally, and that repository's README does not
+state that it implements the 3.0 release served by the site. The local
+archives and the service are therefore two different artefacts, and the local
+ones are not the service's models.
+
+[Polaris](https://github.com/polaris-hub/polaris) is a hosted platform for
+sharing drug-discovery datasets and benchmarks, with a Python client library
+that downloads datasets, loads benchmark splits, and evaluates a method against
+a benchmark.
+
+A related dataset, [ADME-Fang-v1](https://polarishub.io/datasets/biogen/adme-fang-v1), is Biogen's curated release of laboratory ADME measurements from the [Fang et al. industrial validation study](https://doi.org/10.1021/acs.jcim.3c00160). The dataset page reports 3,521 datapoints in its summary and 3,516 molecules after curation without reconciling those figures. Its measurements came from one laboratory group under consistent conditions over 20 months, not from multiple sites. The page states no train, validation or test partition, and the published [curation notebook](https://raw.githubusercontent.com/polaris-hub/polaris-recipes/main/org-Biogen/fang2023_ADME/01_polaris_adme-fang_data_curation.ipynb) configures molecule curation, distribution inspection, outlier detection and stereoisomer activity-shift detection without defining a benchmark split. The dataset is openly downloadable under its stated CC BY 4.0 licence, but no opened page declares it a training release or a split for a specific model, so its training-data dimension remains unverified.
+
+[Therapeutics Data Commons](https://tdcommons.ai/) is the official collection
+of therapeutic machine-learning tasks, datasets, and benchmarks. It supplies
+the material rather than a prediction, and it is the training source named in
+ADMET-AI's README.
+
+[OpenADMET Models](https://github.com/OpenADMET/openadmet-models) is a
+collection of model implementations and training routines for building, testing,
+and prototyping ADMET predictors.
+
+[Contrastive KERMT](/atlas/model-kermt/) is NVIDIA's pretrained graph-transformer
+backbone for molecular representation learning. Its [model card](https://huggingface.co/nvidia/NV-KERMT-70M-v2)
+says users are expected to fine-tune it on their own labelled datasets for
+specific ADMET endpoints. The record carries no ADMET prediction from this model.
+
+The boundary that separates them is simple to state and easy to lose. A
+hosted service returns a value for your molecule. A benchmark returns a score
+for your method on someone else's split. A toolkit supplies routines for
+building a predictor. A dataset returns rows. A pretrained backbone supplies
+representations that still need endpoint-specific fine-tuning. Only a service's
+returned value here is a prediction about a compound, and no prediction is a
+measurement.
+
+## Representation, objective, training and inference
+
+The older tool records give a thin answer to this question. Contrastive KERMT's
+model record describes its representation and pretraining objective more directly.
+
+**Representation.** Contrastive KERMT is a graph transformer with 70.6 million
+parameters, derived from GROVER and KERMT. The other explicit representation
+statement is a difference between two releases of the same package, because
+the ADMET-AI record says that version 2 was retrained from scratch with
+Chemprop v2 and without RDKit fingerprints. The version 1 models
+in the archive were built with those fingerprints, and the archive ships the
+corresponding features. The ADMETlab record names a framework rather than a
+representation, and the OpenADMET Models record marks architecture as
+available without describing it inside the record. The TDC record describes no
+representation at all.
+
+**Objective.** Contrastive KERMT was pretrained without labels on one joint
+objective combining SMILES reconstruction, in-batch contrastive discrimination,
+and chemistry-specific self-supervision. The other records name endpoints but
+do not state a training objective. An endpoint is a target rather than an
+objective; those records do not say how a loss was formed.
+
+**Training.** The training stories are the most concrete part of the family, and
+they differ in kind. ADMET-AI's README names the TDC ADMET datasets as the
+training source, its archive ships that data with the split files, and its
+package ships a scripts directory that the record treats as the evidence for
+training code, data recipe, and evaluation code. ADMETlab states that its
+models are trained on an internal database of 0.37M entries spanning 77
+endpoints, and it publishes neither that database, the training code, nor the
+model definitions. OpenADMET Models supplies the training routine and leaves
+the data recipe, the training data, and the endpoint-specific provenance
+unestablished. Contrastive KERMT's card describes 100 epochs of unsupervised
+pretraining over about 11.1 million unique canonical SMILES. The pool starts
+with ZINC15 and ChEMBL and adds Biogen ADMET, ExpansionRX, and ChEMBL-MT. It was
+deduplicated by canonical SMILES and scaffold-balanced for the train and
+validation split. The record did not inspect the underlying corpora, and the
+pretraining used no dedicated testing dataset.
+
+**Inference.** Here the family separates cleanly. ADMET-AI gives the reader a
+package, a command-line tool, and a hosted service. OpenADMET Models gives
+inference code and a training routine. Polaris gives evaluation code that
+scores a method against a split. ADMETlab gives a hosted service, and the
+local archives belong to an earlier release whose own README does not claim the
+3.0 behaviour. Contrastive KERMT supplies code and weights for a pretrained
+backbone rather than a ready-made ADMET predictor. The decoder's recommended
+maximum SMILES length is 512 tokens; longer structures are to be truncated or
+omitted. The card describes Linux with NVIDIA GPUs as the deployment target.
+
+One consequence runs through all of it. The ADMET-AI record states that the
+version 2 predictions do not exactly match the version 1 models in the archive
+or in the published paper, so a reader who installs the package and a reader
+who downloads the archive are running two different model generations under two
+different licences.
+
+## Openness and licence posture
+
+Every record carries the same seven openness dimensions, and each dimension
+carries its own evidence. A cell that reads unverified is a statement that no
+claim is made, not a statement that the artefact is closed. A cell that reads
+not applicable is a statement that the dimension does not apply to that
+artefact at all.
+
+| Dimension | [ADMET-AI](/atlas/tool-admet-ai/) | [ADMETlab](/atlas/tool-admetlab/) | [Polaris](/atlas/tool-polaris/) | [TDC](/atlas/benchmark-tdc/) | [OpenADMET Models](/atlas/tool-openadmet-models/) | [Contrastive KERMT](/atlas/model-kermt/) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Access level | open source | source available | open source | unverified | open source | open source |
+| Inference code | available | available | available | unverified | available | available |
+| Training code | available | unverified | not applicable | unverified | available | available |
+| Weights | available | available | unverified | unverified | unverified | available |
+| Architecture | available | unverified | unverified | unverified | available | available |
+| Data recipe | available | unverified | unverified | unverified | unverified | available |
+| Training data | available | unverified | unverified | unverified | unverified | available |
+| Evaluation code | available | unverified | available | unverified | unverified | unverified |
+
+ADMET-AI is the only record in the family with all seven dimensions
+established. The MIT licence file in the repository covers the package
+source code, the version 2 Chemprop checkpoints bundled with the package, and
+the packaged CSV data files, and it states no further conditions. A second
+licence, on the Zenodo record, covers the deposited data and model archives,
+which hold the version 1 Chemprop and Chemprop-RDKit models, the TDC ADMET
+data, the RDKit features, and the benchmark-group splits, and it requires
+attribution to the record creators. The bundled version 2 checkpoints carry no
+licence statement beyond the repository's MIT file, and the archive's licence
+does not extend to them.
+
+Contrastive KERMT's card states that the source code is under Apache 2.0 and
+the weights under the NVIDIA Open Model License. It says the model is ready for
+commercial or non-commercial use. The record did not inspect the linked licence
+terms page, so the detailed terms for the weights are not established here.
+Its evaluation-code dimension remains unverified, despite the other six
+dimensions being marked available.
+
+The TDC column is the one to read twice. That record leaves its status, its
+access level, and all seven openness dimensions unverified, and it lists no
+licence at all. It is also the training source named in ADMET-AI's README, so
+the widest-openness record in the family leans on a record that claims
+nothing. The two facts are not in conflict, because ADMET-AI's own record
+establishes the training data separately, on the strength of the archive that
+ships it. What the TDC record leaves open is the collection's own access and
+licence position, which is a different question from the archive's.
+
+Polaris answers the same question in the other direction. Its client library is
+open source and its training-code dimension is not applicable, because a client
+that downloads a split and scores a method does not train models. The weights
+dimension stays unverified because the Hub's model listing shows six models
+with no weight or checkpoint download and no model-specific licence.
+
+The licence questions in this family are not one question, and two of them fail
+in ways a reader has to know about.
+
+The ADMETlab repository carries a GNU Affero General Public License v3 in its
+LICENSE file, which is the only licence file in that repository, and the README
+of the same repository names a New BSD licence for the software and its
+associated data and documents. The record keeps both statements and treats
+neither as controlling, so the effective terms for reuse are unverified. The
+conflict is recorded rather than settled, and a reader has to ask the authors
+which statement governs.
+
+The 3.0 service is a separate question again, and it is the harder one. The
+site states no licence for the prediction service, and its only LICENSE link
+points to a GitHub repository path that does not exist and returns HTTP 404.
+The terms under which a service's output may be kept, published, or
+redistributed are therefore unverified, and no amount of reading the
+repository's licence file answers them.
+
+The OpenADMET Models licence has the same shape of problem. The file states
+Apache License, Version 2.0 with sections 1 to 9 complete and the standard
+Appendix boilerplate truncated, and the Appendix carries the project notice
+"Copyright 2025 Open Molecular Software Foundation" where the standard notice
+would normally sit. The README of the same repository states that the library
+is made available under the MIT open source licence. The record follows the
+licence file and preserves the conflict. That file's scope covers the
+repository source code and does not extend to any dataset, model, or dependency
+the project uses.
+
+Polaris separates the two cleanly, which makes it the clearest case in the
+family. The Apache-2.0 licence covers the source code of the Python client
+distributed on PyPI as polaris-lib and on conda-forge as polaris, and it covers
+that client code only. It grants no right to use, redistribute, or re-host the
+hosted Polaris Platform or the datasets, benchmarks, and models that the
+platform serves. The hosted service is operated by Valence Labs under the
+Polaris Platform Agreement, last updated on 3 April 2024, which licenses the
+documentation on a revocable, non-exclusive, non-transferable, and
+non-sublicensable basis limited to using the platform, prohibits
+sub-licensing, selling, renting, lending, leasing, or distributing the platform
+and its intellectual property, and prohibits use for building a similar or
+competitive product or service. A dataset uploaded by another user is governed
+by the licence stated with that dataset, which without one defaults to a right
+to use, display, and perform it through the platform and to reproduce it on the
+platform as permitted by Valence Labs.
+
+## The comparison the records do not support
+
+The strongest relevant comparison under a matched protocol is not available in
+these records, and the reason is not that the tools are hard to compare. It is
+that the comparison was never specified.
+
+ADMET-AI's archive ships five-split benchmark files, and its README names the
+TDC ADMET datasets as the training source. The opened pages do not document
+the curation, filtering, or split rules used to build the released benchmark
+splits. A split without its construction rules cannot be re-derived, and two
+scores on two such splits are not a comparison.
+
+Polaris supplies the machinery for a matched comparison. Its client library
+loads benchmark splits and evaluates a method against a benchmark, and the Hub
+lists datasets, benchmarks, competitions, and models. The Hub's own curation
+guidance is incomplete, because the small-molecule guidelines page marks the
+Data Curation paper as Planned and the Splitting Methods paper as In Progress,
+so no published curation or split rule is available. The models page lists six
+models but shows no weight or checkpoint download and no model-specific
+licence, so the weights dimension stays unverified and those models cannot be
+run from the Hub as it stands.
+
+Inside ADMET-AI there is one comparison the record makes on its own. The
+version 2 models do not exactly match the version 1 models in the archive or in
+the published paper. That is a measured statement about a released artefact, and
+it is the only internal comparison the family offers.
+
+Contrastive KERMT's card reports no numerical benchmark, and its unsupervised
+pretraining used no dedicated testing dataset. Its scaffold-balanced train and
+validation split is a pretraining split, not an endpoint evaluation. The record
+therefore supplies neither an ADMET prediction nor a ranking against ADMET-AI,
+ADMETlab, Polaris, or Therapeutics Data Commons.
+
+A reader who wants a comparison has to supply the protocol that the records do
+not. It would need one split with its construction rules published, one
+endpoint definition with units, one metric, the same weights on both sides, and
+a stated domain of applicability. A ranking of the family without that is an
+invention rather than a reading.
+
+## Entities, splits, metrics and resources
+
+The entities underneath these tools are the entities of the track. A training
+compound, a labelled endpoint with a unit, a split, a metric, and a decision
+threshold are what a prediction is about.
+
+ADMET-AI's record supplies model checkpoints, data, and split files. ADMETlab's
+record supplies an internal database of 0.37M entries spanning 77 endpoints
+that it does not publish. Polaris's record supplies datasets and benchmarks
+governed by third-party licences. The TDC record supplies a collection whose
+access, licence, and seven openness dimensions are all unverified. Contrastive
+KERMT's record names an unlabelled pretraining pool of about 11.1 million unique
+canonical SMILES, but no endpoint labels or predictions from its backbone.
+That is the entity picture a reader has to work with.
+
+ADMET-AI names five-split benchmark files without their construction rules or
+an attached metric. Contrastive KERMT names a scaffold-balanced train and
+validation split for label-free pretraining, with no dedicated test set and no
+numerical benchmark. Neither supplies a matched endpoint metric for this family.
+
+The resources a reader can reach are the project repositories, the Zenodo
+archive, the hosted services, the Hub listings, Contrastive KERMT's model card,
+weights and [code repository](https://github.com/NVIDIA-BioNeMo/KERMT), and the two ADMETlab papers
+alongside the ADMET-AI paper. The distinction that governs all of them is the
+one the record keeps making. A published benchmark split is not a training set
+for the next model, and a catalogue of endpoints is not evidence that the
+catalogue was filled from your chemical space.
+
+## What was inspected and what was run
+
+Nothing was run. No package was installed, no service was called, no model was
+loaded, no weight was downloaded, and no prediction was produced for this
+lesson. Every statement above is read from the six Atlas records and from the
+pages those records cite.
+
+Each record names the pages that support it, including the licence files, the
+README files, the archived model and data listings, the platform terms, and
+the dated commit histories that make the older maintenance claims checkable,
+and the Contrastive KERMT model card reviewed on 2026-10-23.
+
+ADMET-AI's most recent commit shown is dated 22 February 2026, where the
+package version was bumped to 2.0.1. The Polaris client library's most recent
+commit shown is dated 30 July 2025, while the hosted service is live and lists
+datasets, benchmarks, competitions, and models. The ADMETlab repository's most
+recent commit shown is 20 June 2024, and the site's last stated update is
+31 January 2024. The OpenADMET Models repository's most recent commit shown is
+13 October 2026, and the release page lists v0.2.0 as the latest tag.
+
+## Worked case
+
+The following is a **constructed teaching case**. It audits sentences against
+records. It is not an executed session, a benchmark run, or a legal opinion.
+
+A team wants to write one internal note about the open tooling available for
+its analogue series. Nothing has been run. The note would contain six
+sentences.
+
+| Sentence the note would contain | Verdict | What the record says |
+| --- | --- | --- |
+| ADMET-AI predicts ADME endpoints with Chemprop models trained on Therapeutics Data Commons datasets, and releases inference code, training code, and weights. | supported | All seven openness dimensions are established. The MIT file covers the package source, the bundled version 2 checkpoints, and the packaged CSV data files, and the archive on Zenodo holds the version 1 models, the data, the features, and the split files under a second licence that requires attribution. |
+| ADMETlab 3.0 has the widest endpoint coverage in the family, at 34 ADME endpoints, 36 toxicity endpoints, and 8 toxicophore rules. | not supported | The site reports those three figures and separately reports that the predictable endpoint count rose from 88 to 119 while the underlying database spans 77 endpoints, and the page does not reconcile them. A coverage ranking between tools is also a comparison the records do not carry. |
+| The ADMETlab model archives and the service output can be redistributed under one open licence. | not supported | The repository's terms are contested between the AGPL-3.0 LICENSE file and the New BSD licence named in the README. The 3.0 service states no licence, and its only LICENSE link returns HTTP 404. |
+| Polaris can benchmark our model on a published split and place it beside the models listed on the Hub. | not supported | The client library can load splits and evaluate a method, but the Hub's curation and split rules are unpublished, and the models page lists six models with no weight or checkpoint download and no model-specific licence. |
+| The Therapeutics Data Commons datasets behind our models are openly licensed and reproducible. | not supported | That record leaves its status, its access level, all seven openness dimensions, and every licence field unverified, and it records no licence at all. ADMET-AI's own record establishes the training data separately, because the archive ships it, and the curation, filtering, and split rules behind the released benchmark splits are not documented. |
+| Contrastive KERMT directly predicts ADMET endpoints from an input molecule. | not supported | The record describes a pretrained backbone to fine-tune on the user's labelled endpoint data. It carries no prediction and no numerical benchmark. |
+
+The first sentence is the only one the records carry. The second is the mistake
+this lesson exists to prevent, because a wide endpoint count says nothing
+about whether a prediction was made on a compound like yours. ADMETlab's
+training database is not published, so the region of chemical space where its
+predictions hold cannot be inspected, and the site does not reconcile its own
+endpoint figures. The third and fourth sentences confuse permission with
+capability. The fifth states a licence the record does not contain. The sixth
+mistakes a representation backbone for an endpoint predictor.
+
+## What this material does not show
+
+Nothing here establishes that any of these tools predicts an endpoint
+accurately for any compound, and nothing here compares them. The records carry
+no matched protocol, no shared split, and no common metric, so a ranking of
+the family would be an invention rather than a finding.
+
+The records also do not establish that a prediction from one of these tools
+transfers to a compound like yours. A published endpoint count is a catalogue
+of what a service can be asked for. The domain of applicability lives in the
+training data. ADMETlab's is unpublished, ADMET-AI's is released without its
+curation and split rules, and the TDC record claims none. OpenADMET Models'
+data are outside the scope of the licence that covers its code. Contrastive
+KERMT's named pretraining pool was not inspected as files, contains no labelled
+endpoint evaluation in this record, and cannot establish ADMET accuracy.
+
+Contrastive KERMT states a representation and a pretraining objective. The
+other records do not state a training objective, and their representation
+detail does not go beyond the difference between the two ADMET-AI releases.
+The KERMT card also cautions that predictions are statistical estimates and
+must not substitute for experimental measurement in safety-critical decisions.
+
+Currency is bounded as well. The older software records state the date of the
+most recent commit they saw, and the two ADMETlab dates, 31 January 2024 for
+the site and 20 June 2024 for the repository, are the ones that most limit what can be said
+about that service. A released artefact is a dated statement about an interface
+and a licence, not a standing property of a scientific field.
+
+Finally, this reading is an inspection and not an execution. No model was run,
+no weight was downloaded, no endpoint was predicted, and no benchmark score was
+reproduced. A reader who wants a number from these tools has to run them under
+a protocol they declare, and this page does not supply that protocol.
+
+## Independent exercise
+
+A project writes the following sentence for a report.
+
+> We ranked our analogue series on ADMET risk using ADMETlab 3.0, which reports
+> 34 ADME endpoints, 36 toxicity endpoints, and 8 toxicophore rules, and we
+> checked the result against models listed on the Polaris Hub. We plan to
+> publish the note and the service output under an open licence.
+
+Answer the following using only the Atlas records for this family.
+
+1. Separate the sentences in that note into a scientific claim, a capability
+   claim, and a permission claim, and say which of the three the records
+   support.
+2. Say what the endpoint counts do establish and what they cannot establish
+   about a compound like the one in the note.
+3. Name the two licence questions the note has to answer before anything is
+   published, and say which record answers each one.
+4. Say what a matched comparison between the ADMETlab service and the Hub
+   models would require, and why the records do not supply it.
+5. Rewrite the note in one sentence that the records support.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+1. The scientific claim is that the ranking reflects ADMET risk, and the
+   records support none of it. No model was run under a declared protocol, the
+   ADMETlab training database of 0.37M entries is not published, and the
+   domain in which the service's predictions hold cannot be inspected, so the
+   ranking has no stated scope. The capability claim is that ADMETlab reports
+   the listed endpoint counts and that the Hub can be used to check a result
+   against listed models. The service does report those figures, and the client
+   library can load benchmark splits and evaluate a method against a benchmark,
+   but the Hub's curation and split rules are unpublished, the models page
+   lists six models with no weight or checkpoint download and no model-specific
+   licence, and the site does not reconcile its three endpoint figures with the
+   88 to 119 figure or the 77-endpoint database. The permission claim is that
+   the service output and the note can be published under an open licence, and
+   the records do not support it. The 3.0 site states no licence for the
+   prediction service and its only LICENSE link returns HTTP 404, so the terms
+   for keeping and redistributing service output are unverified. The
+   repository's own terms are contested between the AGPL-3.0 LICENSE file and
+   the New BSD licence named in the README. Polaris's Apache-2.0 licence
+   covers the client code only, while the Platform Agreement restricts
+   redistribution of the platform and use for a competing service.
+2. The endpoint counts establish what the service can be asked to return. They
+   are a catalogue of output slots, and they say nothing about whether the
+   predictions were made on compounds like the one in the note. That
+   information lives in the training data, which the site does not publish, and
+   in the split rules, which the site does not document. A service that
+   returns 34 ADME and 36 toxicity endpoints can be applied to a compound
+   outside its training neighbourhood without any signal that this has
+   happened.
+3. Two questions, answered by two different records. The service-output
+   question is answered by the ADMETlab 3.0 site, which is the only place that
+   could state the terms of the prediction service, and it does not state them,
+   because its only licence link points to a path that does not exist. The
+   model-archive question is answered by the ADMETlab repository, whose
+   LICENSE file and README disagree, so the effective terms for reuse are
+   unverified there as well. A separate question about the Hub's models stays
+   open, because the model listing shows no download and no model-specific
+   licence.
+4. A matched comparison needs one protocol applied to both sides. It would need
+   the same split with its construction rules published, the same endpoint
+   definition with units, the same metric, the same weights on both sides, and
+   a stated domain of applicability. The records supply none of that. The
+   ADMETlab service publishes neither its training database of 0.37M entries
+   nor its model definitions, the Hub's curation guidance is marked Planned
+   and In Progress, the Hub's model listing provides no checkpoints, the
+   Therapeutics Data Commons record carries no licence and no openness claim,
+   and ADMET-AI's own record states that its version 2 models do not exactly
+   match its version 1 models or the published paper. Ranking the family would
+   be an invention.
+5. A supportable sentence is this. We inspected the records for the six artefacts
+   in this family and their licence files, READMEs, archives, platform terms
+   and commit histories. ADMETlab 3.0 publishes a catalogue of 34 ADME
+   endpoints, 36 toxicity endpoints and 8 toxicophore rules, trained on an
+   internal database that it does not publish, and the site does not reconcile
+   those figures with the 88 to 119 figure or the 77-endpoint database it also
+   reports. The service states no licence and its only licence link does not
+   resolve, and the repository's LICENSE file and README name different
+   licences, so the terms for the archives and for the service output are
+   unverified. The Polaris client can load splits and evaluate a method, but
+   the Hub's curation rules are unpublished and its model listing provides no
+   checkpoints. No model was run, no endpoint was predicted, and no ranking or
+   benchmark score is claimed.
+
+</details>
+
+## Sources and attribution
+
+<div data-case-sources>
+
+- [ADMET-AI repository](https://github.com/swansonk14/admet_ai) and its [MIT licence file](https://raw.githubusercontent.com/swansonk14/admet_ai/main/LICENSE.txt)
+- [ADMET-AI data and models archive on Zenodo, record 10372419, version v1.0.0](https://zenodo.org/records/10372419)
+- [ADMET-AI paper, Bioinformatics 40(7), btae416](https://doi.org/10.1093/bioinformatics/btae416)
+- [ADMETlab 3.0 service home page](https://admetlab3.scbdd.com/) and its [licence link target](https://github.com/antwiser/ADMETlab-3.0/blob/main/LICENSE)
+- [ADMETlab model archive repository](https://github.com/ifyoungnet/ADMETlab) and its [LICENSE file](https://raw.githubusercontent.com/ifyoungnet/ADMETlab/master/LICENSE)
+- [ADMETlab 2.0 paper, Nucleic Acids Research 49(W5), W5-W14, 2021](https://doi.org/10.1093/nar/gkab255)
+- [ADMETlab paper, Journal of Cheminformatics 10, 29, 2018](https://doi.org/10.1186/s13321-018-0283-x)
+- [Polaris repository](https://github.com/polaris-hub/polaris) and its [Apache-2.0 licence file](https://raw.githubusercontent.com/polaris-hub/polaris/main/LICENSE)
+- [Polaris Python client documentation](https://polaris-hub.github.io/polaris/stable/)
+- [Polaris Hub](https://polarishub.io/), its [model listing](https://polarishub.io/models), its [small-molecule curation guidelines](https://polarishub.io/guidelines/small-molecules), and the [Polaris Platform Agreement terms of use](https://polarishub.io/legal/terms-of-use)
+- [Therapeutics Data Commons](https://tdcommons.ai/) and its [quick start](https://tdcommons.ai/start/)
+- [OpenADMET Models repository](https://github.com/OpenADMET/openadmet-models) and its [LICENSE file](https://raw.githubusercontent.com/OpenADMET/openadmet-models/main/LICENSE)
+- [Contrastive KERMT model card and weights](https://huggingface.co/nvidia/NV-KERMT-70M-v2) and its [code repository](https://github.com/NVIDIA-BioNeMo/KERMT)
+
+</div>
+
+The four software and platform records were last verified on 2026-10-21, and
+the Therapeutics Data Commons record on 2026-09-04, and the Contrastive KERMT
+record on 2026-10-23. The worked case and the
+exercise are constructed. Nothing on this page was run, reproduced, or
+re-implemented, and no prediction claim is made. Original lesson prose is
+CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-10-23.

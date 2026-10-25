@@ -1,0 +1,174 @@
+{
+  "chembl_bound_measurements": 516,
+  "chembl_standard_type_counts": {
+    "AC50": 395,
+    "EC50": 182,
+    "IC50": 393,
+    "Kd": 7,
+    "Ki": 27
+  },
+  "computed_on": "2026-10-23",
+  "licensed_claim_counts": {
+    "binding_bound": 10,
+    "binding_point": 22,
+    "clinical_outcome": 0,
+    "endpoint_bound": 926,
+    "endpoint_point": 1320,
+    "functional_response": 1204
+  },
+  "limit_statement": "The audit does not turn a measurement into a response or a response into an outcome. A record without a clinical endpoint says nothing about a clinical result.",
+  "protocol_id": "chembl37-pubchem-functional-validation-v1",
+  "pubchem_assays": {
+    "1277": {
+      "bound_values": 35,
+      "endpoint_counts": {
+        "AC50": 0,
+        "EC50": 0,
+        "IC50": 63,
+        "Ki": 0,
+        "MIC": 0
+      },
+      "equality_values": 28,
+      "qualifier_row_counts": {
+        "<": 4,
+        "=": 28,
+        ">": 31
+      },
+      "stated_qualifier_values": 63,
+      "total_records": 63,
+      "unstated_relation_values": 0
+    },
+    "439": {
+      "bound_values": 14,
+      "endpoint_counts": {
+        "AC50": 0,
+        "EC50": 69,
+        "IC50": 0,
+        "Ki": 0,
+        "MIC": 0
+      },
+      "equality_values": 55,
+      "qualifier_row_counts": {
+        "=": 55,
+        ">": 14
+      },
+      "stated_qualifier_values": 69,
+      "total_records": 69,
+      "unstated_relation_values": 0
+    },
+    "464": {
+      "bound_values": 115,
+      "endpoint_counts": {
+        "AC50": 706,
+        "EC50": 0,
+        "IC50": 0,
+        "Ki": 0,
+        "MIC": 0
+      },
+      "equality_values": 591,
+      "qualifier_row_counts": {
+        "=": 591,
+        ">": 115
+      },
+      "stated_qualifier_values": 706,
+      "total_records": 706,
+      "unstated_relation_values": 0
+    },
+    "519": {
+      "bound_values": 356,
+      "endpoint_counts": {
+        "AC50": 0,
+        "EC50": 0,
+        "IC50": 272,
+        "Ki": 272,
+        "MIC": 0
+      },
+      "equality_values": 188,
+      "qualifier_row_counts": {
+        "=": 94,
+        ">": 178
+      },
+      "stated_qualifier_values": 544,
+      "total_records": 272,
+      "unstated_relation_values": 0
+    },
+    "548": {
+      "bound_values": 30,
+      "endpoint_counts": {
+        "AC50": 0,
+        "EC50": 0,
+        "IC50": 94,
+        "Ki": 0,
+        "MIC": 0
+      },
+      "equality_values": 64,
+      "qualifier_row_counts": {
+        "=": 64,
+        ">": 30
+      },
+      "stated_qualifier_values": 94,
+      "total_records": 94,
+      "unstated_relation_values": 0
+    },
+    "691": {
+      "bound_values": 38,
+      "endpoint_counts": {
+        "AC50": 0,
+        "EC50": 0,
+        "IC50": 0,
+        "Ki": 0,
+        "MIC": 53
+      },
+      "equality_values": 0,
+      "qualifier_row_counts": {
+        ">": 38,
+        "unstated": 15
+      },
+      "stated_qualifier_values": 38,
+      "total_records": 53,
+      "unstated_relation_values": 15
+    }
+  },
+  "records_licensing_no_claim": 15,
+  "rule_statement": "A point with a stated endpoint type and unit licenses its reported value. A stated relation bound licenses only a bound. A numeric concentration series with a stated response definition licenses an observed response in that assay. A direct binding claim additionally requires a binding assay and Kd or Ki. No record here licenses a clinical outcome.",
+  "schema_version": "aidd-commons.functional-validation-audit-summary.v1",
+  "software": {
+    "python": "3.11.15",
+    "rdkit": "2025.09.6"
+  },
+  "sources": {
+    "chembl37": {
+      "release": "ChEMBL_37",
+      "release_date": "2026-05-01"
+    },
+    "pubchem_bioassay": {
+      "archive": "PubChem BioAssay",
+      "read_on": "2026-10-21"
+    }
+  },
+  "tables": {
+    "chembl37": {
+      "kind_counts": {
+        "bound": 516,
+        "concentration_response_table": 0,
+        "no_licensed_claim": 0,
+        "point_measurement": 488
+      },
+      "total_records": 1004
+    },
+    "pubchem_bioassay": {
+      "kind_counts": {
+        "bound": 38,
+        "concentration_response_table": 1204,
+        "no_licensed_claim": 15,
+        "point_measurement": 0
+      },
+      "total_records": 1257
+    }
+  },
+  "unmeasurable_routes": {
+    "binding_to_response_transfer": "The snapshots do not pair a direct binding measurement with a response record for the same entity under a matched experiment.",
+    "clinical_outcome": "Neither snapshot carries a clinical endpoint or an outcome observation.",
+    "response_to_clinical_transfer": "Neither snapshot links a response record to a clinical outcome record."
+  }
+}

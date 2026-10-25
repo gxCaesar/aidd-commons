@@ -1,0 +1,67 @@
+id: benchmark-guacamol
+name: GuacaMol
+kind: benchmark
+summary: Benchmark suite with separate distribution-learning and goal-directed tasks for molecular generation.
+canonical_url: https://github.com/BenevolentAI/guacamol
+identifiers:
+  - scheme: paper
+    value: "GuacaMol: Benchmarking Models for De Novo Molecular Design"
+    url: https://arxiv.org/abs/1811.09621
+  - scheme: dataset
+    value: "GuacaMol dataset collection"
+    url: https://figshare.com/projects/GuacaMol/56639
+stages: [design, evaluation]
+modalities: [small-molecule]
+tasks: [distribution-learning-evaluation, goal-directed-generation-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [repository, license-file, figshare-train, figshare-validation, figshare-test] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: GuacaMol benchmark software in the repository; does not cover the separately hosted ChEMBL-derived SMILES files or upstream ChEMBL rights.
+    evidence: [license-file]
+  - name: CC BY 4.0
+    scope: GuacaMol training, validation, test and all-SMILES dataset files published by the authors on Figshare; does not relicense upstream ChEMBL material beyond these releases.
+    evidence: [figshare-train, figshare-validation, figshare-test, figshare-all]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/BenevolentAI/guacamol
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/BenevolentAI/guacamol
+    label: GuacaMol repository
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: license-file
+    url: https://raw.githubusercontent.com/BenevolentAI/guacamol/HEAD/LICENSE
+    label: Repository LICENSE file (reviewed 2026-10-23)
+    supports: []
+  - id: figshare-train
+    url: https://figshare.com/articles/dataset/GuacaMol_Training_SMILES/7322228
+    label: "Reviewed 2026-10-23: training SMILES downloadable without account; dataset page states CC BY 4.0"
+    supports: [caveats]
+  - id: figshare-validation
+    url: https://figshare.com/articles/dataset/GuacaMol_Validation_SMILES/7322243
+    label: "Reviewed 2026-10-23: validation SMILES downloadable without account; dataset page states CC BY 4.0"
+    supports: [caveats]
+  - id: figshare-test
+    url: https://figshare.com/articles/dataset/GuacaMol_Test_SMILES/7322246
+    label: "Reviewed 2026-10-23: test SMILES downloadable without account; dataset page states CC BY 4.0"
+    supports: [caveats]
+  - id: figshare-all
+    url: https://figshare.com/articles/dataset/GuacaMol_All_SMILES/7322252
+    label: "Reviewed 2026-10-23: all SMILES downloadable without account; dataset page states CC BY 4.0"
+    supports: [caveats]
+caveats:
+  - Distribution-learning and goal-directed benchmarks use different generator interfaces and assessment functions; their scores are not interchangeable.
+  - Standardized ChEMBL-derived data are hosted on Figshare rather than in the MIT-licensed code repository; follow the dataset pages' CC BY 4.0 terms and check upstream ChEMBL rights for uses beyond these files.
+acknowledgements: []
+last_verified: "2026-10-23"

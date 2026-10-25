@@ -1,0 +1,17 @@
+{
+  "activity_id": 101,
+  "activity_ids": [101],
+  "canonical_smiles": "CCO",
+  "member_ids": ["mobley_1"],
+  "molecule_chembl_id": "CHEMBL101",
+  "parent_molecule_chembl_id": "CHEMBL101",
+  "predictions": { "morgan_ridge": 7.1 },
+  "target_pchembl": 7.0,
+  "smiles": ["CCO"],
+  "raw_rows": [{ "id": "mobley_1" }],
+  "evaluation_command": "python run_lab.py evaluate-test",
+  "pretest_passed": true,
+  "pipeline_status": "complete",
+  "test_evaluation_complete": true,
+  "fit_trace": { "model_fit_ids": ["mobley_1"] }
+}

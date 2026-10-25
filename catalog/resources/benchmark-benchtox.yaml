@@ -1,0 +1,43 @@
+id: benchmark-benchtox
+name: BenchTox
+kind: benchmark
+summary: Unified benchmarking framework for in-silico toxicity prediction that evaluates more than twenty graph-based approaches under consistent conditions across several datasets and partitioning strategies, and publishes its framework as open-source software.
+canonical_url: https://arxiv.org/abs/2609.37555
+identifiers:
+  - scheme: paper
+    value: "Benchmarking graph-based models for in-silico toxicity prediction in drug discovery; Suarez-Barro, Lama and Vidal, arXiv 2609.37555, submitted 29 September 2026"
+    url: https://arxiv.org/abs/2609.37555
+  - scheme: code
+    value: "the released benchmarking framework, noel.suarez/benchtox on the GitLab instance at citius.gal"
+    url: https://gitlab.citius.gal/noel.suarez/benchtox
+stages: [evaluation, dmpk-toxicology]
+modalities: [small-molecule]
+tasks: [toxicity-prediction, benchmark-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [repository] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: not_applicable, evidence: [repository] }
+  data_recipe: { value: available, evidence: [repository] }
+  training_data: { value: available, evidence: [repository] }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses: []
+evidence:
+  - id: paper-record
+    url: https://arxiv.org/abs/2609.37555
+    label: The arXiv record of the paper, read on 2026-10-24, with its title, author list, submission date and abstract
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: repository
+    url: https://gitlab.citius.gal/noel.suarez/benchtox
+    label: The benchmark framework's public repository, read on 2026-10-24 through the GitLab interface, which reports no licence
+    supports: [identifiers, caveats]
+caveats:
+  - "The repository is public and carries no licence file, so the framework is openly readable without a stated grant and the record carries no licence name."
+  - "The framework's own repository holds the datasets, the approach environments, the benchmark logs and the result tables, and its own last activity is dated 9 October 2026."
+  - "The paper's stated scope is more than twenty representative approaches evaluated under consistent conditions across multiple datasets and partitioning strategies, and the paper says the literature-based comparisons it set out to fix were difficult to interpret because of inconsistencies in datasets, preprocessing pipelines and evaluation protocols. It says nothing about how graph-based approaches compare with descriptor or fingerprint baselines, so a reader who takes its ordering as a field-wide ranking reads more into it than the paper claims."
+  - "The record did not run the framework."
+acknowledgements: []
+last_verified: "2026-10-24"

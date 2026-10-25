@@ -1,0 +1,207 @@
+id: practical-cheminformatics
+name: Practical Cheminformatics Tutorials
+provider_class: tutorial-collection
+canonical_url: https://github.com/PatWalters/practical_cheminformatics_tutorials
+summary: A public collection of Jupyter notebooks covering open-source cheminformatics, QSAR, SAR, structure, generation, and active learning.
+audiences: [cheminformatics-learners]
+languages: [en]
+metadata_evidence: [tutorial-index]
+access:
+  content: { value: open, evidence: [tutorial-index] }
+  code: { value: open, evidence: [tutorial-index] }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses:
+  - name: MIT License
+    scope: Repository software and associated documentation; linked databases, services, and downloaded assets retain separate terms
+    evidence: [repository-license]
+correction_url: https://github.com/PatWalters/practical_cheminformatics_tutorials/issues
+correction_evidence: [tutorial-index]
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence was encoded for omitted taxonomy topics in this dated review.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t07-regression-formulation
+    depth: executable
+    run_basis: unverified
+    evidence: [qsar-notebook]
+    reviewed_scope: QSAR in 8 Lines notebook
+    note: The notebook declares molecular inputs and a property target and runs a compact regression workflow with outputs.
+  - topic_id: t07-interpretability-sar
+    depth: executable
+    run_basis: unverified
+    evidence: [free-wilson-notebook]
+    reviewed_scope: A Free-Wilson analysis decomposing an analogue series against a declared core, one-hot encoding the R-groups, fitting a ridge model on a train and test split, and then reading the fitted coefficients back onto each substituent as its contribution
+    note: The explanation is the model's own coefficients over an analogue series rather than an attribution heuristic, so a claimed substituent effect can be checked by adding the analogue. The 2026-09-04 review recorded only a mention.
+  - topic_id: t15-acquisition-policy-uncertainty
+    depth: executable
+    run_basis: unverified
+    evidence: [active-learning-notebook]
+    reviewed_scope: Active Classification notebook
+    note: The notebook implements an iterative active-learning policy with an oracle and comparative outputs.
+  - topic_id: t10-complex-cofolding-hypothesis
+    depth: executable
+    run_basis: real-data
+    evidence: [cofolding-notebook]
+    reviewed_scope: A notebook that downloads a protein-ligand complex from the PDB, extracts the ligand to SMILES and the protein to a sequence, co-folds the pair with OpenFold-3, superimposes the predicted and experimental chains and reports a protein alpha-carbon RMSD and then a separate ligand RMSD by maximum-common-substructure alignment
+    note: The prediction is checked against the experimental structure it was built to reproduce, and the protein and ligand deviations are reported separately rather than as one number. The 2026-09-04 review recorded this as worked.
+  - topic_id: t17-metric-endpoint-uncertainty
+    depth: worked
+    evidence: [cofolding-notebook]
+    reviewed_scope: Co-folding RMSD calculation and comparison
+    note: The worked case computes a structural comparison metric; it does not establish broad uncertainty treatment.
+  - topic_id: t12-candidate-design-space
+    depth: worked
+    evidence: [generation-notebook]
+    reviewed_scope: SMILES-RNN analogue-generation notebook
+    note: The notebook demonstrates a concrete string-based generation workflow and resulting candidate surface.
+  - topic_id: t05-complex-interaction-representation
+    depth: executable
+    run_basis: real-data
+    evidence: [interaction-fingerprint-notebook]
+    reviewed_scope: A notebook computing ProLIF interaction fingerprints for a fragment hit from an ERK2 structure and its docked analogues, plotting them as a heatmap and then clustering compounds by the interactions they make
+    note: The complex is reduced to a typed per-residue interaction profile which is then used as the clustering feature, so the representation is consumed rather than only displayed.
+  - topic_id: t09-binding-mode-pose-hypothesis
+    depth: executable
+    run_basis: real-data
+    evidence: [interaction-fingerprint-notebook]
+    reviewed_scope: The same notebook measuring how far each docked analogue departs from the reference fragment pose by maximum-common-substructure RMSD, plotting the distribution and retaining only analogues below one angstrom
+    note: Pose preservation is quantified against an experimental reference and a numeric cut is declared before the interaction analysis proceeds. Whether the retained poses are correct is not established by the filter.
+  - topic_id: t06-disease-state-definition
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t06-mechanism-hypothesis-counterevidence
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t06-causal-target-evidence
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t06-perturbation-genetic-validation
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t06-tractability-target-risk
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t13-biologic-modality-construct
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t13-sequence-structure-function-objective
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t13-specificity-negative-selection
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t13-expression-developability-manufacturability
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t13-functional-validation
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t18-evidence-package-claim-chain
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t18-crossdomain-tradeoff-decision
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t18-counterevidence-failure-analysis
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t18-nomination-readiness-next-experiment
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+  - topic_id: t18-openness-biosecurity-governance-boundary
+    depth: absent
+    evidence: [notebook-index]
+    reviewed_scope: The complete notebook index reviewed on 2026-09-11 across the fundamentals, ml_models, sar_analysis, docking, generative, active_learning, clustering, reaction, qm, patent and misc sections
+    note: No notebook in the reviewed index addresses any topic in the mechanism-targets, biologics-design, candidate-nomination track, so the whole track is unrepresented there. The reviewed surface is the index of notebook names, not the full text of every notebook, and the absence is recorded at that scope.
+evidence:
+  - id: notebook-index
+    url: https://github.com/PatWalters/practical_cheminformatics_tutorials
+    title: Practical Cheminformatics notebook index
+    observed_scope: The complete set of notebook directories and filenames, covering RDKit fundamentals, SMILES and SMARTS, machine-learning models and cross-validation, SAR analysis including Free-Wilson and matched pairs, docking interaction analysis, a SMILES RNN, active learning, clustering, reactions, tautomer energies, patent analysis and ChEMBL data work.
+    access: opened
+    reviewed_on: 2026-09-11
+  - id: tutorial-index
+    url: https://raw.githubusercontent.com/PatWalters/practical_cheminformatics_tutorials/main/README.md
+    title: Practical Cheminformatics With Open Source Software
+    observed_scope: Forty-one-notebook inventory, Colab and local routes, correction request, and topic groupings.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: repository-license
+    url: https://raw.githubusercontent.com/PatWalters/practical_cheminformatics_tutorials/main/LICENSE
+    title: Practical Cheminformatics repository licence
+    observed_scope: MIT terms for repository software and associated documentation.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: qsar-notebook
+    url: https://raw.githubusercontent.com/PatWalters/practical_cheminformatics_tutorials/main/ml_models/QSAR_in_8_lines.ipynb
+    title: Build and Test a QSAR Model in 8 Lines of Python
+    observed_scope: Declared SMILES and property inputs, regression pipeline, runnable code, and notebook outputs.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: active-learning-notebook
+    url: https://raw.githubusercontent.com/PatWalters/practical_cheminformatics_tutorials/main/active_learning/active_classification.ipynb
+    title: Active Classification
+    observed_scope: Candidate pool, oracle, acquisition loop, iterations, runnable code, and comparative outputs.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: cofolding-notebook
+    url: https://raw.githubusercontent.com/PatWalters/practical_cheminformatics_tutorials/main/biotite/evaluate_cofolding.ipynb
+    title: Evaluating Co-folding Results with Biotite
+    observed_scope: External co-folding service workflow, supplied result archive, structural alignment, RMSD worked case, and caveats. Re-read in full through the repository API on 2026-09-10, which resolved the specifics, a PDB complex downloaded and split into a ligand SMILES and a protein sequence, co-folding with OpenFold-3, chain superposition through plinder, and a protein alpha-carbon RMSD reported separately from a ligand RMSD computed by maximum-common-substructure alignment. A dependency conflict requiring a kernel restart is stated up front. No exercises.
+    access: opened
+    reviewed_on: 2026-09-10
+  - id: generation-notebook
+    url: https://raw.githubusercontent.com/PatWalters/practical_cheminformatics_tutorials/main/generative/SMILES_RNN.ipynb
+    title: Generative Molecular Design with SMILES-RNN
+    observed_scope: Analogue-generation objective, model workflow, code, and generated-molecule outputs.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: interaction-fingerprint-notebook
+    url: https://github.com/PatWalters/practical_cheminformatics_tutorials/blob/main/docking/prolif_analysis.ipynb
+    title: Interaction fingerprints for docked analogues
+    observed_scope: Read in full through the repository API. Reference fragment from an ERK2 structure with docked analogues, maximum-common-substructure RMSD against the reference with a one-angstrom filter, ProLIF interaction fingerprints, heatmap and clustering by interaction profile. No exercises.
+    access: opened
+    reviewed_on: 2026-09-10
+  - id: free-wilson-notebook
+    url: https://github.com/PatWalters/practical_cheminformatics_tutorials/blob/main/sar_analysis/free_wilson.ipynb
+    title: Free-Wilson analysis
+    observed_scope: Read in full through the repository API. Core definition and alignment, R-group decomposition, one-hot encoding, ridge regression on a train and test split, predicted against observed plots, and fitted coefficients rendered as per-substituent contributions. No exercises.
+    access: opened
+    reviewed_on: 2026-09-10
+caveats:
+  - The repository tree lists more than forty notebooks across fundamentals, clustering, SAR analysis, machine learning, docking, generation, reactions, quantum chemistry and active learning. Nine have now been reviewed, so this record still understates the provider and omitted topics stay unverified rather than absent.
+  - No notebook reviewed here carries an exercise or a quiz, so no topic is scored at assessed for this provider.
+  - The co-folding notebook relies on ApherisFold-Lite and a supplied result pointer, so it is recorded as worked rather than self-contained executable coverage.
+  - Repository availability does not establish uniform access or licence terms for ChEMBL, BindingDB, co-folding services, or downloaded assets.
+last_verified: 2026-09-11

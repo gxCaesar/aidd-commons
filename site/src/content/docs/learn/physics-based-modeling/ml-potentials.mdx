@@ -1,0 +1,298 @@
+---
+title: Machine-learning interatomic potentials
+description: Read the open machine-learned interatomic potentials as artefacts rather than as rankings, and see which parts of each release a reader can actually reach.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="physics-based-modeling/ml-potentials" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+A classical force field fixes the functional form of an energy surface and fits
+its parameters. A machine-learned interatomic potential lets the model learn the
+surface from data. That substitution is the whole idea, and it is also the whole
+difficulty: the classical force field states in its own documentation which
+terms it contains and what was fitted to what, while a learned surface inherits
+the reach of whatever corpus produced it, and that corpus is often the part a
+reader cannot inspect.
+
+Read this after [force fields and sampling](../force-fields-and-sampling/), which
+fixes the classical contract, and after
+[physical model and system state](../physical-model-system-state/), which fixes
+what a system state is and why frames of one trajectory are not independent
+observations.
+
+By the end you should be able to state, for any published interatomic
+potential, whether a reader can run the released code, retrain the released
+model, and inspect the corpus the model was trained on. These are three
+different questions and the open artefacts answer them differently.
+
+## From a fixed functional form to a learned surface
+
+A fixed force field states its functional form in advance. A reader can read the
+equation, count the terms, and see which physical effects were left out on
+purpose. Nothing about the field is hidden by the data.
+
+A learned potential replaces that equation with a model whose behaviour on an
+unseen configuration is determined by the data it saw. The model is usually
+described as a graph network over atoms with a stated equivariance property,
+and the equivariance is a real and checkable property of the architecture. What
+the model does with a chemistry outside its training distribution is not a
+property of the architecture at all. It is a property of the corpus, and the
+corpus is exactly the part these releases vary most in how they document it.
+
+The consequence for a reader is a change of what must be checked. Asking
+whether a force field is a good approximation means asking whether its terms
+are adequate. Asking whether a learned potential is a good approximation means
+asking whether its corpus contains the chemistry and whether the corpus can be
+inspected.
+
+## What the six released code bases are
+
+Six open releases are registered in the atlas for this track. They are not
+ranked here, because the records do not carry a comparison under a shared
+protocol. What each one is, taken from its own record, is this.
+
+**NequIP** is a code base for E(3)-equivariant machine-learned interatomic
+potentials that also distributes pretrained foundation potentials through its own
+model host. **MACE** is a code base for machine-learned potentials with
+higher-order equivariant message passing, publishing pretrained potentials for
+materials and molecules, with an academic source licence on a subset of them.
+**CHGNet** is a pretrained graph neural network potential for charge-informed
+atomistic modelling, trained on Materials Project relaxation trajectories and
+used to predict energy, force, stress and magnetisation. **MatterSim** is a deep
+learning atomistic model used as a machine-learning force field across the
+periodic table, released with two pretrained checkpoints, a finetuning script
+and a model card. **SevenNet** is a graph neural network interatomic potential
+package with pretrained universal potentials and a fine-tuning interface, usable
+through the ASE calculator and LAMMPS. **TorchANI** is a PyTorch library for
+building, training and running ANI-style neural network interatomic potentials,
+with pretrained ANI-2x weights published on the Hugging Face Hub.
+
+Each of the six is a real, inspectable artefact with a source licence: MIT for
+NequIP, MACE, MatterSim and TorchANI, BSD-3-Clause for CHGNet, and MIT for
+SevenNet. Four of the six additionally publish weights under a licence the
+record names, and in two cases the weights sit under a different and more
+restrictive licence than the code.
+
+## The openness picture across the six
+
+The atlas keeps seven openness dimensions apart for exactly this reason. Read
+across the six records and the pattern is clear.
+
+| Dimension | Available | Unverified |
+| --- | ---: | ---: |
+| Inference code | 6 | 0 |
+| Training code | 6 | 0 |
+| Architecture | 6 | 0 |
+| Weights | 4 | 2 |
+| Training data | 2 | 4 |
+| Data recipe | 0 | 6 |
+| Evaluation code | 1 | 5 |
+
+Inference, training and architecture are open everywhere. Weights are open in
+four of the six, and the two exceptions are CHGNet and SevenNet, whose records
+state that no opened page gives a licence for the published checkpoints even
+though the repositories ship a licence for the code beside them.
+
+The bottom two rows are the ones a reader cannot infer. The data recipe is
+unverified in all six records. The evaluation code is open in one, MACE, and
+unverified in the other five. A repository can contain the scripts that trained
+a model without containing a record of how the training set was assembled.
+
+## Where the training corpus stays dark
+
+Training data is open in two of the six records. MACE's record supports the
+claim for the MACE-MP checkpoints, whose training corpus the README names as
+MPtrj selected from Materials Project relaxation trajectories. CHGNet's record
+supports it for the MPtrj corpus, which the model card records with a 9-0.5-0.5
+train, validation and test split.
+
+The other four leave it unverified, and the reasons differ in a way that
+matters. NequIP's foundation potentials are pre-trained on OMat24 and
+fine-tuned on a subsample of Alexandria and on MPtrj, and no opened page states
+the redistribution term for that subsample. MatterSim's README describes the
+corpus only as data generated through the workflows introduced in its own
+paper, and the model card names a test set drawn from MPtrj and from Alexandria
+without giving redistribution terms for the Alexandria subset. SevenNet's
+documentation names 15 open ab initio datasets by task labels such as mpa,
+matpes_r2scan, omol25_low, oc20, oc22 and odac23, which names a selection
+without describing how the selection was made. TorchANI's register of built-in
+datasets records the DOI and article for the ANI-2x corpus as TODO.
+
+The Zenodo record behind the NequIP MP models states that those models train
+solely on MPtrj of about 1.5 million frames and are recommended for
+benchmarking rather than production work. That is a useful statement about a
+corpus size. It is not a statement about which chemistry the 1.5 million frames
+contain.
+
+## When one name means two things
+
+Two assets share the OMat24 name, and they carry different licences. On the
+Hugging Face Hub the OMat24 dataset is tagged cc-by-4.0. The OMat24 checkpoint
+collection published by the same organisation is tagged other and carries a
+bespoke OMat24 License that incorporates the FAIR Acceptable Use Policy.
+
+This is not a pedantic distinction. A reader who sees "OMat24" in a training
+description cannot tell from the name which of the two assets is meant, and the
+two have different terms. The NequIP and SevenNet records both note it, and
+both also note that the fine-tuning corpus is a subsample of Alexandria whose
+redistribution term no opened page states.
+
+Two more names carry a similar hazard. The MACE README names the OMAT, OMOL,
+MATPES and SPICE corpora for its non-MP checkpoints without stating their
+licences. And MatterSim offers more advanced pretrained versions and further
+materials capabilities through a hosted product, whose pages state no licence.
+
+## When two results are not independent
+
+SevenNet's own README states that its core model is based on NequIP. Results
+attributed to SevenNet and results attributed to NequIP therefore do not
+measure two independent architectures, and a comparison that reads them as two
+independent entries in a leaderboard is reading a family tree as a sample.
+
+The same applies to the fine-tuning corpora. When one architecture is
+fine-tuned on a corpus another was pre-trained on, the two are not independent
+with respect to the chemistry they cover, whatever their architectures.
+
+## What a reported error does and does not mean
+
+The records are careful about the numbers their own pages report, and the
+cautions are worth carrying into any comparison.
+
+The CHGNet model card reports mean absolute errors for energy, force, stress
+and magnetisation on its MPtrj test split, and the record notes that the
+publisher page for the article was not opened during the review, so the
+citation is recorded as the README states it and not from the article itself.
+The MACE README states that the MACE-MP models are trained on MPtrj raw DFT
+energies from VASP outputs and are not directly comparable to Materials
+Project or CHGNet energies, which carry MP2020Compatibility corrections. The
+SevenNet documentation reports F1 and RMSD on the WBM dataset together with a
+combined performance score, but the opened pages give neither the metric
+definitions nor the evaluation code.
+
+Two failures of the same metric are therefore not two measurements. The labels
+differ, and the record that says so is the same record that says the
+evaluation code is unverified in five of the six cases. An error quoted from a
+model card is a number whose protocol the reader may not be able to obtain.
+
+## What a matched comparison would need
+
+A comparison that ranks these six would need three things the records do not
+currently carry. It would need one evaluation code path that every model is
+run through, since five of the six leave it unverified. It would need one
+stated split and one stated metric definition, since the reported errors use
+different corpora, different labels and, in the case of the combined
+performance score, an undefined aggregation. And it would need the training
+corpus terms, because a model whose corpus cannot be redistributed cannot be
+retrained by a reader who is not already inside the rights holder.
+
+What the records do support today is a statement about what each artefact
+publishes. That is a different statement from a ranking, and it is the one a
+reader can actually act on.
+
+## Worked case
+
+A reader wants to know whether the NequIP foundation potentials can be
+reproduced by someone outside the project. The record answers in three
+separate parts.
+
+The code can be obtained. The inference code, the training code and the
+architecture are all available, and the NequIP Python package is under MIT.
+
+The weights can be obtained. The foundation potential packages listed on the
+model host carry CC-BY-4.0, and the Zenodo record gives the model artifact a
+DOI. One detail is worth carrying forward, because it shows what a licence
+field does not say: the model host listing gives one licence field for the
+model package and does not separate code terms from weight terms, so the MIT
+terms recorded in the atlas come from the repository licence file rather than
+from the listing.
+
+The training cannot be reproduced. The data recipe is unverified, and the
+corpus is described as OMat24 with fine-tuning on a subsample of Alexandria
+and on MPtrj, where no opened page states the redistribution term for that
+subsample. The Zenodo record names the frame count and says the models are
+recommended for benchmarking, which tells a reader how much data there is and
+not what is in it.
+
+So the answer to the reader's question is that the released potentials can be
+run and inspected, and that the training that produced them cannot be
+repeated from what is published.
+
+## Independent exercise
+
+Consider the six records above and answer these three questions, then compare
+with the table in the openness section.
+
+1. How many of the six let a reader re-run the training, meaning that a training
+   script and the inputs it consumed are both present? Give the count for the
+   training code alone and for the data recipe alone, and state what the
+   difference between the two counts means for a reader who wants to retrain
+   rather than merely to run.
+2. Four of the six publish weights under a licence their record names, and two
+   do not. Name the two, and say what a licence record tells you and what it
+   does not.
+3. Two records name a corpus whose redistribution term no opened page states.
+   Name the corpus and the two records. Now say whether a reader who cannot
+   obtain that corpus can still use the released weights, and what they lose.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+1. Training code is available in 6 of 6. The data recipe is unverified in 6 of
+   6, so the count for the training inputs is 0. The difference is the whole
+   point: running the training script is not the same as reproducing the
+   training, because a script that has been run once on a corpus nobody can
+   obtain is a script whose output cannot be checked. A reader who wants to
+   retrain has the code and, in two cases, the corpus, and in the other four
+   has the code and a name.
+2. The two are CHGNet and SevenNet. A licence record tells you the terms under
+   which the artefact may be used and redistributed. It does not tell you
+   whether the artefact exists in a form that can be obtained, whether the
+   weights are the ones the paper used, or whether the corpus behind them can
+   be reached.
+3. The corpus is the Alexandria subsample, named by the NequIP and SevenNet
+   records, and the terms of the second OMat24 asset are the other case. A
+   reader who cannot obtain the corpus can still use the released weights,
+   because the weights are published under their own licence and the corpus is
+   not needed to evaluate them. What they lose is the ability to retrain, to
+   fine-tune on a related chemistry, or to establish how far the weights
+   extrapolate, since that judgement is a statement about the corpus.
+
+</details>
+
+## What this material does not show
+
+This reading does not compare the six releases, and it does not rank them. The
+records carry no evaluation under a shared protocol, so any ordering would be
+an artefact of which page happened to be read first.
+
+It does not establish that a learned potential is accurate, or that it is more
+accurate than a force field. It reports what each release publishes and what
+each leaves unverified.
+
+It does not establish that the training corpora are small, biased or
+well-balanced. The one corpus whose size the records state is about 1.5 million
+frames, and a frame count is not a description of chemistry.
+
+It does not tell you that a weight is unusable because its licence is
+unstated. It tells you that the terms are unknown, which is a different
+problem with a different remedy.
+
+## Sources and attribution
+
+The six records consulted are `model-nequip`, `model-mace`, `model-chgnet`,
+`model-mattersim`, `model-sevennet` and `model-torchani` in the
+[atlas](/atlas/). Each record carries the canonical repository URL, the licence
+file, the model card or release notes that were opened, and the date of the
+review.
+
+[Force fields and sampling](../force-fields-and-sampling/) is the classical
+counterpart to this reading, and
+[physical model and system state](../physical-model-system-state/) fixes what a
+system state is for the purpose of sampling.
+
+Last reviewed: 2026-10-22

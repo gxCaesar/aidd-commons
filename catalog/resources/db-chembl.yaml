@@ -1,0 +1,41 @@
+id: db-chembl
+name: ChEMBL
+kind: database
+summary: Official bioactivity database for drug-discovery information.
+canonical_url: https://www.ebi.ac.uk/chembl/
+identifiers:
+  - scheme: documentation
+    value: "ChEMBL interface documentation"
+    url: https://chembl.gitbook.io/chembl-interface-documentation
+stages: [target-discovery, hit-discovery, lead-optimization]
+modalities: [small-molecule, bioactivity]
+tasks: [bioactivity-retrieval]
+relations: []
+status: { value: active, evidence: [official-page] }
+access_level: { value: source_available, evidence: [official-page] }
+openness:
+  inference_code: { value: not_applicable, evidence: [official-page] }
+  training_code: { value: not_applicable, evidence: [official-page] }
+  weights: { value: not_applicable, evidence: [official-page] }
+  architecture: { value: not_applicable, evidence: [official-page] }
+  data_recipe: { value: unverified }
+  training_data: { value: available, evidence: [official-page] }
+  evaluation_code: { value: not_applicable, evidence: [official-page] }
+licenses:
+  - name: Creative Commons Attribution-ShareAlike 3.0 Unported
+    scope: The ChEMBL data records and contents. The official page states the data is provided under this licence, which requires attribution and share-alike on redistribution. It does not cover the code of this repository, the lesson prose, or any model, weight or derivative dataset built from the records.
+    evidence: [official-page]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://chembl.gitbook.io/chembl-interface-documentation
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: official-page
+    url: https://www.ebi.ac.uk/chembl/
+    label: ChEMBL official page, re-opened 2026-10-21, stating the data is provided under a Creative Commons Attribution-ShareAlike 3.0 Unported license
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+caveats:
+  - The licence covers the data records. The software that serves them carries its own terms, and the records of any individual document deposited in ChEMBL keep the rights of their original owners.
+  - Version-specific releases carry their own record with the release directory and the release licence file, so a statement about one release is not a statement about every release.
+acknowledgements: []
+last_verified: "2026-10-21"

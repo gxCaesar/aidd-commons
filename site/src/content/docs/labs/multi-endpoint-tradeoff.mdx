@@ -1,0 +1,77 @@
+---
+title: Multi-endpoint coverage without a score
+description: Count admitted ChEMBL measurements by endpoint family, with missing families left visible.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+This laboratory asks which measurements actually cover a declared compound cohort before anyone compares efficacy, safety or exposure. Read [the decision-unit lesson](/learn/foundations/decision-unit-scope/) and [metabolism to safety](/learn/admet-pk/metabolism-to-safety/) first. You will distinguish an activity row from an independent measurement, keep a unit and a spread beside each reported value, and mark an unmeasured family as missing.
+
+## Fresh independent computation
+
+The mode is a fresh independent computation under a frozen protocol. Use the project's Python 3.11 environment. The first command downloads the ChEMBL 37 snapshot into a separate cache and requires network access. The remaining commands read that cache without network access or an accelerator. They do not change the source data. The export command overwrites the small committed summary only after the contract and arithmetic checks pass.
+
+```bash
+.venv/bin/python labs/multi_endpoint_tradeoff/run_lab.py download
+.venv/bin/python labs/multi_endpoint_tradeoff/inspect_multi_endpoint_tradeoff.py show
+.venv/bin/python labs/multi_endpoint_tradeoff/inspect_multi_endpoint_tradeoff.py check
+.venv/bin/python labs/multi_endpoint_tradeoff/export_summary.py
+.venv/bin/python -m pytest labs/tests/multi_endpoint_tradeoff -q
+```
+
+## Source records and measurement rule
+
+The declared cohort contains 15 ChEMBL seed molecules that resolve to 10 parent molecules. The reader reuses the decision-unit laboratory's ChEMBL 37 cache format, parent resolution and admission rule. A point row must report `AC50`, `EC50`, `IC50`, `Kd` or `Ki` in `nM`, with `=` and the declared curation and quality flags. Bounds such as `>` remain counted as bounds in the sibling census and do not enter the value summaries here. One independent point measurement has a unique parent, assay, document and standard type. Two rows with that same key contribute one median value.
+
+The family map is explicit. `AC50`, `EC50` and `IC50` enter the efficacy-related response-potency proxy. `Kd` and `Ki` enter `other` as affinity measurements. A newly admitted type without a mapping also enters `other`. No admitted standard type identifies toxicity or exposure, so neither family receives a measurement. This is a statement about this protocol's coverage, not about whether these compounds have ever been tested for those outcomes.
+
+## Measurements by family
+
+The committed computation on 2026-10-23 found 488 admitted point rows and 486 independent measurements. The latter is the decision-unit laboratory's count for the same ChEMBL 37 cohort. Each median and interquartile range below describes the independent reported values in `nM`. The quartiles use linear interpolation at 25% and 75%. A dash means no value can be calculated.
+
+| Family | Independent measurements | Documents | Assays | Median (`nM`) | Interquartile range (`nM`) | Parents without a measurement |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Efficacy-related response potency | 462 | 208 | 459 | 1885 | 9839.5 | 1 |
+| Toxicity | 0 | 0 | 0 | — | — | 10 |
+| Exposure | 0 | 0 | 0 | — | — | 10 |
+| Other affinity | 24 | 14 | 24 | 1600 | 6970.0325 | 6 |
+
+The median is a description of heterogeneous assays, targets and endpoint types. It is not a target-independent potency estimate or a clinical efficacy estimate. The independent count and spread make the limitations of a bare median visible.
+
+## Coverage by parent compound
+
+The table lists independent measurements after repeated rows at one measurement key are collapsed. The final column counts the named efficacy-related, toxicity and exposure families with at least one measurement. `other` remains visible but does not turn affinity into exposure or toxicity.
+
+| Parent | Response potency | Toxicity | Exposure | Other affinity | Named families present |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `CHEMBL109` VALPROIC ACID | 27 | 0 | 0 | 0 | 1 |
+| `CHEMBL1144` PRAVASTATIN | 33 | 0 | 0 | 3 | 1 |
+| `CHEMBL13829` MIXTURE OF MMC AND TA | 1 | 0 | 0 | 0 | 1 |
+| `CHEMBL23393` SODIUM LAURYL SULFATE | 3 | 0 | 0 | 1 | 1 |
+| `CHEMBL25` ASPIRIN | 98 | 0 | 0 | 5 | 1 |
+| `CHEMBL275835` DARBUFELONE | 12 | 0 | 0 | 0 | 1 |
+| `CHEMBL441` THIOPENTAL | 2 | 0 | 0 | 0 | 1 |
+| `CHEMBL588` FENOLDOPAM | 36 | 0 | 0 | 15 | 1 |
+| `CHEMBL593` DELAVIRDINE | 250 | 0 | 0 | 0 | 1 |
+| `CHEMBL906` MINOXIDIL SULFATE | 0 | 0 | 0 | 0 | 0 |
+
+All 10 parents have an empty named family. Toxicity and exposure are empty for all 10. `CHEMBL906` also lacks a response-potency measurement and has 0 named families present. The committed summary names every parent with an empty family and the families it has. A blank family does not mean a favorable assay result.
+
+## Limits of the material
+
+The 15 seeds were selected to exercise the admission rule and are not a random sample. The lab does not fit a model, estimate performance, combine families, produce a score or rank compounds. It cannot infer safety, clean interaction behavior or bioavailability from an absent measurement. A response-potency type alone does not establish therapeutic efficacy, and a pooled median across assays does not replace the individual experimental contexts. The local snapshot contains source activity records, while the committed summary contains counts and descriptive statistics rather than activity rows.
+
+## Sources and attribution
+
+The [multi-endpoint integration laboratory](/labs/multi-endpoint-integration/) takes this
+inventory one step further and joins the families that can be joined, by parent
+molecule, so that a reader can see how many compounds carry more than one
+measured family at all.
+
+The [ChEMBL 37 release status](https://www.ebi.ac.uk/chembl/api/data/status.json) and [activity records](https://www.ebi.ac.uk/chembl/api/data/activity.json) were read for the source snapshot on 2026-10-21. ChEMBL 37 has release date 2026-05-01. The [release licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) and [README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README) were read on 2026-10-21. The data licence is Creative Commons Attribution-ShareAlike 3.0 Unported. Original lesson prose is CC BY 4.0 and original laboratory code is Apache-2.0.
+
+Last reviewed 2026-10-23.

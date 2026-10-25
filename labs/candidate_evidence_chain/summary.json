@@ -1,0 +1,548 @@
+{
+  "schema_version": "aidd-commons.candidate-evidence-chain-summary.v1",
+  "protocol_id": "chembl37-candidate-evidence-chain-v1",
+  "computed_on": "2026-10-23",
+  "software": {
+    "aidd_commons_labs": "0.2.0rc1",
+    "python": "3.11.15",
+    "numpy": "2.4.6",
+    "rdkit": "2025.09.6"
+  },
+  "links": [
+    "mechanism",
+    "target",
+    "activity",
+    "selectivity",
+    "exposure",
+    "safety",
+    "synthesis",
+    "reproducibility"
+  ],
+  "chains": [
+    {
+      "parent_chembl_id": "CHEMBL1144",
+      "links": [
+        {
+          "name": "mechanism",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "target",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "activity",
+          "state": "measured",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "source": "decision_unit_scope",
+          "measurements": [
+            {
+              "assay_chembl_id": "CHEMBL5234138",
+              "document_chembl_id": "CHEMBL5233232",
+              "endpoint_type": "EC50",
+              "value": 7800.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL5234139",
+              "document_chembl_id": "CHEMBL5233232",
+              "endpoint_type": "EC50",
+              "value": 7800.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL5234140",
+              "document_chembl_id": "CHEMBL5233232",
+              "endpoint_type": "EC50",
+              "value": 7800.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL1909158",
+              "document_chembl_id": "CHEMBL1909046",
+              "endpoint_type": "IC50",
+              "value": 5.591,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL2077082",
+              "document_chembl_id": "CHEMBL2074482",
+              "endpoint_type": "IC50",
+              "value": 15600.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL2077092",
+              "document_chembl_id": "CHEMBL2074482",
+              "endpoint_type": "IC50",
+              "value": 13700.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL2169432",
+              "document_chembl_id": "CHEMBL2163248",
+              "endpoint_type": "IC50",
+              "value": 3600.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL2169433",
+              "document_chembl_id": "CHEMBL2163248",
+              "endpoint_type": "IC50",
+              "value": 62000.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL3854544",
+              "document_chembl_id": "CHEMBL3853309",
+              "endpoint_type": "IC50",
+              "value": 400.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL691939",
+              "document_chembl_id": "CHEMBL1125752",
+              "endpoint_type": "IC50",
+              "value": 40.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL691942",
+              "document_chembl_id": "CHEMBL1134061",
+              "endpoint_type": "IC50",
+              "value": 4.2,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL691947",
+              "document_chembl_id": "CHEMBL1126905",
+              "endpoint_type": "IC50",
+              "value": 5.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL692133",
+              "document_chembl_id": "CHEMBL1126067",
+              "endpoint_type": "IC50",
+              "value": 30.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL692514",
+              "document_chembl_id": "CHEMBL1125000",
+              "endpoint_type": "IC50",
+              "value": 26.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL692518",
+              "document_chembl_id": "CHEMBL1125205",
+              "endpoint_type": "IC50",
+              "value": 24.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL692724",
+              "document_chembl_id": "CHEMBL1134061",
+              "endpoint_type": "IC50",
+              "value": 1370.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL698276",
+              "document_chembl_id": "CHEMBL1125000",
+              "endpoint_type": "IC50",
+              "value": 3100.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL699286",
+              "document_chembl_id": "CHEMBL1128513",
+              "endpoint_type": "IC50",
+              "value": 430.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL699647",
+              "document_chembl_id": "CHEMBL1125205",
+              "endpoint_type": "IC50",
+              "value": 3080.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL779600",
+              "document_chembl_id": "CHEMBL1125752",
+              "endpoint_type": "IC50",
+              "value": 141.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL779601",
+              "document_chembl_id": "CHEMBL1125752",
+              "endpoint_type": "IC50",
+              "value": 228.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL779602",
+              "document_chembl_id": "CHEMBL1125752",
+              "endpoint_type": "IC50",
+              "value": 329.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL785041",
+              "document_chembl_id": "CHEMBL1125000",
+              "endpoint_type": "IC50",
+              "value": 100.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL872936",
+              "document_chembl_id": "CHEMBL1148267",
+              "endpoint_type": "IC50",
+              "value": 5100.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL879350",
+              "document_chembl_id": "CHEMBL1125205",
+              "endpoint_type": "IC50",
+              "value": 100.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL926244",
+              "document_chembl_id": "CHEMBL1140700",
+              "endpoint_type": "IC50",
+              "value": 13.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL926245",
+              "document_chembl_id": "CHEMBL1140700",
+              "endpoint_type": "IC50",
+              "value": 17.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL926246",
+              "document_chembl_id": "CHEMBL1140700",
+              "endpoint_type": "IC50",
+              "value": 7600.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL944784",
+              "document_chembl_id": "CHEMBL1140824",
+              "endpoint_type": "IC50",
+              "value": 17.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL944785",
+              "document_chembl_id": "CHEMBL1140824",
+              "endpoint_type": "IC50",
+              "value": 7550.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL975202",
+              "document_chembl_id": "CHEMBL1150265",
+              "endpoint_type": "IC50",
+              "value": 31.6,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL975203",
+              "document_chembl_id": "CHEMBL1150265",
+              "endpoint_type": "IC50",
+              "value": 29.0,
+              "unit": "nM"
+            },
+            {
+              "assay_chembl_id": "CHEMBL975204",
+              "document_chembl_id": "CHEMBL1150265",
+              "endpoint_type": "IC50",
+              "value": 1519.0,
+              "unit": "nM"
+            }
+          ]
+        },
+        {
+          "name": "selectivity",
+          "state": "absent",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "exposure",
+          "state": "measured",
+          "scope": "Observed in vitro intrinsic clearance in the named assay system only.",
+          "source": "az_clearance_system",
+          "measurements": [
+            {
+              "value": 26.98,
+              "unit": "uL.min-1.(10^6cells)-1",
+              "assay_chembl_id": "CHEMBL3301371",
+              "assay_system": "Rat hepatocytes",
+              "document_chembl_id": "CHEMBL3301361"
+            }
+          ]
+        },
+        {
+          "name": "safety",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "synthesis",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "reproducibility",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        }
+      ],
+      "counts": {
+        "measured": 2,
+        "absent": 1,
+        "constructed": 0,
+        "not covered": 5
+      },
+      "first_non_measured": "mechanism",
+      "supports_claim": false,
+      "bounded_claim": null
+    },
+    {
+      "parent_chembl_id": "CHEMBL1232461",
+      "links": [
+        {
+          "name": "mechanism",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "target",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "activity",
+          "state": "absent",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "selectivity",
+          "state": "absent",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "exposure",
+          "state": "measured",
+          "scope": "Observed in vitro intrinsic clearance in the named assay system only.",
+          "source": "az_clearance_system",
+          "measurements": [
+            {
+              "value": 14.13,
+              "unit": "mL.min-1.g-1",
+              "assay_chembl_id": "CHEMBL3301370",
+              "assay_system": "Human liver microsomes",
+              "document_chembl_id": "CHEMBL3301361"
+            },
+            {
+              "value": 10.23,
+              "unit": "uL.min-1.(10^6cells)-1",
+              "assay_chembl_id": "CHEMBL3301371",
+              "assay_system": "Rat hepatocytes",
+              "document_chembl_id": "CHEMBL3301361"
+            }
+          ]
+        },
+        {
+          "name": "safety",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "synthesis",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "reproducibility",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        }
+      ],
+      "counts": {
+        "measured": 1,
+        "absent": 2,
+        "constructed": 0,
+        "not covered": 5
+      },
+      "first_non_measured": "mechanism",
+      "supports_claim": false,
+      "bounded_claim": null
+    },
+    {
+      "parent_chembl_id": "CHEMBL1963249",
+      "links": [
+        {
+          "name": "mechanism",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "target",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "activity",
+          "state": "absent",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "selectivity",
+          "state": "measured",
+          "scope": "Observed CYP3A4 versus CYP2D6 inhibition in the same document only.",
+          "source": "cyp_assay_system",
+          "measurements": [
+            {
+              "value": 4.08,
+              "unit": "pChEMBL (dimensionless)",
+              "target": "CYP2D6",
+              "assay_chembl_id": "CHEMBL6078959",
+              "document_chembl_id": "CHEMBL6078621"
+            },
+            {
+              "value": 5.62,
+              "unit": "pChEMBL (dimensionless)",
+              "target": "CYP3A4",
+              "assay_chembl_id": "CHEMBL6078958",
+              "document_chembl_id": "CHEMBL6078621"
+            }
+          ]
+        },
+        {
+          "name": "exposure",
+          "state": "measured",
+          "scope": "Observed in vitro intrinsic clearance in the named assay system only.",
+          "source": "az_clearance_system",
+          "measurements": [
+            {
+              "value": 26.92,
+              "unit": "uL.min-1.(10^6cells)-1",
+              "assay_chembl_id": "CHEMBL3301372",
+              "assay_system": "Human hepatocytes",
+              "document_chembl_id": "CHEMBL3301361"
+            }
+          ]
+        },
+        {
+          "name": "safety",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "synthesis",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        },
+        {
+          "name": "reproducibility",
+          "state": "not covered",
+          "scope": null,
+          "source": null,
+          "measurements": []
+        }
+      ],
+      "counts": {
+        "measured": 2,
+        "absent": 1,
+        "constructed": 0,
+        "not covered": 5
+      },
+      "first_non_measured": "mechanism",
+      "supports_claim": false,
+      "bounded_claim": null
+    }
+  ],
+  "states_by_link": {
+    "mechanism": {
+      "not covered": 3
+    },
+    "target": {
+      "not covered": 3
+    },
+    "activity": {
+      "measured": 1,
+      "absent": 2
+    },
+    "selectivity": {
+      "absent": 2,
+      "measured": 1
+    },
+    "exposure": {
+      "measured": 3
+    },
+    "safety": {
+      "not covered": 3
+    },
+    "synthesis": {
+      "not covered": 3
+    },
+    "reproducibility": {
+      "not covered": 3
+    }
+  },
+  "first_non_measured_distribution": {
+    "mechanism": 3
+  },
+  "claim_count": 0,
+  "boundary_statement": "These chains assemble selected ChEMBL 37 measurements, not a development-candidate assessment. Response potency does not validate mechanism or intended-target engagement. A matched CYP3A4/CYP2D6 comparison describes only those enzymes, and intrinsic clearance is not systemic exposure. This repository has no measured safety, synthesis or clinical outcome for these parents. Constructed teaching cases cannot fill those links, and the missing links are not known to be fillable.",
+  "rules": {
+    "claim_gate": "A chain supports a claim only when every link is measured. An absent, constructed or not covered link stops the claim, even when later links have measurements.",
+    "claim_scope": "A claim may not exceed the first measured link's own scope. A supported chain carries exactly that scope."
+  }
+}

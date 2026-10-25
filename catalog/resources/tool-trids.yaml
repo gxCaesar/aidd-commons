@@ -1,0 +1,53 @@
+id: tool-trids
+name: TRIDS
+kind: software
+summary: AI-native molecular docking framework that unifies binding-site identification, conformation sampling and scoring in one pipeline, and guides the sampling with the gradient of an analytic scoring function.
+canonical_url: https://github.com/xuhanliu/trids
+identifiers:
+  - scheme: paper
+    value: "TRIDS: AI-native molecular docking framework for accelerating high-throughput virtual screening with physically valid binding poses; arXiv 2510.24186, submitted 28 October 2025, revised 1 July 2026"
+    url: https://arxiv.org/abs/2510.24186
+  - scheme: code
+    value: "TRIDS source repository, xuhanliu/trids"
+    url: https://github.com/xuhanliu/trids
+stages: [hit-discovery]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [docking, binding-site-identification, conformation-sampling, scoring]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [trids-license] }
+openness:
+  inference_code: { value: available, evidence: [trids-readme] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: available, evidence: [trids-readme] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: "Apache-2.0"
+    scope: "The repository's LICENSE file is the Apache License, Version 2.0, and the README points at that file for the licence terms of the software. The README adds a separate statement that the software is basically free to academic users and that anyone who wishes to sell it or use it in a commercial product should contact the authors. The two statements are recorded side by side rather than reconciled."
+    evidence: [trids-license, trids-readme]
+evidence:
+  - id: trids-repository
+    url: https://github.com/xuhanliu/trids
+    label: TRIDS repository (reviewed 2026-10-24)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: trids-readme
+    url: https://raw.githubusercontent.com/xuhanliu/trids/main/README.md
+    label: TRIDS README (reviewed 2026-10-24)
+    supports: [identifiers, caveats]
+  - id: trids-license
+    url: https://raw.githubusercontent.com/xuhanliu/trids/main/LICENSE
+    label: TRIDS Apache 2.0 licence file (reviewed 2026-10-24)
+    supports: [caveats]
+  - id: trids-arxiv
+    url: https://arxiv.org/abs/2510.24186
+    label: TRIDS arXiv abstract page (reviewed 2026-10-24)
+    supports: [identifiers, caveats]
+caveats:
+  - "The arXiv abstract states that a single docking task completes in a fraction of a second, that the GPU memory footprint is a few hundred megabytes, that the method improves docking accuracy and passes physical validation, and that it was applied to a high-throughput TNF-alpha virtual screening that produced hits with novel scaffolds. Those are the abstract's own statements. The record did not run the software and does not carry them as measurements."
+  - "The README lists DSDP and DSDPFlex, both from the same group and both in the Journal of Chemical Information and Modeling, as the predecessor frameworks, and the arXiv abstract identifies DSDP as the predecessor. The record does not compare TRIDS against either of them."
+  - "The record establishes what the framework is and how it may be obtained. It does not establish that any pose it produces is correct, and no docking was run here."
+acknowledgements: []
+last_verified: "2026-10-24"

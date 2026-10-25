@@ -1,0 +1,49 @@
+{
+  "schema_version": "aidd-commons.open-question-audit-protocol.v1",
+  "protocol_id": "aidd-commons.open-question-audit-v1",
+  "issued_on": "2026-10-23",
+  "sources": {
+    "self_record": {"path": "catalog/comparisons/systems/aidd-commons.yaml", "route": "committed local YAML, coverage.note and depth"},
+    "independent_reading": {"path": "catalog/comparisons/reviews/aidd-commons-blind-2026-09-11.yaml", "route": "committed local YAML, readings.reason and depth"},
+    "taxonomy": {"path": "catalog/comparisons/taxonomy.yaml", "route": "committed local YAML, tracks and topic IDs"}
+  },
+  "access": "Read committed repository files in place. No download, network request or accelerator.",
+  "counted_unit": "one taxonomy topic",
+  "depth_order": ["absent", "explained", "worked", "executable", "assessed"],
+  "question_states": ["open", "settled by measurement", "held by a reading", "lowered by a reading", "unexamined"],
+  "state_rule": {
+    "order": ["lowered by a reading", "held by a reading", "settled by measurement", "open", "unexamined"],
+    "lowered by a reading": "The self note explicitly records a lowering from an earlier claimed depth after an independent reading, and the current self depth is no deeper than that reading after the ordinal mapping.",
+    "held by a reading": "The self note explicitly says the independent reading or its missing runnable task kept a shallower self value, and no later raise supersedes that hold.",
+    "settled by measurement": "The self note names a laboratory, inspector, command, notebook, or measured result and says what that local result established. A reason explicitly closing all requested components also qualifies when the self reviewed_scope describes a measured local laboratory task and the note states its bounded decision. This state concerns only that local result.",
+    "open": "Both the self note and the independent reason carry substantive text without a local measured conclusion or a recorded hold/lowering. Their paired wording leaves the topic-level question unsettled. A missing test is recorded separately; generic calls for more work do not provide one.",
+    "unexamined": "Neither the self note nor the independent reason carries substantive text beyond depth and evidence identifiers.",
+    "lowered_phrases": ["lowered from", "lowered again from", "self record was lowered", "record was lowered"],
+    "held_phrases": ["takes the shallower", "took the shallower", "recorded at executable rather than assessed", "no runnable task for it", "no runnable task, which compares as worked"],
+    "later_raise_phrases": ["a new laboratory arrived", "raised again", "the thirty-ninth reading"],
+    "measurement_subjects": ["laboratory", "lab", "inspector", "inspection", "command", "notebook", "evaluation", "replay", "audit", "result", "fingerprint", "checks"],
+    "measurement_verbs": ["measured", "computed", "recomputed", "reports", "reported", "reporting", "finds", "found", "shows", "showed", "shares", "establishes", "established", "passes", "passed", "passing", "checks", "checked", "runs", "ran", "retains", "retained", "records", "recorded", "compares", "compared", "counts", "counted", "applies", "applied", "executes", "executed", "scored"],
+    "closed_reason_phrases": ["all requested components are addressed", "all requested elements appear", "all requested concepts are addressed"],
+    "bounded_decision_phrases": ["named exclusions", "declared rule", "measured result"]
+  },
+  "falsifier_rule": {
+    "decision": "For open and held topics, a named falsifier exists only when a note or reason contains a listed discriminating-observation phrase or a sentence with both a missing-measurement cue and one of the six named family vocabularies. A generic sentence such as 'more work is needed' does not qualify. Open without either is counted as unfalsifiable and never reported as well-posed.",
+    "discriminating_phrases": ["falsif", "discriminating observation", "would test", "would settle", "would contradict", "next experiment", "independent validation"],
+    "missing_cues": ["missing", "unmeasured", "untested", "not measured", "not tested", "not established", "not provided", "not demonstrated", "not evaluated", "not exercised", "not empirically exercised", "not developed", "not worked", "not implemented", "not supplied", "not assessed", "never established", "no runnable", "no executable", "no real-data", "no independent", "lacks", "lack", "remain un", "remains un", "without", "absent", "excludes", "limited", "partial", "no ", "does not", "do not"],
+    "generic_only": ["more work is needed", "further work is needed", "more research is needed"]
+  },
+  "missing_measurement_families": {
+    "runnable task": ["runnable", "executable", "command", "implemented", "implementation", "lab", "exercise", "task", "notebook", "worked", "specification", "dynamics"],
+    "empirical observation": ["measur", "empirical", "experimental", "assay", "real-data", "real data", "clinical", "prospective", "in vivo", "observed", "outcome", "functional", "receptor", "protonation", "feasibility", "route"],
+    "comparison and control": ["compar", "baseline", "control", "alternative", "negative selection", "matched", "counterfactual", "replicate"],
+    "scope and transfer": ["transport", "transfer", "generaliz", "external", "modality", "population", "target", "site", "patient", "coverage", "scope", "family", "state", "interface", "graph"],
+    "uncertainty and independence": ["uncertainty", "interval", "calibration", "independent", "variance", "error", "confidence", "sensitivity", "replication"],
+    "record and provenance": ["record", "provenance", "source", "version", "trace", "identity", "metadata", "contract", "licen", "schema"]
+  },
+  "excluded_by_design": [
+    "No claim that a question is scientifically settled",
+    "No ranking of tracks by how many questions they leave open",
+    "No use of a note's wording as evidence that the underlying measurement was made",
+    "No re-scoring of either comparison record or inference of reader learning"
+  ]
+}

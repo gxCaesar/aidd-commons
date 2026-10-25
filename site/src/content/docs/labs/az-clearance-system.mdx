@@ -1,0 +1,180 @@
+---
+title: Does one clearance assay predict another?
+description: Read real ChEMBL 37 intrinsic-clearance records for three assay systems, human liver microsomes, human hepatocytes and rat hepatocytes, and see how far a value from one predicts a value from another.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Before you run
+
+**Mode: fresh independent computation over a live, versioned database
+snapshot.** No model is fitted anywhere in this lab. Its scope is narrow by
+design: it covers intrinsic clearance only, one of the several PK-exposure
+measures its taxonomy topic names. Two other candidate sources for the
+remaining measures, absorption, distribution and oral bioavailability, were
+checked on 2026-09-12 and rejected: three of the four datasets a common
+aggregator lists all trace to ordinary closed-access journal articles with
+no independently verifiable open licence, and a second, genuinely CC BY 4.0
+database restricts its actual measurement values to authenticated users.
+See `docs/ROADMAP_V0.2.md`, 2026-09-12.
+
+```bash
+python labs/az_clearance_system/run_lab.py download   # fetches and caches the live snapshot
+python labs/az_clearance_system/inspect_az_clearance_system.py show
+python labs/az_clearance_system/inspect_az_clearance_system.py check
+```
+
+Python 3.11 or newer, NumPy, SciPy and RDKit. Network access only for the
+one-time download from the public ChEMBL REST API; no network access once
+the cache at `.cache/az_clearance_system/` is present.
+
+## Why this document, and why three named assays
+
+The data here comes from one real, citable ChEMBL dataset deposition,
+[document `CHEMBL3301361`](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361),
+"Experimental in vitro DMPK and physicochemical data on a set of publicly
+disclosed compounds" (AstraZeneca, Mark Wenlock and Nicholas Tomkinson,
+2016), not a proxy for a paywalled paper. It reports intrinsic clearance in
+three named assays: human liver microsomes, human hepatocytes and rat
+hepatocytes. `protocol.json` admits only these three, by assay ID, because
+they are exactly the systems this document itself distinguishes, and reads
+each one's assay description to confirm the species and matrix it names.
+
+## An admission rule adapted to a real difference
+
+This endpoint's real data does not use `standard_relation="="` for an exact
+value the way the sibling IC50 labs do. Here, an empty `standard_relation`
+field is the exact value, and `"<"` or `">"` marks a reading outside the
+assay's own quantifiable range, for example "&lt;3 to &gt;150 microL/min/mg"
+as the assay description states. A record is admitted only when its relation
+field is empty, `standard_flag=1`, `potential_duplicate=0`, it carries no
+data validity comment, its molecule is its own parent, its structure is
+RDKit-valid, and its two independently reported value fields agree. Computed
+on 2026-09-12:
+
+| Assay | Species | Matrix | Input rows | Admitted parents |
+| --- | --- | --- | ---: | ---: |
+| `CHEMBL3301370` | Human | Microsome | 1,102 | 743 |
+| `CHEMBL3301371` | Rat | Hepatocyte | 837 | 592 |
+| `CHEMBL3301372` | Human | Hepatocyte | 408 | 288 |
+
+No admitted parent carries more than one activity in any of the three
+assays, so no median aggregation happens in this run; `show` still reports
+the duplicate-parent count so a future re-fetch that does find repeats does
+not go unreported.
+
+The microsome assay reports clearance per gram of microsomal protein
+(`mL.min-1.g-1`); both hepatocyte assays report it per million whole cells
+(`uL.min-1.(10^6cells)-1`). These are different physical bases, not two
+units of the same quantity, and this protocol applies no scaling factor to
+convert between them. Spearman rho and Pearson r are unaffected by that
+difference: both are invariant to any fixed monotonic rescaling of either
+side, which is exactly what a unit change is. A raw ratio between one
+system's number and another's is not: the `log10 ratio` `show` prints for
+the two microsome-involving pairs is a real, deterministic computation over
+the reported values, but it is not a literal fold-change in clearance the
+way it is for the two hepatocyte assays, which share a unit. Read it as a
+same-direction size signal for those two pairs, not a physical magnitude.
+
+## Three comparisons, two variables
+
+`show` reports all three pairwise overlaps, each holding one variable fixed
+where possible:
+
+| Comparison | What varies | Overlap | Full Spearman rho | Clean-subset Spearman rho |
+| --- | --- | ---: | ---: | ---: |
+| Human hepatocytes vs. rat hepatocytes | species, matrix fixed | 106 | 0.4732 | 0.4732 |
+| Human liver microsomes vs. human hepatocytes | matrix, species fixed | 96 | 0.4864 | 0.4864 |
+| Human liver microsomes vs. rat hepatocytes | both differ | 359 | 0.3868 | 0.3868 |
+
+The full overlap and the clean single-pair subset agree exactly here because
+no parent in this snapshot carries a repeated admitted activity in any
+assay; `check` asserts that the clean subset is always a subset of the full
+overlap regardless. All three correlations are real and positive, and all
+three are far short of 1: swapping species alone, or matrix alone, already
+loses more than half the predictive value in rank terms.
+
+## What the correlation hides
+
+Named divergent examples from `show`, for the cleanest single-variable
+comparison (species, matrix fixed at hepatocyte):
+
+| Compound | Human hepatocyte CL | Rat hepatocyte CL | log10 ratio |
+| --- | ---: | ---: | ---: |
+| `CHEMBL361546` | 135 | 14.8 | +0.96 |
+| `CHEMBL1229592` | 3.31 | 79.4 | −1.38 |
+
+Both real compounds sit in the admitted set for both species; one clears
+roughly ninefold faster in human hepatocytes than in rat, the other roughly
+24-fold faster in rat than in human. A single cross-species clearance ratio
+does not exist for this pair of assays; a claim needs to say for which
+compound, and cite the actual measured pair.
+
+## What this does not show
+
+This protocol reads only in vitro intrinsic-clearance records from one
+document. It says nothing about absorption, volume of distribution or oral
+bioavailability, the other PK-exposure measures its taxonomy topic names,
+and it makes no causal or human-dose claim: an in vitro clearance
+disagreement between two assay systems is not a prospective interaction or
+dosing statement. See `protocol.json`'s `excluded_by_design` for the
+complete, machine-readable list.
+
+## Independent exercise
+
+A summary table reports "Compound Z: CL = 22" with no further detail.
+
+1. Using only what `show` reports, name the two axes (not one) that this
+   number is missing, and give one real compound from the tables above
+   whose value would look completely different if either axis changed.
+2. The human-hepatocyte-vs-rat-hepatocyte comparison and the
+   human-microsome-vs-human-hepatocyte comparison both land close to
+   Spearman rho ≈ 0.48. Does that similarity mean species and matrix affect
+   clearance by the same mechanism? What would you need, beyond this
+   protocol, to tell those two mechanisms apart?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The missing axes are species (human vs. rat) and matrix (microsome vs.
+whole-cell hepatocyte); this protocol admits three named assays precisely
+because both can change the number independently. `CHEMBL361546` differs by
+close to tenfold between human and rat hepatocytes, both reported in the
+same unit, so that is a real fold-change with the other axis fixed. The
+microsome-vs-hepatocyte pair cannot show an equally clean example: its two
+assays report clearance in different physical units (per gram of
+microsomal protein versus per million whole cells), so a raw ratio between
+them, such as `CHEMBL2181927`'s or `CHEMBL1916271`'s, is a real signal that
+the two systems disagree in the same direction, not a literal fold-change
+the way the hepatocyte pair's number is. A similar correlation coefficient across
+two pairs is not evidence of a shared mechanism; two very different
+biological reasons for disagreement, species metabolic differences and
+subcellular-versus-whole-cell composition, can produce numerically similar
+rank correlations by coincidence. Telling them apart needs a mechanistic
+study of each axis separately, which this protocol, reading only these three
+assays' reported clearance values, does not supply.
+
+</details>
+
+## Sources and next lesson
+
+<div data-case-sources>
+
+- [ChEMBL 37 dataset CHEMBL3301361 (AstraZeneca in vitro DMPK data)](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361), read live on 2026-09-12
+- [ChEMBL 37 activity records for assay CHEMBL3301370 (human liver microsomes)](https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL3301370)
+- [ChEMBL 37 activity records for assay CHEMBL3301371 (rat hepatocytes)](https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL3301371)
+- [ChEMBL 37 activity records for assay CHEMBL3301372 (human hepatocytes)](https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL3301372)
+
+</div>
+
+This page shares its admission discipline with, but reads independent data
+from, the completed ChEMBL EGFR representation lab and the CYP
+assay-system lab; it changes no split, no selected hyperparameter and no
+locked result in either. Continue to [From clearance and exposure to
+PK/PD](/learn/admet-pk/exposure-clearance-pkpd/) for where this fits among
+the other PK-exposure concepts.
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-12.

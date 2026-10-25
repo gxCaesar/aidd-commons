@@ -1,0 +1,62 @@
+id: model-mattersim
+name: MatterSim
+kind: model
+summary: MatterSim is a deep learning atomistic model used as a machine-learning force field across the periodic table, released with two pretrained checkpoints, a finetuning script and a model card.
+canonical_url: https://github.com/microsoft/mattersim
+identifiers:
+  - scheme: paper
+    value: "MatterSim: A Deep Learning Atomistic Model Across Elements, Temperatures and Pressures; arXiv:2405.04967"
+    url: https://arxiv.org/abs/2405.04967
+  - scheme: documentation
+    value: "MatterSim model card"
+    url: https://raw.githubusercontent.com/microsoft/mattersim/main/MODEL_CARD.md
+  - scheme: model-weights
+    value: "MatterSim-v1.0.0-1M and MatterSim-v1.0.0-5M checkpoints in the repository pretrained_models folder"
+    url: https://github.com/microsoft/mattersim/tree/main/pretrained_models
+stages: [physics-based-modelling, model-development, evaluation]
+modalities: [molecular-geometry, molecular-conformation]
+tasks: [molecular-energy-regression, force-learning, molecular-dynamics, structure-prediction, model-training]
+relations: []
+status: { value: active, evidence: [github-api] }
+access_level: { value: open_source, evidence: [code-license] }
+openness:
+  inference_code: { value: available, evidence: [repository, model-card] }
+  training_code: { value: available, evidence: [repository, readme] }
+  weights: { value: available, evidence: [model-card] }
+  architecture: { value: available, evidence: [repository, model-card] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified, evidence: [model-card, readme] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: the MatterSim source code in this repository, per LICENSE.txt (Copyright (c) Microsoft Corporation), and, according to the repository model card, the two released checkpoints MatterSim-v1.0.0-1M and MatterSim-v1.0.0-5M, which the model card lists under the MIT License. The model card does not cover the separate pretrained versions offered through Azure Quantum Elements, and this record does not cover them.
+    evidence: [code-license, model-card]
+evidence:
+  - id: repository
+    url: https://github.com/microsoft/mattersim
+    label: MatterSim repository
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: readme
+    url: https://raw.githubusercontent.com/microsoft/mattersim/main/README.md
+    label: MatterSim README
+    supports: [identifiers, caveats]
+  - id: model-card
+    url: https://raw.githubusercontent.com/microsoft/mattersim/main/MODEL_CARD.md
+    label: MatterSim model card
+    supports: [identifiers, caveats]
+  - id: code-license
+    url: https://raw.githubusercontent.com/microsoft/mattersim/main/LICENSE.txt
+    label: MatterSim licence file
+    supports: []
+  - id: github-api
+    url: https://api.github.com/repos/microsoft/mattersim
+    label: GitHub repository metadata for microsoft/mattersim
+    supports: []
+caveats:
+  - The model card declares the model under the MIT License and names the two repository checkpoints, but the README describes the training corpus only as data generated through the workflows introduced in the MatterSim manuscript, and no opened page identifies a distributed training corpus, so the openness of the training data is unverified.
+  - The model card states that the released checkpoints are trained on an internal implementation of the M3GNet architecture, and the repository does not publish that implementation.
+  - The model card's Bias, Risks and Limitations section states relatively low accuracy for organic polymeric systems and a training bias toward a PBE variant with known limits across chemical space, and it recommends fine-tuning for surfaces, interfaces and long-range systems.
+  - More advanced pretrained versions of MatterSim and additional materials capabilities are offered through Azure Quantum Elements, a hosted product. The opened pages state no licence for those versions, so they are not covered by the MIT terms recorded here.
+  - The model card lists test sets sampled from MPtrj and from Alexandria, and the opened pages state no redistribution terms for the Alexandria subset.
+acknowledgements: []
+last_verified: "2026-10-21"

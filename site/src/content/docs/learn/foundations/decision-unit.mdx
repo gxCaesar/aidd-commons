@@ -1,0 +1,233 @@
+---
+title: One claim, one decision unit
+description: Assemble the scientific object, intended action, experimental context and unit of inference behind an AIDD claim, and watch a real result change meaning when one field changes.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="foundations/decision-unit" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After this lesson you should be able to write the decision unit of an AIDD claim
+as four fields, say which sentence a reported metric is evidence for, and name the
+field that a proposed comparison has quietly changed. Read [Start with the AIDD
+pipeline](/learn/foundations/getting-started/) and [Read a source and identify its
+biological object](/learn/foundations/source-and-entity-literacy/) first.
+
+**Mode: reading existing results.** The worked case reads numbers already
+committed in this repository from a completed, frozen evaluation. Nothing is run,
+retrained or re-sampled, and no command is needed. The optional inspection route
+at the end runs one offline command over the same committed files.
+
+## Four fields before any model
+
+A claim in AI-driven drug discovery is always about something, for some purpose,
+under some conditions, and it generalises over some unit. Writing those four
+things down is the decision unit.
+
+| Field                | The question it answers                                                                                                                                 | What goes wrong when it stays implicit                                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Scientific object    | What does one row denote, and what is the prediction about? A parent molecule, a salt form, an assay well, a protein construct or a patient sample.     | Two rows of one object count as two pieces of evidence, or a result about salts is read as a result about parents.      |
+| Intended action      | Which decision will the output change, among which candidates, and at what budget?                                                                      | A metric is optimised that the decision never uses, such as average error when only the top ten compounds will be made. |
+| Experimental context | Under which assay, endpoint, units, admission rules, target state and data version does a label mean what it means?                                     | Labels from different contexts are pooled as if they measured one quantity.                                             |
+| Unit of inference    | Over which independent unit is the claim meant to generalise? This fixes what must never be shared between fitting and evaluation, and what `n` counts. | A random row split lets near-copies of one unit sit on both sides, and interpolation is reported as generalisation.     |
+
+The selection population belongs with the intended action. It is the set of
+candidates in which the action will actually be taken, and it can differ from
+every set the model has seen.
+
+The fields are not independent. The unit of inference follows from the intended
+action and the context, not from whatever is easiest to split. If the action is to
+rank compounds from chemical series nobody has made yet, the unit is the series,
+and an evaluation that shares series between fitting and testing answers a
+different question.
+
+## Worked case: one model, two sentences
+
+This repository holds a completed and frozen evaluation on two ChEMBL 37 assays of
+the human EGFR kinase. It ran on 2026-09-08 on a local Mac CPU with Python 3.11.15,
+NumPy 2.4.6, scikit-learn 1.9.0 and RDKit 2025.09.6. Its locked summary is committed
+as `labs/chembl_egfr/locked-summary.json` and was read, not rerun, for this lesson.
+
+Six terms first. **pChEMBL** is the negative base-10 logarithm of the molar
+potency value, so an IC50 of 1 nM gives 9 and one of 100 nM gives 7, and a higher
+value means a more potent compound. A **Morgan fingerprint** here is a 2,048-bit
+binary vector marking which circular substructures, out to radius 2, a molecule
+contains. The **descriptor** representation is 214 computed whole-molecule
+properties from RDKit, with missing values filled by training-set medians and
+every property scaled on training molecules only. **Ridge regression** fits a
+linear model with a penalty on coefficient size. Each model was fitted on training
+molecules only, and its penalty strength was the value in a fixed grid with the
+lowest mean absolute error on the validation molecules. A **Bemis–Murcko
+scaffold** keeps a molecule's ring systems and the linkers between them and drops
+the side chains, so close analogues usually share one. **Spearman rank
+correlation** compares the order of predicted and measured values, from −1 to 1,
+where 0 means no monotonic association.
+
+**Sentence A.** "For compounds from scaffolds not seen in fitting, measured in
+assay CHEMBL5736995, a Morgan-fingerprint ridge model predicts pChEMBL with a lower
+mean absolute error than a descriptor ridge model."
+
+| Field                | Value in the frozen contract                                                                                                                                                                                                                                                                                         |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Scientific object    | The standardised ChEMBL parent molecule. The 966 admitted rows describe 902 parents. Repeated measurements on one parent are reduced to their median. 57 parents had repeats, with a median within-parent range of 0.48 and a maximum of 3.60 pChEMBL units, so for some parents the median hides real disagreement. |
+| Intended action      | Choose a representation for predicting the pChEMBL values of compounds from unseen scaffolds in this assay.                                                                                                                                                                                                          |
+| Experimental context | Assay CHEMBL5736995 on EGFR (ChEMBL target CHEMBL203), which ChEMBL classifies as a binding assay and whose description reports a TR-FRET biochemical kinase assay. Exact nanomolar IC50 records only, expressed as pChEMBL.                                                                                         |
+| Unit of inference    | The chirality-aware Bemis–Murcko scaffold. The 902 parents fall into 238 scaffolds, assigned whole and largest first to 634 training, 136 validation and 132 locked evaluation parents.                                                                                                                              |
+
+The unit of inference also tells you which compounds the numbers describe. Because
+whole scaffolds were filled largest first, the 634 training parents sit in 53
+scaffolds, while the 132 locked parents come from 124 scaffolds, 116 of them
+represented by a single parent. These counts were taken on 2026-09-11 from the
+lab's split-membership record, which stays local because it lists the members of
+the locked evaluation. Only the counts are reported here. The locked numbers are
+therefore about compounds from small scaffolds nobody fitted on, not about a typical
+new analogue of a large series.
+
+On the 132 locked parents:
+
+| Model                        | Mean absolute error (pChEMBL) | Spearman rank correlation |
+| ---------------------------- | ----------------------------: | ------------------------: |
+| Training-set mean (constant) |                         0.479 |                 undefined |
+| Descriptor ridge             |                         0.469 |                     0.129 |
+| Morgan ridge                 |                         0.418 |                     0.505 |
+
+A constant prediction has no ordering, so its rank correlation is undefined rather
+than zero. Work the error comparison through from the stored values. Morgan ridge is
+0.061 pChEMBL units below the constant baseline, about 13% of the baseline error,
+and 0.050 units below descriptor ridge, about 11% of that model's error. Subtracting
+the rounded table entries would give `0.469 − 0.418 = 0.051` instead, which is why
+a difference is computed before it is rounded.
+
+These numbers are evidence for sentence A, under the caveats the locked summary
+records about itself. A separate teaching lab had already accessed labels shared
+with this evaluation before it ran, so it is not an untouched confirmation. No
+confidence interval or p value was computed. The selected descriptor penalty sits
+at the upper edge of its frozen grid.
+
+**Sentence B.** "A Morgan-fingerprint ridge model predicts EGFR potency."
+
+Read the way such a sentence is usually heard, B is a claim about EGFR potency in
+general. It keeps the object and the model and widens two fields without saying so.
+The context becomes any EGFR assay, and the unit of inference becomes any EGFR
+compound. The primary result is one instance consistent with it, and one instance
+cannot establish a general claim. The frozen evaluation measured exactly one other
+context, assay CHEMBL3705421. It is also an EGFR enzyme assay with the same
+assay-format annotation, but it comes from a different document and uses a
+different commercial kit. Its 170 parents share no parent with the primary assay
+and fall into 23 scaffolds. The fitted models were applied to it unchanged.
+
+| Model                        | Mean absolute error on CHEMBL3705421 | Spearman rank correlation |
+| ---------------------------- | -----------------------------------: | ------------------------: |
+| Training-set mean (constant) |                                0.898 |                 undefined |
+| Descriptor ridge             |                                0.579 |                     0.113 |
+| Morgan ridge                 |                                3.132 |                    −0.041 |
+
+The representation that won under sentence A has an error `3.132 / 0.898 ≈ 3.5`
+times that of predicting a constant in the one other context tested, and its rank
+correlation there is −0.041, essentially no association. Sentence A is supported. Sentence B, as a claim
+about EGFR potency in general, is contradicted by the one other context tested, and
+nothing in this repository supports anything broader than sentence A. The model
+did not change between the two sentences. The decision unit did.
+
+## Change the action, and the unit follows
+
+Keep the object and the context of sentence A and change only the intended action.
+In a **constructed** scenario, a team has one large scaffold that is well
+represented in its training data and must choose which 15 proposed analogues of it
+to make next. The action now ranks new compounds inside one known scaffold. The unit
+of inference becomes the new analogue within a represented series, and the evidence
+the decision needs is ranking quality within that scaffold, ideally tested forward
+in time.
+
+None of the frozen numbers measures that. They pool all 132 locked parents, which
+come from scaffolds unseen in fitting, and 116 of those scaffolds hold a single
+parent. Only eight locked scaffolds hold two parents each, so ranking within a
+scaffold was not reported and could be checked on at most eight pairs here. The
+correct reading is not that the model fails this decision. It is that this
+evaluation says nothing about it. Writing the decision unit is how you notice that
+before the analogues are made.
+
+## Independent exercise
+
+A **constructed** report reads: "Our hERG classifier is accurate across the
+portfolio, with AUROC 0.86 on a random 80/20 split of 4,000 records pooled from
+three hERG assays." hERG is a cardiac potassium channel, and compounds that block
+it are flagged as a safety risk. AUROC is the probability that a randomly chosen
+positive is scored above a randomly chosen negative, so 0.5 is chance. The
+classifier was trained on those records, and the team's five active chemical series
+are all represented in them. The team intends to use it to deprioritise proposed,
+not yet synthesised, analogues in these five series.
+
+1. Write the four fields as the report implies them and as the intended action
+   requires them.
+2. Which field is mismatched, and which is missing?
+3. Name one evaluation that would bear on the intended action.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+| Field                | As the report implies                                                                                                                | As the action requires                                                           |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| Scientific object    | Records pooled from three assays. How many compounds they cover, and whether one compound appears more than once, is not stated      | One record per parent compound in the decision assay                             |
+| Intended action      | Not stated                                                                                                                           | Deprioritise proposed analogues in five named series before synthesis            |
+| Experimental context | Three hERG assays pooled. Whether they share an endpoint, and which one the decision relies on, is not stated. No threshold is given | The assay or assays, endpoint and activity threshold the decision will use       |
+| Unit of inference    | A random record                                                                                                                      | A new analogue within one of the five represented series, tested forward in time |
+
+The unit of inference is mismatched. The decision scores future analogues of series
+the model already knows, so the matching evaluation holds out the most recently
+made compounds within those series, a time split, and reports results per series. A
+random split over records answers an easier question. Unless records were grouped
+by compound and by series before splitting, close analogues and any repeat records
+of one compound can sit on both sides, and 0.86 may then largely reflect
+interpolation among known compounds. Check the membership before trusting the
+number. A
+series-held-out split would answer a harder question, which matters only if new
+series will be scored.
+
+The experimental context is missing. The report does not say whether the three
+assays measure the same endpoint or which of them the decision relies on, and pooled
+labels mean one thing only if they do. Without a threshold, nobody can say what a
+positive call means. Even a well-matched time split is retrospective evidence about compounds
+like the proposed ones, not a measurement of them.
+
+</details>
+
+## What this lesson does not show
+
+The four fields are necessary, not sufficient. Writing them does not make a
+scaffold the right unit for every task, does not repair a poorly chosen endpoint,
+and does not turn a retrospective evaluation into a prospective one. The worked
+case is one frozen evaluation on two assays of one target. Its second assay is a
+single context, not a survey of EGFR assays.
+
+## Inspect the same contract yourself
+
+The [frozen-contract inspection lab](/labs/chembl-contract-inspection/) is a
+**runnable inspection of committed files**. One offline command prints the two
+assays, the admission rules and the row arithmetic behind this case, and a second
+checks that the committed artifacts still agree. Continue to [Splits and leakage
+across three labs](/learn/evaluation-and-reproducibility/split-and-leakage-cases/)
+for units of inference beyond scaffolds, and to [Screening prevalence, affinity
+scales, and transfer](/learn/dti-screening/screening-prevalence-and-transfer/) for
+why the selection population changes what a precision means.
+
+<div data-case-sources>
+
+- [ChEMBL assay record CHEMBL5736995 (web services)](https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5736995.json)
+- [ChEMBL assay record CHEMBL3705421 (web services)](https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3705421.json)
+- [ChEMBL documentation: definition of the pChEMBL value](https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/chembl-data-questions)
+- [Bemis and Murcko (1996): the molecular frameworks of known drugs](https://pubmed.ncbi.nlm.nih.gov/8709122/)
+
+</div>
+
+The sources were opened on 2026-09-11. The metric values and repeat ranges are read
+from this repository's committed summaries and were not recomputed. The scaffold
+counts per split were counted from the lab's local split-membership record. The hERG report
+and the analogue scenario are constructed. Original lesson prose is CC BY 4.0;
+linked sources retain their own terms.
+
+Last reviewed: 2026-09-11.

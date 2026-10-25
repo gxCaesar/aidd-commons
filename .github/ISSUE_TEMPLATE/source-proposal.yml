@@ -1,0 +1,44 @@
+name: Source proposal
+description: Propose a paper, dataset, model, tool, standard, or tutorial for the Atlas.
+title: "[Source]: "
+labels: ["source-proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping extend the evidence base. Link the primary source whenever one is available.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Resource and proposed use
+      description: Identify the resource and the claims or curriculum gap it would support.
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Primary evidence
+      description: Provide direct URLs and say which claim each source supports. Mark anything you could not verify.
+    validations: { required: true }
+  - type: textarea
+    id: licence_attribution
+    attributes:
+      label: Licence and attribution
+      description: Give asset-specific terms and required credit, or state that the terms are unverified.
+    validations: { required: true }
+  - type: textarea
+    id: audience
+    attributes:
+      label: Expected audience
+      description: State the learner or practitioner group and assumed background.
+    validations: { required: true }
+  - type: textarea
+    id: scientific_assumptions
+    attributes:
+      label: Scientific assumptions
+      description: State the task, data, comparison, and scope assumptions behind the proposed claims.
+    validations: { required: true }
+  - type: textarea
+    id: conflict_disclosure
+    attributes:
+      label: Conflict disclosure
+      description: Disclose affiliations or interests connected to the resource, or write "None".
+    validations: { required: true }

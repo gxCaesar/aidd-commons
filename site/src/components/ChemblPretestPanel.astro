@@ -1,0 +1,535 @@
+---
+import developmentSummary from "../../../labs/chembl_egfr/development-summary.json";
+
+type Metric = {
+  mae: number;
+  rmse: number;
+  spearman: number | null;
+};
+
+type DevelopmentSummary = {
+  data: {
+    parent_overlap: number;
+    primary: {
+      input_rows: number;
+      parent_count: number;
+      retained_rows: number;
+    };
+    replication: { parent_count: number };
+  };
+  locked_evaluations: {
+    primary: string;
+    replication: string;
+  };
+  selection: {
+    grid_scores: {
+      descriptor_ridge: Array<{ alpha: number }>;
+    };
+    metrics: {
+      descriptor_ridge: Metric;
+      morgan_ridge: Metric;
+      train_mean: Metric;
+    };
+    selected_alphas: {
+      descriptor_ridge: number;
+      morgan_ridge: number;
+    };
+  };
+  split: {
+    actual_counts: {
+      test: number;
+      train: number;
+      validation: number;
+    };
+    scaffold_counts: {
+      primary: number;
+      replication: number;
+    };
+  };
+};
+
+const summary = developmentSummary as DevelopmentSummary;
+
+const metricLabels = [
+  { key: "train_mean", label: "Train mean" },
+  { key: "descriptor_ridge", label: "Descriptor Ridge" },
+  { key: "morgan_ridge", label: "Morgan Ridge" },
+] as const;
+const largestMae = Math.max(
+  ...metricLabels.map(({ key }) => summary.selection.metrics[key].mae),
+);
+const formatMetric = (value: number | null) =>
+  value === null ? "undefined" : value.toFixed(3);
+const validationMetrics = metricLabels.map(({ key, label }) => {
+  const metric = summary.selection.metrics[key];
+  return {
+    label,
+    mae: formatMetric(metric.mae),
+    rmse: formatMetric(metric.rmse),
+    spearman: formatMetric(metric.spearman),
+    width: `${((metric.mae / largestMae) * 100).toFixed(2)}%`,
+  };
+});
+
+const funnel = [
+  [String(summary.data.primary.input_rows), "queried rows"],
+  [String(summary.data.primary.retained_rows), "valid rows"],
+  [String(summary.data.primary.parent_count), "parent molecules"],
+  [String(summary.split.scaffold_counts.primary), "scaffold groups"],
+];
+const split = summary.split.actual_counts;
+const lockedCount = Object.values(summary.locked_evaluations).filter(
+  (state) => state === "not_run",
+).length;
+const descriptorAlpha = summary.selection.selected_alphas.descriptor_ridge;
+const descriptorGridUpperEdge = Math.max(
+  ...summary.selection.grid_scores.descriptor_ridge.map(({ alpha }) => alpha),
+);
+const descriptorAtUpperEdge = descriptorAlpha === descriptorGridUpperEdge;
+---
+
+<section class="chembl-panel" aria-labelledby="chembl-panel-title">
+  <header class="chembl-panel__header">
+    <div>
+      <p class="chembl-panel__eyebrow">Reviewed development evidence</p>
+      <h2 id="chembl-panel-title">One comparison, three boundaries</h2>
+      <p>
+        This panel preserves the model-selection snapshot before evaluation.
+        Completed primary and replication scores are reported separately below.
+      </p>
+    </div>
+    <ul class="chembl-panel__status" aria-label="Status at development freeze">
+      <li class="chembl-panel__pill chembl-panel__pill--passed">
+        <span aria-hidden="true"></span>Development passed
+      </li>
+      <li class="chembl-panel__pill chembl-panel__pill--locked">
+        <span aria-hidden="true"></span>{lockedCount} evaluations were not_run at development freeze
+      </li>
+    </ul>
+  </header>
+
+  <div class="chembl-panel__body">
+    <section class="chembl-panel__funnel" aria-labelledby="data-funnel-title">
+      <div class="chembl-panel__section-heading">
+        <p>01 / Data funnel</p>
+        <h3 id="data-funnel-title">Primary assay after frozen filters</h3>
+      </div>
+      <ol>
+        {funnel.map(([value, label], index) => (
+          <li>
+            <span class="chembl-panel__step">{String(index + 1).padStart(2, "0")}</span>
+            <strong>{value}</strong>
+            <span>{label}</span>
+          </li>
+        ))}
+      </ol>
+      <p class="chembl-panel__note">
+        The separate replication contributes {summary.data.replication.parent_count}
+        parent molecules across {summary.split.scaffold_counts.replication} scaffold
+        groups, with {summary.data.parent_overlap} parent overlap.
+      </p>
+    </section>
+
+    <section class="chembl-panel__split" aria-labelledby="split-title">
+      <div class="chembl-panel__section-heading">
+        <p>02 / Grouped partition</p>
+        <h3 id="split-title">Whole chirality-aware scaffolds</h3>
+      </div>
+      <div
+        class="chembl-panel__split-bar"
+        role="img"
+        aria-label={`${split.train} training molecules, ${split.validation} validation molecules, and ${split.test} locked test molecules`}
+      >
+        <span class="chembl-panel__train" style={`flex: ${split.train}`}>{split.train} train</span>
+        <span class="chembl-panel__validation" style={`flex: ${split.validation}`}>
+          {split.validation} validation
+        </span>
+        <span class="chembl-panel__test" style={`flex: ${split.test}`}>{split.test} locked</span>
+      </div>
+      <p class="chembl-panel__note">
+        Realised counts differ slightly from 70/15/15 targets because scaffold
+        groups are never broken.
+      </p>
+    </section>
+
+    <section class="chembl-panel__metrics" aria-labelledby="metrics-title">
+      <div class="chembl-panel__section-heading">
+        <p>03 / Validation only</p>
+        <h3 id="metrics-title">Selection evidence, not test performance</h3>
+      </div>
+      <p class="chembl-panel__axis-note">MAE in pChEMBL units · shorter is lower</p>
+      <ul>
+        {validationMetrics.map((metric) => (
+          <li>
+            <div class="chembl-panel__metric-label">
+              <strong>{metric.label}</strong>
+              <span>MAE {metric.mae}</span>
+            </div>
+            <div class="chembl-panel__track" aria-hidden="true">
+              <span style={`width: ${metric.width}`}></span>
+            </div>
+            <p>RMSE {metric.rmse} · Spearman {metric.spearman}</p>
+          </li>
+        ))}
+      </ul>
+      <div class="chembl-panel__selection">
+        <p><span>Descriptor Ridge</span><strong>alpha {descriptorAlpha}</strong></p>
+        <p>
+          <span>Morgan Ridge</span>
+          <strong>alpha {summary.selection.selected_alphas.morgan_ridge}</strong>
+        </p>
+      </div>
+      {descriptorAtUpperEdge && (
+        <p class="chembl-panel__warning">
+          The descriptor choice sits on the upper grid edge. The grid stays
+          frozen; this is reported as a limitation.
+        </p>
+      )}
+    </section>
+
+    <section class="chembl-panel__locks" aria-labelledby="locks-title">
+      <div class="chembl-panel__section-heading">
+        <p>04 / Historical evaluation boundary</p>
+        <h3 id="locks-title">Status at the development freeze</h3>
+      </div>
+      <dl>
+        <div>
+          <dt>Primary scaffold test</dt>
+          <dd><code>{summary.locked_evaluations.primary}</code></dd>
+        </div>
+        <div>
+          <dt>Assay-level replication</dt>
+          <dd><code>{summary.locked_evaluations.replication}</code></dd>
+        </div>
+      </dl>
+      <p class="chembl-panel__note">
+        These are the preserved pre-evaluation states, not the current run status.
+        <a href="#chembl-locked-title">Both completed evaluations</a> are reported
+        separately. They must not be repeated or used for retuning.
+      </p>
+    </section>
+  </div>
+</section>
+
+<style>
+  .chembl-panel {
+    margin-block: 2rem 3rem;
+    overflow: hidden;
+    border: 1px solid var(--atlas-rule);
+    background:
+      radial-gradient(
+        circle at 100% 0,
+        color-mix(in srgb, var(--atlas-coral) 15%, transparent),
+        transparent 27rem
+      ),
+      var(--atlas-panel);
+    box-shadow: var(--atlas-shadow);
+  }
+
+  .chembl-panel__header {
+    display: grid;
+    gap: 1.5rem;
+    padding: clamp(1.25rem, 4vw, 2.25rem);
+    border-bottom: 1px solid var(--atlas-rule);
+  }
+
+  .chembl-panel__header > div {
+    max-width: 46rem;
+  }
+
+  .chembl-panel__eyebrow,
+  .chembl-panel__section-heading > p {
+    margin: 0 0 0.4rem;
+    color: var(--atlas-teal-deep);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .chembl-panel h2 {
+    margin: 0;
+    color: var(--atlas-ink);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.6rem, 4vw, 2.55rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .chembl-panel__header p:last-child,
+  .chembl-panel__note {
+    color: var(--atlas-muted);
+  }
+
+  .chembl-panel__status {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chembl-panel__pill {
+    display: inline-flex;
+    min-height: 2rem;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--atlas-rule);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--atlas-bg) 72%, transparent);
+    color: var(--atlas-ink);
+    font-size: 0.72rem;
+    font-weight: 750;
+    white-space: nowrap;
+  }
+
+  .chembl-panel__pill span {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--atlas-muted);
+  }
+
+  .chembl-panel__pill--passed span {
+    background: var(--atlas-teal);
+  }
+
+  .chembl-panel__pill--locked span {
+    background: var(--atlas-coral);
+  }
+
+  .chembl-panel__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .chembl-panel__body > section {
+    min-width: 0;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border-bottom: 1px solid var(--atlas-rule);
+  }
+
+  .chembl-panel__body > section:last-child {
+    border-bottom: 0;
+  }
+
+  .chembl-panel__section-heading h3 {
+    margin: 0;
+    color: var(--atlas-ink);
+    font-size: 1.05rem;
+  }
+
+  .chembl-panel__funnel ol {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin: 1.15rem 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chembl-panel__funnel li {
+    min-width: 0;
+    padding: 0.7rem;
+    border-block: 1px solid var(--atlas-rule);
+    border-right: 1px solid var(--atlas-rule);
+  }
+
+  .chembl-panel__funnel li:first-child {
+    border-left: 1px solid var(--atlas-rule);
+  }
+
+  .chembl-panel__funnel strong,
+  .chembl-panel__funnel li > span:last-child {
+    display: block;
+  }
+
+  .chembl-panel__funnel strong {
+    margin-top: 0.35rem;
+    color: var(--atlas-ink);
+    font-size: clamp(1.15rem, 3vw, 1.65rem);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .chembl-panel__funnel li > span:last-child {
+    color: var(--atlas-muted);
+    font-size: 0.7rem;
+    line-height: 1.3;
+  }
+
+  .chembl-panel__step {
+    color: var(--atlas-teal-deep);
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .chembl-panel__split-bar {
+    display: flex;
+    min-height: 4.5rem;
+    margin: 1.15rem 0;
+    overflow: hidden;
+    border: 1px solid var(--atlas-rule);
+    font-size: 0.7rem;
+    font-weight: 800;
+  }
+
+  .chembl-panel__split-bar span {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem;
+    text-align: center;
+  }
+
+  .chembl-panel__train {
+    background: var(--atlas-teal);
+    color: var(--atlas-action-ink);
+  }
+
+  .chembl-panel__validation {
+    background: color-mix(in srgb, var(--atlas-teal) 28%, var(--atlas-panel));
+    color: var(--atlas-ink);
+  }
+
+  .chembl-panel__test {
+    background: color-mix(in srgb, var(--atlas-coral) 24%, var(--atlas-panel));
+    color: var(--atlas-ink);
+  }
+
+  .chembl-panel__axis-note {
+    margin: 0.9rem 0 0;
+    color: var(--atlas-muted);
+    font-size: 0.72rem;
+  }
+
+  .chembl-panel__metrics ul {
+    display: grid;
+    gap: 0.85rem;
+    margin: 0.9rem 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chembl-panel__metric-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--atlas-ink);
+    font-size: 0.78rem;
+  }
+
+  .chembl-panel__metric-label span,
+  .chembl-panel__metrics li > p {
+    color: var(--atlas-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .chembl-panel__track {
+    display: block;
+    height: 0.55rem;
+    margin-top: 0.25rem;
+    background: color-mix(in srgb, var(--atlas-rule) 52%, transparent);
+  }
+
+  .chembl-panel__track span {
+    display: block;
+    height: 100%;
+    background: var(--atlas-teal);
+  }
+
+  .chembl-panel__metrics li > p {
+    margin: 0.2rem 0 0;
+    font-size: 0.68rem;
+  }
+
+  .chembl-panel__selection {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .chembl-panel__selection p,
+  .chembl-panel__locks dl div {
+    margin: 0;
+    padding: 0.7rem;
+    border-left: 3px solid var(--atlas-teal);
+    background: color-mix(in srgb, var(--atlas-bg) 70%, transparent);
+  }
+
+  .chembl-panel__selection span,
+  .chembl-panel__selection strong {
+    display: block;
+  }
+
+  .chembl-panel__selection span,
+  .chembl-panel__locks dt {
+    color: var(--atlas-muted);
+    font-size: 0.68rem;
+  }
+
+  .chembl-panel__selection strong {
+    margin-top: 0.15rem;
+    font-size: 0.88rem;
+  }
+
+  .chembl-panel__warning {
+    margin: 0.8rem 0 0;
+    padding: 0.65rem;
+    border: 1px solid color-mix(in srgb, var(--atlas-coral) 58%, var(--atlas-rule));
+    color: var(--atlas-muted);
+    font-size: 0.75rem;
+  }
+
+  .chembl-panel__locks dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin: 1.15rem 0;
+  }
+
+  .chembl-panel__locks dl div {
+    border-left-color: var(--atlas-coral);
+  }
+
+  .chembl-panel__locks dd {
+    margin: 0.25rem 0 0;
+  }
+
+  .chembl-panel__locks code {
+    color: var(--atlas-ink);
+    font-weight: 800;
+  }
+
+  .chembl-panel__note {
+    margin-bottom: 0;
+    font-size: 0.78rem;
+  }
+
+  @media (max-width: 34rem) {
+    .chembl-panel__funnel ol,
+    .chembl-panel__selection,
+    .chembl-panel__locks dl {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .chembl-panel__funnel li:nth-child(3) {
+      border-left: 1px solid var(--atlas-rule);
+    }
+
+    .chembl-panel__split-bar {
+      display: grid;
+      height: auto;
+    }
+
+    .chembl-panel__split-bar span {
+      min-height: 2.4rem;
+    }
+  }
+</style>

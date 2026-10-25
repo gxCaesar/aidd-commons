@@ -1,0 +1,15 @@
+packages:
+  - site
+
+allowBuilds:
+  esbuild: true
+
+# Large platform-specific binaries such as Pagefind can be slow on international
+# links. Keep the canonical registry and allow the request to finish.
+fetchTimeout: 600000
+minimumReleaseAgeExclude:
+  - '@vitest/mocker@5.0.0'
+  - '@vitest/spy@5.0.0'
+  - astro@7.3.1
+  - vitest@5.0.0
+networkConcurrency: 4

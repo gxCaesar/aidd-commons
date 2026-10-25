@@ -1,0 +1,53 @@
+id: model-cpa
+name: CPA
+kind: model
+summary: Compositional perturbation autoencoder that factorises single-cell transcriptional responses into basal, drug, and perturbation effects so that dose, cell-type, and genetic interventions can be extrapolated to unseen combinations.
+canonical_url: https://github.com/theislab/cpa
+identifiers:
+  - scheme: paper
+    value: "Predicting cellular responses to complex perturbations in high-throughput screens; Molecular Systems Biology 19(6):e11517 (2023), DOI 10.15252/msb.202211517"
+    url: https://doi.org/10.15252/msb.202211517
+  - scheme: model-weights
+    value: "Datasets and pre-trained models collection hosted on Google Drive and linked from the README"
+    url: https://drive.google.com/drive/folders/1yFB0gBr72_KLLp1asojxTgTqgz6cwpju?usp=drive_link
+stages: [representation-learning, model-development, property-prediction]
+modalities: [single-cell-transcriptomics, perturbational-transcriptomics]
+tasks: [perturbation-comparison, cell-context-inspection, out-of-distribution-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [cpa-license] }
+openness:
+  inference_code: { value: available, evidence: [cpa-repository] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [cpa-repository] }
+  architecture: { value: available, evidence: [cpa-paper] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: BSD-3-Clause
+    scope: "Repository source code. The LICENSE file reads 'BSD 3-Clause License' and 'Copyright (c) 2023, Mohammad Lotfollahi, Theislab'. The README has no licence section, and no terms are stated for the pre-trained models or the datasets that sit in the same Google Drive collection."
+    evidence: [cpa-license, cpa-readme]
+evidence:
+  - id: cpa-repository
+    url: "https://github.com/theislab/cpa"
+    label: CPA repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: cpa-readme
+    url: "https://raw.githubusercontent.com/theislab/cpa/main/README.md"
+    label: CPA README (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: cpa-license
+    url: "https://raw.githubusercontent.com/theislab/cpa/main/LICENSE"
+    label: CPA BSD-3-Clause license file (reviewed 2026-10-21)
+    supports: []
+  - id: cpa-paper
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:%2210.15252/msb.202211517%22&resultType=core&format=json"
+    label: Europe PMC record for the CPA paper (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+caveats:
+  - The README names its tutorials through the link labels combosciplex, Norman, and Kang but does not state which dataset any released checkpoint was trained on, so the training corpus is unverified.
+  - Pre-trained models and datasets are delivered from a single Google Drive collection whose per-file terms are not stated on the opened page, and the BSD-3-Clause file covers the repository code only.
+  - The paper abstract reports that the genetic screen used a Perturb-seq experiment and that newly generated combination data were used, without naming the datasets or giving splits.
+acknowledgements: []
+last_verified: "2026-10-21"

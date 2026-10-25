@@ -1,0 +1,1049 @@
+{
+  "boundary": "A passing return record establishes a self-describing laboratory artefact. It does not establish that its measurement is true, that the tool ran in the environment it names, or that a reader can reproduce the result from the record alone.",
+  "computed_on": "2026-10-24",
+  "contract": {
+    "environment": {
+      "required": [
+        "software.python",
+        "environment.requires",
+        "environment.unavailable",
+        "environment.can_attest_external_execution"
+      ],
+      "rule": "The return must name a Python software version and nonempty requirement and unavailable lists. can_attest_external_execution must be false. These are declarations, not an independent process trace.",
+      "unavailable": [
+        "external execution attestation",
+        "proof of runtime hardware from a return record"
+      ]
+    },
+    "error_states": {
+      "field": "outcome_status",
+      "must_stop": [
+        "halt"
+      ],
+      "no_usable_result": [
+        "no_result",
+        "halt"
+      ],
+      "observed_field_names": [
+        "run_status",
+        "status",
+        "error",
+        "errors"
+      ],
+      "rule": "The outcome_status field must have one declared value. no_result licenses no usable result and halt requires stopping. Missing status cannot be inferred as complete. Existing laboratories have no uniform top-level error field.",
+      "statuses": [
+        "complete",
+        "no_result",
+        "halt"
+      ]
+    },
+    "schema": {
+      "field_coverage": [
+        "schema_version",
+        "protocol_id",
+        "computed_on",
+        "software",
+        "environment",
+        "side_effects",
+        "outcome_status",
+        "scientific_meaning",
+        "software.python",
+        "environment.requires",
+        "environment.unavailable",
+        "environment.can_attest_external_execution",
+        "side_effects.allowed_writes",
+        "scientific_meaning.licenses",
+        "scientific_meaning.does_not_license",
+        "boundary",
+        "does_not_do",
+        "does_not_show",
+        "excluded_by_design",
+        "interpretation_limits",
+        "limit_statement",
+        "limits",
+        "run_status",
+        "status",
+        "error",
+        "errors"
+      ],
+      "required": {
+        "computed_on": "iso_date",
+        "environment": "object",
+        "outcome_status": "status",
+        "protocol_id": "nonempty_string",
+        "schema_version": "nonempty_string",
+        "scientific_meaning": "object",
+        "side_effects": "object",
+        "software": "version_map"
+      },
+      "rule": "Each required field must be present with its declared type and a value. Missing and empty or invalid values are distinct failures. Extra result fields are allowed because laboratories have different outputs."
+    },
+    "scientific_meaning": {
+      "field": "scientific_meaning",
+      "limit_field_names": [
+        "boundary",
+        "does_not_do",
+        "does_not_show",
+        "excluded_by_design",
+        "interpretation_limits",
+        "limit_statement",
+        "limits"
+      ],
+      "required": [
+        "licenses",
+        "does_not_license"
+      ],
+      "rule": "Both meaning statements must be nonempty strings. A pass licenses only a self-describing artefact, not measurement truth or independent reproduction. Count existing limit declarations separately without treating them as this full statement."
+    },
+    "side_effects": {
+      "field": "side_effects.allowed_writes",
+      "rule": "Declare a list of repository-relative paths that the tool may write. An empty list makes a no-write claim checkable against a separate trace. The return record alone cannot prove that actual writes obeyed it."
+    },
+    "version": {
+      "fields": [
+        "schema_version",
+        "protocol_id"
+      ],
+      "rule": "Both fields must be nonempty strings. Without either field the record cannot be read as a versioned artefact. This does not validate the protocol's science."
+    }
+  },
+  "environment": {
+    "can_attest_external_execution": false,
+    "requires": [
+      "Python 3.11",
+      "committed local laboratory return records"
+    ],
+    "unavailable": [
+      "external execution attestation",
+      "independent measurement validation"
+    ]
+  },
+  "error_field_counts": {
+    "records_carrying_error": 0,
+    "records_carrying_errors": 0,
+    "records_carrying_run_status": 0,
+    "records_carrying_status": 0
+  },
+  "field_counts": {
+    "records_carrying_boundary": 4,
+    "records_carrying_computed_on": 32,
+    "records_carrying_does_not_do": 1,
+    "records_carrying_does_not_show": 1,
+    "records_carrying_environment": 0,
+    "records_carrying_environment.can_attest_external_execution": 0,
+    "records_carrying_environment.requires": 0,
+    "records_carrying_environment.unavailable": 0,
+    "records_carrying_error": 0,
+    "records_carrying_errors": 0,
+    "records_carrying_excluded_by_design": 2,
+    "records_carrying_interpretation_limits": 2,
+    "records_carrying_limit_statement": 1,
+    "records_carrying_limits": 2,
+    "records_carrying_outcome_status": 0,
+    "records_carrying_protocol_id": 32,
+    "records_carrying_run_status": 0,
+    "records_carrying_schema_version": 32,
+    "records_carrying_scientific_meaning": 0,
+    "records_carrying_scientific_meaning.does_not_license": 0,
+    "records_carrying_scientific_meaning.licenses": 0,
+    "records_carrying_side_effects": 0,
+    "records_carrying_side_effects.allowed_writes": 0,
+    "records_carrying_software": 32,
+    "records_carrying_software.python": 32,
+    "records_carrying_status": 0
+  },
+  "fields_in_every_record": [
+    "schema_version",
+    "protocol_id",
+    "computed_on",
+    "software",
+    "software.python"
+  ],
+  "fields_in_no_records": [
+    "environment",
+    "side_effects",
+    "outcome_status",
+    "scientific_meaning",
+    "environment.requires",
+    "environment.unavailable",
+    "environment.can_attest_external_execution",
+    "side_effects.allowed_writes",
+    "scientific_meaning.licenses",
+    "scientific_meaning.does_not_license",
+    "run_status",
+    "status",
+    "error",
+    "errors"
+  ],
+  "fields_in_some_records": [
+    "boundary",
+    "does_not_do",
+    "does_not_show",
+    "excluded_by_design",
+    "interpretation_limits",
+    "limit_statement",
+    "limits"
+  ],
+  "limit_fields_checked": [
+    "boundary",
+    "does_not_do",
+    "does_not_show",
+    "excluded_by_design",
+    "interpretation_limits",
+    "limit_statement",
+    "limits"
+  ],
+  "outcome_status": "complete",
+  "per_laboratory": [
+    {
+      "declared_limit_fields": [
+        "limits"
+      ],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "agent_evaluation_taskset",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [
+        "does_not_do"
+      ],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "applicability_domain_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "assay_endpoint_controls",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "asset_openness_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "az_clearance_system",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [
+        "boundary"
+      ],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "biologic_construct_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "candidate_evidence_chain",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "claim_chain_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [
+        "interpretation_limits"
+      ],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "claims_evidence_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "crossdomain_tradeoff",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "cyp_assay_system",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "decision_unit_scope",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [
+        "limits"
+      ],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "entity_glossary_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "free_energy_network_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [
+        "limit_statement"
+      ],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "functional_validation_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "generalization_unit_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "l1000_perturbation_context",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [
+        "boundary"
+      ],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "mechanism_consistency",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "multi_endpoint_integration",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "multi_endpoint_tradeoff",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [
+        "does_not_show",
+        "excluded_by_design"
+      ],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "nomination_readiness_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "objective_ladder",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "open_question_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [
+        "boundary"
+      ],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "oracle_exploitation_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [
+        "boundary"
+      ],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "pkpd_translation_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "relational_graph_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "rosetta_cross_modality",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "skempi_affinity",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [
+        "excluded_by_design",
+        "interpretation_limits"
+      ],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "source_review_scope_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "specificity_margin_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "split_leakage_audit",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    },
+    {
+      "declared_limit_fields": [],
+      "failed_fields": [
+        {
+          "field": "environment",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "outcome_status",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "scientific_meaning",
+          "reason": "missing_required_field"
+        },
+        {
+          "field": "side_effects",
+          "reason": "missing_required_field"
+        }
+      ],
+      "laboratory": "target_product_profile",
+      "protocol_present": true,
+      "readme_present": true,
+      "verdict": "invalid"
+    }
+  ],
+  "protocol_file_count": 32,
+  "protocol_id": "aidd-commons-lab-return-contract-v1",
+  "readme_file_count": 32,
+  "records_with_declared_limits": 11,
+  "records_without_declared_limits": 21,
+  "return_record_count": 32,
+  "schema_version": "aidd-commons.tool-contract-audit-summary.v1",
+  "scientific_meaning": {
+    "does_not_license": "The audit does not prove measurement truth, actual execution environment or independent reproduction from a return record.",
+    "licenses": "The laboratory produced a self-describing contract-audit artefact."
+  },
+  "side_effects": {
+    "allowed_writes": [
+      "labs/tool_contract_audit/summary.json"
+    ]
+  },
+  "software": {
+    "aidd_commons_labs": "0.2.0rc1",
+    "python": "3.11.15"
+  },
+  "verdict_counts": {
+    "halt": 0,
+    "invalid": 32,
+    "no_result": 0,
+    "pass": 0
+  }
+}

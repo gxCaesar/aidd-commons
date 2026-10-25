@@ -1,0 +1,87 @@
+---
+import { parse } from "yaml";
+import { buildResourceMap } from "../../../scripts/curriculum/resource-map.js";
+import type { Curriculum } from "../../../scripts/curriculum/curriculum.js";
+import type { Resource } from "../../../catalog/schema/resource.js";
+import source from "../../../catalog/curriculum/tracks.yaml?raw";
+import resourceData from "../../public/data/resources.v1.json";
+
+interface Props { chinese?: boolean; }
+const { chinese = false } = Astro.props;
+const map = buildResourceMap(parse(source) as Curriculum, resourceData as Resource[]);
+const resources = new Map(map.resources.map((resource) => [resource.id, resource]));
+const prefix = chinese ? "/zh-cn" : "";
+const capabilityLabels: Record<string, string> = chinese
+  ? { orientation: "导览", explanation: "讲解", "worked-example": "示例", exercise: "练习", runnable: "可运行" }
+  : { orientation: "Orientation", explanation: "Explanation", "worked-example": "Worked example", exercise: "Exercise", runnable: "Runnable" };
+---
+
+<section data-curriculum-resource-map aria-label={chinese ? "当前单元资源矩阵" : "Current unit resource matrix"}>
+  <p>
+    {chinese
+      ? `${map.rows.length} 个单元；Atlas 共 ${map.catalog_resource_count} 条资源。下列参考资料按现有课程关联生成，不是逐单元完整性评分。`
+      : `${map.rows.length} units; ${map.catalog_resource_count} resources in the Atlas. Reading lists follow current lesson assignments; they are not per-unit completeness scores.`}
+  </p>
+  <p><a href="/data/curriculum-resources.json" download>{chinese ? "下载当前资源关联（JSON）" : "Download current resource associations (JSON)"}</a></p>
+  {map.tracks.map((track) => (
+    <details class="resource-map-track" data-resource-track={track.id} open={track.id === "foundations"}>
+      <summary>{chinese ? track.title_zh : track.title}</summary>
+      <table>
+        <caption>{chinese ? "课程活动与参考资料分开列出；资源充分性尚未逐单元评定。" : "Teaching activities and reading are separate; resource sufficiency has not been assessed per unit."}</caption>
+        <thead><tr>
+          <th scope="col">{chinese ? "单元与正文" : "Unit and lesson"}</th>
+          <th scope="col">{chinese ? "章节活动" : "Lesson activities"}</th>
+          <th scope="col">{chinese ? "章节登记资源" : "Registered lesson resources"}</th>
+        </tr></thead>
+        <tbody>{map.rows.filter((row) => row.track_id === track.id).map((row) => (
+          <tr data-resource-unit={row.unit_id}>
+            <th scope="row">{row.lesson_id
+              ? <a data-resource-lesson href={`${prefix}/learn/${row.lesson_id}/`}>{chinese ? row.title_zh : row.title}</a>
+              : <span>{chinese ? row.title_zh : row.title} ({chinese ? "计划中" : "Planned"})</span>}</th>
+            <td>{row.capabilities.length ? row.capabilities.map((value) => capabilityLabels[value]).join(chinese ? "、" : ", ") : "—"}</td>
+            <td>
+              {row.lesson_resource_ids.length ? <ul>{row.lesson_resource_ids.map((id) => {
+                const resource = resources.get(id)!;
+                return <li><a href={`/atlas/${id}/`}>{resource.name}</a> <small>({resource.kind})</small></li>;
+              })}</ul> : <span>{chinese ? "尚未登记章节资源" : "No assigned lesson resources"}</span>}
+              {row.pathway_resource_ids.length > 0 && <details>
+                <summary>{chinese ? "另见轨道阅读" : "Additional track reading"}</summary>
+                <ul>{row.pathway_resource_ids.map((id) => <li><a href={`/atlas/${id}/`}>{resources.get(id)!.name}</a></li>)}</ul>
+              </details>}
+            </td>
+          </tr>
+        ))}</tbody>
+      </table>
+    </details>
+  ))}
+</section>
+
+<script>
+  document.querySelectorAll<HTMLDetailsElement>(".resource-map-track").forEach((track) => {
+    const update = () => {
+      const table = track.querySelector("table");
+      if (!table || !track.open) return;
+      if (table.scrollWidth > table.clientWidth) {
+        table.tabIndex = 0;
+        table.setAttribute("aria-label", document.documentElement.lang.startsWith("zh") ? "可滚动资源表" : "Scrollable resource table");
+      } else {
+        table.removeAttribute("tabindex");
+        table.removeAttribute("aria-label");
+      }
+    };
+    track.addEventListener("toggle", update);
+    window.addEventListener("resize", update);
+    requestAnimationFrame(update);
+  });
+</script>
+
+<style>
+  .resource-map-track { margin-block: 1rem; }
+  summary { cursor: pointer; }
+  table { display: block; width: 100%; overflow-x: auto; }
+  th, td { vertical-align: top; min-width: 9rem; }
+  td:last-child { min-width: 15rem; }
+  caption { text-align: left; font-size: .85rem; padding-block: .5rem; }
+  ul { padding-inline-start: 1.2rem; }
+  small { color: var(--sl-color-gray-3); }
+</style>

@@ -1,0 +1,40 @@
+id: benchmark-biostudybench
+name: BioStudyBench
+kind: benchmark
+summary: Benchmark of 25 long-horizon biomedical analysis tasks with paired no-data controls and cutoff-restricted retrieval to probe gains over prior knowledge and reduce answer leakage.
+canonical_url: https://arxiv.org/abs/2610.07614
+identifiers:
+  - scheme: paper
+    value: "BioStudyBench: Evaluating Agents on Post-Cutoff Biomedical Studies; Li, Karim and Gensbigler, arXiv 2610.07614, submitted 6 October 2026"
+    url: https://arxiv.org/abs/2610.07614
+stages: [evaluation]
+modalities: [biomedical-text, scientific-data]
+tasks: [agentic-planning, scientific-question-answering, benchmark-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: unverified }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: not_applicable, evidence: [paper-fulltext] }
+  weights: { value: not_applicable, evidence: [paper-fulltext] }
+  architecture: { value: not_applicable, evidence: [paper-fulltext] }
+  data_recipe: { value: available, evidence: [paper-fulltext] }
+  training_data: { value: not_applicable, evidence: [paper-fulltext] }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: paper-record
+    url: https://arxiv.org/abs/2610.07614
+    label: The arXiv record, re-opened on 2026-10-25, with its title, author list, submission date and abstract
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: paper-fulltext
+    url: https://arxiv.org/html/2610.07614v1
+    label: Full text read on 2026-10-25, especially Sections 3–6 and the task appendix
+    supports: [summary, caveats]
+caveats:
+  - "The inspected paper provides construction details and task descriptions but no benchmark-package download or code licence. Packaged release and access remain unverified. Public evaluation data do not establish training-data availability."
+  - "The 25 tasks come from July–September 2026 studies selected from 404,019 PubMed records. Agents acquire public data rather than receive bundled files. Reported cutoffs, date filters and source restrictions reduce leakage risk without proving absence of prior exposure or answer-bearing sources."
+  - "Each condition is repeated three times. Across eight models, data and tools improve average pass rate by 47 percentage points. The best open-weight and closed-weight results are 81.3 and 94.7 percent. These are descriptive model comparisons, not a causal effect of weight accessibility."
+  - "Passing measures agreement with the published reference within the scoring tolerance, not comprehensive methodological correctness. A correct answer need not follow a correct analysis. This record did not run the tasks."
+acknowledgements: []
+last_verified: "2026-10-25"

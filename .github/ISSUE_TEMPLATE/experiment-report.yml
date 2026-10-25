@@ -1,0 +1,41 @@
+name: Experiment report
+description: Contribute a reproducible result, negative result, replication, or failure analysis.
+title: "[Experiment]: "
+labels: ["experiment-report"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Question and observed result
+      description: Separate measured observations from interpretation and future work.
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Run evidence
+      description: Give the public code/config, data version, exact command, logs or tables, and failed checks needed to inspect the result.
+    validations: { required: true }
+  - type: textarea
+    id: licence_attribution
+    attributes:
+      label: Licence and attribution
+      description: Identify terms for data, software, weights, and contributed outputs.
+    validations: { required: true }
+  - type: textarea
+    id: audience
+    attributes:
+      label: Expected audience
+      description: State which lesson, lab, or research decision this result informs.
+    validations: { required: true }
+  - type: textarea
+    id: scientific_assumptions
+    attributes:
+      label: Protocol and assumptions
+      description: State samples, split, metric, selection rule, seeds, exclusions, leakage checks, and uncertainty unit.
+    validations: { required: true }
+  - type: textarea
+    id: conflict_disclosure
+    attributes:
+      label: Conflict disclosure
+      description: Disclose relevant affiliations, funding, or interests, or write "None".
+    validations: { required: true }

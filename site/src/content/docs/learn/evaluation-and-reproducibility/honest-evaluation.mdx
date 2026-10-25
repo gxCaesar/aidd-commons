@@ -1,0 +1,59 @@
+---
+title: Honest evaluation
+description: Audit the independent generalization unit before interpreting an AIDD result.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="evaluation-and-reproducibility/honest-evaluation" />
+
+## Foundations
+
+Evaluation begins with the unit expected to generalize: molecule, scaffold,
+target, protein family, assay, patient, time period, or experimental campaign.
+A high score is not informative until the split, labels, leakage controls, and
+comparison protocol are explicit.
+
+## Practical workflow
+
+Write a data contract and freeze split construction, model selection, metric,
+and uncertainty reporting before model comparison. Use a cheap baseline and
+audit duplicate, scaffold, target, and time overlap. [Therapeutics Data
+Commons](https://tdcommons.ai/) and [OGB](https://ogb.stanford.edu/) publish
+task definitions, but a project still needs to inspect the matched endpoint.
+
+## Evaluation
+
+Report the benchmark version, inputs, labels, splits, selection protocol,
+failed runs, and uncertainty over the actual independent unit. For structures,
+[PoseBusters](https://github.com/maabuu/posebusters) checks selected physical
+plausibility conditions; it does not validate biological efficacy.
+
+## Frontier and open questions
+
+Out-of-distribution evaluation, dataset shift, label noise, and benchmark
+leakage remain active problems. [DrugOOD](https://drugood.github.io/) makes
+one family of distribution shifts explicit, not every way a deployed decision
+can fail.
+
+## What v0.1 does not yet teach
+
+v0.1 does not publish new benchmark scores, assert that any split is leakage
+free by default, or certify reproducibility from a repository link alone.
+
+## Core-source path
+
+Apply these distinctions in [Splits and leakage across three labs](/learn/evaluation-and-reproducibility/split-and-leakage-cases/).
+The browser-only exercise includes four cases and worked answers drawn from
+the completed ChEMBL, rMD17 and pool-budget labs.
+Exercise link added: 2026-09-08; the scientific-source review date below is unchanged.
+
+Continue with [Metrics and uncertainty across four labs](/learn/evaluation-and-reproducibility/metrics-and-uncertainty/)
+to distinguish prediction error, rank association, interval coverage and
+budgeted recovery. This second exercise link was added on 2026-09-09.
+
+Start from the [TDC](https://tdcommons.ai/) and [OGB](https://ogb.stanford.edu/)
+task documentation, then inspect the exact data and split implementation before
+adopting a reported comparison.
+
+Last reviewed: 2026-09-04.

@@ -1,0 +1,135 @@
+---
+title: 流模型与受约束分子搜索
+description: 将生成密度模型作为冻结的候选空间和选择策略的一部分，而不是把生成字符串当作发现。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Flows and constrained molecular search](/learn/molecular-generation/flows-and-constrained-search/)。
+
+<LessonProgress lessonId="molecular-generation/flows-and-constrained-search" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将先于选择生成器定义候选空间，解释可逆 normalizing flow 能够和不能评分的内容，并在不隐藏选择
+规则的情况下形成透明的多目标短名单。请先读[生成与搜索](/zh-cn/learn/molecular-generation/generation-and-search/)
+和[生成模型机制](/zh-cn/learn/molecular-generation/generative-model-mechanisms/)。本课为浏览器和手算教学，
+不是可运行生成器、合成计划、活性预测或实验性提名。
+
+## 候选空间不只是表示
+
+令 `C` 为一个过程可提出的候选集合。采样前定义表示、允许原子/键、骨架或片段 grammar、禁止基团、
+立体化学、质子化/互变异构处理和硬约束。字符串、图、构象和质子化状态可为不同 `C` 成员，因此
+去重必须命名身份。Grammar 控制提案，却不证明稳定、有用、可合成或新颖。Validity 需要已命名的
+检查器和表示。生成器输出是可追溯提案，不是发现。
+
+## Normalizing flow 建模什么
+
+对带有可逆变换 `z = f_theta(x)` 的连续表示，变量变换规则给出：
+
+`log p_X(x) = log p_Z(f_theta(x)) + log|det J_f_theta(x)|`。
+
+其中 `p_Z` 是基础密度，`J_f_theta(x)` 是变换的 Jacobian。该方程解释为何 normalizing flow 可为
+其已声明表示同时采样和精确计算密度。它不意味着该密度是生物活性、临床效用或化学成功的概率。
+表示须支持可逆性和可处理 determinant；可变大小的分子图、离散 token、立体化学替代方案和受约束
+grammar 都在这条简单方程之外加入设计选择。
+
+一个**构造的 1D 手算**使 Jacobian 具体化。令 `z = x/2`。当 `x = 2` 时，`z = 1` 且
+`|dz/dx| = 1/2`。若标准正态 base density 为 `phi(1) = 0.24197`，变换后的 density 是
+`p_X(2) = 0.24197 x (1/2) = 0.120985`。这是 `x = 2` 处的 density，不是某分子存在、有效或在测定中
+成功的概率。
+
+**机制手算练习（不可运行、非实证）：** 保持 `z = x/2` 和标准正态 base。在 `x = 0` 时，计算 `z`、
+`phi(z)` 和 `p_X(0)`。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+在 `x = 0` 时，`z = 0`；`phi(0) = 0.39894`，并且
+`p_X(0) = 0.39894 x (1/2) = 0.19947`。它仍是连续 density，而不是分配给候选或实证结局的概率。
+
+</details>
+
+Rezende 与 Mohamed 使用 normalizing flows，通过可逆变换构造更丰富的变分分布
+[Variational Inference with Normalizing Flows](https://arxiv.org/abs/1505.05770)。相关连续时间方法可沿
+选择的概率路径学习向量场，示意为 `dx_t/dt = v_theta(x_t, t)`
+[Flow Matching for Generative Modeling](https://arxiv.org/abs/2210.02747)。
+任一形式都不会自动使化学表示有效。应声明哪一种模型给出候选提案，哪一种独立检查在解码后运行。
+
+## 搜索需要冻结目标与可见门槛
+
+分子选择通常涉及不相容目标。标量目标如 `S(x) = w_1 a(x) + w_2 b(x) - w_3 c(x)` 只有在查看偏好
+输出前固定定义、尺度、权重和硬排除时才可解释。`a(x)` 可以是已声明模型分数，`b(x)` 是性质代理，
+`c(x)` 是惩罚。它们不会仅因有数字而成为测量。Pareto 规则可避免任意权重：候选 `x` 仅在每个已
+声明目标均不差且至少一个更好时支配 `y`。
+
+应将 diversity 声明为图、骨架或 embedding 距离，或相似类似物上限。近重复批次不是独立证据。
+将硬门槛与排序分开，再保留候选、过滤、分数版本和规则。
+
+| 阶段     | 必须记录                                       | 不可替代为   |
+| -------- | ---------------------------------------------- | ------------ |
+| 提案     | 模型/版本、seed 策略、输入 grammar 和解码身份  | 显示名称     |
+| 有效性   | 检查器、标准化策略和失败原因                   | 未验证字符串 |
+| 硬分流   | 预先声明的排除或可行性规则                     | 高分补偿     |
+| 排序     | 分数定义、若有则校准集、冻结权重或 Pareto 规则 | 人工偏好示例 |
+| 批次选择 | diversity 定义、重复规则和保留替代项           | 生成样本数   |
+
+## 自己把闸门跑一遍
+
+本课主张目标必须冻结、门槛必须可见。[生成闸门实验](/zh-cn/labs/generation-gate/)
+把两者都做成可离线运行的：当目标的性质没有界限、或基团没有模式时，它拒绝对其运行筛选；
+随后施加六道分母逐级相扣的闸门，于是头条有效率与幸存数可以被直接对照。
+
+## 已解案例：透明的构造短名单
+
+本案例的全部数值均为**构造的教学数值**。一个团队在查看候选前冻结三条规则：`valid = 1`；资源
+代理必须满足 `h(x) >= 0.70`；第二个批次成员与第一个的 diversity distance 至少为 `0.20`。其已
+声明目标是最大化 `a(x)` 和 `b(x)`，而不把它们转成单一加权分数。
+
+| 候选 | `valid` | `h(x)` | `a(x)` | `b(x)` | 与 A 的距离 |
+| ---- | ------: | -----: | -----: | -----: | ----------: |
+| A    |     `1` | `0.76` | `0.82` | `0.61` |      `0.00` |
+| B    |     `1` | `0.68` | `0.91` | `0.77` |      `0.45` |
+| C    |     `1` | `0.79` | `0.84` | `0.64` |      `0.08` |
+
+候选 B 虽有吸引人的模型分数，却失败硬 `h(x)` 门槛。候选 C 在两个已声明分数上支配 A 且通过
+`h(x)`，但在 A 之后不能作为第二批次成员，因为 `0.08 < 0.20`。团队若记录该选择并从 C 的角度
+应用同一批次规则，可提名 C 而非 A；它不可只报告 A 和 B 以暗示高分跨越了失败门槛。这是选择策略
+练习，不是关于真实分子或测定结局的主张。
+
+## 局限与独立练习
+
+密度继承训练偏差；检查器和性质/可行性代理可失败。更多候选增加选择压力，而非证据。应保留未选
+和失败案例，使后续结果可追溯到策略。
+
+**手算练习（不可运行、非实证）：** 一个构造批次有硬规则 `q(x) >= 0.60` 和 diversity 阈值 `0.30`。
+D 有 `q(x) = 0.64`、分数 `0.70`；E 有 `q(x) = 0.58`、分数 `0.94`；F 有 `q(x) = 0.71`、分数
+`0.72`，且与 D 的距离为 `0.22`。哪些候选失败硬门槛，F 能否在 D 后加入？说出一项记录，避免之后
+读者误把该选择视为实证发现。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+E 失败，因为 `0.58 < 0.60`。F 通过硬规则，但在已声明 diversity 策略下不能在 D 后加入，因为
+`0.22 < 0.30`。有用记录包括精确候选身份与标准化、模型和分数版本、冻结门槛与 diversity 定义、
+所有考虑候选，以及每一项排除原因。构造分数均不确立活性、安全性或合成成功。
+
+</details>
+
+## 来源与下一课
+
+下列原始论文于 2026-09-09 打开。它们支持概率形式，不支持构造搜索分数或生成候选有用的主张。
+
+<div data-case-sources>
+
+- [Variational Inference with Normalizing Flows](https://arxiv.org/abs/1505.05770)
+- [Flow Matching for Generative Modeling](https://arxiv.org/abs/2210.02747)
+
+</div>
+
+继续阅读[反应映射与路线搜索](/zh-cn/learn/synthesis-and-automation/reaction-mapping-and-route-search/)，以理解为何一个分子提案需要另行记录的转化与路线假设。
+原创课程文字采用 CC BY 4.0；链接来源保留各自条款。
+
+最后审阅：2026-09-09。

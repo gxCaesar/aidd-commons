@@ -1,0 +1,47 @@
+id: benchmark-lab-bench
+name: LAB-Bench
+kind: benchmark
+summary: Biology-research capability evaluation with literature, database, figure, table, protocol and sequence questions and a multiple-choice evaluation interface.
+canonical_url: https://github.com/Future-House/LAB-Bench
+identifiers:
+  - scheme: dataset
+    value: Public LAB-Bench dataset and task configurations
+    url: https://huggingface.co/datasets/futurehouse/lab-bench
+  - scheme: paper
+    value: Language Agent Biology Benchmark
+    url: https://arxiv.org/abs/2407.10362
+stages: [evaluation, evidence-synthesis, analysis]
+modalities: [text, image, sequence]
+tasks:
+  [scientific-question-answering, biological-research-capability-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [repository] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: CC BY-SA 4.0
+    scope: Public LAB-Bench dataset; not blanket rights to every third-party source or model
+    evidence: [dataset-license]
+evidence:
+  - id: repository
+    url: https://raw.githubusercontent.com/Future-House/LAB-Bench/main/README.md
+    label: Official task descriptions and evaluation interface, reviewed 2026-09-09
+    supports:
+      [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: dataset-license
+    url: https://huggingface.co/datasets/futurehouse/lab-bench/blob/main/LICENSE
+    label: Public dataset LICENSE text
+    supports: []
+caveats:
+  - The repository describes a public portion and a separate private holdout for contamination monitoring; this entry does not provide the private portion.
+  - A benchmark's hosted split label is not a training-data recommendation. No benchmark questions were used to train or evaluate a model here.
+  - Multiple-choice performance measures the specified questions and tool setting, not autonomous laboratory execution.
+acknowledgements: []
+last_verified: "2026-09-09"

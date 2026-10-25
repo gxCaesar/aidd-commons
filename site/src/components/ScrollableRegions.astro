@@ -1,0 +1,42 @@
+<span data-scrollable-regions hidden></span>
+
+<script>
+  const contentSelector = ".sl-markdown-content table, .sl-markdown-content pre";
+
+  function updateScrollableRegions() {
+    document.querySelectorAll<HTMLElement>(contentSelector).forEach((region) => {
+      if (region.scrollWidth > region.clientWidth) {
+        region.tabIndex = 0;
+        region.setAttribute(
+          "aria-label",
+          region instanceof HTMLTableElement
+            ? "Scrollable table"
+            : "Scrollable code example",
+        );
+      } else {
+        region.removeAttribute("tabindex");
+        region.removeAttribute("aria-label");
+      }
+    });
+  }
+
+  // A table only becomes wider than its container once its content has laid out,
+  // and the web font arriving changes that width again. Measuring once, on the
+  // first animation frame, therefore catches the tables whose width is known
+  // at that moment and misses the ones that settle later, which leaves a
+  // scrollable region that a keyboard cannot reach. The measurement is repeated
+  // when the fonts are ready, whenever the content is resized, and once the
+  // page has finished loading.
+  requestAnimationFrame(updateScrollableRegions);
+  window.addEventListener("resize", updateScrollableRegions);
+  window.addEventListener("load", updateScrollableRegions);
+  document.fonts?.ready.then(updateScrollableRegions);
+
+  if ("ResizeObserver" in window) {
+    const observer = new ResizeObserver(updateScrollableRegions);
+    const content = document.querySelector<HTMLElement>(".sl-markdown-content");
+    if (content) {
+      observer.observe(content);
+    }
+  }
+</script>

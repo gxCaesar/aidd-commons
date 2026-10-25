@@ -1,0 +1,72 @@
+---
+title: 2026 年的三种蛋白质设计方法
+description: 根据任务约定、已发布资产和证据边界，阅读 Raygun、NISE 与 LASErMPNN 的资源记录。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/frontier-protein-design-2026" />
+
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+学完[核酸与肽设计的开放模型](/zh-cn/learn/biologics-design/nucleic-acid-and-peptide-models/)后，用这些注明日期的目录记录区分序列编辑方法、迭代设计流程，以及该流程使用的序列网络。找出每份记录对训练材料、已发布资产和使用许可确立了什么。本课是附带书面练习的阅读课，没有运行任何方法或资产。[英文原版](/learn/biologics-design/frontier-protein-design-2026/)是规范版本。
+
+## 比较约定
+
+Raygun 对现有蛋白质序列同时进行插入、删除和替换。NISE 在针对已放置配体的序列提案与结构及结合预测之间迭代。LASErMPNN 在 NISE 中提供以配体为条件的序列设计和侧链装配，但 NISE 也可用 LigandMPNN 进行序列设计。这些资源彼此相关，却不是三个可互换的预测器。记录没有提供可用于排名的共同输入集合、分割、指标或基线。代码或权重的发布提供核查路径，不等于结果已复现。
+
+## Raygun
+
+[Raygun 仓库](https://github.com/rohitsinghlab/raygun)介绍了以模板为基础编辑现有蛋白质的方法。它将 ESM-2 嵌入表示为固定长度的块，从而能同时进行插入、删除和替换，也能在无需重新训练的情况下改变序列长度。[README](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/README.md)将 4 个具名检查点分别对应到含 8.8 million、4.4 million、2.2 million 和 100,000 条序列的 UniRef50 子集。除这些数量外，README 没有说明子集的过滤方法。
+
+记录确立了推断和训练代码，并通过 `raygun.pretrained` 导入方式说明如何使用预训练模型。它没有列出独立的检查点下载网址。所链接的 [Zenodo 记录](https://zenodo.org/records/19546626)对应训练与基准序列，而不是注明的检查点下载地址。读者可以核查已发布流程和列出的资产，但记录未确立评估代码入口或已复现的比较。[LICENSE 文件](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/LICENSE)写的是 CC BY-NC 4.0，并禁止商业用途。README 则写为 CC-BY-NC-SA 4.0，还描述了用于内部评估的 60-day 试用许可及后续商业使用所需的单独协议。这两份第一方声明不一致，因此无法仅凭本记录确定适用条款。
+
+## NISE
+
+[NISE 仓库](https://github.com/polizzilab/NISE)描述了一套迭代选择与扩展流程，用于围绕蛋白质与配体的姿态优化蛋白质序列和结构。它使用 LASErMPNN 或 LigandMPNN 设计序列，并使用 Boltz-1x 或 Boltz-2x 评估结构和结合。[README](https://raw.githubusercontent.com/polizzilab/NISE/main/README.md)说明了推断用法和流程架构。它指向一个模型访问脚本和一个预建的执行容器，但没有列出单独的权重文件或检查点下载地址。容器是执行环境，并不能证明检查点已经发布。
+
+记录未核实 NISE 的训练代码、权重、数据配方、训练数据或评估代码。README 没有指出训练语料或分割，也没有许可声明；记录未检查 LICENSE 文件。因此，记录既未确立适用许可，也未确立可复现的训练或评估流程。
+
+## LASErMPNN
+
+[LASErMPNN 仓库](https://github.com/polizzilab/LASErMPNN)描述了 NISE 使用的配体条件序列网络。它针对固定骨架和已放置配体提出序列，也支持侧链装配。[README](https://raw.githubusercontent.com/polizzilab/LASErMPNN/main/README.md)称该网络使用质子化结构训练。它列出了分别下载配体编码器训练数据集和质子化 PDB 训练数据集的脚本，但没有给出任一语料的名称、记录数量、过滤方法或分割大小。
+
+记录确立了已发布的推断和训练代码。README 将 `laser_weights_0p1A_nothing_heldout.pt` 指为默认检查点，并说明其他权重位于仓库的 `model_weights` 目录，但没有给出独立的检查点下载地址。这些材料可供读者核查记录中的模型和训练路径，本课却没有执行它们或复现评估。README 没有许可声明，记录也未检查 LICENSE 文件。资产可用因此不能确立使用权利。由于语料未具名，也无法将已发布权重准确对应到可重建的训练集。
+
+## 按维度记录开放状态
+
+以下七列保留目录中的不同维度。可用表示被引用的记录确立了访问或文档证据，不代表本课执行过资产。未核实表示记录没有确立该维度。
+
+| 资源 | 推断代码 | 训练代码 | 权重 | 架构 | 数据配方 | 训练数据 | 评估代码 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Raygun | 可用 | 可用 | 可用 | 可用 | 可用 | 可用 | 未核实 |
+| NISE | 可用 | 未核实 | 未核实 | 可用 | 未核实 | 未核实 | 未核实 |
+| LASErMPNN | 可用 | 可用 | 可用 | 可用 | 可用 | 可用 | 可用 |
+
+## 推演案例
+
+某团队希望将 Raygun 用于商业场景，于是查阅了仓库中的两份第一方许可声明。[README](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/README.md)写的是 CC-BY-NC-SA 4.0，并描述了用于内部评估的 60-day 试用许可。[LICENSE 文件](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/LICENSE)写的是 CC BY-NC 4.0，并指出材料不得用于商业目的。仅凭这两份文件，无法确定哪份条款适用于该团队拟议的使用。团队需要请作者澄清适用许可、试用范围以及任何单独商业协议的条款，才能将仓库视为已获准用于该用途。目录中的访问标签无法解决第一方声明之间的冲突。
+
+## 独立练习
+
+一位同事看到 NISE 可以调用 LASErMPNN，就认为 NISE 也发布了相同的训练资产和权重。根据开放状态表，指出 NISE 哪些字段仍未核实，并说明两者的关系为什么不能改变这些字段。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+NISE 自身记录中的训练代码、权重、数据配方、训练数据和评估代码均为未核实。LASErMPNN 在这些字段上均标为可用，但 NISE 能使用该网络，并不意味着其资产就成为 NISE 的资产。NISE README 所述容器和模型访问脚本没有指出单独的 NISE 检查点。LASErMPNN 的数据集脚本也没有给出训练语料名称。结论依据的是每项资源各自的开放状态字段和 README 限制，而非它们之间的关系。
+
+</details>
+
+## 适用范围
+
+记录未打开各论文的正文，因此本课不转述报告的命中率和亲和力。NISE 与 LASErMPNN 的 README 均没有许可声明，记录也未检查其 LICENSE 文件，所以两份记录均未记载许可。两者都没有给出训练语料名称。Raygun 子集的过滤方法和许可冲突的解决方式仍不明确。阅读开放状态字段不等于执行资产、复现模型，也不能确立共同基准或已测得的读者学习成效。
+
+## 来源
+
+目录记录 `model-raygun`、`model-nise` 和 `model-lasermpnn` 均于 2026-10-23 最后核实。Raygun 记录引用了[仓库](https://github.com/rohitsinghlab/raygun)、[README](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/README.md)、[LICENSE 文件](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/LICENSE)和 [Zenodo 记录](https://zenodo.org/records/19546626)。NISE 记录引用了[仓库](https://github.com/polizzilab/NISE)和 [README](https://raw.githubusercontent.com/polizzilab/NISE/main/README.md)。LASErMPNN 记录引用了[仓库](https://github.com/polizzilab/LASErMPNN)和 [README](https://raw.githubusercontent.com/polizzilab/LASErMPNN/main/README.md)。各来源保留自身声明的适用范围。
+
+Last reviewed: 2026-10-23.

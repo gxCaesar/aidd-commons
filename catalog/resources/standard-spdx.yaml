@@ -1,0 +1,70 @@
+id: standard-spdx
+name: SPDX
+kind: standard
+summary: Licence metadata standard and specification resource.
+canonical_url: https://spdx.dev/
+identifiers:
+- scheme: documentation
+  value: SPDX License List
+  url: https://spdx.org/licenses/
+stages:
+- data-intake
+- governance
+modalities:
+- licence-metadata
+tasks:
+- licence-expression
+relations: []
+status:
+  value: unverified
+access_level:
+  value: open_source
+  evidence:
+  - legal-notices
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: Community-Spec-1.0 with CC-BY-3.0
+  scope: The legal notices state that each version of the SPDX Specification is offered in its entirety under the Community Specification License 1.0 together with the Creative Commons Attribution License 3.0 Unported, and that the trademark licence is conditional on complying with that specification. The grant covers the specification documents. The separate repository that publishes the licence-list data carries no licence file, so the data files are not covered by this grant on the record.
+  evidence:
+  - legal-notices
+evidence:
+- id: resource-links-2026-09-08
+  url: https://spdx.dev/
+  label: Official source for additional resource links (reviewed 2026-09-08)
+  supports:
+  - identifiers
+- id: official-page
+  url: https://spdx.dev/
+  label: SPDX official page
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - caveats
+- id: legal-notices
+  url: https://spdx.dev/legal-notices
+  label: SPDX legal notices (reviewed 2026-10-23) — the specification is offered under Community-Spec-1.0 with CC-BY-3.0
+  supports:
+  - caveats
+caveats:
+- The legal notices read on 2026-10-23 state that each version of the SPDX Specification is offered in its entirety under the Community Specification License 1.0 together with the Creative Commons Attribution License 3.0 Unported, and they set the conditions under which the SPDX trademarks may be used. The separate repository that publishes the licence-list data carries no licence file, so the data files themselves are not covered by this grant on the record.
+- SPDX expressions describe licences but do not resolve an upstream resource's legal scope.
+acknowledgements: []
+last_verified: '2026-10-23'

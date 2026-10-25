@@ -1,0 +1,110 @@
+{
+  "computed_on": "2026-09-12",
+  "correlation": {
+    "clean_pairs_only": {
+      "count": 1015,
+      "pearson_r": 0.2990050716862229,
+      "spearman_p_value": 4.10244536347541e-23,
+      "spearman_rho": 0.3037894169671597
+    },
+    "full": {
+      "count": 1195,
+      "pearson_r": 0.2987472291525193,
+      "spearman_p_value": 6.079963622665975e-26,
+      "spearman_rho": 0.2980596894318972
+    }
+  },
+  "divergent_examples": {
+    "primary_selective": [
+      {
+        "difference": 2.9000000000000004,
+        "parent_molecule_chembl_id": "CHEMBL298817",
+        "primary_pchembl": 7.4,
+        "secondary_pchembl": 4.5
+      },
+      {
+        "difference": 2.79,
+        "parent_molecule_chembl_id": "CHEMBL1650652",
+        "primary_pchembl": 7.4,
+        "secondary_pchembl": 4.61
+      },
+      {
+        "difference": 2.75,
+        "parent_molecule_chembl_id": "CHEMBL4755729",
+        "primary_pchembl": 6.8,
+        "secondary_pchembl": 4.05
+      }
+    ],
+    "secondary_selective": [
+      {
+        "difference": -2.87,
+        "parent_molecule_chembl_id": "CHEMBL5925065",
+        "primary_pchembl": 4.7,
+        "secondary_pchembl": 7.57
+      },
+      {
+        "difference": -2.6899999999999995,
+        "parent_molecule_chembl_id": "CHEMBL1642906",
+        "primary_pchembl": 4.7,
+        "secondary_pchembl": 7.39
+      },
+      {
+        "difference": -2.46,
+        "parent_molecule_chembl_id": "CHEMBL5205327",
+        "primary_pchembl": 4.54,
+        "secondary_pchembl": 7.0
+      }
+    ]
+  },
+  "overlap": {
+    "clean_pair_count": 1015,
+    "full_count": 1195,
+    "shares_document_count": 1186
+  },
+  "protocol_id": "chembl37-cyp-assay-system-v1",
+  "schema_version": "aidd-commons.cyp-assay-system-summary.v1",
+  "software": {
+    "numpy": "2.4.6",
+    "python": "3.11.15",
+    "rdkit": "2025.09.6",
+    "scipy": "1.17.1"
+  },
+  "targets": {
+    "CHEMBL289": {
+      "admitted_parents": 2781,
+      "audit": {
+        "duplicate_parent_count": 181,
+        "exclusion_counts": {
+          "data_validity_comment": 71,
+          "missing_structure": 1,
+          "not_parent_structure": 176,
+          "potential_duplicate": 153
+        },
+        "input_rows": 3432,
+        "maximum_duplicate_range": 4.1,
+        "median_duplicate_range": 0.04999999999999982,
+        "parent_count": 2781,
+        "retained_rows": 3031
+      },
+      "name": "CYP2D6"
+    },
+    "CHEMBL340": {
+      "admitted_parents": 5251,
+      "audit": {
+        "duplicate_parent_count": 649,
+        "exclusion_counts": {
+          "data_validity_comment": 83,
+          "non_standard_activity": 11,
+          "not_parent_structure": 219,
+          "potential_duplicate": 319
+        },
+        "input_rows": 6750,
+        "maximum_duplicate_range": 4.950000000000001,
+        "median_duplicate_range": 0.34999999999999964,
+        "parent_count": 5251,
+        "retained_rows": 6118
+      },
+      "name": "CYP3A4"
+    }
+  }
+}

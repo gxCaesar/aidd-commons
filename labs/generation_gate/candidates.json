@@ -1,0 +1,29 @@
+{
+  "schema_version": "aidd-commons.generation-candidates.v1",
+  "artifact_type": "constructed-candidate-set",
+  "authored_on": "2026-09-10",
+  "provenance": "Authored by hand for teaching. No generative model was run, and no candidate is a proposal for synthesis or measurement.",
+  "how_to_read_constructed_for": "Each entry names the single gate it was written to exercise. 'none' means it was written to survive every gate. The field is a teaching label; the gates are computed from the structure, never from this field. Note that memorization is not a gate: a memorized candidate is stopped by the novelty gate, and expected_reference_split records which side of the reference set it came from.",
+  "candidates": [
+    { "id": "c01", "smiles": "CCOc1ccc(C)cc1", "constructed_for": "none" },
+    { "id": "c02", "smiles": "CCOC(=O)C(C)C", "constructed_for": "none" },
+    { "id": "c03", "smiles": "OCc1ccccc1F", "constructed_for": "none" },
+    { "id": "c04", "smiles": "CCCCn1cccn1", "constructed_for": "none" },
+    { "id": "c05", "smiles": "COc1ccc(CO)cc1", "constructed_for": "none" },
+    { "id": "c06", "smiles": "CCN(CC)C(C)=O", "constructed_for": "none" },
+    { "id": "c07", "smiles": "C1CC(=O", "constructed_for": "validity" },
+    { "id": "c08", "smiles": "c1ccc2c(c1)cccc2X", "constructed_for": "validity" },
+    { "id": "c09", "smiles": "CCOC1=CC=C(C)C=C1", "constructed_for": "uniqueness" },
+    { "id": "c10", "smiles": "CCOC(=O)C(C)C", "constructed_for": "uniqueness" },
+    { "id": "c11", "smiles": "CCCBr", "constructed_for": "novelty", "expected_reference_split": "test" },
+    { "id": "c12", "smiles": "COCCOC", "constructed_for": "novelty", "expected_reference_split": "test" },
+    { "id": "c13", "smiles": "CSc1ccccc1", "constructed_for": "novelty", "expected_reference_split": "train" },
+    { "id": "c14", "smiles": "Oc1ccccc1Cl", "constructed_for": "novelty", "expected_reference_split": "train" },
+    { "id": "c15", "smiles": "CCCCC(=O)Cl", "constructed_for": "prohibited-motif" },
+    { "id": "c16", "smiles": "CCOOCC", "constructed_for": "prohibited-motif" },
+    { "id": "c17", "smiles": "CCCCCCCCCCCCCCCCCCCCCCCCCC", "constructed_for": "desired-property" },
+    { "id": "c18", "smiles": "OCCOCCOCCOCCOCCOCCO", "constructed_for": "desired-property" },
+    { "id": "c19", "smiles": "C1CC2CCC3CCC4CCC5CCC1C2C3C45", "constructed_for": "synthesis-limit" },
+    { "id": "c20", "smiles": "C[Si](C)(C)CCO", "constructed_for": "synthesis-limit" }
+  ]
+}

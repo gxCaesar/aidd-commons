@@ -1,0 +1,48 @@
+id: benchmark-drugood
+name: DrugOOD
+kind: benchmark
+summary: Out-of-distribution benchmark for drug-discovery prediction tasks.
+canonical_url: https://github.com/tencent-ailab/DrugOOD
+identifiers:
+  - scheme: project-homepage
+    value: "DrugOOD project"
+    url: https://drugood.github.io/
+stages: [hit-discovery, evaluation]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [out-of-distribution-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [repository, license-file, project-data] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: GPL-3.0
+    scope: DrugOOD repository software and curation code; does not grant rights to the separately hosted ChEMBL-derived datasets or ChEMBL database.
+    evidence: [license-file]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/tencent-ailab/DrugOOD
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/tencent-ailab/DrugOOD
+    label: DrugOOD repository
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: license-file
+    url: https://raw.githubusercontent.com/tencent-ailab/DrugOOD/HEAD/LICENSE
+    label: Repository LICENSE file (reviewed 2026-10-23)
+    supports: []
+  - id: project-data
+    url: https://drugood.github.io/
+    label: "Reviewed 2026-10-23: project page links 96 realized datasets through a separate Google Drive folder; the repository documents a separate ChEMBL download and curation route"
+    supports: [caveats]
+caveats:
+  - The GPL-3.0 grant covers repository software; the realized datasets use a separate Google Drive route, and ChEMBL source data and redistribution terms require their own review.
+acknowledgements: []
+last_verified: "2026-10-23"

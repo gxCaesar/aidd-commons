@@ -1,0 +1,110 @@
+id: model-lasermpnn
+name: LASErMPNN
+kind: model
+summary: All-atom ligand-conditioned protein sequence design and side-chain packing network, which proposes sequences for a fixed backbone and a placed ligand and is the sequence half of the NISE selection-expansion protocol.
+canonical_url: https://github.com/polizzilab/LASErMPNN
+identifiers:
+- scheme: paper
+  value: Zero-shot design of drug-binding proteins via neural iterative selection-expansion; Nature 656(8126):237-249, DOI 10.1038/s41586-026-10670-w
+  url: https://doi.org/10.1038/s41586-026-10670-w
+- scheme: code
+  value: LASErMPNN source repository, polizzilab/LASErMPNN
+  url: https://github.com/polizzilab/LASErMPNN
+stages:
+- design
+- hit-discovery
+modalities:
+- biomolecular-complex
+tasks:
+- ligand-conditioned-sequence-design
+- side-chain-packing
+relations:
+- type: used-by
+  target: model-nise
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - lasermpnn-repository
+  - lasermpnn-license
+  - lasermpnn-data-routes
+openness:
+  inference_code:
+    value: available
+    evidence:
+    - lasermpnn-readme
+  training_code:
+    value: available
+    evidence:
+    - lasermpnn-readme
+  weights:
+    value: available
+    evidence:
+    - lasermpnn-readme
+  architecture:
+    value: available
+    evidence:
+    - lasermpnn-readme
+  data_recipe:
+    value: available
+    evidence:
+    - lasermpnn-readme
+  training_data:
+    value: available
+    evidence:
+    - lasermpnn-readme
+  evaluation_code:
+    value: available
+    evidence:
+    - lasermpnn-readme
+licenses:
+- name: MIT
+  scope: The repository LICENSE grants use, modification, redistribution and sale of the LASErMPNN software and associated documentation with preservation of its notices. It does not state a grant for the separately hosted SPICE and protonated-PDB training data, which the repository's download scripts obtain from Zenodo; those data need their own access and terms review.
+  evidence:
+  - lasermpnn-license
+  - lasermpnn-data-routes
+  - lasermpnn-spice-route
+evidence:
+- id: lasermpnn-repository
+  url: https://github.com/polizzilab/LASErMPNN
+  label: LASErMPNN repository (reviewed 2026-10-23)
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - relations
+  - caveats
+- id: lasermpnn-readme
+  url: https://raw.githubusercontent.com/polizzilab/LASErMPNN/main/README.md
+  label: LASErMPNN README (reviewed 2026-10-23)
+  supports:
+  - identifiers
+  - caveats
+- id: lasermpnn-license
+  url: https://raw.githubusercontent.com/polizzilab/LASErMPNN/main/LICENSE
+  label: LASErMPNN MIT licence — MIT permission grant for the repository software and associated documentation, with notice retention and warranty disclaimer.
+  supports:
+  - caveats
+- id: lasermpnn-data-routes
+  url: https://raw.githubusercontent.com/polizzilab/LASErMPNN/main/download_protonated_pdb_training_dataset.sh
+  label: LASErMPNN protonated-PDB training-data download route — The script downloads all_data.zip from Zenodo record 15035128 rather than bundling this training corpus in the source repository. It states no data licence.
+  supports:
+  - caveats
+- id: lasermpnn-spice-route
+  url: https://raw.githubusercontent.com/polizzilab/LASErMPNN/main/download_ligand_encoder_training_dataset.sh
+  label: LASErMPNN ligand-encoder training-data download route — The script downloads SPICE-2.0.1.hdf5 from Zenodo record 10975225. It states no data licence.
+  supports:
+  - caveats
+caveats:
+- 'The source and repository model_weights directory are public, and the LICENSE grants MIT terms for software and documentation. Training data follow separate Zenodo routes: the ligand-encoder script retrieves SPICE-2.0.1.hdf5 from record 10975225 and the protonated-PDB script retrieves all_data.zip from record 15035128. Neither script states the data terms, so the software grant is not treated as a licence for those external corpora.'
+- The README carries no data-availability statement. It names two dataset-download scripts, one for the ligand-encoder training dataset and one for the protonated PDB training dataset, and states that LASErMPNN was trained on protonated structures, but it gives no corpus name, record count, filtering procedure or split size for either.
+- The default checkpoint is named laser_weights_0p1A_nothing_heldout.pt and the README says other weights are in the model_weights directory. It gives no separate checkpoint download URL, so the weights are reachable through the repository rather than through a stated download.
+- The retrained comparison model is described against the streptavidin heldout split and a reconstruction of the LigandMPNN training dataset, which names a split but not its size.
+- The README gives two conda environment files, one for CUDA 11 and one for CUDA 12, and names PyTorch, torch-scatter, torch-cluster and ProDy as the minimum inference dependencies without dated releases.
+- The paper is recorded from the DOI and the repository's own README. The article's text was not opened, so the reported hit rates and the measured affinities are not carried here.
+acknowledgements: []
+last_verified: '2026-10-23'

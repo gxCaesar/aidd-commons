@@ -1,0 +1,341 @@
+---
+title: Choosing scientific-agent resources and evaluations
+description: Match literature questions, chemistry tools and biological data analysis to their resources, then separate answer correctness from completed work.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+import ResourceGuideTables from "../../../../components/ResourceGuideTables.astro";
+
+<LessonProgress lessonId="scientific-agents/agent-resource-guide" />
+<ScrollableRegions />
+<ResourceGuideTables />
+
+## Learning goals and prerequisites
+
+Choose a resource by the work it performs, preserve the task and software
+version, and distinguish a correct answer from a supported execution claim.
+Read [Retrieval, typed tools, and feedback loops](/learn/scientific-agents/retrieval-tools-feedback/)
+first. The required work is reading, hand calculation and an optional configuration
+check. It requires no API key, model call, benchmark download or laboratory access.
+An optional notebook now reads a completed local-document integration example;
+it is not a reproduction of an autonomous agent or a benchmark.
+
+## Identify the missing capability
+
+Start with the requested output. A cited explanation needs relevant documents;
+a computed statistic needs data and an analysis; a wet-lab result needs an
+authorized experiment and valid controls. A fluent language model is not a
+substitute for any missing input.
+
+| Needed capability | Resource | Inspect this input/output boundary |
+| --- | --- | --- |
+| Biomedical text modelling | [BioGPT](/atlas/model-biogpt/) | Text and a model configuration → generated text or task predictions; not a complete retrieval or action workflow. |
+| Evidence gathering from documents | [PaperQA2](/atlas/agent-paperqa/) | Question, supplied documents and configured models → retrieved evidence and cited answer. |
+| Chemistry tool orchestration | [ChemCrow](/atlas/agent-chemcrow/) | Chemistry question, model and available tools → tool observations and an answer. |
+| Biology question evaluation | [LAB-Bench](/atlas/benchmark-lab-bench/) | Questions, choices and applicable figures → submitted choices and evaluation results. |
+| Computational-biology agent evaluation | [BixBench](/atlas/benchmark-bixbench/) | Question-linked data capsule and execution setting → analysis trajectory, notebook and separately graded answer. |
+
+These are different objects, not competitors on one leaderboard. The
+[BioGPT repository](https://github.com/microsoft/BioGPT) implements biomedical
+text generation and mining. Giving such a model a tool does not establish
+correct retrieval, safe execution or biological validity.
+
+## Read the implementation boundary before choosing it
+
+[PaperQA2's README](https://github.com/Future-House/paper-qa#paperqa2-vs-paperqa)
+distinguishes the system name from package versions, including its move to
+calendar versioning in December 2025. Its public local-document use also
+differs from paper experiments that searched a larger literature collection
+with access and tools that cannot all be shared. Supplying known relevant PDFs
+changes the retrieval problem. Record that assistance rather than calling it a
+reproduction of unrestricted literature search.
+
+[ChemCrow's public README](https://github.com/ur-whitelab/chemcrow-public#%EF%B8%8F-note)
+states that API restrictions exclude some paper tools and prevent identical
+paper results. Before adapting either system, identify the actual model,
+document collection and callable services. A repository licence does not
+provide credentials, model weights, paper access or permission to send
+confidential material to an external provider. The Atlas separates source-code
+licences from those assets. This guide makes no service-availability claim.
+
+## Default route with no API fees
+
+The tutorial defaults to local models. Free-tier hosted APIs are optional alternatives;
+paid services belong in advanced comparisons. No API fees does not mean no cost:
+local inference still needs memory, model downloads, disk, electricity and time.
+It also does not establish parity with the models used in a paper.
+
+| Route | Role in this tutorial | Limit to preserve |
+| --- | --- | --- |
+| PaperQA + local Ollama models | Default supplied-document route, with a five-question worked example and editable notebooks. | No internet literature discovery or reproduction of the PaperQA2 paper agent. Five examples do not establish general reliability. |
+| Free-tier hosted API | Optional when the computer cannot run a local model. | Requires an account; quotas and models can change. Documents leave the machine. Never enabled automatically. |
+| BixBench, ChemCrow or paid models | Advanced adaptation and comparison, not an introductory dependency. | Check the main model, grader and each external tool separately; replacing one API key is insufficient. |
+
+For example, [Groq's official rate-limit page](https://console.groq.com/docs/rate-limits)
+lists free-plan limits. A free allowance is not an unlimited or permanent-free
+commitment. This tutorial configures no hosted fallback: if the local model is
+unavailable, stop and report the cause instead of switching to a paid service.
+
+### Start with the observed-answer notebook
+
+Download the <a href="/downloads/labs/paperqa_local/paperqa_local_tutorial.ipynb" download>English notebook</a>,
+<a href="/downloads/labs/paperqa_local/paperqa_local_tutorial.zh-CN.ipynb" download>Chinese notebook</a>, or
+<a href="/downloads/labs/paperqa_local/reviewed-example.json" download>observed answers and attributed source texts</a>.
+The notebooks are standalone: open in Jupyter or upload through Colab's
+**File → Upload notebook**. Default cells read embedded results, make no network
+requests or model calls, and need no API key or GPU. They write a fresh student
+report without changing the observed answers. See the [notebook environment guide](/labs/notebook-guide/)
+for general execution and recovery instructions.
+
+The local integration completed on 10 September 2026 using `paper-qa[pypdf]==2026.8.12`,
+Ollama 0.33.3, `qwen3:8b` and `nomic-embed-text:v1.5`. Indexing and answering
+took **109.368 seconds**, excluding installation and downloads, on an RTX A6000.
+The sampled GPU-memory peak was **7.334 GB**, not a minimum hardware requirement.
+All five questions produced answers; the four factual questions have supported
+core answers, and the joint-benchmark question received an insufficient-information
+response. This is assistant source review, not a human-graded accuracy score.
+
+The weaknesses are part of the lesson. The Open Babel utilities answer gives two
+supported search formats, then misattributes molecular-summary generation to them;
+the paper assigns that function to the report format. The refusal cites just one
+Open Babel chunk, so it does not prove absence across both full papers. The
+notebook separates source text, generated summaries and complete answers, then
+asks the reader to correct this function-to-format mapping without regenerating
+a preferred answer.
+
+The notebook's indexing and answering cells are separately editable but disabled
+by default. Enabling them requires an already prepared local model server and
+creates fresh student output. The observed batch ran through the SDK helper;
+the first CPU-only live attempt timed out while embedding the first document
+under its 150-second indexing limit, with no answer. A later CPU execution copy
+completed all 12 code cells in **774.12 seconds**, using four model threads,
+zero SDK retries and 600/2400-second document/question limits. Its one fresh
+answer correctly states that Open Babel 2.3 interconverted over 110 formats,
+but adds unsupported reliability guarantees and overstates a conversion test's
+scope. The failure and unedited new answer are retained separately from the
+original five examples. This validates the modified execution copy, not the
+unchanged default CPU limits or general answer quality. Both
+offline notebook editions have been executed, including a test that rejects an
+invented replacement for a real evidence chunk. That check validates copied
+sources, not semantic entailment. The recorded Python sockets used only the
+local endpoint; this does not audit native networking or the separate server.
+
+Both editions now name that budget in an `EXECUTION_PROFILE` constant beside the
+mode switch, so a reader who enables live inference chooses limits deliberately
+instead of inheriting them. `as-observed` keeps the limits the observed batch
+used with a GPU, including the 150-second indexing limit that stopped the first
+CPU attempt. `cpu-extended` restates the accepted execution copy's four threads,
+zero retries and 600/2400-second limits; about **708.61 seconds** of that copy's
+runtime were inside a single query, which already exceeds the `as-observed`
+question limit. A profile changes threads and timeouts only: the notebook
+compares the settings before and after with transport limits removed and refuses
+any profile that would move a model, retrieval or answer field. Selecting the
+CPU profile copies one machine's budget, not its result, and no unattended CPU
+run of the published notebook has been accepted.
+
+### Check the configuration without downloading models
+
+Download the <a href="/downloads/configs/scientific-agents/paperqa-local.json" download>local profile</a>
+and <a href="/downloads/scripts/agents/check_local_profile.py" download>profile checker</a> into the
+same directory. With Python 3.11 or newer, run:
+
+```bash
+python3 check_local_profile.py paperqa-local.json
+```
+
+Expected output:
+
+```text
+PASS: supported local-only configuration; SDK validation and inference not run.
+```
+
+This step uses only the Python standard library. It requires neither PaperQA nor
+Ollama and makes no network requests. The profile targets `paper-qa==2026.8.12`,
+whose upstream source tag is `v2026.08.12`. It uses `qwen3:8b` for answering and
+summarization, and `nomic-embed-text:v1.5` for embeddings. Every model role points
+to `http://127.0.0.1:11434`. The checker rejects missing roles, cloud endpoints,
+extra fallbacks and unsupported settings; it is not a general PaperQA validator.
+
+### Boundaries for fresh installation and inference
+
+For real inference, separately install [Ollama](https://docs.ollama.com/quickstart)
+and `paper-qa[pypdf]==2026.8.12`, then download
+[Qwen3 8B](https://ollama.com/library/qwen3:8b) and
+[Nomic embedding v1.5](https://ollama.com/library/nomic-embed-text:v1.5).
+The official pages list model files of approximately `5.2 GB` and `274 MB`,
+about `5.5 GB` combined, excluding software, caches and runtime memory. This is
+not a minimum-memory requirement or a speed measurement. Each model has its own licence.
+
+The [Ollama FAQ](https://docs.ollama.com/faq) documents disabling cloud features
+with `OLLAMA_NO_CLOUD=1 ollama serve`. Set this on the actual server process,
+not just the question-answering client. If a server already runs, stop it through
+its normal management interface before starting another. A localhost address
+does not prove network isolation: proxies, dependencies and other tools still
+need separate inspection.
+
+The profile follows the [pinned Settings implementation](https://github.com/Future-House/paper-qa/blob/v2026.08.12/src/paperqa/settings.py).
+It covers answer, summary, agent, embedding and enrichment models while disabling
+document-metadata lookup and multimodal enrichment. The JSON outer object is a
+tutorial wrapper: pass only its `settings` field to `Settings`, and explicitly
+pass `embedding_ndim=768` to the embedding object. This excerpt shows object
+wiring only; **it does not ask a question**. The observed integration adds the
+notebook's explicit `ollama_chat/` transport and bounded generation settings;
+the base configuration check alone is not an inference test:
+
+```python
+from check_local_profile import load_profile
+from lmi import LiteLLMEmbeddingModel
+from paperqa import Settings
+
+profile = load_profile("paperqa-local.json")
+settings = Settings(**profile["settings"])
+embedding = LiteLLMEmbeddingModel(
+    name=settings.embedding,
+    ndim=profile["embedding_ndim"],
+    config=settings.embedding_config,
+)
+```
+
+For document answering, follow the [pinned Docs interface](https://github.com/Future-House/paper-qa/blob/v2026.08.12/src/paperqa/docs.py).
+Pass the same `settings` and `embedding_model=embedding` to **both** `Docs.aadd`
+and `Docs.aquery`. Start with authorized local plain text, supplying accurate
+`citation`, `docname`, `dockey` and `title` when adding each document. Do not copy
+default examples that omit settings or switch to `ask`, URL ingestion or the
+default CLI agent: these change the tools and access scope. A fixed answering
+workflow does not test the benefit of adaptive planning.
+
+BixBench's agent can be adapted through its model-routing layer, but its
+open-answer grader can also call a paid model. Manual or local grading is an
+evaluation variant that must be labelled, not represented as the same official
+score. [ChemCrow's model factory](https://github.com/ur-whitelab/chemcrow-public/blob/main/chemcrow/agents/chemcrow.py)
+also restricts model-name paths: changing a name alone does not enable local
+models, and external chemistry-tool dependencies remain. Neither adaptation
+was implemented or run here.
+
+The configuration tests mutate the distributed profile to introduce cloud
+endpoints, missing roles and fallbacks and verify rejection. They establish only
+those configuration constraints, not SDK compatibility, network isolation,
+correct citations or completed work. The worked example adds observed execution
+and source checks, but every fresh run needs its own checks for model loading,
+unexpected external calls and citations supporting the exact claim.
+
+## Keep the evaluation task intact
+
+[LAB-Bench's interface](https://github.com/Future-House/LAB-Bench#defining-an-agent)
+takes a question, choices and applicable figures and returns a choice letter.
+Its public portion is not the private holdout described by the authors. Name
+the task category, source access, tool setting and evaluated portion; a correct
+choice does not demonstrate that a laboratory procedure was executed.
+
+[BixBench's dataset card](https://huggingface.co/datasets/futurehouse/BixBench)
+records a substantial question revision in September 2025 and separates
+original `v1.0` from revised `v1.5`. Version changes can alter answerability.
+Do not combine their scores. The hosted `train` split name is a storage label,
+not a reason to train on evaluation answers. If examples enter a tutorial,
+prompt-development set or model context, that exposure must be excluded from
+any claim of unseen-task evaluation.
+
+Its [grading entry point](https://github.com/Future-House/BixBench/blob/main/grade_outputs.py)
+uses different paths for multiple-choice and open answers; the latter can call
+a language-model grader. Grader configuration belongs to the result. The
+script also writes grading columns back into its input CSV, so upstream users
+should preserve the original and grade a working copy. The
+[execution instructions](https://github.com/Future-House/BixBench#agentic-evaluations)
+separate generating trajectories from postprocessing. No such execution is
+performed in this guide.
+
+## Constructed case: two questions about the same submission
+
+A **fictional teaching audit**, not a result from either benchmark, reviews
+`12` analysis questions from `4` source data capsules. Before review, it defines
+two separate checks for each question:
+
+- **Answer check:** does the reported answer match the reference under the
+  declared tolerance?
+- **Execution-record check:** does the supplied record identify the required
+  input and completed analysis, with inspectable outputs and no unresolved
+  execution error? This does not by itself validate the statistical method.
+
+| Answer check | Execution-record check | Question count |
+| --- | --- | --- |
+| Pass | Pass | `6` |
+| Pass | Fail | `3` |
+| Fail | Pass | `2` |
+| Fail | Fail | `1` |
+
+The answer pass fraction is `(6 + 3) / 12 = 75%`. The execution-record pass
+fraction is `(6 + 2) / 12 = 66.7%`, rounded to one decimal place. The fraction
+passing both is `6 / 12 = 50%`. These are this exercise's descriptive counts,
+not official LAB-Bench or BixBench metrics. Neither marginal fraction can
+replace the joint result.
+
+For example, copying the right number from an answer key could pass the first
+check without showing any analysis. A complete notebook using the wrong
+sample group could pass the record check yet answer the wrong scientific
+question. Even the six joint passes require scientific scrutiny before a
+biological conclusion. The record criterion is deliberately narrower than
+method correctness.
+
+Questions sharing a capsule can share data, code and failure modes. These are
+not `12` independent studies: the packet contains only `4` source capsules,
+and independence between those capsules has not been established. Per-capsule
+outcomes are missing, so this table cannot establish generalization to new
+datasets. Repeating a grader does not create new biological samples.
+
+## A useful comparison and a cheap first reading
+
+Before crediting adaptive planning, compare it with a competent fixed workflow
+using the same models, tools, documents, data and permission boundary. The
+fixed workflow can include declared recovery and abstention branches. Freeze
+the task set, grader and budget, and retain failed or refused tasks. This
+lesson proposes that comparison; it does not report a win for either design.
+
+For a first reading exercise, select one resource above and identify one input,
+one observable output and one unavailable dependency. Then write the narrowest
+claim those objects could support. For a literature answer, inspect whether
+the cited passage supports the exact organism, assay and endpoint. For a data
+analysis, inspect the actual cohort and transformation, not only the final
+number. Neither activity requires running an agent.
+
+## Independent exercise
+
+A second **constructed packet** contains `10` questions from `5` source
+capsules. There are `7` answer passes, `6` execution-record passes and `5`
+joint passes. Reconstruct the four cells of the table, compute the three pass
+fractions and explain why five agreeing graders would not prove five
+independent replications. What should a system report if the required source
+document is inaccessible?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Both checks pass for `5` questions; answer only for `7 - 5 = 2`; record only
+for `6 - 5 = 1`; neither for `10 - 5 - 2 - 1 = 2`. The answer, record and joint
+fractions are `7 / 10 = 70%`, `6 / 10 = 60%` and `5 / 10 = 50%`.
+The graders inspect the same underlying outputs and add no new source data.
+Even the five capsules are not automatically independent biological studies.
+Report the inaccessible document and the resulting unresolved claim, rather
+than fabricating evidence or silently changing the allowed source set. An
+abstention is an observable outcome, not proof that the answer is false.
+
+</details>
+
+## Source and reuse boundary
+
+<div data-case-sources>
+
+- [PaperQA2: implementation and reproduction limits](https://github.com/Future-House/paper-qa)
+- [ChemCrow: public tool collection](https://github.com/ur-whitelab/chemcrow-public)
+- [LAB-Bench: official evaluation interface](https://github.com/Future-House/LAB-Bench)
+- [BixBench: evaluation modes and execution](https://github.com/Future-House/BixBench)
+- [BixBench dataset: version-change notice](https://huggingface.co/datasets/futurehouse/BixBench)
+
+</div>
+
+The cases are original constructed examples, not copied benchmark questions.
+No upstream agent, benchmark, paid API or wet experiment was run. Benchmark
+scores and reader learning remain unmeasured here. Original prose is CC BY 4.0;
+linked code, datasets and third-party sources retain their own terms.
+
+Last reviewed: 2026-09-09.

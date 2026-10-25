@@ -1,0 +1,70 @@
+id: tutorial-botorch
+name: BoTorch tutorials
+kind: tutorial
+summary: Tutorial collections for Gaussian-process models, acquisition functions, multi-objective optimization, and full Bayesian optimization loops.
+canonical_url: https://botorch.org/docs/tutorials
+identifiers: []
+stages:
+- design
+- analyze
+modalities:
+- experimental-measurement
+tasks:
+- bayesian-optimization-learning
+relations:
+- type: demonstrates
+  target: tool-botorch
+status:
+  value: unverified
+access_level:
+  value: open_source
+  evidence:
+  - official-collection
+  - tutorial-source-license
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: MIT
+  scope: BoTorch repository software, tutorial notebook source and associated documentation; it does not grant rights to third-party packages or independently sourced application data.
+  evidence:
+  - tutorial-source-license
+evidence:
+- id: official-collection
+  url: https://botorch.org/docs/tutorials
+  label: Official tutorial collection inspected 2026-09-09
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - relations
+  - caveats
+- id: terms-page
+  url: https://botorch.org/
+  label: Terms page read 2026-10-23
+  supports:
+  - caveats
+- id: tutorial-source-license
+  url: https://raw.githubusercontent.com/meta-pytorch/botorch/main/LICENSE
+  label: BoTorch repository MIT licence — The linked public BoTorch repository contains the tutorial notebooks and documentation; its LICENSE grants use, modification and redistribution of the software and associated documentation under MIT terms.
+  supports: []
+caveats:
+- Tutorial source and documentation are downloadable through the linked public repository. The MIT grant does not relicense third-party packages or data that an application supplies.
+- The official tutorials assume familiarity with Bayesian optimization and PyTorch; their entry page directs newcomers to Ax and PyTorch introductions.
+acknowledgements: []
+last_verified: '2026-10-23'

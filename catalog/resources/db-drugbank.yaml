@@ -1,0 +1,86 @@
+id: db-drugbank
+name: DrugBank
+kind: database
+summary: Drug knowledge base with drug and target information.
+canonical_url: https://go.drugbank.com/
+identifiers:
+- scheme: documentation
+  value: DrugBank help center
+  url: https://dev.drugbank.com/guides/index
+- scheme: dataset
+  value: DrugBank academic downloads (terms apply)
+  url: https://go.drugbank.com/releases/latest
+stages:
+- target-discovery
+- repurposing
+- dmpk-toxicology
+modalities:
+- small-molecule
+- protein
+tasks:
+- drug-information-retrieval
+relations: []
+status:
+  value: unverified
+access_level:
+  value: gated
+  evidence:
+  - drugbank-academic-access
+  - drugbank-pricing
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: DrugBank Academic License
+  scope: The verified academic tier permits non-commercial research and teaching with a limited downloadable dataset; it does not grant commercial use, API access, or model training.
+  evidence:
+  - drugbank-academic-access
+  - drugbank-pricing
+evidence:
+- id: resource-links-2026-09-08
+  url: https://go.drugbank.com/
+  label: Official source for additional resource links (reviewed 2026-09-08)
+  supports:
+  - caveats
+  - identifiers
+- id: official-page
+  url: https://go.drugbank.com/
+  label: DrugBank official page
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+- id: terms-page
+  url: https://go.drugbank.com/
+  label: Terms page read 2026-10-23
+  supports:
+  - caveats
+- id: drugbank-academic-access
+  url: https://go.drugbank.com/academic_research/
+  label: DrugBank academic licence and qualification page — Free academic dataset access requires eligibility for the Academic License.
+  supports:
+  - caveats
+- id: drugbank-pricing
+  url: https://go.drugbank.com/pricing/
+  label: DrugBank academic pricing and access conditions — Academic verification is required; the grant is non-commercial research and teaching, with no model training.
+  supports:
+  - caveats
+caveats:
+- Academic access requires verification and is limited to non-commercial research and teaching; commercial/API tiers use separate agreements, and model training is not granted by the academic tier.
+acknowledgements: []
+last_verified: '2026-10-23'

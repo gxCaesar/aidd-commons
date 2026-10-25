@@ -1,0 +1,51 @@
+id: claim-backed-fixture
+name: Claim-backed Fixture
+kind: fixture
+summary: Local fixture with source-linked catalog claims.
+canonical_url: https://example.org/claim-backed
+identifiers: []
+stages:
+  - discovery
+modalities:
+  - small-molecule
+tasks:
+  - catalog-testing
+relations: []
+status:
+  value: active
+  evidence:
+    - official-source
+access_level:
+  value: open_source
+  evidence:
+    - official-source
+openness:
+  inference_code:
+    value: available
+    evidence:
+      - official-source
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+  - name: Apache-2.0
+    scope: code
+    evidence:
+      - official-source
+evidence:
+  - id: official-source
+    url: https://example.org/claim-backed/source
+    label: Local fixture source
+    supports: [name, kind, summary, stages, modalities, tasks]
+caveats: []
+acknowledgements: []
+last_verified: "2026-09-04"

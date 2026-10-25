@@ -1,0 +1,68 @@
+---
+title: 审计比较记录中的开放问题
+description: 重新计算课程自评注释和独立阅读是否仍保留检验未决问题的方法。
+---
+
+## 准备与学习目标
+
+先阅读[机制与靶点验证课程](/learn/mechanism-targets/perturbation-to-target-validation/)。本实验对应 `t06-mechanism-hypothesis-counterevidence`。你将根据成对的审阅记录给问题划分状态，识别缺失的测量，并找出记录中没有说明如何解决的开放问题。了解 YAML 会有所帮助，但不需要建模经验。
+
+## 模式与命令
+
+本实验采用固定协议，对仓库中已提交的记录进行全新独立计算。使用项目的 Python 3.11 环境、PyYAML 和 CPU。命令不需要网络、下载或加速器。请在仓库根目录执行。下载命令只核查 3 份本地输入是否存在，不写文件。检查器也不写文件。导出器仅在检查通过后覆盖本实验的精简摘要。
+
+```bash
+.venv/bin/python labs/open_question_audit/run_lab.py download
+.venv/bin/python labs/open_question_audit/inspect_open_question_audit.py show
+.venv/bin/python labs/open_question_audit/inspect_open_question_audit.py check
+.venv/bin/python labs/open_question_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/open_question_audit -q
+```
+
+## 问题状态
+
+计算读取 93 个分类主题。规则使用成对的自评注释和独立阅读理由，并在每种状态下保留主题 ID。测量所得状态只指注释所描述的本地结果，并不解决背后的科学问题。
+
+| 状态 | 主题数 | 记录规则 |
+| --- | ---: | --- |
+| 开放 | 28 | 成对的解释仍留下未决问题。 |
+| 由测量确定 | 53 | 注释描述了本地实验结果及其所确立的内容。 |
+| 由阅读维持 | 12 | 独立阅读保留了较浅的取值，自评记录也保持该取值。 |
+| 由阅读调低 | 0 | 独立阅读调低曾主张的深度，修正后的自评取值仍在使用。 |
+| 未审查 | 0 | 除深度和证据标识外，两份记录都没有解释该主题。 |
+
+检查器打印每种状态的完整主题列表。后来的调高不会抹去历史上的调低。工具契约主题 `t16-tool-input-output-contract` 记录了这样一次调低，目前也指出尚缺少逐次调用的契约执行。
+
+## 开放问题与证伪依据
+
+协议要求指出有区分力的观察或具体缺失的测量，才允许把开放问题说成有解决途径。`more work is needed` 这类笼统措辞不符合条件。检查器执行此规则，构造的已知缺陷案例也检验此规则。
+
+| 开放记录 | 数量 | 主题 |
+| --- | ---: | --- |
+| 指出证伪依据或缺失测量 | 28 | `t02-therapeutic-decision-context`, `t02-target-product-profile`, `t04-entity-identity-resolution`, `t04-cleaning-exclusion-rules`, `t06-mechanism-hypothesis-counterevidence`, `t06-causal-target-evidence`, `t07-property-representation-selection`, `t07-classification-formulation`, `t08-safety-toxicity-endpoint`, `t08-multiendpoint-tradeoff`, `t09-binding-mode-pose-hypothesis`, `t09-binder-classification`, `t11-docking-scoring-protocol`, `t11-free-energy-endpoint-network`, `t12-candidate-design-space`, `t13-expression-developability-manufacturability`, `t14-reaction-record-condition-unit`, `t14-route-feasibility-material-safety`, `t14-forward-reaction-lab-feedback`, `t15-time-ordered-feedback-update`, `t16-scientific-task-action-boundary`, `t16-source-retrieval-evidence-grounding`, `t16-human-review-authority-evaluation`, `t17-baseline-model-selection-protocol`, `t17-reproduction-reporting-receipt`, `t18-evidence-package-claim-chain`, `t18-crossdomain-tradeoff-decision`, `t18-openness-biosecurity-governance-boundary` |
+| 没有指出证伪依据或缺失测量 | 0 | 无 |
+
+已提交的记录中，最后一行为空。在构造的已知缺陷案例里，只写 `more work is needed` 的注释成为没有证伪依据的开放记录。这样的措辞还没有把问题表述成可检验的形式，并不表示该主题只是难，也不表示相关科学问题没有可能的检验方法。
+
+## 缺失测量类别
+
+注释和理由的计数表示 93 个主题记录中有多少至少匹配 1 个类别。如果两个字段都提到同一类别，该类别仍只对该主题计数一次。类别之间可以重叠。
+
+| 记录字段或类别 | 主题数 |
+| --- | ---: |
+| 提及缺失测量的自评注释 | 36 |
+| 提及缺失测量的阅读理由 | 81 |
+| 可运行任务 | 58 |
+| 经验观察 | 42 |
+| 比较与对照 | 28 |
+| 范围与迁移 | 31 |
+| 不确定性与独立性 | 26 |
+| 记录与来源 | 21 |
+
+## 材料边界
+
+本实验测量记录是否仍保留证伪观察或缺失测量，并不证明任何问题已经得到回答。文字提到某项测量，不等于测量已经完成。固定词表可能漏掉另一种表达，也可能匹配到人工阅读时会有不同理解的语句。因此，状态计数只描述这些定期记录在既定规则下的情况，不是对课程路径的排序，也不是读者学习效果的测量。
+
+## 来源与条款
+
+已提交的项目自评比较记录、独立阅读和主题分类于 2026-10-23 读取。独立阅读的原始日期为 2026-09-11，记录中还包含后来重新阅读的结果。[规范英文指南](/labs/open-question-audit/)是本页的英文原版。原创指南文字采用 CC BY 4.0，实验代码采用 Apache-2.0。链接材料保留其自身条款。

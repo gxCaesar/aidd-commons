@@ -1,0 +1,374 @@
+---
+title: Five-case capstone workbook
+description: Integrate target evidence, property prediction, structure-led selection, experiment allocation and candidate nomination using complete constructed cases and worked answers.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="candidate-nomination/capstone-workbook" />
+<ScrollableRegions />
+
+## What you will produce
+
+This is a written capstone, not a runnable experiment. Complete the
+[core route](/learn/foundations/curriculum-map/) and the specialist chapters linked
+under each case. You need paper or a text editor and a calculator, not downloaded
+data, a GPU or laboratory access. Every entity, measurement and threshold below
+is **constructed for teaching**. None is a real candidate recommendation.
+
+For each case, write a short memo before opening its answer. State the decision
+unit and population, show the decisive calculation, name the strongest alternative
+explanation, and select one observation that could change the next decision.
+Separate what the supplied table establishes from what remains unknown. A good
+answer can be “continue characterization” or “do not nominate”; it need not select
+a winner. The exercise assesses reasoning, not whether you agree with a hidden
+ranking.
+
+## Case 1 — target evidence across biological contexts
+
+Preparation: [genetics to target evidence](/learn/mechanism-targets/genetics-to-target-evidence/)
+and [perturbation to target validation](/learn/mechanism-targets/perturbation-to-target-validation/).
+
+The fictional project asks whether reducing target T merits disease-context
+validation. A regional genetic association exists, but the supplied evidence does
+not identify its effector gene or causal direction. A perturbation gives these
+matched phenotype differences from control; more negative is the intended direction:
+
+| Independent donor | Disease-relevant cells | Reference-context cells |
+| ----------------- | ---------------------- | ----------------------- |
+| D1                | −4                     | −1                      |
+| D2                | −6                     | −2                      |
+| D3                | −2                     | −1                      |
+
+Values are arbitrary phenotype units. The same three donors contribute both
+contexts. Each donor value already summarizes technical observations. Target
+engagement, cell viability and a perturbation-independent detection control are
+not supplied. A second gene U at the associated locus has not been tested.
+
+Calculate the mean disease-context effect and the mean paired disease-minus-reference
+contrast. Can the project claim that human genetics validates inhibition of T?
+Propose a bounded next question that separates a T-dependent phenotype from a
+measurement or nonspecific cell-state effect. Your deliverable is a target-evidence
+memo that keeps both the genetic ambiguity and the small independent-unit count.
+
+<details data-worked-answer>
+<summary>Case 1 answer — evidence converges only when its links are established</summary>
+
+The disease mean is `(-4−6−2)/3=−4`. Paired contrasts are `[-3,−4,−1]`, averaging
+`−8/3≈−2.67`. There are three donor units, not six independent context values
+and not the number of technical wells. The table supports a context-dependent
+pattern in this constructed sample, but supplies no uncertainty estimate or
+validated measurement bridge. Do not invent a p value.
+
+The regional association does not identify T or prove that lowering its activity
+is protective. Keep U and other effector explanations open. A useful next
+question is whether a suitably validated, independently measured phenotype
+retains the contrast under an intervention that establishes T dependence, while
+accounting for viability and detection interference. The exact assay and sample
+size require actual validation data; this memo is not an experimental procedure.
+Advance the question to validation, not T to “genetically validated drug target.”
+
+</details>
+
+Transfer exercise: a fourth donor has disease effect +2 and reference effect 0.
+Recalculate both means and revise one sentence of the memo.
+
+<details data-worked-answer>
+<summary>Transfer answer</summary>
+
+The disease mean becomes `(-4−6−2+2)/4=−2.5`; the paired mean is
+`(-3−4−1+2)/4=−1.5`. State that the direction is heterogeneous across four
+donors. Do not remove the fourth donor because it weakens the narrative.
+
+</details>
+
+## Case 2 — a property model with unresolved transfer reliability
+
+Preparation: [chemical series and domains](/learn/qsar-properties/chemical-series-and-domains/),
+[uncertainty and decisions](/learn/qsar-properties/uncertainty-to-decisions/), and
+the existing [assay-shift diagnosis](/learn/evaluation-and-reproducibility/assay-shift-diagnosis/).
+
+The following is a separate constructed example, not a replacement for that
+lab's results. A descriptor model was selected using source-assay validation
+only. Its frozen predictions and a frozen train-mean predictor are shown for
+four target-assay compounds. All values use the same declared log endpoint,
+but the assay conditions differ. The train-mean prediction is 6.0 for every row.
+
+| Compound | Target-assay observation | Descriptor prediction |
+| -------- | ------------------------ | --------------------- |
+| P1       | 5.0                      | 5.2                   |
+| P2       | 6.0                      | 5.8                   |
+| P3       | 7.0                      | 6.8                   |
+| P4       | 8.0                      | 6.0                   |
+
+Calculate MAE for both predictors. Suppose P4 is the only representative of its
+series and lies outside the model's predeclared domain warning. Can it be deleted
+from the primary result? Write a reproduction-scope statement distinguishing
+recomputing these errors from reproducing fitting, source data and transfer.
+
+<details data-worked-answer>
+<summary>Case 2 answer — the full result and subgroup diagnosis have different roles</summary>
+
+Descriptor absolute errors are `[0.2,0.2,0.2,2.0]`, giving MAE 0.65. Train-mean
+errors are `[1,0,1,2]`, giving MAE 1.0. The descriptor model improves this toy
+aggregate by 0.35, but its error on P4 remains 2.0. Domain status warns about a
+limitation; it does not authorize an outcome-driven deletion. If the declared
+task includes P4, retain it. Report the in-domain subgroup separately with its
+three-compound count, without replacing the primary population.
+
+“We recomputed metrics from supplied frozen predictions” is supported. “We
+reproduced training” requires the fitting process and inputs, not just matching
+MAE. These four rows also do not establish general transfer reliability or its
+uncertainty. A representative target-assay evaluation or an independently
+validated assay bridge would address a different question from fitting a larger
+model to the same exposed rows.
+
+</details>
+
+Transfer exercise: P4 is corrected to 9.0 after a documented source correction,
+with predictions unchanged. Recompute both MAEs and state what changed.
+
+<details data-worked-answer>
+<summary>Transfer answer</summary>
+
+Descriptor MAE is `(0.2+0.2+0.2+3)/4=0.9`; train-mean MAE is
+`(1+0+1+3)/4=1.25`. The difference remains 0.35, but both absolute errors change.
+This is a correction to evaluation input, not a new fitted model. Document the
+source correction and retain its population identity.
+
+</details>
+
+## Case 3 — structure-led selection without calling a score affinity
+
+Preparation: [pocket states and confidence](/learn/structure-and-pockets/pocket-states-and-confidence/)
+and [free-energy cycles and convergence](/learn/physics-based-modeling/free-energy-cycles-and-convergence/).
+
+Two ligands have these constructed results in a fixed target-state screen:
+
+| Candidate | Docking score, lower preferred | Pose inspection                    | State support                |
+| --------- | ------------------------------ | ---------------------------------- | ---------------------------- |
+| S1        | −9.0                           | Severe unresolved clash            | One predicted state only     |
+| S2        | −8.0                           | No flagged clash in inspected pose | Two considered target states |
+
+The scoring convention is not an experimentally calibrated affinity scale.
+Neither candidate has a measured binding result. Separately, an alchemical
+calculation transforming S1 to S2 reports a complex-leg change of +2.0 kcal/mol
+and a solvent-leg change of +1.5 kcal/mol. Convergence evidence and uncertainty
+are absent. Use the convention `ΔΔGbind=ΔGcomplex−ΔGsolvent`, where positive
+means S2 is less favorable than S1 under the model.
+
+Compute the reported cycle difference. Does it rescue S1's clash or establish
+that S1 binds better? Choose the next computational or measurement question
+without quietly promoting a docking score into a binding free energy.
+
+<details data-worked-answer>
+<summary>Case 3 answer — inspect the assumptions before reconciling rankings</summary>
+
+The cycle difference is `2.0−1.5=+0.5 kcal/mol`. Under the specified model and
+sign convention it favors S1, but missing convergence and uncertainty prevent
+judging whether this small difference is resolved. The calculation does not
+repair a severe pose problem or prove that the thermodynamic states were modelled
+correctly. Different scoring functions can disagree without either being measured
+affinity.
+
+S1's structure hypothesis needs revision or justification before it supplies a
+credible energetic comparison. S2 has fewer listed pose objections, not proven
+binding. An informative next step can assess the physical consistency and sampling
+of the compared states, or obtain a valid binding measurement for the stated
+construct and conditions. The correct choice depends on which input assumption
+can be resolved; neither candidate is nominated from this table.
+
+</details>
+
+Transfer exercise: the solvent leg is instead +2.5 kcal/mol, with all other
+limitations unchanged. What changes and what does not?
+
+<details data-worked-answer>
+<summary>Transfer answer</summary>
+
+The difference becomes −0.5 kcal/mol, reversing the model's preference toward
+S2. Missing convergence, uncertainty, valid state definitions and experimental
+binding evidence remain. Reversing a computed sign does not remove those limits.
+
+</details>
+
+## Case 4 — select a feasible batch and account for failure
+
+Preparation: [flows and constrained search](/learn/molecular-generation/flows-and-constrained-search/)
+and [acquisition, delays and stopping](/learn/active-learning/acquisition-delays-and-stopping/).
+
+An invented project has a 4-unit attempt budget and at most two simultaneous
+slots. It seeks immediate additive expected confirmed hits, not information gain.
+Candidate probabilities are assumed calibrated for this example. A synthesis
+review has already fixed eligibility; no operational recipe is supplied.
+
+| Candidate | Expected hit probability | Attempt cost | Eligible?                          |
+| --------- | ------------------------ | ------------ | ---------------------------------- |
+| A         | 0.80                     | 3            | Yes                                |
+| B         | 0.60                     | 2            | Yes                                |
+| C         | 0.55                     | 2            | Yes                                |
+| D         | 0.95                     | 1            | No, unresolved material constraint |
+
+Enumerate the feasible one- and two-candidate choices and maximize the declared
+expected hit count. Then suppose one selected candidate returns a valid negative
+and the other fails measurement, each consuming its full attempt cost. Report
+budget use and outcomes without labelling failure as a biological negative.
+
+<details data-worked-answer>
+<summary>Case 4 answer — solve the stated constrained objective</summary>
+
+Feasible nonempty choices are A, B, C and B+C. A+B and A+C cost 5 and exceed
+budget; D is ineligible. Their expected hit counts are 0.80, 0.60, 0.55 and 1.15,
+so B+C wins this teaching objective at cost 4. Additivity of the expectation
+does not require independent outcomes, although dependence matters for other
+objectives such as probability of at least one hit.
+
+The realized batch uses 4 cost units, yields one valid negative and one failed
+measurement, and confirms zero hits. It has one interpretable activity label,
+not two negatives. A retry needs budget and eligibility under the declared
+rules; it cannot be silently added to one policy's budget. A poor realized batch
+does not alone refute its expected-value calculation, whose calibration assumption
+was supplied rather than established by these two outcomes.
+
+</details>
+
+Transfer exercise: budget increases to 5 but capacity remains two. Which eligible
+choice now maximizes expected hits?
+
+<details data-worked-answer>
+<summary>Transfer answer</summary>
+
+A+B gives 1.40 expected hits at cost 5, above A+C at 1.35 and B+C at 1.15.
+D remains ineligible. A resource change can change the optimum without changing
+any candidate probability.
+
+</details>
+
+## Case 5 — cross-domain nomination with a missing requirement
+
+Preparation: [product profiles](/learn/drug-discovery-foundations/product-profile-and-series/),
+[metabolism to safety](/learn/admet-pk/metabolism-to-safety/) and
+[evidence to validation](/learn/candidate-nomination/evidence-to-validation/).
+
+The fictional project defines **teaching thresholds only**: matched potency
+at most 50 nM, selectivity ratio at least 20, and a specified exposure-to-effective
+concentration ratio at least 3. It also requires an independently reviewed safety
+package and interpretable functional validation. Ratios are precomputed under
+the project's stated compatible units and contexts; these are not universal
+pharmacological criteria.
+
+| Candidate | Potency, nM | Selectivity ratio | Exposure ratio | Required safety package | Functional validation |
+| --------- | ----------- | ----------------- | -------------- | ----------------------- | --------------------- |
+| N1        | 20          | 8                 | 4              | Available for review    | Interpretable         |
+| N2        | 40          | 30                | 2              | Available for review    | Interpretable         |
+| N3        | 45          | 25                | 3.5            | Missing                 | Interpretable         |
+
+Which candidates meet the numerical thresholds? Does any satisfy the complete
+nomination requirement? Write a next-decision memo that distinguishes revising
+a candidate, closing an evidence gap and changing the product profile. Explain
+why an average rank across columns cannot erase a missing safety requirement.
+
+<details data-worked-answer>
+<summary>Case 5 answer — no candidate satisfies the supplied full requirement</summary>
+
+N1 fails selectivity, N2 fails exposure, and N3 passes the three numerical
+thresholds but lacks the required safety package. “Available for review” is also
+not synonymous with a favorable review. None can be declared to satisfy the
+complete requirement from this table.
+
+N3 may warrant closing the named evidence gap, but missing information is not
+evidence of safety or of danger. N1 and N2 may motivate a separately evaluated
+optimization question. Changing thresholds to make a favorite pass is a change
+to the project requirement, not a discovery. A scientifically motivated profile
+revision can be legitimate if explicitly decided and independently evaluated;
+do not present it as success under the original profile.
+
+An average rank permits good potency to compensate for any other column by
+construction. That is not the stated decision rule, which contains required
+conditions. Preserve the cross-domain tradeoffs and the unresolved review rather
+than compressing them into an unjustified scalar.
+
+</details>
+
+Transfer exercise: N3's package becomes available and passes the defined review.
+Does the teaching table now imply clinical efficacy or permission to dose humans?
+
+<details data-worked-answer>
+<summary>Transfer answer</summary>
+
+It can satisfy this fictional project's stated nomination inputs, assuming the
+other evidence remains valid and the responsible decision-maker accepts it.
+It does not establish clinical efficacy, regulatory authorization or human-dosing
+permission. Those are different evidence and authority questions.
+
+</details>
+
+A laboratory executes this case's rule. The [cross-domain trade-off
+laboratory](/labs/crossdomain-tradeoff/) runs the workbook's own rule twice: on
+the three teaching candidates, where its computed answer is the answer above,
+and on the 58 real ChEMBL parent molecules that carry at least two measured
+endpoint families. On the measured cohort the rule cannot be posed at all,
+because the families the cohort holds in abundance, in vitro intrinsic
+clearance and CYP inhibition, are not the inputs this rule asks for. Every
+candidate there is blocked at the potency input and none completes a
+nomination. That is a different statement from the one the [endpoint coverage
+laboratory](/labs/multi-endpoint-tradeoff/) makes: a census of which families
+exist is not a decision, and the inputs a decision needs may be absent while
+the families it does not need are plentiful.
+
+## Governance and the handoff
+
+Responsible research extends beyond a successful calculation. The
+[WHO life-sciences governance framework overview](https://www.who.int/publications/i/item/9789240056107)
+describes biorisk mitigation and dual-use governance as shared responsibilities
+across the research life cycle. Here the educational boundary is specific:
+these cases do not authorize synthesis, biological intervention, human studies,
+restricted-data access or public release of someone else's assets.
+
+A tool that proposes a sequence, returns a simulated assay value or reports a
+job as completed has not independently established an experimental observation.
+For a handoff, state the action actually performed, the artifact or measurement
+that exists, and the interpretation it supports. A simulated value remains
+simulated. A queued experiment remains pending. Human review should address
+scientific, safety and permissions decisions the tool cannot establish.
+
+If a proposed extension could enable harmful biological capability or involves
+restricted materials, pause that extension for appropriate institutional review;
+do not convert the tutorial into an operational instruction set. Safe documentary
+reasoning and ordinary source reading can continue independently. For data reuse,
+follow [identity, lineage and reuse](/learn/data-governance/identity-lineage-and-reuse/)
+and inspect the actual terms, not merely the public visibility of a repository.
+
+## Assessment rubric and your final artifact
+
+Submit five short memos plus a one-page synthesis. The synthesis should name
+one assumption that breaks across cases, one preserved negative or missing result,
+and one next observation that is worth more than another model score. An evaluator
+can use the following rubric for each memo; it is a teaching rubric, not a validated
+learning-outcome instrument:
+
+| Dimension               | 0                                     | 1                               | 2                                                        |
+| ----------------------- | ------------------------------------- | ------------------------------- | -------------------------------------------------------- |
+| Decision and population | Unspecified or changed                | Partly stated                   | Exact unit, population and decision retained             |
+| Calculation             | Missing or materially wrong           | Mostly correct with an omission | Correct values, direction and units                      |
+| Interpretation          | Overclaims the evidence               | States a generic caveat         | Names a concrete alternative and missing link            |
+| Next observation        | Repeats the score or changes the task | Relevant but not discriminating | Could change the stated decision under explicit outcomes |
+
+Maximum is 8 per case and 40 across five cases. A correct sum does not compensate
+for invented evidence. Revise any unsupported empirical, causal or safety claim
+before treating the memo as complete. No reader scores have been collected here.
+
+The [candidate evidence chain laboratory](/labs/candidate-evidence-chain/)
+assembles a compound's own measurements into one chain and reports the first
+link that is not measured.
+
+The [claim-chain audit](/labs/claim-chain-audit/) tests whether every named
+evidence link supports the scope of a nomination memo, and reports the weakest
+link of each chain it audits.
+
+For empirical practice later, return to the [notebook guide](/labs/notebook-guide/)
+and choose an existing exercise whose data and protocol match the question. Do
+not describe these handworked capstones as five newly reproduced experiments.
+
+Original examples and prose: CC BY 4.0. Sources reviewed: 2026-09-09.

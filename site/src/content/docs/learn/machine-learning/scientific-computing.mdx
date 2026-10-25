@@ -1,0 +1,52 @@
+---
+title: Scientific machine learning
+description: Build the mathematical and implementation habits needed to audit AIDD models.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="machine-learning/scientific-computing" />
+
+## Foundations
+
+Scientific ML combines a prediction target, a representation, an objective, an
+optimization procedure, and an uncertainty statement. Geometric and graph
+methods encode useful inductive biases, but no architecture repairs a mismatched
+label or a contaminated split. [DGL-LifeSci](https://github.com/awslabs/dgl-lifesci)
+and [PyTorch Geometric](https://github.com/pyg-team/pytorch_geometric) expose
+common graph-learning building blocks.
+
+## Practical workflow
+
+Start with a fixed data table, a train-only preprocessing pipeline, and a
+baseline such as regularized linear regression, a random forest, or a simple
+fingerprint model. Record seed handling, checkpoint selection, and the exact
+inference inputs. Only add geometric complexity after the cheap baseline and
+data contract are stable.
+
+## Evaluation
+
+Report the independent unit, not only the number of rows or optimization steps.
+Do not choose a model on the test set. Compare models under the same split,
+budget, and selection rule; otherwise a larger score may reflect a protocol
+difference rather than a method difference.
+
+## Frontier and open questions
+
+Foundation models and scientific recipe collections such as
+[BioNeMo Recipes](https://github.com/NVIDIA-BioNeMo/bionemo-recipes) can reduce
+implementation cost, but their transferred assumptions and asset terms must be
+audited task by task.
+
+## What v0.1 does not yet teach
+
+v0.1 does not offer a general proof of geometric-model superiority or a
+GPU-scale training curriculum.
+
+## Core-source path
+
+Work through [TorchDrug](https://github.com/DeepGraphLearning/torchdrug), then
+inspect a graph architecture in [Graphormer](https://github.com/microsoft/Graphormer)
+and the [DIG](https://github.com/divelab/DIG) research library.
+
+Last reviewed: 2026-09-04.

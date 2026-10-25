@@ -1,0 +1,135 @@
+---
+title: Structure, affinity, and what a prediction names
+description: Separate coordinates, confidence, binder probability, and assay-conditioned affinity outputs before making a molecular decision.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="structure-and-pockets/structure-affinity-mechanisms" />
+
+<ScrollableRegions />
+
+## Learning goals
+
+After this lesson, you should be able to name the prediction target behind a
+structure or affinity-looking number, convert an IC50 to pIC50 with the unit
+made explicit, and state why a joint prediction is not causal energetic proof.
+You should also be able to write the narrower decision that an output can
+support.
+
+## Prerequisites and task boundary
+
+Read [Structure, pockets, and co-folding](/learn/structure-and-pockets/cofolding-frontier/)
+first, then [From docking to free-energy perturbation](/learn/physics-based-modeling/docking-to-fep/).
+Those lessons distinguish a structural hypothesis from an experimental decision
+and introduce the limits of a physics-based endpoint. Here the task is not
+"predict affinity" in the abstract. It is to map a specified molecular input
+and assay context to one declared output.
+
+Let `X` denote a protein--ligand representation, `E` an endpoint definition,
+and `B` a binder label. A system may return any of the following:
+
+| Output | Question named by the output | What it does not establish alone |
+| --- | --- | --- |
+| coordinates or a pose | Which geometry is proposed? | That the ligand binds in an assay |
+| pose confidence | How confident is the model in that proposed geometry? | A calibrated binder probability or an energy decomposition |
+| `P(B=1 | X)` | Is this input predicted to belong to the model's binder class? | The magnitude of a continuous assay endpoint |
+| `y_hat(X, E)` | What value is predicted for this named endpoint and unit? | Equivalence to every other affinity-like measurement |
+
+The input or latent representation may contain atom types, bonds, residue or
+ligand tokens, pair relations, and three-dimensional positions. Pair features
+make it possible to describe relationships such as residue--ligand proximity.
+Coordinates are outputs that then propose one geometry compatible with the
+learned representation. None of those choices turns a geometry into a measured
+free-energy difference.
+
+## Training objective and inference
+
+A multi-output model can be trained schematically with
+`L = lambda_struct L_struct + lambda_bind L_bind + lambda_aff L_aff`.
+This is a generic teaching objective, not an exact Boltz training recipe.
+The structure term, binary binder term, and continuous endpoint term can share
+representations while using different labels and losses. At inference, a model
+may emit a coordinate proposal, a confidence value, a binary probability, and a
+numeric endpoint together. Shared parameters or simultaneous outputs do not
+prove that changing a coordinate causes a particular energetic change. They
+also do not make the outputs interchangeable.
+
+For a concrete naming example, the official [Boltz repository](https://github.com/jwohlwend/boltz)
+distinguishes `affinity_probability_binary` from `affinity_pred_value`. Its
+README says the former is for binder-versus-decoy prediction and the latter is a
+`log10(IC50)` value derived from IC50 in micromolar units, for ranking specified
+binders during optimization. This lesson does not reproduce its training or
+claim a complete training release; inspect the current repository before making
+an availability statement.
+
+`pIC50` uses another convention: `pIC50 = -log10(IC50 in M)`. For a **constructed
+teaching value** of `IC50 = 50 nM = 5 x 10^-8 M`, `pIC50 = 7.30`. The sign and
+unit matter. The same value is `-1.30` under `log10(IC50 in micromolar)`, because
+`50 nM = 0.05 micromolar`. Do not silently compare either number with KD, Ki,
+EC50, or an endpoint measured under another assay design. These are not
+universal synonyms for affinity.
+
+## Worked case: a confident pose is not a binder call
+
+Consider the following **constructed model output**, not a measurement:
+
+- proposed pose confidence: `0.92`;
+- binder probability: `P(B=1 | X) = 0.18`;
+- endpoint prediction: `log10(IC50 in micromolar) = 0.70`.
+
+Suppose a screening rule incorrectly labels every pose with confidence above
+`0.90` as a binder. It would call this ligand positive. A declared binder
+threshold of `0.50` on the binary head instead calls it negative. The first
+rule is wrong because it substitutes a geometry-confidence quantity for a
+binder decision. The numeric endpoint is also not permission to reverse that
+decision: it has a named IC50 convention and remains a model prediction.
+
+The safe report is: “The model proposed a confident pose while its binder head
+assigned a low probability under this input representation.” It is not “the
+ligand binds,” “the pose proves affinity,” or “the model identified the causal
+energetic mechanism.” An assay, an appropriate structural observation, or a
+validated prospective protocol would be needed for those claims.
+
+## Independent exercise
+
+A report gives `log10(IC50 in micromolar) = -1.00` and calls it “pIC50 = -1.00.”
+Correct the notation and calculate pIC50. Then name one missing condition that
+would prevent this number from being universally comparable to another affinity
+entry.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+`log10(IC50 in micromolar) = -1.00` means `IC50 = 0.1 micromolar = 10^-7 M`.
+Therefore `pIC50 = -log10(10^-7) = 7.00`, not `-1.00`. A missing condition could
+be the assay protocol, target construct, ligand state, temperature, competing
+substrate concentration, or the endpoint itself. Matching a word such as
+“affinity” is insufficient.
+
+</details>
+
+## Failure boundaries and source path
+
+Confidence is conditional on the input and model representation. A pose can be
+well formed while the ligand preparation, target state, assay context, or
+binder label is mismatched. A multitask output can be useful for a declared
+decision, but it is not a proof that the learned terms recover physical causes.
+For energetic questions, return to the [physics-model lesson](/learn/physics-based-modeling/docking-to-fep/)
+and state the system, endpoint, and validation boundary.
+
+<div data-case-sources>
+
+- [Boltz official repository and affinity-output definitions](https://github.com/jwohlwend/boltz)
+- [Structure, pockets, and co-folding](/learn/structure-and-pockets/cofolding-frontier/)
+- [From docking to free-energy perturbation](/learn/physics-based-modeling/docking-to-fep/)
+
+</div>
+
+All numerical values in the two examples are constructed for teaching. This
+lesson adds no empirical comparison, training reproduction, or binding claim.
+Original lesson prose is CC BY 4.0; linked software and sources retain their
+own terms.
+
+Last reviewed: 2026-09-09.

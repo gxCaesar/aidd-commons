@@ -1,0 +1,125 @@
+---
+title: 力场、溶剂与采样
+description: 将分子动力学轨迹视为已声明近似模型中的样本，而不是自动证明分子行为的一段影片。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Force fields, solvent, and sampling](/learn/physics-based-modeling/force-fields-and-sampling/)。
+
+<LessonProgress lessonId="physics-based-modeling/force-fields-and-sampling" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将说出经典力场的项和适用范围，区分溶剂与长程相互作用选择和坐标文件，并估计为何保存的轨迹
+帧不会自动成为独立观测。请先读[物理模型与系统状态](/zh-cn/learn/physics-based-modeling/physical-model-system-state/)
+和[从对接到 FEP](/zh-cn/learn/physics-based-modeling/docking-to-fep/)。本课为浏览器和手算教学，
+不规定生产级模拟、不验证参数集，也不报告分子动力学结果。
+
+## 力场是近似能量模型
+
+对坐标 `x`，一个常见的固定电荷分子力学模型可示意写为：
+
+`U(x) = sum_bonds k_b(r-r0)^2 + sum_angles k_theta(theta-theta0)^2 + sum_torsions V_n[1+cos(n phi-delta)] + sum_i<j [4 epsilon_ij((sigma_ij/r_ij)^12 - (sigma_ij/r_ij)^6) + q_i q_j/(4 pi epsilon_0 r_ij)]`。
+
+前几项约束成键几何和扭转。末一求和以一种常见形式表示短程范德华与静电相互作用。该方程是教学
+示意，而不是普适泛函形式或任一分子的参数列表。其参数、原子类型、组合规则、电荷模型、非键
+处理与约束共同定义模型。改变一个成分可改变有效的物理假设。
+
+经典力场被设计为近似一类已命名的分子相互作用。它们通常不描述任意断键、成键、电荷转移、电子
+激发，或尚未声明的质子化状态。因此，低势能不是化学正确性的通用证书；一个力场内部的一致也不
+是结构假设的独立确认。
+
+## 溶剂与边界条件是体系的一部分
+
+显式溶剂模型将水和离子表示为粒子；隐式模型以约化描述表示部分溶剂效应。除非完整模型与目标
+问题已声明，二者都不是“同一个在水中的蛋白质”。使用显式溶剂时，水模型和离子参数必须与所选
+力场兼容。周期边界条件、盒子、直接空间截断和 PME 等长程方法也会改变正在评估的内容。
+
+OpenMM 指南展示了由拓扑、力场和水模型构建的体系，使用 PME、`1 nm` 直接空间截断、氢键约束和
+`300 K` 的 Langevin 积分器 [OpenMM running simulations](https://docs.openmm.org/latest/userguide/application/02_running_sims.html)。
+这些值是实现示例，不是能迁移到每一科学问题的默认设置。同一指南说明为何不能仅从坐标理解轨迹：
+拓扑、位置、力场文件、非键方法、约束、积分器、温度和报告器均参与其含义。
+
+| 项目     | 与决策相关的记录                             | 诱人但无效的捷径     |
+| -------- | -------------------------------------------- | -------------------- |
+| 分子状态 | 构建体、链、配体、质子化和离子               | “该靶标”             |
+| 能量模型 | 力场和溶剂模型标识、参数来源                 | “基于物理”           |
+| 边界     | 盒子、周期性、截断和长程方法                 | 坐标截图             |
+| 动力学   | 系综目标、积分器、步长、恒温/恒压器和约束    | 只有帧数             |
+| 分析     | 可观测量、burn-in 规则、相关性诊断和独立单位 | 把每个保存帧当作重复 |
+
+## 采样不只是生成很多帧
+
+对正则系综，理想平衡坐标分布为 `p(x) = exp(-beta U(x))/Z`，其中 `beta = 1/(k_B T)`，`Z` 是归一化
+常数。积分器和恒温器是从已声明系综抽取近似样本的数值方式；它们并不证明已达到平衡。初始化、
+平衡化、慢转变、有限盒效应和模型误差，都可主导一条看似很长的轨迹。
+
+动力学中相邻帧相关，因为体系连续演化。若距离或口袋体积在数百个保存帧内保持较高，这些帧提供
+的是一个缓慢变化状态的重复测量，而不是数百个独立分子。一个有用报告应给出可观测量、时间原点
+或丢弃的 burn-in、相关性诊断，以及计算不确定性的单位。独立起始体系或经验证的重复可增加证据；
+同一状态初始化的重复输出不能悄然成为新的生物学样本量。
+
+OpenMM 理论指南把该库描述为分子模拟工具箱，而非科学验证协议
+[OpenMM theory introduction](https://docs.openmm.org/latest/userguide/theory/01_introduction.html)。
+这个区别很重要：可执行选择可以很精确，而分子问题的答案仍取决于模型与采样。
+
+## 已解案例：一万帧不是一万次重复
+
+本案例的全部数值均为**构造的教学数值**。一条轨迹以 `Delta_t_save = 1 ps` 保存 `N = 10,000` 帧，
+所以保存跨度约为 `T = 10 ns`。对一个已声明的口袋距离可观测量，诊断估计积分自相关时间为
+`tau_int = 200 ps`。粗略有效计数近似为
+`N_eff approx T/(2 tau_int) = 10,000 ps/(400 ps) = 25`。
+
+正确推断不是恰好有 25 次独立分子实验，而是在该构造相关性模型下，把 `N = 10,000` 行视为独立的
+统计量会严重夸大精度。团队应报告估计 `tau_int` 的可观测量、保存间隔、若有则丢弃部分，以及该
+近似是诊断而不是达到平衡的保证。
+
+假设同一团队还比较两组已声明参数束 `F_A + W_A` 和 `F_B + W_B`，其中 `F` 指一个生物分子力场，
+`W` 指其预期水/离子模型。若体系、可观测量和采样规则保持明确，它可将二者作为两项模型假设
+比较。它不应因坐标能载入就声称 `F_A + W_B` 是中性的插值。配对属于参数化与验证问题，而不是
+格式选择。
+
+## 局限与独立练习
+
+力场对一个已声明状态和可观测量可以有效，却可能对另一个状态或转变错误。采样诊断可漏掉罕见
+事件或共享初始化偏差。更多帧既不能降低不匹配终点的影响，也不能修补未声明的质子化假设。比较
+轨迹前，应匹配体系定义、能量模型、系综、分析窗口和独立单位。
+
+**手算练习（不可运行、非实证）：** 一条构造轨迹在 `5 ns` 内每 `2 ps` 保存一帧，某已命名
+可观测量有 `tau_int = 100 ps`。用 `N_eff approx T/(2 tau_int)` 得到粗略计数。然后说出解释该计数
+所必需、但不是坐标帧的一项记录，以及该计数本身不能支持的一项主张。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+`T = 5,000 ps`，所以 `N_eff approx 5,000/(2 x 100) = 25`。保存间隔给出 `2,500` 个存储帧，
+但在已声明的 `tau_int` 下不改变粗略有效计数。必需记录可包括可观测量定义、力场与溶剂标识、
+温度/系综、初始化与 burn-in 规则，或相关性诊断。该计数本身不能显示轨迹已平衡、某口袋在实验中
+有群体，或某参数束在物理上正确。
+
+</details>
+
+## 来源与下一课
+
+下列官方文档页面于 2026-09-09 打开。它们支持 OpenMM 体系成分与实现选择之间的关系；不支持
+构造的有效计数。
+
+<div data-case-sources>
+
+- [OpenMM User Guide: Running Simulations](https://docs.openmm.org/latest/userguide/application/02_running_sims.html)
+- [OpenMM User Guide: Theory Introduction](https://docs.openmm.org/latest/userguide/theory/01_introduction.html)
+
+</div>
+
+当决策需要已声明的热力学终点而非单轨迹描述性可观测量时，继续阅读[自由能循环与收敛](/zh-cn/learn/physics-based-modeling/free-energy-cycles-and-convergence/)。
+原创课程文字采用 CC BY 4.0；链接来源保留各自条款。
+
+若想看一份采样契约被真正执行——包括被选帧实际相隔多远、以及为什么帧池化指标被禁止——
+可运行[误差是相对什么而言的误差](/zh-cn/labs/rmd17-contract-inspection/)。若想在一整条
+真实的从头算轨迹上计算一个真实观测量，并看到一个朴素不确定性估计低估自身，可运行
+[一个轨迹观测量，以及你需要多少帧](/zh-cn/labs/rmd17-dynamics-observable/)。
+
+最后审阅：2026-09-11。

@@ -1,0 +1,50 @@
+id: tool-reinvent-4
+name: REINVENT 4
+kind: software
+summary: Molecular design software for sampling, transfer learning and reinforcement-learning optimization under user-defined multi-component objectives.
+canonical_url: https://github.com/MolecularAI/REINVENT4
+identifiers:
+  - scheme: documentation
+    value: REINVENT 4 configuration examples and instructions
+    url: https://github.com/MolecularAI/REINVENT4/tree/main/configs
+  - scheme: documentation
+    value: REINVENT 4 tutorial scripts in Jupytext format
+    url: https://github.com/MolecularAI/REINVENT4/tree/main/notebooks
+  - scheme: model-archive
+    value: Public prior-model archive linked by the official README; archive not inspected here
+    url: https://doi.org/10.5281/zenodo.15641296
+stages: [design, lead-optimization, evaluation]
+modalities: [small-molecule]
+tasks: [molecular-generation, transfer-learning, goal-directed-optimization]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [source-license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: REINVENT 4 source code; not optional proprietary scoring components or every linked prior asset
+    evidence: [source-license]
+evidence:
+  - id: repository
+    url: https://github.com/MolecularAI/REINVENT4
+    label: Official REINVENT 4 repository and README, reviewed 2026-09-09
+    supports:
+      [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: source-license
+    url: https://raw.githubusercontent.com/MolecularAI/REINVENT4/main/LICENSE
+    label: REINVENT 4 source LICENSE
+    supports: []
+caveats:
+  - REINVENT 4 is distinct from the archived REINVENT 3.2 repository; configuration, environment and prior-model instructions must match the selected version.
+  - The README links public priors on Zenodo, but that archive was not successfully inspected in this review; weights, their terms and training-data availability remain unverified here.
+  - Some optional scoring components and tests require a proprietary OpenEye licence. A software licence does not grant access to every scorer.
+  - Upstream test instructions warn that MAIN_TEST_PATH must not already exist because test cleanup removes that directory. No upstream tests or generation workflows were run here.
+acknowledgements: []
+last_verified: "2026-09-09"

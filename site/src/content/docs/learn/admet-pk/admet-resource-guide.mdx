@@ -1,0 +1,197 @@
+---
+title: Choosing ADMET and PK resources
+description: Match a question to the entity, endpoint, and evidence layer that an ADMET or PK resource can actually supply.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="admet-pk/admet-resource-guide" />
+<ScrollableRegions />
+
+## Learning goal and boundary
+
+Use this guide after [ADMET evaluation](/learn/admet-pk/admet-evaluation/) and
+[clearance, exposure, and PK/PD](/learn/admet-pk/exposure-clearance-pkpd/).
+Its purpose is resource selection and inspection, not model execution, dosing,
+or toxicology advice. The useful first question is not “which ADMET tool is
+best?” It is: **what object, endpoint, and next decision do I have?** A molecule
+identifier, a concentration-response record, and an individual’s concentration
+time course are different entities. A resource that connects only one of them
+cannot establish the others.
+
+Keep a compact request card: chemical identity and form; endpoint and assay
+system; species, route, matrix, and time; intended output; and the alternative
+explanation that would change the decision. “Predict safety from a SMILES” lacks
+an endpoint, exposure context, and decision rule. “Find reported human
+midazolam half-lives after an oral intervention in healthy subjects” is a
+retrieval question with named entities and a usable inspection target.
+
+## Select a resource by evidence layer
+
+<table>
+  <thead>
+    <tr>
+      <th>Question and input</th>
+      <th>Useful output</th>
+      <th>Start here</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        Can I inspect a transparent example of a small-molecule ADMET modelling
+        workflow? A chemical table plus a named endpoint.
+      </td>
+      <td>
+        Notebook workflow, comparison step, and a reportable modelling artifact.
+      </td>
+      <td>
+        <a href="/atlas/tutorial-openadmet-demos/">OpenADMET Demos</a>, then{" "}
+        <a href="/atlas/tool-openadmet-models/">OpenADMET Models</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Which identity and associated chemical evidence should I inspect first?
+        A name, CAS number, or structure-linked identifier.
+      </td>
+      <td>
+        A dashboard record and linked chemistry, hazard, exposure, or
+        bioactivity context.
+      </td>
+      <td>
+        <a href="/atlas/db-comptox-chemicals-dashboard/">
+          CompTox Chemicals Dashboard
+        </a>
+        .
+      </td>
+    </tr>
+    <tr>
+      <td>What in-vitro assay evidence exists for a chemical and endpoint?</td>
+      <td>
+        Assay annotations, concentration-response-derived records, and
+        processing context.
+      </td>
+      <td>
+        <a href="/atlas/dataset-toxcast/">ToxCast</a>; inspect the assay rather
+        than treating its hit call as organism-level toxicity.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        What published PK record has the needed study, subject, intervention,
+        and output entities?
+      </td>
+      <td>
+        Filterable studies, groups or individuals, interventions, outputs, and
+        time courses.
+      </td>
+      <td>
+        <a href="/atlas/db-pk-db/">PK-DB</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        How do explicit physiology and compound assumptions generate a
+        concentration-time simulation?
+      </td>
+      <td>
+        A specified PBPK project and simulated curves conditional on its
+        building blocks.
+      </td>
+      <td>
+        <a href="/atlas/tool-pk-sim/">PK-Sim</a>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+The first row is a **software and tutorial** choice. OpenADMET Demos shows a
+CYP3A4 case through curation, model training, comparison, and application to an
+unseen set; it is not a released universal CYP3A4 truth set. OpenADMET Models
+contains model implementations and training routines. Inspect the endpoint
+definition, source records, split, and selection rule before adapting either.
+The Atlas records source code under its stated licences, but do not assert
+released weights or complete data provenance.
+
+The middle rows are **evidence retrieval**, not prediction. CompTox is a useful
+identity-centered entry point. Its pages may bring together experimental and
+predicted fields, so retain field provenance and do not turn a displayed
+prediction into an observed label. ToxCast is an EPA resource of heterogeneous
+in-vitro assays. Its relevant input is a chemical plus assay or biological
+endpoint; its output is assay-level evidence with concentration-response
+processing. It does not answer whether a candidate is safe at a human exposure.
+
+PK-DB keeps the study context that flat ADMET tables often lose. A concentration
+or half-life is interpretable only with its study, subject or group,
+intervention, matrix or output, and time context. Its web and REST interfaces
+support filtering and downloading. Its current repository
+[LICENSE](https://github.com/matthiaskoenig/pkdb/blob/develop/LICENSE) is MIT;
+the API's LGPL label conflicts with that file. The catalog follows the source
+licence, which does not automatically cover imported records. Similarly,
+[OpenADMET Models' LICENSE](https://github.com/OpenADMET/openadmet-models/blob/main/LICENSE)
+is Apache-2.0 despite a conflicting MIT sentence in its README. PK-Sim's
+[GPL-2.0 licence includes a clarifying addendum](https://github.com/Open-Systems-Pharmacology/PK-Sim/blob/develop/LICENSE).
+Finally, PK-Sim is not a data repository: it combines individuals
+or populations, compounds, formulations, administration protocols, and other
+building blocks into a PBPK simulation. A curve is therefore an implication of
+the entered model, not newly measured PK evidence.
+
+## Constructed case: choose before you calculate
+
+This case is **invented for teaching**. A team has a neutral small-molecule
+structure and asks whether it should be prioritized because “CYP3A4 risk is
+low.” No assay, species, dose, concentration, or comparator is supplied. The
+correct first output is not a rank.
+
+First, use [CompTox](/atlas/db-comptox-chemicals-dashboard/) to resolve and
+inspect the chemical record, retaining the submitted structure form and every
+matched identifier. Next, use [ToxCast](/atlas/dataset-toxcast/) only to inspect
+whether a relevant assay and its annotations exist; a missing or positive record
+does not settle CYP3A4 inhibition. If the project needs a modelling template,
+inspect the [OpenADMET Demos](/atlas/tutorial-openadmet-demos/) CYP3A4 example
+and the [OpenADMET Models](/atlas/tool-openadmet-models/) implementation, then
+freeze a source and split before fitting. If the decision is instead about
+reported exposure, query [PK-DB](/atlas/db-pk-db/) for a matched intervention,
+population, matrix, and time-course or PK output. Only after explicit compound,
+physiology, and administration assumptions are assembled is
+[PK-Sim](/atlas/tool-pk-sim/) a suitable simulation resource.
+
+Every sentence above is a selection plan, not a claim that this molecule has a
+particular liability, exposure, or simulation result. The missing assay and
+exposure information are the result of the case, not fields to fill with a
+model score.
+
+## Independent resource-selection question
+
+A report asks: “Compare oral exposure of compound X in healthy adults with
+compound Y in rats, and assess a mitochondrial-toxicity concern.” Which two
+resources should be inspected first, what entity filters must remain attached,
+and why should PK-Sim not be the first source of evidence?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Start with [PK-DB](/atlas/db-pk-db/) for published PK records and
+[ToxCast](/atlas/dataset-toxcast/) for an in-vitro mitochondrial assay search.
+For PK-DB, retain compound identity, study, species, health state, route, dose,
+matrix, sampling time or derived output, and whether the record represents an
+individual or group. Do not compare an oral human AUC with a rat parameter
+without these qualifiers. For ToxCast, retain the chemical identity, assay and
+endpoint annotation, concentration-response processing, and the fact that it is
+in vitro. PK-Sim is subsequent: it can test declared translation assumptions,
+but its simulated curve cannot replace either the observed PK record or the
+assay evidence.
+
+</details>
+
+## Source and access notes
+
+The linked Atlas records were reviewed on 2026-09-09. They distinguish stated
+source-code licences from access to data, weights, and recipes; unverified
+fields are intentionally not upgraded from a reachable web page. None of these
+resources substitutes for endpoint-specific assay review, exposure measurement,
+or a safety conclusion.
+
+Last reviewed: 2026-09-09.

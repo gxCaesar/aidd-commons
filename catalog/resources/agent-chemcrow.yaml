@@ -1,0 +1,45 @@
+id: agent-chemcrow
+name: ChemCrow
+kind: agent
+summary: Language-model orchestration of chemistry tools and information sources; the public tool collection differs from the paper's system.
+canonical_url: https://github.com/ur-whitelab/chemcrow-public
+identifiers:
+  - scheme: paper
+    value: "ChemCrow: Augmenting large-language models with chemistry tools; arXiv:2304.05376"
+    url: https://arxiv.org/abs/2304.05376
+stages: [make, evidence-synthesis, design]
+modalities: [small-molecule, reaction, text]
+tasks: [tool-using-agent]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [source-license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: Repository software and associated documentation, not external models, APIs or database content
+    evidence: [source-license]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/ur-whitelab/chemcrow-public
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/ur-whitelab/chemcrow-public
+    label: ChemCrow repository and public-tool limitations, reviewed 2026-09-09
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: source-license
+    url: https://raw.githubusercontent.com/ur-whitelab/chemcrow-public/main/LICENSE
+    label: ChemCrow source LICENSE, reviewed 2026-09-09
+    supports: []
+caveats:
+  - The README states that API restrictions exclude some paper tools from this public repository and that it will not produce the same paper results.
+  - Model and optional tool services have separate access requirements. No upstream agent execution or paper-run reproduction was performed here.
+acknowledgements: []
+last_verified: "2026-09-09"

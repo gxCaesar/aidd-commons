@@ -1,0 +1,65 @@
+id: model-deepdta
+name: DeepDTA
+kind: model
+summary: Drug-target affinity prediction model repository.
+canonical_url: https://github.com/hkmztrk/DeepDTA
+identifiers:
+- scheme: documentation
+  value: DeepDTA dataset instructions
+  url: https://github.com/hkmztrk/DeepDTA/blob/master/data/README.md
+stages:
+- hit-discovery
+- evaluation
+modalities:
+- small-molecule
+- protein
+tasks:
+- drug-target-affinity-prediction
+relations: []
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - repository
+openness:
+  inference_code:
+    value: available
+    evidence:
+    - repository
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses: []
+evidence:
+- id: resource-links-2026-09-08
+  url: https://github.com/hkmztrk/DeepDTA
+  label: Official source for additional resource links (reviewed 2026-09-08)
+  supports:
+  - identifiers
+- id: repository
+  url: https://github.com/hkmztrk/DeepDTA
+  label: DeepDTA repository
+  supports:
+  - caveats
+  - kind
+  - modalities
+  - name
+  - stages
+  - summary
+  - tasks
+caveats:
+- The openness claims here rest on the repository's own file listing and README, read on 2026-10-23; the code was not run, and no claim is made that the released scripts reproduce the published numbers.
+- The repository holds no licence file under the usual names and its front page states no licence, as read on 2026-10-23, so the terms of the release are not established by this record and the access level stays unverified.
+- The repository is public and clonable and carries no licence file, so the code is obtainable while the terms under which it may be reused are unstated. The repository has not been pushed to since 2023.
+acknowledgements: []
+last_verified: '2026-10-23'

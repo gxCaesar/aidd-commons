@@ -1,0 +1,47 @@
+id: dataset-prism-repurposing
+name: PRISM Repurposing dataset
+kind: dataset
+summary: A Broad PRISM resource containing pooled cancer cell-line chemical-perturbation viability screen results and associated primary and secondary screen files.
+canonical_url: https://depmap.org/repurposing/
+identifiers:
+  - scheme: portal
+    value: DepMap repurposing resource
+    url: https://depmap.org/repurposing/
+stages: [target-discovery, repurposing]
+modalities: [cancer-cell-line, chemical-perturbation, viability]
+tasks: [response-inspection, biomarker-hypothesis-generation]
+relations: []
+status: { value: unverified }
+access_level: { value: research_only, evidence: [depmap-terms] }
+openness:
+  inference_code: { value: not_applicable, evidence: [repurposing-page] }
+  training_code: { value: not_applicable, evidence: [repurposing-page] }
+  weights: { value: not_applicable, evidence: [repurposing-page] }
+  architecture: { value: not_applicable, evidence: [repurposing-page] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: not_applicable, evidence: [repurposing-page] }
+licenses:
+  - name: DepMap Portal Data Terms and Conditions
+    scope: "The DepMap team's own statement of the terms that apply to the data it hosts, which the record read on 2026-10-24: current data are freely available for internal or non-profit research, and commercial use, including the sale or product use of models trained on the data, is not permitted under these terms and may require a separate license agreement from Broad or its contributors. The PRISM repurposing files are reached through the same portal, and the record did not find a separate terms page for the PRISM project, so the portal terms are what it carries."
+    evidence: [depmap-terms]
+evidence:
+  - id: repurposing-page
+    url: https://depmap.org/repurposing/
+    label: Broad PRISM repurposing resource, re-opened 2026-10-24, which renders its content in the browser
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: terms-page
+    url: https://depmap.org/repurposing/
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+  - id: depmap-terms
+    url: https://forum.depmap.org/t/provide-an-open-endpoint-for-latest-version-retrieval/4652
+    label: The DepMap team's statement of the current portal data terms, read 2026-10-24
+    supports: [caveats]
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one. The page was re-opened on 2026-10-24 and still renders its content in the browser with no terms in the returned text, so the record carries the portal's terms rather than a page-specific one.
+  - The DepMap team's statement of the terms is a statement about the data it hosts, and the record applies it to the PRISM repurposing files because they are reached through that portal and because no separate PRISM terms page was found. A reader who needs a grant for this project specifically has to ask the Broad.
+  - The same forum thread records that the portal now puts a captcha layer in front of its file downloads, that the bulk download path redirects to a captcha-protected location, and that the team's answer offers a no-captcha endpoint for the file list. The files are therefore reachable but not by an unattended script.
+  - The primary and secondary releases are pooled cancer cell-line chemical-perturbation viability screens with distinct stated compound, cell-line, and dose scopes.
+acknowledgements: []
+last_verified: "2026-10-24"

@@ -1,0 +1,147 @@
+---
+title: Mechanisms of conditional generation
+description: Compare factorized sampling, denoising, latent-variable decoding, and velocity fields without treating a generated candidate as a discovery result.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="molecular-generation/generative-model-mechanisms" />
+
+<ScrollableRegions />
+
+## Learning goals
+
+After this lesson, you should be able to distinguish autoregressive,
+denoising-diffusion, latent-VAE, and flow-matching mechanisms at the level of
+their target and inference procedure. You should also be able to keep candidate
+validity, novelty, synthesizability, and a scored objective separate.
+
+## Prerequisites and task boundary
+
+Read [Generation and search](/learn/molecular-generation/generation-and-search/)
+first. Let `x` be a molecular object represented as tokens, a graph, or atomic
+coordinates, and let `c` be a declared condition such as a target-site
+representation or a property constraint. A generator samples a candidate from
+`p(x | c)`; it does not by itself establish activity, synthesis, or a useful
+experimental outcome.
+
+## Four mechanisms, four inference paths
+
+An autoregressive model factorizes a sequence into conditional next-token
+decisions:
+`p(x | c) = product_i p(x_i | x_<i, c)`. Inference chooses or samples one token
+after another. During training, a standard objective is the negative
+log-likelihood `L_AR = -sum_i log p_theta(x_i | x_<i, c)`. The factorization,
+tokenization, and conditioning all belong to the model contract.
+
+A denoising diffusion model defines noisy versions of a clean object and learns
+to remove noise conditional on time and, when used, `c`. One common teaching
+form is `x_t = sqrt(alpha_bar_t) x_0 + sqrt(1-alpha_bar_t) epsilon`, with a
+noise-prediction loss `E ||epsilon - epsilon_theta(x_t, t, c)||^2`. Inference
+begins from noise and applies a reverse denoising procedure. The original
+[DDPM paper](https://arxiv.org/abs/2006.11239) describes the connection between
+diffusion probabilistic models and denoising score matching; it is a mechanism
+source, not evidence that every molecular diffusion implementation uses the
+same representation or sampler.
+
+A latent variational autoencoder (VAE) introduces a latent variable `z`. For a
+fully conditional VAE, the encoder can approximate `q_phi(z | x, c)`, the prior
+can be `p(z | c)`, and the decoder models `p_theta(x | z, c)`. Its conditional
+evidence lower bound balances reconstruction with
+`KL(q_phi(z | x, c) || p(z | c))`. An unconditional encoder `q_phi(z | x)` is
+also possible, but the chosen encoder, prior, and decoder conditions must be
+declared rather than mixed implicitly. [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114)
+is the original source for the reparameterized variational-learning mechanism.
+At generation time, sampling `z` and decoding it is not the same operation as
+iterative denoising in object space.
+
+Flow matching trains a continuous vector field. In the narrow sense used here,
+it learns a velocity `v_theta(x_t, t, c)` along a chosen probability path, then
+an ODE solver integrates `dx/dt = v_theta(x_t, t, c)` from a base distribution
+to data. The original [Flow Matching paper](https://arxiv.org/abs/2210.02747)
+frames this as regressing vector fields of fixed conditional probability paths.
+Velocity learning alone says neither that a generated molecule is valid nor that
+the path is a physical reaction trajectory.
+
+## Worked likelihood: a candidate is more than its token probability
+
+For a **constructed conditional-token example**, suppose a model assigns
+`p(A | c) = 0.80`, `p(B | A, c) = 0.25`, and
+`p(stop | AB, c) = 0.50`. Its probability for the token sequence `AB` followed
+by stop is `0.80 x 0.25 x 0.50 = 0.10`. This arithmetic says only how likely
+that sequence is under this factorization and condition.
+
+It does not answer four separate downstream questions:
+
+| Question | Example evidence needed |
+| --- | --- |
+| Validity | A parser, valence check, or valid coordinate/graph construction |
+| Novelty | A declared reference set and similarity or identity rule |
+| Synthesizability | A route, reagents, conditions, and an explicit feasibility criterion |
+| Objective proxy | A named model score with its target, unit, and calibration limits |
+
+A high token likelihood does not imply any one of these. Conversely, a novel
+or synthetically plausible candidate need not optimize the proxy score.
+
+## Conditional generation and examples at the right scope
+
+The condition `c` must be visible in both training and inference claims. For
+example, a pocket, residue constraint, desired property, or atomic motif can be
+provided as a condition, but no universal pretrained capability to use every
+such `c` follows. The resulting sample remains conditional on how that item was
+encoded, which conditions appeared in training, and the model's declared
+inference interface.
+
+[RFdiffusion2](https://github.com/RosettaCommons/RFdiffusion2) is a useful
+official example of protein atomic active-site scaffolding. Its repository
+states that the current release supports inference only and describes protein
+design demonstrations. It is not evidence of small-molecule discovery, a
+general molecular-generation benchmark result, or complete training
+availability.
+Its 41 M-CSA enzyme benchmark does not identify the training corpus, and the [project documentation](https://rosettacommons.github.io/RFdiffusion2/) recommends the original RFdiffusion for binder design.
+
+## Independent exercise
+
+Choose a condition `c` and a molecule representation `x`. In two sentences,
+state how an autoregressive sampler and a diffusion sampler would begin
+inference. Then list one test for each of validity and objective-proxy quality.
+Do not use “the model generated it” as either test.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+For example, let `c` be a target-site representation and `x` a molecular graph.
+An autoregressive sampler begins with a start token or partial graph and samples
+the next component conditioned on the prefix and `c`. A diffusion sampler begins
+with noisy graph or coordinate variables and repeatedly denoises them using
+time and `c`. Validity might be assessed by a graph/valence rule. Objective-proxy
+quality requires a separately named scorer and a check that its output has the
+claimed unit, target, and calibration scope. Neither test establishes synthesis
+or biological activity.
+
+</details>
+
+## Failure boundaries and source path
+
+Generation changes a proposal distribution; it does not remove uncertainty in
+the target state, the condition, a scoring proxy, or a later experiment. Record
+the representation, conditioning information, sampling rule, validity filter,
+reference set for novelty, and decision endpoint before comparing candidate
+lists.
+
+<div data-case-sources>
+
+- [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239)
+- [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114)
+- [Flow Matching for Generative Modeling](https://arxiv.org/abs/2210.02747)
+- [RFdiffusion2 official repository](https://github.com/RosettaCommons/RFdiffusion2)
+
+</div>
+
+The likelihood and all examples here are constructed teaching examples. This
+lesson makes no model-ranking, training-availability, software-execution, or
+discovery claim. Original lesson prose is CC BY 4.0; linked software and
+sources retain their own terms.
+
+Last reviewed: 2026-09-09.

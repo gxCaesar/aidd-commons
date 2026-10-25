@@ -1,0 +1,91 @@
+{
+  "protocol_id": "rmd17-system-state-v1",
+  "source": {
+    "figshare_article": "12672038",
+    "doi": "10.6084/m9.figshare.12672038.v4",
+    "version": 4,
+    "licence": "CC0",
+    "primary_paper_doi": "10.1088/2632-2153/abba6f"
+  },
+  "systems": [
+    {
+      "system_id": "ethanol",
+      "filename": "rmd17_ethanol.npz",
+      "file_id": "62265733",
+      "role": "development",
+      "expected_frames": 100000,
+      "expected_atoms": 9
+    },
+    {
+      "system_id": "malonaldehyde",
+      "filename": "rmd17_malonaldehyde.npz",
+      "file_id": "62265736",
+      "role": "development",
+      "expected_frames": 100000,
+      "expected_atoms": 9
+    },
+    {
+      "system_id": "benzene",
+      "filename": "rmd17_benzene.npz",
+      "file_id": "62265739",
+      "role": "locked",
+      "expected_frames": 100000,
+      "expected_atoms": 12
+    },
+    {
+      "system_id": "uracil",
+      "filename": "rmd17_uracil.npz",
+      "file_id": "62265745",
+      "role": "locked",
+      "expected_frames": 100000,
+      "expected_atoms": 12
+    }
+  ],
+  "required_npz_keys": [
+    "nuclear_charges",
+    "coords",
+    "energies",
+    "forces",
+    "old_indices",
+    "old_energies",
+    "old_forces"
+  ],
+  "units": {
+    "coordinates": "Angstrom",
+    "energies": "kcal/mol",
+    "forces": "kcal/mol/Angstrom"
+  },
+  "sampling": {
+    "sort": "stable ascending old_indices",
+    "rank_expression": "rint(linspace(0, n_frames - 1, 1000)).astype(int64)",
+    "selected_frames": 1000,
+    "partitions": {
+      "train": 600,
+      "validation": 200,
+      "evaluation": 200
+    }
+  },
+  "features": {
+    "channels": "lexicographic unordered element pairs",
+    "edges_angstrom": "0.0, 0.1, ..., 10.0",
+    "ordinary_bins": 100,
+    "overflow": "distance over 10.0 Angstrom",
+    "normalization": "fixed atom-pair count per channel"
+  },
+  "models": {
+    "control": "per-system train mean energy",
+    "learned": "StandardScaler on train features; train-energy centering; Ridge(fit_intercept=False, solver=lsqr)",
+    "alphas": [0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0],
+    "selection": "median validation MAE across ethanol and malonaldehyde; exact ties choose larger alpha"
+  },
+  "metrics": {
+    "per_system": ["MAE kcal/mol", "RMSE kcal/mol", "target range kcal/mol"],
+    "aggregate": ["median per-system MAE", "range of per-system MAEs"],
+    "forbidden": ["frame-pooled metrics", "confidence intervals"]
+  },
+  "feature_and_target_boundaries": {
+    "target_array": "energies",
+    "allowed_feature_arrays": ["nuclear_charges", "coords"],
+    "prohibited_arrays": ["forces", "old_energies", "old_forces"]
+  }
+}

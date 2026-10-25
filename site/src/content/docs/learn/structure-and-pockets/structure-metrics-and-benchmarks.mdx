@@ -1,0 +1,141 @@
+---
+title: Structure metrics and benchmark windows
+description: Read structure comparison measures alongside atom correspondence, benchmark construction, and the assets needed to check a result.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="structure-and-pockets/structure-metrics-and-benchmarks" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Pocket states and confidence](/learn/structure-and-pockets/pocket-states-and-confidence/)
+and [Metrics and uncertainty](/learn/evaluation-and-reproducibility/metrics-and-uncertainty/),
+use the PXMeter record to identify what a structural comparison measures, why
+atom correspondence matters, and what is needed to check a benchmark claim over
+a different time window. This is a reading lesson with a written exercise. The
+tool and its benchmark were not run here.
+
+## Comparison contract
+
+PXMeter compares a model structure with a reference structure. Its command line
+and Python interfaces establish full-atom correspondence before computing the
+measures below. The reference, model, and correspondence define the comparison.
+Closeness to a reference does not establish that the reference is correct, that
+the evaluated interface is the binding interface, or that a pose is physically
+possible. The four measures address different parts of that comparison and do
+not form a single claim about biological validity.
+
+## The four measures
+
+| Measure | What it measures | What it does not establish |
+| --- | --- | --- |
+| LDDT | Local agreement between a reference and a model structure without a global superposition | Correctness of the reference or physical plausibility of a ligand pose |
+| DockQ | Interface interaction quality | That the evaluated interface is the binding interface |
+| Pocket-aligned RMSD | Ligand pose quality after pocket alignment | That the pose is physically possible |
+| PoseBusters validity checks | Plausibility of generated molecule poses | Closeness of a model structure to a reference or a binding measurement |
+
+These are the functions named in the [PXMeter repository](https://github.com/bytedance/PXMeter)
+and [README](https://raw.githubusercontent.com/bytedance/PXMeter/main/README.md).
+A score must be read with its comparison object. None of these measures alone
+establishes an experimental binding or mechanism result.
+
+## Correspondence before comparison
+
+PXMeter establishes full-atom correspondence between the reference and model
+structures before calculating a measure. Without a defensible match between
+atoms, the reported difference can reflect which atoms were paired or how the
+structures were aligned rather than the prediction being assessed. The
+[evaluation lesson](/learn/evaluation-and-reproducibility/metrics-and-uncertainty/)
+asks what a metric averages over. Here the prior question is which structural
+features are being compared at all. A metric name cannot repair a mismatched
+pair.
+
+## A benchmark and its time window
+
+The PXMeter README describes the RecentPDB low-homology dataset. Its construction
+uses filtering, homology scans, clustering, and subset labelling. The benchmark
+pipeline can rebuild the evaluation dataset from scratch over a chosen time
+window. A result on one window therefore describes that constructed set. Checking
+whether a comparison persists on another window requires reconstructing the set
+and evaluating it again. The record supplies no split name, sample count, release
+manifest, or roster of benchmarked models, so it supports no leaderboard here.
+
+The benchmarking workflow, benchmark data, and evaluation driver are in the
+source repository, not in the published PyPI package. Installing that package
+provides the metrics but not the benchmark. A reader seeking to check a
+different window needs the source repository's benchmark pipeline.
+
+## Openness by dimension
+
+The seven columns preserve the catalogue's distinct dimensions. Available
+means the cited record established access or documentation, not that this lesson
+executed the asset. Unverified means the record did not establish that dimension.
+
+| Resource | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| PXMeter | available | unverified | unverified | available | available | available | available |
+
+The available data and evaluation entries describe assets in the source
+repository. They do not imply that the published package contains the benchmark.
+The repository README states Apache-2.0 for the tool's source. Its Chemical
+Component Dictionary comes from Biotite's bundle, while reference structures
+are RCSB PDB CIF files. Those inputs retain their respective projects' terms.
+
+## Worked case
+
+Suppose a predicted structure is reported to score well against a reference.
+What follows from the comparison, and what remains untested? Which computational
+step makes the comparison interpretable? If a ranking is later proposed for a
+different time window, what must a reader obtain to check it?
+
+The supported conclusion is closeness to that reference under the stated
+measure. It does not certify the reference, identify a biological binding
+interface, or establish physical plausibility of a pose. Full-atom
+correspondence must be established before the measure is calculated. A ranking
+over another time window would also require rebuilding the evaluation set and
+running the source repository's benchmark pipeline. The published package does
+not carry its data or evaluation driver. This case supplies no observed score
+or model ranking.
+
+## Independent exercise
+
+A colleague installs the published package, sees that the record marks
+evaluation code and training data available, and plans to reproduce a benchmark
+on a newly chosen time window using only that installation. Explain what the
+installation provides, what else the colleague needs, and which `2` openness
+fields are unverified.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The installation provides the metrics, not the benchmark data or evaluation
+driver. The colleague needs the benchmark pipeline in the source repository to
+rebuild and evaluate a set over the chosen window. The available evaluation-code
+and training-data cells report record-level access, not package contents. The
+training-code and weights cells are unverified. Those `2` entries cannot be
+filled from the availability of the benchmark pipeline.
+
+</details>
+
+## Scope
+
+PXMeter was not run here, and no structure was scored. The record names no
+roster of benchmarked models. The benchmark's construction supports claims
+about its chosen time window, not a model ranking in this lesson. Biotite's
+Chemical Component Dictionary bundle and RCSB PDB reference structures bring
+other projects' terms to the inputs. Reading an openness cell does not execute
+an asset or reproduce a benchmark.
+
+## Sources
+
+The catalogue record `tool-pxmeter` was last verified on 2026-10-23. It cites
+the [PXMeter repository](https://github.com/bytedance/PXMeter) and
+[README](https://raw.githubusercontent.com/bytedance/PXMeter/main/README.md).
+The record's access, openness, licence, and caveats define the scope of this
+lesson. Original lesson prose is CC BY 4.0; linked sources retain their own
+terms.
+
+Last reviewed: 2026-10-23.

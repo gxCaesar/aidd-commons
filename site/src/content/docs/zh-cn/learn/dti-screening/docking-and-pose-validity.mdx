@@ -1,0 +1,112 @@
+---
+title: 对接、位姿生成与物理有效性
+description: 把一个 pose 的几何准确度与它自身的物理有效性区分开，看清一个已发表的对接成功率里，到底测的是哪一个，又是在哪个测试集上测的。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Docking, pose generation, and physical validity](/learn/dti-screening/docking-and-pose-validity/)。
+
+<LessonProgress lessonId="dti-screening/docking-and-pose-validity" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将区分对接或位姿生成方法回答的两个不同问题：这个 pose 离真实实验几何有多近，以及这个
+pose 本身在物理上是否可能。你会读一份真实发表的比较，它同时给出这两个问题的答案，并覆盖
+两个难度不同的测试集，然后判断每个数字各自能支持什么结论。请先读[筛选与亲和力](/zh-cn/learn/dti-screening/screening-and-affinity/)
+和[筛选候选活性率、亲和力尺度与迁移](/zh-cn/learn/dti-screening/screening-prevalence-and-transfer/)，
+本课深入展开后者开篇提出的那句话："pose 可在高分时仍物理不可能"。本课是阅读与手算课，
+不是可运行的对接练习，也不重现所引用的 benchmark。
+
+## pose 分数能回答的两个问题，以及它们为何分离
+
+**几何准确度**问的是预测 pose 离已知参考结构有多近，通常是预测配体原子与共晶配体原子间的
+RMSD（单位 Å）。它需要一个真实结构作参照，且单独看时不说明这个 pose 本身怎么样。**物理
+有效性**问的是这个 pose 本身是否内在合理：键长键角是否落在经验正常范围内、环构象是否匹配
+已知合理模板、立体化学是否一致、以及是否与蛋白质发生严重冲突。它完全不需要参考结构，因为
+它是单个生成 pose 自身的属性。
+
+一个被训练去模仿共晶几何的位姿生成模型，可以在第一个问题上表现很好，却在第二个问题上失败：
+RMSD 只根据原子位置与参考结构比较来计算，它不会惩罚一处局部张力过大的键、一个超出正常范围的
+环褶皱，或模型在复现正确部分的同时一并复现的冲突。而基于物理或打分函数的搜索方法很少一开始
+就生成内在不可能的 pose，因为冲突与张力项本就是它优化目标的一部分；但它的搜索与打分近似仍可能
+让它落进错误的亚口袋或旋转异构体，离真实参考几何很远。这两种失败模式几乎相反，而单独一个
+RMSD 数字完全掩盖了第一种失败。
+
+## 已构造案例：一份 benchmark，两个指标，两个测试集
+
+[PoseBusters](https://arxiv.org/abs/2308.05777)（Buttenschoen、Morris 与 Deane，
+*Chemical Science* 2024, 15, 3130–3139）构建了这样一套完全不依赖参考结构的内在有效性检查，
+并把它与普通 RMSD 一起应用到若干对接与位姿生成方法上，覆盖两个测试集：较旧、被广泛使用的
+Astex Diverse 集，以及一个专门构建、用来减少与深度学习方法训练数据重叠的更新的 PoseBusters
+Benchmark 集。
+
+在 Astex Diverse 集上，DiffDock 仅按 RMSD 计的成功率（pose 在 2 Å 内接近共晶配体、不要求
+物理有效性）是 72%，是被比较方法中最高的。一旦同时要求物理有效性，即同一联合判据（RMSD ≤ 2 Å
+**且**通过全部 PoseBusters 检查），Gold 为 64%、AutoDock Vina 为 56%、DiffDock 为 47%。
+按这个读法，DiffDock headline 数字里的二十五个百分点，来自那些几何上接近却未能独立通过
+物理合理性检查的 pose。
+
+在专门构建来减少"被记住"可能性的 PoseBusters Benchmark 集上，同一联合判据给出
+AutoDock Vina 58%、Gold 55%、DiffDock 仅 12%。两个经典方法哪个分数更高，在两个测试集间
+并不稳定——Astex 上是六十四比五十六，新集上是五十五比五十八——这本身就提醒我们不要把
+任一单一数字当成固定排序。稳定的是与最好的深度学习方法之间的差距：两个经典工具在两个
+测试集上都远远领先 DiffDock，而 DiffDock 自己的联合分数从 47% 跌到 12%，跌幅远大于任一
+经典方法在同两个测试集间的变化。按这个读法，AutoDock Vina 在新集上联合判据下的成功率约为
+DiffDock 的 4.8 倍（58/12）。论文自身的结论原话是："no DL-based method yet outperforms
+standard docking methods when both physical plausibility and binding mode RMSD is taken
+into account."（把物理合理性与结合模式 RMSD 一并纳入考量时，尚无深度学习方法超过标准对接
+方法。）同一篇论文报告的另一个深度学习方法 EquiBind 的一个具体失败模式是它"commonly
+generated severe protein-ligand clashes"（常生成严重的蛋白质—配体冲突），这正是
+RMSD-only 数字看不见的那种内在合理性失败。
+
+同一张表里能看到两种独立的风险：只报告两个轴中的一个的风险，以及把一个来自更容易、可能
+已被记住的测试集上的数字当成能推广到新靶点的风险。本项目没有独立重跑这些方法中的任何一个；
+以上数字直接读自一份已发表的比较，使用作者自己钉住的工具版本、自己定义的有效性检查和自己
+选定的两个测试集，不是一个通用的或最新的排名。
+
+## 替代方法、局限与独立练习
+
+DeepDTA、GraphDTA 这类基于序列的打分器根本不产生 pose；它们用放弃任何合理性检查的机会，
+换取一个不依赖结构就能评估的标签或亲和力输出。本课的两个轴都不适用于它们，这是一种设计
+选择，不是任一类模型的缺陷。通过全部有效性检查同样不能证明这个 pose 就是真实结合模式：
+一个物理上可能的几何仍可能是错的——这与前一课已经指出的"化学上合理的 pose 不证明结合"
+是同一个警告。几何准确度、物理有效性与结合真值是三个独立问题，单一数字最多只回答其中一个。
+
+**手算练习（不可运行、非实证）：** 某方法宣称的 headline 是"在 Benchmark Set 1 上 68%
+的 pose 落在 2 Å RMSD 内"，报告时未提及任何物理有效性要求。一次独立审计按联合判据
+（RMSD ≤ 2 Å 且通过全部内在有效性检查）重新测量，在 Benchmark Set 1 上得到 19%，
+在一个专门构建来减少训练重叠的更新集 Benchmark Set 2 上得到 6%。(a) 指出 68% 这个
+headline 混淆了哪两个轴。(b) 固定测试集为 Set 1，单独加入有效性要求让分数损失了多少
+个百分点？(c) 从 19% 到 6% 的进一步下降，是否是 (b) 中同一个问题的证据，还是另一个问题？
+(d) 分别指出一种仅凭 68% 这个数字就足够、和一种不足够的筛选决策。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+(a) 与参考结构的几何准确度，以及内在物理有效性；68% 这个数字只测了第一个。(b) 68% − 19%
+= 49 个百分点，在同一测试集上，归因于那些几何上接近却未能独立通过物理合理性检查的 pose。
+(c) 是另一个问题：这是较易、可能已被记住的测试集与专门减少了这种重叠的更新测试集之间的
+泛化差距，不是 (b) 中已经计入的有效性差距的重复。(d) 68% 这个仅按 RMSD 计的数字，可以
+支持一个不依赖任何单个 pose 本身可部署的纯排序任务，例如决定哪些候选进入后续结合测定；
+它不足以支持一个消费几何本身的决策，例如根据预测接触提出具体类似物或合成路线，因为一个
+从未要求物理有效性或在更新靶点上表现的 headline，对这两者都没有说明。
+
+</details>
+
+## 来源与下一课
+
+下列原始来源于 2026-09-12 打开。它支持所报告的数字与论文自身的结论，不支持已构造的练习。
+
+<div data-case-sources>
+
+- [PoseBusters: AI-based docking methods fail to generate physically valid poses or generalise to novel sequences](https://arxiv.org/abs/2308.05777) — Buttenschoen、Morris 与 Deane，*Chemical Science* 2024, 15, 3130–3139。
+
+</div>
+
+继续读[结构、亲和力与机制](/zh-cn/learn/structure-and-pockets/structure-affinity-mechanisms/)，
+检查一个分数继承了哪些结构假设。原始课程文字为 CC BY 4.0；链接来源保留其自身条款。
+
+最后审阅：2026-09-12。

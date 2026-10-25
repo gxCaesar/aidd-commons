@@ -1,0 +1,95 @@
+{
+  "cell_lines": {
+    "MCF7": {
+      "admitted_entity_count": 1725,
+      "duplicate_entity_count": 1720,
+      "exclusion_counts": {
+        "missing_structure": 8,
+        "wrong_dose": 30047,
+        "wrong_time": 1872
+      },
+      "input_rows": 37495,
+      "retained_rows": 5568
+    },
+    "PC3": {
+      "admitted_entity_count": 1724,
+      "duplicate_entity_count": 1714,
+      "exclusion_counts": {
+        "missing_structure": 6,
+        "wrong_dose": 28602,
+        "wrong_time": 186
+      },
+      "input_rows": 34112,
+      "retained_rows": 5318
+    }
+  },
+  "computed_on": "2026-09-12",
+  "examples": {
+    "most_divergent": [
+      {
+        "pert_id": "BRD-A36010170",
+        "pert_iname": "amcinonide",
+        "spearman_rho": -0.5913199178332151
+      },
+      {
+        "pert_id": "BRD-K67578145",
+        "pert_iname": "GDC-0879",
+        "spearman_rho": -0.5276784994417507
+      },
+      {
+        "pert_id": "BRD-K76964878",
+        "pert_iname": "EX-527",
+        "spearman_rho": -0.5162859798623574
+      }
+    ],
+    "most_reproducible": [
+      {
+        "pert_id": "BRD-K81258678",
+        "pert_iname": "triptolide",
+        "spearman_rho": 0.7932577905070931
+      },
+      {
+        "pert_id": "BRD-K73196317",
+        "pert_iname": "urapidil",
+        "spearman_rho": 0.7566473986327109
+      },
+      {
+        "pert_id": "BRD-K21680192",
+        "pert_iname": "mitoxantrone",
+        "spearman_rho": 0.7207483464333441
+      }
+    ]
+  },
+  "fixed_condition": {
+    "dose": "10.0",
+    "time": "24.0"
+  },
+  "matched": {
+    "count": 1721,
+    "fraction_positive": 0.7948866937826845,
+    "mean": 0.1831772025808912,
+    "median": 0.17542207052634282
+  },
+  "null_mismatched": {
+    "count": 1721,
+    "fraction_positive": 0.6025566531086578,
+    "mean": 0.0437289709125652,
+    "median": 0.03406343247594268
+  },
+  "protocol_id": "lincs-l1000-perturbation-context-v1",
+  "rank_sum_comparison": {
+    "matched_count": 1721,
+    "null_count": 1721,
+    "p_value": 7.913850597115292e-82,
+    "u_statistic": 2039475.0
+  },
+  "schema_version": "aidd-commons.l1000-perturbation-context-summary.v1",
+  "shared_compound_count": 1721,
+  "software": {
+    "h5py": "3.16.0",
+    "numpy": "2.4.6",
+    "python": "3.11.15",
+    "rdkit": "2025.09.6",
+    "scipy": "1.17.1"
+  }
+}

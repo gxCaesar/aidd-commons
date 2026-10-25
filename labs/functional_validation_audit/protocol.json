@@ -1,0 +1,208 @@
+{
+  "admitted_measurement": {
+    "admission_rule": "Apply the decision-unit-scope reader's classification to each activity row and retain only point and bound rows.",
+    "bound_relations": [
+      "<",
+      "<=",
+      ">",
+      ">="
+    ],
+    "exclusion_priority": [
+      "outside_endpoint_family",
+      "non_nanomolar_units",
+      "non_standard_activity",
+      "potential_duplicate",
+      "data_validity_comment",
+      "missing_value",
+      "missing_structure",
+      "missing_relation"
+    ],
+    "point_relation": "=",
+    "standard_types": [
+      "AC50",
+      "EC50",
+      "IC50",
+      "Kd",
+      "Ki"
+    ],
+    "standard_units": "nM"
+  },
+  "claim_rule": {
+    "binding_bound": "A bound additionally needs ChEMBL assay_type B and standard_type Kd or Ki; it never licenses an exact binding value.",
+    "binding_point": "A point additionally needs ChEMBL assay_type B and standard_type Kd or Ki; other point types are not binding measurements.",
+    "clinical_outcome": "No record in either snapshot licenses this claim.",
+    "endpoint_bound": "Only a stated bound relation with an endpoint value and unit licenses a bound statement.",
+    "endpoint_point": "Only a stated equality with an endpoint value and unit licenses a point-value statement.",
+    "functional_response": "Only a numeric concentration series with at least five values and a stated activation or inhibition response definition licenses a response statement in its assay.",
+    "limit_statement": "The audit does not turn a measurement into a response or a response into an outcome. A record without a clinical endpoint says nothing about a clinical result.",
+    "rule_statement": "A point with a stated endpoint type and unit licenses its reported value. A stated relation bound licenses only a bound. A numeric concentration series with a stated response definition licenses an observed response in that assay. A direct binding claim additionally requires a binding assay and Kd or Ki. No record here licenses a clinical outcome."
+  },
+  "excluded_by_design": [
+    "Any prediction of a clinical result.",
+    "Any claim that either table licenses a clinical statement.",
+    "Selection of a record because it supports a convenient conclusion."
+  ],
+  "issued_on": "2026-10-23",
+  "protocol_id": "chembl37-pubchem-functional-validation-v1",
+  "record_kinds": {
+    "bound": "An admitted single endpoint value with a stated type, unit and bound relation, without a numeric response series.",
+    "concentration_response_table": "An admitted assay row with at least five numeric concentration values and a stated response definition in its assay description.",
+    "no_licensed_claim": "A retained row that satisfies none of the three field rules above.",
+    "point_measurement": "An admitted single endpoint value with a stated type, unit and equality relation, without a numeric response series."
+  },
+  "schema_version": "aidd-commons.functional-validation-audit-protocol.v1",
+  "sources": {
+    "chembl": {
+      "artifacts": [
+        {
+          "byte_length": 231,
+          "path": "status.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/status.json"
+        },
+        {
+          "byte_length": 4003,
+          "path": "molecules.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/molecule/{molecule_chembl_id}.json"
+        },
+        {
+          "byte_length": 5440753,
+          "path": "activities-CHEMBL109.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL109"
+        },
+        {
+          "byte_length": 1491763,
+          "path": "activities-CHEMBL1144.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL1144"
+        },
+        {
+          "byte_length": 2030,
+          "path": "activities-CHEMBL13829.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL13829"
+        },
+        {
+          "byte_length": 116508,
+          "path": "activities-CHEMBL23393.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL23393"
+        },
+        {
+          "byte_length": 3504249,
+          "path": "activities-CHEMBL25.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL25"
+        },
+        {
+          "byte_length": 23503,
+          "path": "activities-CHEMBL275835.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL275835"
+        },
+        {
+          "byte_length": 97917,
+          "path": "activities-CHEMBL441.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL441"
+        },
+        {
+          "byte_length": 218661,
+          "path": "activities-CHEMBL588.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL588"
+        },
+        {
+          "byte_length": 730939,
+          "path": "activities-CHEMBL593.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL593"
+        },
+        {
+          "byte_length": 3616,
+          "path": "activities-CHEMBL906.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL906"
+        },
+        {
+          "byte_length": 248931,
+          "path": "assays.json",
+          "source_url": "https://www.ebi.ac.uk/chembl/api/data/assay.json"
+        }
+      ],
+      "database": "ChEMBL_37",
+      "release_date": "2026-05-01",
+      "source_protocol_id": "chembl37-decision-unit-scope-v1"
+    },
+    "pubchem": {
+      "assays": {
+        "1277": {
+          "data_bytes": 13508,
+          "description_bytes": 37306,
+          "endpoint_labels": [
+            "IC50"
+          ],
+          "endpoint_units": [
+            "uM"
+          ],
+          "response_definition": "inhibition"
+        },
+        "439": {
+          "data_bytes": 15725,
+          "description_bytes": 32180,
+          "endpoint_labels": [
+            "EC50"
+          ],
+          "endpoint_units": [
+            "uM"
+          ],
+          "response_definition": "activation"
+        },
+        "464": {
+          "data_bytes": 126194,
+          "description_bytes": 20295,
+          "endpoint_labels": [
+            "AC50"
+          ],
+          "endpoint_units": [
+            "uM"
+          ],
+          "response_definition": "inhibition"
+        },
+        "519": {
+          "data_bytes": 45668,
+          "description_bytes": 40283,
+          "endpoint_labels": [
+            "IC50",
+            "Ki"
+          ],
+          "endpoint_units": [
+            "uM",
+            "uM"
+          ],
+          "response_definition": "inhibition"
+        },
+        "548": {
+          "data_bytes": 18331,
+          "description_bytes": 22562,
+          "endpoint_labels": [
+            "IC50"
+          ],
+          "endpoint_units": [
+            "uM"
+          ],
+          "response_definition": "inhibition"
+        },
+        "691": {
+          "data_bytes": 12490,
+          "description_bytes": 22919,
+          "endpoint_labels": [
+            "MIC"
+          ],
+          "endpoint_units": [
+            "uM"
+          ],
+          "response_definition": "categorical"
+        }
+      },
+      "database": "PubChem BioAssay",
+      "read_on": "2026-10-21",
+      "source_protocol_id": "pubchem-bioassay-endpoint-controls-v1"
+    }
+  },
+  "unmeasurable_routes": {
+    "binding_to_response_transfer": "The snapshots do not pair a direct binding measurement with a response record for the same entity under a matched experiment.",
+    "clinical_outcome": "Neither snapshot carries a clinical endpoint or an outcome observation.",
+    "response_to_clinical_transfer": "Neither snapshot links a response record to a clinical outcome record."
+  }
+}

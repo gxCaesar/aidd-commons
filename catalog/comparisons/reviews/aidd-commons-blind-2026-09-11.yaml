@@ -1,0 +1,1066 @@
+id: aidd-commons-blind-2026-09-11
+system_id: aidd-commons
+reviewed_on: '2026-09-11'
+reviewer: OpenAI Codex CLI 0.154.0 with the gpt-6-astra model at maximum reasoning effort, run as three independent batches covering tracks 1-6, 7-12 and 13-18. The self-scores it is compared with were assigned by Claude sessions, so the reading comes from a different model family than the scores. It is not a reading by a family that wrote none of the material, because Codex sessions also wrote parts of the course. Seven structure topics whose material changed after that reading were read again the same day by the same model and settings in a fourth batch. A fifth batch on 2026-09-11 re-read the four topics below 'worked' in the self record from commit af39caf7, after new lessons for them, with the same reviewer, model, settings, rubric and interpreter. A sixth batch on 2026-09-11 re-read t11-dynamic-simulation-observable, t11-convergence-protocol-uncertainty from commit d122766b, after a new lab, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with the two real development NPZ files present so the command actually ran. A seventh batch on 2026-09-11 re-read t15-acquisition-policy-uncertainty from commit 04a51857, after a new lab, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with the two real development NPZ files present so the command actually ran. An eighth batch on 2026-09-12 re-read t08-metabolism-ddi-risk from commit 483aa9d, after a new lab, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with a real, live-fetched ChEMBL 37 CYP3A4/CYP2D6 activity snapshot present so the command actually ran. A ninth batch on 2026-09-12 re-read t08-exposure-pk-endpoint from commit af21a37, after a new lab narrowly scoped to intrinsic clearance, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with a real, live-fetched ChEMBL 37 clearance snapshot for three named assays present so the command actually ran. A tenth batch on 2026-09-12 re-read t05-omics-perturbation-representation from commit 881d5e8, after a new lab, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with a real, live-fetched LINCS L1000 GSE70138 snapshot present so the command actually ran. An eleventh batch on 2026-10-22 re-read t01-aidd-decision-unit from commit 16779f9249a04ada53532b033270070320b1e768, after a new lab, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with a real, live-fetched ChEMBL 37 snapshot present so the command actually ran. An twelfth batch on 2026-10-22 re-read t02-assay-endpoint-controls from commit 16779f9249a04ada53532b033270070320b1e768, after a new lab for the assay-controls track, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with a live-fetched PubChem BioAssay snapshot present so the command actually ran. An thirteenth batch on 2026-10-22 re-read t06-perturbation-genetic-validation from commit 16779f9249a04ada53532b033270070320b1e768, after a new lab for the cross-modality track, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with a live-fetched Cell Painting Gallery snapshot present so the command actually ran. An fourteenth batch on 2026-10-22 re-read t13-sequence-structure-function-objective from commit 16779f9249a04ada53532b033270070320b1e768, after a new lab for the affinity-table track, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with a live-fetched affinity-table snapshot present so the command actually ran. A fifteenth batch on 2026-10-23 re-read t13-sequence-structure-function-objective from commit b0021f1c1b7af5d8941ab99cc9d209b5299ba01b, after a new lab for the six-objective topic, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with a live-fetched snapshot of the records that laboratory reads present so the command actually ran. A eighteenth batch on 2026-10-23 re-read t05-relational-knowledge-graph-representation from commit 37dc5d9, after a new laboratory for the relational-graph topic, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with the material the laboratory reads present so the command actually ran. A nineteenth batch on 2026-10-23 re-read t17-split-leakage-audit from commit dfe1b50, after a new laboratory for the leakage-routes topic, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with the material the laboratory reads present so the command actually ran. A twentieth batch on 2026-10-23 re-read t10-asset-openness-reproducibility from commit 0f8173e, after a new laboratory for the asset-openness topic, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with the material the laboratory reads present so the command actually ran. A twenty-second batch on 2026-10-23 re-read t01-evidence-claim-unknown from commit f249a46, after a new laboratory for the claims-and-evidence topic, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with the material the laboratory reads present so the command actually ran. A twenty-fifth batch on 2026-10-23 re-read t13-functional-validation from commit 65114d4, after a new laboratory for the functional-validation topic, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with the material the laboratory reads present so the command actually ran. A twenty-sixth batch on 2026-10-23 re-read t08-multiendpoint-tradeoff from commit 65114d4, after a new laboratory for the multi-endpoint topic, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with the material the laboratory reads present so the command actually ran. A twenty-seventh batch on 2026-10-23 re-read t01-source-review-scope from commit 6044bbe, after a new laboratory for the source-review topic, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with the material the laboratory reads present so the command actually ran. A twenty-eighth batch on 2026-10-23 re-read t01-entity-glossary from commit d279443, after a new laboratory for the entity-glossary topic, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with the material the laboratory reads present so the command actually ran. A thirty-first batch on 2026-10-23 re-read t17-generalization-unit from commit 31eb5379c28d955b2bdeb75c3be9d98e22f923e9, after a new laboratory for the generalization-unit topic, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with the material the laboratory reads present so the command actually ran. A thirty-second batch on 2026-10-23 re-read t07-applicability-domain from commit 31eb5379c28d955b2bdeb75c3be9d98e22f923e9, after a new laboratory for the applicability-domain topic, with the same reviewer, model, settings, rubric and sandboxed interpreter, and this time with the material the laboratory reads present so the command actually ran. A thirty-third batch on 2026-10-23 re-read t18-nomination-readiness-next-experiment from commit f95b7b1cb36fca7cf7a775aae0726c9b21bdff7e, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A thirty-fifth batch on 2026-10-23 re-read t08-exposure-pk-endpoint, t08-metabolism-ddi-risk, t08-safety-toxicity-endpoint, t09-affinity-ranking, t09-binder-classification, t09-screening-selection-repurposing-transfer, t10-complex-cofolding-hypothesis, t10-structural-confidence-alternatives, t11-convergence-protocol-uncertainty, t11-docking-scoring-protocol, t11-dynamic-simulation-observable, t12-candidate-design-space, t12-design-objective-constraints, t12-validity-novelty-synthetic-screen, t14-retrosynthetic-disconnection, t15-acquisition-policy-uncertainty, t16-tool-input-output-contract, t17-ood-transportability, t17-reproduction-reporting-receipt, t18-counterevidence-failure-analysis from commit 0228a710be2bc8d276594240b588cc743f8717a9, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A thirty-sixth batch on 2026-10-23 re-read t05-omics-perturbation-representation, t05-protein-sequence-structure-representation, t07-calibration, t07-chemical-standardisation, t07-interpretability-sar, t07-property-decision-use, t07-property-representation-selection, t07-property-task-split-design from commit dce53b7, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A thirty-seventh batch on 2026-10-23 re-read t13-specificity-negative-selection from commit 91c00b1, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A thirty-eighth batch on 2026-10-23 re-read t02-therapeutic-decision-context, t02-target-product-profile, t02-chemical-series-feedback, t04-permitted-use-legal-scope, t06-mechanism-hypothesis-counterevidence, t06-causal-target-evidence, t06-tractability-target-risk, t08-pkpd-translational-assumption, t11-free-energy-endpoint-network, t12-multiobjective-search-diversity, t12-generated-candidate-evaluation-batch from commit 2103c1eaf9c6b5b8205b0531bae9cbbd2685a271, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A thirty-ninth batch on 2026-10-23 re-read t16-tool-input-output-contract from commit c452b52, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A fortieth batch on 2026-10-23 re-read t13-expression-developability-manufacturability,
+  t14-reaction-record-condition-unit, t14-atom-mapping-transformation-class, t14-route-feasibility-material-safety, t14-forward-reaction-lab-feedback, t16-scientific-task-action-boundary, t16-trace-recovery, t16-human-review-authority-evaluation, t18-evidence-package-claim-chain, t18-crossdomain-tradeoff-decision, t18-openness-biosecurity-governance-boundary from commit 7427a09, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A forty-first batch on 2026-10-23 re-read t08-pkpd-translational-assumption, t13-expression-developability-manufacturability, t14-route-feasibility-material-safety from commit 5cacb90, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A forty-second batch on 2026-10-23 re-read t08-multiendpoint-tradeoff, t12-generated-candidate-evaluation-batch from commit 0603b18, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A forty-third batch on 2026-10-23 re-read t03-prediction-target-loss, t03-inductive-bias-selection, t03-training-validation-selection, t03-computational-uncertainty, t04-entity-identity-resolution, t04-data-contract, t04-provenance-versioning, t04-cleaning-exclusion-rules, t05-small-molecule-representation, t07-endpoint-definition, t07-regression-formulation from commit 0603b18, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A forty-fourth batch on 2026-10-23 re-read t07-classification-formulation, t09-target-assay-screen-unit, t11-physical-model-system-state, t15-experiment-pool-budget-feasibility, t15-batch-diversity-multiobjective-allocation, t15-time-ordered-feedback-update, t15-stopping-rule-policy-evaluation, t16-source-retrieval-evidence-grounding, t17-baseline-model-selection-protocol, t17-metric-endpoint-uncertainty from commit 4a35849, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A forty-fifth batch on 2026-10-23 re-read t13-biologic-modality-construct, t18-evidence-package-claim-chain, t06-mechanism-hypothesis-counterevidence from commit 2fc9f16, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A forty-seventh batch on 2026-10-23 re-read t02-target-product-profile, t16-human-review-authority-evaluation from commit 360487d, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A forty-ninth batch on 2026-10-23 re-read t11-free-energy-endpoint-network from commit c425022, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A fiftieth batch on 2026-10-24 re-read t07-property-task-split-design, t07-calibration, t07-interpretability-sar, t07-property-decision-use, t07-chemical-standardisation, t07-property-representation-selection, t08-exposure-pk-endpoint, t08-metabolism-ddi-risk, t08-safety-toxicity-endpoint, t05-omics-perturbation-representation, t11-dynamic-simulation-observable, t11-convergence-protocol-uncertainty, t12-design-objective-constraints, t12-candidate-design-space, t12-validity-novelty-synthetic-screen from commit 042dfe96ee3b4d89abb2896983783279bd50afb5, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A fifty-first batch on 2026-10-24 re-read t05-protein-sequence-structure-representation, t09-binder-classification, t09-affinity-ranking, t09-screening-selection-repurposing-transfer, t10-complex-cofolding-hypothesis, t10-structural-confidence-alternatives, t11-docking-scoring-protocol, t14-retrosynthetic-disconnection, t15-acquisition-policy-uncertainty, t16-scientific-task-action-boundary, t16-human-review-authority-evaluation, t17-ood-transportability, t17-reproduction-reporting-receipt, t18-counterevidence-failure-analysis from commit 042dfe96ee3b4d89abb2896983783279bd50afb5, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran. A fifty-second batch on 2026-10-24 re-read t06-mechanism-hypothesis-counterevidence, t13-biologic-modality-construct, t18-evidence-package-claim-chain, t13-functional-validation from commit 468b151fcf1854c2e38c7654297e373f9e132bfb, with the same reviewer, model, settings, rubric and sandboxed interpreter, and the material each topic names present so the command actually ran.
+isolation: 'A read-only sandbox holding a git archive of commit 40a6776 restricted to the lessons, lab guides, atlas pages, labs, resource records, taxonomy and curriculum map. The curriculum''s capability tags were removed, and the sandbox held no comparison records, audit report, roadmap, self-score or Chinese edition. Web access was not used. The 149 completed shell commands across the three batches referenced no path outside the sandbox. The fourth batch read commit 017d447 in a fresh sandbox built the same way, which also held a Python interpreter with NumPy so the reviewer could run the new structure lab; its 17 completed commands referenced no path outside that sandbox. The fifth batch ran in a fresh sandbox built the same way, and its isolation was checked by parsing every event as JSON rather than by grep: 29 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The eighth batch''s isolation was checked the same way: 15 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The ninth batch''s isolation was checked the same way: 11 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The tenth batch''s isolation was checked the same way: 13 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The sixth batch''s isolation was checked the same way: 17 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The seventh batch''s isolation was checked the same way: 21 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The eleventh batch''s isolation was checked the same way: 17 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The twelfth batch''s isolation was checked the same way: 19 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The thirteenth batch''s isolation was checked the same way: 22 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The fourteenth batch''s isolation was checked the same way: 0 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The fifteenth batch''s isolation was checked the same way: 15 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The eighteenth batch''s isolation was checked the same way: 12 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The nineteenth batch''s isolation was checked the same way: 14 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The twentieth batch''s isolation was checked the same way: 18 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The twenty-second batch''s isolation was checked the same way: 14 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The twenty-fifth batch''s isolation was checked the same way: 19 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The twenty-sixth batch''s isolation was checked the same way: 18 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The twenty-seventh batch''s isolation was checked the same way: 26 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The twenty-eighth batch''s isolation was checked the same way: 30 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The thirty-first batch''s isolation was checked the same way: 20 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. One command in that batch was a file search whose exclusion globs named the hidden directories the reviewer was told not to open, which the checker''s rule counts; no command read a path outside the sandbox. The thirty-second batch''s isolation was checked the same way: 25 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The thirty-third batch''s isolation was checked the same way: 28 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The thirty-fifth batch''s isolation was checked the same way: 110 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The thirty-sixth batch''s isolation was checked the same way: 83 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The thirty-seventh batch''s isolation was checked the same way: 19 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The thirty-eighth batch''s isolation was checked the same way: 38 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The thirty-ninth batch''s isolation was checked the same way: 20 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The fortieth batch''s isolation was checked the same way: 46 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The forty-first batch''s isolation was checked the same way: 22 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The forty-second batch''s isolation was checked the same way: 20 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The forty-third batch''s isolation was checked the same way: 58 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The forty-fourth batch''s isolation was checked the same way: 67 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The forty-fifth batch''s isolation was checked the same way: 19 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The forty-seventh batch''s isolation was checked the same way: 22 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The forty-ninth batch''s isolation was checked the same way: 15 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The fiftieth batch''s isolation was checked the same way: 85 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The fifty-first batch''s isolation was checked the same way: 54 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search. The fifty-second batch''s isolation was checked the same way: 31 completed commands, no absolute path outside the sandbox, no parent-directory reference and no web search.'
+rubric: Choose the deepest state the material demonstrably reaches for the topic as the taxonomy describes it, reading the passage rather than a title or link, and choose the shallower state when the evidence is ambiguous. 'executable' needs a runnable task in the repository about this topic with declared inputs and outputs. 'assessed' needs an exercise with a worked answer, rubric or verification target about this topic and does not require anything runnable. Every executable or assessed reading states whether its runnable task rests on real data, on authored inputs, or on nothing runnable.
+ordinal_mapping: This audit scores depth ordinally, so a recorded 'assessed' also claims 'executable'. A reading of 'assessed' with nothing runnable is therefore compared as 'worked'. The reviewer's 'public-data' basis is recorded here as 'real-data'.
+not_evidence_of: This is an automated second reading of teaching depth. It is not reader evidence, not a human expert review, and not a measure of learning. The first three batches had no Python environment, so notes that local execution failed because RDKit was unavailable describe the sandbox. It also excluded the scripts directory, so the note that an advertised checker script is missing describes the sandbox, not the repository, where the script is published.
+readings:
+- topic_id: t01-evidence-claim-unknown
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: f249a46
+  evidence_paths:
+  - site/src/content/docs/learn/foundations/evidence-claims-and-unknowns.mdx
+  - labs/claims_evidence_audit/README.md
+  - labs/claims_evidence_audit/inspect_claims_evidence_audit.py
+  - labs/src/aidd_commons/claims_evidence_audit/analysis.py
+  - labs/tests/claims_evidence_audit/test_analysis.py
+  reason: All four distinctions are explained and assessed through a classification exercise with worked answers. Constructed-input classifier checks passed after substituting an existing file for the missing README fixture. No described component is missing; source-content verification remains limited. An earlier score appeared incidentally in the lab guide, compromising blinding; it was excluded as evidence.
+- topic_id: t01-aidd-decision-unit
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 16779f9249a04ada53532b033270070320b1e768
+  evidence_paths:
+  - site/src/content/docs/learn/foundations/decision-unit.mdx
+  - site/src/content/docs/learn/foundations/decision-unit-scope.mdx
+  - labs/decision_unit_scope/README.md
+  - labs/decision_unit_scope/protocol.json
+  - labs/decision_unit_scope/inspect_decision_unit_scope.py
+  - labs/tests/decision_unit_scope/test_real_data.py
+  reason: All four required fields are explained and assessed through a hERG exercise with a worked answer. The companion lab uses real ChEMBL 37 measurements with declared inputs, outputs and verification targets; all three cached-data integration tests passed. No description component is missing. Runnable work emphasizes entity identity and experimental context; intended-action reasoning is assessed in writing.
+- topic_id: t01-source-review-scope
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 6044bbe
+  evidence_paths:
+  - site/src/content/docs/learn/foundations/source-review-and-claim-scope.mdx
+  - labs/source_review_scope_audit/README.md
+  - labs/src/aidd_commons/source_review_scope_audit/analysis.py
+  - labs/tests/source_review_scope_audit/test_analysis.py
+  - catalog/resources/db-rcsb-pdb.yaml
+  - catalog/resources/db-uniprot.yaml
+  - catalog/resources/tool-rdkit.yaml
+  - catalog/resources/model-boltz-2.yaml
+  reason: A worked audit and topic-specific exercise with an answer cover surface, version, review date and reviewed material. Three focused tests passed. Runnable inputs are hand-authored catalogue metadata. Actual source-passage verification and a complete real-source claim binding remain undemonstrated. Embedded prior ratings were incidentally encountered and disregarded.
+- topic_id: t01-entity-glossary
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: d279443
+  evidence_paths:
+  - site/src/content/docs/learn/foundations/entity-kinds-and-identifiers.mdx
+  - site/src/content/docs/labs/entity-glossary-audit.mdx
+  - labs/entity_glossary_audit/README.md
+  - labs/entity_glossary_audit/protocol.json
+  - labs/entity_glossary_audit/inspect_entity_glossary_audit.py
+  - labs/tests/entity_glossary_audit/test_analysis.py
+  - labs/tests/entity_glossary_audit/test_summary_artifact.py
+  reason: 'An answered exercise distinguishes molecule/compound forms, assays and targets. The runnable ChEMBL 37 audit supplies entity-count verification targets; inspection and all 12 tests pass. Assessment is partial: the glossary assessment flags complexes, cell states, patients and therapeutic candidates as missing identifiers, without positive classification cases distinguishing those kinds.'
+- topic_id: t02-therapeutic-decision-context
+  depth: assessed
+  run_basis: none
+  reviewed_commit: 2103c1eaf9c6b5b8205b0531bae9cbbd2685a271
+  evidence_paths:
+  - site/src/content/docs/learn/drug-discovery-foundations/discovery-context.mdx
+  - site/src/content/docs/learn/mechanism-targets/disease-state-definition.mdx
+  - site/src/content/docs/learn/candidate-nomination/capstone-workbook.mdx
+  reason: Answered disease-state and capstone exercises connect biological context, intervention evidence and next falsifying observations. Coverage of unmet clinical need and comparison among modalities is thin; no exercise develops the entire disease-need-to-modality decision in one concrete programme.
+- topic_id: t02-target-product-profile
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 360487d
+  evidence_paths:
+  - site/src/content/docs/learn/drug-discovery-foundations/product-profile-and-series.mdx
+  - site/src/content/docs/labs/target-product-profile.mdx
+  - labs/target_product_profile/README.md
+  - labs/target_product_profile/protocol.json
+  - labs/src/aidd_commons/target_product_profile/profile.py
+  - labs/multi_endpoint_integration/summary.json
+  - labs/target_product_profile/summary.json
+  reason: Worked-answer exercises test predeclared gates, preferences and missing evidence. The runnable lab applies an illustrative population/route profile to real ChEMBL measurements; its outcomes reproduce from committed records. Efficacy and exposure use proxies, safety is narrowly represented, and developability assessment is limited to a constructed solubility example rather than comprehensive requirements.
+- topic_id: t02-assay-endpoint-controls
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 16779f9249a04ada53532b033270070320b1e768
+  evidence_paths:
+  - site/src/content/docs/learn/drug-discovery-foundations/assay-controls-dose-response.mdx
+  - site/src/content/docs/learn/drug-discovery-foundations/assay-endpoint-controls.mdx
+  - labs/assay_endpoint_controls/README.md
+  - labs/assay_endpoint_controls/protocol.json
+  - labs/assay_endpoint_controls/inspect_assay_endpoint_controls.py
+  - labs/tests/assay_endpoint_controls/test_real_data.py
+  - labs/tests/assay_endpoint_controls/test_normalisation.py
+  reason: Worked-answer exercises test normalization, interference, censored endpoints and control-based decision limits. Lessons connect readouts, biological systems and measurement-error sources. The runnable six-assay PubChem task uses real archived responses; inspection and 17 tests passed. Raw-well measurement-error estimation is absent, and decision relevance is assessed mainly through limits on permissible claims.
+- topic_id: t02-chemical-series-feedback
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 2103c1eaf9c6b5b8205b0531bae9cbbd2685a271
+  evidence_paths:
+  - site/src/content/docs/learn/drug-discovery-foundations/product-profile-and-series.mdx
+  - site/src/content/docs/labs/sar-attribution.mdx
+  - labs/sar_attribution/README.md
+  - labs/sar_attribution/dataset.json
+  - labs/sar_attribution/inspect_attribution.py
+  reason: Worked analogue differences and answered exercises connect series changes to orthogonal follow-up. The runnable SAR lab challenges an attribution hypothesis using confounded molecules and correlation-breaking analogues. Its 14 checks passed. Activity labels follow an authored rule; real experimental series updates and iterative medicinal-chemistry optimization are not demonstrated.
+- topic_id: t03-prediction-target-loss
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - site/src/content/docs/learn/machine-learning/probability-loss-and-checkpoints.mdx
+  - site/src/content/docs/learn/data-governance/records-to-model-table.mdx
+  - labs/lipophilicity/README.md
+  - labs/lipophilicity/lipophilicity_tutorial.ipynb
+  - labs/lipophilicity/tutorial.py
+  reason: Derives Gaussian, Laplace and Bernoulli losses, explains censoring and target leakage, and supplies answered likelihood exercises. The public logD notebook maps structures to features and measured exp to a penalized regression objective, with answer checks. Censored-likelihood fitting is discussed but not implemented.
+- topic_id: t03-inductive-bias-selection
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - labs/student_modelling/README.md
+  - labs/student_modelling/student_modelling_tutorial.ipynb
+  - labs/student_modelling/run_lab.py
+  - labs/tests/test_student_modelling_families.py
+  - site/src/content/docs/learn/machine-learning/neural-representations.mdx
+  reason: The authored notebook compares Ridge and a decision stump under a common selection rule, explains extrapolation assumptions, and supplies an answered counterfactual about the data regime. Graph, attention and geometric assumptions have worked exercises. Comparable executable selection exercises for sequence and multimodal models are missing.
+- topic_id: t03-training-validation-selection
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - site/src/content/docs/learn/machine-learning/probability-loss-and-checkpoints.mdx
+  - labs/lipophilicity/README.md
+  - labs/lipophilicity/lipophilicity_tutorial.ipynb
+  - labs/lipophilicity/tutorial.py
+  - labs/chembl_egfr/inspect_contract.py
+  reason: The public logD notebook separates training-only preprocessing and fitting, validation hyperparameter selection, tie-breaking and final evaluation. Answer checks test whether changing held-out labels leaves selection and predictions unchanged. Checkpoint choice has a separate worked exercise. An executable neural-training checkpoint-selection workflow is not supplied.
+- topic_id: t03-computational-uncertainty
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - labs/student_modelling/README.md
+  - labs/student_modelling/student_modelling_tutorial.ipynb
+  - labs/student_modelling/run_lab.py
+  - labs/tests/test_student_modelling_families.py
+  - site/src/content/docs/learn/machine-learning/probability-loss-and-checkpoints.mdx
+  - site/src/content/docs/learn/qsar-properties/uncertainty-to-decisions.mdx
+  reason: The authored notebook varies optimizer starts and step budgets, counts gradient evaluations, compares probability spread with decision agreement, and supplies an answered exercise distinguishing optimization variability from finite-data uncertainty. GP and conformal exercises address predictive uncertainty. The integrated compute-versus-decision assessment uses synthetic data and does not estimate sampling uncertainty experimentally.
+- topic_id: t04-entity-identity-resolution
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - site/src/content/docs/learn/data-governance/identity-lineage-and-reuse.mdx
+  - site/src/content/docs/labs/decision-unit-scope.mdx
+  - labs/decision_unit_scope/README.md
+  - labs/decision_unit_scope/summary.json
+  - labs/decision_unit_scope/inspect_decision_unit_scope.py
+  - labs/src/aidd_commons/decision_unit_scope/data.py
+  reason: The ChEMBL task resolves fifteen salt/parent identifiers to ten entities, verifies mappings, and assesses consequences of merging or dropping formulations. Written examples preserve ambiguous chemical and protein-isoform assignments. Disease and sample resolution lack comparable assessed demonstrations; the runnable cohort assumes declared, resolvable identifiers rather than retaining unmatched cases.
+- topic_id: t04-data-contract
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - site/src/content/docs/learn/data-governance/data-contracts.mdx
+  - site/src/content/docs/labs/chembl-contract-inspection.mdx
+  - labs/chembl_egfr/README.md
+  - labs/chembl_egfr/protocol.json
+  - labs/chembl_egfr/development-summary.json
+  - labs/chembl_egfr/inspect_contract.py
+  reason: The ChEMBL materials declare producer/release, entities, labels, exclusions, inference and split units, permitted use and output artifacts. Offline checks inspect real computed summaries; an answered exercise tests whether assay, censoring and aggregation differences invalidate comparisons. All requested elements appear, although assessment does not independently test construction of every contract field.
+- topic_id: t04-provenance-versioning
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - site/src/content/docs/learn/data-governance/identity-lineage-and-reuse.mdx
+  - site/src/content/docs/learn/data-governance/structure-from-images.mdx
+  - labs/chembl_egfr/README.md
+  - labs/src/aidd_commons/chembl_egfr/data.py
+  - labs/tests/chembl_egfr/test_data.py
+  reason: Written exercises test structure origin, producing checkpoint and review state; ChEMBL tests verify retained source activity IDs and release rejection on invented fixtures. Dated sources and processing stages are explained. No assessment traces every real output row through a complete versioned transformation chain; the image exercise wrongly exempts manually typed records from provenance.
+- topic_id: t04-cleaning-exclusion-rules
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - site/src/content/docs/learn/data-governance/records-to-model-table.mdx
+  - site/src/content/docs/labs/chembl-contract-inspection.mdx
+  - labs/chembl_egfr/README.md
+  - labs/chembl_egfr/development-summary.json
+  - labs/src/aidd_commons/chembl_egfr/data.py
+  - labs/tests/chembl_egfr/test_data.py
+  reason: A worked table and the ChEMBL parser cover duplicates, unit/log normalization, censoring, missing labels and structures, conflicting identities, aggregation and exclusion counts. Answers and executable checks test admission and transformations. Conflict handling principally uses rejection or declared aggregation; adjudicating incompatible experimental measurements is not developed.
+- topic_id: t04-permitted-use-legal-scope
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 2103c1eaf9c6b5b8205b0531bae9cbbd2685a271
+  evidence_paths:
+  - site/src/content/docs/learn/data-governance/identity-lineage-and-reuse.mdx
+  - site/src/content/docs/learn/structure-and-pockets/asset-openness-and-reuse.mdx
+  - labs/asset_openness_audit/README.md
+  - labs/asset_openness_audit/inspect_asset_openness_audit.py
+  - catalog/resources/model-boltz-2.yaml
+  reason: Written answers test licence separation and redistribution. The runnable audit checks access, evidence references and licence scopes in curated records of real resources; its checks passed. Privacy, consent and commercial-use issues are explained, but are not exercised through a concrete participant-data or intended-use decision.
+- topic_id: t05-small-molecule-representation
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - site/src/content/docs/learn/representations/small-molecule-representations.mdx
+  - site/src/content/docs/labs/molecule-representation-inspector.mdx
+  - labs/molecule_representations/README.md
+  - labs/molecule_representations/examples.csv
+  - labs/molecule_representations/run_lab.py
+  - labs/tests/representations/test_inspection.py
+  reason: The chapter compares all named representation families by retained information. Seven authored molecular examples support executable verification of alternate SMILES, identifiers, stereochemical collapse, salts, descriptors and fingerprints. Explicit expected relationships assess interpretation. Conformers and learned graph encodings are explained without corresponding executable assessment in this inspector.
+- topic_id: t05-protein-sequence-structure-representation
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/representations/complex-cell-and-knowledge-graphs.mdx
+  - site/src/content/docs/labs/egfr-structure-evidence.mdx
+  - labs/egfr_structures/README.md
+  - labs/egfr_structures/entries.json
+  - labs/egfr_structures/inspect_state.py
+  reason: Masked-pooling exercises have worked answers. The EGFR task maps deposited sequences to reference residues and checks geometric representations across structures, using public coordinates. Surface encodings and weighted ensembles receive brief explanations, without worked construction or dedicated assessment.
+- topic_id: t05-complex-interaction-representation
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 017d447
+  evidence_paths:
+  - site/src/content/docs/learn/representations/complex-cell-and-knowledge-graphs.mdx
+  - site/src/content/docs/labs/egfr-structure-evidence.mdx
+  - labs/egfr_structures/README.md
+  - labs/egfr_structures/entries.json
+  - labs/egfr_structures/inspect_complex.py
+  reason: Contact-graph exercises have worked answers. The runnable EGFR task constructs polar, carbon and water contacts and residue-interaction fingerprints while preserving receptor-state identity, with explicit checks. Coverage concentrates on protein-ligand interfaces; broader multicomponent interface graphs are not developed.
+- topic_id: t05-omics-perturbation-representation
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/representations/complex-cell-and-knowledge-graphs.mdx
+  - site/src/content/docs/labs/l1000-perturbation-context.mdx
+  - labs/l1000_perturbation_context/README.md
+  - labs/l1000_perturbation_context/protocol.json
+  - labs/l1000_perturbation_context/inspect_l1000_perturbation_context.py
+  reason: The L1000 lab encodes plate-corrected 978-gene profiles at compound-by-cell-line units with fixed dose/time, replicate aggregation, checks, and worked-answer context questions. Inputs are public measurements. Time-course encoding, varying doses, single-cell donor structure, and genetic perturbations are not exercised.
+- topic_id: t05-relational-knowledge-graph-representation
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 37dc5d9
+  evidence_paths:
+  - site/src/content/docs/learn/representations/relational-graph-evidence.mdx
+  - site/src/content/docs/learn/representations/complex-cell-and-knowledge-graphs.mdx
+  - site/src/content/docs/labs/relational-graph-audit.mdx
+  - labs/relational_graph_audit/README.md
+  - labs/relational_graph_audit/run_lab.py
+  - labs/src/aidd_commons/relational_graph_audit/graph.py
+  - catalog/resources/model-cgflow.yaml
+  - labs/tests/relational_graph_audit/test_analysis.py
+  - labs/tests/relational_graph_audit/test_summary_artifact.py
+  reason: Worked cases and an exercise with answers test typed entities/relations, source-record provenance, missing edges and why paths do not establish causality. The runnable audit uses the source-cited, curated public resource catalogue; inspection checks and five tests passed. All requested concepts are addressed, but provenance validation checks metadata support mappings, not the truth of linked evidence.
+- topic_id: t06-disease-state-definition
+  depth: assessed
+  run_basis: none
+  reviewed_commit: af39caf7
+  evidence_paths:
+  - site/src/content/docs/learn/mechanism-targets/disease-state-definition.mdx
+  - labs/egfr_structures/README.md
+  reason: EGFR trial subgroups and acquired resistance explain all six disease-state fields. A colorectal-cancer exercise supplies a worked answer covering indication, phenotype, tissue, cell state, population, and temporal context. Assessment is written; the linked structure inspector supplies no disease-state definition task.
+- topic_id: t06-mechanism-hypothesis-counterevidence
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 468b151fcf1854c2e38c7654297e373f9e132bfb
+  evidence_paths:
+  - site/src/content/docs/learn/mechanism-targets/perturbation-to-target-validation.mdx
+  - site/src/content/docs/labs/mechanism-consistency.mdx
+  - labs/mechanism_consistency/README.md
+  - labs/mechanism_consistency/inspect_mechanism_consistency.py
+  - labs/src/aidd_commons/l1000_perturbation_context/data.py
+  - labs/mechanism_consistency/summary.json
+  reason: Worked rescue/stress cases and answered exercises test hypotheses, alternatives and discriminating observations. The runnable GSE70138 task compares target-specific and generic-stress patterns against explicit verification targets; inspection passed. The runnable case lacks a named disease mechanism, identified mediator and target-engagement measurement. Disease-relevant causal validation remains a proposed next step.
+- topic_id: t06-causal-target-evidence
+  depth: assessed
+  run_basis: none
+  reviewed_commit: 2103c1eaf9c6b5b8205b0531bae9cbbd2685a271
+  evidence_paths:
+  - site/src/content/docs/learn/mechanism-targets/genetics-to-target-evidence.mdx
+  - site/src/content/docs/learn/mechanism-targets/perturbation-to-target-validation.mdx
+  reason: Answered credible-set and Wald-ratio exercises test genetic assumptions and limits of intervention claims. Colocalization is distinguished from mediation, and ancestry differences and lifelong-genetic versus timed-intervention transport assumptions are explained. Prediction-versus-intervention comparison and formal mediation receive less worked treatment; no runnable causal-target analysis is supplied.
+- topic_id: t06-perturbation-genetic-validation
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 16779f9249a04ada53532b033270070320b1e768
+  evidence_paths:
+  - site/src/content/docs/learn/mechanism-targets/perturbation-to-target-validation.mdx
+  - site/src/content/docs/learn/mechanism-targets/perturbation-context-generalization.mdx
+  - site/src/content/docs/learn/mechanism-targets/cross-modality-perturbation-evidence.mdx
+  - site/src/content/docs/labs/l1000-perturbation-context.mdx
+  - labs/rosetta_cross_modality/README.md
+  - labs/rosetta_cross_modality/protocol.json
+  - labs/rosetta_cross_modality/inspect_rosetta_cross_modality.py
+  - labs/src/aidd_commons/rosetta_cross_modality/data.py
+  - labs/tests/rosetta_cross_modality/test_analysis.py
+  - labs/tests/rosetta_cross_modality/test_summary_artifact.py
+  reason: Worked-answer exercises assess genetic controls, rescue/stress alternatives, pharmacological context effects, and independent units. ROSETTA analyzes public genetic-perturbation measurements with perturbation-level aggregation and plate/batch holdouts; cached-data recomputation and 27 tests passed. Orthogonal readouts are analyzed, but orthogonal perturbation validation remains conceptual; empirical genetic–pharmacological convergence and donor-level validation tasks are missing.
+- topic_id: t06-tractability-target-risk
+  depth: assessed
+  run_basis: none
+  reviewed_commit: 2103c1eaf9c6b5b8205b0531bae9cbbd2685a271
+  evidence_paths:
+  - site/src/content/docs/learn/mechanism-targets/perturbation-to-target-validation.mdx
+  reason: The answered exercise asks whether perturbation responses establish a tractable modality and withholds that claim. A worked pocket/non-target-expression/homologue example separates opportunity from safety and selectivity uncertainty. Assessment covers evidence sufficiency only; modality choice, quantitative selectivity and translational-risk analysis are not worked through.
+- topic_id: t07-endpoint-definition
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - site/src/content/docs/learn/data-governance/records-to-model-table.mdx
+  - site/src/content/docs/labs/chembl-contract-inspection.mdx
+  - labs/chembl_egfr/README.md
+  - labs/chembl_egfr/protocol.json
+  - labs/chembl_egfr/development-summary.json
+  - labs/chembl_egfr/inspect_contract.py
+  reason: The ChEMBL task specifies assay, exact IC50 in nM, pChEMBL consistency, censored-row exclusion, parent-level median aggregation and prediction unit. Offline inspection checks the committed results; worked answers test unit conversion, reversed censoring inequalities and comparability. All requested components are addressed for this bounded exact-value endpoint.
+- topic_id: t07-chemical-standardisation
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/qsar-properties/chemical-series-and-domains.mdx
+  - site/src/content/docs/labs/decision-unit-scope.mdx
+  - labs/decision_unit_scope/README.md
+  - labs/decision_unit_scope/inspect_decision_unit_scope.py
+  - labs/chembl_egfr/protocol.json
+  reason: 'Worked-answer exercises and runnable ChEMBL audits test salt-to-parent identity, duplicate grouping, and retention of tested forms under declared rules. Assessment is partial: no integrated property-dataset exercise freezes and applies charge, tautomer, stereochemistry, and mixture policies together.'
+- topic_id: t07-property-representation-selection
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/qsar-properties/chemical-series-and-domains.mdx
+  - site/src/content/docs/labs/chembl-egfr-representation-baselines.mdx
+  - labs/chembl_egfr/README.md
+  - labs/chembl_egfr/protocol.json
+  reason: The matched ChEMBL descriptor/Morgan Ridge comparison supplies commands, frozen inputs/results, representation-counterexample exercises, and grading criteria. Endpoint, preprocessing, and assay-transfer constraints are explicit. Graph and 3D choices are explained but lack matched executable comparisons for this property task.
+- topic_id: t07-regression-formulation
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - site/src/content/docs/learn/machine-learning/baseline-training-validation.mdx
+  - site/src/content/docs/learn/qsar-properties/regression-classification-errors.mdx
+  - labs/lipophilicity/README.md
+  - labs/lipophilicity/lipophilicity_tutorial.ipynb
+  - labs/lipophilicity/tutorial.py
+  reason: The public logD notebook builds train-mean, descriptor Ridge and Morgan Ridge baselines, exports predictions and residual plots, and asks learners to recompute errors and explain failures with answer checks. Learned regression coefficients are exercised; neural or learned-representation regression baselines are not supplied in this exercise.
+- topic_id: t07-classification-formulation
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 4a35849
+  evidence_paths:
+  - site/src/content/docs/learn/qsar-properties/regression-classification-errors.mdx
+  - labs/student_modelling/README.md
+  - labs/student_modelling/run_lab.py
+  - labs/tests/test_student_modelling.py
+  reason: Logistic and prevalence baselines, train-only scaling, validation selection and fixed thresholds run on invented binary labels. Worked confusion-matrix and leakage exercises test learning. Imbalance is explained through prevalence and error interpretation, but the balanced executable example does not implement weighting or resampling.
+- topic_id: t07-property-task-split-design
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/qsar-properties/chemical-series-and-domains.mdx
+  - labs/freesolv/README.md
+  - site/src/content/docs/labs/chembl-egfr-representation-baselines.mdx
+  - site/src/content/docs/labs/split-leakage-audit.mdx
+  - labs/split_leakage_audit/inspect_split_leakage_audit.py
+  reason: Worked-answer exercises distinguish series and time holdouts; FreeSolv implements random/scaffold comparisons, and ChEMBL provides assay-separated evaluation. Identity-overlap checks connect partitions to generalization claims. A combined future-series/time/source partition is discussed but not implemented.
+- topic_id: t07-calibration
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/qsar-properties/uncertainty-to-decisions.mdx
+  - site/src/content/docs/labs/property-decision-threshold.mdx
+  - labs/property_decision/inspect_decision.py
+  - labs/freesolv/README.md
+  - labs/src/aidd_commons/freesolv/evaluation.py
+  reason: Finite-sample conformal exercises have worked answers, and commands inspect validation-calibrated FreeSolv coverage against nominal coverage. Public-data execution covers marginal regression intervals; classification calibration and subgroup-conditional calibration lack comparable runnable tasks.
+- topic_id: t07-applicability-domain
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 31eb5379c28d955b2bdeb75c3be9d98e22f923e9
+  evidence_paths:
+  - site/src/content/docs/learn/qsar-properties/applicability-domain-diagnostics.mdx
+  - site/src/content/docs/learn/qsar-properties/chemical-series-and-domains.mdx
+  - site/src/content/docs/labs/applicability-domain-audit.mdx
+  - labs/applicability_domain_audit/README.md
+  - labs/src/aidd_commons/applicability_domain_audit/analysis.py
+  - labs/applicability_domain_audit/summary.json
+  - labs/tests/applicability_domain_audit/test_summary_artifact.py
+  reason: Worked-answer exercises assess chemical-support diagnostics and why an uncalibrated cutoff cannot establish a domain. The runnable FreeSolv audit uses measured hydration energies. Endpoint-context coverage and an operational withholding rule remain untested. Here, 13/14 tests passed; one frozen farthest-distance value differed (3.993587 versus 3.996323), with dependency versions differing from the recorded run.
+- topic_id: t07-interpretability-sar
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/qsar-properties/chemical-series-and-domains.mdx
+  - site/src/content/docs/labs/sar-attribution.mdx
+  - labs/sar_attribution/README.md
+  - labs/sar_attribution/dataset.json
+  reason: A runnable synthetic Ridge/fingerprint example traces atom attribution, breaks a confound with analogues, and supplies checks plus a worked-answer experiment-design exercise. It explicitly separates model attribution from causal SAR. Measured analogue validation and comparison of explanation methods are absent.
+- topic_id: t07-property-decision-use
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/qsar-properties/uncertainty-to-decisions.mdx
+  - site/src/content/docs/labs/property-decision-threshold.mdx
+  - labs/property_decision/README.md
+  - labs/property_decision/decision-rule.json
+  - site/src/content/docs/labs/oracle-exploitation-audit.mdx
+  reason: Worked-answer exercises and checked FreeSolv tasks connect calibrated intervals to thresholds, abstention, utility, and bounded batch selection. The threshold/grid are authored; an additional lab selects real measured molecules retrospectively. No prospective experimental outcome or coverage guarantee for the selected batch is established.
+- topic_id: t08-exposure-pk-endpoint
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/admet-pk/exposure-clearance-pkpd.mdx
+  - site/src/content/docs/labs/az-clearance-system.mdx
+  - labs/az_clearance_system/README.md
+  - labs/az_clearance_system/protocol.json
+  - labs/az_clearance_system/inspect_az_clearance_system.py
+  reason: Worked PK derivations and answers cover clearance, volume, bioavailability, route, AUC, and unbound exposure; a checked ChEMBL lab compares intrinsic clearance across species and matrices. Public-data execution covers clearance only, without measured absorption, distribution, oral bioavailability, or route-dependent exposure profiles.
+- topic_id: t08-metabolism-ddi-risk
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/admet-pk/metabolism-to-safety.mdx
+  - site/src/content/docs/labs/cyp-assay-system.mdx
+  - labs/cyp_assay_system/README.md
+  - labs/cyp_assay_system/protocol.json
+  - labs/cyp_assay_system/inspect_cyp_assay_system.py
+  reason: ChEMBL CYP3A4/CYP2D6 inhibition comparisons run with assay/document-aware admission, verification targets, and worked-answer exercises. DDI roles are explained. Transporter assays, enzyme induction, metabolite identification, and quantitative drug-pair interaction interpretation are not exercised.
+- topic_id: t08-safety-toxicity-endpoint
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/admet-pk/metabolism-to-safety.mdx
+  - site/src/content/docs/labs/safety-evidence.mdx
+  - labs/safety_evidence/README.md
+  - labs/safety_evidence/dataset.json
+  reason: The safety exercise uses an explicitly authored record to distinguish structural alerts, assay findings, organ liabilities, concentration context, and organism evidence. Checks and a worked-answer hERG comparison test those distinctions. The topic-specific runnable demonstration does not contain measured toxicity or exposure-linked risk estimates.
+- topic_id: t08-pkpd-translational-assumption
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 5cacb90
+  evidence_paths:
+  - site/src/content/docs/learn/admet-pk/exposure-clearance-pkpd.mdx
+  - site/src/content/docs/labs/pkpd-translation-audit.mdx
+  - labs/pkpd_translation_audit/README.md
+  - labs/pkpd_translation_audit/protocol.json
+  - labs/pkpd_translation_audit/inspect_pkpd_translation_audit.py
+  - labs/tests/pkpd_translation_audit/test_model.py
+  - labs/tests/pkpd_translation_audit/test_analysis.py
+  - labs/tests/pkpd_translation_audit/test_summary_artifact.py
+  reason: Answered exercises and runnable verification connect real human/rat clearance measurements to exposure, target occupancy, response and propagated species uncertainty. Inspection and six topic-specific tests passed. Binding, exposure scaling and response parameters are assumed; measured engagement/response and externally validated species translation are absent.
+- topic_id: t08-multiendpoint-tradeoff
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - site/src/content/docs/learn/admet-pk/metabolism-to-safety.mdx
+  - site/src/content/docs/labs/multi-endpoint-integration.mdx
+  - labs/multi_endpoint_integration/README.md
+  - labs/multi_endpoint_integration/protocol.json
+  - labs/src/aidd_commons/multi_endpoint_integration/analysis.py
+  - labs/multi_endpoint_integration/summary.json
+  reason: 'Worked ADMET gate decisions and exposure calculations have answered exercises. Runnable ChEMBL profiles integrate potency, clearance and CYP inhibition without a composite score, with an answered interpretation exercise. Coverage remains partial: toxicity is unmeasured, no compound spans all three measured families, clinical outcomes remain proxies, and measurement uncertainty is not propagated into decisions.'
+- topic_id: t09-target-assay-screen-unit
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 4a35849
+  evidence_paths:
+  - site/src/content/docs/learn/dti-screening/screening-and-affinity.mdx
+  - site/src/content/docs/labs/chembl-contract-inspection.mdx
+  - labs/chembl_egfr/README.md
+  - labs/chembl_egfr/protocol.json
+  - labs/chembl_egfr/inspect_contract.py
+  reason: Worked ChEMBL contract exercises and executable inspection address assay identity, ligand/parent units, endpoints and admission rules using real assay-derived records. Screening prose includes budget and intended action. Target construct/conformational state and a complete integrated screening specification are not worked through.
+- topic_id: t09-binding-mode-pose-hypothesis
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 017d447
+  evidence_paths:
+  - site/src/content/docs/learn/dti-screening/screening-prevalence-and-transfer.mdx
+  - site/src/content/docs/labs/egfr-structure-evidence.mdx
+  - labs/egfr_structures/README.md
+  - labs/egfr_structures/entries.json
+  - labs/egfr_structures/inspect_complex.py
+  - labs/tests/test_egfr_structures.py
+  reason: Worked exercises test clash cutoffs and state-dependent pose validation. Runnable comparisons use deposited crystal poses plus declared rigid perturbations, separating RMSD, hinge contacts and steric clashes under protonation assumptions; all 15 checks passed. Receptor flexibility and explicit protonation preparation are not demonstrated.
+- topic_id: t09-binder-classification
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/labs/binder-definition.mdx
+  - labs/binder_definition/README.md
+  - labs/binder_definition/dataset.json
+  - labs/binder_definition/inspect_definition.py
+  reason: Executable checks and a worked-answer exercise address positive thresholds, measured inactives, assumed decoys, class balance and scaffold generalization units. All listed definition elements are covered. The measurements are explicitly invented; no binder classifier is fitted or evaluated.
+- topic_id: t09-affinity-ranking
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/structure-and-pockets/structure-affinity-mechanisms.mdx
+  - site/src/content/docs/labs/skempi-affinity.mdx
+  - labs/skempi_affinity/README.md
+  - labs/skempi_affinity/protocol.json
+  - labs/skempi_affinity/inspect_skempi_affinity.py
+  - labs/src/aidd_commons/skempi_affinity/analysis.py
+  reason: SKEMPI code predicts held-out continuous affinities and compares row-weighted and complex-weighted errors. Worked-answer exercises assess independent units and endpoint/unit comparability; lessons distinguish binder probabilities from continuous outputs. Within-series ligand ranking and ranking-specific uncertainty remain unworked.
+- topic_id: t09-screening-selection-repurposing-transfer
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/dti-screening/screening-prevalence-and-transfer.mdx
+  - site/src/content/docs/labs/screening-transport.mdx
+  - labs/screening_transport/README.md
+  - labs/screening_transport/inspect_transport.py
+  - labs/pool_budget/real-summary.json
+  - labs/pool_budget/real-protocol.json
+  reason: Worked-answer exercises assess enrichment and transfer claims. Executable inspection examines fixed-budget recovery and cross-assay transport using completed ChEMBL replays. Off-target evaluation, transfer between repurposing indications and prospective experimental follow-up are not demonstrated; the runnable evidence concerns two retrospective assays on one target.
+- topic_id: t10-structure-evidence-state
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 017d447
+  evidence_paths:
+  - site/src/content/docs/learn/structure-and-pockets/cofolding-frontier.mdx
+  - site/src/content/docs/labs/egfr-structure-evidence.mdx
+  - labs/egfr_structures/README.md
+  - labs/egfr_structures/entries.json
+  - labs/egfr_structures/inspect_state.py
+  reason: Methods, constructs, mutations, missing residues, ligands, assembly annotations and conformational descriptors are extracted from three deposited structures, with declared outputs and 16 passing checks. Worked exercises test receptor-state limitations. Predicted structures receive conceptual treatment; full conformational-state assignment is explicitly outside the lab.
+- topic_id: t10-binding-site-pocket-definition
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 017d447
+  evidence_paths:
+  - site/src/content/docs/learn/structure-and-pockets/pocket-states-and-confidence.mdx
+  - site/src/content/docs/labs/egfr-structure-evidence.mdx
+  - labs/egfr_structures/README.md
+  - labs/egfr_structures/entries.json
+  - labs/egfr_structures/inspect_state.py
+  reason: Known ATP-site neighborhoods are computed at three cutoffs and linked to receptor states, box definitions and worked screening exercises. A separate answered exercise treats a hypothetical cryptic pocket. Allosteric and transient sites are acknowledged but not operationally defined from data; no pocket predictor is supplied.
+- topic_id: t10-complex-cofolding-hypothesis
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/structure-and-pockets/cofolding-frontier.mdx
+  - site/src/content/docs/labs/cofolding-claim-separation.mdx
+  - labs/cofolding_claims/README.md
+  - labs/cofolding_claims/claim-records.json
+  - labs/cofolding_claims/inspect_claims.py
+  - catalog/resources/model-boltz-2.yaml
+  reason: The runnable task classifies curated public model records. A worked-answer exercise separates benchmark accuracy, individual pose claims and binding/selection decisions. Monomer-versus-complex-versus-co-folding distinctions remain largely declarative; no actual structures or binding measurements are compared. Catalogue inspection establishes claim separation, not predictive accuracy.
+- topic_id: t10-structural-confidence-alternatives
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/structure-and-pockets/pocket-states-and-confidence.mdx
+  - site/src/content/docs/learn/structure-and-pockets/cofolding-frontier.mdx
+  - site/src/content/docs/labs/egfr-structure-evidence.mdx
+  - labs/egfr_structures/README.md
+  - labs/egfr_structures/entries.json
+  - labs/egfr_structures/inspect_complex.py
+  reason: Public EGFR structures support executable comparisons of alternate states, missing residues, structural uncertainty and steric clashes. Cutoff and screening-plan exercises have worked answers; another exercise interprets pLDDT conservatively. Disorder is addressed mainly through missing residues. Ensemble populations and training-overlap audits are not operationalized.
+- topic_id: t10-asset-openness-reproducibility
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 0f8173e
+  evidence_paths:
+  - site/src/content/docs/learn/structure-and-pockets/asset-openness-and-reuse.mdx
+  - site/src/content/docs/labs/asset-openness-audit.mdx
+  - labs/asset_openness_audit/README.md
+  - labs/asset_openness_audit/inspect_asset_openness_audit.py
+  - labs/src/aidd_commons/asset_openness_audit/analysis.py
+  - catalog/resources/model-boltz-2.yaml
+  - catalog/resources/model-alphafold-3-inference.yaml
+  - labs/tests/asset_openness_audit/test_analysis.py
+  - labs/tests/asset_openness_audit/test_known_bad.py
+  reason: Separate asset fields and licence scope receive explanations, worked comparisons, and an exercise with a worked answer. The runnable audit checks 24 author-maintained catalogue records against declared targets; inspection checks and 14 tests pass. Inputs are authored availability judgements. Verification covers internal evidence references, without inspecting underlying releases or independently establishing training and evaluation reproducibility.
+- topic_id: t11-physical-model-system-state
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 4a35849
+  evidence_paths:
+  - site/src/content/docs/labs/rmd17-system-state-energy-baselines.mdx
+  - site/src/content/docs/learn/physics-based-modeling/force-fields-and-sampling.mdx
+  - labs/rmd17_system_state/README.md
+  - labs/rmd17_system_state/protocol.json
+  - labs/rmd17_system_state/inspect_contract.py
+  reason: Real rMD17 tasks and worked answers assess atomic identities, coordinates, units and declaring a new molecular system. Force-field lessons explain solvent, ions and boundaries. A complete exercised physical-state specification integrating construct, protonation/tautomers, environment and a matched experimental comparator is missing.
+- topic_id: t11-docking-scoring-protocol
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/labs/docking-protocol.mdx
+  - labs/docking_protocol/README.md
+  - labs/docking_protocol/protocols.json
+  - labs/docking_protocol/inspect_protocol.py
+  reason: Seven protocol components are explained and compared through executable checks on explicitly authored declarations and scores. A worked-answer exercise tests comparability, missing validation and corrective action. The assessed task is protocol reasoning; actual docking search, rescoring and decoy-based empirical validation are not performed.
+- topic_id: t11-dynamic-simulation-observable
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/physics-based-modeling/force-fields-and-sampling.mdx
+  - site/src/content/docs/labs/rmd17-dynamics-observable.mdx
+  - labs/rmd17_system_state/observable-protocol.json
+  - labs/rmd17_system_state/inspect_dynamics.py
+  - labs/src/aidd_commons/rmd17_system_state/dynamics.py
+  reason: The rMD17 task computes mass-weighted radius of gyration from chronologically ordered public ab initio trajectories, with expected values and verification targets. Force fields and ensembles are explained. It neither runs a new simulation nor compares ensembles; local raw trajectories were unavailable.
+- topic_id: t11-free-energy-endpoint-network
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: c425022
+  evidence_paths:
+  - site/src/content/docs/learn/physics-based-modeling/free-energy-cycles-and-convergence.mdx
+  - site/src/content/docs/labs/free-energy-network-audit.mdx
+  - labs/free_energy_network_audit/README.md
+  - labs/free_energy_network_audit/protocol.json
+  - labs/free_energy_network_audit/summary.json
+  - labs/src/aidd_commons/free_energy_network_audit/analysis.py
+  - labs/tests/free_energy_network_audit/test_analysis.py
+  - labs/tests/free_energy_network_audit/test_known_bad.py
+  reason: A worked-answer exercise tests relative-energy signs and uncertainty propagation. Runnable code audits public OpenFE transformation networks and retains failed cycles. Absolute energies, estimators and assay matching receive conceptual treatment, without worked absolute calculations, estimator comparisons, assay validation or individual failed-edge identification. Three focused tests passed; full recomputation was unavailable because the sandbox lacked cached archives.
+- topic_id: t11-convergence-protocol-uncertainty
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/physics-based-modeling/free-energy-cycles-and-convergence.mdx
+  - site/src/content/docs/labs/rmd17-dynamics-observable.mdx
+  - labs/rmd17_system_state/observable-protocol.json
+  - labs/src/aidd_commons/rmd17_system_state/dynamics.py
+  - labs/tests/rmd17_system_state/test_dynamics.py
+  reason: Cumulative-mean and block-SEM calculations on rMD17 have verification targets and a worked-answer convergence exercise. This assesses within-trajectory sampling uncertainty; replicate dependence, force-field sensitivity, integrator/numerical error, and decision value per compute cost are not tested. Local raw trajectories were unavailable.
+- topic_id: t12-design-objective-constraints
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/molecular-generation/flows-and-constrained-search.mdx
+  - site/src/content/docs/labs/generation-gate.mdx
+  - labs/generation_gate/README.md
+  - labs/generation_gate/objective.json
+  - labs/generation_gate/candidates.json
+  reason: A frozen objective declares bounded properties, SMARTS exclusions, physical-property context, synthesis proxies, and experiment/batch/abstention rules. Runnable gates and verification targets test its application to authored candidates. Biological target context, synthesis limits supported by routes, and experimentally justified property thresholds are absent.
+- topic_id: t12-candidate-design-space
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/molecular-generation/flows-and-constrained-search.mdx
+  - site/src/content/docs/labs/design-space.mdx
+  - labs/design_space/README.md
+  - labs/design_space/spaces.json
+  reason: RDKit enumerates authored core/fragment spaces and checks target reachability, including scaffold and linker counterexamples. A worked-answer exercise tests why library size does not establish coverage or synthesizability. Practical assessment concerns fixed 2D enumeration; learned graph/string and 3D spaces lack comparable reachability tasks.
+- topic_id: t12-multiobjective-search-diversity
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 2103c1eaf9c6b5b8205b0531bae9cbbd2685a271
+  evidence_paths:
+  - site/src/content/docs/learn/molecular-generation/flows-and-constrained-search.mdx
+  - site/src/content/docs/learn/active-learning/diversity-uncertainty-feedback.mdx
+  - labs/pool_budget/README.md
+  - labs/pool_budget/inspect_contract.py
+  - labs/pool_budget/real-protocol.json
+  - labs/pool_budget/real-summary.json
+  reason: A Pareto worked case and answered diversity exercise assess selection rules. The runnable inspector recomputes MaxMin-versus-random comparisons from real ChEMBL replay outputs, covering diversity-aware selection; its checks passed. Conditional generation, reinforcement learning and simple-search baselines are not compared together under a common multi-objective evaluation.
+- topic_id: t12-validity-novelty-synthetic-screen
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/labs/generation-gate.mdx
+  - labs/generation_gate/README.md
+  - labs/generation_gate/objective.json
+  - labs/generation_gate/candidates.json
+  reason: The authored-candidate lab computes validity, uniqueness, reference-set novelty, training-set overlap, and structural synthesis proxies, with chained-denominator checks and a worked answer. It distinguishes route feasibility explicitly but leaves it unassessed; no generative-model memorization experiment or route validation is performed.
+- topic_id: t12-generated-candidate-evaluation-batch
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 0603b18
+  evidence_paths:
+  - site/src/content/docs/labs/oracle-exploitation-audit.mdx
+  - labs/oracle_exploitation_audit/README.md
+  - labs/oracle_exploitation_audit/protocol.json
+  - labs/src/aidd_commons/oracle_exploitation_audit/analysis.py
+  - labs/oracle_exploitation_audit/summary.json
+  - labs/tests/oracle_exploitation_audit/test_analysis.py
+  reason: 'Runnable FreeSolv comparisons retain predictions, measurements, random controls and an eight-molecule held-out batch with verification targets. An answered exercise tests prediction-gap interpretation. Coverage is partial: fitted-set selection does not demonstrate adaptive oracle exploitation, selection controls do not constitute comparisons against simple generators, and batch verification uses existing measurements rather than prospective independent evaluation.'
+- topic_id: t13-biologic-modality-construct
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 468b151fcf1854c2e38c7654297e373f9e132bfb
+  evidence_paths:
+  - site/src/content/docs/learn/biologics-design/construct-identity-and-objectives.mdx
+  - site/src/content/docs/labs/biologic-construct-audit.mdx
+  - labs/biologic_construct_audit/README.md
+  - labs/src/aidd_commons/biologic_construct_audit/__init__.py
+  - labs/biologic_construct_audit/inspect_biologic_construct_audit.py
+  reason: Answered record-repair exercises cover modality, construct, expression host and intended function across proteins, antibodies, peptides and oligonucleotides. The runnable audit checks committed UniProt/DailyMed passages and supplies an interpretation exercise with an answer; inspection passed. All requested definition fields are covered, although the executable cohort is limited to six protein therapeutics.
+- topic_id: t13-sequence-structure-function-objective
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: b0021f1c1b7af5d8941ab99cc9d209b5299ba01b
+  evidence_paths:
+  - site/src/content/docs/learn/biologics-design/construct-identity-and-objectives.mdx
+  - site/src/content/docs/labs/objective-ladder.mdx
+  - labs/objective_ladder/README.md
+  - labs/objective_ladder/inspect_objective_ladder.py
+  - labs/src/aidd_commons/objective_ladder/runner.py
+  - labs/tests/objective_ladder/test_analysis.py
+  reason: All six objectives are distinguished through worked cases and a six-field exercise with worked answers. The public-record lab executed offline; its verification command and 43 tests passed. Catalysis and function use annotations rather than measured rates or functional assays; folding uses deposited conformations and predictions. These limitations are explicit, and no requested objective distinction is omitted.
+- topic_id: t13-specificity-negative-selection
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 91c00b1
+  evidence_paths:
+  - site/src/content/docs/learn/biologics-design/antibody-peptide-design.mdx
+  - site/src/content/docs/learn/biologics-design/specificity-and-negative-selection.mdx
+  - site/src/content/docs/labs/specificity-margin-audit.mdx
+  - labs/specificity_margin_audit/README.md
+  - labs/specificity_margin_audit/protocol.json
+  - labs/src/aidd_commons/specificity_margin_audit/analysis.py
+  - labs/specificity_margin_audit/summary.json
+  reason: Worked-answer exercises assess negative-selection gates and missing alternative-partner evidence. Lessons explain intended antigens, off-targets, alternative states and rejection controls. Public SKEMPI records support a reproducible partner-coverage audit, but not matched selectivity measurements or empirical rejection; gate examples use invented signals. Direct analysis matched frozen outputs; the inspection wrapper could not finish because sandbox pyproject.toml is missing.
+- topic_id: t13-expression-developability-manufacturability
+  depth: assessed
+  run_basis: none
+  reviewed_commit: 5cacb90
+  evidence_paths:
+  - site/src/content/docs/learn/biologics-design/nucleic-acids-conjugates-degraders.mdx
+  - site/src/content/docs/learn/biologics-design/developability-and-validation.mdx
+  - site/src/content/docs/learn/biologics-design/modality-resource-guide.mdx
+  reason: 'Answered delivery-bottleneck calculations assess uptake, endosomal escape and compartment action; a worked soluble-fraction screen adds developability context. Coverage remains partial: expression, stability and aggregation lack comparable assessment, and immunogenicity, formulation and manufacturing constraints are not substantively evaluated by modality. No topic-relevant runnable task was found.'
+- topic_id: t13-functional-validation
+  depth: assessed
+  run_basis: none
+  reviewed_commit: 468b151fcf1854c2e38c7654297e373f9e132bfb
+  evidence_paths:
+  - site/src/content/docs/learn/biologics-design/developability-and-validation.mdx
+  - site/src/content/docs/learn/biologics-design/antibody-peptide-design.mdx
+  - site/src/content/docs/learn/biologics-design/multimodal-design.mdx
+  - labs/functional_validation_audit/README.md
+  - labs/src/aidd_commons/functional_validation_audit/analysis.py
+  - labs/objective_ladder/README.md
+  reason: Answered exercises assess soluble-fraction gates, negative selection, target-positive versus target-negative functional contrasts, independent preparations and orthogonal readouts. These assessments are written. Runnable audits address assay-record claims or neighbouring objectives, not biologic validation progression. A worked progression linking expression, measured binding, specificity and cellular function to in vivo relevance is missing.
+- topic_id: t14-reaction-record-condition-unit
+  depth: assessed
+  run_basis: none
+  reviewed_commit: 7427a09
+  evidence_paths:
+  - site/src/content/docs/learn/synthesis-and-automation/reaction-mapping-and-route-search.mdx
+  - site/src/content/docs/learn/synthesis-and-automation/route-feasibility-and-feedback.mdx
+  - site/src/content/docs/learn/synthesis-and-automation/reaction-to-lab.mdx
+  reason: 'The feedback exercise asks which fields an observed reaction record needs; its answer specifies input identity, graph version, outcome, provenance and failed/inconclusive labels. Roles and conditions are explained separately. Assessment is limited to record completeness: learners do not construct a complete experimental record with equipment and structured conditions.'
+- topic_id: t14-atom-mapping-transformation-class
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 7427a09
+  evidence_paths:
+  - site/src/content/docs/learn/synthesis-and-automation/reaction-mapping-and-route-search.mdx
+  - site/src/content/docs/labs/retro-disconnection.mdx
+  - labs/retro_disconnection/README.md
+  - labs/retro_disconnection/routes.json
+  - labs/retro_disconnection/methods.json
+  - labs/retro_disconnection/inspect_disconnection.py
+  reason: Answered exercises address ambiguous maps and unmapped atoms. Runnable RDKit checks apply mapped SMARTS across hand-authored transformation classes and expose class-dependent recovery and alternative disconnections. The provenance explicitly identifies constructed routes. Real reaction-map validation and systematic mapping-error diagnosis are missing; executable coverage is chiefly bond edits and classes.
+- topic_id: t14-retrosynthetic-disconnection
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/labs/retro-disconnection.mdx
+  - labs/retro_disconnection/README.md
+  - labs/retro_disconnection/routes.json
+  - labs/retro_disconnection/methods.json
+  - labs/retro_disconnection/inspect_disconnection.py
+  reason: Rules, exact retrieval and hand-extracted templates execute on ten authored routes. Checks expose split-dependent recovery, and a worked-answer exercise critiques learned-versus-template comparisons and feasibility claims. No learned disconnector runs, and laboratory feasibility is explicitly unassessed.
+- topic_id: t14-route-feasibility-material-safety
+  depth: assessed
+  run_basis: none
+  reviewed_commit: 5cacb90
+  evidence_paths:
+  - site/src/content/docs/learn/synthesis-and-automation/route-feasibility-and-feedback.mdx
+  - site/src/content/docs/learn/synthesis-and-automation/reaction-mapping-and-route-search.mdx
+  - labs/retro_disconnection/README.md
+  - labs/retro_disconnection/routes.json
+  reason: An answered exercise tests material-access and safety-review blockers; worked cases address model uncertainty, selectivity and protected-state mismatches. Actual conditions, purification, scale, hazard analysis and cost remain unevaluated. The runnable retrosynthesis lab explicitly excludes feasibility, so this assessment is written only.
+- topic_id: t14-forward-reaction-lab-feedback
+  depth: assessed
+  run_basis: none
+  reviewed_commit: 7427a09
+  evidence_paths:
+  - site/src/content/docs/learn/synthesis-and-automation/route-feasibility-and-feedback.mdx
+  - site/src/content/docs/learn/synthesis-and-automation/reaction-to-lab.mdx
+  - labs/retro_disconnection/README.md
+  reason: Worked examples and an answered exercise separate predicted products from observed, failed or inconclusive outcomes and require provenance before feedback updates. Condition recommendation, automation and a detailed chemist-review workflow are not worked through. The executable retrosynthesis comparison does not implement forward prediction or laboratory feedback.
+- topic_id: t15-experiment-pool-budget-feasibility
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 4a35849
+  evidence_paths:
+  - site/src/content/docs/learn/active-learning/experiment-pools-and-budgets.mdx
+  - labs/pool_budget/README.md
+  - labs/pool_budget/REAL_PROTOCOL.md
+  - labs/pool_budget/real-summary.json
+  - labs/pool_budget/inspect_contract.py
+  reason: Worked contracts and assessed exercises cover eligibility, parent-level units, batch budgets, baselines and failed-attempt charging. Runnable inspection uses real ChEMBL campaign records. Variable costs, synthesis/assay failures and practical capacity constraints are discussed but not represented in the executed campaign.
+- topic_id: t15-acquisition-policy-uncertainty
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/active-learning/acquisition-delays-and-stopping.mdx
+  - site/src/content/docs/labs/pool-budget-uncertainty-acquisition.mdx
+  - labs/pool_budget/README.md
+  - labs/pool_budget/uncertainty-protocol.json
+  - labs/pool_budget/real-protocol.json
+  - labs/src/aidd_commons/pool_budget_uncertainty.py
+  reason: EI and UCB exercises have worked answers; random, greedy and uncertainty policies are explained. A public ChEMBL replay implements prediction-variance acquisition with controlled label access. Information-gain policies are not worked through, and the executable uncertainty signal explicitly lacks predictive-calibration validation.
+- topic_id: t15-batch-diversity-multiobjective-allocation
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 4a35849
+  evidence_paths:
+  - site/src/content/docs/learn/molecular-generation/flows-and-constrained-search.mdx
+  - site/src/content/docs/learn/active-learning/diversity-uncertainty-feedback.mdx
+  - labs/pool_budget/README.md
+  - labs/pool_budget/run_real_campaign.py
+  - labs/src/aidd_commons/pool_budget_campaign.py
+  - labs/pool_budget/real-summary.json
+  reason: A constructed two-objective shortlist and answered feasibility/diversity exercises assess finite-batch selection. The runnable ChEMBL MaxMin task supplies public-data diversity allocation. Joint allocation across exploitation, exploration, competing experimental objectives and costs is not implemented; the real-data credit covers only the diversity component.
+- topic_id: t15-time-ordered-feedback-update
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 4a35849
+  evidence_paths:
+  - site/src/content/docs/learn/active-learning/acquisition-delays-and-stopping.mdx
+  - site/src/content/docs/labs/pool-budget-uncertainty-acquisition.mdx
+  - labs/pool_budget/UNCERTAINTY_PROTOCOL.md
+  - labs/src/aidd_commons/pool_budget_uncertainty.py
+  - labs/pool_budget/uncertainty-summary.json
+  reason: Worked timeline exercises test pending results, label availability and failures. The real-data uncertainty policy refits from previously acquired labels before selecting each new batch. Actual acquisition/completion timestamps, asynchronous returns, retries and failure-dependent updates are absent from the runnable replay.
+- topic_id: t15-stopping-rule-policy-evaluation
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 4a35849
+  evidence_paths:
+  - site/src/content/docs/learn/active-learning/acquisition-delays-and-stopping.mdx
+  - site/src/content/docs/labs/pool-budget-contract-inspection.mdx
+  - labs/pool_budget/REAL_PROTOCOL.md
+  - labs/pool_budget/real-summary.json
+  - labs/pool_budget/inspect_contract.py
+  reason: Matched-budget and policy-interpretation exercises have worked answers. Runnable checks recompute recovery AUC from real ChEMBL aggregates under a frozen four-round stop. Predictive calibration is explicitly untested, and outcome-dependent stopping is discussed without a worked stopping decision.
+- topic_id: t16-scientific-task-action-boundary
+  depth: assessed
+  run_basis: none
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/scientific-agents/agents-and-tools.mdx
+  - site/src/content/docs/learn/scientific-agents/retrieval-tools-feedback.mdx
+  reason: A constructed QC-failure exercise has a worked answer identifying evidence, prohibited conclusions, halted inference and authorized review before further action. Read/write boundaries are explained. The exercise assumes a permission boundary rather than requiring a complete allowed/prohibited-action contract; the direct assessment is written.
+- topic_id: t16-source-retrieval-evidence-grounding
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 4a35849
+  evidence_paths:
+  - labs/paperqa_local/README.md
+  - labs/paperqa_local/corpus.json
+  - labs/paperqa_local/reviewed-example.json
+  - labs/paperqa_local/paperqa_local_tutorial.ipynb
+  reason: The offline notebook checks attributed article excerpts, resolves citations and preserves actual generated answers. A worked exercise corrects unsupported citation mapping. Inputs are real source texts and saved computation. Authoritative source discovery is not exercised offline, and literal-copy verification does not establish semantic support.
+- topic_id: t16-tool-input-output-contract
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: c452b52
+  evidence_paths:
+  - site/src/content/docs/learn/scientific-agents/retrieval-tools-feedback.mdx
+  - site/src/content/docs/labs/tool-contract-audit.mdx
+  - labs/tool_contract_audit/README.md
+  - labs/tool_contract_audit/protocol.json
+  - labs/tool_contract_audit/inspect_tool_contract_audit.py
+  - labs/src/aidd_commons/tool_contract_audit/analysis.py
+  - labs/tests/tool_contract_audit/test_contract.py
+  - labs/tests/tool_contract_audit/test_analysis.py
+  - labs/applicability_domain_audit/README.md
+  - labs/applicability_domain_audit/summary.json
+  reason: An executable audit of real committed computation records teaches schemas, versions, environments, side effects, error states and scientific meaning; its comparison exercise supplies expected failures. Inspection and 26 tests pass. Coverage focuses on returns, leaving input-request schema design and per-call enforcement underdeveloped. The README's 21-record account contradicts the verified 20-record protocol.
+- topic_id: t16-trace-recovery
+  depth: assessed
+  run_basis: authored
+  reviewed_commit: 7427a09
+  evidence_paths:
+  - site/src/content/docs/learn/scientific-agents/retrieval-tools-feedback.mdx
+  - labs/paperqa_local/README.md
+  - labs/paperqa_local/paperqa_local_tutorial.ipynb
+  - labs/tests/test_paperqa_notebook.py
+  reason: The answered failure trace requires retaining failed observations and halting unsupported inference. Runnable controlled-failure tests verify saved errors and partial outputs; runtime-profile tests preserve scientific settings. Those failure inputs are authored fixtures. Successful resumption of an interrupted multi-step agent and recovery of an experimental workflow are not demonstrated.
+- topic_id: t16-human-review-authority-evaluation
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/labs/agent-evaluation-taskset.mdx
+  - labs/agent_evaluation_taskset/README.md
+  - labs/src/aidd_commons/agent_evaluation_taskset/analysis.py
+  - labs/tests/agent_evaluation_taskset/test_known_bad.py
+  - labs/paperqa_local/README.md
+  - labs/paperqa_local/reviewed-example.json
+  - labs/chembl_egfr/locked-summary.json
+  reason: A fixed five-dimension audit uses actual retained PaperQA outputs and ChEMBL-derived records. Unused-source and false-passing exercises have explicit rejection targets. It assesses record auditing rather than agents attempting new tasks. Human-authorization evidence is incomplete, and the material does not demonstrate successful authorized execution.
+- topic_id: t17-generalization-unit
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 31eb5379c28d955b2bdeb75c3be9d98e22f923e9
+  evidence_paths:
+  - site/src/content/docs/learn/evaluation-and-reproducibility/generalization-unit-and-estimand.mdx
+  - site/src/content/docs/labs/generalization-unit-audit.mdx
+  - labs/generalization_unit_audit/README.md
+  - labs/generalization_unit_audit/inspect_generalization_unit_audit.py
+  - labs/src/aidd_commons/generalization_unit_audit/analysis.py
+  - labs/decision_unit_scope/README.md
+  - labs/tests/generalization_unit_audit/test_summary_artifact.py
+  reason: 'Defines estimands and generalization units, with an exercise and worked answer testing assay/target distinctions. A runnable ChEMBL audit computes molecule/scaffold/assay/target counts; recomputation passed. Time, site and patient generalization lack practical treatment in this audit, and predictive estimands are not numerically estimated. Tests: 14 passed; one failed solely because sandbox software versions differed.'
+- topic_id: t17-split-leakage-audit
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: dfe1b50
+  evidence_paths:
+  - site/src/content/docs/learn/evaluation-and-reproducibility/split-and-leakage-cases.mdx
+  - site/src/content/docs/learn/evaluation-and-reproducibility/split-leakage-routes.mdx
+  - labs/split_leakage_audit/README.md
+  - labs/split_leakage_audit/inspect_split_leakage_audit.py
+  - labs/src/aidd_commons/split_leakage_audit/analysis.py
+  - labs/decision_unit_scope/README.md
+  reason: Worked-answer exercises assess duplicate/scaffold grouping and preprocessing leakage. The runnable ChEMBL audit reproduces published overlap counts from real records; 16 tests pass. Analogue detection uses a scaffold proxy. The audit does not test target-family, temporal, donor, patient, site, or fitted-preprocessing leakage; preprocessing receives written assessment.
+- topic_id: t17-baseline-model-selection-protocol
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 4a35849
+  evidence_paths:
+  - site/src/content/docs/learn/evaluation-and-reproducibility/split-and-leakage-cases.mdx
+  - site/src/content/docs/learn/evaluation-and-reproducibility/assay-shift-diagnosis.mdx
+  - labs/chembl_egfr/README.md
+  - labs/chembl_egfr/protocol.json
+  - labs/chembl_egfr/inspect_contract.py
+  reason: Frozen ChEMBL train-mean, descriptor and Morgan comparisons support worked exercises on recipe parity, train-only preprocessing, validation selection and locked-test boundaries. Runnable inspection replays the recorded selection rule. Headroom beyond these cheap baselines is not established; prior shared-label exposure prevents claiming untouched confirmation.
+- topic_id: t17-metric-endpoint-uncertainty
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 4a35849
+  evidence_paths:
+  - site/src/content/docs/learn/evaluation-and-reproducibility/metrics-and-uncertainty.mdx
+  - site/src/content/docs/labs/rmd17-contract-inspection.mdx
+  - site/src/content/docs/labs/rmd17-dynamics-observable.mdx
+  - labs/rmd17_system_state/README.md
+  - labs/rmd17_system_state/inspect_contract.py
+  reason: Worked answers assess endpoint-matched metrics, interval interpretation and scoring versus independent units. Runnable inspectors use real computed summaries, and trajectory exercises illustrate block SEM. A worked procedure reporting confidence intervals over independent assays or molecular systems is missing; prediction intervals and correlated-frame diagnostics do not supply it.
+- topic_id: t17-ood-transportability
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/learn/evaluation-and-reproducibility/assay-shift-diagnosis.mdx
+  - site/src/content/docs/labs/screening-transport.mdx
+  - labs/screening_transport/README.md
+  - labs/screening_transport/inspect_transport.py
+  - labs/chembl_egfr/locked-summary.json
+  - labs/pool_budget/real-summary.json
+  reason: Worked-answer exercises assess cross-assay reversal, transfer assumptions and fresh-evaluation requirements. Executable inspection checks disjointness and outcome resolution using completed ChEMBL records. Evidence spans two retrospective same-target assays; broader external populations and prospective settings are discussed but not empirically evaluated.
+- topic_id: t17-reproduction-reporting-receipt
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/labs/chembl-contract-inspection.mdx
+  - labs/chembl_egfr/inspect_contract.py
+  - labs/tests/test_chembl_contract_inspector.py
+  - labs/freesolv/README.md
+  - labs/src/aidd_commons/freesolv/pipeline.py
+  - labs/freesolv/results/pretest.json
+  - site/src/content/docs/learn/candidate-nomination/capstone-workbook.mdx
+  reason: ChEMBL checks enforce agreement among protocol, environment, selection and result records. FreeSolv constructs and validates source/version, command, seeded protocol and output provenance. Drift-rejection targets and a reproduction-scope exercise assess learning. Code revision and comprehensive failure/limitation records are not consistently bound into one rerunnable receipt.
+- topic_id: t18-evidence-package-claim-chain
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 468b151fcf1854c2e38c7654297e373f9e132bfb
+  evidence_paths:
+  - site/src/content/docs/learn/candidate-nomination/capstone-workbook.mdx
+  - site/src/content/docs/labs/candidate-evidence-chain.mdx
+  - labs/candidate_evidence_chain/README.md
+  - labs/candidate_evidence_chain/protocol.json
+  - labs/src/aidd_commons/candidate_evidence_chain/analysis.py
+  - labs/candidate_evidence_chain/inspect_candidate_evidence_chain.py
+  reason: An eight-link ChEMBL audit and answered interpretation exercise test bounded claims using activity, CYP inhibition and clearance records; inspection passed. Mechanism, intended-target validation, safety, synthesis and independent reproducibility remain unmeasured. CYP inhibition and in vitro clearance do not establish therapeutic selectivity or systemic exposure, so no complete empirical nomination chain is demonstrated.
+- topic_id: t18-crossdomain-tradeoff-decision
+  depth: assessed
+  run_basis: none
+  reviewed_commit: 7427a09
+  evidence_paths:
+  - site/src/content/docs/learn/candidate-nomination/capstone-workbook.mdx
+  - labs/multi_endpoint_tradeoff/README.md
+  reason: Case 5 and its worked answer enforce potency, selectivity, exposure and safety requirements while rejecting compensatory average ranks; the rubric assesses the decision memo. Quantitative uncertainty, synthesis feasibility and graded evidence-quality trade-offs are not developed. The endpoint-counting lab inventories coverage rather than executing this cross-domain decision.
+- topic_id: t18-counterevidence-failure-analysis
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: 042dfe96ee3b4d89abb2896983783279bd50afb5
+  evidence_paths:
+  - site/src/content/docs/labs/counterevidence-dossier.mdx
+  - site/src/content/docs/learn/candidate-nomination/evidence-to-validation.mdx
+  - labs/counterevidence/README.md
+  - labs/counterevidence/inspect_dossier.py
+  - labs/chembl_egfr/locked-summary.json
+  - labs/pool_budget/real-summary.json
+  reason: The executable dossier audit preserves failed transfer, losing policies, undefined metrics, exposure disclosures and measurement variation from completed results. A worked-answer exercise tests omission detection. Assay-limit and alternative-mechanism exercises are constructed; actual failed biological candidate nominations are not supplied.
+- topic_id: t18-nomination-readiness-next-experiment
+  depth: assessed
+  run_basis: real-data
+  reviewed_commit: f95b7b1cb36fca7cf7a775aae0726c9b21bdff7e
+  evidence_paths:
+  - site/src/content/docs/learn/candidate-nomination/readiness-rules-and-next-experiment.mdx
+  - site/src/content/docs/learn/candidate-nomination/evidence-to-validation.mdx
+  - site/src/content/docs/learn/candidate-nomination/capstone-workbook.mdx
+  - labs/nomination_readiness_audit/README.md
+  - labs/nomination_readiness_audit/protocol.json
+  - labs/nomination_readiness_audit/inspect_nomination_readiness_audit.py
+  - labs/src/aidd_commons/nomination_readiness_audit/analysis.py
+  reason: Worked-answer exercises assess go/hold/stop rules, evidence gaps, and discriminating independent follow-up. The runnable audit applies declared rules to real ChEMBL records; its offline check and nine tests pass. Thresholds are pedagogical and fixed after the source census existed. The real-data case identifies missing measurement coverage but does not fully specify a biologically independent experiment.
+- topic_id: t18-openness-biosecurity-governance-boundary
+  depth: assessed
+  run_basis: none
+  reviewed_commit: 7427a09
+  evidence_paths:
+  - site/src/content/docs/learn/data-governance/identity-lineage-and-reuse.mdx
+  - site/src/content/docs/learn/candidate-nomination/capstone-workbook.mdx
+  - site/src/content/docs/learn/scientific-agents/autonomous-laboratory-agents.mdx
+  reason: An answered redistribution exercise tests licence scope and withholding assets with unclear terms. Capstone answers distinguish nomination from dosing authority; governance prose explains dual-use escalation. Assessment covers release permission and authority, but no concrete biosecurity-risk case or integrated reproducibility/licence/safety release decision is worked or executable.

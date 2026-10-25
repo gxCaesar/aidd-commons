@@ -1,0 +1,52 @@
+id: benchmark-lit-pcba
+name: LIT-PCBA
+kind: benchmark
+summary: Ligand-information benchmark for virtual screening.
+canonical_url: https://drugdesign.unistra.fr/LIT-PCBA/
+identifiers:
+  - scheme: documentation
+    value: "LIT-PCBA data content"
+    url: https://drugdesign.unistra.fr/LIT-PCBA/page2.htm
+  - scheme: paper
+    value: "LIT-PCBA: An Unbiased Data Set for Machine Learning and Virtual Screening; Tran-Nguyen, Jacquemard and Rognan, Journal of Chemical Information and Modeling 2020, 60, 9, 4263-4273"
+    url: https://doi.org/10.1021/acs.jcim.0c00155
+stages: [hit-discovery, evaluation]
+modalities: [small-molecule, bioassay]
+tasks: [virtual-screening]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [official-page, data-content-page] }
+openness:
+  inference_code: { value: not_applicable, evidence: [official-page] }
+  training_code: { value: not_applicable, evidence: [official-page] }
+  weights: { value: not_applicable, evidence: [official-page] }
+  architecture: { value: not_applicable, evidence: [official-page] }
+  data_recipe: { value: available, evidence: [data-content-page] }
+  training_data: { value: available, evidence: [official-page, data-content-page] }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://drugdesign.unistra.fr/LIT-PCBA/
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [caveats, identifiers]
+  - id: official-page
+    url: https://drugdesign.unistra.fr/LIT-PCBA/
+    label: LIT-PCBA official site, re-opened 2026-10-24, with the download links and the citation
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: data-content-page
+    url: https://drugdesign.unistra.fr/LIT-PCBA/page2.htm
+    label: The site's own data content page, read 2026-10-24, which lists the per-target input files and the citation
+    supports: [identifiers, caveats]
+  - id: terms-page
+    url: https://drugdesign.unistra.fr/LIT-PCBA/
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one. The page was re-opened on 2026-10-24 and still states no licence or reuse term, and the record therefore carries an access level without a licence.
+  - "The site states its own count as 15 target sets, 7,761 actives and 382,674 unique inactives selected from high-confidence PubChem BioAssay data, and it offers two direct download links, the full data and an unbiased AVE variant, neither of which asks for an account."
+  - "The site's data content page names the per-target input files, the protein and ligand MOL2 structures with their PDB identifiers, the active and inactive SMILES files with PubChem identifiers, and separate training and validation SMILES files, and it names the citation to Tran-Nguyen and Rognan. The record carries the count and the file list as the site's own statements and not as a measurement."
+  - "The site's citation names two authors, and the published paper carries three, Tran-Nguyen, Jacquemard and Rognan, under DOI 10.1021/acs.jcim.0c00155. The record carries the published byline and notes the difference."
+  - "The site carries the copyright line of the Laboratoire d'Innovation Therapeutique and states no reuse terms beyond it, so a reader who needs a grant to redistribute the files has to ask the laboratory."
+acknowledgements: []
+last_verified: "2026-10-24"

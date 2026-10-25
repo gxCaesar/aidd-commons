@@ -1,0 +1,412 @@
+{
+  "generated_by": "report/figures/measure_palette.py",
+  "source_of_truth": "report/figures/atlas_palette.py",
+  "site_mirror": "site/src/data/atlas-palette.json",
+  "toolkit": {
+    "name": "single-column-figs/assets/figset.py",
+    "resolved_from": "the AIDD_FIGSET_PATH override or the skill's own assets folder",
+    "cvd_floor": 10.0,
+    "luminance_budget": 0.22
+  },
+  "cvd_floor": 10.0,
+  "floors": {
+    "cvd_ciede2000": 10.0,
+    "luminance_spread": 0.22,
+    "wcag_contrast": 3.0,
+    "ladder_adjacent_luminance_gap": 0.05
+  },
+  "vision_kinds": [
+    "normal",
+    "deutan",
+    "protan",
+    "tritan"
+  ],
+  "themes": {
+    "light": {
+      "theme": "light",
+      "panel": "#fffdf8",
+      "other_panel": "#172b3b",
+      "categorical": {
+        "teal": "#399693",
+        "coral": "#c85f51",
+        "ember": "#8c4239",
+        "slate": "#4d5f6d"
+      },
+      "ladder": [
+        "#e6f2f1",
+        "#b5dcda",
+        "#77b9bd",
+        "#35757f",
+        "#123a49"
+      ],
+      "fills": {
+        "teal": "#dfeeee",
+        "coral": "#f6e5e3",
+        "ember": "#ede1df",
+        "slate": "#e3e5e8"
+      },
+      "pairs": [
+        {
+          "a": "teal",
+          "b": "coral",
+          "normal": 48.24724740582523,
+          "deutan": 33.68878904364624,
+          "protan": 23.257151881675927,
+          "tritan": 48.88924173686447
+        },
+        {
+          "a": "teal",
+          "b": "ember",
+          "normal": 48.49036804145952,
+          "deutan": 32.98535254403541,
+          "protan": 29.018700749276313,
+          "tritan": 49.00178650488097
+        },
+        {
+          "a": "teal",
+          "b": "slate",
+          "normal": 24.890980508675774,
+          "deutan": 15.211300502613687,
+          "protan": 19.05110281550718,
+          "tritan": 21.05984384923313
+        },
+        {
+          "a": "coral",
+          "b": "ember",
+          "normal": 15.428903226303435,
+          "deutan": 17.118791814106178,
+          "protan": 14.026900818430487,
+          "tritan": 15.387138223878798
+        },
+        {
+          "a": "coral",
+          "b": "slate",
+          "normal": 36.217948530938926,
+          "deutan": 38.73655675501146,
+          "protan": 29.452787795129684,
+          "tritan": 38.073457076766154
+        },
+        {
+          "a": "ember",
+          "b": "slate",
+          "normal": 31.662770148144677,
+          "deutan": 30.64099345747824,
+          "protan": 24.491034460745528,
+          "tritan": 34.77158045350462
+        }
+      ],
+      "worst_pair": {
+        "normal": {
+          "distance": 15.4289,
+          "pair": "coral/ember"
+        },
+        "deutan": {
+          "distance": 15.2113,
+          "pair": "teal/slate"
+        },
+        "protan": {
+          "distance": 14.0269,
+          "pair": "coral/ember"
+        },
+        "tritan": {
+          "distance": 15.3871,
+          "pair": "coral/ember"
+        }
+      },
+      "contrast": {
+        "teal": {
+          "hex": "#399693",
+          "own_panel": 3.4673,
+          "other_panel": 4.1227
+        },
+        "coral": {
+          "hex": "#c85f51",
+          "own_panel": 3.9638,
+          "other_panel": 3.6063
+        },
+        "ember": {
+          "hex": "#8c4239",
+          "own_panel": 6.9944,
+          "other_panel": 2.0437
+        },
+        "slate": {
+          "hex": "#4d5f6d",
+          "own_panel": 6.5099,
+          "other_panel": 2.1958
+        },
+        "fill:teal": {
+          "hex": "#dfeeee",
+          "own_panel": 1.1736,
+          "other_panel": 12.1802
+        },
+        "fill:coral": {
+          "hex": "#f6e5e3",
+          "own_panel": 1.1985,
+          "other_panel": 11.9266
+        },
+        "fill:ember": {
+          "hex": "#ede1df",
+          "own_panel": 1.2568,
+          "other_panel": 11.3737
+        },
+        "fill:slate": {
+          "hex": "#e3e5e8",
+          "own_panel": 1.2415,
+          "other_panel": 11.5139
+        },
+        "ladder:0": {
+          "hex": "#e6f2f1",
+          "own_panel": 1.1266,
+          "other_panel": 12.6878
+        },
+        "ladder:1": {
+          "hex": "#b5dcda",
+          "own_panel": 1.4533,
+          "other_panel": 9.836
+        },
+        "ladder:2": {
+          "hex": "#77b9bd",
+          "own_panel": 2.184,
+          "other_panel": 6.5453
+        },
+        "ladder:3": {
+          "hex": "#35757f",
+          "own_panel": 5.1614,
+          "other_panel": 2.7695
+        },
+        "ladder:4": {
+          "hex": "#123a49",
+          "own_panel": 11.9605,
+          "other_panel": 1.1951
+        }
+      },
+      "ladder_audit": {
+        "adjacent_luminance_gaps": [
+          0.1392,
+          0.1824,
+          0.251,
+          0.1745
+        ],
+        "min_adjacent_gap": 0.1392,
+        "disjoint_from_categorical": true,
+        "min_normal_distance_to_categorical": 12.7535
+      },
+      "gates": {
+        "cvd_floor": 10.0,
+        "cvd_worst": 14.0269,
+        "cvd_pass": true,
+        "luminance_spread": 0.1863,
+        "luminance_budget": 0.22,
+        "luminance_pass": true,
+        "contrast_floor": 3.0,
+        "contrast_min_on_own_panel": 3.4673,
+        "contrast_pass": true,
+        "ladder_min_gap": 0.1392,
+        "ladder_gap_floor": 0.05,
+        "ladder_pass": true,
+        "categorical_disjoint_from_ladder": true
+      }
+    },
+    "dark": {
+      "theme": "dark",
+      "panel": "#172b3b",
+      "other_panel": "#fffdf8",
+      "categorical": {
+        "teal": "#4fc7bf",
+        "coral": "#bd7366",
+        "ember": "#ffb15b",
+        "slate": "#808b8f"
+      },
+      "ladder": [
+        "#2c5c68",
+        "#3f8183",
+        "#5ba39d",
+        "#86c9c3",
+        "#bce8e3"
+      ],
+      "fills": {
+        "teal": "#245a56",
+        "coral": "#55342e",
+        "ember": "#735029",
+        "slate": "#3a3f40"
+      },
+      "pairs": [
+        {
+          "a": "teal",
+          "b": "coral",
+          "normal": 48.521959168677625,
+          "deutan": 31.58125126585082,
+          "protan": 24.45053648949645,
+          "tritan": 49.1857462857283
+        },
+        {
+          "a": "teal",
+          "b": "ember",
+          "normal": 42.55239910488478,
+          "deutan": 40.588683943300154,
+          "protan": 28.935160716303823,
+          "tritan": 47.79323083776828
+        },
+        {
+          "a": "teal",
+          "b": "slate",
+          "normal": 24.002469744823735,
+          "deutan": 13.06738756500609,
+          "protan": 14.626317777759642,
+          "tritan": 22.38301962213062
+        },
+        {
+          "a": "coral",
+          "b": "ember",
+          "normal": 26.47337524575144,
+          "deutan": 20.818872404071193,
+          "protan": 22.85955669029622,
+          "tritan": 17.273491813715406
+        },
+        {
+          "a": "coral",
+          "b": "slate",
+          "normal": 28.102298774877294,
+          "deutan": 22.89295291642329,
+          "protan": 17.430157965058974,
+          "tritan": 30.05832838810368
+        },
+        {
+          "a": "ember",
+          "b": "slate",
+          "normal": 34.13125157086942,
+          "deutan": 37.253516087671734,
+          "protan": 32.786079604342035,
+          "tritan": 34.487886588787724
+        }
+      ],
+      "worst_pair": {
+        "normal": {
+          "distance": 24.0025,
+          "pair": "teal/slate"
+        },
+        "deutan": {
+          "distance": 13.0674,
+          "pair": "teal/slate"
+        },
+        "protan": {
+          "distance": 14.6263,
+          "pair": "teal/slate"
+        },
+        "tritan": {
+          "distance": 17.2735,
+          "pair": "coral/ember"
+        }
+      },
+      "contrast": {
+        "teal": {
+          "hex": "#4fc7bf",
+          "own_panel": 7.0956,
+          "other_panel": 2.0146
+        },
+        "coral": {
+          "hex": "#bd7366",
+          "own_panel": 4.0189,
+          "other_panel": 3.5568
+        },
+        "ember": {
+          "hex": "#ffb15b",
+          "own_panel": 8.0905,
+          "other_panel": 1.7668
+        },
+        "slate": {
+          "hex": "#808b8f",
+          "own_panel": 4.1571,
+          "other_panel": 3.4386
+        },
+        "fill:teal": {
+          "hex": "#245a56",
+          "own_panel": 1.8489,
+          "other_panel": 7.7315
+        },
+        "fill:coral": {
+          "hex": "#55342e",
+          "own_panel": 1.3265,
+          "other_panel": 10.7765
+        },
+        "fill:ember": {
+          "hex": "#735029",
+          "own_panel": 2.0126,
+          "other_panel": 7.1026
+        },
+        "fill:slate": {
+          "hex": "#3a3f40",
+          "own_panel": 1.3597,
+          "other_panel": 10.5131
+        },
+        "ladder:0": {
+          "hex": "#2c5c68",
+          "own_panel": 1.9637,
+          "other_panel": 7.2793
+        },
+        "ladder:1": {
+          "hex": "#3f8183",
+          "own_panel": 3.2379,
+          "other_panel": 4.4148
+        },
+        "ladder:2": {
+          "hex": "#5ba39d",
+          "own_panel": 4.9619,
+          "other_panel": 2.8809
+        },
+        "ladder:3": {
+          "hex": "#86c9c3",
+          "own_panel": 7.7199,
+          "other_panel": 1.8516
+        },
+        "ladder:4": {
+          "hex": "#bce8e3",
+          "own_panel": 10.9264,
+          "other_panel": 1.3083
+        }
+      },
+      "ladder_audit": {
+        "adjacent_luminance_gaps": [
+          0.0902,
+          0.1176,
+          0.1588,
+          0.1667
+        ],
+        "min_adjacent_gap": 0.0902,
+        "disjoint_from_categorical": true,
+        "min_normal_distance_to_categorical": 6.0757
+      },
+      "gates": {
+        "cvd_floor": 10.0,
+        "cvd_worst": 13.0674,
+        "cvd_pass": true,
+        "luminance_spread": 0.1471,
+        "luminance_budget": 0.22,
+        "luminance_pass": true,
+        "contrast_floor": 3.0,
+        "contrast_min_on_own_panel": 4.0189,
+        "contrast_pass": true,
+        "ladder_min_gap": 0.0902,
+        "ladder_gap_floor": 0.05,
+        "ladder_pass": true,
+        "categorical_disjoint_from_ladder": true
+      }
+    }
+  },
+  "house_gates": {
+    "light": {
+      "deutan": 15.2113,
+      "protan": 14.0269,
+      "tritan": 15.3871,
+      "normal": 15.4289,
+      "luminance_spread": 0.1863
+    },
+    "dark": {
+      "deutan": 13.0674,
+      "protan": 14.6263,
+      "tritan": 17.2735,
+      "normal": 24.0025,
+      "luminance_spread": 0.1471
+    }
+  }
+}

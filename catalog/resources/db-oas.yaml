@@ -1,0 +1,37 @@
+id: db-oas
+name: Observed Antibody Space
+kind: database
+summary: Antibody sequence database organized into studies and metadata-defined data units with searchable and bulk-downloadable records.
+canonical_url: https://opig.stats.ox.ac.uk/webapps/oas/documentation
+identifiers: []
+stages: [biologics-design, data-intake]
+modalities: [antibody]
+tasks: [antibody-sequence-retrieval, repertoire-dataset-construction]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [data-license, documentation] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC-BY-4.0
+    scope: The OAS antibody sequence database data available for bulk or filtered download; the page does not license the original source studies or separate software.
+    evidence: [data-license]
+evidence:
+  - id: data-license
+    url: https://opig.stats.ox.ac.uk/webapps/oas/
+    label: OAS homepage data licence statement
+    supports: []
+  - id: documentation
+    url: https://opig.stats.ox.ac.uk/webapps/oas/documentation
+    label: Observed Antibody Space documentation
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+caveats:
+  - Metadata fields are non-exclusive and bulk downloads can exceed 700 GB, so filters and retrieval scope need inspection before use.
+acknowledgements: []
+last_verified: "2026-10-23"

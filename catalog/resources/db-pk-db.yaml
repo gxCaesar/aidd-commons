@@ -1,0 +1,77 @@
+id: db-pk-db
+name: PK-DB
+kind: database
+summary: Pharmacokinetics database with study-, subject-, intervention-, output-, and time-course-level records accessible through web and REST interfaces.
+canonical_url: https://pk-db.com/data
+identifiers:
+- scheme: api
+  value: PK-DB REST API
+  url: https://pk-db.com/api/v1/swagger/
+stages:
+- dmpk-toxicology
+- pk-pd-modeling
+- data-intake
+modalities:
+- small-molecule
+- biologic
+tasks:
+- pharmacokinetic-data-retrieval
+- pk-modeling
+relations: []
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - api-access-probe-2026-09-12
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: MIT
+  scope: PK-DB-source-code; not automatically imported study records
+  evidence:
+  - source-license
+evidence:
+- id: source-license
+  url: https://raw.githubusercontent.com/matthiaskoenig/pkdb/develop/LICENSE
+  label: Current PK-DB source-code LICENSE
+  supports: []
+- id: data-page
+  url: https://pk-db.com/data
+  label: PK-DB data search page
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - caveats
+- id: api
+  url: https://pk-db.com/api/v1/swagger/
+  label: PK-DB REST API
+  supports:
+  - identifiers
+- id: api-access-probe-2026-09-12
+  url: https://pk-db.com/api/v1/pkdata/studies/
+  label: Direct, unauthenticated probe of every listed REST endpoint, 2026-09-12
+  supports:
+  - caveats
+caveats:
+- Studies, groups, individuals, interventions, and measured outputs are separate entities; pooled records should not erase their provenance or independent unit.
+- 'Study metadata is genuinely public without authentication: fetching all 803 studies from `pkdata/studies/` on 2026-09-12 found 88 carrying the database''s own per-study `licence: "open"` field, and `pkdata/interventions/` returned 4,762 real dosing records with no login. But `pkdata/outputs/` and `pkdata/timecourses/`, the endpoints holding the actual measured PK parameter values, returned zero records under every filter tried, for every study regardless of its own licence field. The underlying NAR paper (PMC7779054) states why independent of this probe: some information is restricted to a limited group of users due to copyright. Do not treat this database as a no-login source of actual PK values without first obtaining and documenting an authenticated access path.'
+acknowledgements: []
+last_verified: '2026-09-12'

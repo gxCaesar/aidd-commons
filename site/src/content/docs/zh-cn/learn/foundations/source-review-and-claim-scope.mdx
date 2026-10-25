@@ -1,0 +1,76 @@
+---
+title: 来源审阅与主张范围
+description: 将主张绑定到来源页面、版本、日期和实际审阅的材料。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="foundations/source-review-and-claim-scope" />
+<ScrollableRegions />
+
+## 学习目标与预备知识
+
+引文可以指出项目名称，却不说明读过哪些内容。本课教你在提出主张前记录页面或仓库、其版本、审阅日期和实际检查的材料，并判断缺失字段留下哪些未知。先读[来源与实体课程](/zh-cn/learn/foundations/source-and-entity-literacy/)会有所帮助。实例使用四条已提交的 Atlas 记录及配套的[审计指南](/zh-cn/labs/source-review-scope-audit/)。英文原文见[本课](/learn/foundations/source-review-and-claim-scope/)。
+
+## 可复核主张的四个部分
+
+| 部分 | 条目必须标识的内容 | 读者可以核查什么 |
+| --- | --- | --- |
+| 表面 | 特定页面或仓库 URL | 从哪里开始检查来源 |
+| 版本 | 发布版本、标签或有日期的政策 | 主张对应哪个修订版 |
+| 日期 | 该条目对应来源的审阅时间 | 记录中的检查发生于何时 |
+| 范围 | 实际审阅的章节、文件、表格或其他精确材料 | 来源的哪个部分可用于该主张 |
+
+四个部分回答不同问题。仓库 URL 指向真实页面，但该 URL 下的可变分支可能在审阅后变化。审阅日期不会冻结分支。许可证段落可能支持关于代码条款的主张，却不说明所链接数据集的情况。实际审阅的材料应与主张相邻，读者才能检验其边界。
+
+## 名称与来源表面
+
+RDKit 这一名称标识项目。[RDKit 仓库](https://github.com/rdkit/rdkit)标识读者可以访问的表面。单凭仓库 URL，既无法确定发布版本，也无法确定哪份文件支持许可证主张。目录还列出[许可证文件](https://github.com/rdkit/rdkit/blob/master/license.txt)，但对应证据条目没有独立的版本、审阅日期或审阅材料字段。其标签写有日期。这段文字可作为线索，却不是条目级日期字段。
+
+条目缺少自身日期，就没有记录该来源何时为了相应主张接受审阅。这不证明主张错误、页面从未被读过，或条目不可靠。记录级 `last_verified` 日期描述的是整条记录，而不是其中每项证据。主张必须受实际记录的证据约束。
+
+## 实例推演
+
+冻结审计读取 4 条记录及其 12 个证据条目。只有条目具有对应的独立字段，才计为携带该部分。标签中的日期或文档类型归为 `named-in-text`。泛泛的项目或仓库标签不标识审阅材料。`supports` 列表说明条目支持哪些记录字段，并不说明在链接页面上实际审阅了哪些精确材料。
+
+| 记录 | 条目 | 携带表面 | 文字中日期 | 携带条目日期 | 有引用的主张 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `db-rcsb-pdb` | 3 | 3 | 2 | 0 | 2 |
+| `db-uniprot` | 2 | 2 | 1 | 0 | 0 |
+| `tool-rdkit` | 3 | 3 | 2 | 0 | 8 |
+| `model-boltz-2` | 4 | 4 | 4 | 0 | 5 |
+| 总计 | 12 | 12 | 9 | 0 | 15 |
+
+12 个条目都有 URL。没有条目通过独立字段携带版本、日期或审阅材料。5 个标签在文字中命名文档类型，另有 7 个没有指明审阅材料。四个部分全部携带、携带日期和表面但没有版本，以及只有名称这三类的数量均为 0。4 条记录含有 39 项结构化主张，其中 15 项有证据引用，24 项没有，0 项有未解析引用。没有主张引用带有条目级审阅日期的证据。
+
+以 `db-uniprot` 的条款条目为例。[条款页面 URL](https://www.uniprot.org/help/license)标识来源表面，标签写有 2026-10-23，但条目没有 `reviewed_on` 字段。记录还含有关于条款页面可能并未被此次审阅打开的注意事项。字段计数无法解决这处张力，也无法判断条款页面实际上说了什么。下一步应打开相关来源，记录精确材料和修订版，并为这次检查记下日期。
+
+## 独立练习
+
+利用表格比较 `tool-rdkit` 与 `db-uniprot`。写出各自的条目数、有引用的主张数、标签注明日期的数量，以及任一记录是否提供条目级带日期的引用。再写出一句在重新审阅链接页面后能够接受核查的话。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+`tool-rdkit` 有 3 个条目、8 项有引用的主张、2 个写有日期的标签。`db-uniprot` 有 2 个条目、0 项有引用的主张、1 个写有日期的标签。两者都没有条目级带日期的引用。打开 RDKit 许可证文件后，可核查的句子应注明检查的文件、修订版、审阅日期，以及支持源代码相关主张的准确条款。表格本身无法提供该条款。
+
+</details>
+
+## 这些材料不能说明什么
+
+审计不打开链接页面。它不能确认页面是否真的陈述了条目所声称的内容、判断审阅是否充分、找回可变 URL 当时指向的修订版，或裁定许可证允许什么。4 条记录是冻结的教学选集，不能用来估计整个 Atlas 的比例。此前独立阅读将它检查的材料评为 `assessed`，项目自身比较记录则标为 `worked`。本课不修改任一评分，也不提供读者学习结果。
+
+## 运行审计
+
+模式是依照冻结协议和已提交目录进行全新独立计算。使用项目的 Python 3.11 环境和 CPU。无需网络、下载或加速器。这些命令不写入文件，分别显示逐条证据记录和验证结果。
+
+```bash
+.venv/bin/python labs/source_review_scope_audit/run_lab.py check
+.venv/bin/python labs/source_review_scope_audit/inspect_source_review_scope_audit.py show
+.venv/bin/python labs/source_review_scope_audit/inspect_source_review_scope_audit.py check
+```
+
+## 来源与署名
+
+目录、比较记录和独立阅读记录于 2026-10-23 在本地读取。来源名称及记载的审阅日期来自这些记录。本课的计算未打开链接的 [RCSB 使用政策](https://www.rcsb.org/pages/usage-policy)、[UniProt 条款页面](https://www.uniprot.org/help/license)、[RDKit 许可证文件](https://github.com/rdkit/rdkit/blob/master/license.txt)或 [Boltz README](https://raw.githubusercontent.com/jwohlwend/boltz/main/README.md)。原创文字采用 CC BY 4.0。最后复核于 2026-10-23。

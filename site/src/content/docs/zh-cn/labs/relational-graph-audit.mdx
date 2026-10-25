@@ -1,0 +1,82 @@
+---
+title: 审计资源图谱中的类型化关系
+description: 根据已提交资源目录重新计算有向关系、源记录证据与候选配对。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[Audit typed relations in the resource graph](/labs/relational-graph-audit/)。
+
+## 准备与学习目标
+
+本实验服务于 `t05-relational-knowledge-graph-representation`。先读[类型化关系与证据](/zh-cn/learn/representations/relational-graph-evidence/)。你将区分节点类型和关系类型，把边追溯到声明它的记录，并检验为什么共享任务或阶段不能确立一条缺失关系。了解 YAML 和有向图会有所帮助。
+
+模式是根据冻结协议和已提交目录做新的独立计算。使用项目的 Python 3.11 环境和 CPU。命令无需网络、下载或加速器。前 3 条命令不写文件。只有全部检查通过后，导出器才覆盖已提交的小型摘要。
+
+```bash
+.venv/bin/python labs/relational_graph_audit/run_lab.py check
+.venv/bin/python labs/relational_graph_audit/inspect_relational_graph_audit.py show
+.venv/bin/python labs/relational_graph_audit/inspect_relational_graph_audit.py check
+.venv/bin/python labs/relational_graph_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/relational_graph_audit -q
+```
+
+## 来源记录与图谱约定
+
+审计读取于 2026-10-25 重新计算的本地目录快照中已提交的 228 条资源记录。每条记录提供一个类型化节点。`relations` 条目提供一条从声明记录指向目标的有向边。缺失目标、重复 id 或未声明类型会被加载器拒绝。只有声明记录中 `supports` 包含 `relations` 的证据条目，才能为边提供证据。检查器打印证据 id，无证据边会在导出前被检查拒绝。
+
+下表报告 2026-10-25 的计算，使用 Python 3.11.15 和 PyYAML 6.0.3。节点表对每条记录计数 1 次。孤立列统计没有声明出边的记录。因此，有入边的目标也可能出现在这一列。
+
+| 节点类型 | 节点数 | 无出边声明 |
+| --- | ---: | ---: |
+| `agent` | 11 | 11 |
+| `benchmark` | 26 | 25 |
+| `database` | 22 | 22 |
+| `dataset` | 14 | 11 |
+| `model` | 81 | 60 |
+| `model-asset` | 1 | 0 |
+| `paper` | 4 | 3 |
+| `software` | 59 | 55 |
+| `standard` | 3 | 3 |
+| `tutorial` | 7 | 2 |
+| 合计 | 228 | 192 |
+
+| 有向边类型 | 边数 |
+| --- | ---: |
+| `analyses` | 2 |
+| `demonstrates` | 5 |
+| `implements` | 2 |
+| `measured-by` | 1 |
+| `reproduces` | 1 |
+| `successor-to` | 5 |
+| `surfaced-by` | 3 |
+| `used-by` | 8 |
+| `uses` | 12 |
+| 合计 | 39 |
+
+按本规则，全部 39 条已声明边都在源记录中有关系证据。无证据边数是 0。总度数按已声明边实例的入边加出边计算。`model-cgflow` 的度数是 3。`model-scgpt` 与 `model-zeroshot-scfoundation` 并列最高，为 4。检查器列出每个节点的度数，以及每条边在源记录中的证据 id。
+
+## 候选配对与孤立节点
+
+当两条记录共享至少 1 个任务或至少 1 个阶段，且任何方向都没有声明关系时，这一无序配对成为候选。审计找到 10100 个候选配对。它不会把这些候选加入 39 条已声明边。`model-opendde`、`model-pocket2mol` 与 `model-targetdiff` 各出现在 158 个候选配对中，是观测到的最高计数。共享元数据使配对值得核查，却不预测两条记录应当相连。
+
+检查器与已提交摘要按类型列出 192 条没有出边声明的记录。`model-rxnflow` 虽然被 `model-cgflow` 指向，也属于其中。这是协议按声明定义的孤立指标，不是图论中度数为 0 的判断。
+
+## 材料的边界
+
+图谱记录这个目录声明了什么，以及条目引用了什么。审计不会独立复核每个链接页面、裁定已声明关系是否真实，也不会推断因果关系。缺失声明不是实验确立的阴性。候选配对不是关系，资源记录之间的路径也不是生物机制。
+
+## 来源与条款
+
+本地目录快照于 2026-10-25 重新计算。下列链接记录带有各自的复核日期和已记录许可范围。这些行中的 MIT 涉及仓库代码，Boltz 记录还列有权重。记录没有把这些授权延伸到所有链接的数据集或检查点。
+
+| 记录来源 | 已记录许可 | 记录复核日期 |
+| --- | --- | --- |
+| [Boltz 仓库](https://github.com/jwohlwend/boltz) | MIT | 2026-10-23 |
+| [CGFlow 仓库](https://github.com/tsa87/cgflow) | MIT | 2026-10-21 |
+| [RxnFlow 仓库](https://github.com/SeonghwanSeo/RxnFlow) | MIT | 2026-10-21 |
+| [TacoGFN 仓库](https://github.com/tsa87/tacogfn) | MIT | 2026-10-21 |
+
+原创指南文字采用 CC BY 4.0，实验代码采用 Apache-2.0。链接资源保留各自条款。最后复核于 2026-10-25。

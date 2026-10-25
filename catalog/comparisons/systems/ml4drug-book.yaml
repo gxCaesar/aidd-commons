@@ -1,0 +1,130 @@
+id: ml4drug-book
+name: Machine Learning for Drug Discovery and Development
+provider_class: curriculum
+canonical_url: https://ml4drug-book.github.io/
+summary: A graduate-oriented textbook project whose public landing page outlines data, machine-learning methods, and drug-discovery and development applications.
+audiences:
+  [advanced-undergraduates, graduate-students, industry-data-scientists]
+languages: [en]
+metadata_evidence: [official-site]
+access:
+  content: { value: unverified }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence was encoded for omitted taxonomy topics in this dated review.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t03-training-validation-selection
+    depth: mentioned
+    evidence: [official-site]
+    reviewed_scope: Public tentative table of contents
+    note: The page lists training, data splitting, hyperparameters, and ensemble methods without exposed chapter treatment.
+  - topic_id: t05-small-molecule-representation
+    depth: mentioned
+    evidence: [official-site]
+    reviewed_scope: Public data and method overview
+    note: The page names SMILES, molecular graphs, fingerprints, and representation learning.
+  - topic_id: t05-protein-sequence-structure-representation
+    depth: mentioned
+    evidence: [official-site]
+    reviewed_scope: Public data and large-molecule topic overview
+    note: The page names amino-acid sequences, protein properties, and three-dimensional structure prediction.
+  - topic_id: t08-exposure-pk-endpoint
+    depth: mentioned
+    evidence: [official-site]
+    reviewed_scope: Public small-molecule application overview
+    note: ADMET property prediction is listed as planned textbook content.
+  - topic_id: t09-screening-selection-repurposing-transfer
+    depth: mentioned
+    evidence: [official-site]
+    reviewed_scope: Public application overview
+    note: Virtual screening and drug repurposing are named in the tentative contents.
+  - topic_id: t12-candidate-design-space
+    depth: mentioned
+    evidence: [official-site]
+    reviewed_scope: Public advanced-method and application overview
+    note: Generative models, reinforcement learning, genetic algorithms, Bayesian optimization, and de novo design are named.
+  - topic_id: t13-sequence-structure-function-objective
+    depth: mentioned
+    evidence: [official-site]
+    reviewed_scope: Public large-molecule design overview
+    note: Protein design, protein properties, structure prediction, and antibody design are listed.
+  - topic_id: t14-retrosynthetic-disconnection
+    depth: mentioned
+    evidence: [official-site]
+    reviewed_scope: Public small-molecule application overview
+    note: Retrosynthesis is named as intended content without an opened chapter body.
+  - topic_id: t03-inductive-bias-selection
+    depth: mentioned
+    evidence: [public-surface]
+    reviewed_scope: The complete public surface reviewed on 2026-09-11, being the landing page with its tentative table of contents and the whole ml4drug-book.github.io repository, which holds only that page, a Jekyll theme and an unrelated workshop schedule
+    note: The contents list MLP, CNN, RNN, graph neural networks, attention, transformers, autoencoders and generative models as separate sections. Named in the tentative table of contents and nowhere else. No chapter text exists on any reviewed surface, so nothing here can be scored above mentioned.
+  - topic_id: t05-omics-perturbation-representation
+    depth: mentioned
+    evidence: [public-surface]
+    reviewed_scope: The complete public surface reviewed on 2026-09-11, being the landing page with its tentative table of contents and the whole ml4drug-book.github.io repository, which holds only that page, a Jekyll theme and an unrelated workshop schedule
+    note: The data section names genomics data alongside drug target, small molecule, biologics, clinical trial and literature data. Named in the tentative table of contents and nowhere else. No chapter text exists on any reviewed surface, so nothing here can be scored above mentioned.
+  - topic_id: t06-causal-target-evidence
+    depth: mentioned
+    evidence: [public-surface]
+    reviewed_scope: The complete public surface reviewed on 2026-09-11, being the landing page with its tentative table of contents and the whole ml4drug-book.github.io repository, which holds only that page, a Jekyll theme and an unrelated workshop schedule
+    note: Target identification is named among the drug discovery applications. Named in the tentative table of contents and nowhere else. No chapter text exists on any reviewed surface, so nothing here can be scored above mentioned.
+  - topic_id: t08-safety-toxicity-endpoint
+    depth: mentioned
+    evidence: [public-surface]
+    reviewed_scope: The complete public surface reviewed on 2026-09-11, being the landing page with its tentative table of contents and the whole ml4drug-book.github.io repository, which holds only that page, a Jekyll theme and an unrelated workshop schedule
+    note: Adverse drug effect prediction is named among the small-molecule property prediction applications. Named in the tentative table of contents and nowhere else. No chapter text exists on any reviewed surface, so nothing here can be scored above mentioned.
+  - topic_id: t08-metabolism-ddi-risk
+    depth: mentioned
+    evidence: [public-surface]
+    reviewed_scope: The complete public surface reviewed on 2026-09-11, being the landing page with its tentative table of contents and the whole ml4drug-book.github.io repository, which holds only that page, a Jekyll theme and an unrelated workshop schedule
+    note: Drug-drug interaction prediction is named among the applications. Named in the tentative table of contents and nowhere else. No chapter text exists on any reviewed surface, so nothing here can be scored above mentioned.
+  - topic_id: t09-affinity-ranking
+    depth: mentioned
+    evidence: [public-surface]
+    reviewed_scope: The complete public surface reviewed on 2026-09-11, being the landing page with its tentative table of contents and the whole ml4drug-book.github.io repository, which holds only that page, a Jekyll theme and an unrelated workshop schedule
+    note: Drug-target interaction prediction and DNA or RNA-protein binding are named among the applications. Named in the tentative table of contents and nowhere else. No chapter text exists on any reviewed surface, so nothing here can be scored above mentioned.
+  - topic_id: t12-design-objective-constraints
+    depth: mentioned
+    evidence: [public-surface]
+    reviewed_scope: The complete public surface reviewed on 2026-09-11, being the landing page with its tentative table of contents and the whole ml4drug-book.github.io repository, which holds only that page, a Jekyll theme and an unrelated workshop schedule
+    note: Lead optimization is named beside de novo design, and combinatorial methods including reinforcement learning, genetic algorithms and Bayesian optimization are listed as a section. Named in the tentative table of contents and nowhere else. No chapter text exists on any reviewed surface, so nothing here can be scored above mentioned.
+  - topic_id: t13-biologic-modality-construct
+    depth: mentioned
+    evidence: [public-surface]
+    reviewed_scope: The complete public surface reviewed on 2026-09-11, being the landing page with its tentative table of contents and the whole ml4drug-book.github.io repository, which holds only that page, a Jekyll theme and an unrelated workshop schedule
+    note: Biologics are named as a data type by amino acid sequence, with protein design, epitope prediction and antibody design among the applications. Named in the tentative table of contents and nowhere else. No chapter text exists on any reviewed surface, so nothing here can be scored above mentioned.
+  - topic_id: t17-split-leakage-audit
+    depth: mentioned
+    evidence: [public-surface]
+    reviewed_scope: The complete public surface reviewed on 2026-09-11, being the landing page with its tentative table of contents and the whole ml4drug-book.github.io repository, which holds only that page, a Jekyll theme and an unrelated workshop schedule
+    note: Data split is named as a section within the machine-learning basics, beside hyperparameters and ensemble methods. Named in the tentative table of contents and nowhere else. No chapter text exists on any reviewed surface, so nothing here can be scored above mentioned.
+  - topic_id: t02-therapeutic-decision-context
+    depth: mentioned
+    evidence: [public-surface]
+    reviewed_scope: The complete public surface reviewed on 2026-09-11, being the landing page with its tentative table of contents and the whole ml4drug-book.github.io repository, which holds only that page, a Jekyll theme and an unrelated workshop schedule
+    note: Clinical trial basics, trial outcome prediction, patient recruitment and trial site selection are named as a drug development section. Named in the tentative table of contents and nowhere else. No chapter text exists on any reviewed surface, so nothing here can be scored above mentioned.
+evidence:
+  - id: public-surface
+    url: https://github.com/ml4drug-book/ml4drug-book.github.io
+    title: ML4Drug book landing page and complete repository
+    observed_scope: The landing page read in full, carrying the audience, the three-aspect plan across data, methods and applications, a tentative table of contents and a tentative release date of 2023. The repository behind it was reviewed in full on 2026-09-11 and contains only that page at about five kilobytes, a Jekyll theme, and a leaderboard file holding an unrelated NeurIPS 2023 workshop schedule. Two navigation links on the site return 404. No chapter text exists on any reviewed surface.
+    access: opened
+    reviewed_on: 2026-09-11
+  - id: official-site
+    url: https://ml4drug-book.github.io/
+    title: Machine Learning for Drug Discovery and Development textbook site
+    observed_scope: Intended graduate and industry audiences, data-method-application framing, and explicitly tentative table of contents.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats:
+  - The entire public surface is a proposal. The landing page describes a planned book with a tentative table of contents and a tentative 2023 release, and the repository behind it contains no chapter. Every cell in this record is therefore capped at 'mentioned', which is a statement about what has been published rather than about what the authors know.
+  - Absence is deliberately not recorded against this provider. A table of contents that omits a topic is not evidence that an unwritten book would omit it, so omitted topics stay 'unverified'.
+  - The public page labels its table of contents tentative; no chapter body, notebook, dataset, assessment, solution, or licence surface was opened.
+  - Topic states are limited to mentioned, and public page availability is not treated as evidence that the textbook itself is freely accessible.
+last_verified: 2026-09-11

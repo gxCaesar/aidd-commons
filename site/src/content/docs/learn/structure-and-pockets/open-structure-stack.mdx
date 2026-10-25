@@ -1,0 +1,171 @@
+---
+title: The open structure-prediction stack
+description: Trace sequence search, folding, and ligand-complex prediction through separate resources and their evidence limits.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="structure-and-pockets/open-structure-stack" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Structure, pockets, and co-folding](/learn/structure-and-pockets/cofolding-frontier/)
+and [Structure, affinity, and what a prediction names](/learn/structure-and-pockets/structure-affinity-mechanisms/),
+trace a proposed structure from sequence search to a coordinate set and, when a
+ligand is considered, to a proposed complex. Identify what each resource makes
+available and where its claim stops. This is a reading lesson with a written
+exercise, not a procedure for running the four resources together.
+
+## Comparison contract
+
+The four catalogue records describe resources at different steps, not a matched
+comparison of predictions. MMseqs2 has the task `sequence-search`, ColabFold and
+RoseTTAFold All-Atom have `structure-prediction`, and DynamicBind has
+`complex-prediction`. Their outputs cannot be treated as interchangeable
+answers to a single biological question. A proposed template also needs its
+own identity and provenance. None of these records establishes a jointly
+tested pipeline, a selected template, or a pinned run version for this chain.
+
+## The steps of a structure
+
+| Step | Resource in these records | What the step can supply | Where the claim stops |
+| --- | --- | --- | --- |
+| Sequence search | MMseqs2 | Sequence hits or clusters that can inform a search for homologues | A hit is not a verified structural template |
+| Template assessment | None of the four | A candidate reference only after its structure and relation to the target are checked separately | The four records do not establish a template's provenance or terms |
+| Folding | ColabFold or RoseTTAFold All-Atom | A model-derived coordinate proposal for the specified molecular input | A predicted coordinate set is not an experimental structure |
+| Binding | DynamicBind | A proposed ligand-specific protein complex | A proposed pose is not a binding or affinity measurement |
+
+This order names distinct decisions, not a claim that these repositories provide
+an integrated workflow. The folding routes are alternatives in this reading
+contract. Agreement between them would not by itself be independent biological
+validation.
+
+## MMseqs2
+
+MMseqs2 is sequence search and clustering software. It sits before folding and
+can help identify sequence hits, but its `sequence-search` task does not certify
+that a hit is the right structural template for a target state. The record
+establishes inference code in the repository. It does not establish training
+code or weights, and those unverified fields should not be turned into claims
+that such assets are either needed or absent. The repository's MIT licence was
+read as covering its source code. The record does not establish a licence for a
+template obtained elsewhere, a verified template choice, or a run version.
+
+## ColabFold
+
+ColabFold is a public protein structure-prediction workflow at the folding
+step. Its record lists a `uses` relation to AlphaFold 2. It establishes
+inference code in the repository, while training code and weights remain
+unverified for this record. That distinction matters when a reader tries to
+move from access to a workflow to access to every asset it may use. The MIT
+licence in the record covers repository source code, not a separately
+established weight licence. A documentation link names `v1.6.2`, but the record
+does not pin a tested run version or establish that a resulting coordinate set
+matches an experimental structure.
+
+## RoseTTAFold All-Atom
+
+RoseTTAFold All-Atom is an all-atom biomolecular structure-prediction model
+repository. It supplies another folding route for the `biomolecular-complex`
+modality, rather than another sequence-search step. Its record establishes
+inference code, training code, and weights in the repository. The available
+training code permits inspection of released code; it does not establish that
+running it reproduces published results. The BSD-3-Clause licence was read as
+covering repository source code. The record does not establish separate terms
+for weights, the training data or data recipe, a tested run version, or
+experimental correctness of a prediction.
+
+## DynamicBind
+
+DynamicBind is a ligand-specific protein-complex modelling repository at the
+binding step. Its `complex-prediction` task concerns a proposed complex, not a
+measured affinity. The record establishes inference and training code in the
+repository. It lists model-weight records, but its weights field remains
+unverified, so those links alone do not establish usable weights. The MIT
+licence was read as covering repository source code. Neither weight access nor
+separate weight terms are established by that licence. The record also does
+not establish a tested run version, measured binding, or reproduction of
+published results.
+
+## Openness by dimension
+
+The seven columns preserve the catalogue's distinct dimensions. Available
+means the cited record established access or documentation, not that this
+lesson executed the asset. Unverified means the record did not establish that
+dimension.
+
+| Resource | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| MMseqs2 | available | unverified | unverified | unverified | unverified | unverified | unverified |
+| ColabFold | available | unverified | unverified | available | unverified | unverified | unverified |
+| RoseTTAFold All-Atom | available | available | available | available | unverified | unverified | available |
+| DynamicBind | available | available | unverified | unverified | unverified | unverified | unverified |
+
+## Worked case
+
+Consider a constructed reading case. A reader starts with a target sequence,
+obtains an MMseqs2 hit, and proposes a structure associated with that hit as a
+template. ColabFold or RoseTTAFold All-Atom then yields a coordinate proposal.
+DynamicBind is considered for a ligand-specific complex. What can the reader
+say after each step, and where does the chain stop? Which record fields leave
+assets or terms to check before relying on the chain?
+
+The search supports a statement about a sequence hit, not about the target's
+structure. The proposed template needs independent provenance and a check of
+its relation to the target. A folding output is a model-derived coordinate set.
+A DynamicBind output would be a proposed complex, not a binding observation.
+The chain stops before a claim that the target has that experimental structure
+or that the ligand binds. The `weights` field is unverified for ColabFold and
+DynamicBind, even though DynamicBind lists model-weight links. RoseTTAFold
+All-Atom marks weights available, but its recorded BSD-3-Clause scope covers
+source code. The reader would need to establish relevant asset access and
+terms, template provenance, and actual versions before using this as a
+reproducible workflow. No hit, structure, pose, or assay result was produced
+for this case.
+
+## Independent exercise
+
+A colleague sees DynamicBind's model-weight links and its MIT source licence,
+then labels both the weights and their licence available. Correct that reading.
+Which folding resource has weights marked available, and what does its recorded
+licence cover?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+DynamicBind's `weights` field is `unverified`. Its model-weight identifiers do
+not change that field, and the MIT licence has `scope` covering repository
+source code. The record establishes no separate weight licence. RoseTTAFold
+All-Atom has `weights` marked `available`, while its BSD-3-Clause licence also
+has source-code scope. Availability of weights does not extend that recorded
+licence to them.
+
+</details>
+
+## Scope
+
+None of the four resources was run here, and no structure was computed. A
+folding model's coordinate set is not an experimental structure, and a docking
+pose is not a measured affinity. Sequence search, folding, and complex
+prediction do not establish a biological claim about the target or ligand.
+Each resource retains its own licence, and this lesson carries only the
+recorded reading of each source-code licence. Template terms, separate weight
+terms, and a jointly tested versioned chain remain unestablished. Reading an
+openness cell does not execute an asset or reproduce a result.
+
+## Sources
+
+The following catalogue records were last verified on 2026-10-23. Their
+repository listings, READMEs, and licence files were read on 2026-10-23. The
+records' access, openness, licence scopes, and caveats define this lesson.
+
+- `tool-mmseqs2` records the [MMseqs2 repository](https://github.com/soedinglab/MMseqs2) and [LICENSE.md](https://raw.githubusercontent.com/soedinglab/MMseqs2/HEAD/LICENSE.md).
+- `tool-colabfold` records the [ColabFold repository](https://github.com/sokrypton/ColabFold) and [LICENSE](https://raw.githubusercontent.com/sokrypton/ColabFold/HEAD/LICENSE).
+- `model-rosettafold-all-atom` records the [RoseTTAFold All-Atom repository](https://github.com/baker-laboratory/RoseTTAFold-All-Atom) and [LICENSE](https://raw.githubusercontent.com/baker-laboratory/RoseTTAFold-All-Atom/HEAD/LICENSE).
+- `model-dynamicbind` records the [DynamicBind repository](https://github.com/luwei0917/DynamicBind) and [LICENSE](https://raw.githubusercontent.com/luwei0917/DynamicBind/HEAD/LICENSE).
+
+Original lesson prose is CC BY 4.0. Linked sources retain their own terms.
+
+Last reviewed: 2026-10-23.

@@ -1,0 +1,68 @@
+---
+title: Audit open questions in the comparison record
+description: Recompute whether the curriculum's own notes and independent reading retain a way to test an unresolved question.
+---
+
+## Preparation and learning objectives
+
+Read [the mechanism and target validation lesson](/learn/mechanism-targets/perturbation-to-target-validation/) first. This laboratory serves `t06-mechanism-hypothesis-counterevidence`. You will classify the state of a question in paired review records, identify a missing measurement, and detect an open question whose record gives no way to settle it. Familiarity with YAML helps. No modelling experience is required.
+
+## Mode and commands
+
+Mode is a fresh independent computation over a frozen protocol and committed repository records. Use the project Python 3.11 environment with PyYAML and CPU. The commands need no network, download, or accelerator. Run from the repository root. The download command verifies the 3 local inputs and writes nothing. The inspector also writes nothing. The exporter overwrites only this laboratory's compact summary after its checks pass.
+
+```bash
+.venv/bin/python labs/open_question_audit/run_lab.py download
+.venv/bin/python labs/open_question_audit/inspect_open_question_audit.py show
+.venv/bin/python labs/open_question_audit/inspect_open_question_audit.py check
+.venv/bin/python labs/open_question_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/open_question_audit -q
+```
+
+## Question states
+
+The computation reads 93 taxonomy topics. Its rules apply the paired note and reason, then preserve the topic IDs under each state. A measured state refers to the local result that the note describes. It does not settle the underlying science.
+
+| State | Topics | Record rule |
+| --- | ---: | --- |
+| Open | 28 | The paired explanations leave a question unsettled. |
+| Settled by measurement | 53 | The note describes a local laboratory result and what it established. |
+| Held by a reading | 12 | The independent reading retained a shallower value and the self record kept it. |
+| Lowered by a reading | 0 | A reading lowered a claimed depth and the corrected self value remains in place. |
+| Unexamined | 0 | Neither record explains the topic beyond depth and evidence identifiers. |
+
+The inspector prints the full topic list for every state. A historical lowering can remain visible after a later raise. The tool-contract topic, `t16-tool-input-output-contract`, records such a lowering and now names a missing contract enforcement step.
+
+## Open questions and falsifiers
+
+The protocol requires a named discriminating observation or a specified missing measurement before an open question can be described as having a way to settle it. Generic wording such as `more work is needed` does not qualify. The check enforces the distinction and a constructed known-bad case tests it.
+
+| Open record | Count | Topics |
+| --- | ---: | --- |
+| Names a falsifier or missing measurement | 28 | `t02-therapeutic-decision-context`, `t02-target-product-profile`, `t04-entity-identity-resolution`, `t04-cleaning-exclusion-rules`, `t06-mechanism-hypothesis-counterevidence`, `t06-causal-target-evidence`, `t07-property-representation-selection`, `t07-classification-formulation`, `t08-safety-toxicity-endpoint`, `t08-multiendpoint-tradeoff`, `t09-binding-mode-pose-hypothesis`, `t09-binder-classification`, `t11-docking-scoring-protocol`, `t11-free-energy-endpoint-network`, `t12-candidate-design-space`, `t13-expression-developability-manufacturability`, `t14-reaction-record-condition-unit`, `t14-route-feasibility-material-safety`, `t14-forward-reaction-lab-feedback`, `t15-time-ordered-feedback-update`, `t16-scientific-task-action-boundary`, `t16-source-retrieval-evidence-grounding`, `t16-human-review-authority-evaluation`, `t17-baseline-model-selection-protocol`, `t17-reproduction-reporting-receipt`, `t18-evidence-package-claim-chain`, `t18-crossdomain-tradeoff-decision`, `t18-openness-biosecurity-governance-boundary` |
+| Names no falsifier or missing measurement | 0 | None |
+
+The final row is empty in the committed records. In the constructed known-bad case, a note that says only `more work is needed` becomes an unfalsifiable open record. Such wording has not made the question well-posed. It does not mean the topic is merely difficult or that the underlying science lacks possible tests.
+
+## Missing measurement families
+
+The note and reason counts report how many of the 93 topic records contain at least 1 family match. A family counts each topic once even if both fields name it. Families overlap.
+
+| Record field or family | Topics |
+| --- | ---: |
+| Notes mentioning a missing measurement | 36 |
+| Reading reasons mentioning a missing measurement | 81 |
+| Runnable task | 58 |
+| Empirical observation | 42 |
+| Comparison and control | 28 |
+| Scope and transfer | 31 |
+| Uncertainty and independence | 26 |
+| Record and provenance | 21 |
+
+## Limits of the material
+
+This audit measures whether the records still carry a falsifying observation or a missing measurement. It does not establish that any question has been answered. Wording is not evidence that a measurement was made. The literal vocabulary can miss a paraphrase or match a phrase that a human would read differently. The state counts therefore describe these dated records under the declared rule, not a ranking of tracks or a measure of reader learning.
+
+## Sources and terms
+
+The committed self comparison record, independent reading, and topic taxonomy were read on 2026-10-23. The independent reading is dated 2026-09-11 and includes later recorded re-readings. The [canonical English guide](/labs/open-question-audit/) is this page. Original guide prose is CC BY 4.0 and laboratory code is Apache-2.0. Linked material retains its own terms.

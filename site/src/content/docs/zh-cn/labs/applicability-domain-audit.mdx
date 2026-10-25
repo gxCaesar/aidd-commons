@@ -1,0 +1,82 @@
+---
+title: 核查 FreeSolv 适用域诊断
+description: 在骨架留出分子上比较到训练集最近邻的性质距离与岭回归预测误差。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[Audit a FreeSolv applicability-domain diagnostic](/labs/applicability-domain-audit/)。
+
+## 准备与学习目标
+
+本实验对应 `t07-applicability-domain`。请先阅读[适用域诊断](/zh-cn/learn/qsar-properties/applicability-domain-diagnostics/)和 [FreeSolv 基线指南](/zh-cn/labs/freesolv-honest-baselines/)。你将计算分子到拟合总体的距离，比较两个距离半区的误差，并说明为何结果只是诊断而不是适用域边界。了解分子描述符和岭回归会有所帮助。
+
+模式是依照冻结协议和本地 FreeSolv 发行文件进行全新独立计算。使用项目的 Python 3.11 环境和 CPU。无需网络、下载或加速器。`check` 与 `show` 不写入文件。导出程序仅在审计通过后覆盖已提交的聚合摘要。
+
+```bash
+.venv/bin/python labs/applicability_domain_audit/run_lab.py check
+.venv/bin/python labs/applicability_domain_audit/inspect_applicability_domain_audit.py show
+.venv/bin/python labs/applicability_domain_audit/inspect_applicability_domain_audit.py check
+.venv/bin/python labs/applicability_domain_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/applicability_domain_audit -q
+```
+
+## 来源与测量
+
+| 输入 | 发行版 | 字节数 | 读取日期 | 此发行版的许可证 |
+| --- | --- | ---: | --- | --- |
+| `.cache/freesolv/freesolv-v0.52-database.txt` | FreeSolv v0.52 | 144897 | 2026-10-23 | 未核实 |
+
+该文件是[固定的 FreeSolv v0.52 发行文件](https://raw.githubusercontent.com/MobleyLab/FreeSolv/v0.52/database.txt)的本地副本。加载程序要求字节长度和发行版文件头符合声明，再将分号分隔的第四字段解析为实测水合自由能，单位为 kcal/mol。v0.52 的发行元数据没有声明许可证条款。当前仓库的许可证不能证明该历史发行版的条款。
+
+## 总体与骨架划分
+
+下表来自已提交的 2026-10-23 计算。中位数与四分位数针对实测终点。划分按照 Bemis-Murcko 骨架分组，并为每个无环分子使用独立的规范异构 SMILES 键。按种子和组大小排序的分配规则将整组放入训练集，直到达到 80% 的目标。两侧没有共享骨架。
+
+| 总体或统计量 | 数值 |
+| --- | ---: |
+| 分子数 | 642 |
+| 不同骨架数 | 382 |
+| 实测中位数，kcal/mol | -3.53 |
+| 实测第一四分位数，kcal/mol | -5.7275 |
+| 实测第三四分位数，kcal/mol | -1.215 |
+| 实测四分位距，kcal/mol | 4.5125 |
+| 训练分子数 | 514 |
+| 测试分子数 | 128 |
+| 训练骨架数 | 254 |
+| 测试骨架数 | 128 |
+
+## 距离与误差对比
+
+距离表示是本实验选定的五个 RDKit 性质，即 MolWt、MolLogP、TPSA、NumHDonors 和 NumHAcceptors。每项性质的绝对差除以该性质在训练集中的总体标准差，标准差为零时使用 1。五个缩放后的差值取平均，形成每个测试与训练分子对的距离。最小的成对距离就是测试分子到训练集最近邻的距离。岭回归用感知手性的 Morgan 指纹作预测。其 `alpha=1.0`、半径 2 和 2048 位均在计算前固定。
+
+下列中位数和四分位数概括了 128 个到训练集最近邻的距离。距离没有物理单位。最近邻距离最大的测试分子由来源 ID 指明。表中也给出该分子与最远训练分子的比较，以明确这两种不同的成对陈述。
+
+| 距离统计量 | 数值 |
+| --- | ---: |
+| 第一四分位数 | 0.000205 |
+| 中位数 | 0.023539 |
+| 第三四分位数 | 0.082516 |
+| 四分位距 | 0.082312 |
+| 最大最近邻距离 | 0.43877 |
+| 该距离对应的测试分子 | `mobley_9460824` |
+| 其最近训练分子 | `mobley_1849020` |
+| 其最远训练分子距离 | 3.996323 |
+| 其最远训练分子 | `mobley_4587267` |
+
+测试分子按最近邻距离及来源 ID 排序，再等分成两半。每个误差都是岭回归预测值与实测值之差的绝对值。
+
+| 测试半区 | 分子数 | 绝对误差中位数，kcal/mol |
+| --- | ---: | ---: |
+| 较小距离 | 64 | 0.586647 |
+| 较大距离 | 64 | 0.800081 |
+
+## 材料局限
+
+这次运行中，较大距离半区的误差中位数较高。该对比不能确定可用阈值，也不能估计某个新分子的误差。不同结构的这五个性质可以几乎相同。本审计不拟合更好的模型，也不把选定距离转为化学机制主张。骨架划分在一种操作性骨架定义下检验留出分组。随机划分可能让相关骨架出现在两侧，因此支持的是另一种泛化主张。
+
+## 来源与条款
+
+[FreeSolv 发行记录](https://doi.org/10.5281/zenodo.1161245)、[RDKit 文档](https://www.rdkit.org/docs/index.html)、本地发行文件与项目来源记录均于 2026-10-23 阅读。FreeSolv v0.52 的许可证仍未核实。RDKit 来源记录将 BSD-3-Clause 用于受其覆盖的代码，并不重新许可第三方组件。原创指南文字采用 CC BY 4.0，实验代码采用 Apache-2.0。链接资源保留各自条款。最后复核于 2026-10-23。

@@ -1,0 +1,57 @@
+id: model-uce
+name: UCE
+kind: model
+summary: Self-supervised model that maps single-cell transcriptomes into one shared biological latent space, so that new cells from new tissues and species can be embedded without labels, retraining, or fine-tuning.
+canonical_url: https://github.com/snap-stanford/UCE
+identifiers:
+  - scheme: paper
+    value: "Universal cell embedding provides a foundation model for cell biology; Nature 656(8126):183-191 (2026), DOI 10.1038/s41586-026-10689-z"
+    url: https://doi.org/10.1038/s41586-026-10689-z
+  - scheme: model-weights
+    value: "Universal Cell Embedding model files, Figshare article 24320806, used with the 33-layer setting"
+    url: https://figshare.com/articles/dataset/Universal_Cell_Embedding_Model_Files/24320806
+stages: [representation-learning, evaluation]
+modalities: [single-cell-transcriptomics]
+tasks: [cell-context-inspection, out-of-distribution-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [uce-license] }
+openness:
+  inference_code: { value: available, evidence: [uce-repository] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [uce-readme] }
+  architecture: { value: available, evidence: [uce-paper] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: "Repository source code. The LICENSE file reads 'MIT License' and 'Copyright (c) 2023 Yanay Rosen, Yusuf Roohani, Jure Leskovec'. The README has no licence section, and no terms are stated for the 33-layer weights on Figshare or for the prepared datasets in the linked collection."
+    evidence: [uce-license, uce-readme]
+evidence:
+  - id: uce-repository
+    url: "https://github.com/snap-stanford/UCE"
+    label: UCE repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: uce-readme
+    url: "https://raw.githubusercontent.com/snap-stanford/UCE/main/README.md"
+    label: UCE README (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: uce-license
+    url: "https://raw.githubusercontent.com/snap-stanford/UCE/main/LICENSE"
+    label: UCE MIT license file (reviewed 2026-10-21)
+    supports: []
+  - id: uce-paper
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:%2210.1038/s41586-026-10689-z%22&resultType=core&format=json"
+    label: Europe PMC record for the UCE paper (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+  - id: uce-figshare
+    url: "https://figshare.com/articles/dataset/Universal_Cell_Embedding_Model_Files/24320806"
+    label: Figshare record for the UCE model files, which returned HTTP 403 when opened on 2026-10-21
+    supports: [caveats]
+caveats:
+  - The Figshare record holding the 33-layer model files returned HTTP 403 when opened on 2026-10-21, so the terms of the released weights were not read; the MIT file covers the repository code only.
+  - Neither the repository nor the paper abstract names the pretraining corpus. The paper reports an Integrated Mega-scale Atlas of 36 million cells and more than 1,000 named cell types as a product of the model without stating that this atlas is the training set.
+  - The README states that the evaluation scripts download the four-layer model files automatically but gives no location for them, so the four-layer checkpoint provenance is also unverified.
+acknowledgements: []
+last_verified: "2026-10-21"

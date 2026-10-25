@@ -1,0 +1,112 @@
+---
+title: Released assets in generative binder design
+description: Read four dated binder-design records through their pipeline, checkpoint, dependency, data and licence boundaries.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="molecular-generation/generative-binder-design" />
+
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Flows and constrained molecular search](/learn/molecular-generation/flows-and-constrained-search/), use this dated reading to inspect four binder-design records as releases. You should be able to say which part of a pipeline is available, distinguish an accessible checkpoint from complete training material, and identify where dependency and licence evidence stops.
+
+This is a source reading with a written exercise. No model or pipeline was run, no weights were downloaded, and no dataset was downloaded. The records do not provide a matched comparison, so the lesson makes no performance ranking or binder-quality claim.
+
+## Task contract
+
+The records describe different kinds of asset. BindCraft distributes a pipeline that filters designs until a requested candidate count passes its filters. AlphaProteo publishes target-input preparation notebooks for a gated model. BoltzGen takes a design specification and returns ranked candidates. RFdiffusion2 publishes inference assets for an atom-level scaffolding model. A ranked candidate, a prepared input and a released checkpoint are different outputs, and none is a measured binding result.
+
+For this reading, the task is to identify the asset actually distributed and its dependencies. An open repository licence cannot silently govern a separately fetched model, a service that is not distributed, or training data whose terms are unstated.
+
+## BindCraft
+
+The [BindCraft repository](https://github.com/martinpacesa/BindCraft) describes a binder-design pipeline using AlphaFold2 backpropagation, ProteinMPNN and PyRosetta. Its inference pipeline and filtering logic are released under an [MIT licence](https://raw.githubusercontent.com/martinpacesa/BindCraft/main/LICENSE) covering BindCraft source code. The [installer](https://raw.githubusercontent.com/martinpacesa/BindCraft/main/install_bindcraft.sh) downloads AlphaFold2 parameters and installs PyRosetta from a separate release channel. The README says commercial use of PyRosetta requires a licence and gives no licence for the ProteinMPNN weights supplied by the user.
+
+BindCraft does not distribute its own model weights, so the weights dimension is not applicable to the pipeline record. That does not make the external weights or software optional for a full run. The README describes inference and states no training procedure or corpus for the pipeline. Open pipeline code therefore establishes neither an independently licensed full installation nor a training reproduction.
+
+## AlphaProteo
+
+The public [AlphaProteo repository](https://github.com/google-deepmind/ap_trusted_testers) contains Trusted Tester Program notebooks for preparing target inputs, not the model implementation or parameters. The [announcement](https://deepmind.google/discover/blog/alphaproteo-generates-novel-proteins-for-biology-and-health-research/) describes phased sharing with external experts and gives no public model download route. The opened announcement, [abstract](https://arxiv.org/abs/2409.08022) and repository file list show no released implementation, parameters, training code, training data or evaluation assets. The catalogue's unavailable entries for inference code and weights record that inspected absence, not an explicit refusal by the publisher.
+
+The repository was archived on 2026-08-24. Its Apache 2.0 licence covers notebook software, while its README places other repository material under CC BY 4.0. The licence file retains an unfilled copyright placeholder even though the README names Google LLC. Neither repository licence extends to the undistributed AlphaProteo model. Its access remains gated.
+
+## BoltzGen
+
+The [BoltzGen repository](https://github.com/HannesStark/boltzgen) and [checkpoint card](https://huggingface.co/boltzgen/boltzgen-1) establish inference code, training code and released weights. The MIT terms cover its source and checkpoints. The checkpoints were fine-tuned from a Boltz-2 base model distributed under separate terms. The released training archives contain target structures, MSAs and a small-molecule dictionary, but the README states no licence for those archives.
+
+The README says the large model expects further distillation datasets to be released later. Its training material is therefore partial despite the available training-data dimension. The checkpoint card supplies no training-data account beyond naming the Boltz-2 base. The README also describes an automatic download of about 6 GB for Boltz plus about 33 GB for ESMFold2 weights and runtime, and says ESMFold2 requires a CUDA 13 compatible NVIDIA driver. Those are stated requirements, not a run performed for this lesson.
+
+## RFdiffusion2
+
+The [RFdiffusion2 repository](https://github.com/RosettaCommons/RFdiffusion2) releases inference code for an atom-level diffusion model described for enzyme and binder design. The repository supports inference only, so training code remains unverified. Weights and container images are hosted separately at `files.ipd.uw.edu`. Its [BSD 3-Clause licence](https://raw.githubusercontent.com/RosettaCommons/RFdiffusion2/main/LICENSE.md) covers repository source code, while the opened pages state no terms for the weights or images.
+
+The repository describes a benchmark crawled from 41 M-CSA enzymes without describing its training corpus. The [project documentation](https://rosettacommons.github.io/RFdiffusion2/) recommends the original RFdiffusion for binder design. The benchmark is an evaluation description, not evidence of which material trained RFdiffusion2 or of a binder-specific release claim.
+
+## Openness by dimension
+
+Available identifies an asset established by the catalogue, not an asset used in this lesson. Unverified leaves a claim open. Not available records an absence on the pages inspected for AlphaProteo, and not applicable distinguishes BindCraft's pipeline from a model-weight release.
+
+| Record | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| BindCraft | available | unverified | not applicable | available | unverified | unverified | unverified |
+| AlphaProteo | not available | unverified | not available | unverified | unverified | unverified | unverified |
+| BoltzGen | available | available | available | available | unverified | available | unverified |
+| RFdiffusion2 | available | unverified | available | available | unverified | unverified | unverified |
+
+Access and permission still depend on the particular asset. BindCraft's source licence does not settle PyRosetta or ProteinMPNN terms. AlphaProteo's notebook licence does not cover its model. BoltzGen's published training archives have no stated terms, and RFdiffusion2's code licence does not settle hosted weights or images.
+
+## Training corpora and coverage
+
+| Record | Published training statement | Boundary |
+| --- | --- | --- |
+| BindCraft | README describes an inference pipeline | No pipeline training procedure or corpus stated |
+| AlphaProteo | No public training assets on the pages inspected | Corpus and recipe unverified |
+| BoltzGen | Archives contain target structures, MSAs and a small-molecule dictionary | Later distillation data promised, recipe unverified |
+| RFdiffusion2 | Repository describes a 41 M-CSA enzyme benchmark | Benchmark is not a stated training corpus |
+
+An archive count, a benchmark source or a released checkpoint cannot substitute for the exact training recipe. These records do not establish which training material supports a particular binder claim under a shared protocol.
+
+## Worked case
+
+Consider a reader cataloguing which release could be independently inspected without claiming that it produces a useful binder. This is a constructed asset audit, not a design procedure or experiment.
+
+1. BindCraft permits inspection of its pipeline code. A full run also depends on separately obtained AlphaFold2 parameters, PyRosetta and user-supplied ProteinMPNN weights, with terms outside the BindCraft MIT licence.
+2. AlphaProteo's public notebooks permit inspection of input preparation. They do not supply the gated model, and their Apache 2.0 and CC BY 4.0 terms do not grant model access.
+3. BoltzGen has code and checkpoints, but its published training material is partial, archive terms are unstated and a base model carries its own terms.
+4. RFdiffusion2 has inference code and hosted weights, but the code licence does not establish the weight terms, and the enzyme benchmark is not its training corpus.
+
+The resulting inventory can describe released assets and remaining conditions. It cannot convert these four unlike releases into a comparison of candidate quality.
+
+## Independent exercise
+
+A colleague says that BindCraft's MIT licence covers everything its installer obtains, that AlphaProteo's notebook repository proves model availability, that BoltzGen's released archives complete its training set, and that RFdiffusion2's 41 M-CSA enzyme benchmark identifies its training corpus. For each claim, identify the asset or evidence boundary that the colleague crossed.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+BindCraft's MIT licence covers its source, while PyRosetta and the supplied ProteinMPNN weights have separate or unstated terms. AlphaProteo's notebooks prepare inputs, and the inspected pages provide no model implementation or parameters. BoltzGen's README explicitly promises further distillation datasets, so the released archives are partial. RFdiffusion2 identifies an enzyme benchmark but gives no training-corpus description. Each statement requires evidence for a different asset or process than the one its cited record establishes.
+
+</details>
+
+## Scope and what the material does not show
+
+These four records were verified on 2026-10-21. They establish release and licence boundaries, not executed designs, measured binding, complete training provenance, matched performance or reader outcomes. No model, dependency or dataset was installed or run for this reading.
+
+## Sources
+
+<div data-case-sources>
+
+- [BindCraft repository](https://github.com/martinpacesa/BindCraft), [installer](https://raw.githubusercontent.com/martinpacesa/BindCraft/main/install_bindcraft.sh) and [MIT licence](https://raw.githubusercontent.com/martinpacesa/BindCraft/main/LICENSE)
+- [AlphaProteo Trusted Tester repository](https://github.com/google-deepmind/ap_trusted_testers), [announcement](https://deepmind.google/discover/blog/alphaproteo-generates-novel-proteins-for-biology-and-health-research/) and [abstract](https://arxiv.org/abs/2409.08022)
+- [BoltzGen repository](https://github.com/HannesStark/boltzgen) and [checkpoint card](https://huggingface.co/boltzgen/boltzgen-1)
+- [RFdiffusion2 repository](https://github.com/RosettaCommons/RFdiffusion2), [project documentation](https://rosettacommons.github.io/RFdiffusion2/) and [BSD 3-Clause licence](https://raw.githubusercontent.com/RosettaCommons/RFdiffusion2/main/LICENSE.md)
+
+</div>
+
+Original lesson prose is CC BY 4.0. Linked assets retain their own terms.
+
+Last reviewed: 2026-10-23.

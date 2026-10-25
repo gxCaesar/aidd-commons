@@ -1,0 +1,155 @@
+---
+title: Nucleic acids, conjugates, and degraders
+description: Separate molecular recognition from delivery, release, and functional consequence across nucleic-acid and induced-proximity modalities.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/nucleic-acids-conjugates-degraders" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will compare sequence-directed nucleic-acid interventions with ADC and
+degrader modalities, state their productively required steps, and detect the
+error of equating uptake or binding with function. Read [Biologics and
+multimodal design](/learn/biologics-design/multimodal-design/) first. This
+reading and hand-calculation lesson provides no construct, delivery, or
+experimental protocol.
+
+## The object differs by modality
+
+An antisense oligonucleotide (ASO) is a sequence and chemistry intended to
+recognize an RNA in a biological compartment. Depending on its architecture,
+functional consequence can involve RNase H activity, steric blockade, or
+splicing modulation. An siRNA similarly requires guide-strand loading and a
+productive RNA-induced silencing complex. Sequence complementarity is necessary
+but cannot by itself show cell entry, endosomal escape, correct compartment,
+on-target RNA change, or phenotype. These mechanistic distinctions are reviewed
+with their explicit limits by [Kuijper et al.](https://pubmed.ncbi.nlm.nih.gov/32391605/).
+
+An antibody–drug conjugate (ADC) is not merely an antibody plus payload: target
+recognition, cellular uptake, intracellular processing, release or activity of
+the payload, and a context-appropriate consequence all form a chain. A
+heterobifunctional degrader analogously requires simultaneous productive
+engagement of target and ligase, a compatible ternary complex, ubiquitination,
+and degradation. A binding measurement to either component alone does not prove
+degradation; observed abundance loss does not identify the intended ligase route
+without discriminating controls.
+
+For a deliberately simple chain model, if `p1, p2, …, pk` are conditional
+success probabilities for successive required steps, then productive fraction is
+`P = Π p_j`. This equation assumes the steps are ordered and probabilities are
+defined conditionally; it is not a fitted cellular model. Its value is
+pedagogical: a high first-step uptake probability cannot compensate for a near
+zero escape or release probability. The lowest step can dominate the final
+signal.
+
+## Build an evidence chain, not a platform slogan
+
+<table>
+  <thead>
+    <tr>
+      <th>Modality</th>
+      <th>Core object and intended action</th>
+      <th>Distinct evidence gap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ASO / siRNA</td>
+      <td>Sequence, chemistry, target RNA, compartment</td>
+      <td>Productive access and on-target RNA consequence</td>
+    </tr>
+    <tr>
+      <td>ADC / conjugate</td>
+      <td>Targeting vehicle, linker, payload, target context</td>
+      <td>Uptake-to-release chain and target-negative response</td>
+    </tr>
+    <tr>
+      <td>Degrader</td>
+      <td>Target ligand, ligase ligand, linker, cellular context</td>
+      <td>Productive ternary route versus non-specific abundance loss</td>
+    </tr>
+  </tbody>
+</table>
+
+The required negative comparison must align with the inferred weak link. For
+sequence-directed intervention, a matched non-targeting sequence and a
+target-rescue or orthogonal RNA readout distinguish broad stress from a
+sequence-linked outcome. For an ADC, a target-negative but otherwise matched
+context distinguishes target-associated delivery from payload-only effects. For
+a degrader, a nonbinding analogue or route-disrupting comparison may test
+whether the observed loss requires the proposed induced-proximity path. No one
+control establishes all steps.
+
+## Worked case: a constructed delivery bottleneck
+
+All quantities here are **constructed for teaching**. Consider a hypothetical
+conjugated RNA-directed candidate in a named cell context. The team records
+conditional probabilities: target-associated uptake `p1 = 0.80`, productive
+endosomal escape `p2 = 0.25`, and correct-compartment action `p3 = 0.60`.
+The simple model gives `P = 0.80 × 0.25 × 0.60 = 0.12`, or 12% productive
+fraction under its artificial assumptions.
+
+Candidate B changes only the constructed escape estimate to `0.50`; its
+`P = 0.80 × 0.50 × 0.60 = 0.24`. B doubles this model output, even though
+uptake was unchanged. The lesson is not that a researcher should report 12% or
+24% as empirical truth. It is that “better uptake” would be a poor selection
+objective when the evidence indicates escape is limiting. A target-negative
+context with the same payload and a matched non-targeting sequence still matter:
+the first probes target-associated delivery; the second probes sequence-linked
+function. A favourable result in both does not yet establish human benefit.
+
+For a constructed degrader, let a target-binding signal remain constant across
+two cell contexts while protein abundance falls only in C1. That pattern is
+consistent with context-dependent productive degradation, but also with C1-only
+stress or protein turnover. It warrants a route-discriminating control, not a
+claim that target binding transported to C2.
+
+## Limitations and independent exercise
+
+The multiplicative toy model hides saturation, parallel routes, variable
+stoichiometry, and feedback. A traditional pharmacology or biochemical model may
+be more appropriate when its parameters are observed. The practical limitation
+is more basic: each modality's requested evidence must follow its mechanism.
+Neither target binding, fluorescent uptake, nor a sequence score is a surrogate
+for the whole chain.
+
+**Handworked exercise (not runnable or empirical):** Constructed candidate C
+has `p1 = 0.70`, `p2 = 0.40`, `p3 = 0.50`; D has `0.90`, `0.20`, `0.50`.
+Calculate both `P` values. Which one should focus on escape under this toy
+model? Name a discriminating negative comparison for an observed RNA change,
+and one conclusion neither calculation supports.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+`P_C = 0.70 × 0.40 × 0.50 = 0.14` and `P_D = 0.90 × 0.20 × 0.50 = 0.09`.
+D has the lower escape term and lower constructed output, so escape is its
+obvious focus in this toy model. A matched non-targeting sequence or a
+target-negative context, chosen to test the named alternative, can help
+distinguish a sequence-linked outcome from broad stress. Neither calculation
+supports in-vivo delivery, safety, clinical efficacy, or a measured rate.
+
+</details>
+
+## Sources and next lesson
+
+Sources were opened on 2026-09-09 and support modality boundaries; numbers above
+are constructed.
+
+<div data-case-sources>
+
+- [Opportunities and challenges for antisense oligonucleotide therapies](https://pubmed.ncbi.nlm.nih.gov/32391605/)
+- [Catalytic in vivo protein knockdown by small-molecule PROTACs](https://pubmed.ncbi.nlm.nih.gov/26075522/)
+- [Antibody-drug conjugates for cancer therapy](https://pubmed.ncbi.nlm.nih.gov/27299281/)
+
+</div>
+
+Continue to [Developability and functional validation](/learn/biologics-design/developability-and-validation/)
+to decide what must be measured before a plausible construct becomes a candidate.
+Original lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-09.

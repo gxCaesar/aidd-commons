@@ -1,0 +1,81 @@
+id: agent-agentd
+name: AgentD
+kind: agent
+summary: Modular LLM agent for early drug discovery that pools candidates with REINVENT4, iterates affinity and ADMET prediction with LLM-driven refinement, and can generate protein-ligand structures with Boltz.
+canonical_url: https://github.com/hoon-ock/AgentD
+identifiers:
+- scheme: paper
+  value: 'AgentD: an LLM agent for drug discovery; Journal of Chemical Information and Modeling 66(4):2055-2068, DOI 10.1021/acs.jcim.5c02454'
+  url: https://doi.org/10.1021/acs.jcim.5c02454
+- scheme: code
+  value: AgentD source repository, hoon-ock/AgentD
+  url: https://github.com/hoon-ock/AgentD
+stages:
+- design
+- hit-discovery
+- lead-optimization
+modalities:
+- small-molecule
+- text
+tasks:
+- literature-retrieval
+- molecule-generation
+- property-prediction
+- structure-generation
+relations: []
+status:
+  value: unverified
+access_level:
+  value: gated
+  evidence:
+  - agentd-readme
+openness:
+  inference_code:
+    value: available
+    evidence:
+    - agentd-readme
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: available
+    evidence:
+    - agentd-readme
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: MIT
+  scope: The repository is public and carries the MIT licence its record names, but the pipeline needs an API key for a commercial language model and for a search service, so a reader without those credentials cannot run it.
+  evidence:
+  - agentd-readme
+evidence:
+- id: agentd-repository
+  url: https://github.com/hoon-ock/AgentD
+  label: AgentD repository (reviewed 2026-10-23)
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - caveats
+- id: agentd-readme
+  url: https://raw.githubusercontent.com/hoon-ock/AgentD/release/README.md
+  label: AgentD README on the release branch (reviewed 2026-10-23)
+  supports:
+  - identifiers
+  - caveats
+caveats:
+- The pipeline needs an API key for a commercial language model and for a search service, and the example configuration selects a proprietary hosted model, so a reader without those credentials cannot reproduce a run. The record therefore carries no verified access level.
+- 'The repository hosts no pretrained checkpoint and gives no weights-download procedure. The models it calls are obtained elsewhere: REINVENT4 from its own repository, Boltz for optional structure generation, and the language and search models from their providers.'
+- The README names the prediction steps, affinity plus ADMET, without naming an ADMET predictor, an implementation or a checkpoint, so what the ADMET numbers are computed by is not established.
+- The README carries no data-availability statement and names no training corpus. It describes inputs the pipeline retrieves at run time and results it writes to a local run directory.
+- The installation instructions clone a repository named llm-dd, which is the repository the package is published from, while the canonical URL is the AgentD repository. Both are first-party, and the record carries the AgentD one.
+acknowledgements: []
+last_verified: '2026-10-23'

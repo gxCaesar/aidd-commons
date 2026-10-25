@@ -1,0 +1,34 @@
+id: missing-licence-evidence
+name: Missing Licence Evidence
+kind: fixture
+summary: Local fixture with an unsupported licence claim.
+canonical_url: https://example.org/missing-licence-evidence
+identifiers: []
+stages: [discovery]
+modalities: [small-molecule]
+tasks: [catalog-testing]
+relations: []
+status:
+  value: unverified
+access_level:
+  value: unverified
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: code
+    evidence: []
+evidence:
+  - id: fixture-source
+    url: https://example.org/missing-licence-evidence/source
+    label: Local fixture source
+    supports: [name, kind, summary, stages, modalities, tasks]
+caveats: []
+acknowledgements: []
+last_verified: "2026-09-04"

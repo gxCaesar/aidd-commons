@@ -1,0 +1,114 @@
+---
+title: 生成式结合蛋白设计的已发布资产
+description: 从流水线、检查点、依赖、数据与许可边界阅读四份注明日期的结合蛋白设计记录。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="molecular-generation/generative-binder-design" />
+
+<ScrollableRegions />
+
+英文原文：[Released assets in generative binder design](/learn/molecular-generation/generative-binder-design/)。
+
+## 学习目标与前置知识
+
+学完[流模型与受约束分子搜索](/zh-cn/learn/molecular-generation/flows-and-constrained-search/)后，借这份注明日期的阅读材料把四份结合蛋白设计记录作为发布物检查。完成本课后，你应能说明流水线的哪一部分可用，区分可取得的检查点与完整的训练材料，并指出依赖与许可证据止于何处。
+
+这是一份附有书面练习的来源阅读。本课没有运行模型或流水线、下载权重或下载数据集。记录不提供匹配的比较，因此本课不作性能排名或结合蛋白质量主张。
+
+## 任务约定
+
+这些记录描述不同类型的资产。BindCraft 发布一条流水线，对设计进行过滤，直至达到所要求的通过筛选的候选数量。AlphaProteo 为一个访问受限的模型发布靶点输入准备 notebook。BoltzGen 接收设计规格并返回排序后的候选。RFdiffusion2 为原子层面的支架构建模型发布推理资产。排序后的候选、已准备的输入与已发布检查点是不同的输出，其中没有一项是实测结合结果。
+
+本课的任务是识别实际发布的资产及其依赖。开放的仓库许可不能自动支配另行获取的模型、未发布的服务或条款未声明的训练数据。
+
+## BindCraft
+
+[BindCraft 仓库](https://github.com/martinpacesa/BindCraft)描述了一条采用 AlphaFold2 反向传播、ProteinMPNN 和 PyRosetta 的结合蛋白设计流水线。其推理流水线与筛选逻辑按覆盖 BindCraft 源码的 [MIT 许可](https://raw.githubusercontent.com/martinpacesa/BindCraft/main/LICENSE)发布。[安装脚本](https://raw.githubusercontent.com/martinpacesa/BindCraft/main/install_bindcraft.sh)下载 AlphaFold2 参数，并从另一个发布渠道安装 PyRosetta。README 称商业用途需要 PyRosetta 许可，对用户提供的 ProteinMPNN 权重则未给出许可。
+
+BindCraft 不发布自己的模型权重，因此流水线记录的权重维度为不适用。这不意味着外部权重或软件对于完整运行是可有可无的。README 描述推理过程，没有给出流水线的训练程序或语料。开放的流水线代码既不确立整套安装的独立授权，也不确立训练复现。
+
+## AlphaProteo
+
+公开的 [AlphaProteo 仓库](https://github.com/google-deepmind/ap_trusted_testers)包含 Trusted Tester Program 的靶点输入准备 notebook，而非模型实现或参数。[公告](https://deepmind.google/discover/blog/alphaproteo-generates-novel-proteins-for-biology-and-health-research/)描述与外部专家分阶段共享，未给出公开的模型下载入口。所打开的公告、[摘要](https://arxiv.org/abs/2409.08022)与仓库文件列表均没有展示已发布的实现、参数、训练代码、训练数据或评估资产。目录中推理代码与权重的不可用条目，记录的是对这些页面检查所得的缺席，而非发布方明确拒绝发布。
+
+该仓库于 2026-08-24 归档。其 Apache 2.0 许可覆盖 notebook 软件，README 则把仓库中的其他材料置于 CC BY 4.0 之下。许可文件仍有未填写的版权占位符，而 README 指明 Google LLC。两种仓库许可都不延伸到未发布的 AlphaProteo 模型。模型访问仍受限。
+
+## BoltzGen
+
+[BoltzGen 仓库](https://github.com/HannesStark/boltzgen)与[检查点模型卡](https://huggingface.co/boltzgen/boltzgen-1)确立了推理代码、训练代码与已发布权重。MIT 条款覆盖其源码和检查点。检查点从另行适用条款的 Boltz-2 基础模型微调而来。已发布的训练归档包含靶点结构、MSA 与小分子字典，但 README 没有说明这些归档的许可。
+
+README 称大型模型还需要今后才会发布的蒸馏数据集。因此，即使训练数据维度标为可用，已发布的训练材料仍不完整。检查点模型卡除指明 Boltz-2 基础模型外，没有描述训练数据。README 还描述自动下载约 6 GB 的 Boltz 材料及约 33 GB 的 ESMFold2 权重与运行环境，并称 ESMFold2 需要兼容 CUDA 13 的 NVIDIA 驱动。这些是仓库所述要求，并非本课执行过的运行。
+
+## RFdiffusion2
+
+[RFdiffusion2 仓库](https://github.com/RosettaCommons/RFdiffusion2)发布一个用于酶与结合蛋白设计的原子层面扩散模型的推理代码。仓库仅支持推理，因此训练代码仍为未核实。权重和容器映像另行托管在 `files.ipd.uw.edu`。其 [BSD 3-Clause 许可](https://raw.githubusercontent.com/RosettaCommons/RFdiffusion2/main/LICENSE.md)覆盖仓库源码，已打开的页面却没有说明权重或映像的条款。
+
+仓库描述了一个从 41 种 M-CSA 酶收集的基准，却没有描述训练语料。[项目文档](https://rosettacommons.github.io/RFdiffusion2/)建议结合蛋白设计使用原始 RFdiffusion。该基准是评估描述，并不证明 RFdiffusion2 在哪些材料上训练，也不证明某项结合蛋白专属的发布主张。
+
+## 按维度记录开放状态
+
+可用表示目录确立了资产，不代表本课使用过。未核实让主张保持开放。不可用记录的是在所检查页面上未发现 AlphaProteo 的对应资产，不适用则将 BindCraft 流水线与模型权重发布区分开来。
+
+| 记录 | 推理代码 | 训练代码 | 权重 | 架构 | 数据配方 | 训练数据 | 评估代码 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| BindCraft | 可用 | 未核实 | 不适用 | 可用 | 未核实 | 未核实 | 未核实 |
+| AlphaProteo | 不可用 | 未核实 | 不可用 | 未核实 | 未核实 | 未核实 | 未核实 |
+| BoltzGen | 可用 | 可用 | 可用 | 可用 | 未核实 | 可用 | 未核实 |
+| RFdiffusion2 | 可用 | 未核实 | 可用 | 可用 | 未核实 | 未核实 | 未核实 |
+
+访问与许可仍取决于具体资产。BindCraft 的源码许可不解决 PyRosetta 或 ProteinMPNN 的条款。AlphaProteo 的 notebook 许可不覆盖模型。BoltzGen 已发布的训练归档没有声明条款，RFdiffusion2 的代码许可也不解决另行托管的权重或映像条款。
+
+## 训练语料与覆盖范围
+
+| 记录 | 已发表的训练陈述 | 边界 |
+| --- | --- | --- |
+| BindCraft | README 描述推理流水线 | 未说明流水线训练程序或语料 |
+| AlphaProteo | 所检查页面没有公开的训练资产 | 语料与配方未核实 |
+| BoltzGen | 归档包含靶点结构、MSA 与小分子字典 | 更多蒸馏数据将来发布，配方未核实 |
+| RFdiffusion2 | 仓库描述 41 种 M-CSA 酶的基准 | 基准不是已声明的训练语料 |
+
+归档数量、基准来源或已发布检查点都不能代替准确的训练配方。这些记录没有在共享协议下确立支持某项具体结合蛋白主张的训练材料。
+
+## 推演案例
+
+设一位读者想整理哪些发布物能够独立检查，同时不声称它们能产生有用的结合蛋白。这是构造的资产核查，而非设计程序或实验。
+
+1. BindCraft 允许检查其流水线代码。完整运行还依赖另行获取的 AlphaFold2 参数、PyRosetta 和用户提供的 ProteinMPNN 权重，其条款不在 BindCraft 的 MIT 许可范围内。
+2. AlphaProteo 的公开 notebook 允许检查输入准备，却不提供访问受限的模型。它们的 Apache 2.0 与 CC BY 4.0 条款也不授予模型访问权。
+3. BoltzGen 有代码和检查点，但已发布训练材料不完整，归档条款未说明，基础模型也有自己的条款。
+4. RFdiffusion2 有推理代码和另行托管的权重，但代码许可不确立权重条款，酶基准也不是其训练语料。
+
+由此得到的清单可以描述已发布资产和剩余条件，却不能把这四种不同的发布物变成候选质量比较。
+
+## 独立练习
+
+一位同事说，BindCraft 的 MIT 许可覆盖其安装脚本取得的所有资产，AlphaProteo 的 notebook 仓库证明模型可用，BoltzGen 已发布的归档构成完整训练集，而 RFdiffusion2 的 41 种 M-CSA 酶基准指明其训练语料。请逐项指出这位同事跨过了哪一条资产或证据边界。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+BindCraft 的 MIT 许可覆盖其源码，PyRosetta 与用户提供的 ProteinMPNN 权重适用另外的或未说明的条款。AlphaProteo 的 notebook 用于准备输入，而所检查页面没有提供模型实现或参数。BoltzGen 的 README 明确称还有蒸馏数据集待发布，因此现有归档只是部分材料。RFdiffusion2 指明了一项酶基准，却没有描述训练语料。每项说法所需的是另一件资产或另一道过程的证据，并非引用记录已经确立的内容。
+
+</details>
+
+## 适用范围与材料未展示的内容
+
+这四条记录最后核验于 2026-10-21。它们确立发布与许可边界，而不是已执行的设计、实测结合、完整训练来源、匹配性能或读者学习成果。本课没有安装或运行模型、依赖或数据集。
+
+## 来源
+
+<div data-case-sources>
+
+- [BindCraft 仓库](https://github.com/martinpacesa/BindCraft)、[安装脚本](https://raw.githubusercontent.com/martinpacesa/BindCraft/main/install_bindcraft.sh)及 [MIT 许可](https://raw.githubusercontent.com/martinpacesa/BindCraft/main/LICENSE)
+- [AlphaProteo Trusted Tester 仓库](https://github.com/google-deepmind/ap_trusted_testers)、[公告](https://deepmind.google/discover/blog/alphaproteo-generates-novel-proteins-for-biology-and-health-research/)与[摘要](https://arxiv.org/abs/2409.08022)
+- [BoltzGen 仓库](https://github.com/HannesStark/boltzgen)与[检查点模型卡](https://huggingface.co/boltzgen/boltzgen-1)
+- [RFdiffusion2 仓库](https://github.com/RosettaCommons/RFdiffusion2)、[项目文档](https://rosettacommons.github.io/RFdiffusion2/)及 [BSD 3-Clause 许可](https://raw.githubusercontent.com/RosettaCommons/RFdiffusion2/main/LICENSE.md)
+
+</div>
+
+原创课程文字采用 CC BY 4.0。链接的资产保留各自条款。
+
+最后审阅：2026-10-23。

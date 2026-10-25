@@ -1,0 +1,461 @@
+id: openmm-cookbook
+name: OpenMM Cookbook and Tutorials
+provider_class: tutorial-collection
+canonical_url: https://openmm.github.io/openmm-cookbook/latest/
+summary: A collection of rendered notebooks and tutorials for learning OpenMM and performing common molecular-simulation tasks.
+audiences: [molecular-simulation-practitioners, new-openmm-users]
+languages: [en]
+metadata_evidence: [landing-page, official-repository]
+access:
+  content: { value: open, evidence: [landing-page] }
+  code: { value: open, evidence: [landing-page, official-repository] }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence was encoded for omitted taxonomy topics in this dated review.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t11-physical-model-system-state
+    depth: explained
+    evidence: [getting-started]
+    reviewed_scope: Official getting-started tutorial
+    note: The tutorial introduces system construction, force fields, integrators, pressure and temperature control, coordinates, and simulation state.
+  - topic_id: t11-dynamic-simulation-observable
+    depth: executable
+    run_basis: real-data
+    evidence: [landing-page, tutorial-index, official-repository]
+    reviewed_scope: Public notebook delivery, introductory simulation tutorials, and repository execution description
+    note: The rendered collection provides downloadable and Colab notebooks for simulation setup, execution, reporting, and advanced examples.
+  - topic_id: t11-free-energy-endpoint-network
+    depth: mentioned
+    evidence: [tutorial-index]
+    reviewed_scope: Official advanced tutorial index
+    note: The index includes an alchemical free-energy tutorial, but its endpoint and network treatment were not reviewed deeply enough for a stronger state.
+  - topic_id: t11-convergence-protocol-uncertainty
+    depth: executable
+    run_basis: real-data
+    evidence: [parameter-tutorials]
+    reviewed_scope: The Selecting Values for Simulation Parameters tutorial read in full, with the umbrella-sampling and alchemical free-energy tutorials
+    note: Parameter selection is framed as an explicit speed-against-accuracy trade-off separating physical from numerical accuracy, cutoffs, tolerances and time step. Umbrella sampling covers equilibration and convergence, and the alchemical tutorial reports MBAR uncertainty. Replicate dependence and force-field sensitivity are not tested as such, so the topic is covered by runnable material rather than fully.
+  - topic_id: t02-therapeutic-decision-context
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t02-target-product-profile
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t02-assay-endpoint-controls
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t02-chemical-series-feedback
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t04-entity-identity-resolution
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t04-data-contract
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t04-provenance-versioning
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t04-cleaning-exclusion-rules
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t04-permitted-use-legal-scope
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t06-disease-state-definition
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t06-mechanism-hypothesis-counterevidence
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t06-causal-target-evidence
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t06-perturbation-genetic-validation
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t06-tractability-target-risk
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t07-endpoint-definition
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t07-chemical-standardisation
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t07-property-representation-selection
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t07-regression-formulation
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t07-classification-formulation
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t07-property-task-split-design
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t07-calibration
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t07-applicability-domain
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t07-interpretability-sar
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t07-property-decision-use
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t08-exposure-pk-endpoint
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t08-metabolism-ddi-risk
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t08-safety-toxicity-endpoint
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t08-pkpd-translational-assumption
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t08-multiendpoint-tradeoff
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t09-target-assay-screen-unit
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t09-binding-mode-pose-hypothesis
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t09-binder-classification
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t09-affinity-ranking
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t09-screening-selection-repurposing-transfer
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t10-structure-evidence-state
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t10-binding-site-pocket-definition
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t10-complex-cofolding-hypothesis
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t10-structural-confidence-alternatives
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t10-asset-openness-reproducibility
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t12-design-objective-constraints
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t12-candidate-design-space
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t12-multiobjective-search-diversity
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t12-validity-novelty-synthetic-screen
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t12-generated-candidate-evaluation-batch
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t13-biologic-modality-construct
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t13-sequence-structure-function-objective
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t13-specificity-negative-selection
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t13-expression-developability-manufacturability
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t13-functional-validation
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t14-reaction-record-condition-unit
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t14-atom-mapping-transformation-class
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t14-retrosynthetic-disconnection
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t14-route-feasibility-material-safety
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t14-forward-reaction-lab-feedback
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t15-experiment-pool-budget-feasibility
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t15-acquisition-policy-uncertainty
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t15-batch-diversity-multiobjective-allocation
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t15-time-ordered-feedback-update
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t15-stopping-rule-policy-evaluation
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t16-scientific-task-action-boundary
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t16-source-retrieval-evidence-grounding
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t16-tool-input-output-contract
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t16-trace-recovery
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t16-human-review-authority-evaluation
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t17-generalization-unit
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t17-split-leakage-audit
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t17-baseline-model-selection-protocol
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t17-metric-endpoint-uncertainty
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t17-ood-transportability
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t17-reproduction-reporting-receipt
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t18-evidence-package-claim-chain
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t18-crossdomain-tradeoff-decision
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t18-counterevidence-failure-analysis
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t18-nomination-readiness-next-experiment
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+  - topic_id: t18-openness-biosecurity-governance-boundary
+    depth: absent
+    evidence: [collection-index]
+    reviewed_scope: The complete cookbook and tutorial index reviewed on 2026-09-11, being 15 cookbook entries and 14 tutorials covering force fields, thermostats and barostats, restraints and external forces, energy analysis, parameter selection, multistate sampling, alchemical free energy, umbrella sampling, coarse-grained models, nuclear quantum effects and machine-learning potentials
+    note: No cookbook entry or tutorial in the reviewed index addresses any topic in this track. The collection teaches how to set up, run and analyse molecular simulations. The reviewed surface is the index of entry titles together with the parameter-selection, umbrella-sampling, alchemical and machine-learning-potential tutorials read in full.
+evidence:
+  - id: collection-index
+    url: https://openmm.github.io/openmm-cookbook/latest/cookbook.html
+    title: OpenMM Cookbook and tutorial index
+    observed_scope: The complete listing of 15 cookbook entries and 14 tutorials, covering first simulations, temperature and pressure, system serialisation, topology merging, hydrogens for nonstandard molecules, Lennard-Jones mixing, tabulated potentials, external forces, position and dihedral restraints, energy contributions, interaction energies, charge querying, minimisation reporting, input loading, system building, parameter selection, replica exchange, expanded ensemble, alchemical free energy, coarse-grained polymers, nuclear quantum effects, REST, constant potential electrodes, umbrella sampling and machine-learning potentials.
+    access: opened
+    reviewed_on: 2026-09-11
+  - id: parameter-tutorials
+    url: https://openmm.github.io/openmm-cookbook/latest/notebooks/tutorials/simulation_parameters.html
+    title: Selecting Values for Simulation Parameters, with umbrella sampling and alchemical free energy
+    observed_scope: The parameter-selection tutorial read in full, separating physical accuracy from numerical accuracy and working through the speed-against-accuracy trade-off for cutoffs, tolerances and time step. The umbrella-sampling tutorial mentions equilibration and convergence, and the alchemical tutorial uses MBAR to report uncertainty. All are rendered notebooks offered for download and Colab.
+    access: opened
+    reviewed_on: 2026-09-11
+  - id: landing-page
+    url: https://openmm.github.io/openmm-cookbook/latest/
+    title: OpenMM Cookbook and Tutorials
+    observed_scope: Collection purpose, new-user audience, Cookbook and tutorial distinctions, downloadable notebooks, local execution, and Colab routes.
+    access: opened
+    reviewed_on: 2026-09-04
+    version: "v0.9 documentation"
+  - id: tutorial-index
+    url: https://openmm.github.io/openmm-cookbook/latest/tutorials.html
+    title: OpenMM Tutorials index
+    observed_scope: Introductory simulation sequence and advanced topics including replica exchange, enhanced sampling, alchemical free energy, and machine-learned potentials.
+    access: opened
+    reviewed_on: 2026-09-04
+    version: "v0.9 documentation"
+  - id: getting-started
+    url: https://openmm.github.io/openmm-cookbook/dev/notebooks/tutorials/getting_started.html
+    title: Getting Started with OpenMM
+    observed_scope: OpenMM architecture, system setup, force fields, integrator, barostat, input coordinates, simulation, and data reporting links.
+    access: opened
+    reviewed_on: 2026-09-04
+    version: "development documentation"
+  - id: official-repository
+    url: https://github.com/openmm/openmm-cookbook
+    title: OpenMM Cookbook official repository
+    observed_scope: Public notebook source, build process, Colab injection, required files, versioned releases, and CI distinction between Cookbook notebooks and tutorials.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats:
+  - The repository states that Cookbook notebooks run in CI, while the longer tutorials do not; no blanket test-status claim is made for all tutorial notebooks.
+  - No repository- or content-level licence was verified for the Cookbook during this review, and external input terms remain unverified.
+last_verified: 2026-09-11

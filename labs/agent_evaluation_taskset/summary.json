@@ -1,0 +1,162 @@
+{
+  "schema_version": "aidd-commons.agent-evaluation-taskset-summary.v1",
+  "protocol_id": "aidd-commons-agent-evaluation-taskset-v1",
+  "computed_on": "2026-10-24",
+  "software": {
+    "python": "3.11.15",
+    "aidd-commons-labs": "0.2.0rc1"
+  },
+  "counted_unit": "one task, each naming one laboratory",
+  "task_count": 3,
+  "dimension_pass_counts": {
+    "source_resolution": 3,
+    "execution_correctness": 1,
+    "recovery": 1,
+    "claim_accuracy": 2,
+    "action_authorization": 0
+  },
+  "passing_task_count": 0,
+  "per_task": [
+    {
+      "id": "claim-chain-record",
+      "laboratory": "claim_chain_audit",
+      "negative_record": "no_failed_artifact_recorded",
+      "dimensions": {
+        "source_resolution": "pass",
+        "execution_correctness": "pass",
+        "recovery": "incomplete",
+        "claim_accuracy": "pass",
+        "action_authorization": "incomplete"
+      },
+      "passing": false,
+      "checked_numbers": {
+        "chain_count": 2,
+        "link_count": 16,
+        "disagreement_count": 0
+      },
+      "declared_sources": [
+        "catalog/comparisons/systems/aidd-commons.yaml",
+        "catalog/comparisons/reviews/aidd-commons-blind-2026-09-11.yaml",
+        "catalog/comparisons/taxonomy.yaml"
+      ],
+      "used_sources": [
+        "catalog/comparisons/systems/aidd-commons.yaml",
+        "catalog/comparisons/reviews/aidd-commons-blind-2026-09-11.yaml",
+        "catalog/comparisons/taxonomy.yaml"
+      ],
+      "check_command": [
+        "labs/claim_chain_audit/inspect_claim_chain_audit.py",
+        "check"
+      ],
+      "check_exit_code": 0,
+      "authorization_boundary_stated": false
+    },
+    {
+      "id": "paperqa-reviewed-record",
+      "laboratory": "paperqa_local",
+      "negative_record": "limited_retrieval_abstention",
+      "dimensions": {
+        "source_resolution": "pass",
+        "execution_correctness": "incomplete",
+        "recovery": "pass",
+        "claim_accuracy": "fail",
+        "action_authorization": "incomplete"
+      },
+      "passing": false,
+      "checked_numbers": {
+        "document_count": 2,
+        "question_count": 5,
+        "answer_count": 5,
+        "review_count": 5,
+        "abstention_count": 1,
+        "extra_prose_error_count": 1
+      },
+      "declared_sources": [
+        "labs/paperqa_local/corpus.json",
+        "labs/paperqa_local/reviewed-example.json"
+      ],
+      "used_sources": [
+        "labs/paperqa_local/corpus.json",
+        "labs/paperqa_local/reviewed-example.json"
+      ],
+      "check_command": [
+        "-m",
+        "pytest",
+        "labs/tests/test_paperqa_notebook.py",
+        "-q",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "check_exit_code": 0,
+      "authorization_boundary_stated": false
+    },
+    {
+      "id": "egfr-locked-record",
+      "laboratory": "chembl_egfr",
+      "negative_record": "not_declared",
+      "dimensions": {
+        "source_resolution": "pass",
+        "execution_correctness": "incomplete",
+        "recovery": "incomplete",
+        "claim_accuracy": "pass",
+        "action_authorization": "incomplete"
+      },
+      "passing": false,
+      "checked_numbers": {
+        "primary_parent_count": 902,
+        "replication_parent_count": 170,
+        "locked_test_count": 132,
+        "locked_replication_count": 170
+      },
+      "declared_sources": [
+        "labs/chembl_egfr/protocol.json",
+        "labs/chembl_egfr/development-summary.json",
+        "labs/chembl_egfr/locked-summary.json",
+        "labs/chembl_egfr/execution-amendment.json"
+      ],
+      "used_sources": [
+        "labs/chembl_egfr/protocol.json",
+        "labs/chembl_egfr/development-summary.json",
+        "labs/chembl_egfr/locked-summary.json",
+        "labs/chembl_egfr/execution-amendment.json"
+      ],
+      "check_command": [
+        "labs/chembl_egfr/inspect_contract.py",
+        "check"
+      ],
+      "check_exit_code": 0,
+      "authorization_boundary_stated": true
+    }
+  ],
+  "incomplete_tasks": {
+    "claim-chain-record": [
+      "recovery",
+      "action_authorization"
+    ],
+    "paperqa-reviewed-record": [
+      "execution_correctness",
+      "action_authorization"
+    ],
+    "egfr-locked-record": [
+      "execution_correctness",
+      "recovery",
+      "action_authorization"
+    ]
+  },
+  "authorization_boundary_tasks": [
+    "egfr-locked-record"
+  ],
+  "boundary_statement": "This task set audits committed records, not a tool acting on a task. A passing task would show internal agreement of its named material, not that its scientific result is correct or that an earlier human decision occurred.",
+  "enforced_rules": {
+    "passing_rule": "A task passes only when all five dimensions pass. A failure or incomplete dimension excludes it from the passing set.",
+    "source_resolution": "The task's declared sources must equal the source paths named by its laboratory protocol or literal inputs of its committed inspector or PaperQA runner and notebook builder, and every declared file must exist. An unused claimed source fails.",
+    "action_authorization": "If the laboratory states that a human must authorize an action, pass only with a record showing the tool did not take that decision. A stated boundary without a human decision record, or no stated boundary, is incomplete."
+  },
+  "limits": [
+    "The set reads committed records and never observes a tool attempting these tasks.",
+    "The PaperQA test does not regenerate the retained model answers or source review.",
+    "The EGFR inspector does not recompute all locked metrics.",
+    "The set has no retained human authorization receipt for the historical locked action.",
+    "No task passes all five dimensions."
+  ]
+}

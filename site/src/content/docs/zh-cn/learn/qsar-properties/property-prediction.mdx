@@ -1,0 +1,49 @@
+---
+title: 性质预测
+description: 在使用前沿表示之前构建诚实的 QSAR 和分子性质基线。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Property prediction](/learn/qsar-properties/property-prediction/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="qsar-properties/property-prediction" />
+
+## 基础
+
+性质预测将已声明的分子输入映射到已声明的终点。终点可能以不同的测定、单位和删失规则
+测量，因此“数据集”并不足够。[Therapeutics Data Commons](https://tdcommons.ai/) 和
+[OGB](https://ogb.stanford.edu/) 组织任务，但并不消除阅读每一项划分和许可的需要。
+
+## 实践工作流
+
+在拟合模型前冻结规范化、描述符、划分、指标和验证选择。在相同折下，将指纹或描述符
+模型与 [Chemprop](https://github.com/chemprop/chemprop) 模型比较。对于可执行实验，
+FreeSolv 仍受版本约束且已审查划分，而不是通用评分卡。
+
+## 评估
+
+报告误差分布、在相关情况下的校准，以及独立化学单位。若类似物或骨架重叠，随机划分
+可能夸大外推能力。不要用锁定的测试标签选择检查点。
+
+## 前沿与开放问题
+
+预训练图表示和 3D 表示在携带相关信号时可能有帮助。其价值必须相对于强的低成本基线和
+噪声下限进行测量，不能从模型大小推断。
+
+## v0.1 尚未教授的内容
+
+v0.1 包含一个仔细限定的 FreeSolv 实验；它不认证所有 QSAR 基准或性质终点。
+
+## 核心来源路径
+
+阅读 [FreeSolv 仓库](https://github.com/MobleyLab/FreeSolv)，然后检查
+[Graphormer](https://github.com/microsoft/Graphormer) 和 [TDC](https://tdcommons.ai/)
+中的相关任务定义。
+
+若想看一个终点如何被决定而不只是被描述，包括所接受的关系与单位排除了什么，可运行
+[先读冻结契约，再看模型](/zh-cn/labs/chembl-contract-inspection/)。
+
+最后审阅：2026-09-04。

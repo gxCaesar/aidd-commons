@@ -1,0 +1,63 @@
+---
+title: 审计来源审阅与主张范围
+description: 测量四条 Atlas 记录如何将主张绑定到来源页面、版本、审阅日期和审阅材料。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## 准备与学习目标
+
+本实验对应 `t01-source-review-scope`。你将区分证据条目的 URL 与来源名称，查找条目自身的版本、日期和审阅材料字段，并将结构化主张追溯到同一记录中的证据条目。先阅读[来源审阅与主张范围](/zh-cn/learn/foundations/source-review-and-claim-scope/)。了解 YAML 会有所帮助。英文原文见[实验指南](/labs/source-review-scope-audit/)。
+
+模式是依照冻结协议进行全新独立计算。输入是已提交的 Atlas 目录和独立阅读记录。使用项目的 Python 3.11 环境和 CPU。无需网络、下载或加速器。`check` 与 `show` 不写入文件。导出程序仅在验证通过后覆盖已提交的精简汇总。
+
+```bash
+.venv/bin/python labs/source_review_scope_audit/run_lab.py check
+.venv/bin/python labs/source_review_scope_audit/inspect_source_review_scope_audit.py show
+.venv/bin/python labs/source_review_scope_audit/inspect_source_review_scope_audit.py check
+.venv/bin/python labs/source_review_scope_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/source_review_scope_audit -q
+```
+
+## 来源记录与计算方法
+
+协议按顺序声明 4 条记录。加载器拒绝目录中不存在的标识符。对每个证据条目，有效 URL 携带页面或仓库这一来源表面。独立的 `version`、`reviewed_on` 和 `reviewed_scope` 字段携带其余部分。标签中出现的日期或文档类型只报告为 `named-in-text`。泛泛的项目或仓库名称不标识审阅材料。记录级 `last_verified` 日期不能充当每条证据的日期。`supports` 列表将主张映射到条目，却不标识实际审阅的精确材料。
+
+检查器分别检查状态、访问级别、7 个开放性维度及各项许可证主张。它报告每个引用能否在同一记录中解析，以及被引用条目是否携带自身的日期。`unverified` 主张可以没有引用，其他主张必须有引用。引用可解析只表示内部链接成立，不证实链接页面的内容。
+
+## 检查的记录
+
+下表给出 2026-10-23 的已提交计算。表面、版本、日期和范围列计数由条目独立字段携带的部分。文字日期列计数在标签中写有日期、但条目没有自身日期字段的情况。文字范围列计数标签中写有文档类型、但条目没有独立审阅材料字段的情况。已链接主张至少有一项证据引用。检查器逐项给出条目与引用。
+
+| 记录 | 条目 | 表面 | 版本 | 日期 | 文字日期 | 范围 | 文字范围 | 主张 | 已链接主张 | 未解析主张 | `last_verified` |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| `db-rcsb-pdb` | 3 | 3 | 0 | 0 | 2 | 0 | 1 | 10 | 2 | 0 | 2026-10-23 |
+| `db-uniprot` | 2 | 2 | 0 | 0 | 1 | 0 | 1 | 9 | 0 | 0 | 2026-10-23 |
+| `tool-rdkit` | 3 | 3 | 0 | 0 | 2 | 0 | 1 | 10 | 8 | 0 | 2026-10-23 |
+| `model-boltz-2` | 4 | 4 | 0 | 0 | 4 | 0 | 2 | 10 | 5 | 0 | 2026-10-21 |
+| 总计 | 12 | 12 | 0 | 0 | 9 | 0 | 5 | 39 | 15 | 0 |  |
+
+## 总数与独立阅读
+
+在这 4 条记录中，12 个条目都携带来源表面。没有条目通过独立字段携带版本、审阅日期或审阅材料。9 个标签写有日期，5 个标签写有文档类型，因此这些部分属于 `named-in-text`。另外 7 个标签没有指明审阅材料。四个部分全部携带、携带日期和表面但没有版本，以及只有名称这三类的数量均为 0。39 项主张中，15 项有引用，24 项没有引用，0 项有未解析引用，0 项引用带有独立审阅日期的条目。
+
+项目自身的比较记录与独立阅读现在都把该主题标为 `assessed`，运行依据为 `authored`，两者一致。在实验还不存在时它们并不一致：记录把此前该主题的覆盖标为 `worked`，阅读把材料标为 `assessed`。正是这个实验让差异变得可核对，记录随后追上了阅读。这个新实验尚未接受独立评分。
+
+## 审计范围之外的路径
+
+| 路径 | 无法测量的原因 |
+| --- | --- |
+| `linked-page-content` | 审计只读取证据条目，不打开链接页面。 |
+| `moving-url-revision` | 没有条目级发布版本或标签时，可变 URL 无法确定当时看到的修订版。 |
+| `review-thoroughness` | 记录不测量人工审阅的完整程度。 |
+| `licence-permission` | 记录中的引用不能裁定某种用途在法律上是否获准。 |
+
+## 材料局限
+
+本审计不能断定链接页面确实说了条目所声称的内容。缺少条目级日期意味着该条目没有记录来源何时为相应主张接受审阅。这不证明主张错误、从未有人读过页面，或条目不可靠。标签和记录的注意事项也可能对页面的可访问情况作不同描述。不打开来源页面的字段审计无法调和这种差异。冻结选集说明规则，不代表整个 Atlas。
+
+## 来源与条款
+
+已提交的目录、项目比较记录和独立阅读记录于 2026-10-23 在本地读取。各条目录记录的复核日期见表格。记录中列出 [RCSB 使用政策](https://www.rcsb.org/pages/usage-policy)、[UniProt 条款页面](https://www.uniprot.org/help/license)、[RDKit 许可证文件](https://github.com/rdkit/rdkit/blob/master/license.txt)和 [Boltz README](https://raw.githubusercontent.com/jwohlwend/boltz/main/README.md)。本次计算没有打开这些链接的内容。指南原创文字采用 CC BY 4.0，实验原创代码采用 Apache-2.0。最后复核于 2026-10-23。

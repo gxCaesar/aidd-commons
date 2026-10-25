@@ -1,0 +1,82 @@
+{
+  "complex_holdout": {
+    "group_only": {
+      "complex_mean_mae_log10_m": 1.6844078536090268,
+      "row_mae_log10_m": 1.427417380072399
+    },
+    "observed_mutant": {
+      "complex_mean_mae_log10_m": 1.5600351451153442,
+      "row_mae_log10_m": 1.1318877872000341
+    },
+    "test_complexes": 9,
+    "test_rows": 33,
+    "train_complexes": 35,
+    "train_rows": 686
+  },
+  "computed_on": "2026-10-21",
+  "concentration_shares": {
+    "": 0.23966588134504177,
+    "AB/AG": 0.41807228915662653,
+    "Pr/PI": 0.8401559454191033,
+    "TCR/pMHC": 0.5589285714285714
+  },
+  "counts": {
+    "classes": {
+      "": {
+        "complete_pairs": 739,
+        "complexes": 249,
+        "protein_groups": 145,
+        "rows": 4669,
+        "top_five_rows": 1119
+      },
+      "AB/AG": {
+        "complete_pairs": 719,
+        "complexes": 51,
+        "protein_groups": 2,
+        "rows": 830,
+        "top_five_rows": 347
+      },
+      "Pr/PI": {
+        "complete_pairs": 1026,
+        "complexes": 59,
+        "protein_groups": 1,
+        "rows": 1026,
+        "top_five_rows": 862
+      },
+      "TCR/pMHC": {
+        "complete_pairs": 2,
+        "complexes": 37,
+        "protein_groups": 1,
+        "rows": 560,
+        "top_five_rows": 313
+      }
+    },
+    "complete_pairs": 2486,
+    "complexes": 348,
+    "eligible_ab_ag_rows": 719,
+    "field_counts": {
+      "11": 57,
+      "2": 1973,
+      "27": 1141,
+      "29": 1346,
+      "5": 62,
+      "6": 2506
+    },
+    "fragmented_rows": 5739,
+    "rows": 7085
+  },
+  "named_complexes": [
+    "3HFM_HL_Y",
+    "1MHP_HL_A",
+    "1JRH_LH_I"
+  ],
+  "protocol_id": "skempi2-complex-holdout-v1",
+  "row_split_diagnostic": {
+    "leaked_test_rows": 142,
+    "test_rows": 144
+  },
+  "schema_version": "aidd-commons.skempi-affinity-summary.v1",
+  "software": {
+    "python": "3.11.15"
+  }
+}

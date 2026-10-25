@@ -1,0 +1,57 @@
+id: model-pertformer
+name: PertFormer
+kind: model
+summary: Multimodal transformer with 3 billion parameters that predicts the effects of genetic, transcriptional, and sequence perturbations on gene expression and cell fate from unperturbed sequence, and nominates perturbation targets.
+canonical_url: https://github.com/alibaba/damo-pertformer
+identifiers:
+  - scheme: paper
+    value: "Multimodal foundation model predicts zero-shot functional perturbations and cell fate dynamics; bioRxiv DOI 10.1101/2024.12.19.629561"
+    url: https://doi.org/10.1101/2024.12.19.629561
+  - scheme: model-weights
+    value: "Official pretrained PertFormer checkpoints, Hugging Face model repository GenomicIntelligenceDamoAcademy/pertformer, about 13 GB"
+    url: https://huggingface.co/GenomicIntelligenceDamoAcademy/pertformer
+stages: [representation-learning, model-development, property-prediction]
+modalities: [perturbational-omics, single-cell-transcriptomics]
+tasks: [perturbation-comparison, cell-context-inspection, out-of-distribution-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: research_only, evidence: [pertformer-license, pertformer-model-card] }
+openness:
+  inference_code: { value: available, evidence: [pertformer-repository] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [pertformer-model-card] }
+  architecture: { value: available, evidence: [pertformer-paper] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC-BY-NC-ND-4.0
+    scope: "Repository source code and the model card's licence line. The grant covers reproduction and sharing of the licensed material for non-commercial purposes only; adapted material may be produced and reproduced for non-commercial purposes but may not be shared; attribution, the licence text or a link, a practicable source link, and identification of modifications are required on sharing, and no downstream restrictions may be added. The licence text states no model-weight or data-specific term."
+    evidence: [pertformer-license, pertformer-model-card]
+evidence:
+  - id: pertformer-repository
+    url: "https://github.com/alibaba/damo-pertformer"
+    label: PertFormer repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: pertformer-readme
+    url: "https://raw.githubusercontent.com/alibaba/damo-pertformer/main/README.md"
+    label: PertFormer README (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: pertformer-license
+    url: "https://raw.githubusercontent.com/alibaba/damo-pertformer/main/LICENSE"
+    label: PertFormer CC BY-NC-ND 4.0 license file (reviewed 2026-10-21)
+    supports: []
+  - id: pertformer-model-card
+    url: "https://huggingface.co/GenomicIntelligenceDamoAcademy/pertformer"
+    label: PertFormer model card (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: pertformer-paper
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:%2210.1101/2024.12.19.629561%22&resultType=core&format=json"
+    label: Europe PMC record for the PertFormer preprint (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+caveats:
+  - The README has no licence section and the repository page shows only a generic licence label, so the terms come from the LICENSE file and the model card rather than from the README.
+  - Neither the README, the model card, nor the paper abstract names the pretraining corpora. The abstract gives only modality counts, namely nine data types, 55 billion base pairs of bulk data, and 1.5 billion paired multi-omic observations from one million cells, and it names no benchmark datasets, splits, or metrics.
+  - "The README names the preprint as 'PertFormer: Zero-shot perturbation prediction and target discovery from wild-type biology' and states the manuscript was under review, while the bioRxiv record at the cited DOI carries the title 'Multimodal foundation model predicts zero-shot functional perturbations and cell fate dynamics'. The two titles do not match."
+acknowledgements: []
+last_verified: "2026-10-21"

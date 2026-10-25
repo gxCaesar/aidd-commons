@@ -1,0 +1,72 @@
+---
+title: Three protein-design methods from 2026
+description: Read the Raygun, NISE, and LASErMPNN records through their task contracts, published assets, and evidence limits.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/frontier-protein-design-2026" />
+
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Open models for nucleic-acid and peptide design](/learn/biologics-design/nucleic-acid-and-peptide-models/), use these dated catalogue records to distinguish a sequence-editing method, an iterative design protocol, and the sequence network used within that protocol. Identify what each record establishes about training material, published assets, and permission to use them. This is a reading lesson with a written exercise. None of the methods or assets was run here.
+
+## Comparison contract
+
+Raygun edits an existing protein sequence with insertions, deletions, and substitutions. NISE iterates between sequence proposals and structure and binding predictions for a placed ligand. LASErMPNN supplies ligand-conditioned sequence design and side-chain packing within NISE, although NISE can instead use LigandMPNN for sequence design. These are related resources, not three interchangeable predictors. The records provide no shared input collection, split, metric, or baseline from which to rank them. Published code or weights establish a route for inspection, not a reproduced result.
+
+## Raygun
+
+The [Raygun repository](https://github.com/rohitsinghlab/raygun) presents template-guided editing of an existing protein. Its fixed-length block representation of ESM-2 embeddings allows simultaneous insertions, deletions, and substitutions, including a change in sequence length without retraining. The [README](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/README.md) associates its 4 named checkpoints with UniRef50 subsets of 8.8 million, 4.4 million, 2.2 million, and 100,000 sequences. It does not explain how those subsets were filtered beyond their counts.
+
+The record establishes inference and training code and documents pretrained model access through `raygun.pretrained` imports. It names no separate checkpoint download URL. The linked [Zenodo record](https://zenodo.org/records/19546626) is for training and benchmark sequences, not a stated checkpoint download. A reader can inspect the published procedures and listed assets, but the record does not establish an evaluation-code entry point or a reproduced comparison. The [LICENSE file](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/LICENSE) states CC BY-NC 4.0 and prohibits commercial use. The README instead says CC-BY-NC-SA 4.0 and describes a 60-day trial licence for internal evaluation and a separate agreement for continued commercial use. The two first-party statements disagree, so the applicable terms cannot be settled from this record alone.
+
+## NISE
+
+The [NISE repository](https://github.com/polizzilab/NISE) describes an iterative selection-expansion protocol built to optimize a protein sequence and structure around a protein-ligand pose. It pairs LASErMPNN or LigandMPNN for sequence design with Boltz-1x or Boltz-2x for structure and binding evaluation. The [README](https://raw.githubusercontent.com/polizzilab/NISE/main/README.md) documents inference use and the protocol architecture. It points to a model-access script and a prebuilt execution container, but enumerates no individual weight file or checkpoint download. A container is an execution environment, not evidence of a published checkpoint.
+
+The record does not verify training code, weights, a data recipe, training data, or evaluation code for NISE. Its README names no training corpus or split. It also has no licence statement, and a LICENSE file was not inspected. The record therefore establishes neither the applicable licence nor a reproducible training or evaluation procedure.
+
+## LASErMPNN
+
+The [LASErMPNN repository](https://github.com/polizzilab/LASErMPNN) describes the ligand-conditioned sequence network used by NISE. It proposes sequences for a fixed backbone and placed ligand and also supports side-chain packing. Its [README](https://raw.githubusercontent.com/polizzilab/LASErMPNN/main/README.md) says the network was trained on protonated structures. It names separate download scripts for a ligand-encoder training dataset and a protonated PDB training dataset, without naming either corpus or giving a record count, filtering procedure, or split size.
+
+The record establishes published inference and training code. The README names `laser_weights_0p1A_nothing_heldout.pt` as the default checkpoint and places other weights in the repository's `model_weights` directory. It supplies no separate checkpoint download URL. These materials let a reader inspect the documented model and training route, but this lesson has not executed them or reproduced an evaluation. The README makes no licence statement, and a LICENSE file was not inspected. Asset availability therefore does not establish usage rights. The unnamed corpora also prevent exact attribution of the published weights to a reconstructable training set.
+
+## Openness by dimension
+
+The seven columns preserve the catalogue's distinct dimensions. Available means the cited record established access or documentation, not that this lesson executed the asset. Unverified means the record did not establish that dimension.
+
+| Resource | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Raygun | available | available | available | available | available | available | unverified |
+| NISE | available | unverified | unverified | available | unverified | unverified | unverified |
+| LASErMPNN | available | available | available | available | available | available | available |
+
+## Worked case
+
+A team wants to use Raygun in a commercial setting and reads the repository's two first-party licence statements. The [README](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/README.md) states CC-BY-NC-SA 4.0 and describes a 60-day trial licence for internal evaluation. The [LICENSE file](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/LICENSE) states CC BY-NC 4.0 and says the material may not be used commercially. Neither file establishes which terms govern the team's proposed use. The team would need the authors to clarify the applicable licence, the trial's scope, and the terms of any separate commercial agreement before treating the repository as licensed for that use. A catalogue access label cannot resolve a conflict between first-party statements.
+
+## Independent exercise
+
+A colleague sees that NISE can call LASErMPNN and assumes that NISE therefore publishes the same training assets and weights. Use the openness table to identify which NISE fields remain unverified, and explain why the relationship does not change them.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+NISE's training code, weights, data recipe, training data, and evaluation code are unverified in its own record. LASErMPNN has available entries for those fields, but its assets do not become NISE assets merely because NISE can use that network. The NISE README's container and model-access script do not identify an individual NISE checkpoint. LASErMPNN's dataset scripts likewise do not name its training corpora. Each conclusion follows the resource-specific openness fields and README caveats rather than the relationship alone.
+
+</details>
+
+## Scope
+
+The article text of each paper was not opened, so reported hit rates and affinities are not carried here. The NISE and LASErMPNN READMEs state no licence, and their LICENSE files were not inspected, so neither record has a licence. Neither names its training corpora. Raygun's subset-filtering procedure and the resolution of its licence conflict remain unknown. Reading an openness cell does not execute an asset, reproduce a model, or establish a common benchmark or measured reader learning.
+
+## Sources
+
+The catalogue records `model-raygun`, `model-nise`, and `model-lasermpnn` were each last verified on 2026-10-23. The Raygun record cites its [repository](https://github.com/rohitsinghlab/raygun), [README](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/README.md), [LICENSE file](https://raw.githubusercontent.com/rohitsinghlab/raygun/main/LICENSE), and [Zenodo record](https://zenodo.org/records/19546626). The NISE record cites its [repository](https://github.com/polizzilab/NISE) and [README](https://raw.githubusercontent.com/polizzilab/NISE/main/README.md). The LASErMPNN record cites its [repository](https://github.com/polizzilab/LASErMPNN) and [README](https://raw.githubusercontent.com/polizzilab/LASErMPNN/main/README.md). Each source retains its own stated scope.
+
+Last reviewed: 2026-10-23.

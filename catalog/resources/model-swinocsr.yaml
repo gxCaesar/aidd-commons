@@ -1,0 +1,109 @@
+id: model-swinocsr
+name: SwinOCSR
+kind: model
+summary: Optical chemical structure recognition model that uses a Swin Transformer backbone with a Transformer decoder to turn images of chemical structures into SMILES strings.
+canonical_url: https://github.com/suanfaxiaohuo/SwinOCSR
+identifiers:
+- scheme: paper
+  value: 'SwinOCSR: end-to-end optical chemical structure recognition using a Swin Transformer; Journal of Cheminformatics 14, article 41 (2022); DOI 10.1186/s13321-022-00624-5'
+  url: https://doi.org/10.1186/s13321-022-00624-5
+- scheme: model-weights
+  value: SwinOCSR trained models on Kaggle, covering Swin Transformer with cross-entropy loss and with focal loss
+  url: https://www.kaggle.com/gogogogo11/moedel
+- scheme: dataset
+  value: SwinOCSR label files on Kaggle, alongside the DeepSMILES split files held in the repository Data directory
+  url: https://www.kaggle.com/gogogogo11/datasetlabel
+stages:
+- data-intake
+- representation-learning
+- evaluation
+modalities:
+- small-molecule
+- molecular-graph
+tasks:
+- chemical-identity-resolution
+- molecular-representation-learning
+relations: []
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - repository
+openness:
+  inference_code:
+    value: available
+    evidence:
+    - repository
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: available
+    evidence:
+    - repository
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: available
+    evidence:
+    - repository
+licenses: []
+evidence:
+- id: repository
+  url: https://github.com/suanfaxiaohuo/SwinOCSR
+  label: SwinOCSR repository page, reviewed 2026-10-21
+  supports:
+  - caveats
+  - kind
+  - modalities
+  - name
+  - stages
+  - summary
+  - tasks
+- id: readme
+  url: https://raw.githubusercontent.com/suanfaxiaohuo/SwinOCSR/main/README.md
+  label: SwinOCSR README, reviewed 2026-10-21
+  supports:
+  - summary
+  - identifiers
+  - caveats
+- id: repository-tree
+  url: https://api.github.com/repos/suanfaxiaohuo/SwinOCSR/git/trees/main?recursive=1
+  label: SwinOCSR repository file tree, reviewed 2026-10-21
+  supports: []
+- id: repository-metadata
+  url: https://api.github.com/repos/suanfaxiaohuo/SwinOCSR
+  label: SwinOCSR repository metadata, reviewed 2026-10-21
+  supports:
+  - caveats
+- id: kaggle-models
+  url: https://www.kaggle.com/gogogogo11/moedel
+  label: Kaggle models page linked by the SwinOCSR README, reviewed 2026-10-21
+  supports:
+  - identifiers
+  - caveats
+- id: kaggle-labels
+  url: https://www.kaggle.com/gogogogo11/datasetlabel
+  label: Kaggle label page linked by the SwinOCSR README, reviewed 2026-10-21
+  supports:
+  - identifiers
+  - caveats
+- id: crossref
+  url: https://api.crossref.org/works/10.1186/s13321-022-00624-5
+  label: Crossref metadata for the SwinOCSR paper, reviewed 2026-10-21
+  supports:
+  - identifiers
+caveats:
+- The openness claims here rest on the repository's own file listing and README, read on 2026-10-23; the code was not run, and no claim is made that the released scripts reproduce the published numbers.
+- 'The repository declares no licence: the GitHub licence field is null and no LICENSE file appears in the file tree, so the terms for the code, the bundled dataset archives and the trained checkpoints are unverified and every openness dimension is left unverified.'
+- The repository does ship inference, training and evaluation scripts, among them run_ocsr_on_images.py, model/Swin-transformer-celoss/main.py, model/eval.py and the pycocoevalcap metric package, but without a licence their availability for use is not established.
+- The trained models and the label files are hosted on Kaggle; those pages rendered only their titles when opened on 2026-10-21, with no description, file list or terms of use, so the checkpoint contents and their licence are unverified.
+- The README names the DeepSMILES split files, for example Data/500wan/500wan_shuffle_DeepSMILES_train.pkl, but documents no corpus composition, no source for the molecules and no data terms, and the repository also ships .rar dataset archives whose licence is not stated.
+- The article's own data and code availability statements were not read because the publisher page redirected to a sign-in flow, so this record relies on the repository pages only.
+- The repository is public and clonable and carries no licence file, so the code is obtainable while the terms under which it may be reused are unstated. The repository has not been pushed to since 2022.
+acknowledgements: []
+last_verified: '2026-10-23'

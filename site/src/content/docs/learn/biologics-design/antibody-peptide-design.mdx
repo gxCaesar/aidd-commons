@@ -1,0 +1,165 @@
+---
+title: Antibody and peptide design with negative selection
+description: Specify a biological recognition objective, then test binding, specificity, and alternative explanations as separate properties.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/antibody-peptide-design" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will define an antibody or peptide design object, explain why affinity and
+specificity are distinct, and write positive and negative selection conditions
+that test a named off-target alternative. Read [Biologics and multimodal
+design](/learn/biologics-design/multimodal-design/) first. This is a conceptual,
+handworked lesson: it contains no selection recipe, expression instruction, or
+therapeutic dosing advice.
+
+## Design begins with the recognition event
+
+For an antibody, the object may be a variable-region sequence, format, and a
+specified antigen state. For a peptide, it may be a sequence and constrained or
+unconstrained state. The desired output must name the antigen form, epitope or
+functional mechanism when known, desired context, and negative set. “Binds
+target” is underspecified when the target has homologues, multiple conformations,
+post-translational states, or shared surfaces.
+
+Affinity is a concentration-dependent interaction quantity under named assay
+conditions. Specificity is comparative: a candidate's interaction with intended
+object(s) versus a declared universe of plausible alternatives. A high apparent
+affinity can coexist with broad non-specific interaction; a selective candidate
+may have inadequate functional activity. Peptide-directed antibody design itself
+requires trade-offs among uniqueness, conservation, accessible features, and
+modification-sensitive regions [Pisitkun et al.](https://pubmed.ncbi.nlm.nih.gov/21956165/).
+
+For a simple equilibrium illustration, `K_D = [P][L]/[PL]`, where `P` is free
+protein, `L` free ligand, and `PL` complex at equilibrium. Its unit is mol/L;
+lower `K_D` means more complex at a given matched total concentration. This is
+not a universal result for avid, multivalent, kinetic, membrane, or cell-based
+systems. An apparent `K_D` must retain format, valency, temperature, buffer, and
+analysis model. It cannot alone establish epitope, selectivity in biology, or
+function.
+
+## Positive and negative selection make the target claim testable
+
+A positive condition retains candidates that recognize the intended antigen
+state. A negative condition removes or flags candidates that recognize a named
+competitor: a close homologue, irrelevant protein with similar presentation, a
+different antigen state, matrix component, or a cell population lacking the
+intended marker. The negative set is a scientific choice. “No binding to one
+unrelated control” does not demonstrate broad specificity, whereas screening an
+unrealistically vast negative universe can erase a useful context-specific
+binder. State what the negative panel represents and what it misses.
+
+Use a contrast rather than a generic activity score. Let `R+` and `R−` be
+background-corrected signals for matched positive and negative conditions. A
+constructed selectivity contrast is `ΔR = R+ − R−`; larger positive values are
+better only if high signal has the same meaning in both conditions. It must not
+be compared across assay formats as if it were `K_D`. More importantly, a signal
+difference can come from antigen amount, display geometry, detector response, or
+candidate aggregation; matched controls and orthogonal confirmation address
+different alternatives.
+
+<table>
+  <thead>
+    <tr>
+      <th>Evidence</th>
+      <th>Supports</th>
+      <th>Does not support alone</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sequence / structural model</td>
+      <td>A design hypothesis</td>
+      <td>Expression, folding, binding, or function</td>
+    </tr>
+    <tr>
+      <td>Positive binding signal</td>
+      <td>Interaction in its stated setup</td>
+      <td>Epitope mechanism or organismal selectivity</td>
+    </tr>
+    <tr>
+      <td>Negative-panel result</td>
+      <td>No detected interaction with that panel</td>
+      <td>Absence of every off-target interaction</td>
+    </tr>
+    <tr>
+      <td>Functional response</td>
+      <td>Effect in that relevant model context</td>
+      <td>Direct binding mechanism without a bridge</td>
+    </tr>
+  </tbody>
+</table>
+
+## Worked case: a constructed negative-selection decision
+
+All values here are **constructed for teaching**. Two antibody candidates are
+measured in one matched detection format. The intended antigen state gives
+signals `R+ = 92` for A and `88` for B. A close homologue gives `R− = 38` for A
+and `12` for B. Thus `ΔR_A = 92 − 38 = 54` and `ΔR_B = 88 − 12 = 76` arbitrary
+signal units. A generic-protein control gives 8 for A and 10 for B.
+
+If the prespecified gate is `R+ ≥ 70` and `R− ≤ 20` for the close homologue,
+A fails and B passes this **panel**. B is not “specific” in an absolute sense:
+the panel omitted other family members, unrelated sticky interactions, and the
+cellular context. The next informative question is whether B's signal persists
+when the antigen is presented in a second relevant format, and whether its
+functional response is absent in a target-negative matched context. Those tests
+probe presentation and functional causality rather than merely adding repeats.
+
+For a peptide, the same logic applies, but conformational and proteolytic state
+can change the object itself. A sequence predicted to form a desired helix is a
+representation-level proposal; a functional comparison must specify whether the
+peptide actually adopts that state in the evaluation system. Do not call a
+sequence model “binding validation.”
+
+## Alternatives, limitations, and independent exercise
+
+Deep mutational scanning, structural mapping, cell panels, and polyreactivity
+panels can refine a negative set, but each has coverage and representation
+limits. Computational sequence scores can prioritize variants, not replace the
+positive/negative evidence contract. Biophysical developability is also not
+specificity: an antibody may avoid aggregation yet bind an unintended target, or
+vice versa. Observed self-interaction and polyspecificity differences across
+discovery sources illustrate why selection history should be recorded, not used
+as a deterministic label [Kaleli et al.](https://pubmed.ncbi.nlm.nih.gov/30883916/).
+
+**Handworked exercise (not runnable or empirical):** Under the same constructed
+rules, peptide P has `R+ = 74`, `R− = 19`; peptide Q has `R+ = 81`, `R− = 27`.
+Calculate both `ΔR` values, decide which passes the panel, and name one
+alternative explanation remaining for P. Why is “P has lower K_D” not justified
+from this table?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+`ΔR_P = 74 − 19 = 55`; `ΔR_Q = 81 − 27 = 54` arbitrary units. P meets both
+constructed thresholds, while Q fails the negative signal threshold despite a
+high positive signal. P could still reflect antigen-presentation or detector
+effects, a missing homologue, or aggregation. The table contains signals rather
+than an equilibrium analysis with free concentrations, so it cannot establish a
+lower `K_D` for P.
+
+</details>
+
+## Sources and next lesson
+
+The pages below were opened on 2026-09-09; the worked values are invented.
+
+<div data-case-sources>
+
+- [NHLBI-AbDesigner: an online tool for design of peptide-directed antibodies](https://pubmed.ncbi.nlm.nih.gov/21956165/)
+- [Phage display derived therapeutic antibodies and developability issues](https://pubmed.ncbi.nlm.nih.gov/30883916/)
+- [Physicochemical rules for identifying monoclonal antibodies with drug-like specificity](https://pubmed.ncbi.nlm.nih.gov/32453957/)
+
+</div>
+
+Continue to [Nucleic acids, conjugates, and degraders](/learn/biologics-design/nucleic-acids-conjugates-degraders/)
+to compare a recognition event with productive intracellular delivery or induced
+proximity. Original lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-09.

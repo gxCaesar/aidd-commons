@@ -1,0 +1,78 @@
+{
+  "paperqa_version": "2026.8.12",
+  "embedding_ndim": 768,
+  "settings": {
+    "llm": "ollama/qwen3:8b",
+    "llm_config": {
+      "model_list": [
+        {
+          "model_name": "ollama/qwen3:8b",
+          "litellm_params": {
+            "model": "ollama/qwen3:8b",
+            "api_base": "http://127.0.0.1:11434"
+          }
+        }
+      ]
+    },
+    "summary_llm": "ollama/qwen3:8b",
+    "summary_llm_config": {
+      "model_list": [
+        {
+          "model_name": "ollama/qwen3:8b",
+          "litellm_params": {
+            "model": "ollama/qwen3:8b",
+            "api_base": "http://127.0.0.1:11434"
+          }
+        }
+      ]
+    },
+    "embedding": "ollama/nomic-embed-text:v1.5",
+    "embedding_config": {
+      "model_list": [
+        {
+          "model_name": "ollama/nomic-embed-text:v1.5",
+          "litellm_params": {
+            "model": "ollama/nomic-embed-text:v1.5",
+            "api_base": "http://127.0.0.1:11434"
+          }
+        }
+      ]
+    },
+    "agent": {
+      "agent_llm": "ollama/qwen3:8b",
+      "agent_llm_config": {
+        "model_list": [
+          {
+            "model_name": "ollama/qwen3:8b",
+            "litellm_params": {
+              "model": "ollama/qwen3:8b",
+              "api_base": "http://127.0.0.1:11434"
+            }
+          }
+        ]
+      }
+    },
+    "parsing": {
+      "use_doc_details": false,
+      "multimodal": false,
+      "enrichment_llm": "ollama/qwen3:8b",
+      "enrichment_llm_config": {
+        "model_list": [
+          {
+            "model_name": "ollama/qwen3:8b",
+            "litellm_params": {
+              "model": "ollama/qwen3:8b",
+              "api_base": "http://127.0.0.1:11434"
+            }
+          }
+        ]
+      }
+    },
+    "answer": {
+      "evidence_retrieval": true,
+      "evidence_skip_summary": false,
+      "get_evidence_if_no_contexts": true,
+      "max_concurrent_requests": 1
+    }
+  }
+}

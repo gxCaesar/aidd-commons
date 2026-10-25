@@ -1,0 +1,121 @@
+---
+title: How a baseline learns, predicts and gets selected
+description: Derive a small Ridge fit and trace training, preprocessing and validation without confusing their roles.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="machine-learning/baseline-training-validation" />
+
+## The question behind fit
+
+Read [records to a modelling table](/learn/data-governance/records-to-model-table/)
+first. This lesson connects a feature, an objective and a prediction. You will
+derive a fitted line, distinguish fitted parameters from chosen settings, and
+trace which data may influence each step. The example is constructed arithmetic,
+not a molecular assay or a research result.
+
+A representation maps an object to numbers. A predictor maps those numbers to an
+output. Training chooses predictor parameters to reduce an objective on observed
+training examples. Inference evaluates the resulting mapping on a new input; it
+does not ordinarily update the parameters. Validation compares candidate choices
+without being another training loss term unless the protocol explicitly says so.
+
+## Derive the smallest useful model
+
+For one feature, predict `ŷ = b + w x`. Here `b` is the intercept and `w` the
+slope. Ordinary least squares minimizes the sum of squared residuals. Ridge adds
+a penalty on the slope:
+
+```text
+J(b, w) = Σtraining (yᵢ − b − w xᵢ)² + α w²
+w = Σ(xᵢ − x̄)(yᵢ − ȳ) / [Σ(xᵢ − x̄)² + α]
+b = ȳ − w x̄
+```
+
+The intercept is unpenalized. Setting its derivative to zero gives the third
+line; substituting that relation into the slope derivative gives the second.
+The sums and means use training rows only. With multiple features, the same idea
+uses matrix operations; the [linear-model documentation](https://scikit-learn.org/stable/modules/linear_model.html)
+defines the corresponding least-squares and Ridge objectives.
+
+For training pairs `(0, 1), (1, 3), (2, 5)`, the feature mean is 1 and target
+mean is 3. The centered product sum is 4 and centered feature square sum is 2.
+At alpha 0, `w = 2`, `b = 1`. At alpha 2, `w = 1`, `b = 2`. The latter line
+shrinks toward the training mean: it is not produced by multiplying every
+prediction by a constant.
+
+At `x = 3`, the two predictions are 7 and 5. If a validation target there is 6,
+both have absolute error 1. A tie rule fixed beforehand can choose the smaller
+alpha. A new test target must not resolve that validation tie. This tiny example
+does not establish that either penalty is generally preferable.
+
+## A parameter is not a hyperparameter
+
+The fitted `b` and `w` are parameters learned from training labels. Alpha is a
+candidate hyperparameter in this lesson; validation selects it from a declared
+grid. A learned feature scaler has its own parameters too. Compute its mean and
+scale on training features, then apply those same numbers to validation and test.
+Recomputing a scaler on the test batch changes the model's input mapping.
+
+The [preprocessing leakage guide](https://scikit-learn.org/stable/common_pitfalls.html)
+gives practical examples. In a cross-validation workflow, preprocessing must be
+fit separately inside each training fold. Cross-validation is not permission to
+preprocess the entire table first.
+
+Our later sandbox uses unscaled input for one-dimensional Ridge and train-only
+standardization for logistic regression. Consequently, equal numeric penalties
+across the two methods are not equal regularization strengths. Always inspect
+whether a loss is a sum or mean and which parameters are penalized.
+
+## Trace the complete procedure
+
+```text
+Declare task and partitions
+  → fit each candidate on training rows
+  → use frozen candidate mappings to predict validation rows
+  → select using the declared validation metric and tie rule
+  → predict test inputs with the selected mapping
+  → compare predictions with test targets and retain errors
+```
+
+This lesson's sandbox does not refit on training plus validation after selection.
+Such a refit can be a legitimate predeclared protocol elsewhere, but it creates a
+different fitted predictor and must not be silently mixed with this one.
+
+A constant training-mean predictor is important: it reveals whether the learned
+relationship improves on having no input dependence. A flexible model's lower
+training loss is not enough. Linear models can extrapolate confidently beyond
+the training feature range, even when the relationship stops there.
+
+## How this extends to larger models
+
+A tree selects feature-based partitions and predicts within leaves. A GNN
+repeatedly combines a node's state with neighbors' messages. A Transformer uses
+content-dependent weighted combinations of token states. These change the
+predictor's hypothesis class and representation learning, not the need to define
+inputs, training targets and selection data. Mechanism-specific units in the
+[curriculum blueprint](/learn/foundations/curriculum-map/) separate these topics;
+this line-fitting lesson is not a completed GNN or Transformer course.
+
+## Independent exercise
+
+Train on `(0, 2), (1, 4), (2, 6)` with alpha 2. Derive the slope and intercept,
+then predict at 3. Suppose someone appends a validation point to the training
+array before calling `fit`. Can the original “training-only fit” description
+still stand? Explain the change without needing to run software.
+
+<details data-worked-answer>
+<summary>Worked answer — fit, then name the boundary</summary>
+
+The means are 1 and 4, the centered sums remain 4 and 2, so the slope is 1 and
+intercept is 3. Prediction at 3 is 6. Adding a validation point changes the
+training objective, and generally its fitted parameters. The old description is
+false even if a special point happens not to change the numeric solution.
+A complete answer distinguishes the access rule from accidental equality.
+
+</details>
+
+Continue to [regression, classification and errors](/learn/qsar-properties/regression-classification-errors/),
+then run the [student sandbox](/learn/machine-learning/student-modelling-sandbox/).
+Original prose and examples: CC BY 4.0. Last reviewed: 2026-09-09.

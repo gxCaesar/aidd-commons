@@ -1,0 +1,57 @@
+id: model-raygun
+name: Raygun
+kind: model
+summary: Template-guided protein design tool that edits an existing protein with insertions, deletions and substitutions at once, using a fixed-length block representation of ESM-2 embeddings so that a sequence can be shortened or lengthened without retraining.
+canonical_url: https://github.com/rohitsinghlab/raygun
+identifiers:
+  - scheme: paper
+    value: "Miniaturizing and modifying natural proteins with Raygun; Nature 656(8126):452-460, DOI 10.1038/s41586-026-10842-8"
+    url: https://doi.org/10.1038/s41586-026-10842-8
+  - scheme: code
+    value: "Raygun source repository, rohitsinghlab/raygun"
+    url: https://github.com/rohitsinghlab/raygun
+  - scheme: dataset
+    value: "Raygun training and benchmark sequences, Zenodo record 19546626"
+    url: https://zenodo.org/records/19546626
+stages: [design, lead-optimization]
+modalities: [protein-sequence]
+tasks: [protein-miniaturization, sequence-editing, template-based-design]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [raygun-readme] }
+openness:
+  inference_code: { value: available, evidence: [raygun-readme] }
+  training_code: { value: available, evidence: [raygun-readme] }
+  weights: { value: available, evidence: [raygun-readme] }
+  architecture: { value: available, evidence: [raygun-readme] }
+  data_recipe: { value: available, evidence: [raygun-readme] }
+  training_data: { value: available, evidence: [raygun-readme] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: "CC BY-NC 4.0"
+    scope: "The LICENSE file of the repository states the Creative Commons Attribution-NonCommercial 4.0 International license and the line 'You may not use the material for commercial purposes.' The repository README instead states that everything in the repository is licensed under CC-BY-NC-SA 4.0 and adds a 60-day trial licence for internal evaluation and a separate agreement for continued commercial use. The two first-party files therefore state different terms, and the record carries the one the LICENSE file states."
+    evidence: [raygun-license]
+  - name: "CC BY-NC-SA 4.0"
+    scope: "The version stated by the repository README, which also describes the governmental, nonprofit and charitable permission and the 60-day trial licence. It contradicts the LICENSE file, so the two terms are recorded as two readings of the same repository rather than one."
+    evidence: [raygun-readme]
+evidence:
+  - id: raygun-repository
+    url: https://github.com/rohitsinghlab/raygun
+    label: Raygun repository (reviewed 2026-10-23)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: raygun-readme
+    url: https://raw.githubusercontent.com/rohitsinghlab/raygun/main/README.md
+    label: Raygun README (reviewed 2026-10-23)
+    supports: [identifiers, caveats]
+  - id: raygun-license
+    url: https://raw.githubusercontent.com/rohitsinghlab/raygun/main/LICENSE
+    label: Raygun LICENSE file (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - "The README and the LICENSE file state different licences for the same repository, CC-BY-NC-SA 4.0 and CC BY-NC 4.0 respectively, so a reader who needs a commercial right has to settle that with the authors."
+  - "The README names four checkpoints and the training set each was trained on: raygun_8_8mil_800M on 8.8 million UniRef50 sequences, raygun_4_4mil_800M on 4.4 million, raygun_2_2mil_800M on 2.2 million and raygun_100k_750M on 100,000. It does not state the filtering procedure that produced those UniRef50 subsets beyond the counts."
+  - "The README states the installation depends on NumPy, pandas, fair-esm, PyYAML, h5py, einops and PyTorch, and that Lightning and Hydra are used for training. It gives no dated release for any of them."
+  - "The paper is recorded from the DOI and the repository's own README and Zenodo record. The article's own text was not opened, so the reported functional retention and the measured affinities are not carried here."
+  - "The README documents the model access through the raygun.pretrained imports and gives no separate checkpoint download URL, and it points the trained sequences and benchmarks at a Zenodo record rather than at the checkpoints themselves."
+acknowledgements: []
+last_verified: "2026-10-23"

@@ -1,0 +1,161 @@
+---
+title: Route feasibility, forward prediction, and feedback
+description: Convert an abstract route graph into a bounded feasibility record that separates materials and safety gates, model outputs, and observed laboratory feedback.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="synthesis-and-automation/route-feasibility-and-feedback" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will distinguish route feasibility from a retrosynthetic score, make material
+and safety constraints visible without proposing laboratory operations, and keep
+forward-prediction output separate from observed feedback. Read [Reaction mapping
+and route search](/learn/synthesis-and-automation/reaction-mapping-and-route-search/)
+first. This is a browser and handworked planning lesson. It does not authorize
+procurement, laboratory work, safety assessment, or a synthesis procedure.
+
+## Feasibility is a contract with several gates
+
+A route graph becomes decision-relevant only after each edge and terminal node
+has a feasibility record. Material availability is one field: it includes the
+declared identity and form, source or inventory reference, date checked, amount
+or scale requirement if relevant, and status such as confirmed, unavailable, or
+not checked. “Purchasable” in a search index is not the same as a material being
+available for the stated project at the required time.
+
+Safety and operational review are separate authority fields. A route may have a
+plausible graph and confirmed materials yet remain `approval_required` because
+a competent institutional safety review has not occurred. The absence of a
+warning in a dataset does not mark a transformation safe. This lesson deliberately
+does not list operational conditions, hazards, or mitigation steps; it teaches
+only the decision boundary and record structure.
+
+One compact status function is
+`route_status(r) = material_gate(r) AND safety_authority(r) AND evidence_gate(r)`.
+Here each term is a named status, not a probability or a promise of success.
+For example, an unavailable terminal can make a route ineligible for the current
+campaign, while an unreviewed safety field makes it pending rather than false.
+Keeping the reasons distinct prevents a search score from silently overriding a
+real constraint.
+
+| Gate              | Minimum record                                                             | Honest status examples                           | What it is not       |
+| ----------------- | -------------------------------------------------------------------------- | ------------------------------------------------ | -------------------- |
+| materials         | identity/form, source, date, availability and quantity boundary            | confirmed, unavailable, not checked              | a purchase order     |
+| safety/operations | declared review owner, authority state and restriction note                | approval_required, cleared under named authority | a safety procedure   |
+| route logic       | graph version, node states, edge hypotheses and unresolved fields          | consistent, mismatch, unresolved                 | a proof of execution |
+| forward model     | input representation, model/version, output set and uncertainty/abstention | predicted, unavailable, out of scope             | an observed product  |
+| laboratory record | actual inputs, outcome, measurement/provenance and failed/unknown fields   | observed, failed, inconclusive                   | a model score        |
+
+## Forward prediction and a result are different data objects
+
+A forward model maps a declared representation of inputs to an output proposal,
+schematically `X -> P_hat`. Its input contract includes molecular identities,
+roles, standardization, and whatever context the model requires. Its output may
+be a ranked set, a probability-like score, or an abstention. It does not state
+that `P_hat` was observed, isolated, characterized, or obtained at any scale.
+The next valid action is a scoped feasibility or human review, not an inflated
+claim about a route.
+
+An observed record has a different form: `X, protocol_context, measurement ->
+outcome`. It needs provenance and must preserve negative and inconclusive cases.
+The Open Reaction Database schema explicitly separates reaction inputs, setup,
+conditions, observations, workups, outcomes, and provenance
+[ORD schema documentation](https://docs.open-reaction-database.org/en/latest/schema.html).
+The `ord-schema` repository likewise describes schema and validation tools rather
+than a database of guaranteed executable routes
+[ord-schema repository](https://github.com/open-reaction-database/ord-schema).
+
+This distinction is the foundation of honest feedback. A model's prediction may
+be useful for prioritization only when its version and input contract are saved.
+An observed failure may be useful for updating a future policy only when the
+input identity, context, and outcome are retained. Do not delete failures to
+make a model look calibrated, and do not train or select on a held-out outcome
+without declaring that protocol change.
+
+## A feedback loop needs fixed definitions
+
+Before feedback changes a route policy, define what counts as the unit of
+feedback. It could be a reaction record, a route edge, or a target campaign;
+these are not interchangeable. Freeze the outcome label, reason for exclusion,
+and decision rule for the current batch. Then record whether a later update is
+exploratory, retrospective, or prospectively tested. A change from “route score”
+to “observed laboratory success” is a change in evidence type, not a stronger
+number on the same scale.
+
+The smallest useful feedback table retains both successes and failures, links
+each to a route-graph version and input state, and says whether it may be used to
+update the next model. If a record lacks critical fields, label it incomplete
+rather than filling gaps from a similarity search. This protects both laboratory
+learning and the interpretation of a forward model.
+
+## Worked case: two routes with different blockers
+
+All values and statuses in this case are **constructed for teaching**. Route
+`R_A` has `2` terminal materials, both marked `confirmed` on `2026-09-09`. Its
+route graph is internally consistent, but its safety authority is
+`approval_required`; its forward model returns proposed outcome `P_hat_A` with
+uncertainty field `not reported`. Route `R_B` also has `2` terminal materials,
+but one is marked `unavailable` on `2026-09-09`; its safety authority is
+`not checked`.
+
+Neither route is ready for execution. `R_A` is pending the named safety authority
+and requires a review of the forward model's missing uncertainty before any
+decision that depends on it. `R_B` is currently ineligible because of material
+status and independently lacks a safety review. It would be misleading to call
+`R_A` “validated” from `P_hat_A`, or to call `R_B` chemically impossible from an
+availability field. The correct output is a bounded status record with separate
+blockers, not a laboratory recommendation.
+
+Suppose a later constructed feedback record for `R_A` contains an input identity
+but an outcome marked `inconclusive`. It must remain in the table. It cannot be
+relabelled as a success or used to claim model accuracy; it may motivate a
+separate data-quality review of the missing outcome fields.
+
+## Limits and independent exercise
+
+Availability changes, models have coverage limits, and laboratory records can be
+incomplete or non-comparable. A forward model can be internally consistent while
+wrong for an unrepresented transformation. A safety field can be cleared under
+one authority and still not transfer to another setting. These are reasons to
+maintain a route contract, not to convert unknowns into favourable scores.
+
+**Handworked exercise (not runnable or empirical):** A constructed route `R_C`
+has `3` terminal fields: two `confirmed` and one `not checked`. Its graph is
+`consistent`; safety authority is `approval_required`; a model returns `P_hat_C`
+with score `0.93`. Which fields prevent a readiness claim? State whether
+`P_hat_C` is an observed outcome, and name one field needed before an observed
+result could be used in a later feedback update.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The `not checked` material field and `approval_required` safety authority prevent
+a readiness claim, regardless of `0.93`. `P_hat_C` is a model proposal, not an
+observed outcome. A later feedback record needs at least the exact input identity,
+route-graph version, outcome/measurement field, provenance, and an explicit
+label for failed or inconclusive cases. The score does not replace any of them.
+
+</details>
+
+## Sources and next lesson
+
+The following official ORD sources were opened on 2026-09-09. They support a
+structured distinction among inputs, outcomes and provenance, not the constructed
+route statuses or any laboratory action.
+
+<div data-case-sources>
+
+- [Open Reaction Database Schema documentation](https://docs.open-reaction-database.org/en/latest/schema.html)
+- [Open Reaction Database ord-schema repository](https://github.com/open-reaction-database/ord-schema)
+
+</div>
+
+Return to [Reaction prediction to the lab](/learn/synthesis-and-automation/reaction-to-lab/)
+to connect a feasibility record to a broader experimental decision boundary.
+Original lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-09.

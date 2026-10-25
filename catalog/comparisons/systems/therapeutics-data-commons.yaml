@@ -1,0 +1,140 @@
+id: therapeutics-data-commons
+name: Therapeutics Data Commons
+provider_class: benchmark-hub
+canonical_url: https://tdcommons.ai/
+summary: A public therapeutic machine-learning resource organized around problems, tasks, datasets, data functions, benchmarks, and leaderboards.
+audiences: [biomedical-researchers, machine-learning-researchers]
+languages: [en]
+metadata_evidence: [quick-start, official-repository]
+access:
+  content: { value: open, evidence: [quick-start] }
+  code: { value: open, evidence: [official-repository] }
+  data: { value: open, evidence: [quick-start, official-repository] }
+  solutions: { value: unverified }
+licenses:
+  - name: MIT License
+    scope: Software and associated documentation in the TDC repository; upstream dataset terms are separate
+    evidence: [repository-license]
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence was encoded for omitted taxonomy topics in this dated review.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t04-data-contract
+    depth: explained
+    evidence: [quick-start]
+    reviewed_scope: Official Quick Start hierarchy, data-loader example, split output, and data-function overview
+    note: The documentation identifies problem, task, dataset, inputs, labels, train-validation-test outputs, splits, processors, metrics, and oracles.
+  - topic_id: t07-property-task-split-design
+    depth: executable
+    run_basis: unverified
+    evidence: [repository-readme]
+    reviewed_scope: A split returned by a documented call taking a method, a random seed and explicit fractions, with a scaffold method among the options, and benchmark groups exposing a train and validation split by benchmark name, split type and seed
+    note: The split is a parameterised call rather than a file, so the method and the seed travel with the data. Whether a given method is appropriate for a given endpoint is left to the user.
+  - topic_id: t12-generated-candidate-evaluation-batch
+    depth: worked
+    evidence: [repository-readme]
+    reviewed_scope: More than ten named oracles documented for goal-oriented and distribution-learning generation, invoked by name and applied to candidates, alongside a metric evaluator invoked the same way
+    note: The evaluation side of generation is supplied as callable infrastructure with documented usage. Its tutorial notebook was not opened in this review, and nothing observed addresses detecting oracle exploitation or comparing against a simple generator.
+  - topic_id: t17-metric-endpoint-uncertainty
+    depth: mentioned
+    evidence: [quick-start, official-repository]
+    reviewed_scope: Benchmark, evaluator, and metric overview
+    note: Metrics and evaluation functions are named; uncertainty treatment was not verified across individual tasks.
+  - topic_id: t08-exposure-pk-endpoint
+    depth: executable
+    run_basis: real-data
+    evidence: [task-pages]
+    reviewed_scope: The ADME task page read in full with 21 datasets, and the toxicity, retrosynthesis and drug-target interaction task pages probed on 2026-09-11, each carrying named datasets with a Python loader, a get_split call, a task definition and references
+    note: Absorption, distribution and excretion endpoints are separate named datasets with loaders and declared splits, including half life, clearance, volume of distribution and plasma protein binding. Endpoint definitions are given per dataset rather than pooled.
+  - topic_id: t08-metabolism-ddi-risk
+    depth: executable
+    run_basis: real-data
+    evidence: [task-pages]
+    reviewed_scope: The ADME task page read in full with 21 datasets, and the toxicity, retrosynthesis and drug-target interaction task pages probed on 2026-09-11, each carrying named datasets with a Python loader, a get_split call, a task definition and references
+    note: Eight CYP datasets separate inhibition from substrate status across five isoforms, and a drug-drug interaction task is listed separately. Assay system is named per dataset.
+  - topic_id: t08-safety-toxicity-endpoint
+    depth: executable
+    run_basis: real-data
+    evidence: [task-pages]
+    reviewed_scope: The ADME task page read in full with 21 datasets, and the toxicity, retrosynthesis and drug-target interaction task pages probed on 2026-09-11, each carrying named datasets with a Python loader, a get_split call, a task definition and references
+    note: Eleven toxicity datasets are loadable with declared splits, spanning hERG, AMES, DILI, LD50, ToxCast, Tox21 and ClinTox, which separates molecular alerts, assay outcomes and organism-level endpoints by dataset.
+  - topic_id: t09-affinity-ranking
+    depth: executable
+    run_basis: real-data
+    evidence: [task-pages]
+    reviewed_scope: The ADME task page read in full with 21 datasets, and the toxicity, retrosynthesis and drug-target interaction task pages probed on 2026-09-11, each carrying named datasets with a Python loader, a get_split call, a task definition and references
+    note: BindingDB, DAVIS and KIBA are loadable with declared splits as a drug-target interaction task. Continuous affinity estimation is the framing; cross-assay comparability is not addressed on the reviewed pages.
+  - topic_id: t14-retrosynthetic-disconnection
+    depth: executable
+    run_basis: real-data
+    evidence: [task-pages]
+    reviewed_scope: The ADME task page read in full with 21 datasets, and the toxicity, retrosynthesis and drug-target interaction task pages probed on 2026-09-11, each carrying named datasets with a Python loader, a get_split call, a task definition and references
+    note: USPTO-50K and USPTO are loadable with declared splits as a retrosynthesis prediction task, with a task definition and references.
+  - topic_id: t02-therapeutic-decision-context
+    depth: mentioned
+    evidence: [task-pages]
+    reviewed_scope: The single-instance, multi-instance and generation task overviews reviewed on 2026-09-11, which map each named task to its named datasets
+    note: A clinical trial outcome prediction task is listed with phase 1, phase 2 and phase 3 datasets. The reviewed overviews name the task and its datasets without the decision framing the topic asks for, and the task page was not read.
+  - topic_id: t13-expression-developability-manufacturability
+    depth: mentioned
+    evidence: [task-pages]
+    reviewed_scope: The single-instance, multi-instance and generation task overviews reviewed on 2026-09-11, which map each named task to its named datasets
+    note: A developability prediction task is listed under single-instance prediction. The reviewed overviews name it without stating construct, expression or manufacturability criteria, and the task page was not read.
+  - topic_id: t05-omics-perturbation-representation
+    depth: mentioned
+    evidence: [task-pages]
+    reviewed_scope: The single-instance, multi-instance and generation task overviews reviewed on 2026-09-11, which map each named task to its named datasets
+    note: Counterfactual prediction over scPerturb and a single-cell drug-target interaction task are listed. The reviewed overviews name the datasets without describing how cell state, perturbation or time are encoded, and the task pages were not read.
+  - topic_id: t12-candidate-design-space
+    depth: mentioned
+    evidence: [task-pages]
+    reviewed_scope: The single-instance, multi-instance and generation task overviews reviewed on 2026-09-11, which map each named task to its named datasets
+    note: A molecule generation task is listed over ZINC, MOSES and ChEMBL. The reviewed overviews name the datasets without defining the reachable chemistry of each space, and the task page was not read.
+  - topic_id: t14-forward-reaction-lab-feedback
+    depth: mentioned
+    evidence: [task-pages]
+    reviewed_scope: The single-instance, multi-instance and generation task overviews reviewed on 2026-09-11, which map each named task to its named datasets
+    note: Reaction outcome prediction over USPTO and a reaction yields prediction task are listed. The reviewed overviews name them without describing condition units or laboratory feedback, and the task pages were not read.
+  - topic_id: t09-binding-mode-pose-hypothesis
+    depth: mentioned
+    evidence: [task-pages]
+    reviewed_scope: The single-instance, multi-instance and generation task overviews reviewed on 2026-09-11, which map each named task to its named datasets
+    note: A structure-based drug design task is listed over PDBBind, DUD-E, scPDB and CrossDock. The reviewed overviews name the datasets without treating a pose as a structural hypothesis, and the task page was not read.
+evidence:
+  - id: task-pages
+    url: https://tdcommons.ai/single_pred_tasks/adme/
+    title: Therapeutics Data Commons task overviews and task pages
+    observed_scope: The single-instance, multi-instance and generation task overviews mapping every named task to its named datasets, together with the ADME task page read in full and the toxicity, retrosynthesis and drug-target interaction pages probed. Every probed page carries named datasets with a Python loader, a get_split call, a task definition and references. Tasks listed only in the overviews were not opened.
+    access: opened
+    reviewed_on: 2026-09-11
+  - id: quick-start
+    url: https://tdcommons.ai/start/
+    title: Therapeutics Data Commons Quick Start
+    observed_scope: Therapeutic scope, problem-task-dataset hierarchy, data-loader example, split outputs, processors, metrics, oracles, and benchmark groups.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: official-repository
+    url: https://github.com/mims-harvard/TDC
+    title: Therapeutics Data Commons official repository
+    observed_scope: Public code repository, tutorials, data loaders, data functions, splits, evaluators, installation, and project scope.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: repository-license
+    url: https://github.com/mims-harvard/TDC/blob/main/LICENSE
+    title: Therapeutics Data Commons repository licence
+    observed_scope: MIT terms for repository software and associated documentation.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: repository-readme
+    url: https://raw.githubusercontent.com/mims-harvard/TDC/master/README.md
+    title: Therapeutics Data Commons repository README
+    observed_scope: Read in full on 2026-09-10. The three-tier problem, task and dataset organisation, splits returned by a call taking method, seed and fractions with a scaffold option, a named metric evaluator, more than ten named generation oracles for goal-oriented and distribution learning, benchmark groups with split type and seed, and leaderboard submission.
+    access: opened
+    reviewed_on: 2026-09-10
+caveats:
+  - This pass read the repository README only. The tutorial notebooks, including the oracle tutorial, were not opened, so states here rest on documented interfaces rather than on an executed example. Omitted topics stay unverified rather than absent.
+  - Public retrieval through TDC does not establish a uniform licence, redistribution right, or unrestricted commercial-use status for every upstream dataset.
+  - Individual dataset pages, leaderboard submissions, and task-specific uncertainty protocols were outside this review scope.
+last_verified: 2026-09-11

@@ -1,0 +1,60 @@
+id: db-thera-sabdab
+name: Thera-SAbDab
+kind: database
+summary: Therapeutic structural antibody database for WHO-recognised antibody and single-domain-antibody-derived therapeutics with released sequences and structural coverage.
+canonical_url: https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/therasabdab/about
+identifiers: []
+stages:
+- biologics-design
+- data-intake
+- evaluation
+modalities:
+- antibody
+- nanobody
+tasks:
+- therapeutic-antibody-retrieval
+- antibody-sequence-similarity-search
+relations: []
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - terms-page
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses: []
+evidence:
+- id: database
+  url: https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/therasabdab/about
+  label: Thera-SAbDab database
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - caveats
+- id: terms-page
+  url: https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/therasabdab/about
+  label: Terms page read 2026-10-23
+  supports:
+  - caveats
+caveats:
+- The about page read on 2026-10-23 states that the database was built under an open-innovation agreement and asks that users cite the database paper, and it describes the contents as immunotherapeutic variable-domain sequences with their structural representatives. It names no licence, so the terms a user is given are the agreement the page mentions rather than a stated grant.
+acknowledgements: []
+last_verified: '2026-10-23'

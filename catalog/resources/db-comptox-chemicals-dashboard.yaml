@@ -1,0 +1,58 @@
+id: db-comptox-chemicals-dashboard
+name: CompTox Chemicals Dashboard
+kind: database
+summary: US EPA web resource for searching chemical substances and inspecting integrated chemistry, hazard, exposure, and bioactivity information.
+canonical_url: https://comptox.epa.gov/dashboard/
+identifiers:
+  - scheme: code
+    value: "ctxR, the EPA's R package of utilities for interacting with the CTX APIs without prior API knowledge"
+    url: https://github.com/USEPA/ctxr
+stages: [dmpk-toxicology, data-intake]
+modalities: [small-molecule]
+tasks: [chemical-identity-resolution, toxicity-evidence-retrieval]
+relations: []
+status: { value: active, evidence: [release-notes] }
+access_level: { value: open_source, evidence: [epa-open-data-statement] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: not_applicable, evidence: [epa-open-data-statement] }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: available, evidence: [generation-page, epa-open-data-statement] }
+  training_data: { value: available, evidence: [epa-open-data-statement] }
+  evaluation_code: { value: available, evidence: [generation-page, tcpl-package] }
+licenses:
+  - name: United States Government work, public domain
+    scope: The agency's own statement that all of its computational toxicology data is considered open data, that it is free of all copyright restrictions, and that it is fully and freely available for both non-commercial and commercial use. The grant reaches the data the agency publishes and serves through the dashboard; it says nothing about a third party who redistributes a derived product.
+    evidence: [epa-open-data-statement]
+evidence:
+  - id: dashboard
+    url: https://comptox.epa.gov/dashboard/
+    label: CompTox Chemicals Dashboard, re-opened 2026-10-24
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: release-notes
+    url: https://www.epa.gov/comptox-tools/comptox-chemicals-dashboard-release-notes
+    label: US EPA CompTox Chemicals Dashboard release notes
+    supports: []
+  - id: epa-open-data-statement
+    url: https://www.epa.gov/comptox-tools/downloadable-computational-toxicology-data
+    label: The EPA's statement that its computational toxicology data is open data free of copyright restrictions, read 2026-10-24
+    supports: [caveats]
+  - id: generation-page
+    url: https://www.epa.gov/comptox-tools/generating-toxcast-data
+    label: The EPA's description of how its screening data are generated through the tcpl pipeline, read 2026-10-24
+    supports: [caveats]
+  - id: tcpl-package
+    url: https://github.com/USEPA/CompTox-ToxCast-tcpl
+    label: The EPA's open-source ToxCast pipeline repository, which resolves on 2026-10-24
+    supports: [identifiers, caveats]
+  - id: terms-page
+    url: https://comptox.epa.gov/dashboard/
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+caveats:
+  - "The canonical page could not be read on 2026-10-23 (<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c), so no terms statement was established. The page resolved on 2026-10-24, but it renders its content in the browser, so the terms come from the agency's own downloadable-data page rather than from the dashboard itself."
+  - Dashboard search and integrated predictions do not establish that a record is an experimental toxicity measurement or a suitable training label.
+  - The dashboard serves integrated predictions alongside the measured data. The record did not open the code behind those predictions, so the inference code and the weights stay unverified; the ctxR package it publishes is a client for the agency's APIs.
+acknowledgements: []
+last_verified: "2026-10-24"

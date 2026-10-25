@@ -1,0 +1,77 @@
+{
+  "schema_version": "aidd-commons.generation-objective.v1",
+  "objective_id": "freesolv-space-design-v1",
+  "frozen_on": "2026-09-10",
+  "artifact_type": "frozen-design-objective",
+  "declared_before_generation": true,
+  "target_context": {
+    "chemical_space": "Small neutral organic molecules of the kind present in the FreeSolv hydration set",
+    "reference_set": "labs/freesolv/results/splits/scaffold.csv",
+    "reference_set_size": 642,
+    "training_split_size": 514,
+    "what_this_context_is_not": "No protein target, no binding hypothesis and no biological activity claim is part of this objective. The context is a physical-property design space."
+  },
+  "desired_properties": [
+    {
+      "name": "heavy_atom_count",
+      "computed_by": "rdkit.Chem.Mol.GetNumHeavyAtoms",
+      "bound": { "minimum": 4, "maximum": 30 },
+      "reason": "Keeps candidates inside the size range the reference measurements cover."
+    },
+    {
+      "name": "molecular_weight",
+      "computed_by": "rdkit.Chem.Descriptors.MolWt",
+      "bound": { "minimum": 50.0, "maximum": 400.0 },
+      "reason": "States the mass window as a design constraint, not as a prediction."
+    },
+    {
+      "name": "crippen_logp",
+      "computed_by": "rdkit.Chem.Crippen.MolLogP",
+      "bound": { "minimum": -3.0, "maximum": 5.0 },
+      "reason": "A computed descriptor used as a stated constraint; it is not a measured partition coefficient."
+    },
+    {
+      "name": "rotatable_bond_count",
+      "computed_by": "rdkit.Chem.rdMolDescriptors.CalcNumRotatableBonds",
+      "bound": { "minimum": 0, "maximum": 8 },
+      "reason": "Caps conformational flexibility so the downstream measurement stays interpretable."
+    }
+  ],
+  "prohibited_motifs": [
+    {
+      "name": "acyl-halide",
+      "smarts": "[CX3](=O)[F,Cl,Br,I]",
+      "reason": "Hydrolyses in aqueous assay conditions, so a hydration measurement would not describe the submitted structure."
+    },
+    {
+      "name": "peroxide",
+      "smarts": "[OX2][OX2]",
+      "reason": "Handling and stability risk in a teaching workflow."
+    },
+    {
+      "name": "azide",
+      "smarts": "[NX2-]=[NX2+]=[NX1-,NX2]",
+      "reason": "Handling and stability risk in a teaching workflow."
+    },
+    {
+      "name": "isocyanate",
+      "smarts": "[NX2]=[CX2]=[OX1]",
+      "reason": "Reacts with water, so the measured species would not be the proposed species."
+    }
+  ],
+  "synthesis_limits": {
+    "maximum_ring_count": 4,
+    "maximum_stereocentre_count": 2,
+    "prohibited_elements": ["Si", "B", "Se", "Te", "As"],
+    "what_these_limits_are": "Cheap structural proxies chosen before generation. They are not a synthesis plan and they do not establish that any candidate can be made.",
+    "route_feasibility": "not_assessed"
+  },
+  "experimental_decision": {
+    "question": "Which candidates enter the next hydration free-energy measurement batch?",
+    "batch_size": 5,
+    "assay": "Hydration free energy in water at 298 K, the observable used by the FreeSolv reference set",
+    "selection_rule": "Rank the candidates that survive every gate by heavy-atom count ascending, then by canonical SMILES, and take the first five.",
+    "abstention_rule": "If fewer than 5 candidates survive, submit only the survivors and record the shortfall rather than relaxing a gate.",
+    "what_a_pass_does_not_mean": "Surviving every gate means the candidate was not excluded by a declared constraint. It is not evidence of a property value, of synthetic accessibility, or of measurement success."
+  }
+}

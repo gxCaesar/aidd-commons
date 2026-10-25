@@ -1,0 +1,43 @@
+id: db-human-protein-atlas
+name: Human Protein Atlas
+kind: database
+summary: A human protein atlas with downloadable protein-expression, RNA-expression, subcellular-localization, cancer, cell-line, and interaction data.
+canonical_url: https://www.proteinatlas.org/
+identifiers:
+  - scheme: download
+    value: Human Protein Atlas downloadable data
+    url: https://www.proteinatlas.org/about/download
+  - scheme: terms
+    value: Human Protein Atlas licence and citation guidance
+    url: https://www.proteinatlas.org/about/licence
+stages: [disease-mechanism, target-discovery]
+modalities: [protein-expression, tissue-expression, subcellular-localization]
+tasks: [expression-lookup, localization-inspection]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [download-page, licence-page] }
+openness:
+  inference_code: { value: not_applicable, evidence: [download-page] }
+  training_code: { value: not_applicable, evidence: [download-page] }
+  weights: { value: not_applicable, evidence: [download-page] }
+  architecture: { value: not_applicable, evidence: [download-page] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: not_applicable, evidence: [download-page] }
+licenses:
+  - name: CC-BY-4.0
+    scope: Copyrightable parts of the Human Protein Atlas database available for download; third-party constrained data may be included and retain their own restrictions, which this grant does not override.
+    evidence: [licence-page]
+evidence:
+  - id: download-page
+    url: https://www.proteinatlas.org/about/download
+    label: Human Protein Atlas downloadable data
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: licence-page
+    url: https://www.proteinatlas.org/about/licence
+    label: Human Protein Atlas licence and citation guidance
+    supports: [identifiers, caveats]
+caveats:
+  - The licence page says that third-party-constrained data may be included and users must determine applicable third-party restrictions.
+acknowledgements: []
+last_verified: "2026-10-23"

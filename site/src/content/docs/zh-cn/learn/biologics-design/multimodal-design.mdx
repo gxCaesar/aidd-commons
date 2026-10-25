@@ -1,0 +1,49 @@
+---
+title: 生物制剂与多模态设计
+description: 将设计出的序列和结构与生物学功能的证据分开。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Biologics and multimodal design](/learn/biologics-design/multimodal-design/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="biologics-design/multimodal-design" />
+
+## 基础
+
+蛋白质、肽、抗体和核酸设计处理的生物对象中，序列、结构、表达、稳定性、特异性和
+功能可能彼此不一致。一个看似合理的设计不是其能表达、折叠、结合或按预期发挥作用的
+证据。
+
+## 实践工作流
+
+明确构建体、期望功能、负向选择条件、表达系统和测定面板。生成一个规模小且可审查的
+候选集，再利用实验反馈更新设计规则。应结合其所声明的输入和输出假设阅读
+[ProteinMPNN](https://github.com/dauparas/ProteinMPNN) 和
+[RFdiffusion](https://github.com/RosettaCommons/RFdiffusion) 等来源。
+
+## 评估
+
+将计算合理性与序列恢复、表达、生物物理结合、特异性、细胞功能和体内相关性分开。
+评估泛化时，留出相关家族或结构语境，并记录失败而不是只保留成功的设计。
+
+## 前沿与开放问题
+
+[LigandMPNN](https://github.com/dauparas/LigandMPNN) 和
+[Chroma](https://github.com/generatebio/chroma) 扩展了设计输入，但并未消除复合物、
+抗原状态或下游功能中的不确定性。合适的模型取决于决策和可用的测定反馈。
+
+## v0.1 尚未教授的内容
+
+v0.1 不规定抗体或治疗性蛋白开发计划，不从结构本身声称已获得功能验证，也不以
+合成的综合评分对设计系统排序。
+
+## 核心来源路径
+
+从 [ProteinMPNN](https://github.com/dauparas/ProteinMPNN) 和
+[RFdiffusion](https://github.com/RosettaCommons/RFdiffusion) 开始；当设计决策依赖于
+预测的复合物时，再回看[共折叠 Atlas](/atlas/open-cofolding-frontier/)。
+
+最后审阅：2026-09-04。

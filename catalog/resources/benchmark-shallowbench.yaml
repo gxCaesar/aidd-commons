@@ -1,0 +1,36 @@
+id: benchmark-shallowbench
+name: ShallowBench
+kind: benchmark
+summary: Benchmark of 5,780 shallow-pocket targets drawn from CrossDocked2020 and selected by the geometry of the binding interface, on which generative drug-design models are reported to produce weaker predicted binding affinity.
+canonical_url: https://arxiv.org/abs/2606.06717
+identifiers:
+  - scheme: paper
+    value: "ShallowBench: Benchmarking Generative Drug Design Models on Shallow-Pocket Targets; Reddy and Liu, arXiv 2606.06717, submitted 4 June 2026"
+    url: https://arxiv.org/abs/2606.06717
+stages: [molecular-generation, evaluation]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [molecular-generation, virtual-screening, benchmark-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: unverified }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: available, evidence: [paper-record] }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: paper-record
+    url: https://arxiv.org/abs/2606.06717
+    label: The arXiv record of the paper, read on 2026-10-24, with its title, author list, submission date and abstract
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+caveats:
+  - "The arXiv page states no code or data release and gives no repository or download location, so the record carries no licence and no established access level. The paper, its experimental HTML and its TeX source are the artefacts the page offers."
+  - "The targets are selected by comparing the Alpha Shape lid volume with the protein's atom-voxel volume, which identifies shallow interfaces with low concavity and adequate binding surface area, and the benchmark holds 5,780 of them drawn from CrossDocked2020. The selection rule is the benchmark's own and it decides which targets the number is about."
+  - "The affinity the benchmark reports is a predicted binding affinity, so the ordering inherits the biases of the scoring function that produced it. The paper's own argument is that the generative models do worse on these low-concavity interfaces and that the difficulty is the target family rather than the architecture."
+  - "The record did not run the benchmark, and it did not obtain the target list."
+acknowledgements: []
+last_verified: "2026-10-24"

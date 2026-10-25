@@ -1,0 +1,4291 @@
+{
+  "schema_version": "aidd-commons.crossdomain-tradeoff-summary.v1",
+  "protocol_id": "chembl37-crossdomain-tradeoff-v1",
+  "computed_on": "2026-10-24",
+  "software": {
+    "aidd_commons_labs": "0.2.0rc1",
+    "python": "3.11.15",
+    "numpy": "2.4.6",
+    "rdkit": "2025.09.6"
+  },
+  "inputs": [
+    "potency",
+    "selectivity_ratio",
+    "exposure_ratio",
+    "safety_package",
+    "functional_validation"
+  ],
+  "teaching_decisions": [
+    {
+      "id": "N1",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "supplied",
+          "value": 20.0,
+          "unit": "nM",
+          "meets_threshold": true,
+          "evidence_kind": "constructed teaching row",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": null
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "supplied",
+          "value": 8.0,
+          "unit": "fold",
+          "meets_threshold": false,
+          "evidence_kind": "constructed teaching row",
+          "scope": "A ratio against an intended target.",
+          "note": null
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "supplied",
+          "value": 4.0,
+          "unit": "fold",
+          "meets_threshold": true,
+          "evidence_kind": "constructed teaching row",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": null
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "supplied",
+          "value": "available for review",
+          "unit": null,
+          "meets_threshold": true,
+          "evidence_kind": "constructed teaching row",
+          "scope": "An independently reviewed safety package.",
+          "note": "Available for review is not a favourable review, and the review outcome is not established here."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "supplied",
+          "value": "interpretable",
+          "unit": null,
+          "meets_threshold": true,
+          "evidence_kind": "constructed teaching row",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": null
+        }
+      },
+      "blocking_input": "selectivity_ratio",
+      "next_decision": "revise the candidate",
+      "evidence_grade": {
+        "supplied_input_count": 5,
+        "supplied_inputs": [
+          "potency",
+          "selectivity_ratio",
+          "exposure_ratio",
+          "safety_package",
+          "functional_validation"
+        ],
+        "kinds": {
+          "potency": "constructed teaching row",
+          "selectivity_ratio": "constructed teaching row",
+          "exposure_ratio": "constructed teaching row",
+          "safety_package": "constructed teaching row",
+          "functional_validation": "constructed teaching row"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "N2",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "supplied",
+          "value": 40.0,
+          "unit": "nM",
+          "meets_threshold": true,
+          "evidence_kind": "constructed teaching row",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": null
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "supplied",
+          "value": 30.0,
+          "unit": "fold",
+          "meets_threshold": true,
+          "evidence_kind": "constructed teaching row",
+          "scope": "A ratio against an intended target.",
+          "note": null
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "supplied",
+          "value": 2.0,
+          "unit": "fold",
+          "meets_threshold": false,
+          "evidence_kind": "constructed teaching row",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": null
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "supplied",
+          "value": "available for review",
+          "unit": null,
+          "meets_threshold": true,
+          "evidence_kind": "constructed teaching row",
+          "scope": "An independently reviewed safety package.",
+          "note": "Available for review is not a favourable review, and the review outcome is not established here."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "supplied",
+          "value": "interpretable",
+          "unit": null,
+          "meets_threshold": true,
+          "evidence_kind": "constructed teaching row",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": null
+        }
+      },
+      "blocking_input": "exposure_ratio",
+      "next_decision": "revise the candidate",
+      "evidence_grade": {
+        "supplied_input_count": 5,
+        "supplied_inputs": [
+          "potency",
+          "selectivity_ratio",
+          "exposure_ratio",
+          "safety_package",
+          "functional_validation"
+        ],
+        "kinds": {
+          "potency": "constructed teaching row",
+          "selectivity_ratio": "constructed teaching row",
+          "exposure_ratio": "constructed teaching row",
+          "safety_package": "constructed teaching row",
+          "functional_validation": "constructed teaching row"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "N3",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "supplied",
+          "value": 45.0,
+          "unit": "nM",
+          "meets_threshold": true,
+          "evidence_kind": "constructed teaching row",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": null
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "supplied",
+          "value": 25.0,
+          "unit": "fold",
+          "meets_threshold": true,
+          "evidence_kind": "constructed teaching row",
+          "scope": "A ratio against an intended target.",
+          "note": null
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "supplied",
+          "value": 3.5,
+          "unit": "fold",
+          "meets_threshold": true,
+          "evidence_kind": "constructed teaching row",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": null
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": false,
+          "evidence_kind": "constructed teaching row",
+          "scope": "An independently reviewed safety package.",
+          "note": null
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "supplied",
+          "value": "interpretable",
+          "unit": null,
+          "meets_threshold": true,
+          "evidence_kind": "constructed teaching row",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": null
+        }
+      },
+      "blocking_input": "safety_package",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 4,
+        "supplied_inputs": [
+          "potency",
+          "selectivity_ratio",
+          "exposure_ratio",
+          "functional_validation"
+        ],
+        "kinds": {
+          "potency": "constructed teaching row",
+          "selectivity_ratio": "constructed teaching row",
+          "exposure_ratio": "constructed teaching row",
+          "safety_package": "constructed teaching row",
+          "functional_validation": "constructed teaching row"
+        }
+      },
+      "complete": false
+    }
+  ],
+  "measured_decisions": [
+    {
+      "id": "CHEMBL1073",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL114",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL1144",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "indeterminate",
+          "value": null,
+          "unit": "nM",
+          "meets_threshold": null,
+          "evidence_kind": "multi-activity median",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "The admitted records mix the endpoint types EC50, IC50, so no single potency value is the family's."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "multi-activity median",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL1171837",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL118",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL1232461",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL1269858",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL1276308",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL1294",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL169901",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL17157",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL1829763",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL193",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL1951444",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL1963249",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL196945",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL2017291",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL205742",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL205807",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL2070137",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL212521",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL212689",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL2152523",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL218628",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL219861",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL23",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL2337977",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL2337981",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL243001",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL244521",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL244936",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL254328",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL29609",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL296419",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL375166",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL387125",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL397983",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL413",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL42",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL423",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL445",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL46",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL479",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL499",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL518924",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL54",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL569185",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL575448",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL602745",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL631",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL655",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL682",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL6966",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL71",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL833",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL84",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL841",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    },
+    {
+      "id": "CHEMBL95",
+      "inputs": {
+        "potency": {
+          "name": "potency",
+          "state": "absent",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Observed in vitro response potency in the named assay and document only.",
+          "note": "No admitted response-potency point exists for this parent."
+        },
+        "selectivity_ratio": {
+          "name": "selectivity_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "A ratio against an intended target.",
+          "note": "The cohort holds inhibition potency against two drug-metabolising enzymes, which is not a selectivity ratio against an intended target."
+        },
+        "exposure_ratio": {
+          "name": "exposure_ratio",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An exposure compared with an effective concentration.",
+          "note": "The cohort holds in vitro intrinsic clearance, which is not an exposure and cannot form an exposure-to-effective-concentration ratio."
+        },
+        "safety_package": {
+          "name": "safety_package",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "An independently reviewed safety package.",
+          "note": "No measured safety material exists for this cohort, and a review is a human decision that no measurement supplies."
+        },
+        "functional_validation": {
+          "name": "functional_validation",
+          "state": "not covered",
+          "value": null,
+          "unit": null,
+          "meets_threshold": null,
+          "evidence_kind": "none",
+          "scope": "Interpretable functional validation for the compound.",
+          "note": "The measured assay records in this repository classify assay records rather than validate a compound's function."
+        }
+      },
+      "blocking_input": "potency",
+      "next_decision": "close an evidence gap",
+      "evidence_grade": {
+        "supplied_input_count": 0,
+        "supplied_inputs": [],
+        "kinds": {
+          "potency": "none",
+          "selectivity_ratio": "none",
+          "exposure_ratio": "none",
+          "safety_package": "none",
+          "functional_validation": "none"
+        }
+      },
+      "complete": false
+    }
+  ],
+  "teaching_blocking_counts": {
+    "selectivity_ratio": 1,
+    "exposure_ratio": 1,
+    "safety_package": 1
+  },
+  "teaching_next_decision_counts": {
+    "revise the candidate": 2,
+    "close an evidence gap": 1
+  },
+  "measured_blocking_counts": {
+    "potency": 58
+  },
+  "measured_next_decision_counts": {
+    "close an evidence gap": 58
+  },
+  "measured_input_state_counts": {
+    "potency": {
+      "absent": 57,
+      "indeterminate": 1
+    },
+    "selectivity_ratio": {
+      "not covered": 58
+    },
+    "exposure_ratio": {
+      "not covered": 58
+    },
+    "safety_package": {
+      "not covered": 58
+    },
+    "functional_validation": {
+      "not covered": 58
+    }
+  },
+  "measured_complete_count": 0,
+  "teaching_complete_count": 0,
+  "measured_candidate_count": 58,
+  "boundary_statement": "These decisions execute the curriculum's nomination rule. They are not a development-candidate assessment and they nominate nothing. Response potency does not validate mechanism or intended-target engagement, a comparison between two drug-metabolising enzymes is not a selectivity ratio, intrinsic clearance is not exposure, and a safety package that is available for review is not a favourable review. The thresholds are the fictional project's teaching thresholds and not pharmacological criteria.",
+  "rules": {
+    "composite_score": "Refuse every composite, weighted sum, overall desirability value and ordering of the candidates. A candidate is reported as the state of each required input, the input that blocks it, and the next decision the evidence points to.",
+    "missing_input": "A missing input stays missing. It is never filled with a no-risk, adequate-exposure, clean, safe or interpretable value, and an input that is not covered never passes.",
+    "review_input": "A safety package that is available for review is not a favourable review, and a review is not a measurement. The input is supplied as available for review and the decision still records that the review outcome is not established.",
+    "next_decision": "A candidate that misses a numerical threshold on a supplied input is a candidate to revise. A candidate that misses a required input that is absent or not covered is a candidate with an evidence gap to close. Changing a threshold so that a favourite passes is a change to the product requirement and is not a discovery."
+  }
+}

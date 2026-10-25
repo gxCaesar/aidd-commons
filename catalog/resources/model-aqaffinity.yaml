@@ -1,0 +1,40 @@
+id: model-aqaffinity
+name: AQAffinity
+kind: model
+summary: Structure-free protein-ligand binding-affinity head built on the OpenFold3 trunk, which takes a protein sequence and a ligand representation, folds the complex internally and predicts affinity without an experimental structure.
+canonical_url: https://huggingface.co/SandboxAQ/AQAffinity
+identifiers:
+  - scheme: code
+    value: "AQAffinity source and weights, Hugging Face repository SandboxAQ/AQAffinity, installable with pip from that repository"
+    url: https://huggingface.co/SandboxAQ/AQAffinity
+stages: [hit-discovery, lead-optimization]
+modalities: [protein-ligand-complex]
+tasks: [affinity-prediction, structure-free-binding-affinity]
+relations: []
+status: { value: unverified }
+access_level: { value: gated, evidence: [aqaffinity-page] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: "Apache-2.0"
+    scope: "The repository's own metadata states the Apache 2.0 licence. The record did not read the licence text or the model card, because the repository's files return an unauthorised status to an unauthenticated reader, so the scope of the grant on the weights, the code and the accompanying data is not established from the file itself."
+    evidence: [aqaffinity-page]
+evidence:
+  - id: aqaffinity-page
+    url: https://huggingface.co/SandboxAQ/AQAffinity
+    label: AQAffinity repository page (reviewed 2026-10-23)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+caveats:
+  - "The repository is gated, and its approval setting is automatic, so access follows a request rather than being open. The record's access level is therefore gated rather than open."
+  - "The model card and the repository's files return an unauthorised status to an unauthenticated reader, so the record could not read what the repository says about its architecture, its training data, its checkpoint names or the construction of the data it ships. Every openness dimension except the access level and the licence is unverified, and that is a statement about what the record could establish, not a claim that the repository lacks them."
+  - "The repository's file listing was visible to the record's unauthenticated request and names a training and a validation dataset with and without a structure representation, an inference example under the L1000 target, and a runner configuration, but the contents of those files were not read."
+  - "The record carries no paper identifier for the model, because the model card that would carry it was not readable, and the identifier list holds only the repository itself."
+  - "The name and the repository path are recorded as the project published them. The record did not read the model card, so the summary of what the model does rests on the repository's own metadata and on the project's public description of it."
+acknowledgements: []
+last_verified: "2026-10-23"

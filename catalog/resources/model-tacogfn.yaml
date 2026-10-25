@@ -1,0 +1,57 @@
+id: model-tacogfn
+name: TacoGFN
+kind: model
+summary: "TacoGFN is a target-conditioned GFlowNet for structure-based drug design that generates molecules conditioned on a protein pocket, rewarding binding affinity, drug-likeness and synthesizability."
+canonical_url: https://github.com/tsa87/tacogfn
+identifiers:
+  - scheme: paper
+    value: "TacoGFN: Target-conditioned GFlowNet for Structure-based Drug Design, TMLR 2024; arXiv 2310.03223"
+    url: https://arxiv.org/abs/2310.03223
+stages: [design, hit-discovery, lead-optimization]
+modalities: [small-molecule, protein-pocket, molecular-graph]
+tasks: [molecular-generation, target-conditioned-generation]
+relations:
+  - type: used-by
+    target: model-cgflow
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [readme] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: "repository source code only, with the notice to be retained; no terms are stated for the CrossDocked2020 and ZINCDock-15M datasets or for the Figshare package that carries the trained weights"
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/tsa87/tacogfn
+    label: tsa87/tacogfn repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: paper
+    url: https://arxiv.org/abs/2310.03223
+    label: arXiv abstract for the TacoGFN paper (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: readme
+    url: https://raw.githubusercontent.com/tsa87/tacogfn/main/readme.md
+    label: TacoGFN readme
+    supports: [caveats, acknowledgements]
+  - id: cgflow-readme
+    url: https://raw.githubusercontent.com/tsa87/cgflow/main/README.md
+    label: CGFlow README, which names TacoGFN as prior work and ships a TacoGFN checkpoint
+    supports: [relations, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/tsa87/tacogfn/main/LICENSE.md
+    label: TacoGFN MIT LICENSE
+    supports: []
+caveats:
+  - The README states no licence or usage terms for the CrossDocked2020 and ZINCDock-15M datasets or for the Figshare package that holds the trained weights, pharmacophores and pocket graphs.
+  - The code modifies the GFlowNet library at github.com/recursionpharma/gflownet, which is a different repository from GFNOrg/gflownet.
+  - The repository is also reachable at github.com/tsa87/TacoGFN-SBDD, which is the path the CGFlow README links to.
+acknowledgements:
+  - The README states the code modifies the GFlowNet library for graph and molecular data maintained by Recursion.
+last_verified: "2026-10-21"

@@ -1,0 +1,33 @@
+id: bad-license-inaccessible-evidence
+name: Inaccessible licence claim
+provider_class: curriculum
+canonical_url: https://example.org/inaccessible-license
+summary: A fixture with a licence claim supported only by an inaccessible page.
+audiences: [graduate-students]
+languages: [en]
+metadata_evidence: [overview]
+access:
+  content: { value: gated, evidence: [overview] }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses:
+  - name: Claimed example licence
+    scope: Course materials
+    evidence: [restricted-terms]
+coverage: []
+evidence:
+  - id: overview
+    url: https://example.org/inaccessible-license
+    title: Inaccessible licence overview
+    observed_scope: System identity and gated content access.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: restricted-terms
+    url: https://example.org/inaccessible-license/terms
+    title: Restricted terms page
+    observed_scope: The page required credentials and its terms were not visible.
+    access: inaccessible
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

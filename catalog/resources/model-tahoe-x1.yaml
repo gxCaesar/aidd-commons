@@ -1,0 +1,50 @@
+id: model-tahoe-x1
+name: Tahoe-x1
+kind: model
+summary: Family of perturbation-trained single-cell foundation models that scale from seventy million to three billion parameters, pretrained on about 266 million single-cell profiles and adapted to cancer-focused downstream tasks, with the weights published.
+canonical_url: https://github.com/tahoebio/tahoe-x1
+identifiers:
+  - scheme: code
+    value: "Tahoe-x1 source repository and published model weights, tahoebio/tahoe-x1, with copies of the weights on Hugging Face as safetensor files"
+    url: https://github.com/tahoebio/tahoe-x1
+  - scheme: paper
+    value: "Tahoe-x1: Scaling Perturbation-Trained Single-Cell Foundation Models to 3 Billion Parameters; bioRxiv 2025.10.23.683759"
+    url: https://www.biorxiv.org/content/10.1101/2025.10.23.683759v1
+stages: [design, evaluation]
+modalities: [single-cell, gene-expression]
+tasks: [perturbation-prediction, gene-essentiality-prediction, cell-type-classification, pathway-membership-recovery]
+relations:
+  - type: successor-to
+    target: model-scgpt
+status: { value: unverified }
+access_level: { value: open_source, evidence: [tahoe-readme] }
+openness:
+  inference_code: { value: available, evidence: [tahoe-readme] }
+  training_code: { value: available, evidence: [tahoe-readme] }
+  weights: { value: available, evidence: [tahoe-readme] }
+  architecture: { value: available, evidence: [tahoe-readme] }
+  data_recipe: { value: available, evidence: [tahoe-readme] }
+  training_data: { value: available, evidence: [tahoe-readme] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: "Apache-2.0"
+    scope: "The repository's own licence marker states Apache License 2.0. The grant covers the source code and the published checkpoints. The licences of the pretraining corpora are the corpora's own, and the page states that some of the training corpora are not publicly downloadable and require an access request."
+    evidence: [tahoe-readme]
+evidence:
+  - id: tahoe-repository
+    url: https://github.com/tahoebio/tahoe-x1
+    label: Tahoe-x1 repository (reviewed 2026-10-23)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, relations, caveats]
+  - id: tahoe-readme
+    url: https://raw.githubusercontent.com/tahoebio/tahoe-x1/main/README.md
+    label: Tahoe-x1 README (reviewed 2026-10-23)
+    supports: [identifiers, caveats]
+caveats:
+  - "The page states the headline pretraining size as 266 million single-cell profiles, and the six rows it lists, an unfiltered and a filtered version of CellxGene 2025-01, scBaseCamp 2025-02 and Tahoe-100M, sum to about 269 million. The record carries both figures rather than reconciling them, because the page does not."
+  - "The filtered corpora discard the cells with the fewest detected genes, and the page says this can affect cohort selection, so the second pretraining stage is not the same population as the first."
+  - "The page gives no formal pretraining objective, loss or masking procedure. It describes the models as perturbation-trained with two-stage pretraining and downstream adaptation, and the record does not supply a more precise statement than that."
+  - "The page reports no numerical benchmark result. It names the evaluations, DepMap essentiality, MSigDB hallmarks, cell-type classification across five tissues, and perturbation prediction in unseen contexts, and points to the preprint, so the record carries the names of the evaluations and not their outcomes."
+  - "The current codebase supports only the flash attention implementation with the attention mask disabled, and the Triton backend and the custom attention masks used in training the smaller two models are no longer supported, so the released inference path is not the path the smaller models were trained with."
+  - "The page states that some training corpora are not publicly downloadable and require an access request, so a reader can obtain the weights without being able to obtain every corpus behind them."
+acknowledgements: []
+last_verified: "2026-10-23"

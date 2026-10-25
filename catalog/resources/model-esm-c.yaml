@@ -1,0 +1,73 @@
+id: model-esm-c
+name: ESM Cambrian
+kind: model
+summary: The Biohub ESM repository release of the ESM Cambrian models, comprising the ESMC 6B protein language model, the ESMFold2 all-atom folding model and the ESMC sparse autoencoders, with the ESM Atlas dataset and a binder design system released alongside them.
+canonical_url: https://github.com/Biohub/esm
+identifiers:
+  - scheme: source-code
+    value: "Biohub ESM repository, source code and model weights release"
+    url: https://github.com/Biohub/esm
+  - scheme: model-weights
+    value: "ESMC 6B checkpoint"
+    url: https://huggingface.co/biohub/ESMC-6B
+  - scheme: model-weights
+    value: "ESMFold2 checkpoint"
+    url: https://huggingface.co/biohub/ESMFold2
+  - scheme: model-weights
+    value: "ESMC 6B sparse autoencoder checkpoint"
+    url: https://huggingface.co/biohub/ESMC-6B-sae-k64-codebook16384
+  - scheme: paper
+    value: "Language Modeling Materializes a World Model of Protein Biology; DOI 10.64898/2026.06.03.729735"
+    url: https://www.biorxiv.org/content/10.64898/2026.06.03.729735
+stages: [representation-learning, structure-prediction, design]
+modalities: [protein, sequence]
+tasks: [protein-representation-learning, structure-prediction, protein-design]
+relations:
+  - type: successor-to
+    target: model-esm3
+status: { value: unverified }
+access_level: { value: open_source, evidence: [readme, license] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [readme, esmc-card] }
+  architecture: { value: available, evidence: [readme] }
+  data_recipe: { value: available, evidence: [model-esm-c-readme] }
+  training_data: { value: available, evidence: [esmfold2-card] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: covers the source code and the model weights released by the ESM project, per the project README and the LICENSE.md file; the model cards additionally list an Acceptable Use Policy, and the README assigns no separate terms to the ESM Atlas dataset or to the binder design system
+    evidence: [readme, license, esmc-card]
+evidence:
+  - id: repository
+    url: https://github.com/Biohub/esm
+    label: Biohub ESM repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, relations, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/Biohub/esm/main/README.md
+    label: Biohub ESM README (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: esmc-card
+    url: https://huggingface.co/biohub/ESMC-6B
+    label: ESMC 6B model card (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: esmfold2-card
+    url: https://huggingface.co/biohub/ESMFold2
+    label: ESMFold2 model card (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/Biohub/esm/main/LICENSE.md
+    label: Biohub ESM MIT licence file (reviewed 2026-10-21)
+    supports: []
+  - id: model-esm-c-readme
+    url: https://raw.githubusercontent.com/Biohub/esm/HEAD/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The release states that the model was trained on protein sequences from UniRef, MGnify and the Joint Genome Institute with the sequence clustering and the two-stage schedule the ESMC card sets out, and the repository states that the ESM Atlas dataset is released openly.
+  - Only the ESMFold2 model card names a training corpus, the Protein Data Bank and the AlphaFold DB; the repository README names no Cambrian collection, so the data recipe stays unverified.
+  - The README states that the models are available under the MIT licence but assigns no separate terms to the ESM Atlas dataset or to the binder design system.
+  - The ESMC 6B and sparse autoencoder model cards show a second licence label, other, next to mit, and link an Acceptable Use Policy that the cards do not explain.
+acknowledgements: []
+last_verified: "2026-10-23"

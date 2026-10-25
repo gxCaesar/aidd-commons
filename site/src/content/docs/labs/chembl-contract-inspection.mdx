@@ -1,0 +1,155 @@
+---
+title: Read the frozen contract before the model
+description: Inspect the screening unit, endpoint definition and admission rules of the ChEMBL 37 EGFR lab with one offline command, and check that the committed artifacts still agree.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="chembl-contract" />
+
+## Before you run
+
+**Mode: runnable inspection of committed files.** The command below reads only
+JSON already stored in this repository. It makes no network request, downloads
+nothing, imports no third-party package and trains nothing. It does not
+reproduce the experiment. It answers a narrower question that comes first: what
+is this dataset a dataset of, and which rows were never allowed in?
+
+Most reported model errors are not comparable because the contracts behind them
+differ. A number is only meaningful once you can say which assay produced it,
+which quantity was modelled, and which rows were excluded before fitting began.
+
+```bash
+python labs/chembl_egfr/inspect_contract.py show
+```
+
+## 1. The screening unit is an assay, not a target
+
+The first block names two assays, `CHEMBL5736995` as primary and
+`CHEMBL3705421` as replication. Both are binding assays with a confidence score
+of 9 and the same BAO format, and each comes from its own document.
+
+They are two units, not one dataset about EGFR. That is the whole point of
+keeping them apart: a model fitted on the first is asked, later, whether it
+transfers to the second. The output also states what the choice excludes, which
+is every other EGFR assay in the release and therefore any claim about EGFR
+activity in general.
+
+The transfer question has an answer here, and it is a negative one. Morgan
+Ridge reached the lowest primary error at 0.41833032711934154 and then the
+highest replication error at 3.1316760122202343, above both descriptor Ridge at
+0.57926487123557 and the train mean at 0.898379755056597. Selecting the
+representation on the primary assay alone would have chosen the one that fails
+hardest on the second.
+
+## 2. The endpoint is a decision, not a column
+
+The second block shows that the measured quantity is IC50, that only the exact
+relation is admitted, that only nanomolar units are admitted, and that the
+modelled target is the `pchembl_value` derived from them. Repeats on one parent
+are reduced by their median, with a consistency tolerance of 0.011.
+
+Each of those is an exclusion. Ki and Kd rows never enter. Non-nanomolar rows
+never enter. Every greater-than and less-than measurement never enters, and
+those censored rows are concentrated at the weak end of the range. A model
+trained under this contract predicts a potency summary for compounds that were
+measurable in one assay format. It does not predict whether a compound is
+active.
+
+## 3. The admitted rows, and the ones that were not
+
+The third block traces the row counts. The primary assay reads 975 rows,
+excludes 9 for a missing structure, and retains 966. Those 966 rows describe
+902 parent molecules, of which 57 carry repeated measurements. The replication
+assay reads 173 rows, excludes none and retains 173 rows over 170 parents. No
+parent appears in both assays.
+
+The independent unit is the ChEMBL parent molecule, not the row and not the
+salt. A salt and its parent are one unit, so they cannot land on opposite sides
+of a split. The arithmetic is printed so the denominator stays visible: a yield
+or an error rate quoted without the count that entered is not checkable.
+
+## 4. Check that the artifacts still agree
+
+```bash
+python labs/chembl_egfr/inspect_contract.py check
+```
+
+This recomputes nine relationships across the protocol, the development
+summary, the locked summary and the execution amendment. It confirms that all
+four declare the same protocol, that the admission arithmetic closes for both
+assays, that every selected alpha belongs to the frozen grid, that the stored
+validation grid replays to the recorded alphas under the protocol's own rule of
+minimum validation error with ties choosing the smaller alpha, that the locked
+run reused those alphas rather than reselecting, that both runs report the same
+Python, NumPy and RDKit, and that the constant baseline reports an undefined
+rank correlation rather than a zero.
+
+What this establishes is internal agreement. It is not a check of scientific
+validity, and it cannot tell you whether the endpoint was the right one to
+model. A contract can be perfectly self-consistent and still answer a question
+nobody asked.
+
+## 5. What an amendment is for
+
+The command ends with a note rather than a failure. The frozen protocol still
+records its locked evaluation as `not_run`, while the locked summary reads
+`completed`. The protocol was not rewritten to match the outcome. A separate
+amendment records the change, states that it supersedes the execution wording
+only, and forbids any new selection freedom.
+
+Rewriting the protocol would have been easier and would have produced a tidier
+set of files. It would also have destroyed the evidence that the execution rule
+changed after the protocol was issued, and when.
+
+## Independent exercise
+
+A colleague reports a mean absolute error of 0.30 on "the same ChEMBL EGFR
+data", better than the 0.41833032711934154 recorded here, and proposes to adopt
+their representation. Before comparing the two numbers, name three fields of
+this contract you would need from them, and say what a different value in each
+would do to the comparison.
+
+<details data-worked-answer>
+<summary>Worked answer — three fields, three different failures</summary>
+
+**The assay.** If their rows come from a different assay, or from several
+assays pooled, the two numbers describe different units and are not comparable
+at all. This is the first question because a difference here makes the other two
+irrelevant. Pooling assays also tends to lower the reported error, because
+repeated easy compounds recur across sources.
+
+**The admitted relation and units.** If they admitted censored rows, their label
+distribution includes the weak end that this contract drops. A wider range
+usually raises the error, so an error that is lower despite a wider range is a
+stronger result. If instead they narrowed the range further, a lower error may
+mean nothing more than an easier target.
+
+**The entity unit and aggregation.** If they modelled rows rather than parent
+molecules, repeated measurements of one compound can appear on both sides of a
+split, and the reported error will be optimistic. The median aggregation and the
+parent rule here exist to prevent exactly that, so the comparison is only fair
+against a contract that also has them.
+
+A complete answer notices that none of these can be settled by looking at the
+two error values. They are properties of the datasets, not of the models, and
+the smaller number can easily be the weaker result.
+
+</details>
+
+## Where this sits
+
+This page is an inspection route into the completed
+[ChEMBL 37 EGFR representation baselines](/labs/chembl-egfr-representation-baselines/).
+It changes no protocol, no split and no result. Continue to
+[data contracts](/learn/data-governance/data-contracts/) for the general form,
+[property prediction](/learn/qsar-properties/property-prediction/) for the
+endpoint decision in a wider setting, and
+[screening and affinity](/learn/dti-screening/screening-and-affinity/) for what
+a screening result can and cannot claim.
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-10.

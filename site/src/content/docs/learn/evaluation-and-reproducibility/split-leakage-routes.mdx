@@ -1,0 +1,135 @@
+---
+title: Leakage routes in an activity table
+description: Use a measured ChEMBL 37 split audit to separate shared identities from unsupported generalization claims.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="evaluation-and-reproducibility/split-leakage-routes" />
+
+## Learning goals and prerequisites
+
+First read [splits and leakage across three labs](/learn/evaluation-and-reproducibility/split-and-leakage-cases/)
+and [the decision-unit lesson](/learn/foundations/decision-unit-scope/).
+You will identify the unit assigned to a split, test several routes by
+intersecting train and test group keys, and state the narrowest claim a
+disjointness check supports. The [runnable audit](/labs/split-leakage-audit/)
+provides the frozen protocol, commands and full count table.
+
+## A route is a shared identity
+
+A random row split keeps row identifiers separate. It does not keep the
+entities behind them separate. Duplicate reports can repeat one measurement.
+Different records can belong to one parent molecule, or to structures with
+the same scaffold. An assay can generate multiple records. Targets can appear
+in both partitions, and a target family can connect distinct target IDs.
+Temporal, donor, patient and site overlap can also make nominally different
+rows less independent than they appear. A preprocessing transform fitted on
+all rows can carry information from test into training even when group keys
+are disjoint.
+
+The ChEMBL 37 teaching cohort begins with 15 seed molecules and 10 resolved
+parents. Its declared admission rule yields 488 point activity rows. Collapsing
+rows with the same parent, assay, document and endpoint type gives 486
+independent measurements. The two repeated keys are collapsed before the
+split, so the task does not count a repeated report as another test case.
+This choice addresses one duplicate route by construction, while other
+duplicate relationships may remain unknown.
+
+| Route | Tested group key | What remains beyond the check |
+| --- | --- | --- |
+| Parent molecule | ChEMBL parent ID | Different parents can still be analogues. |
+| Analogue proxy | Chirality-aware Bemis-Murcko scaffold | One scaffold definition cannot cover every analogue relationship. |
+| Assay | ChEMBL assay ID | Different assays can share conditions or sources. |
+| Target | Exact ChEMBL target ID | Target-family overlap is not resolved by an exact-ID check. |
+| Standard tested form | RDKit canonical isomeric SMILES | Static form identity does not test fitted preprocessing. |
+
+## How the overlap is counted
+
+The audit sorts measurement keys and shuffles them with seed 20261023. The
+fixed row split assigns floor(0.8 × 486) measurements to training. For each
+route, it collects the group keys on each side. A test measurement is counted
+if any of its keys is also present in training. The shared-group count is
+the size of the intersection of the two key sets. The training holdout count
+is the number of training measurements matching any test key on that route.
+If a measurement has multiple source forms, all of them contribute keys.
+
+| Split | Training measurements | Test measurements | Test measurements unseen by parent |
+| --- | ---: | ---: | ---: |
+| Random row | 388 | 98 | 0 |
+| Grouped by parent | 133 | 353 | 353 |
+
+The parent-grouped split assigns whole parent IDs and therefore has uneven
+measurement counts. Its 353 test measurements are unseen by parent under
+that assignment. This does not say that they have unseen scaffolds, targets,
+assay contexts or laboratory conditions.
+
+## Worked case from the measured counts
+
+| Route | Test rows sharing training group | Shared groups | Training rows to hold out |
+| --- | ---: | ---: | ---: |
+| Parent molecule | 98 | 6 | 381 |
+| Bemis-Murcko scaffold | 98 | 6 | 379 |
+| Assay | 1 | 1 | 1 |
+| Exact target identifier | 81 | 19 | 285 |
+| Standard tested form | 98 | 11 | 379 |
+
+All 98 row-split test measurements share at least one of these group keys
+with training. All 5 tested routes contribute, but their affected rows
+overlap. Adding the route counts would count some test measurements several
+times. Parent, scaffold and standard form tie at 98. The summary uses parent
+as the highest overlap route by the declared route order.
+
+The row split has therefore been demonstrated to be a row split, not an
+evaluation of new-compound prediction. The parent-grouped split establishes
+one narrower fact, parent IDs are disjoint. Neither result reports model
+performance. No model was fitted or evaluated.
+
+## Routes the table cannot expose
+
+These activity rows contain no measurement date, donor identifier, patient
+identifier or collection site identifier. The temporal, donor, patient and
+site routes cannot be tested. The exact target key does not establish target
+family disjointness. The static standard-form key does not test a transform
+fitted across train and test. Missing route evidence must remain an open
+limitation, even when measured routes show no overlap in another dataset.
+
+## Independent exercise
+
+A colleague adds the 98 parent-overlapping test measurements to the 81
+target-overlapping test measurements and reports 179 contaminated test
+measurements. They then call the 353 parent-grouped test measurements
+independent new compounds. Correct both statements using the measured table.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The row split contains only 98 test measurements, so 179 cannot be a count
+of distinct contaminated test measurements. Route memberships overlap.
+The measured union is 98, and all 5 tested routes have at least one member.
+
+The grouped test contains 353 measurements, not 353 parent compounds. Whole
+parents were assigned to test, giving 0 parent overlap, but several
+measurements can share one parent. The check supports parent disjointness
+under this assignment. It does not establish independent chemistry,
+performance on future compounds, or absence of the routes this table cannot
+measure.
+
+</details>
+
+## What this material does not show
+
+The 15 molecules were chosen to exercise the admission rule, not sampled to
+estimate leakage prevalence in ChEMBL. A Bemis-Murcko scaffold is a useful
+analogue proxy and not an exhaustive chemical similarity test. No
+target-family annotation, timestamp, donor, patient, site or fitted
+preprocessing pipeline was evaluated. Automated checks confirm code and
+count consistency, not reader understanding or predictive performance.
+
+The counts use [ChEMBL 37 activity records](https://www.ebi.ac.uk/chembl/api/data/activity.json)
+and [release status](https://www.ebi.ac.uk/chembl/api/data/status.json), read
+for the frozen snapshot on 2026-10-21. ChEMBL 37 was released on 2026-05-01
+under [Creative Commons Attribution-ShareAlike 3.0 Unported](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE).
+The [RDKit source licence](https://github.com/rdkit/rdkit/blob/master/license.txt)
+was recorded as BSD 3-Clause on 2026-09-09. Original prose is CC BY 4.0 and
+original lab code is Apache-2.0. Last reviewed 2026-10-23.

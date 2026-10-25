@@ -1,0 +1,210 @@
+---
+title: Target product profiles and chemical-series feedback
+description: Turn a therapeutic decision into measurable product constraints, then let an analogue series revise—not decorate—the hypothesis.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="drug-discovery-foundations/product-profile-and-series" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After this reading-and-handworked lesson, you can write a target product profile
+(TPP) as a decision contract, distinguish a threshold from a preference, and use
+an analogue series to test a structure–property hypothesis. Read [Drug discovery
+context](/learn/drug-discovery-foundations/discovery-context/) and [Assay controls
+and dose response](/learn/drug-discovery-foundations/assay-controls-dose-response/)
+first. This is not a synthesis, assay, clinical-dosing, or patient-selection
+protocol.
+
+## A TPP is a falsifiable product decision, not a wish list
+
+A TPP starts with the person or biological context in which a later decision
+would be made. It then states the intended effect, route or format at a high
+level, evidence needed to act, and **minimum** and **preferred** attributes. A
+minimum is a gate: below it, the candidate does not advance on this rationale. A
+preferred value is a direction for trade-off discussions, not a claim that all
+attributes can be simultaneously optimized. Accessible TPPs vary widely in the
+number of features and often omit their development method; that is a reason to
+record assumptions, not to fill every row with a number [Ibnidris et
+al.](https://pubmed.ncbi.nlm.nih.gov/39075460/).
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Question that fixes its meaning</th>
+      <th>Failure if absent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Use context</td>
+      <td>What disease state and decision are in scope?</td>
+      <td>“Potent” has no recipient or use.</td>
+    </tr>
+    <tr>
+      <td>Mechanistic hypothesis</td>
+      <td>What target state or pathway change is expected?</td>
+      <td>Phenotype is mistaken for causal target evidence.</td>
+    </tr>
+    <tr>
+      <td>Endpoint and unit</td>
+      <td>Which assay or measurement, normalized how, at what level?</td>
+      <td>Numbers from incompatible systems are compared.</td>
+    </tr>
+    <tr>
+      <td>Minimum / preferred</td>
+      <td>What is a gate; what is a direction?</td>
+      <td>Post-hoc promotion of convenient candidates.</td>
+    </tr>
+    <tr>
+      <td>Evidence and exclusion</td>
+      <td>What alternative explanation must be tested?</td>
+      <td>A single attractive signal becomes a nomination claim.</td>
+    </tr>
+  </tbody>
+</table>
+
+The object in a TPP is a candidate **for a stated decision**, not a molecule in
+isolation. The representation may be a chemical structure, a series identifier,
+and a table of endpoint records. The objective is a constrained selection rule,
+not a scalar score: retain candidates that meet all prespecified gates, then
+describe trade-offs among survivors. A later observed value may update the TPP
+only with a dated rationale; it must not silently redefine the gate.
+
+## A chemical series is an intervention on a hypothesis
+
+An analogue series changes one interpretable feature while holding as much else
+as practical constant. For a pair, define a signed response difference
+`Δy = y(analogue B) − y(analogue A)` under the same endpoint, unit, assay
+context, and aggregation rule. If `y` is `pIC50 = −log10(IC50 in mol/L)`, then a
+positive `Δy` means lower `IC50`, hence greater apparent potency under that
+assay's conditions. It does **not** establish affinity, mechanism, selectivity,
+or transport. A matched molecular pair can support a narrow claim such as “this
+change coincided with a 0.30-unit increase in this endpoint,” not “this group
+caused efficacy.”
+
+Feedback has three roles. First, it checks whether the proposed causal feature
+predicts direction across more than one comparison. Second, it exposes conflicts:
+an apparent potency gain may accompany worse solubility, stability, or a changed
+assay control window. Third, it picks the next _informative_ comparison, often a
+cheap control that separates two explanations. Do not average endpoints with
+unknown units merely to obtain a series score.
+
+## Worked case: a constructed advance decision
+
+Everything in this case is **constructed for teaching**. A team has a
+target-proximal cellular endpoint and declares the following TPP fragment before
+seeing its next analogues: normalized inhibition at 1 µM must be at least 60%; a
+solubility proxy must be at least 20 arbitrary units; a reporter counterscreen
+must show less than 15% inhibition. The preferred cellular `pIC50` is at least
+6.30. These are invented gates, not a recommendation for any programme.
+
+<table>
+  <thead>
+    <tr>
+      <th>Constructed analogue</th>
+      <th>Inhibition at 1 µM</th>
+      <th>Cellular pIC50</th>
+      <th>Solubility proxy</th>
+      <th>Reporter inhibition</th>
+      <th>Decision under the declared rule</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A (parent)</td>
+      <td>65%</td>
+      <td>6.10</td>
+      <td>34</td>
+      <td>6%</td>
+      <td>Below preferred potency; retain as comparator.</td>
+    </tr>
+    <tr>
+      <td>B (one polar substitution)</td>
+      <td>75%</td>
+      <td>6.45</td>
+      <td>18</td>
+      <td>5%</td>
+      <td>Fails the minimum solubility gate.</td>
+    </tr>
+    <tr>
+      <td>C (alternate substitution)</td>
+      <td>70%</td>
+      <td>6.32</td>
+      <td>27</td>
+      <td>9%</td>
+      <td>Meets this fragment; still needs named evidence.</td>
+    </tr>
+  </tbody>
+</table>
+
+For A→B, `ΔpIC50 = 6.45 − 6.10 = +0.35`. Because `pIC50` is logarithmic, the
+constructed concentration ratio is `10^0.35 = 2.24`: B's fitted `IC50` would be
+about 2.24-fold lower if both fits use the same definition. That numerical gain
+does not override B's failed gate. C has `ΔpIC50 = +0.22` and passes all three
+invented gates, so the next decision is not “C succeeds.” It is “test whether C's
+cellular signal persists in an orthogonal target-proximal readout and whether the
+series relation remains when an independently prepared batch is measured.”
+
+This avoids a familiar error: selecting B because it wins one column, then
+retroactively describing solubility as secondary. The same table also has no
+evidence on exposure, organismal effect, or clinical benefit.
+
+## Alternatives, limits, and an independent exercise
+
+A weighted utility `U = Σ w_j z_j` can be useful only when each normalized
+`z_j`, direction, weight `w_j`, and missing-value rule were fixed before
+selection. A Pareto front retains candidates for which no other candidate is at
+least as good on every declared endpoint and better on one. Both methods conceal
+missing measurements unless missingness is shown explicitly. Neither replaces a
+TPP gate or independent validation.
+
+**Handworked exercise (not runnable or empirical):** Use the same constructed
+TPP. Analogue D has inhibition at 1 µM of `80%`, `pIC50 = 6.55`, solubility
+proxy `24`, and reporter inhibition `22%`; E has inhibition at 1 µM of `65%`,
+`pIC50 = 6.26`, solubility proxy `29`, and reporter inhibition `4%`. Which candidates advance under the fragment? Relative to A,
+calculate D's `ΔpIC50` and its constructed `IC50` ratio. Name one next
+measurement for a C-versus-D choice and one conclusion the table cannot support.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+D fails the less-than-15% reporter gate despite meeting its other listed values,
+including the constructed 1 µM inhibition gate; E meets the constructed 1 µM
+inhibition gate but misses the preferred `pIC50`, which was not declared a minimum, so it meets
+this fragment and can remain a comparator. D has `ΔpIC50 = 6.55 − 6.10 = +0.45`,
+so its constructed `IC50` is `10^0.45 = 2.82`-fold lower than A's under matched
+fits. An orthogonal target-proximal readout or an independently prepared repeat
+could distinguish a persistent biological series signal from a measurement
+artifact. This table cannot establish target engagement in a relevant organism,
+human exposure, safety, or clinical benefit.
+
+</details>
+
+## Sources and next lesson
+
+The sources below were opened on 2026-09-09. They support the TPP and
+assay-interpretation boundary; all values above are invented teaching values.
+
+<div data-case-sources>
+
+- [Facilitating the use of the target product profile in academic research](https://pubmed.ncbi.nlm.nih.gov/39075460/)
+- [Data Standardization for Results Management — NCBI Assay Guidance Manual](https://www.ncbi.nlm.nih.gov/books/NBK91993/)
+- [Basic Guidelines for Reporting Non-Clinical Data — NCBI Assay Guidance Manual](https://www.ncbi.nlm.nih.gov/books/NBK550206/)
+
+</div>
+
+The [target product profile laboratory](/labs/target-product-profile/) applies a
+profile of mandatory gates and preferences, fixed before the measurements are
+read, to the compounds three measured endpoint families share, and reports the
+compounds a later measurement contradicts.
+
+Next, [Mechanism hypothesis and counterevidence](/learn/mechanism-targets/perturbation-to-target-validation/)
+asks whether a product-directed target story survives alternatives. Original
+lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-09.

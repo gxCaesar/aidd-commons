@@ -1,0 +1,155 @@
+---
+title: Entity resolution, scientific lineage and permitted reuse
+description: Resolve ambiguous joins without manufacturing samples, explain a model row's origin, and separate access from permission to redistribute.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="data-governance/identity-lineage-and-reuse" />
+<ScrollableRegions />
+
+## The join is a scientific decision
+
+Read [source and entity literacy](/learn/foundations/source-and-entity-literacy/)
+and [records to a model table](/learn/data-governance/records-to-model-table/).
+You should already distinguish a measurement from its database row. Here you
+will resolve an ambiguous join, account for exclusions, and write a short reuse
+statement. All tables below are constructed teaching examples.
+
+A common data pipeline downloads an assay table, adds a structure, then adds a
+target annotation. Each step can change the scientific population. A display
+name is rarely a reliable join key: aliases can be reused, structures can have
+unspecified stereochemistry, and a protein name can refer to several isoforms
+or experimental constructs. Choosing the first database match merely conceals
+the ambiguity. The desired entity must be defined before the join.
+
+For an affinity task, specify at least the assayed material identity, measured
+target construct, endpoint and measurement context. The parent compound may be
+a useful grouping key without being the complete identity of the material. A
+full-length protein identifier may support annotation without identifying the
+truncated construct actually measured. Maintain these distinctions in separate
+columns instead of forcing every purpose into one universal identifier.
+
+## Worked example — two matches do not create two observations
+
+An invented input has three independent assay observations:
+
+| Observation | Submitted alias | Recorded endpoint |
+| ----------- | --------------- | ----------------- |
+| o1          | A               | 6.0               |
+| o2          | B               | 7.0               |
+| o3          | C               | 5.0               |
+
+The structure lookup returns A→a1, B→b1, B→b2 and C→c1. The two B matches are
+different stereochemical entities, and the source observation does not identify
+which was assayed. A naive join produces four rows, but there are still only
+three observations. Giving both B rows the value 7.0 invents a structure-specific
+assignment and weights o2 twice. The mean would change from `(6+7+5)/3=6.0`
+to `(6+7+7+5)/4=6.25`, entirely because of a join.
+
+For a task requiring stereochemically resolved structures, a defensible table
+retains o1 and o3 and sets o2 aside as unresolved. The retained mean is 5.5,
+which describes **two resolved observations**, not the original population.
+Alternatively, a task explicitly defined at a coarser parent level might retain
+o2 once, with its unresolved stereochemistry recorded. That is a different
+representation contract, not permission to silently impute an isomer.
+
+Record join cardinality before and after the merge. A many-to-one annotation join
+should not increase the number of observations. A legitimate one-to-many relation,
+such as one compound with several measured targets, belongs in a relation table
+or a task whose sample is explicitly the compound–target pair. It should not be
+collapsed or expanded merely to satisfy a model's expected shape.
+
+## A small resolution workflow
+
+Start with source-native identifiers and source version or retrieval date. Define
+the intended comparison key and normalize only fields whose transformation has
+a scientific justification. For example, unit conversion preserves a quantity
+when its relation is known; merging IC50 and Kd changes the endpoint. Keep the
+original value and the transformed value so the operation can be explained.
+
+Next classify matches as exact, defensibly mapped, ambiguous or absent. Inspect
+the ambiguous cases that affect eligibility instead of automatically fuzzy-matching
+all names. Check that one-to-one and many-to-one joins obey their intended
+cardinality. Finally count exclusions by reason, allowing either mutually exclusive
+first-failure categories or clearly labelled overlapping reasons. Do not sum
+overlapping categories as though they partitioned the input.
+
+Suppose 100 source rows contain 8 invalid endpoints, 6 unresolved identities and
+3 rows in both groups. Excluding their union removes `8+6−3=11` rows and retains
+89, not 86. This count says nothing about the number of independent compounds,
+donors or assays; count that unit separately. An exclusion that improves a model
+score can still be legitimate, but its rule needs a task-based rationale rather
+than knowledge of which rows were difficult to predict.
+
+## Scientific lineage that a reader can use
+
+Lineage explains which source records and transformations produced a quantity.
+The [W3C PROV-O recommendation](https://www.w3.org/TR/prov-o/) provides a vocabulary
+for entities, activities and responsible agents. A tutorial-sized implementation
+can be a readable paragraph and table; adopting the full ontology is not required.
+
+For example: “The modelling table uses release R of assay source S. We retained
+exact measurements of endpoint E, converted the declared unit, grouped technical
+replicates by the stated rule, and excluded 11 rows for the documented reasons.
+The final table has 89 observations from 57 compounds.” A second reader can now
+ask whether the replicate rule, endpoint or population matches their question.
+A file digest would not answer those scientific questions.
+
+Separate a source's assertion from your derived assertion. “Database S annotates
+protein P as associated with disease D” is not “our experiment establishes P as
+a causal therapeutic target.” Preserve the evidence type, context and date when
+joining annotations. A later release can change mappings; updating it changes
+the analysis input and should be visible, even when the file format stays fixed.
+
+## Access is not permission
+
+A public download button does not settle redistribution, commercial use, privacy
+or third-party rights. Inspect the licence and terms for the exact dataset,
+code and model assets separately. The [SPDX licensing overview](https://spdx.dev/learn/areas-of-interest/licensing/)
+helps identify licence expressions; it is not a licence grant for an unlicensed
+dataset. The [Creative Commons FAQ](https://creativecommons.org/faq/) explains
+attribution and distinctions among CC licences. Do not infer that every linked
+asset inherits the licence of a surrounding paper or website.
+
+Write down what asset was checked, where its terms are stated, which intended
+use is covered, and what remains unresolved. If redistribution is unclear, a
+public tutorial can provide acquisition and preprocessing instructions instead
+of copying the underlying records. Restricted human data and uncertain permissions
+need the appropriate institutional or rights-holder decision. This is a data
+workflow lesson, not a legal opinion.
+
+For participant-derived data, a reuse licence and the scope of participant
+consent are different questions. Removing direct identifiers alone does not
+establish that every linkage or release is permitted. Preserve the responsible
+institution's approved scope and unresolved access conditions instead of
+inferring permission from the data's scientific usefulness.
+
+## Independent exercises
+
+1. A lookup expands 40 assay observations to 52 rows because 12 observations
+   each match two protein isoforms. How many observations have been collected?
+   What information would allow an isoform-specific label?
+2. From 60 rows, 7 have invalid units, 5 lack identity, and 2 satisfy both reasons.
+   How many survive excluding either problem?
+3. A repository licence covers its code; its README links a third-party dataset
+   with no clear redistribution terms. Can you put that dataset in your release?
+
+<details data-worked-answer>
+<summary>Worked answers — preserve population and authority</summary>
+
+There are 40 observations, not 52. A source record identifying the measured
+isoform or construct could resolve assignment; two candidate annotations alone
+cannot. The exclusions total `7+5−2=10`, leaving 50 rows. A code licence does
+not supply missing rights to the third-party data. Keep the data out of the
+redistributed artifact while clarifying terms, and provide permitted source
+instructions where appropriate. Missing permission is not evidence that the
+scientific data do not exist.
+
+</details>
+
+Continue to [complex biological representations](/learn/representations/complex-cell-and-knowledge-graphs/)
+to see how resolved entities become features without losing their measurement context.
+
+Original examples and prose: CC BY 4.0. Sources reviewed: 2026-09-09.

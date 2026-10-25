@@ -1,0 +1,881 @@
+{
+  "cohort": {
+    "admission_funnel": [
+      {
+        "remaining": 13305,
+        "removed": 0,
+        "stage": "reported_rows"
+      },
+      {
+        "remaining": 7788,
+        "removed": 5517,
+        "stage": "outside_endpoint_family"
+      },
+      {
+        "remaining": 7777,
+        "removed": 11,
+        "stage": "non_nanomolar_units"
+      },
+      {
+        "remaining": 1414,
+        "removed": 6363,
+        "stage": "non_standard_activity"
+      },
+      {
+        "remaining": 1344,
+        "removed": 70,
+        "stage": "potential_duplicate"
+      },
+      {
+        "remaining": 1058,
+        "removed": 286,
+        "stage": "data_validity_comment"
+      },
+      {
+        "remaining": 1058,
+        "removed": 0,
+        "stage": "missing_value"
+      },
+      {
+        "remaining": 1058,
+        "removed": 0,
+        "stage": "missing_structure"
+      },
+      {
+        "remaining": 1004,
+        "removed": 54,
+        "stage": "missing_relation"
+      },
+      {
+        "remaining": 1004,
+        "removed": 0,
+        "stage": "admitted_total"
+      },
+      {
+        "remaining": 488,
+        "removed": 516,
+        "stage": "admitted_bound"
+      },
+      {
+        "remaining": 488,
+        "removed": 0,
+        "stage": "admitted_point"
+      }
+    ],
+    "admitted_bound_count": 516,
+    "admitted_point_count": 488,
+    "exclusion_counts": {
+      "data_validity_comment": 286,
+      "missing_relation": 54,
+      "missing_structure": 0,
+      "missing_value": 0,
+      "non_nanomolar_units": 11,
+      "non_standard_activity": 6363,
+      "outside_endpoint_family": 5517,
+      "potential_duplicate": 70
+    },
+    "independent_experiment_count": 484,
+    "independent_measurement_count": 486,
+    "parent_form_point_count": 417,
+    "parents": [
+      {
+        "admitted_bound_count": 125,
+        "admitted_point_count": 27,
+        "assay_organism_counts": {
+          "Bos taurus": 3,
+          "Homo sapiens": 8,
+          "Rattus norvegicus": 5,
+          "not recorded": 11
+        },
+        "assay_type_counts": {
+          "B": 20,
+          "F": 7
+        },
+        "assay_type_disagreement_count": 0,
+        "bound_relation_counts": {
+          ">": 125
+        },
+        "child_molecule_ids": [
+          "CHEMBL433"
+        ],
+        "confidence_score_counts": {
+          "0": 4,
+          "1": 4,
+          "8": 11,
+          "9": 8
+        },
+        "distinct_assay_count": 27,
+        "distinct_document_count": 15,
+        "distinct_target_count": 22,
+        "endpoint_type_counts": {
+          "AC50": 9,
+          "EC50": 1,
+          "IC50": 17
+        },
+        "exclusion_counts": {
+          "data_validity_comment": 99,
+          "missing_relation": 10,
+          "missing_structure": 0,
+          "missing_value": 0,
+          "non_nanomolar_units": 0,
+          "non_standard_activity": 3674,
+          "outside_endpoint_family": 2349,
+          "potential_duplicate": 10
+        },
+        "independent_experiment_count": 27,
+        "independent_measurement_count": 27,
+        "parent_form_point_count": 25,
+        "parent_molecule_chembl_id": "CHEMBL109",
+        "pref_name": "VALPROIC ACID",
+        "replicate_point_row_count": 0,
+        "reported_row_count": 6294,
+        "salt_form_point_count": 2,
+        "target_organism_counts": {
+          "Bos taurus": 1,
+          "Homo sapiens": 17,
+          "Rattus norvegicus": 4,
+          "Sus scrofa": 1,
+          "not recorded": 4
+        },
+        "toid_point_row_count": 0
+      },
+      {
+        "admitted_bound_count": 80,
+        "admitted_point_count": 37,
+        "assay_organism_counts": {
+          "Canis lupus familiaris": 2,
+          "Escherichia coli": 1,
+          "Homo sapiens": 8,
+          "Mycobacterium tuberculosis": 3,
+          "Rattus norvegicus": 15,
+          "not recorded": 8
+        },
+        "assay_type_counts": {
+          "A": 4,
+          "B": 12,
+          "F": 21
+        },
+        "assay_type_disagreement_count": 0,
+        "bound_relation_counts": {
+          ">": 80
+        },
+        "child_molecule_ids": [
+          "CHEMBL690"
+        ],
+        "confidence_score_counts": {
+          "0": 1,
+          "1": 17,
+          "8": 10,
+          "9": 9
+        },
+        "distinct_assay_count": 34,
+        "distinct_document_count": 17,
+        "distinct_target_count": 14,
+        "endpoint_type_counts": {
+          "EC50": 3,
+          "IC50": 31,
+          "Ki": 3
+        },
+        "exclusion_counts": {
+          "data_validity_comment": 20,
+          "missing_relation": 6,
+          "missing_structure": 0,
+          "missing_value": 0,
+          "non_nanomolar_units": 0,
+          "non_standard_activity": 718,
+          "outside_endpoint_family": 733,
+          "potential_duplicate": 0
+        },
+        "independent_experiment_count": 34,
+        "independent_measurement_count": 36,
+        "parent_form_point_count": 23,
+        "parent_molecule_chembl_id": "CHEMBL1144",
+        "pref_name": "PRAVASTATIN",
+        "replicate_point_row_count": 1,
+        "reported_row_count": 1594,
+        "salt_form_point_count": 14,
+        "target_organism_counts": {
+          "Homo sapiens": 13,
+          "Mycobacterium tuberculosis": 3,
+          "Rattus norvegicus": 20,
+          "not recorded": 1
+        },
+        "toid_point_row_count": 0
+      },
+      {
+        "admitted_bound_count": 0,
+        "admitted_point_count": 1,
+        "assay_organism_counts": {
+          "Mus musculus": 1
+        },
+        "assay_type_counts": {
+          "F": 1
+        },
+        "assay_type_disagreement_count": 0,
+        "bound_relation_counts": {},
+        "child_molecule_ids": [],
+        "confidence_score_counts": {
+          "1": 1
+        },
+        "distinct_assay_count": 1,
+        "distinct_document_count": 1,
+        "distinct_target_count": 1,
+        "endpoint_type_counts": {
+          "IC50": 1
+        },
+        "exclusion_counts": {
+          "data_validity_comment": 0,
+          "missing_relation": 0,
+          "missing_structure": 0,
+          "missing_value": 0,
+          "non_nanomolar_units": 0,
+          "non_standard_activity": 0,
+          "outside_endpoint_family": 1,
+          "potential_duplicate": 0
+        },
+        "independent_experiment_count": 1,
+        "independent_measurement_count": 1,
+        "parent_form_point_count": 1,
+        "parent_molecule_chembl_id": "CHEMBL13829",
+        "pref_name": "MIXTURE OF MMC AND TA",
+        "replicate_point_row_count": 0,
+        "reported_row_count": 2,
+        "salt_form_point_count": 0,
+        "target_organism_counts": {
+          "Mus musculus": 1
+        },
+        "toid_point_row_count": 0
+      },
+      {
+        "admitted_bound_count": 2,
+        "admitted_point_count": 4,
+        "assay_organism_counts": {
+          "Homo sapiens": 3,
+          "Human immunodeficiency virus 1": 1
+        },
+        "assay_type_counts": {
+          "A": 1,
+          "B": 3
+        },
+        "assay_type_disagreement_count": 0,
+        "bound_relation_counts": {
+          ">": 2
+        },
+        "child_molecule_ids": [],
+        "confidence_score_counts": {
+          "0": 3,
+          "9": 1
+        },
+        "distinct_assay_count": 4,
+        "distinct_document_count": 3,
+        "distinct_target_count": 3,
+        "endpoint_type_counts": {
+          "IC50": 3,
+          "Ki": 1
+        },
+        "exclusion_counts": {
+          "data_validity_comment": 5,
+          "missing_relation": 6,
+          "missing_structure": 0,
+          "missing_value": 0,
+          "non_nanomolar_units": 0,
+          "non_standard_activity": 58,
+          "outside_endpoint_family": 57,
+          "potential_duplicate": 0
+        },
+        "independent_experiment_count": 4,
+        "independent_measurement_count": 4,
+        "parent_form_point_count": 4,
+        "parent_molecule_chembl_id": "CHEMBL23393",
+        "pref_name": "SODIUM LAURYL SULFATE",
+        "replicate_point_row_count": 0,
+        "reported_row_count": 132,
+        "salt_form_point_count": 0,
+        "target_organism_counts": {
+          "Homo sapiens": 1,
+          "not recorded": 3
+        },
+        "toid_point_row_count": 0
+      },
+      {
+        "admitted_bound_count": 187,
+        "admitted_point_count": 103,
+        "assay_organism_counts": {
+          "Bos taurus": 1,
+          "Cavia porcellus": 4,
+          "Glycine max": 1,
+          "Homo sapiens": 48,
+          "Mus musculus": 2,
+          "Oryctolagus cuniculus": 14,
+          "Ovis aries": 12,
+          "Rattus norvegicus": 6,
+          "Solanum tuberosum": 1,
+          "not recorded": 14
+        },
+        "assay_type_counts": {
+          "B": 35,
+          "F": 68
+        },
+        "assay_type_disagreement_count": 0,
+        "bound_relation_counts": {
+          ">": 187
+        },
+        "child_molecule_ids": [],
+        "confidence_score_counts": {
+          "0": 13,
+          "1": 59,
+          "4": 1,
+          "7": 1,
+          "8": 6,
+          "9": 23
+        },
+        "distinct_assay_count": 103,
+        "distinct_document_count": 75,
+        "distinct_target_count": 24,
+        "endpoint_type_counts": {
+          "AC50": 1,
+          "IC50": 97,
+          "Kd": 1,
+          "Ki": 4
+        },
+        "exclusion_counts": {
+          "data_validity_comment": 147,
+          "missing_relation": 0,
+          "missing_structure": 0,
+          "missing_value": 0,
+          "non_nanomolar_units": 8,
+          "non_standard_activity": 1474,
+          "outside_endpoint_family": 2129,
+          "potential_duplicate": 46
+        },
+        "independent_experiment_count": 103,
+        "independent_measurement_count": 103,
+        "parent_form_point_count": 103,
+        "parent_molecule_chembl_id": "CHEMBL25",
+        "pref_name": "ASPIRIN",
+        "replicate_point_row_count": 0,
+        "reported_row_count": 4094,
+        "salt_form_point_count": 0,
+        "target_organism_counts": {
+          "Bos taurus": 1,
+          "Cavia porcellus": 2,
+          "Homo sapiens": 34,
+          "Mus musculus": 1,
+          "Oryctolagus cuniculus": 4,
+          "Ovis aries": 12,
+          "Rattus norvegicus": 2,
+          "not recorded": 47
+        },
+        "toid_point_row_count": 0
+      },
+      {
+        "admitted_bound_count": 0,
+        "admitted_point_count": 12,
+        "assay_organism_counts": {
+          "Oryctolagus cuniculus": 3,
+          "Ovis aries": 2,
+          "Rattus norvegicus": 2,
+          "Solanum tuberosum": 1,
+          "not recorded": 4
+        },
+        "assay_type_counts": {
+          "B": 10,
+          "F": 2
+        },
+        "assay_type_disagreement_count": 0,
+        "bound_relation_counts": {},
+        "child_molecule_ids": [
+          "CHEMBL109745"
+        ],
+        "confidence_score_counts": {
+          "0": 2,
+          "1": 2,
+          "4": 1,
+          "8": 3,
+          "9": 4
+        },
+        "distinct_assay_count": 12,
+        "distinct_document_count": 5,
+        "distinct_target_count": 10,
+        "endpoint_type_counts": {
+          "IC50": 12
+        },
+        "exclusion_counts": {
+          "data_validity_comment": 0,
+          "missing_relation": 0,
+          "missing_structure": 0,
+          "missing_value": 0,
+          "non_nanomolar_units": 0,
+          "non_standard_activity": 6,
+          "outside_endpoint_family": 8,
+          "potential_duplicate": 0
+        },
+        "independent_experiment_count": 12,
+        "independent_measurement_count": 12,
+        "parent_form_point_count": 7,
+        "parent_molecule_chembl_id": "CHEMBL275835",
+        "pref_name": "DARBUFELONE",
+        "replicate_point_row_count": 0,
+        "reported_row_count": 26,
+        "salt_form_point_count": 5,
+        "target_organism_counts": {
+          "Homo sapiens": 1,
+          "Mus musculus": 1,
+          "Oryctolagus cuniculus": 2,
+          "Ovis aries": 2,
+          "Rattus norvegicus": 4,
+          "not recorded": 2
+        },
+        "toid_point_row_count": 0
+      },
+      {
+        "admitted_bound_count": 2,
+        "admitted_point_count": 2,
+        "assay_organism_counts": {
+          "Cavia porcellus": 1,
+          "not recorded": 1
+        },
+        "assay_type_counts": {
+          "B": 1,
+          "F": 1
+        },
+        "assay_type_disagreement_count": 0,
+        "bound_relation_counts": {
+          ">": 2
+        },
+        "child_molecule_ids": [],
+        "confidence_score_counts": {
+          "4": 1,
+          "9": 1
+        },
+        "distinct_assay_count": 2,
+        "distinct_document_count": 2,
+        "distinct_target_count": 2,
+        "endpoint_type_counts": {
+          "IC50": 2
+        },
+        "exclusion_counts": {
+          "data_validity_comment": 2,
+          "missing_relation": 6,
+          "missing_structure": 0,
+          "missing_value": 0,
+          "non_nanomolar_units": 0,
+          "non_standard_activity": 54,
+          "outside_endpoint_family": 46,
+          "potential_duplicate": 0
+        },
+        "independent_experiment_count": 2,
+        "independent_measurement_count": 2,
+        "parent_form_point_count": 2,
+        "parent_molecule_chembl_id": "CHEMBL441",
+        "pref_name": "THIOPENTAL",
+        "replicate_point_row_count": 0,
+        "reported_row_count": 112,
+        "salt_form_point_count": 0,
+        "target_organism_counts": {
+          "Cavia porcellus": 1,
+          "Rattus norvegicus": 1
+        },
+        "toid_point_row_count": 0
+      },
+      {
+        "admitted_bound_count": 29,
+        "admitted_point_count": 51,
+        "assay_organism_counts": {
+          "Bos taurus": 1,
+          "Cercopithecidae": 1,
+          "Homo sapiens": 5,
+          "Influenza A virus (A/California/07/2009(H1N1))": 1,
+          "Oryctolagus cuniculus": 3,
+          "Plasmodium falciparum": 6,
+          "Rattus norvegicus": 6,
+          "not recorded": 28
+        },
+        "assay_type_counts": {
+          "B": 33,
+          "F": 18
+        },
+        "assay_type_disagreement_count": 0,
+        "bound_relation_counts": {
+          ">": 29
+        },
+        "child_molecule_ids": [
+          "CHEMBL1026",
+          "CHEMBL1256646"
+        ],
+        "confidence_score_counts": {
+          "0": 2,
+          "1": 11,
+          "4": 2,
+          "8": 27,
+          "9": 9
+        },
+        "distinct_assay_count": 51,
+        "distinct_document_count": 18,
+        "distinct_target_count": 24,
+        "endpoint_type_counts": {
+          "AC50": 16,
+          "EC50": 9,
+          "IC50": 11,
+          "Kd": 6,
+          "Ki": 9
+        },
+        "exclusion_counts": {
+          "data_validity_comment": 7,
+          "missing_relation": 14,
+          "missing_structure": 0,
+          "missing_value": 0,
+          "non_nanomolar_units": 0,
+          "non_standard_activity": 57,
+          "outside_endpoint_family": 90,
+          "potential_duplicate": 0
+        },
+        "independent_experiment_count": 51,
+        "independent_measurement_count": 51,
+        "parent_form_point_count": 36,
+        "parent_molecule_chembl_id": "CHEMBL588",
+        "pref_name": "FENOLDOPAM",
+        "replicate_point_row_count": 0,
+        "reported_row_count": 248,
+        "salt_form_point_count": 15,
+        "target_organism_counts": {
+          "Bos taurus": 2,
+          "Homo sapiens": 27,
+          "Oryctolagus cuniculus": 2,
+          "Plasmodium falciparum": 6,
+          "Rattus norvegicus": 12,
+          "not recorded": 2
+        },
+        "toid_point_row_count": 0
+      },
+      {
+        "admitted_bound_count": 91,
+        "admitted_point_count": 251,
+        "assay_organism_counts": {
+          "Escherichia coli": 1,
+          "Homo sapiens": 42,
+          "Human immunodeficiency virus": 1,
+          "Human immunodeficiency virus 1": 188,
+          "Human immunodeficiency virus type 1 BH10": 1,
+          "Plasmodium falciparum": 1,
+          "Plasmodium yoelii yoelii": 2,
+          "Severe acute respiratory syndrome coronavirus 2": 1,
+          "not recorded": 14
+        },
+        "assay_type_counts": {
+          "A": 1,
+          "B": 33,
+          "F": 217
+        },
+        "assay_type_disagreement_count": 0,
+        "bound_relation_counts": {
+          ">": 90,
+          ">=": 1
+        },
+        "child_molecule_ids": [
+          "CHEMBL929"
+        ],
+        "confidence_score_counts": {
+          "0": 14,
+          "1": 202,
+          "8": 14,
+          "9": 21
+        },
+        "distinct_assay_count": 250,
+        "distinct_document_count": 90,
+        "distinct_target_count": 21,
+        "endpoint_type_counts": {
+          "AC50": 7,
+          "EC50": 131,
+          "IC50": 113
+        },
+        "exclusion_counts": {
+          "data_validity_comment": 5,
+          "missing_relation": 12,
+          "missing_structure": 0,
+          "missing_value": 0,
+          "non_nanomolar_units": 3,
+          "non_standard_activity": 320,
+          "outside_endpoint_family": 103,
+          "potential_duplicate": 14
+        },
+        "independent_experiment_count": 250,
+        "independent_measurement_count": 250,
+        "parent_form_point_count": 216,
+        "parent_molecule_chembl_id": "CHEMBL593",
+        "pref_name": "DELAVIRDINE",
+        "replicate_point_row_count": 1,
+        "reported_row_count": 799,
+        "salt_form_point_count": 35,
+        "target_organism_counts": {
+          "Escherichia coli K-12": 1,
+          "Homo sapiens": 40,
+          "Human immunodeficiency virus 1": 192,
+          "Plasmodium falciparum": 1,
+          "Plasmodium yoelii yoelii": 2,
+          "Severe acute respiratory syndrome coronavirus 2": 1,
+          "not recorded": 14
+        },
+        "toid_point_row_count": 0
+      },
+      {
+        "admitted_bound_count": 0,
+        "admitted_point_count": 0,
+        "assay_organism_counts": {},
+        "assay_type_counts": {},
+        "assay_type_disagreement_count": 0,
+        "bound_relation_counts": {},
+        "child_molecule_ids": [],
+        "confidence_score_counts": {},
+        "distinct_assay_count": 0,
+        "distinct_document_count": 0,
+        "distinct_target_count": 0,
+        "endpoint_type_counts": {},
+        "exclusion_counts": {
+          "data_validity_comment": 1,
+          "missing_relation": 0,
+          "missing_structure": 0,
+          "missing_value": 0,
+          "non_nanomolar_units": 0,
+          "non_standard_activity": 2,
+          "outside_endpoint_family": 1,
+          "potential_duplicate": 0
+        },
+        "independent_experiment_count": 0,
+        "independent_measurement_count": 0,
+        "parent_form_point_count": 0,
+        "parent_molecule_chembl_id": "CHEMBL906",
+        "pref_name": "MINOXIDIL SULFATE",
+        "replicate_point_row_count": 0,
+        "reported_row_count": 4,
+        "salt_form_point_count": 0,
+        "target_organism_counts": {},
+        "toid_point_row_count": 0
+      }
+    ],
+    "reported_row_count": 13305,
+    "salt_form_point_count": 71
+  },
+  "computed_on": "2026-10-21",
+  "endpoint": {
+    "standard_types": [
+      "AC50",
+      "EC50",
+      "IC50",
+      "Kd",
+      "Ki"
+    ],
+    "standard_units": "nM"
+  },
+  "entity_resolution": {
+    "declared_seed_count": 15,
+    "distinct_parent_count": 10,
+    "seed_groups_sharing_one_parent": [
+      {
+        "molecule_chembl_ids": [
+          "CHEMBL109",
+          "CHEMBL433"
+        ],
+        "parent_molecule_chembl_id": "CHEMBL109"
+      },
+      {
+        "molecule_chembl_ids": [
+          "CHEMBL1144",
+          "CHEMBL690"
+        ],
+        "parent_molecule_chembl_id": "CHEMBL1144"
+      },
+      {
+        "molecule_chembl_ids": [
+          "CHEMBL109745",
+          "CHEMBL275835"
+        ],
+        "parent_molecule_chembl_id": "CHEMBL275835"
+      },
+      {
+        "molecule_chembl_ids": [
+          "CHEMBL1026",
+          "CHEMBL588"
+        ],
+        "parent_molecule_chembl_id": "CHEMBL588"
+      },
+      {
+        "molecule_chembl_ids": [
+          "CHEMBL593",
+          "CHEMBL929"
+        ],
+        "parent_molecule_chembl_id": "CHEMBL593"
+      }
+    ],
+    "seeds": [
+      {
+        "is_own_parent": false,
+        "molecule_chembl_id": "CHEMBL1026",
+        "parent_molecule_chembl_id": "CHEMBL588",
+        "pref_name": "FENOLDOPAM MESYLATE",
+        "stored_fragment_count": 2
+      },
+      {
+        "is_own_parent": true,
+        "molecule_chembl_id": "CHEMBL109",
+        "parent_molecule_chembl_id": "CHEMBL109",
+        "pref_name": "VALPROIC ACID",
+        "stored_fragment_count": 1
+      },
+      {
+        "is_own_parent": false,
+        "molecule_chembl_id": "CHEMBL109745",
+        "parent_molecule_chembl_id": "CHEMBL275835",
+        "pref_name": "DARBUFELONE MESYLATE",
+        "stored_fragment_count": 2
+      },
+      {
+        "is_own_parent": true,
+        "molecule_chembl_id": "CHEMBL1144",
+        "parent_molecule_chembl_id": "CHEMBL1144",
+        "pref_name": "PRAVASTATIN",
+        "stored_fragment_count": 1
+      },
+      {
+        "is_own_parent": true,
+        "molecule_chembl_id": "CHEMBL13829",
+        "parent_molecule_chembl_id": "CHEMBL13829",
+        "pref_name": "MIXTURE OF MMC AND TA",
+        "stored_fragment_count": 2
+      },
+      {
+        "is_own_parent": true,
+        "molecule_chembl_id": "CHEMBL23393",
+        "parent_molecule_chembl_id": "CHEMBL23393",
+        "pref_name": "SODIUM LAURYL SULFATE",
+        "stored_fragment_count": 2
+      },
+      {
+        "is_own_parent": true,
+        "molecule_chembl_id": "CHEMBL25",
+        "parent_molecule_chembl_id": "CHEMBL25",
+        "pref_name": "ASPIRIN",
+        "stored_fragment_count": 1
+      },
+      {
+        "is_own_parent": true,
+        "molecule_chembl_id": "CHEMBL275835",
+        "parent_molecule_chembl_id": "CHEMBL275835",
+        "pref_name": "DARBUFELONE",
+        "stored_fragment_count": 1
+      },
+      {
+        "is_own_parent": false,
+        "molecule_chembl_id": "CHEMBL433",
+        "parent_molecule_chembl_id": "CHEMBL109",
+        "pref_name": "VALPROATE SODIUM",
+        "stored_fragment_count": 2
+      },
+      {
+        "is_own_parent": true,
+        "molecule_chembl_id": "CHEMBL441",
+        "parent_molecule_chembl_id": "CHEMBL441",
+        "pref_name": "THIOPENTAL",
+        "stored_fragment_count": 1
+      },
+      {
+        "is_own_parent": true,
+        "molecule_chembl_id": "CHEMBL588",
+        "parent_molecule_chembl_id": "CHEMBL588",
+        "pref_name": "FENOLDOPAM",
+        "stored_fragment_count": 1
+      },
+      {
+        "is_own_parent": true,
+        "molecule_chembl_id": "CHEMBL593",
+        "parent_molecule_chembl_id": "CHEMBL593",
+        "pref_name": "DELAVIRDINE",
+        "stored_fragment_count": 1
+      },
+      {
+        "is_own_parent": false,
+        "molecule_chembl_id": "CHEMBL690",
+        "parent_molecule_chembl_id": "CHEMBL1144",
+        "pref_name": "PRAVASTATIN SODIUM",
+        "stored_fragment_count": 2
+      },
+      {
+        "is_own_parent": true,
+        "molecule_chembl_id": "CHEMBL906",
+        "parent_molecule_chembl_id": "CHEMBL906",
+        "pref_name": "MINOXIDIL SULFATE",
+        "stored_fragment_count": 1
+      },
+      {
+        "is_own_parent": false,
+        "molecule_chembl_id": "CHEMBL929",
+        "parent_molecule_chembl_id": "CHEMBL593",
+        "pref_name": "DELAVIRDINE MESYLATE",
+        "stored_fragment_count": 2
+      }
+    ]
+  },
+  "named_examples": {
+    "highest_salt_form_share": {
+      "admitted_point_count": 12,
+      "child_molecule_ids": [
+        "CHEMBL109745"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL275835",
+      "pref_name": "DARBUFELONE",
+      "salt_form_point_count": 5,
+      "salt_form_share": 0.4166666666666667
+    },
+    "largest_row_to_measurement_gap": {
+      "admitted_point_count": 27,
+      "independent_measurement_count": 27,
+      "parent_molecule_chembl_id": "CHEMBL109",
+      "pref_name": "VALPROIC ACID",
+      "reported_row_count": 6294,
+      "rows_per_independent_measurement": 233.11111111111111
+    },
+    "one_reported_value_in_full_context": {
+      "activity_id": 495981,
+      "assay_chembl_id": "CHEMBL646326",
+      "assay_organism": null,
+      "assay_type": "B",
+      "confidence_score": 8,
+      "document_chembl_id": "CHEMBL1125615",
+      "document_journal": "J Med Chem",
+      "document_year": 1991,
+      "parent_molecule_chembl_id": "CHEMBL109",
+      "parent_pref_name": "VALPROIC ACID",
+      "pchembl_value": 4.05,
+      "standard_relation": "=",
+      "standard_type": "IC50",
+      "standard_units": "nM",
+      "standard_value": 89000.0,
+      "target_chembl_id": "CHEMBL4049",
+      "target_organism": "Sus scrofa",
+      "target_pref_name": "Aldo-keto reductase family 1 member A1",
+      "tested_form": "child (salt or mixture) form",
+      "tested_molecule_chembl_id": "CHEMBL433",
+      "toid": null
+    },
+    "parents_without_admitted_measurement": [
+      {
+        "parent_molecule_chembl_id": "CHEMBL906",
+        "pref_name": "MINOXIDIL SULFATE",
+        "reported_row_count": 4
+      }
+    ]
+  },
+  "protocol_id": "chembl37-decision-unit-scope-v1",
+  "schema_version": "aidd-commons.decision-unit-scope-summary.v1",
+  "software": {
+    "numpy": "2.4.6",
+    "python": "3.11.15",
+    "rdkit": "2025.09.6"
+  },
+  "source": {
+    "database": "ChEMBL_37",
+    "licence": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+    "licence_url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE",
+    "release_date": "2026-05-01"
+  }
+}

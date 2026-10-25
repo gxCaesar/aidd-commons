@@ -1,0 +1,154 @@
+---
+title: QM/MM boundaries and reactive events
+description: Define a quantum region, its environment, and its boundary tests before using a QM/MM calculation to discuss a reactive molecular event.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="physics-based-modeling/qm-mm-and-reactive-events" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will explain why a fixed-topology force field may be inadequate for a
+declared reactive event, define the components of a QM/MM partition, and detect
+when a reported barrier is sensitive to that partition. Read [Force fields,
+solvent, and sampling](/learn/physics-based-modeling/force-fields-and-sampling/)
+and [Free-energy cycles, endpoints, and convergence](/learn/physics-based-modeling/free-energy-cycles-and-convergence/)
+first. This lesson is conceptual and handworked. It supplies neither a reaction
+procedure nor a calculated mechanism for a real molecular system.
+
+## Why split a system into QM and MM regions?
+
+Classical molecular mechanics can efficiently represent many bonded and
+nonbonded motions, but its fixed atom types and charges generally cannot describe
+an event in which electronic structure changes. Bond formation or cleavage,
+charge redistribution, change of electronic state, and some metal-centred
+processes are common reasons to ask a quantum-mechanical question. Applying QM
+to every atom can be expensive, whereas applying MM to the changing chemical
+region can make the question ill posed.
+
+QM/MM divides an **entire system** into a primary QM subsystem `Q` and an MM
+subsystem `M`. A useful schematic energy is
+`E_QM/MM = E_QM(Q) + E_MM(M) + E_int(Q,M)`.
+The interaction term is not optional bookkeeping: it determines how the local
+electronic problem feels steric and electrostatic surroundings. The original
+Warshel and Levitt study explicitly considered a substrate, enzyme and surrounding
+solvent while separating quantum and classical energy factors
+[Warshel and Levitt](https://weizmann.elsevierpure.com/en/publications/theoretical-studies-of-enzymic-reactions-dielectric-electrostatic/).
+
+The split is a modelling hypothesis. It should be selected from the chemistry
+of the declared event, not from a desire to obtain a smaller atom count. Include
+atoms whose bonds, formal charge, protonation, coordination, or electronic state
+are expected to change, plus nearby groups needed to represent direct electronic
+or steric coupling. Keep more distant surroundings in `M` when their principal
+role is environmental. The correct boundary is assessed by sensitivity tests,
+not guessed from a residue label alone.
+
+| Choice           | What to specify                                                            | Why it changes the result                                           |
+| ---------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| QM region `Q`    | atom list, charge, spin, electronic method and basis                       | electronic rearrangement is only possible inside the defined region |
+| MM region `M`    | force field, protonation, solvent/ions, restraints and boundary conditions | environment can stabilize geometries and charge distributions       |
+| embedding        | mechanical, electrostatic, or another named coupling scheme                | it determines how `M` acts on `Q`                                   |
+| cut bonds        | capping/link treatment, charge handling and atom identities                | artificial boundary terms can perturb energies                      |
+| event coordinate | geometric/electronic collective variables and reference states             | a barrier only has meaning along a named path                       |
+
+## Boundary treatment is part of the hypothesis
+
+A covalent boundary can leave an open valence in the QM calculation. A common
+repair uses a link atom or other capping construction, but its position and the
+treatment of nearby MM charges are assumptions that can affect the result.
+Mechanical embedding evaluates QM and MM pieces with a classical-style coupling.
+Electrostatic embedding lets MM charges enter the QM Hamiltonian, so the QM
+electron density responds to the environment. Neither label makes an answer
+universally reliable.
+
+The Lin and Truhlar review writes the same partition as a primary system,
+secondary system, and their interaction, and distinguishes mechanical from
+electrostatic embedding and several boundary treatments
+[Lin and Truhlar](https://comp.chem.umn.edu/qmmmreview/QMMMreview05.htm).
+Its central practical lesson is still current: report where the boundary lies,
+what it cuts, and how its effects were tested. A calculation that changes
+substantially when one adjacent group crosses the boundary has discovered an
+uncertainty, not a mechanism conclusion.
+
+## A reactive coordinate must be named
+
+“The reaction occurred” is not a numerical endpoint. A simple constructed
+coordinate might be `xi(x) = r_form - r_break`, where `r_form` and `r_break`
+are two declared interatomic distances. It can locate a path hypothesis, but it
+may fail to describe proton transfer, solvent rearrangement, alternative
+conformations, or a change of spin state. The reported quantities must say
+whether they are optimized-path energies, sampled free energies, or another
+defined object. A transition-like geometry from a short optimization is not by
+itself a rate prediction.
+
+For any result, retain the entire-system coordinates, QM atom list and charge,
+electronic method, MM model, embedding, boundary treatment, restraint and
+sampling protocol, reaction-coordinate definition, and reference state. This
+record makes it possible to tell an informative QM/MM sensitivity analysis from
+a diagram with a coloured active site.
+
+## Worked case: a boundary sensitivity finding
+
+All values in this case are **constructed for teaching**. A team defines a
+reaction-coordinate hypothesis `xi(x) = r_form - r_break`. Its first partition
+`Q_24` contains `24` atoms and gives an optimized-path barrier of
+`17.4 kcal/mol`. A second partition `Q_38` adds one nearby charged group and
+its covalent neighbour, uses the same named electronic method and environment,
+and gives `19.1 kcal/mol`. The difference is `19.1 - 17.4 = 1.7 kcal/mol`.
+
+The defensible conclusion is that this constructed barrier is boundary-sensitive
+at least across `Q_24` and `Q_38`. It is not that `19.1 kcal/mol` is the true
+barrier, that the added group “causes catalysis,” or that either calculation
+predicts a measured rate. The next useful work is to inspect the charge,
+geometry, and boundary treatment around the changed group; if the scientific
+decision depends on less than `1.7 kcal/mol`, the partition uncertainty is
+already decision-relevant.
+
+## Limits and independent exercise
+
+QM/MM can omit relevant states, use an inadequate electronic method, or sample
+the surrounding environment poorly. Enlarging `Q` may reduce one boundary error
+while increasing cost enough to reduce sampling. Agreement between two choices
+does not remove shared assumptions. Report a negative sensitivity result as a
+result; do not hide it by selecting the partition with the more convenient
+number.
+
+**Handworked exercise (not runnable or empirical):** A constructed event uses
+`Q_small = 18` atoms and `Q_large = 32` atoms. The same stated path gives
+`DeltaE‡ = 12.0 kcal/mol` and `DeltaE‡ = 13.8 kcal/mol`, respectively. Compute
+the change. Name two records needed for another reader to interpret it, and write
+one claim that would exceed the evidence.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The change is `13.8 - 12.0 = 1.8 kcal/mol`. Needed records include the atom
+lists, charge/spin and electronic method for `Q`, the MM force field and
+environment, embedding and capping treatment, complete coordinates, restraints,
+and the definition of `DeltaE‡`. The result supports a boundary-sensitivity
+observation under the constructed protocol. It does not establish an experimental
+activation free energy, a reaction rate, or a causal role for the added atoms.
+
+</details>
+
+## Sources and next lesson
+
+The following sources were opened on 2026-09-09. The first is a foundational
+QM/MM article and the second reviews partition, embedding and boundary issues;
+neither supports the constructed barriers.
+
+<div data-case-sources>
+
+- [Theoretical studies of enzymic reactions: dielectric, electrostatic and steric stabilization](https://weizmann.elsevierpure.com/en/publications/theoretical-studies-of-enzymic-reactions-dielectric-electrostatic/)
+- [QM/MM: What have we learned, where are we, and where do we go from here](https://comp.chem.umn.edu/qmmmreview/QMMMreview05.htm)
+
+</div>
+
+Continue to [Reaction mapping and route search](/learn/synthesis-and-automation/reaction-mapping-and-route-search/)
+to separate a modelled reactive event from a proposed synthetic transformation.
+Original lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-09.

@@ -1,0 +1,170 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  description: string;
+  lang?: "en" | "zh-CN";
+  title: string;
+}
+
+const { description, lang = "en", title } = Astro.props;
+const chinese = lang === "zh-CN";
+const navigation = chinese
+  ? [
+      ["学习", "/zh-cn/pathways/"],
+      ["图谱", "/atlas/"],
+      ["实验室", "/zh-cn/labs/"],
+      ["审计", "/audit/"],
+      ["报告", "/report/"],
+      ["参与", "/contribute/"],
+    ]
+  : [
+      ["Learn", "/learn/foundations/getting-started/"],
+      ["Atlas", "/atlas/"],
+      ["Labs", "/labs/"],
+      ["Audit", "/audit/"],
+      ["Report", "/report/"],
+      ["Contribute", "/contribute/"],
+    ];
+
+// The three states the toggle cycles through. "system" is the state Starlight calls auto: it
+// keeps the key empty, which both implementations read as "follow the operating system".
+const themeLabels = {
+  auto: {
+    short: chinese ? "跟随系统" : "System",
+    label: chinese ? "颜色主题：跟随系统。切换到浅色。" : "Colour theme: system. Switch to light.",
+  },
+  light: {
+    short: chinese ? "浅色" : "Light",
+    label: chinese ? "颜色主题：浅色。切换到深色。" : "Colour theme: light. Switch to dark.",
+  },
+  dark: {
+    short: chinese ? "深色" : "Dark",
+    label: chinese ? "颜色主题：深色。切换到跟随系统。" : "Colour theme: dark. Switch to system.",
+  },
+};
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} | AIDD Commons</title>
+    <script is:inline>
+      // The bootstrap Starlight runs on its own pages, repeated here so that the custom shell
+      // starts in the theme the reader already chose. The key and the attribute are the same
+      // ones Starlight uses, so the two halves of the site never disagree. The script is
+      // inline and sits in the head, so the attribute is set before the first paint.
+      (() => {
+        let stored = null;
+        try {
+          stored = window.localStorage.getItem("starlight-theme");
+        } catch {
+          stored = null;
+        }
+        const theme =
+          stored === "light" || stored === "dark"
+            ? stored
+            : window.matchMedia("(prefers-color-scheme: light)").matches
+              ? "light"
+              : "dark";
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">{chinese ? "跳到主要内容" : "Skip to main content"}</a>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="brand" href="/">AIDD Commons</a>
+        <site-navigation>
+          <button class="nav-toggle" type="button" aria-controls="primary-navigation" aria-expanded="false">
+            {chinese ? "打开导航" : "Open navigation"}
+          </button>
+          <nav id="primary-navigation" class="primary-nav" aria-label={chinese ? "主要导航" : "Primary navigation"}>
+            {navigation.map(([label, href]) => <a href={href}>{label}</a>)}
+            <a class="language-link" href={chinese ? "/" : "/zh-cn/"}>{chinese ? "English" : "中文"}</a>
+          </nav>
+          <button
+            class="theme-toggle"
+            type="button"
+            data-theme-toggle
+            data-theme-labels={JSON.stringify(themeLabels)}
+            aria-label={themeLabels.auto.label}
+          >
+            <span data-theme-toggle-text>{themeLabels.auto.short}</span>
+          </button>
+        </site-navigation>
+      </div>
+    </header>
+    <script is:inline>
+      // The theme control. It writes the same localStorage key Starlight writes and updates the
+      // same attribute on the html element, so a reader who changes the theme here finds it
+      // already changed on a lesson page.
+      (() => {
+        const button = document.querySelector("[data-theme-toggle]");
+        if (!button) return;
+        const labels = JSON.parse(button.dataset.themeLabels);
+        const modes = ["auto", "light", "dark"];
+        const text = button.querySelector("[data-theme-toggle-text]");
+        const prefersLight = () => window.matchMedia("(prefers-color-scheme: light)").matches;
+        const effective = (mode) => (mode === "auto" ? (prefersLight() ? "light" : "dark") : mode);
+        const read = () => {
+          try {
+            const stored = window.localStorage.getItem("starlight-theme");
+            return stored === "light" || stored === "dark" ? stored : "auto";
+          } catch {
+            return "auto";
+          }
+        };
+        const apply = (mode) => {
+          document.documentElement.dataset.theme = effective(mode);
+          button.dataset.themeMode = mode;
+          button.setAttribute("aria-label", labels[mode].label);
+          if (text) text.textContent = labels[mode].short;
+        };
+        button.addEventListener("click", () => {
+          const next = modes[(modes.indexOf(read()) + 1) % modes.length];
+          try {
+            window.localStorage.setItem("starlight-theme", next === "auto" ? "" : next);
+          } catch {
+            // A reader without storage still gets the theme for this page.
+          }
+          apply(next);
+        });
+        window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => {
+          if (read() === "auto") apply("auto");
+        });
+        apply(read());
+      })();
+    </script>
+    <main id="main-content" class="page-shell">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        {chinese ? "英语内容为规范版本；现有课程与实验说明提供中文译文，数值面板和下载文件保留原始格式。" : "English is canonical. Existing lessons and lab guides have Chinese translations; numerical panels and downloads retain their original format."}
+      </div>
+    </footer>
+    <script>
+      class SiteNavigation extends HTMLElement {
+        connectedCallback() {
+          const button = this.querySelector("button");
+          if (!button) return;
+          button.addEventListener("click", () => {
+            const open = this.dataset.open === "true";
+            this.dataset.open = String(!open);
+            button.setAttribute("aria-expanded", String(!open));
+          });
+        }
+      }
+
+      if (!customElements.get("site-navigation")) {
+        customElements.define("site-navigation", SiteNavigation);
+      }
+    </script>
+  </body>
+</html>

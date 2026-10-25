@@ -1,0 +1,53 @@
+---
+title: Data contracts and licences
+description: Make identity, provenance, legal scope, and entity alignment visible before model development.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="data-governance/data-contracts" />
+
+## Foundations
+
+A data contract names the producer, version, entities, labels, transformations,
+permitted use, split unit, and expected output. Structure sources such as
+[RCSB PDB](https://www.rcsb.org/) and [PDBe](https://www.ebi.ac.uk/pdbe/) can
+identify structures, while [UniProt](https://www.uniprot.org/) and
+[InterPro](https://www.ebi.ac.uk/interpro/) support protein annotation. None of
+those homepage observations settle all downstream terms.
+
+## Practical workflow
+
+Choose stable identifiers before joining chemical, protein, pathway, and assay
+tables. Retain unmatched entities and exclusion counts. For reaction records,
+inspect the [Open Reaction Database schema](https://github.com/open-reaction-database/ord-schema)
+instead of treating a reaction string as a complete provenance record.
+
+## Evaluation
+
+Test joins against held-out entities and audit duplicate or near-duplicate
+records across partitions. A successful lookup does not establish causal
+linkage, licence compatibility, or a valid experimental endpoint.
+
+## Frontier and open questions
+
+Model cards and data cards are useful only when they bind claims to released
+assets. The hard question is whether a data recipe can be rerun without hidden
+source databases, changing APIs, or unrecorded manual curation.
+
+## What v0.1 does not yet teach
+
+This lesson does not provide legal advice or a universal ontology alignment
+service.
+
+## Core-source path
+
+Read the [BioGRID](https://thebiogrid.org/) data entry and compare it with the
+[ORD schema](https://github.com/open-reaction-database/ord-schema), then use the
+atlas to inspect fields that remain `unverified`.
+
+Then inspect a real frozen contract, including the rows it excludes, with one
+offline command in
+[read the frozen contract before the model](/labs/chembl-contract-inspection/).
+
+Last reviewed: 2026-09-04.

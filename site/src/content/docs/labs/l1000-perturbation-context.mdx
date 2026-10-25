@@ -1,0 +1,164 @@
+---
+title: Does a real signature reproduce across cell context?
+description: Read real LINCS L1000 expression profiles for the same real compound in two real cell lines, and see how much of a naive correlation is really shared baseline structure.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Before you run
+
+**Mode: fresh independent computation over a real, versioned GEO series.**
+No model is fitted anywhere in this lab. It reads exactly one real molecular
+profile per admitted compound in each of two fixed cell lines, so its own
+answer to "encode molecular profiles, cell states, perturbations, time and
+experimental context at the relevant biological unit" is: the unit is one
+compound's median differential expression profile, in one cell line, at one
+dose and one timepoint.
+
+```bash
+python labs/l1000_perturbation_context/run_lab.py download   # fetches and caches ~640 MiB
+python labs/l1000_perturbation_context/inspect_l1000_perturbation_context.py show
+python labs/l1000_perturbation_context/inspect_l1000_perturbation_context.py check
+```
+
+Python 3.11 or newer, NumPy, SciPy, RDKit and h5py. Network access only for
+the one-time download from the public GEO FTP mirror; no network access
+once the cache at `.cache/l1000_perturbation_context/` is present.
+
+## Why this file, and not a smaller or bigger one
+
+The data is [GEO series GSE70138](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70138),
+"L1000 Connectivity Map perturbational profiles ... LINCS PHASE II". This
+same series also ships a 2015-dated Level 2 release under simplified column
+labels like `A375-trt_cp-5`; fetched and checked directly, none of its
+column labels appear in the current metadata files at all, so it cannot be
+joined to real compound identity, dose or time and was not used. The full
+12,328-gene Level 4 (Z-score) and Level 5 (aggregated signature) releases
+for this series are 14 GB and 5.4 GB respectively, well outside this
+project's CPU-first scale. This protocol instead reads the 978-landmark-gene
+Level 2 file (directly measured, never an inferred value) and computes its
+own vehicle-control-relative differential signature, real data at a fraction
+of the size.
+
+## An admission rule for one compound, one cell line
+
+An entity is one real compound (`pert_id`, with a real, RDKit-validated
+structure from GSE70138's own perturbagen catalog) in one of two fixed cell
+lines, MCF7 or PC3, at a fixed dose (10 µM) and timepoint (24 h). Its value
+is the median, across replicate wells, of each replicate's raw Level 2
+profile minus the median profile of every vehicle-control well on that
+replicate's own exact plate; a replicate whose plate has no vehicle control
+is excluded rather than paired with a control from elsewhere. Computed on
+2026-09-12:
+
+| Cell line | Input compound-treatment rows | Admitted compounds |
+| --- | ---: | ---: |
+| MCF7 | 37,495 | 1,725 |
+| PC3 | 34,112 | 1,724 |
+
+1,721 compounds are admitted in both cell lines.
+
+## Why baseline correction is not optional here
+
+`show` reports what happens both ways. Computed once on the raw Level 2
+values with no correction at all, real compound-matched pairs show a median
+Spearman rho of 0.79, but a deterministic **mismatched**-compound background
+(each compound paired with a different, fixed compound's profile) shows a
+median rho of 0.70 too: both cell lines' raw profiles share enough baseline
+structure that even unrelated compounds correlate strongly. A naive
+comparison on absolute expression barely distinguishes a real signature from
+shared noise.
+
+After the plate-matched vehicle-control subtraction this protocol requires:
+
+| | Matched (real compound pairs) | Null (deterministic mismatch) |
+| --- | ---: | ---: |
+| Median Spearman rho | 0.175 | 0.034 |
+| Mean Spearman rho | 0.183 | 0.044 |
+| Fraction positive | 79.5% | 60.3% |
+
+A two-sided Mann-Whitney U test between the two distributions gives
+p = 7.9 × 10⁻⁸²: the matched and null distributions are genuinely,
+robustly different, not merely different point estimates on noisy samples.
+
+## What the correlation hides
+
+Named examples from `show`:
+
+| Compound | Cross-cell-line Spearman rho |
+| --- | ---: |
+| Triptolide | +0.793 |
+| Urapidil | +0.757 |
+| Mitoxantrone | +0.721 |
+| GDC-0879 | −0.528 |
+| EX-527 | −0.516 |
+| Amcinonide | −0.591 |
+
+About one-fifth of the 1,721 real, baseline-corrected compounds show a
+**negative** cross-cell-line correlation: for these, MCF7 and PC3 do not
+merely differ in how strongly a compound acts, the direction of the
+transcriptional response itself reverses between the two cell lines.
+
+## What this does not show
+
+This protocol reads two real cell lines, one real dose and one real
+timepoint out of the several thousand cell lines, doses, timepoints and
+perturbation types (shRNA knockdown, gene overexpression) this same GEO
+series also contains, and only the 978 directly measured landmark genes,
+never the 11,350 computationally inferred ones this series also reports. It
+makes no claim that a cross-cell-line signature correlation predicts any
+clinical or in vivo outcome for any named compound. See `protocol.json`'s
+`excluded_by_design` for the complete, machine-readable list.
+
+## Independent exercise
+
+A figure caption states: "Compound Q's transcriptional signature is highly
+reproducible (rho = 0.79)."
+
+1. Using only what this lab computed, name the one thing missing from that
+   sentence that would let you tell whether 0.79 reflects the compound
+   itself or the same shared-baseline effect this lab measured at rho 0.70
+   even for mismatched compounds.
+2. GDC-0879 is a real, named BRAF inhibitor. MCF7 (breast cancer) and PC3
+   (prostate cancer) are not routinely selected for BRAF-mutant status the
+   way a melanoma line would be. Does this lab's protocol, on its own,
+   establish that GDC-0879's negative cross-cell-line rho is caused by a
+   BRAF-pathway difference between the two lines? Name one thing this
+   protocol would need to add to support that specific causal claim.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The missing check is the null comparison: without knowing that mismatched
+compounds also correlate near 0.70 on raw values, a bare 0.79 cannot be told
+apart from shared baseline structure common to nearly every profile in this
+assay. Only after subtracting the plate-matched vehicle-control baseline,
+which removes most of that shared structure, does a real rho become
+informative on its own. On GDC-0879: no, this protocol computes a
+correlation, not a mechanism. It never measures BRAF-pathway activity,
+mutation status, or any other molecular readout beyond the 978 landmark
+genes' expression level. Supporting a specific causal claim about BRAF
+would need, at minimum, a genotype or pathway-activity measurement in both
+cell lines, which this protocol does not collect.
+
+</details>
+
+## Sources and next lesson
+
+<div data-case-sources>
+
+- [GEO series GSE70138 (LINCS L1000, Phase II)](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70138), read live on 2026-09-12
+- [GSE70138 instance-level metadata (2017-03-06 release)](https://ftp.ncbi.nlm.nih.gov/geo/series/GSE70nnn/GSE70138/suppl/GSE70138_Broad_LINCS_inst_info_2017-03-06.txt.gz)
+- [GSE70138 Level 2 landmark-gene expression matrix (2017-03-06 release)](https://ftp.ncbi.nlm.nih.gov/geo/series/GSE70nnn/GSE70138/suppl/GSE70138_Broad_LINCS_Level2_GEX_n345976x978_2017-03-06.gctx.gz)
+
+</div>
+
+This page shares no code, split or locked result with any other lab in this
+repository. Continue to [Perturbation prediction across cellular
+contexts](/learn/mechanism-targets/perturbation-context-generalization/) for
+where this fits among the other perturbation-context concepts.
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-12.

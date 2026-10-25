@@ -1,0 +1,114 @@
+---
+title: 条件生成的机制
+description: 比较因子化采样、去噪、潜变量解码和速度场，而不把生成的候选当作发现结果。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Mechanisms of conditional generation](/learn/molecular-generation/generative-model-mechanisms/)。
+
+译文更新：2026-09-09。
+
+<LessonProgress lessonId="molecular-generation/generative-model-mechanisms" />
+
+<ScrollableRegions />
+
+## 学习目标
+
+完成本课后，你应能在目标和推理程序层面区分自回归、去噪扩散、潜变量 VAE 与 flow matching
+机制。你还应能将候选的有效性、新颖性、可合成性和一个已评分目标彼此分开。
+
+## 预备知识与任务边界
+
+先阅读[生成与搜索](/zh-cn/learn/molecular-generation/generation-and-search/)。令 `x` 为用 token、图或
+原子坐标表示的分子对象，`c` 为已声明的条件，例如靶点位点表示或性质约束。生成器从 `p(x | c)`
+采样一个候选；它本身不确立活性、合成或有用的实验结果。
+
+## 四种机制，四条推理路径
+
+自回归模型将序列分解为条件化的下一个 token 决策：
+`p(x | c) = product_i p(x_i | x_<i, c)`。推理时，它逐个选择或采样 token。该因子分解使顺序和
+token 化成为模型契约的一部分。训练时，一个标准目标是负对数似然
+`L_AR = -sum_i log p_theta(x_i | x_<i, c)`。因子分解、token 化和条件化均属于模型契约。
+
+去噪扩散模型定义干净对象的含噪版本，并学习在时间及（若使用）`c` 条件下去除噪声。一种常见
+教学形式是 `x_t = sqrt(alpha_bar_t) x_0 + sqrt(1-alpha_bar_t) epsilon`，其噪声预测损失为
+`E ||epsilon - epsilon_theta(x_t, t, c)||^2`。推理从噪声开始，并施加反向去噪程序。原始
+[DDPM 论文](https://arxiv.org/abs/2006.11239) 描述了扩散概率模型与去噪 score matching 的联系；
+它是机制来源，并不证明每个分子扩散实现都使用同一表示或采样器。
+
+潜变量变分自编码器（VAE）引入潜变量 `z`。对于完全条件化的 VAE，编码器可以近似
+`q_phi(z | x, c)`，先验可以为 `p(z | c)`，解码器建模 `p_theta(x | z, c)`。其条件 evidence
+lower bound 在重建和 `KL(q_phi(z | x, c) || p(z | c))` 之间折衷。也可以使用无条件编码器
+`q_phi(z | x)`，但必须声明选用的编码器、先验和解码器条件，不能隐式混用。
+[Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114) 是重参数化变分学习机制的原始来源。
+生成时采样 `z` 再解码，并不是在对象空间中迭代去噪。
+
+Flow matching 训练连续向量场。在本课使用的狭义中，它学习沿已选概率路径的速度
+`v_theta(x_t, t, c)`，随后 ODE 求解器将 `dx/dt = v_theta(x_t, t, c)` 从基础分布积分到数据。
+原始 [Flow Matching 论文](https://arxiv.org/abs/2210.02747) 将其表述为对固定条件概率路径的向量场
+进行回归。仅仅学习速度，既不说明生成分子有效，也不说明该路径是物理反应轨迹。
+
+## 推导似然：候选不止其 token 概率
+
+对于一个**构造的条件 token 示例**，设模型分配
+`p(A | c) = 0.80`、`p(B | A, c) = 0.25` 和 `p(stop | AB, c) = 0.50`。它给 token 序列 `AB`
+后接 stop 的概率为 `0.80 x 0.25 x 0.50 = 0.10`。这一算术只说明该序列在这个因子分解与条件下
+有多大概率。
+
+它不能回答四个彼此独立的下游问题：
+
+| 问题 | 所需的示例证据 |
+| --- | --- |
+| 有效性 | 解析器、价态检查，或有效的坐标/图构造 |
+| 新颖性 | 已声明的参考集合，以及相似性或身份规则 |
+| 可合成性 | 路线、试剂、条件与明确的可行性标准 |
+| 目标代理 | 有目标、单位和校准边界的命名模型分数 |
+
+高 token 似然并不意味着其中任何一项。反过来，一个新颖或看似可合成的候选也未必优化该代理分数。
+
+## 条件生成与正确范围内的例子
+
+条件 `c` 必须在训练和推理主张中都可见。例如，口袋、残基约束、目标性质或原子基序都可作为条件
+提供，但不存在可使用每一种这类 `c` 的通用预训练能力。生成样本仍取决于这些项目的编码方式、
+训练中出现过哪些条件，以及模型声明的推理接口。
+
+[RFdiffusion2](https://github.com/RosettaCommons/RFdiffusion2) 是蛋白质原子活性位点支架构建的一个
+有用官方例子。其仓库说明当前发布仅支持推理，并描述蛋白质设计演示。它不是小分子发现、通用分子
+生成基准结果或完整训练可用性的证据。
+其 41 种 M-CSA 酶的基准并未指明训练语料，而[项目文档](https://rosettacommons.github.io/RFdiffusion2/)建议结合蛋白设计使用原始 RFdiffusion。
+
+## 独立练习
+
+选择一个条件 `c` 和一个分子表示 `x`。用两句话说明自回归采样器和扩散采样器将如何开始推理。
+随后分别列出一个有效性测试和一个目标代理质量测试。不要把“模型生成了它”当作任一个测试。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+例如，令 `c` 为靶点位点表示，`x` 为分子图。自回归采样器从起始 token 或部分图开始，并在前缀和
+`c` 条件下采样下一个组件。扩散采样器从带噪图或坐标变量开始，并用时间和 `c` 反复去噪。有效性
+可以用图/价态规则评估。目标代理质量需要一个单独命名的评分器，并检查其输出是否具有所声称的单位、
+靶点和校准范围。两种测试都不确立合成或生物活性。
+
+</details>
+
+## 失效边界与来源路径
+
+生成改变的是候选分布；它不会消除靶点状态、条件、评分代理或后续实验中的不确定性。在比较候选列表
+前，记录表示、条件信息、采样规则、有效性过滤器、新颖性的参考集合和决策终点。
+
+<div data-case-sources>
+
+- [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239)
+- [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114)
+- [Flow Matching for Generative Modeling](https://arxiv.org/abs/2210.02747)
+- [RFdiffusion2 官方仓库](https://github.com/RosettaCommons/RFdiffusion2)
+
+</div>
+
+这里的似然和全部例子均为构造的教学示例。本课不作模型排序、训练可用性、软件执行或发现主张。
+原创课程文字采用 CC BY 4.0；链接的软件和来源保留各自条款。
+
+最后审阅：2026-09-09。

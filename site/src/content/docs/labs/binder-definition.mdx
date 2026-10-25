@@ -1,0 +1,161 @@
+---
+title: One set of molecules, several datasets
+description: Change only the definitions of positive, negative, decoy, balance and unit, and watch a benchmark get easier without a single new measurement.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="binder-definition" />
+
+## Before you run
+
+**Mode: runnable demonstration on constructed data.** The command reads one
+committed JSON file and uses RDKit for scaffolds. **No model is fitted**, no
+compound was assayed, and nothing here is a screening proposal.
+
+```bash
+python labs/binder_definition/inspect_definition.py show
+```
+
+A binder dataset looks like a fact about chemistry. It is mostly a stack of
+decisions. This lab holds the molecules fixed and moves the decisions.
+
+## 1. The file stores no classes
+
+Twelve measured compounds carry a value. Twelve decoys carry none. **Nothing
+carries a class label.**
+
+That is deliberate. A class is produced by a choice, so a stored label would hide
+the choice that made it, and a test asserts the file has no label field.
+
+## 2. The cutoff is a number somebody picked
+
+| cutoff | positives |
+| --- | --- |
+| 5.0 | 9 |
+| 5.5 | 8 |
+| 6.0 | 6 |
+| 6.5 | 4 |
+| 7.0 | 4 |
+
+Same twelve compounds, same twelve values. **Nothing was measured again.** The
+count more than doubles across a range of cutoffs any of which a paper could
+report without comment.
+
+## 3. Four of the twelve are filed by noise
+
+The endpoint declares an assay uncertainty of 0.3. At the primary cutoff of 6.0:
+
+- `m03` measured 6.1, **0.1 from the cutoff**, filed as positive
+- `m04` measured 5.9, **0.1 from the cutoff**, filed as negative
+- `m06` measured 6.0, **exactly on it**, filed as positive
+- `m09` measured 5.8, **0.2 from the cutoff**, filed as negative
+
+A repeat measurement is expected to move each of these across the line. Their
+class is a property of one reading, not of the compound — and once written into a
+dataset, that distinction is gone.
+
+## 4. A negative is two different things
+
+| dataset | positives | negatives | never measured | prevalence |
+| --- | --- | --- | --- | --- |
+| measured only | 6 | 6 | 0% | 0.500 |
+| with decoys | 6 | 18 | **67%** | **0.250** |
+
+A measured inactive is evidence: someone ran the assay and it came back low. A
+decoy is an assumption: nobody ran anything.
+
+Adding decoys **changed no positive**, because it added no measurement. It moved
+prevalence from 0.500 to 0.250. Precision of a random selector equals prevalence,
+so **the number any reported precision has to beat was moved by a decision about
+untested molecules.**
+
+Two thirds of the enlarged negative class carries no measurement at all, and the
+word "negatives" covers both kinds without distinction.
+
+## 5. The generalization unit is not the molecule
+
+Twelve molecules collapse to **four** Bemis-Murcko scaffolds, three of which
+carry more than one molecule:
+
+- four share `O=C(Nc1ccccc1)c1ccccc1`
+- three share `c1ccc(-c2ccccn2)cc1`
+- three share `c1ccc(N2CCNCC2)cc1`
+
+A random split over molecules puts members of the same scaffold on both sides, so
+a held-out molecule can be a near copy of a training one.
+
+One compound, `m11`, is acyclic and has **no scaffold at all**. The unit is not
+coarser for it, it is undefined, and the lab reports that rather than quietly
+assigning one.
+
+**At the primary cutoff there are six positives sitting on three scaffolds.** Six
+is the number that gets reported. Three is the number a test set can spend.
+
+```bash
+python labs/binder_definition/inspect_definition.py check
+```
+
+Sixteen checks run, including that decoys carry no measurement, that the decoy
+assumption is stated, that the cutoff was declared before the analysis, and that
+the assay uncertainty is a positive quantity so no class can look exactly
+determined.
+
+## Independent exercise
+
+A virtual screening paper reports: "our model achieves 0.94 AUC on a benchmark of
+50 actives and 1,500 decoys, and recovers 40% of actives in the top 1%."
+
+Say what you cannot conclude, and name the two numbers you would ask for.
+
+<details data-worked-answer>
+<summary>Worked answer — what the ratio buys, and the two numbers</summary>
+
+**The 30-to-1 ratio was chosen, and it sets the baseline.** With 50 actives among
+1,550 compounds, prevalence is about 0.032. A random selector's precision is that
+number, so AUC and top-1% enrichment are both being read against a floor that a
+decision about untested molecules put there. Make the decoy set ten times larger
+and every enrichment figure improves without a single new experiment.
+
+**"Decoys" is not "inactives".** None of the 1,500 was measured. Property matching
+selects molecules that resemble the actives on cheap descriptors while assuming
+they do not bind, and some fraction of any such set does bind. Those are false
+negatives that inflate the score, and their rate is unknown because nobody looked.
+
+**50 actives is not 50 independent units.** Actives in a screening benchmark
+usually arrive from a handful of published series, so the effective count may be
+closer to the number of scaffolds, which can be under ten. "Recovers 40%" then
+means it recovered a couple of series, and a split that separates molecules but
+not series has already leaked.
+
+**And the activity cutoff is invisible here.** The 50 were called active by some
+threshold on some assay. Compounds near it went one way rather than the other for
+reasons the paper does not carry.
+
+**The two numbers to ask for.** First, **the number of distinct scaffolds among
+the actives**, which converts the headline into the count of independent things
+actually recovered. Second, **the measured-inactive count**, meaning how many
+negatives came back low from a real assay rather than being assumed. If that
+second number is zero, the benchmark contains no negative evidence at all, and
+every metric quoted over it is measuring the ranker against an assumption.
+
+</details>
+
+## What this does not do
+
+It fits no model, reports no performance, and does not say which definitions are
+correct. A decoy set is a legitimate tool when its assumption is stated. The
+failure this lab is built against is reporting decoys and measured inactives under
+one word and quoting a metric over the union.
+
+The molecules and values were authored for teaching and are not measurements. For
+a real frozen screening protocol see the
+[ChEMBL contract inspection](/labs/chembl-contract-inspection/), and for what a
+result does when it moves between assay contexts see
+[repeating is not transporting](/labs/screening-transport/).
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-11.

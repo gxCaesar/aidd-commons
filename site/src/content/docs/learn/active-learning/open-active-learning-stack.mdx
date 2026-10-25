@@ -1,0 +1,160 @@
+---
+title: The open active-learning stack
+description: Map the roles of an active-learning loop to published framework components and their evidence limits.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="active-learning/open-active-learning-stack" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Experiment pools, budgets, and feasibility](/learn/active-learning/experiment-pools-and-budgets/)
+and [Diversity, uncertainty, and experimental feedback](/learn/active-learning/diversity-uncertainty-feedback/),
+use the ALF and Mobley Lab records to identify who supplies each part of an
+active-learning loop. The [design-make-test-analyze lesson](/learn/active-learning/dmta-loops/)
+introduces the experimental decision. This is a reading lesson with a written
+exercise. Neither resource was run here.
+
+## Comparison contract
+
+A candidate pool defines what may be selected. Acquired observations train a
+surrogate, while the acquisition objective determines how candidates are scored.
+Selection, scoring, and obtaining a new label are separate operations. A held-out
+label in a retrospective pool and a result from a new laboratory experiment have
+different evidential force. The information boundary and integer budget still
+need to be declared before interpreting a campaign, as in the preceding lessons.
+
+## The roles of a loop
+
+ALF names these components in its documented loop. The final column identifies
+what the framework provides and where a reader must supply the scientific input.
+
+| Role | Concept from the preceding lessons | ALF component and supplier |
+| --- | --- | --- |
+| Candidate dataset | Eligible pool and acquired observations remain distinct from reserved outcomes | Dataset holds candidates and known labels; the reader supplies the task data |
+| Probabilistic surrogate | Fitted predictions may inform a later choice only after available labels enter training | `Surrogate` wraps a chosen model; acquired observations supply its training labels |
+| Acquisition function | An objective scores candidates; distance, uncertainty, and utility are different quantities | `acquisition_fn` scores candidates under the chosen rule |
+| Search function | A score alone is not a selected batch | `search_fn`, such as `DatasetSearch`, chooses candidates from acquisition results |
+| Optimizer | Selection combines the scoring rule with a search procedure | `Optimizer` joins `acquisition_fn` and `search_fn` |
+| Oracle or scorer | Feedback becomes an observation only when a source supplies a label | `Oracle` calls a scorer; the documented scorer uses a held-out pool or a live scorer, while a real laboratory must be supplied by the reader |
+| Design task | Rounds and batch size govern when feedback can change the next choice | `DesignTask` coordinates the configured loop |
+| State logger | A trace records the loop state without turning a prediction into a measurement | A state logger, such as `TerminalStateLogger`, records state during the task |
+
+The surrogate is the cheap model the loop uses to predict what has not yet been
+observed. The oracle is the source of the next label. Replacing a held-out-pool
+scorer with a laboratory changes what the label means, not the distinction
+between those roles. Likewise, an acquisition value is a score, whereas the
+search function makes a choice from the scores.
+
+## ALF
+
+ALF is a modular scientific active-learning framework. It supplies the loop
+interfaces, ready-made datasets, models, and acquisition strategies. Its source
+establishes available inference, training, and evaluation code. Training code
+lets a reader fit a surrogate to observations; it is not a pretrained model.
+The framework ships no pretrained weights of its own. Any surrogate or oracle
+model loaded from another project brings that project's own licence. The ALF
+README states Apache-2.0 for the framework and tools package.
+
+The documented oracle scores a held-out pool or uses a live scorer. The record
+enumerates no concrete laboratory oracle, so a reader seeking a real experiment
+in the loop must supply one. The record also establishes no data-availability
+statement, numerical benchmark result, or reported case-study result. Its
+article was not opened for the record, so comparisons between acquisition
+strategies are not carried into this lesson.
+
+## The Mobley Lab notebooks
+
+The Mobley Lab active-learning notebooks publish procedures accompanying
+ligand-optimisation studies, including multiobjective optimisation over
+multi-target binding and a study bridging structure-based and data-driven
+affinity prediction. The record establishes accessible notebook code as
+inference code. It does not establish separately available training code,
+pretrained weights, or a complete set of loop components with a laboratory
+oracle. Reading a published notebook gives a procedure to inspect, not an
+executed result.
+
+The README has no licence statement, and the record did not inspect the
+repository's licence file. The record therefore carries no licence and leaves
+access level unverified. The README also gives no dataset or data-availability
+statement, and no command for running either notebook. The accompanying papers
+were not opened for the record, so their reported improvements and comparisons
+are not evidence used here.
+
+## Openness by dimension
+
+The 7 columns preserve the catalogue's separate openness dimensions. Available
+means the cited record established access or documentation, not that this lesson
+executed the asset. Unverified means the record did not establish that dimension.
+
+| Resource | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| ALF | available | available | unverified | available | unverified | unverified | available |
+| Mobley Lab active-learning notebooks | available | unverified | unverified | unverified | unverified | unverified | unverified |
+
+ALF's available training-code cell does not supply pretrained weights. The
+notebooks' available inference-code cell does not establish their data inputs,
+execution, or licence.
+
+## Worked case
+
+A reader has a candidate pool, a fitted surrogate, and an acquisition function
+that scores the remaining candidates. The search function selects one of them.
+What has the loop established about that candidate? Which role would have to be
+a real laboratory rather than a held-out pool to obtain a new experimental
+label, and does the ALF record establish that the framework ships one?
+
+The selection establishes only that the configured search chose a candidate
+under the configured acquisition scores. It is neither a measurement nor
+evidence that the compound is worth making. The oracle or scorer would have to
+connect to the real laboratory. ALF documents a held-out-pool scorer or a live
+scorer but enumerates no concrete laboratory oracle. The reader would have to
+supply one and then assess the resulting observation under a declared protocol.
+This case makes no claim about the candidate's chemistry.
+
+## Independent exercise
+
+A colleague sees the Mobley Lab notebooks' available inference-code cell and
+claims that the published page establishes a runnable, licensed campaign with
+documented data. Which `6` openness fields remain unverified, and what else in
+the record prevents that claim?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Training code, weights, architecture, data recipe, training data, and evaluation
+code are the `6` unverified fields. The README gives no dataset, data source,
+download procedure, preprocessing description, or command for running either
+notebook. It has no licence statement, and the record did not inspect the
+licence file. The available inference-code field supports access to notebook
+code, not a completed run, a licence grant, or a measured result.
+
+</details>
+
+## Scope
+
+Neither resource was run here, and no acquisition campaign was executed. A
+selection is not a measurement, and a published notebook is not a result or a
+licence. The Mobley Lab record carries no established licence, so a reader must
+resolve the terms of any intended use. ALF's Apache-2.0 statement covers its
+framework and tools package; models and other resources retain their own terms.
+These are the records' readings of each resource, not a grant for every asset
+used with it. Reading an openness cell does not execute an asset. Neither
+record establishes a measured result or that a selected compound is worth
+making.
+
+## Sources
+
+The catalogue records `tool-alf` and `tutorial-multiobjective-al` were last
+verified on 2026-10-23. They cite the [ALF repository](https://github.com/instadeepai/alf)
+and [README](https://raw.githubusercontent.com/instadeepai/alf/main/README.md),
+and the [Mobley Lab active-learning notebooks repository](https://github.com/MobleyLab/active-learning-notebooks)
+and [README](https://raw.githubusercontent.com/MobleyLab/active-learning-notebooks/main/README.md).
+The records' access, openness, licence, and caveats define the scope of this
+lesson. Original lesson prose is CC BY 4.0; linked sources retain their own
+terms.
+
+Last reviewed: 2026-10-23.

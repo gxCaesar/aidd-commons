@@ -1,0 +1,152 @@
+---
+title: A trajectory observable, and how much of it you need
+description: Compute a real molecular-dynamics observable and its convergence from the committed rMD17 trajectories, and see a naive uncertainty estimate understate itself.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Before you run
+
+**Mode: fresh independent reproduction of a deterministic computation over an
+existing, real ab initio trajectory.** No new molecular simulation is run and no
+structure is prepared. The two files this reads are development-role rMD17
+systems (ethanol, malonaldehyde) already used elsewhere in this repository for a
+completely separate question, energy prediction. This command asks a different
+question of the same files and touches neither that split, its selected penalty,
+nor the locked benzene and uracil evaluation.
+
+```bash
+python labs/rmd17_system_state/run_lab.py download-development   # if not already present
+python labs/rmd17_system_state/inspect_dynamics.py show
+python labs/rmd17_system_state/inspect_dynamics.py check
+```
+
+Python 3.11 or newer and NumPy. Network access only for the one-time download,
+from the versioned, CC0-licensed Figshare release already declared by this lab's
+protocol.
+
+## What counts as a trajectory here
+
+rMD17 stores 100,000 frames per molecule from a real ab initio molecular-dynamics
+run, each with the molecule's Cartesian coordinates, its energy, and an
+`old_indices` value naming that frame's position in the _original_ trajectory.
+The array order the file ships in is unrelated to simulation time. The frozen
+protocol reuses the same convention the sibling energy-regression lab already
+documents for its own frame selection: sort ascending, stably, on `old_indices`.
+Only after that sort does "the first 1,000 frames" mean anything about early
+simulation time.
+
+## One observable, asked one question
+
+The observable is the mass-weighted radius of gyration, `Rg`, computed per frame
+from the coordinates and each atom's standard atomic mass. It answers: how
+spatially extended is the molecule at this instant? The declared question is
+whether an equilibrium value can be estimated from the trajectory, and how much
+of the trajectory that takes.
+
+## Two ways to be wrong about the uncertainty
+
+A trajectory's frames are not independent samples; nearby frames in time are
+similar. Treating them as independent, the way a naive standard error does,
+understates how uncertain the estimate really is. Splitting the chronologically
+ordered series into equal contiguous blocks and computing the standard error of
+the block means is the textbook correction.
+
+Computed on 2026-09-11 on an Apple arm64 machine with Python 3.11.15 and NumPy
+2.4.6:
+
+| System        | Mean Rg (Å) | Naive SEM (Å) | Block SEM at 100 blocks (Å) | Ratio |
+| ------------- | ----------: | ------------: | --------------------------: | ----: |
+| Ethanol       |      1.2130 |      0.000087 |                    0.000288 |  3.30 |
+| Malonaldehyde |      1.6947 |      0.000235 |                    0.001472 |  6.26 |
+
+Malonaldehyde's frames are more correlated than ethanol's, by this measure. Which
+side of the sign the ratio lands on is a property of the trajectory, not a
+guaranteed mathematical fact. It is reported in `show` as an observation; the
+`check` command asserts a different, always-true property instead: that summing
+back over every frame in equal blocks reproduces the direct trajectory mean
+exactly.
+
+The block count you choose changes the block SEM too. Ethanol's block SEM at 10
+blocks (10,000 frames each) is 0.000289 Å; at 1,000 blocks (100 frames each) it is
+0.000158 Å, roughly half as large from the same trajectory. A corrected
+uncertainty estimate still has a choice hidden inside it.
+
+## How much of the trajectory do you need
+
+The cumulative mean over the first `k` chronologically ordered frames, compared
+against the full 100,000-frame mean:
+
+| Frames included | Ethanol, difference from full trajectory (Å) | Malonaldehyde, difference (Å) |
+| --------------: | -------------------------------------------: | ----------------------------: |
+|             100 |                                     +0.00198 |                      −0.02528 |
+|           1,000 |                                     +0.00254 |                      −0.00743 |
+|          10,000 |                                     +0.00054 |                      −0.00946 |
+|         100,000 |                                     +0.00000 |                      +0.00000 |
+
+Ethanol looks converged by 10,000 frames, well inside the scale of its own
+uncertainty estimate. Malonaldehyde does not: at 10,000 frames the cumulative
+estimate is still off by roughly four to nine times its own block SEM, depending on the block size, at that
+scale. Ten percent of the trajectory is not automatically enough, and a fixed
+number of frames does not transfer its adequacy from one molecule to another.
+
+## What this does not show
+
+There is exactly one ab initio trajectory per molecule here, so nothing here
+speaks to replicate dependence between independent runs. There is exactly one
+level of theory, so nothing here speaks to force-field sensitivity. No new
+simulation is run. A radius of gyration is one scalar; it does not characterise
+a full conformational ensemble, and for a nine-atom molecule its dynamic range
+is inherently small. None of the numbers above is a binding affinity, a free
+energy, or a claim about any system this repository has not directly loaded.
+
+## Independent exercise
+
+A colleague reports "the radius of gyration converges within 1,000 frames" for a
+new, unnamed molecule, citing only a cumulative-mean value at `k = 1,000` that
+matches the reported final value to three decimal places.
+
+1. Name one quantity missing from that claim that this lab's own convergence
+   table always reports alongside the cumulative mean.
+2. Malonaldehyde's `k = 10,000` cumulative mean matched its final value to two
+   decimal places (1.69 vs 1.69) while still being four to nine block-SEMs away, depending on the block size.
+   What does that say about matching digits as a convergence criterion?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The missing quantity is the block-averaged standard error at that same
+checkpoint, or an equivalent correlation-aware uncertainty, not the naive one.
+Without it, "matches to three decimal places" cannot be told apart from "matches
+by coincidence at a scale the estimate's own uncertainty does not resolve."
+Matching digits is a statement about precision of display, not about the
+argument's actual uncertainty; malonaldehyde's own numbers show a difference
+that rounds away under three significant figures while still being large on the
+scale the trajectory's own block SEM reports. A convergence claim needs the
+uncertainty estimate stated beside it, at the same checkpoint, computed under a
+declared block size.
+
+</details>
+
+## Sources and next lesson
+
+<div data-case-sources>
+
+- [Revised MD17 dataset (rMD17), Figshare version 4](https://doi.org/10.6084/m9.figshare.12672038.v4)
+- [Christensen and von Lilienfeld (2020): the revised MD17 correction](https://doi.org/10.1088/2632-2153/abba6f)
+
+</div>
+
+This page is an inspection route that shares its data source with the completed
+rMD17 energy-regression lab. It changes no split, no selected penalty and no
+locked result there. Continue to [Force fields, solvent, and
+sampling](/learn/physics-based-modeling/force-fields-and-sampling/) for the
+sampling concepts behind this observable, and to [Free-energy cycles, endpoints,
+and convergence](/learn/physics-based-modeling/free-energy-cycles-and-convergence/)
+for what a convergence diagnostic still needs beyond what one trajectory can
+show.
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-11.

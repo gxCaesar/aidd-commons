@@ -1,0 +1,80 @@
+{
+  "schema_version": "aidd-commons.free-energy-network-protocol.v1",
+  "protocol_id": "openfe-jacs-relative-network-v1",
+  "issued_on": "2026-10-23",
+  "run_basis": "Fresh independent CPU computation from a locally cached source snapshot.",
+  "source": {
+    "record_id": 21797903,
+    "record_url": "https://zenodo.org/records/21797903",
+    "publication_date": "2026-08-04",
+    "licence": "CC BY 4.0",
+    "retrieval_route": "https://zenodo.org/records/21797903/files/<file name>?download=1",
+    "snapshot_rule": "Download each named archive into the lab cache, validate its byte length and structure, and retain that local copy for offline reruns.",
+    "files": [
+      {
+        "system": "jnk1",
+        "name": "AlchemicalNetwork-6cea205bc124349b8add8824e2060147-openff-openff_3_0_0_alpha1b_opc3-rbfe_pontibus_jacs_set_jnk1.json.bz2",
+        "bytes": 542432
+      },
+      {
+        "system": "bace",
+        "name": "AlchemicalNetwork-58ef1baba714145eaddb8f81abf609ce-openff-openff_3_0_0_alpha1b_opc3-rbfe_pontibus_jacs_set_bace.json.bz2",
+        "bytes": 867452
+      },
+      {
+        "system": "tyk2",
+        "name": "AlchemicalNetwork-51caad3a5d3daea240406eb23fa6dad6-openff-openff_3_0_0_alpha1b_opc3-rbfe_pontibus_jacs_set_tyk2.json.bz2",
+        "bytes": 434490
+      },
+      {
+        "system": "thrombin",
+        "name": "AlchemicalNetwork-7fcf1d4cb0a6af702747de83fc23af69-openff-openff_3_0_0_alpha1b_opc3-rbfe_pontibus_jacs_set_thrombin.json.bz2",
+        "bytes": 333717
+      },
+      {
+        "system": "mcl1",
+        "name": "AlchemicalNetwork-ee5422ba932ced782b51da9bb9eb24ff-openff-openff_3_0_0_alpha1b_opc3-rbfe_pontibus_jacs_set_mcl1.json.bz2",
+        "bytes": 981146
+      },
+      {
+        "system": "ptp1b",
+        "name": "AlchemicalNetwork-3885e858e4b36849e110edbebe348ae2-openff-openff_3_0_0_alpha1b_opc3-rbfe_pontibus_jacs_set_ptp1b.json.bz2",
+        "bytes": 611820
+      },
+      {
+        "system": "cdk2",
+        "name": "AlchemicalNetwork-8b3e6b25fe046924998a1f520c798b19-openff-openff_3_0_0_alpha1b_opc3-rbfe_pontibus_jacs_set_cdk2.json.bz2",
+        "bytes": 552594
+      },
+      {
+        "system": "p38",
+        "name": "AlchemicalNetwork-c613a533bdaa47f92e9a1cf4d58fe6dd-openff-openff_3_0_0_alpha1b_opc3-rbfe_pontibus_jacs_set_p38.json.bz2",
+        "bytes": 867679
+      }
+    ]
+  },
+  "endpoint_rule": {
+    "kind": "relative binding free energy",
+    "direction": "ligand A to ligand B",
+    "pairing": "Pair the complex and solvent transformations for the same ordered ligand mapping. DeltaDeltaG_bind(A to B) = DeltaG_complex(A to B) - DeltaG_solvent(A to B).",
+    "separation": "A solvent edge and a complex edge are different quantities. This calculation does not produce an absolute binding free energy."
+  },
+  "estimate_rule": {
+    "value": "For each distinct repeat ID select its highest recorded generation, then take the arithmetic mean of the three selected estimates per leg. Count successful unit estimates and unit records without an estimate separately.",
+    "uncertainty": "For each leg use the larger of the propagated reported standard error of its mean and its between-repeat standard error. Treat distinct repeats, paired legs, and graph edges as independent for propagation.",
+    "unit": "kilocalorie_per_mole"
+  },
+  "cycle_rule": {
+    "selection": "Build a deterministic spanning forest from binding edges sorted by name. Each non-tree edge and its unique tree path form one fundamental cycle.",
+    "sum": "Signed sum of ordered relative binding edge means around the cycle.",
+    "tolerance": "Two times the quadrature sum of the included edge standard errors, in kilocalorie per mole. This tolerance is fixed before examining cycle residuals.",
+    "closure": "A cycle closes only if the absolute signed sum is at most its tolerance. Every inconsistent cycle is failed and retains its name and discrepancy."
+  },
+  "counted_unit": "One transformation edge. Three distinct repeat IDs measure one edge.",
+  "excluded_by_design": [
+    "Any claim that this laboratory computes an absolute binding free energy.",
+    "Any claim that a closed cycle means an estimate is correct or converged.",
+    "Any ranking of the eight systems by cycle closure.",
+    "Any comparison to assay endpoints or experimental affinity."
+  ]
+}

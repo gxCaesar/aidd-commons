@@ -1,0 +1,68 @@
+---
+title: 从对接到 FEP
+description: 将物理建模方法与已声明的分子决策和协议匹配。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Docking through FEP](/learn/physics-based-modeling/docking-to-fep/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="physics-based-modeling/docking-to-fep" />
+
+## 基础
+
+对接、评分、分子动力学、自由能计算和量子化学针对不同决策作出不同近似的权衡。一个
+对接构象不是自由能估计，而相对自由能计算也不是实验效力的证明。
+
+## 实践工作流
+
+在计算前写明决策、蛋白质构建体和状态、配体系列、质子化假设、力场、溶剂模型和实验
+比较对象。先使用低成本基线，只有当它会改变一项决策时才增加协议成本。
+[Open Force Field Toolkit](https://docs.openforcefield.org/projects/toolkit/en/stable/)
+和 [OpenMM](https://openmm.org/) 记录了这类工作流的不同部分。
+
+## 评估
+
+针对与协议匹配的实验终点进行评估。报告失败的转化、不确定性、收敛诊断，以及用于
+泛化的独立化学系列或靶点状态。不要比较输入或热力学终点不同的方法。
+
+## 前沿与开放问题
+
+[OpenFE](https://github.com/OpenFreeEnergy/openfe)、
+[Perses](https://github.com/choderalab/perses) 和
+[GROMACS](https://www.gromacs.org/) 作出了不同的工作流选择。开放的问题是可用协议、
+计算预算和测定噪声是否支持当前决策，而不是哪个品牌具有普遍优势。
+
+## 状态分辨的能量建模
+
+如需一个几何、单位、轨迹顺序和独立分子—系统单位均已明确的已解示例，请继续阅读
+[物理模型与系统状态](/zh-cn/learn/physics-based-modeling/physical-model-system-state/)。其配套的
+[rMD17 系统状态能量基线已解实验路线](/zh-cn/labs/rmd17-system-state-energy-baselines/)
+将开发证据与程序性锁定边界分开；该链接本身并不确立一项锁定结果。
+
+## 为下一个量选择资源
+
+[物理建模资源指南](/zh-cn/learn/physics-based-modeling/physics-resource-guide/)
+区分对接、参数分配、模拟、轨迹分析与自由能终点。其构造的文件阅读案例说明：
+计算完成后，为什么仍可能缺少请求的量。
+
+## v0.1 尚未教授的内容
+
+v0.1 不提供生产级自由能活动、每一种靶点类别的力场验证，也不声称模拟可替代测量。
+
+## 核一下两个分数是否可以比较
+
+[对接协议实验](/zh-cn/labs/docking-protocol/)把一个分数所来自的七个组件分开，
+并算出哪些被报出来的数字处在同一个标度上。只差一个组件的两份协议，
+在同一个配体、同一个结构上报出 -8.2 与 -10.7；这一组里没有任何一对可以比较；
+而一份没有声明验证的协议照样产出满满一列数字。
+
+## 核心来源路径
+
+从 [OpenMM](https://openmm.org/) 开始，然后检查
+[MDAnalysis](https://www.mdanalysis.org/) 和
+[OpenFE](https://github.com/OpenFreeEnergy/openfe)，了解可执行工作流和分析边界。
+
+最后审阅：2026-09-04。

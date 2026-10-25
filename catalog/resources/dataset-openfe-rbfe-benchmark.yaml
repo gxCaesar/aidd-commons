@@ -1,0 +1,41 @@
+id: dataset-openfe-rbfe-benchmark
+name: OpenFE RBFE benchmark results
+kind: dataset
+summary: Released relative binding free energy results for eight protein-ligand systems, each an alchemical network file holding the edges of the network, the transformation that estimated each edge, and the per-repeat and per-generation estimates with their uncertainties.
+canonical_url: https://zenodo.org/records/21797903
+identifiers:
+  - scheme: paper
+    value: "Large-Scale Collaborative Assessment of Binding Free Energy Calculations for Drug Discovery Using OpenFE; Journal of Chemical Information and Modeling 66(11):6429-6452, DOI 10.1021/acs.jcim.6c00089"
+    url: https://doi.org/10.1021/acs.jcim.6c00089
+  - scheme: dataset
+    value: "OpenFE RBFE jacs_set, eight system files, Zenodo record 21797903, published 2026-08-04"
+    url: https://zenodo.org/records/21797903
+stages: [evaluation]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [relative-binding-free-energy, alchemical-network, cycle-consistency]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [zenodo-record] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: available, evidence: [zenodo-record] }
+  training_data: { value: available, evidence: [zenodo-record] }
+  evaluation_code: { value: available, evidence: [zenodo-record] }
+licenses:
+  - name: "CC BY-4.0"
+    scope: "The Zenodo record states the Creative Commons Attribution 4.0 International licence for the deposited files. The grant covers the released result files and the sample inputs they carry. The licences of the force fields and the software that produced them are their own."
+    evidence: [zenodo-record]
+evidence:
+  - id: zenodo-record
+    url: https://zenodo.org/api/records/21797903
+    label: The Zenodo record for the OpenFE RBFE benchmark files (reviewed 2026-10-23)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+caveats:
+  - "The record carries eight files, one per system, each a bzip2-compressed JSON list holding the chemical systems, the ligand atom mappings, the transformations and the per-repeat and per-generation estimates. One file was read on 2026-10-23 and held 44 mappings, 22 of them solvent and 22 complex, and 132 estimates whose magnitudes run from about minus 47 to plus 53 kilocalorie per mole. The other seven were not read, so the record carries that one file's shape rather than a claim that all eight match it."
+  - "The deposited values are computed estimates, not measurements, and the record does not carry an experimental value beside each one, so a reader cannot compute the error of a single edge from the record alone."
+  - "The paper reports that the calculation used the openff 3.0.0 alpha1b and OPC3 force fields, and the deposited file names carry that same version string. The licence of those force fields is not part of this grant."
+acknowledgements: []
+last_verified: "2026-10-23"

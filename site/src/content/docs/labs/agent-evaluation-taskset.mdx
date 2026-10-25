@@ -1,0 +1,81 @@
+---
+title: Audit a fixed agent-evaluation task set
+description: Check source, execution, recovery, claim and authorization records across three committed laboratories.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+Read [Retrieval, typed tools, and feedback loops](/learn/scientific-agents/retrieval-tools-feedback/) first. You will identify a source a laboratory actually used, test a retained refusal, compare a claim with its own frozen counts and locate a decision the record cannot authorize. Familiarity with JSON and local Python tests is useful. No model inference is required.
+
+## Mode and commands
+
+Mode is a fresh independent computation under a frozen protocol over the repository's committed records. Use Python 3.11.15 on a CPU. No network, download, model server or accelerator is needed. Run from the repository root. The first three commands write nothing. Export overwrites only this laboratory's compact summary after its checks pass. The test command uses temporary files and does not rerun the recorded model or locked evaluation.
+
+```bash
+.venv/bin/python labs/agent_evaluation_taskset/run_lab.py download
+.venv/bin/python labs/agent_evaluation_taskset/inspect_agent_evaluation_taskset.py show
+.venv/bin/python labs/agent_evaluation_taskset/inspect_agent_evaluation_taskset.py check
+.venv/bin/python labs/agent_evaluation_taskset/export_summary.py
+.venv/bin/python -m pytest labs/tests/agent_evaluation_taskset -q
+```
+
+## Task set and decision rules
+
+The frozen selection contains 3 tasks, each drawn from 1 laboratory. Each task names the local evidence files and a check command. Source resolution compares its declared sources with the files named by the source laboratory's contract or actually read by its inspector or notebook builder. A claimed unused source fails. Execution correctness requires both a passing local check and a complete recomputation of the committed result. Recovery requires a retained failed artifact or refusal. Claim accuracy compares declared numbers and preserves the record's stated scope. A retained review finding unsupported answer prose fails this dimension. Action authorization requires a record that leaves a human decision with a person. A stated confirmation gate alone does not document who authorized a completed action.
+
+A task with any failed or incomplete dimension is excluded from the passing set. This task set audits records. It does not evaluate a tool's competence in action or establish that a scientific result is correct.
+
+| Task | Evidence checked | Recorded negative or boundary |
+| --- | --- | --- |
+| Claim-chain record | Committed comparison inputs and summary | Differences with an independent reading are retained. |
+| PaperQA reviewed record | Local question corpus and retained answers | A limited-retrieval abstention and an extra-prose error remain visible. |
+| EGFR locked record | Frozen contract, development and locked summaries, execution amendment | The locked action requires explicit confirmation, with no human authorization receipt in the curated record. |
+
+## Per-task results
+
+The computation on 2026-10-23 used Python 3.11.15 and aidd-commons-labs 0.2.0rc1. Each source check and named laboratory check returned exit code 0. The dimension table separates that observation from a complete result.
+
+| Task | Source | Execution | Recovery | Claim | Authorization | Passing |
+| --- | --- | --- | --- | --- | --- | --- |
+| Claim-chain record | pass | pass | incomplete | pass | incomplete | no |
+| PaperQA reviewed record | pass | incomplete | pass | fail | incomplete | no |
+| EGFR locked record | pass | incomplete | incomplete | pass | incomplete | no |
+
+| Quantity checked | Committed value |
+| --- | ---: |
+| Claim chains | 2 |
+| Claim-chain links | 16 |
+| Differences with the independent reading | 7 |
+| PaperQA documents | 2 |
+| PaperQA questions, answers and reviews | 5 each |
+| PaperQA limited-retrieval abstentions | 1 |
+| PaperQA reviewed extra-prose errors | 1 |
+| EGFR primary and replication parent molecules | 902 and 170 |
+| EGFR locked test and replication parents | 132 and 170 |
+
+| Dimension | Tasks passing |
+| --- | ---: |
+| Source resolution | 3 |
+| Execution correctness | 1 |
+| Recovery | 1 |
+| Claim accuracy | 2 |
+| Action authorization | 0 |
+| All five dimensions | 0 |
+
+The claim-chain task is incomplete on recovery and authorization. Its reading differences are retained, but a disagreement is not a failed artifact. The PaperQA task fails claim accuracy and is incomplete on execution and authorization. The EGFR task is incomplete on execution, recovery and authorization. The EGFR record states the confirmation boundary, while the other 2 records do not state an action-authorization decision.
+
+## Independent check
+
+Predict what happens if a constructed task declares an additional source its laboratory did not read. The known-bad test reports a source-resolution failure, excludes that task from the passing set and refuses an export. A second test changes a failed task's passing flag to true and verifies that the audit rejects the summary.
+
+## Limits of the material
+
+The PaperQA test does not regenerate model answers or the source review. The EGFR inspector does not recompute all locked metrics. The task set has no passing task, and it cannot show how an agent would perform under a new task, how a person reached the historical locked-action decision or whether the underlying science is right. The number of passing dimensions is not a laboratory ranking. Reader learning was not measured.
+
+## Sources and terms
+
+The [retrieval and tools lesson](/learn/scientific-agents/retrieval-tools-feedback/), [claim-chain guide](/labs/claim-chain-audit/) and [EGFR contract guide](/labs/chembl-contract-inspection/) give the teaching context. The committed claim-chain, PaperQA and EGFR records were read locally on 2026-10-23. Original guide prose is CC BY 4.0 and laboratory code is Apache-2.0. The cited source material retains its own terms.

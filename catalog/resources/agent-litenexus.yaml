@@ -1,0 +1,78 @@
+id: agent-litenexus
+name: LiTENexus
+kind: agent
+summary: End-to-end virtual drug discovery system presented as physics-informed by quantum chemical grounding, with a web interface and named modules for operator prediction, force field, small-model training, ADMET and a molecular-language interface.
+canonical_url: https://github.com/lingcon01/LiTENexus
+identifiers:
+- scheme: code
+  value: LiTENexus source repository, lingcon01/LiTENexus
+  url: https://github.com/lingcon01/LiTENexus
+- scheme: documentation
+  value: LiTENexus web interface, cadd.zju.edu.cn/litenexus
+  url: https://cadd.zju.edu.cn/litenexus/
+stages:
+- design
+- hit-discovery
+- lead-optimization
+modalities:
+- small-molecule
+- protein-structure
+tasks:
+- admet-prediction
+- operator-prediction
+- virtual-screening
+relations: []
+status:
+  value: unverified
+access_level:
+  value: gated
+  evidence:
+  - litenexus-readme
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: available
+    evidence:
+    - litenexus-readme
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: Apache-2.0
+  scope: The repository is public and carries the Apache 2.0 licence its record names, but it gives no installation or code-execution command and the route a reader would use is a hosted web service, so the source is obtainable and the system is not.
+  evidence:
+  - litenexus-readme
+evidence:
+- id: litenexus-repository
+  url: https://github.com/lingcon01/LiTENexus
+  label: LiTENexus repository (reviewed 2026-10-23)
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - caveats
+- id: litenexus-readme
+  url: https://raw.githubusercontent.com/lingcon01/LiTENexus/main/README.md
+  label: LiTENexus README (reviewed 2026-10-23)
+  supports:
+  - identifiers
+  - caveats
+caveats:
+- The README gives no installation, setup or code-execution command, so the record cannot establish that the repository runs. It shows version badges for Python and PyTorch and a link to a web interface, which is a service rather than a command.
+- The README names no downloadable checkpoint, model-weight URL or acquisition instruction. The LiTEN-Base, LiTEN-FF, LiTEN-Micro, LiTEN-ADMET and LiTENCLIP names are described as system modules, and the README does not state that pretrained versions of them are available.
+- The README states that the platform is continuously updated and that more features and public services will be released progressively. That is a statement of intent, and the record does not treat it as a release.
+- The README names PharmaBench, Biogen, ADMETLAB 3.0, DUD-E and LIT-PCBA as benchmarks without giving access links, and carries no data-availability statement.
+- The record's access level stays unverified because the repository's own licence covers its source while the route a reader would use, the web interface, is a service under its own terms.
+acknowledgements: []
+last_verified: '2026-10-23'

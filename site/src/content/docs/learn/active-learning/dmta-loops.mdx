@@ -1,0 +1,58 @@
+---
+title: Design-make-test-analyze loops
+description: Allocate limited experiments with a frozen selection rule and observable feedback.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="active-learning/dmta-loops" />
+
+## Foundations
+
+Design-make-test-analyze loops allocate finite experimental capacity. The
+decision unit is a batch of feasible candidates under a stated budget, assay,
+and selection rule. Uncertainty is useful only if it changes an experimental
+choice and is later checked against outcomes.
+
+## Practical workflow
+
+Predeclare the candidate pool, objective, constraints, batch size, diversity
+rule, acquisition function, and stopping condition. Start with random,
+diversity-based, or simple property baselines. [BoTorch](https://botorch.org/)
+and [Ax](https://ax.dev/) document tools for optimization; they do not choose
+the scientific objective for a project.
+
+## Evaluation
+
+Compare policies on identical budgeted rounds and preserve the time order of
+experimental feedback. Report calibration, failed syntheses, assay failures,
+and the actual number of independent experimental units rather than only the
+best observed molecule.
+
+## Frontier and open questions
+
+Multi-objective selection exposes trade-offs between potency, exposure,
+synthesis, and novelty. [MolScore](https://github.com/MorganCThomas/MolScore)
+can make a scoring specification executable, but the scoring specification
+must remain traceable to a decision and assay plan.
+
+## What v0.1 does not yet teach
+
+v0.1 does not supply a live robotic loop, a universal acquisition function, or
+a claim that model uncertainty is calibrated without experimental checks.
+
+## Core-source path
+
+Continue with [Experiment pools, budgets, and feasibility](/learn/active-learning/experiment-pools-and-budgets/)
+for a runnable synthetic campaign, exact budget arithmetic, and worked exercises.
+
+Then read [Diversity, uncertainty, and experimental feedback](/learn/active-learning/diversity-uncertainty-feedback/)
+to distinguish a refitted predictor from a model-guided selection rule.
+
+Begin with the [BoTorch documentation](https://botorch.org/) and
+[Ax documentation](https://ax.dev/), then write a small selection contract
+before connecting a model to a laboratory queue.
+
+Last reviewed: 2026-09-04.
+
+Navigation updated: 2026-09-09.

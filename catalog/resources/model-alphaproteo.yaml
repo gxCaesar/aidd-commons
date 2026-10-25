@@ -1,0 +1,62 @@
+id: model-alphaproteo
+name: AlphaProteo
+kind: model
+summary: AlphaProteo is a Google DeepMind model family for de novo design of protein binders; the only public artefact is a Trusted Tester Program notebook repository for preparing target inputs, not the model itself.
+canonical_url: https://github.com/google-deepmind/ap_trusted_testers
+identifiers:
+  - scheme: paper
+    value: "De novo design of high-affinity protein binders with AlphaProteo; arXiv 2409.08022"
+    url: https://arxiv.org/abs/2409.08022
+  - scheme: source-code
+    value: "AlphaProteo Trusted Tester Program notebooks"
+    url: https://github.com/google-deepmind/ap_trusted_testers
+stages: [design, evaluation]
+modalities: [protein]
+tasks: [protein-design]
+relations: []
+status: { value: unverified }
+access_level: { value: gated, evidence: [blog, repository] }
+openness:
+  inference_code: { value: not_available, evidence: [repository, blog] }
+  training_code: { value: unverified }
+  weights: { value: not_available, evidence: [repository, blog] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: covers the software in the Trusted Tester Program notebook repository only; the README states that all other materials in the repository are under CC BY 4.0, and neither licence reaches the AlphaProteo model, whose implementation and parameters are not distributed
+    evidence: [license, readme]
+  - name: CC-BY-4.0
+    scope: covers the non-software material in the Trusted Tester Program notebook repository, per the README; it does not cover the AlphaProteo model implementation or parameters
+    evidence: [readme]
+evidence:
+  - id: repository
+    url: https://github.com/google-deepmind/ap_trusted_testers
+    label: AlphaProteo Trusted Tester Program repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/google-deepmind/ap_trusted_testers/main/README.md
+    label: AlphaProteo Trusted Tester Program README (reviewed 2026-10-21)
+    supports: [identifiers, acknowledgements]
+  - id: blog
+    url: https://deepmind.google/discover/blog/alphaproteo-generates-novel-proteins-for-biology-and-health-research/
+    label: Google DeepMind AlphaProteo announcement (reviewed 2026-10-21)
+    supports: [summary, stages, modalities, tasks, caveats]
+  - id: paper
+    url: https://arxiv.org/abs/2409.08022
+    label: AlphaProteo technical report on arXiv (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+  - id: license
+    url: https://raw.githubusercontent.com/google-deepmind/ap_trusted_testers/main/LICENSE
+    label: AlphaProteo Trusted Tester Program licence file (reviewed 2026-10-21)
+    supports: []
+caveats:
+  - The opened announcement, the arXiv abstract page and the repository file list contain no released model implementation, parameters, training code, training data or evaluation assets for AlphaProteo, so the two not_available entries record an absence found on those pages rather than a published refusal.
+  - The announcement describes a phased sharing approach with external experts and gives no download route, so access is gated rather than open.
+  - The repository was archived by its owner on 2026-08-24 and is read-only.
+  - The licence file carries the unfilled Apache 2.0 copyright placeholder while the README names Google LLC as the copyright holder, and the README places non-software material under CC BY 4.0.
+acknowledgements:
+  - "The repository README asks that the model be cited as De novo design of high-affinity protein binders with AlphaProteo, arXiv 2409.08022."
+last_verified: "2026-10-21"

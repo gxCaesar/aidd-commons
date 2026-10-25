@@ -1,0 +1,145 @@
+---
+title: What a seed is not
+description: Inspect the budget arithmetic, the policy access rules and the fit-lock-score ordering of the frozen pool-budget campaign, and recompute its headline recovery numbers from the raw series.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="pool-budget-contract" />
+
+## Before you run
+
+**Mode: runnable inspection of committed files.** The command reads only JSON
+already stored in this repository. It makes no network request, downloads
+nothing, imports no third-party package and selects nothing. The retrospective
+campaign is already complete. What this page adds is the route to check its
+arithmetic and to read what its policies were allowed to see.
+
+```bash
+python labs/pool_budget/inspect_contract.py show
+```
+
+## 1. The budget is derived, not chosen
+
+The nominal budget is twenty percent of the pool, but the reported fraction is
+not twenty percent. The batch size is the floor of the pool count divided by
+twenty, four rounds are run, and the acquired count is four batches.
+
+In the primary assay a pool of 631 parents gives a batch of 31, an acquired
+count of 124, and an actual budget fraction of 0.196513470681458. In the
+replication assay a pool of 130 gives a batch of 6, an acquired count of 24, and
+a fraction of 0.18461538461538463. Integer rounding, not a design choice, is why
+neither equals the nominal target, and the contract says so rather than
+reporting the round number.
+
+The checker recomputes all of it, including that the three partitions sum to the
+902 and 170 parents inherited from the frozen ChEMBL contract. A budget study
+whose partition sizes drift from the dataset it claims to replay is comparing
+policies on a different problem.
+
+## 2. What a policy sees, and what a seed is not
+
+The diversity policy is label-blind. The contract states that its selector must
+not receive the initial, pool or evaluation labels, which is what makes its
+selections a property of the chemistry rather than of the answer.
+
+The five random seeds are the part most often misread. The protocol calls them
+fixed policy instances, not independent assays or samples. That wording is doing
+real work. In the replication assay their recovery AUCs run from
+0.009615384615384616 to 0.10576923076923077, an eleven-fold spread across what
+looks like the same baseline. It is tempting to average them and quote the
+spread as an error bar.
+
+That would claim something the design cannot support, and the exercise below
+asks you to say exactly what.
+
+## 3. Fit, lock, then score
+
+The prediction contract fixes an order rather than a formula. At each checkpoint
+the model is fitted only on the initial parents plus everything acquired through
+that checkpoint, never on evaluation parents. Every acquisition order is
+finalised and every evaluation prediction vector is locked **before** the scorer
+touches an evaluation label. Then, and only then, the error is scored. The
+contract closes with the rule that evaluation outcomes cannot change a policy, a
+seed, a partition, a feature, an alpha, a batch or any future prediction vector.
+
+You can see the ordering in the output rather than take it on trust. Every
+policy reports the identical error at checkpoint zero, because at that point no
+policy has acquired anything and all of them are fitted on the same initial set.
+A checker confirms it. If those numbers ever differed, something had leaked
+backwards into round zero.
+
+## 4. The result that went against the method
+
+In both assays the diversity policy finished below every one of the five random
+instances. In the replication assay it recovered nothing at all across the whole
+budget, an AUC of 0.0 against random instances reaching 0.10576923076923077.
+
+The command prints that comparison as a sentence rather than leaving it to be
+inferred from a table, and the summary keeps it. A pool of 130 parents with a
+target count of 13 is a small problem, and the honest reading is that this
+campaign does not show diversity selection working here. It is not evidence that
+diversity selection never works.
+
+```bash
+python labs/pool_budget/inspect_contract.py check
+```
+
+## Independent exercise
+
+A colleague proposes reporting "the random baseline" for the replication assay
+as the mean of the five seed AUCs, with their spread from
+0.009615384615384616 to 0.10576923076923077 shown as an error bar. Say what that
+presentation would claim, why the protocol's own wording rules it out, and what
+the target count of 13 tells you about the spread before any statistics are
+considered.
+
+<details data-worked-answer>
+<summary>Worked answer — the claim, the wording and the granularity</summary>
+
+**What it would claim.** An error bar invites the reader to treat the interval as
+sampling uncertainty about a population, and therefore to ask whether the
+diversity policy falls outside it. That is a significance reading. It would say
+that if the experiment were repeated, the random baseline would land in this
+range.
+
+**Why the wording rules it out.** The protocol calls the seeds fixed policy
+instances, not independent assays or samples. Repeating the experiment does not
+resample anything: the assay, the partition, the pool and the targets are all
+frozen and shared. Changing a seed changes which permutation of one fixed pool a
+policy walks. The spread measures how much that one choice matters on this one
+dataset, which is a fact about the policy, not an uncertainty about a
+population.
+
+**What the target count tells you.** Recovery is the count of acquired targets
+divided by the target count, which here is 13. One additional target moves
+recovery by one thirteenth, about 0.077. The full observed spread of the five
+seeds is roughly one such step. Before any statistical argument, the granularity
+of the measurement already accounts for most of the range, which is another way
+of seeing that an interval built from it would be describing arithmetic rather
+than evidence.
+
+A complete answer notices that reporting all five instances individually, as the
+summary does, communicates the same information without the claim, and that the
+right response to a spread this coarse is a larger target set rather than a
+different formula.
+
+</details>
+
+## Where this sits
+
+This page is an inspection route into the completed
+[pool-budget campaign](/labs/pool-budget-campaign/). It changes no protocol, no
+partition and no result. Its companions are the
+[ChEMBL contract inspection](/labs/chembl-contract-inspection/), which walks the
+contract this campaign inherits, and the
+[rMD17 contract inspection](/labs/rmd17-contract-inspection/), which asks the
+denominator question for a physical dataset. Continue to
+[acquisition, delays and stopping](/learn/active-learning/acquisition-delays-and-stopping/)
+for the policy argument in a wider setting.
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-10.

@@ -1,0 +1,97 @@
+---
+title: 抗体与多肽设计及负向选择
+description: 先规定生物识别目标，再把结合、特异性和替代解释视为不同性质检验。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Antibody and peptide design with negative selection](/learn/biologics-design/antibody-peptide-design/)。
+
+<LessonProgress lessonId="biologics-design/antibody-peptide-design" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将定义抗体或多肽的设计对象，解释亲和力与特异性为何不同，并设计能检验明确脱靶替代解释的正、负选择条件。请先读[生物大分子与多模态设计](/zh-cn/learn/biologics-design/multimodal-design/)。本课为概念与手算教学，不含选择流程、表达指令或治疗剂量建议。
+
+## 设计从识别事件开始
+
+抗体对象可为可变区序列、形式和指定抗原状态；多肽对象可为序列以及受约束或非受约束状态。期望输出必须说明抗原形式、已知时的表位或功能机制、预期语境和负集合。若靶点有同源物、多种构象、翻译后状态或共享表面，“结合靶点”并不充分。
+
+亲和力是在已声明测定条件下的浓度依赖相互作用量；特异性是比较性质，即候选项对预期对象与一组可信替代对象的相互作用对比。高表观亲和力可与广泛非特异相互作用共存；选择性候选项也可能缺少功能。肽导向抗体设计本就需在独特性、保守性、可接近特征与修饰敏感区间取舍 [Pisitkun et al.](https://pubmed.ncbi.nlm.nih.gov/21956165/)。
+
+简单平衡示意为 `K_D = [P][L]/[PL]`，其中 `P` 为游离蛋白、`L` 为游离配体、`PL` 为平衡复合物，单位 mol/L；较低 `K_D` 在匹配总浓度下意味着更多复合物。它不适用于所有多价、动力学、膜或细胞系统。表观 `K_D` 要保留形式、价态、温度、缓冲液和分析模型；它不能单独建立表位、体内特异性或功能。
+
+## 正、负选择使靶点主张可检验
+
+正条件保留识别预期抗原状态的候选项；负条件去除或标记识别指定竞争项者，例如近同源物、呈递相似的无关蛋白、另一抗原状态、基质成分或缺少目标标志物的细胞群。负集合是科学选择。“不结合一个无关对照”不证明广泛特异性；不现实的大负集合也会淘汰有用的语境特异结合物。必须说明面板代表什么和漏掉什么。
+
+不要只用通用活性分数。令 `R+`、`R−` 为匹配正、负条件的背景校正信号，构造选择性对比 `ΔR = R+ − R−`；仅当两个系统中高信号含义相同，较大正值才更好。它不可跨测定格式被当成 `K_D`。信号差也可来自抗原量、呈递几何、检测器或聚集，因此需匹配对照与正交确认。
+
+<table>
+  <thead>
+    <tr>
+      <th>证据</th>
+      <th>支持</th>
+      <th>不能单独支持</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>序列 / 结构模型</td>
+      <td>设计假设</td>
+      <td>表达、折叠、结合或功能</td>
+    </tr>
+    <tr>
+      <td>正向结合信号</td>
+      <td>声明设置中的相互作用</td>
+      <td>表位机制或整体选择性</td>
+    </tr>
+    <tr>
+      <td>负面板结果</td>
+      <td>在该面板未检出相互作用</td>
+      <td>不存在所有脱靶</td>
+    </tr>
+    <tr>
+      <td>功能响应</td>
+      <td>相关模型语境中的效应</td>
+      <td>无桥接证据的直接结合机制</td>
+    </tr>
+  </tbody>
+</table>
+
+## 已构造案例：负向选择决策
+
+以下均**为教学构造**。在一个匹配检测格式中，预期抗原状态信号为 A 的 `R+ = 92`、B 的 `88`；近同源物为 A 的 `R− = 38`、B 的 `12`，故 `ΔR_A = 92 − 38 = 54`、`ΔR_B = 88 − 12 = 76` arbitrary signal units。通用蛋白对照为 A 的 8、B 的 10。
+
+若预设门槛为 `R+ ≥ 70` 且近同源物 `R− ≤ 20`，A 失败，B 通过此**面板**。B 仍非绝对“特异”，因为面板未含其他家族成员、无关黏附相互作用和细胞语境。下一有信息量的问题是：B 在第二个相关抗原呈递格式下是否保留信号，以及在 target-negative 匹配语境中是否没有功能响应。它们分别检验呈递与功能因果，而非只增加重复。多肽同样如此：预测螺旋的序列只是表示层建议；功能比较必须说明评估系统中它是否真处于该状态。
+
+## 替代方法、局限与独立练习
+
+deep mutational scanning、结构映射、细胞面板和 polyreactivity 面板可细化负集合，但都有覆盖和表示限制。计算序列分数只能优先化变体，不能替代正/负证据契约。生物物理可开发性也不等于特异性。不同发现来源抗体的自相互作用与多特异性差异说明应记录选择历史，而不是把它当确定标签 [Kaleli et al.](https://pubmed.ncbi.nlm.nih.gov/30883916/)。
+
+**手算练习（不可运行、非实证）：** 同一构造规则下，多肽 P：`R+ = 74`、`R− = 19`；Q：`R+ = 81`、`R− = 27`。计算两者 `ΔR`，判断谁通过面板，指出 P 仍有的一个替代解释。为何不能由此表说“P 有更低 K_D”？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+`ΔR_P = 74 − 19 = 55`，`ΔR_Q = 81 − 27 = 54` arbitrary units。P 通过两项构造阈值；Q 虽正信号高，却未过负信号阈值。P 仍可受抗原呈递、检测器、缺失同源物或聚集影响。表中是信号而非含游离浓度的平衡分析，因此不能建立 P 有更低 `K_D`。
+
+</details>
+
+## 来源与下一课
+
+以下页面于 2026-09-09 打开，构造数值不来自它们。
+
+<div data-case-sources>
+
+- [NHLBI-AbDesigner: an online tool for design of peptide-directed antibodies](https://pubmed.ncbi.nlm.nih.gov/21956165/)
+- [Phage display derived therapeutic antibodies and developability issues](https://pubmed.ncbi.nlm.nih.gov/30883916/)
+- [Physicochemical rules for identifying monoclonal antibodies with drug-like specificity](https://pubmed.ncbi.nlm.nih.gov/32453957/)
+
+</div>
+
+继续读[核酸、偶联物与降解剂](/zh-cn/learn/biologics-design/nucleic-acids-conjugates-degraders/)，比较识别事件和有效细胞内递送或诱导邻近。原始课程文字为 CC BY 4.0；链接来源保留其自身条款。
+
+译文更新：2026-09-09。

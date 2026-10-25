@@ -1,0 +1,386 @@
+---
+import type {
+  ComparisonProvider,
+  ComparisonRow,
+  CoverageDepth,
+} from "../data/comparison.js";
+import { comparisonTrackTitle } from "../data/comparison.js";
+
+interface Props {
+  providers: ComparisonProvider[];
+  rows: ComparisonRow[];
+}
+
+const { providers, rows } = Astro.props;
+const initialTrack = "foundations";
+const label = (value: string) =>
+  value
+    .replaceAll("-", " ")
+    .replaceAll("_", " ")
+    .replace(/^./u, (character) => character.toUpperCase());
+const tracks = [...new Set(rows.map(({ track_id }) => track_id))];
+const topics = [
+  ...new Map(
+    rows.map((row) => [
+      row.topic_id,
+      {
+        id: row.topic_id,
+        order: row.topic_order,
+        title: row.topic_title,
+        track: row.track_id,
+        trackOrder: row.track_order,
+      },
+    ]),
+  ).values(),
+].sort((left, right) =>
+  left.trackOrder === right.trackOrder
+    ? left.order - right.order
+    : left.trackOrder - right.trackOrder,
+);
+const providerClasses = [
+  ...new Set(providers.map(({ provider_class }) => provider_class)),
+].sort();
+const contentAccessValues = [
+  ...new Set(providers.map(({ access }) => access.content.value)),
+].sort();
+const languages = [...new Set(providers.flatMap(({ languages }) => languages))].sort();
+const reviewDates = [...new Set(providers.map(({ last_verified }) => last_verified))].sort();
+const depths: CoverageDepth[] = [
+  "assessed",
+  "executable",
+  "worked",
+  "explained",
+  "mentioned",
+  "absent",
+  "unverified",
+];
+const providersById = new Map(providers.map((provider) => [provider.id, provider]));
+const initialCount = rows.filter(({ track_id }) => track_id === initialTrack).length;
+---
+
+<comparison-audit>
+  <form class="comparison-controls" data-comparison-controls aria-label="Filter comparison cells">
+    <div class="comparison-field">
+      <label for="comparison-track">Track</label>
+      <select id="comparison-track" name="track">
+        {tracks.map((track) => (
+          <option value={track} selected={track === initialTrack}>{comparisonTrackTitle(track)}</option>
+        ))}
+      </select>
+    </div>
+    <div class="comparison-field">
+      <label for="comparison-topic">Topic</label>
+      <select id="comparison-topic" name="topic">
+        <option value="">All topics in track</option>
+        {topics.map((topic) => (
+          <option
+            value={topic.id}
+            data-track={topic.track}
+            hidden={topic.track !== initialTrack}
+            disabled={topic.track !== initialTrack}
+          >
+            {topic.title}
+          </option>
+        ))}
+      </select>
+    </div>
+    <div class="comparison-field">
+      <label for="comparison-provider-class">Provider class</label>
+      <select id="comparison-provider-class" name="providerClass">
+        <option value="">All provider classes</option>
+        {providerClasses.map((providerClass) => (
+          <option value={providerClass}>{label(providerClass)}</option>
+        ))}
+      </select>
+    </div>
+    <div class="comparison-field">
+      <label for="comparison-depth">Coverage depth</label>
+      <select id="comparison-depth" name="depth">
+        <option value="">All depth states</option>
+        {depths.map((depth) => <option value={depth}>{label(depth)}</option>)}
+      </select>
+    </div>
+    <div class="comparison-field">
+      <label for="comparison-access">Content access</label>
+      <select id="comparison-access" name="access">
+        <option value="">All content access states</option>
+        {contentAccessValues.map((access) => (
+          <option value={access}>{label(access)}</option>
+        ))}
+      </select>
+    </div>
+    <div class="comparison-field">
+      <label for="comparison-language">Language</label>
+      <select id="comparison-language" name="language">
+        <option value="">All maintained languages</option>
+        {languages.map((language) => (
+          <option value={language}>{language.toUpperCase()}</option>
+        ))}
+      </select>
+    </div>
+    <div class="comparison-field">
+      <label for="comparison-review-after">Reviewed on or after</label>
+      <input id="comparison-review-after" name="reviewAfter" type="date" max={reviewDates.at(-1)} />
+    </div>
+    <div class="check-control">
+      <input id="comparison-direct" name="direct" type="checkbox" />
+      <label for="comparison-direct">Direct observations only</label>
+    </div>
+    <button type="reset">Reset filters</button>
+  </form>
+
+  <div class="comparison-key" aria-label="Coverage depth key">
+    {depths.map((depth) => (
+      <span class={`depth-badge depth-badge--${depth}`}>{label(depth)}</span>
+    ))}
+  </div>
+
+  <p class="result-count" data-comparison-count aria-live="polite">
+    {initialCount} comparison cells shown
+  </p>
+  <p class="notice" data-comparison-empty hidden>
+    No comparison cells match these filters. Reset one or more controls.
+  </p>
+
+  <div class="comparison-table-wrap">
+    <table class="comparison-table">
+      <caption data-comparison-caption>
+        {comparisonTrackTitle(initialTrack)} coverage cells. Bounds are evaluated at explained depth.
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">Provider</th>
+          <th scope="col">Topic</th>
+          <th scope="col">Depth</th>
+          <th scope="col">Explained bounds</th>
+          <th scope="col">Evidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => {
+          const provider = providersById.get(row.provider_id);
+          if (!provider) {
+            throw new Error(`Missing provider metadata for ${row.provider_id}`);
+          }
+          return (
+            <tr
+              class="comparison-row"
+              data-track={row.track_id}
+              data-provider-class={row.provider_class}
+              data-depth={row.depth}
+              data-origin={row.coverage_origin}
+              data-provider-id={row.provider_id}
+              data-topic-id={row.topic_id}
+              data-content-access={provider.access.content.value}
+              data-languages={provider.languages.join(",")}
+              data-last-reviewed={provider.last_verified}
+              hidden={row.track_id !== initialTrack}
+            >
+              <td data-label="Provider">
+                {provider.canonical_source.source_type === "url" ? (
+                  <a href={provider.canonical_source.url}>{row.provider_name}</a>
+                ) : (
+                  <strong>{row.provider_name}</strong>
+                )}
+                <span class="cell-subline">
+                  {label(row.provider_class)} · content {label(provider.access.content.value)}<br />
+                  {provider.languages.map((language) => language.toUpperCase()).join(", ")} · reviewed {provider.last_verified}
+                </span>
+              </td>
+              <td data-label="Topic">
+                <strong>{row.topic_title}</strong>
+                <span class="cell-subline">
+                  {row.topic_core ? "Core topic" : "Extended topic"} · {row.topic_id}
+                </span>
+              </td>
+              <td data-label="Depth">
+                <span class={`depth-badge depth-badge--${row.depth}`}>{label(row.depth)}</span>
+                <span class="cell-subline">{row.coverage_origin === "direct" ? "Direct review" : "Explicit unknown default"}</span>
+              </td>
+              <td data-label="Explained bounds">
+                <span class="bounds-pair"><span>Lower {row.lower_at_explained}</span><span>Upper {row.upper_at_explained}</span></span>
+              </td>
+              <td data-label="Evidence">
+                <details class="cell-evidence">
+                  <summary>{row.evidence.length > 0 ? `Evidence (${row.evidence.length})` : "Evidence status"}</summary>
+                  <p><strong>Reviewed scope:</strong> {row.reviewed_scope}</p>
+                  <p><strong>Interpretation:</strong> {row.note}</p>
+                  {row.evidence.length > 0 ? (
+                    <ul class="evidence-source-list">
+                      {row.evidence.map((source) => (
+                        <li>
+                          {source.source_type === "url" ? (
+                            <a href={source.url}>{source.title}</a>
+                          ) : (
+                            <>
+                              <strong>{source.title}</strong>
+                              <code>{source.repository_path}</code>
+                            </>
+                          )}
+                          <span class="cell-subline">
+                            {label(source.access)} · reviewed {source.reviewed_on}
+                            {source.version ? ` · ${source.version}` : ""}
+                          </span>
+                          <p>{source.observed_scope}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p class="unknown-note">No topic-specific source was encoded in this dated review.</p>
+                  )}
+                </details>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+</comparison-audit>
+
+<script>
+  class ComparisonAudit extends HTMLElement {
+    private form?: HTMLFormElement;
+
+    connectedCallback() {
+      this.form =
+        this.querySelector<HTMLFormElement>("[data-comparison-controls]") ??
+        undefined;
+      if (!this.form) return;
+
+      this.restoreQuery();
+      this.form.addEventListener("change", () => this.applyFilters(true));
+      this.form.addEventListener("reset", () => {
+        requestAnimationFrame(() => this.applyFilters(true));
+      });
+      this.applyFilters(false);
+    }
+
+    private restoreQuery() {
+      if (!this.form) return;
+      const params = new URLSearchParams(location.search);
+      for (const name of [
+        "track",
+        "providerClass",
+        "depth",
+        "access",
+        "language",
+      ] as const) {
+        const value = params.get(name);
+        const field = this.form.elements.namedItem(name);
+        if (value && field instanceof HTMLSelectElement) {
+          const hasOption = [...field.options].some((option) => option.value === value);
+          if (hasOption) field.value = value;
+        }
+      }
+      const track = this.form.elements.namedItem("track");
+      if (track instanceof HTMLSelectElement) {
+        this.syncTopicOptions(track.value);
+      }
+      const topicValue = params.get("topic");
+      const topic = this.form.elements.namedItem("topic");
+      if (topicValue && topic instanceof HTMLSelectElement) {
+        const option = [...topic.options].find(
+          (candidate) => candidate.value === topicValue && !candidate.disabled,
+        );
+        if (option) topic.value = topicValue;
+      }
+      const reviewAfter = this.form.elements.namedItem("reviewAfter");
+      if (reviewAfter instanceof HTMLInputElement) {
+        reviewAfter.value = params.get("reviewAfter") ?? "";
+      }
+      const direct = this.form.elements.namedItem("direct");
+      if (direct instanceof HTMLInputElement) {
+        direct.checked = params.get("direct") === "1";
+      }
+    }
+
+    private syncTopicOptions(track: string) {
+      if (!this.form) return;
+      const topic = this.form.elements.namedItem("topic");
+      if (!(topic instanceof HTMLSelectElement)) return;
+
+      for (const option of topic.options) {
+        if (!option.dataset.track) continue;
+        const available = option.dataset.track === track;
+        option.disabled = !available;
+        option.hidden = !available;
+      }
+      const selected = topic.selectedOptions.item(0);
+      if (selected?.dataset.track && selected.dataset.track !== track) {
+        topic.value = "";
+      }
+    }
+
+    private applyFilters(updateLocation: boolean) {
+      if (!this.form) return;
+      const trackField = this.form.elements.namedItem("track");
+      const selectedTrack =
+        trackField instanceof HTMLSelectElement ? trackField.value : "";
+      this.syncTopicOptions(selectedTrack);
+      const formData = new FormData(this.form);
+      const track = String(formData.get("track") ?? "");
+      const topic = String(formData.get("topic") ?? "");
+      const providerClass = String(formData.get("providerClass") ?? "");
+      const depth = String(formData.get("depth") ?? "");
+      const access = String(formData.get("access") ?? "");
+      const language = String(formData.get("language") ?? "");
+      const reviewAfter = String(formData.get("reviewAfter") ?? "");
+      const directOnly = formData.get("direct") === "on";
+      let visible = 0;
+
+      for (const row of this.querySelectorAll<HTMLTableRowElement>(
+        "tbody .comparison-row",
+      )) {
+        const matches =
+          row.dataset.track === track &&
+          (!topic || row.dataset.topicId === topic) &&
+          (!providerClass || row.dataset.providerClass === providerClass) &&
+          (!depth || row.dataset.depth === depth) &&
+          (!access || row.dataset.contentAccess === access) &&
+          (!language ||
+            (row.dataset.languages ?? "").split(",").includes(language)) &&
+          (!reviewAfter || (row.dataset.lastReviewed ?? "") >= reviewAfter) &&
+          (!directOnly || row.dataset.origin === "direct");
+        row.hidden = !matches;
+        if (matches) visible += 1;
+      }
+
+      const count = this.querySelector<HTMLElement>("[data-comparison-count]");
+      const empty = this.querySelector<HTMLElement>("[data-comparison-empty]");
+      const caption = this.querySelector<HTMLElement>("[data-comparison-caption]");
+      if (count) count.textContent = `${visible} comparison ${visible === 1 ? "cell" : "cells"} shown`;
+      if (empty) empty.hidden = visible !== 0;
+      if (caption) {
+        const trackName =
+          trackField instanceof HTMLSelectElement
+            ? trackField.selectedOptions.item(0)?.textContent ?? track
+            : track;
+        const topicName = topic
+          ? this.form.querySelector<HTMLOptionElement>(
+              `select[name="topic"] option[value="${CSS.escape(topic)}"]`,
+            )?.textContent
+          : "all topics";
+        caption.textContent = `${trackName}: ${topicName ?? topic}. Bounds are evaluated at explained depth.`;
+      }
+
+      if (updateLocation) {
+        const params = new URLSearchParams();
+        if (track && track !== "foundations") params.set("track", track);
+        if (topic) params.set("topic", topic);
+        if (providerClass) params.set("providerClass", providerClass);
+        if (depth) params.set("depth", depth);
+        if (access) params.set("access", access);
+        if (language) params.set("language", language);
+        if (reviewAfter) params.set("reviewAfter", reviewAfter);
+        if (directOnly) params.set("direct", "1");
+        const query = params.toString();
+        history.replaceState({}, "", `${location.pathname}${query ? `?${query}` : ""}`);
+      }
+    }
+  }
+
+  if (!customElements.get("comparison-audit")) {
+    customElements.define("comparison-audit", ComparisonAudit);
+  }
+</script>

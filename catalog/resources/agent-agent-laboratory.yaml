@@ -1,0 +1,45 @@
+id: agent-agent-laboratory
+name: Agent Laboratory
+kind: agent
+summary: An agent workflow that plans, executes and documents a machine-learning research project end to end.
+canonical_url: https://github.com/SamuelSchmidgall/AgentLaboratory
+identifiers:
+  - scheme: documentation
+    value: "Agent Laboratory repository and usage instructions"
+    url: https://github.com/SamuelSchmidgall/AgentLaboratory
+stages: [model-development, evaluation]
+modalities: [scientific-text, notebook]
+tasks: [tool-using-agent, scientific-question-answering]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: open_source, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: The source code of the repository, per the LICENSE file. It does not cover the language-model services the workflow calls.
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/SamuelSchmidgall/AgentLaboratory
+    label: Agent Laboratory repository, re-opened 2026-10-21
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/SamuelSchmidgall/AgentLaboratory/main/README.md
+    label: Agent Laboratory README, re-opened 2026-10-21
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/SamuelSchmidgall/AgentLaboratory/main/LICENSE
+    label: Agent Laboratory MIT licence file, re-opened 2026-10-21
+    supports: []
+caveats:
+  - The workflow calls external language-model services under their own terms, and the repository licence does not grant access to them.
+  - The reported results depend on the services and the models available at the time; the registry does not establish that a reported run can be reproduced.
+acknowledgements: []
+last_verified: "2026-10-21"

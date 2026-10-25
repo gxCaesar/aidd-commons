@@ -1,0 +1,51 @@
+---
+title: ADMET 评估
+description: 将暴露、毒性、DMPK 和 PK/PD 证据作为相互关联的决策流进行评估。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[ADMET evaluation](/learn/admet-pk/admet-evaluation/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="admet-pk/admet-evaluation" />
+
+## 基础
+
+ADMET 涵盖吸收、分布、代谢、排泄和毒性；PK/PD 增加暴露—反应关系。它们是
+具有不同实验系统和不确定性的不同终点。预测的毒性概率不是安全性结论。
+
+## 实践工作流
+
+对每个拟议分子，列出决策、相关测定、物种和基质、不确定性以及下一项实验。仅在
+核查任务来源和划分后，才将
+[ADMET-AI](https://github.com/swansonk14/admet_ai) 或简单描述符模型作为可复现的比较。
+
+## 评估
+
+审查标签定义、测定删失、化学系列泄漏以及从体外暴露到体内暴露的转化缺口。在
+验证数据上评估校准和决策阈值，而不是在候选项选择之后进行评估。
+
+## 前沿与开放问题
+
+诸如 [OpenFF Evaluator](https://github.com/openforcefield/openff-evaluator) 的
+物理性质工具可以约束一项假设，但不能替代代谢、转运体或毒理学实验。
+
+## v0.1 尚未教授的内容
+
+本课不提供临床药理学计划、监管建议或已验证的人体安全性模型。
+
+## 继续学习浓度—时间模型
+
+[清除率、暴露与 PK/PD](/zh-cn/learn/admet-pk/exposure-clearance-pkpd/)推导一条简化浓度曲线，
+解释为什么总暴露、游离暴露和反应不能相互替换。手算数值为编造示例，不提供动物实验、
+人体剂量或安全性结论。
+
+## 核心来源路径
+
+将 [TDC](https://tdcommons.ai/) 中的任务级材料与
+[DrugBank](https://go.drugbank.com/) 的证据语境进行比较；在来源页面不足时，保留
+未验证的访问和许可字段。
+
+最后审阅：2026-09-04。

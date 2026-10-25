@@ -1,0 +1,57 @@
+id: model-openfold
+name: OpenFold
+kind: software
+summary: Open reproduction effort for AlphaFold-style protein structure prediction.
+canonical_url: https://github.com/aqlaboratory/openfold
+identifiers:
+  - scheme: paper
+    value: "OpenFold: Retraining AlphaFold2 yields new insights into its learning mechanisms and capacity for generalization"
+    url: https://www.biorxiv.org/content/10.1101/2022.11.20.517210
+  - scheme: documentation
+    value: "OpenFold documentation"
+    url: https://openfold.readthedocs.io/
+stages: [structure-prediction, evaluation]
+modalities: [protein]
+tasks: [structure-prediction]
+relations:
+  - type: reproduces
+    target: model-alphafold-2
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [readme] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: source-code
+    evidence: [license]
+  - name: CC-BY-4.0
+    scope: downloaded-deepmind-parameters
+    evidence: [readme]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/aqlaboratory/openfold
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/aqlaboratory/openfold
+    label: OpenFold repository
+    supports:
+      [name, kind, summary, stages, modalities, tasks, relations, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/aqlaboratory/openfold/main/README.md
+    label: OpenFold README
+    supports: []
+  - id: license
+    url: https://raw.githubusercontent.com/aqlaboratory/openfold/main/LICENSE
+    label: OpenFold Apache-2.0 license
+    supports: []
+caveats:
+  - The opened repository does not establish complete dataset or training-recipe provenance.
+acknowledgements: []
+last_verified: "2026-09-04"

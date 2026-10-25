@@ -1,0 +1,139 @@
+---
+title: Label-free molecule representation inspector
+description: Inspect canonicalization, identity loss, descriptors, fingerprints, graphs, and salts without labels or model fitting.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="representation-inspector" />
+
+## Before you run
+
+Mode: editable label-free CPU exercise, not predictive training. Download either
+notebook above, choose **File → Upload notebook** in
+[Colab](https://colab.research.google.com/), or open it in local Jupyter.
+The seven examples and visible inspection code are embedded; no helper upload or
+repository clone is needed. The [practice guide](/labs/notebook-guide/) explains
+cell order and saving. Use the declared
+Python/RDKit environment; installation may require network access, but the seven
+example structures need no dataset download. The notebook creates a fresh temporary
+output directory. The optional CLI defaults to
+`tmp/molecule-representations/report.json` and can overwrite that file; choose a
+different output path to keep earlier attempts. For fitting rather than inspection, continue to the
+[student modelling sandbox](/learn/machine-learning/student-modelling-sandbox/).
+Entry guidance updated: 2026-09-09.
+
+## Status and scope
+
+This is an executable, CPU-only representation lab. It converts seven authored
+SMILES examples into a versioned JSON report and makes several many-to-one
+representation mappings visible. It does not load activity labels, train a
+model, create a dataset split, or report predictive performance.
+
+The exercise supports the
+[small-molecule representations chapter](/learn/representations/small-molecule-representations/).
+It is separate from the completed predictive comparison described in that
+chapter's frozen data contract.
+
+## Input and output contract
+
+The canonical input file is
+`labs/molecule_representations/examples.csv`. Each row contains an authored ID,
+a SMILES string, and the teaching point for that row. The lab preserves row
+order and fails on an empty identifier, duplicate identifier, invalid SMILES,
+or zero-atom molecule.
+
+The JSON output records:
+
+- the installed RDKit version and canonicalization toolkit;
+- canonical isomeric and non-isomeric SMILES plus InChIKey;
+- molecular formula, atom and bond counts, disconnected-component count, and
+  formal charge;
+- assigned and unassigned stereocentre counts;
+- a Bemis–Murcko scaffold when the structure has one;
+- six named 2D descriptors;
+- occupied bits and nonzero count features for a fully recorded Morgan
+  configuration.
+
+No field is interpreted as an experimental property. The output is an
+inspection artifact under one software contract.
+
+## Optional command-line route
+
+For environment setup and a short worked exercise, begin with
+[Your first session](/learn/foundations/first-session/).
+
+From the repository root:
+
+```sh
+env UV_CACHE_DIR=.cache/uv uv run python labs/molecule_representations/run_lab.py inspect
+```
+
+The default output is `tmp/molecule-representations/report.json`. The `tmp/`
+directory is intentionally excluded from public releases. To retain a local
+copy elsewhere, pass `--output PATH`.
+
+The default Morgan configuration is radius 2, 2,048 bits, and chirality
+enabled. The following sensitivity run changes the representation and records
+that change in its own output:
+
+```sh
+env UV_CACHE_DIR=.cache/uv uv run python labs/molecule_representations/run_lab.py inspect \
+  --ignore-chirality \
+  --morgan-radius 3 \
+  --morgan-bits 4096 \
+  --output tmp/molecule-representations/sensitivity.json
+```
+
+This sensitivity output is another computational view of the same seven
+molecules. It is not an independent sample and supplies no evidence about
+predictive quality.
+
+## Expected relationships
+
+Check relationships rather than copying version-sensitive numeric values:
+
+1. `pyridine-kekule` and `pyridine-aromatic` have different input strings but
+   the same RDKit canonical isomeric SMILES and InChIKey.
+2. `alanine-one` and `alanine-two` retain distinct isomeric SMILES and
+   InChIKeys. Their non-isomeric canonical SMILES is identical.
+3. `alanine-unspecified` records an unassigned stereocentre rather than being
+   silently assigned to either defined enantiomer.
+4. `sodium-acetate` remains one input record with two disconnected components.
+   The implementation does not select a fragment parent or neutralize it.
+5. `acetic-acid` and `sodium-acetate` therefore remain distinct computational
+   objects even though a different, explicitly declared parent policy could
+   relate them.
+
+If any relationship fails after a dependency update, inspect the installed
+RDKit version and release notes before changing expected values. A changed
+canonical string can be an implementation change rather than a chemical change.
+
+## Interpretation limits
+
+- Canonicalization is toolkit- and version-scoped. It is not a universal
+  standardisation policy.
+- A molecular descriptor is a computed summary, not a measured assay value.
+- A hashed fingerprint can collide and cannot reconstruct the complete graph.
+- A Bemis–Murcko scaffold is one grouping definition, not proof of independent
+  prospective chemistry.
+- The lab contains no 3D coordinates, conformer ensemble, target, assay,
+  environment, synthesis route, efficacy, or safety evidence.
+- The lab cannot rank representation families. That requires a separately
+  frozen endpoint, entity set, split, cheap baselines, metric, and external
+  validation route.
+
+The authored examples are original AIDD Commons teaching inputs. RDKit remains
+under its own software terms, and OpenSMILES and InChI remain separately
+governed standards and implementations.
+
+## Continue to a predictive comparison
+
+[Read the completed ChEMBL comparison](/labs/chembl-egfr-representation-baselines/#chembl-locked-title)
+to see how representation choice interacts with the evaluation set. Reading
+the saved result does not require downloading data or rerunning evaluation.
+
+Last reviewed: 2026-09-08.

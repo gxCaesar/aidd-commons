@@ -1,0 +1,347 @@
+---
+title: Counting the independent measurements behind a compound
+description: Count the independent nanomolar potency measurements behind a declared cohort of real ChEMBL 37 compounds, and see which rows have to be set aside before that count means anything.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## What the lab asks
+
+A database says a compound has a reported value. The value is one number, but the row
+carrying it is one of many, and the number a reader would use to describe that
+compound's evidence depends on how many rows survive a declared rule and how many of
+the survivors are the same experiment counted twice.
+
+This lab declares fifteen real ChEMBL molecule identifiers, resolves each one to the
+parent molecule it belongs to, applies one admission rule to every activity row
+ChEMBL files under those parents, and reports the assay, document, target, organism,
+assay type, confidence score and relation behind every measurement that survives. No
+model is fitted, no split is drawn and nothing is predicted. The count is descriptive.
+
+The declared question is whether a compound's evidence base is the number of rows a
+database returns or the number of independent measurements underneath them. For this
+cohort, which resolves to ten parent molecules, the two differ by more than two orders
+of magnitude for the compound carrying the most rows, and more than half of the rows
+that survive admission are censored bounds rather than values.
+
+## Before you run
+
+**Mode: fresh independent computation over a live, versioned database release.**
+Nothing here is a frozen one-time evaluation. The protocol fixes the admission rule,
+the entity rule and the grouping rule, but the ChEMBL release itself can in principle
+be superseded, so the download re-checks the live release fields before it fetches
+anything. There is no fitted model anywhere in this lab.
+
+From the repository root:
+
+```bash
+uv sync --group dev
+uv run python labs/decision_unit_scope/run_lab.py download
+uv run python labs/decision_unit_scope/inspect_decision_unit_scope.py show
+uv run python labs/decision_unit_scope/inspect_decision_unit_scope.py check
+```
+
+Python 3.11 or newer, NumPy and RDKit. Network access is needed for the download
+only, which reads the public ChEMBL REST API. The download writes thirteen artefacts
+to a git-ignored cache under `.cache/decision_unit_scope/`. A cold run makes 41 HTTP
+requests and moves 9,794,036 bytes over the wire, and leaves a cache of 11,883,104
+bytes behind, because each artefact is written in this lab's own deterministic
+serialisation. It is resumable, so an artefact whose cached byte length still matches
+the value frozen in the protocol is kept rather than fetched again.
+
+`show` prints the entity resolution, the admission funnel, the per-compound census and
+the named examples. `check` recomputes the invariants and exits non-zero on any
+violation, and it runs with no network and no cache because the committed summary is
+enough for the summary invariants. A separate export step rewrites the committed
+summary in place from the cache, and rerunning it against the same cache reproduces
+that file exactly.
+
+## What the data is
+
+Everything comes from one release of one real database. ChEMBL 37 was released
+2026-05-01 and is read through the ChEMBL REST API. The live release is asserted on
+every run, so a later release stops the download rather than quietly changing the
+counts.
+
+The endpoint scope is a nanomolar potency. A row counts only when its standard type
+is one of AC50, EC50, IC50, Kd or Ki, its units are nM, and it carries a relation
+symbol. A relation of "=" is a point measurement. A relation of ">", "&lt;", ">=" or "&lt;="
+is a bound, and a bound is never pooled with a point value. A row with no relation
+symbol at all is neither, and is set aside.
+
+The ChEMBL bulk artefacts of this release are deliberately not used. The release
+directory ships a SQLite dump of 5,764,252,857 bytes, a MySQL dump of 2,101,694,224
+bytes, a PostgreSQL dump of 2,088,889,426 bytes and an SDF of 931,156,420 bytes, all
+measured on 2026-10-21. The REST API carries the measurement, the entity, the assay,
+the document, the target and the relation in one row, so the dumps would be paid for
+and not used.
+
+## What the reading is
+
+Three rules turn rows into measurements, and they apply in this order.
+
+**The entity rule.** The unit of inference is the ChEMBL parent molecule. Every
+activity row carries both the form that was actually tested and the parent entity the
+row is filed under, and the count is kept on the parent. A row whose tested form
+differs from its parent was measured on a salt or mixture of that parent. Such a row
+is admitted rather than rejected, because it is a real measurement of the parent
+entity obtained on a different formulation, and it is counted separately so a reader
+can see how much of a compound's evidence was obtained on something other than the
+parent structure. The fifteen declared molecules resolve to ten parents because five
+of them are salt formulations of a compound that is itself in the cohort.
+
+**The admission rule.** Every row is tested against a declared list of exclusion
+reasons, and the first reason that matches is the row's reason, so the reasons
+partition the input rows exactly. The order runs from what the row reports, to how
+ChEMBL curated it, to what the row says about its own independence, to its quality
+flags.
+
+**The grouping rule.** Two admitted point measurements are the same measurement when
+they share an assay, a document and an endpoint type, because one experiment in one
+paper reporting one endpoint is one number. The experiment unit drops the endpoint
+type and is reported alongside.
+
+The three counts this produces are worth separating before anything is compared. The
+reported row count is what a plain lookup returns. The distinct assay count is the
+middle step, and it drops the document, so one assay entered twice from the same
+paper counts once. The quantity under study is the independent measurement count,
+which is the number of distinct assay, document and endpoint keys among the admitted
+point measurements.
+
+What survives is never a bare number. Seven pieces of context travel with every
+admitted measurement, and for one compound they read as follows.
+
+| Reading field | Value for VALPROIC ACID (CHEMBL109) |
+| --- | --- |
+| Independent measurements | 27 |
+| Distinct assays | 27 |
+| Distinct documents | 15 |
+| Distinct targets | 22 |
+| Endpoint types | IC50 17, AC50 9, EC50 1 |
+| Assay types | binding 20, functional 7 |
+| Assay organism | not recorded 11, Homo sapiens 8, Rattus norvegicus 5, Bos taurus 3 |
+| Target organism | Homo sapiens 17, Rattus norvegicus 4, not recorded 4, Bos taurus 1, Sus scrofa 1 |
+| ChEMBL confidence score | 8 in 11 measurements, 9 in 8, 0 in 4, 1 in 4 |
+| Relation of the 125 admitted bounds | all ">" |
+| Tested form | 25 on the parent structure, 2 on the salt CHEMBL433 |
+
+The organism and the confidence score are not on the activity row at all. The ChEMBL
+activity endpoint does not carry them, so the lab fetches the assay record behind
+every admitted row, and an assay whose organism is not recorded is reported as not
+recorded rather than guessed.
+
+One reported value, with everything that has to travel with it.
+
+| Field | Value |
+| --- | --- |
+| Activity | 495981 |
+| Compound | VALPROIC ACID, parent CHEMBL109 |
+| Form tested | CHEMBL433, VALPROATE SODIUM, a child salt form |
+| Endpoint | IC50, 89,000 nM, relation "=", pChEMBL 4.05 |
+| Assay | CHEMBL646326, type B, confidence score 8, no assay organism recorded |
+| Document | CHEMBL1125615, J Med Chem, 1991 |
+| Target | CHEMBL4049, aldo-keto reductase family 1 member A1, Sus scrofa |
+| Test occasion identifier | not recorded on this row |
+
+A reader who wrote "valproic acid has an IC50 of 89,000 nM" would have kept the
+number and dropped every other field in the table, and each of them changes what the
+sentence means.
+
+## What the numbers are
+
+Computed on 2026-10-21 against ChEMBL 37 with Python 3.11.15, NumPy 2.4.6 and RDKit
+2025.09.6, and recorded in the committed summary of this lab.
+
+| Quantity | Value |
+| --- | ---: |
+| Declared ChEMBL molecules | 15 |
+| Distinct parent molecules after resolution | 10 |
+| Activity rows filed under the ten parents | 13,305 |
+| Admitted point measurements | 488 |
+| Admitted bounds | 516 |
+| Independent measurements, grouping unit (assay, document, endpoint) | 486 |
+| Independent experiments, grouping unit (assay, document) | 484 |
+| Point measurements reported on the parent structure | 417 |
+| Point measurements reported on a salt or mixture form | 71 |
+
+The admission funnel, cohort-wide.
+
+| Stage | Removed | Remaining |
+| --- | ---: | ---: |
+| Reported rows | 0 | 13,305 |
+| Outside the endpoint family | 5,517 | 7,788 |
+| Outside nM | 11 | 7,777 |
+| Not curated into ChEMBL's standard fields | 6,363 | 1,414 |
+| Flagged as a potential duplicate | 70 | 1,344 |
+| Carrying a data-validity comment | 286 | 1,058 |
+| Missing a value, or missing a structure | 0 | 1,058 |
+| Missing a relation symbol | 54 | 1,004 |
+| Admitted rows | 0 | 1,004 |
+| Set aside as bounds | 516 | 488 |
+| Admitted point measurements | 0 | 488 |
+
+The per-compound census, one row per unit of inference.
+
+| Compound | ChEMBL id | Reported rows | Point | Bounds | Independent measurements | Independent experiments | Salt-form |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| VALPROIC ACID | CHEMBL109 | 6,294 | 27 | 125 | 27 | 27 | 2 |
+| PRAVASTATIN | CHEMBL1144 | 1,594 | 37 | 80 | 36 | 34 | 14 |
+| MIXTURE OF MMC AND TA | CHEMBL13829 | 2 | 1 | 0 | 1 | 1 | 0 |
+| SODIUM LAURYL SULFATE | CHEMBL23393 | 132 | 4 | 2 | 4 | 4 | 0 |
+| ASPIRIN | CHEMBL25 | 4,094 | 103 | 187 | 103 | 103 | 0 |
+| DARBUFELONE | CHEMBL275835 | 26 | 12 | 0 | 12 | 12 | 5 |
+| THIOPENTAL | CHEMBL441 | 112 | 2 | 2 | 2 | 2 | 0 |
+| FENOLDOPAM | CHEMBL588 | 248 | 51 | 29 | 51 | 51 | 15 |
+| DELAVIRDINE | CHEMBL593 | 799 | 251 | 91 | 250 | 250 | 35 |
+| MINOXIDIL SULFATE | CHEMBL906 | 4 | 0 | 0 | 0 | 0 | 0 |
+
+Three findings are worth a reader's attention.
+
+**A row count is not a measurement count.** VALPROIC ACID has 6,294 activity rows in
+ChEMBL 37 and 27 independent measurements under this protocol, so the lab's own
+output reports 233.1 rows per measurement. The rows are mostly not potency
+measurements at all. Among them, 482 report a tissue severity score, 364 a bare
+activity outcome, 298 an ED50, 128 a body weight and 119 a TD50. Of the 6,294 rows,
+2,349 report something outside the declared endpoint family and 3,674 were never
+curated into ChEMBL's standard fields, while 99 carry a data-validity comment, 10
+are flagged as potential duplicates and 10 carry no relation symbol. That leaves 152
+admitted rows, of which 125 are bounds and 27 are point measurements. All 125 bounds
+carry the relation ">", and 124 of them place the value above 10,000 nM. A reader
+who counted rows would have overstated this compound's evidence base by more than
+two orders of magnitude.
+
+**Most of the surviving rows are bounds, not values.** Across the cohort, 516 of the
+1,004 admitted rows are censored bounds and 488 are point measurements. A bound is a
+real measurement and a useless number, because it cannot be averaged with a point
+value. A compound whose only surviving evidence is an IC50 above 10,000 nM has not
+been shown to be potent at all.
+
+**The salt case is not an edge case.** Of the 488 admitted point measurements, 71 were
+reported on a salt or mixture form of the parent rather than on the parent structure.
+DARBUFELONE is the extreme. 5 of its 12 admitted measurements come from CHEMBL109745,
+the mesylate salt of the same compound, and its independent measurement count of 12
+rests on 7 measurements of the parent structure and 5 of that salt. A reader who
+treated the two ChEMBL records as two compounds would have compared a salt against
+its own free base and called the difference a property of the molecules. The declared
+cohort contains five such pairs, which is why fifteen declared molecules resolve to
+ten units of inference.
+
+One compound in the cohort has no admissible measurement at all. MINOXIDIL SULFATE
+(CHEMBL906) has four activity rows in ChEMBL 37 and zero admitted point measurements
+under this protocol. Two of its rows were never curated into ChEMBL's standard fields,
+one carries a data-validity comment and one reports something outside the endpoint
+family. ChEMBL also stores it with a single-component structure, so its name promises
+a salt its record does not contain.
+
+## What this does not show
+
+A count of measurements says nothing about the size or the quality of an effect. This
+lab says nothing about how potent, selective, safe or clinically useful any of these
+compounds is, and it draws no comparison between them.
+
+The cohort is fifteen molecules chosen to exercise the counting rules. It is not a
+random sample of ChEMBL, and nothing computed over it estimates how salt reporting,
+curation or endpoint coverage is distributed across the database. The 71 salt-form
+measurements out of 488 are a count of what these fifteen molecules happen to look
+like in ChEMBL 37, not a rate with a sampling error around it, so no uncertainty
+interval is reported and none should be.
+
+The endpoint scope is one declared family of nanomolar potencies. Rows reporting an
+ED50, a GI50, a potency, a bare activity, an inhibition, a percentage inhibition or a
+haematology count are outside it and are counted as such, so the measurement counts
+here are counts within that family and would change under a different declared family.
+
+The grouping unit treats two rows of the same assay, the same document and the same
+endpoint type as one measurement. That is a judgement about what an independent
+experiment is, and a different judgement would give different counts. ChEMBL's own
+schema documentation notes that a potential-duplicate marker of zero does not
+guarantee that a measurement is novel or independent, and this lab counts what the
+markers say without claiming more.
+
+The protocol reports what ChEMBL stores. Where ChEMBL keeps a salt as its own parent,
+or stores a sulfate without the sulfate, this lab does not correct it. It reports the
+stored fragment count and the resolution and leaves the correction to the reader.
+
+## Independent exercise
+
+A colleague's slide states that valproic acid is one of the best-characterised
+compounds in this cohort, with 6,294 ChEMBL activity records, and a second slide
+states that it has 27 independent potency measurements.
+
+1. Say which of the two slides describes a larger evidence base, and name the two
+   rules that account for the difference between the two numbers.
+2. Using only the tables above, say what the 27 independent measurements of valproic
+   acid were measured on, and name three pieces of context a reader would need
+   before treating any two of them as the same kind of number.
+3. The salt rule admits a child row and counts it on the parent. Say what a reader
+   would compare if they instead treated the two ChEMBL records for darbufelone as
+   two compounds, and what they would silently lose by simply deleting the child
+   rows.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+1. The first slide describes the larger evidence base, and it is not the one a
+   comparison should use. The two rules that account for the difference are the
+   admission rule and the grouping rule, applied after the entity rule has already
+   put both valproic acid and valproate sodium under one parent. The admission rule
+   takes 6,294 rows down to 152 by removing 2,349 rows outside the endpoint family,
+   3,674 rows never curated into ChEMBL's standard fields, 99 rows with a
+   data-validity comment, 10 potential duplicates and 10 rows with no relation
+   symbol. The grouping rule then splits the 152 into 125 bounds and 27 point
+   measurements, and the 27 point measurements collapse to 27 independent
+   measurements under the assay, document and endpoint key, so the two rules together
+   account for the whole gap.
+2. The 27 independent measurements sit in 27 distinct assays drawn from 15 distinct
+   documents and reach 22 distinct targets. Three pieces of context a reader needs
+   before treating any two as the same kind of number are the target the compound
+   was tested against, the organism the assay used, and the ChEMBL confidence score.
+   A fourth is the form that was tested, since 2 of the 27 were measured on the salt
+   CHEMBL433 and 25 on the parent structure, and a fifth is the relation, which
+   separates these 27 point values from the 125 bounds that were admitted alongside
+   them. A reader who took "valproic acid has 27 measurements" to mean 27
+   interchangeable potency values would be wrong on every one of these counts.
+3. A reader who treated the two records as two compounds would compare the 5
+   measurements taken on the darbufelone mesylate CHEMBL109745 against the 7 taken
+   on the darbufelone parent structure, and would read the difference as a property
+   of the two molecules. It is not, because the two records are one compound on two
+   formulations, and the difference is a formulation effect being read as a chemical
+   one. Deleting the child rows instead would drop the count from 12 to 7 and would
+   silently discard part of the compound's evidence, which is exactly the loss the
+   admission of salt-form rows and their separate reporting is there to prevent.
+
+</details>
+
+## Sources and next lesson
+
+<div data-case-sources>
+
+- [ChEMBL 37 release status](https://www.ebi.ac.uk/chembl/api/data/status.json), read live on 2026-10-21
+- [ChEMBL 37 activity records filed under parent CHEMBL109](https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL109)
+- [ChEMBL 37 activity records filed under parent CHEMBL593](https://www.ebi.ac.uk/chembl/api/data/activity.json?parent_molecule_chembl_id=CHEMBL593)
+- [ChEMBL 37 molecule record CHEMBL109](https://www.ebi.ac.uk/chembl/api/data/molecule/CHEMBL109.json)
+- [ChEMBL 37 assay record CHEMBL646326](https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL646326.json)
+- [ChEMBL 37 document record CHEMBL1125615](https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL1125615.json)
+- [ChEMBL 37 target record CHEMBL4049](https://www.ebi.ac.uk/chembl/api/data/target/CHEMBL4049.json)
+- [ChEMBL 37 release directory](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/)
+- [ChEMBL 37 release LICENSE](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)
+- [ChEMBL 37 release README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README)
+- [ChEMBL 37 schema documentation](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/schema_documentation.txt)
+
+</div>
+
+ChEMBL 37 is released by the European Bioinformatics Institute under the Creative
+Commons Attribution-ShareAlike 3.0 Unported licence, and the release README asks
+that the attribution carry the ChEMBL URL and the release version. This lab
+redistributes no ChEMBL data. The committed summary carries counts, identifiers and
+names rather than structures or activity rows.
+
+This lab supports [The scope of one decision unit](/learn/foundations/decision-unit-scope/),
+which grounds the count in the reading of a reported value. Continue to [One claim,
+one decision unit](/learn/foundations/decision-unit/) for the four fields a claim
+needs before any of these numbers is compared.
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last reviewed:
+2026-10-22.

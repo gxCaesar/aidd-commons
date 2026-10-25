@@ -1,0 +1,31 @@
+id: unsupported-url
+name: Unsupported URL
+kind: fixture
+summary: Local fixture with a non-HTTPS canonical URL.
+canonical_url: ftp://example.org/unsupported-url
+identifiers: []
+stages: [discovery]
+modalities: [small-molecule]
+tasks: [catalog-testing]
+relations: []
+status:
+  value: unverified
+access_level:
+  value: unverified
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: fixture-source
+    url: https://example.org/unsupported-url/source
+    label: Local fixture source
+    supports: [name, kind, summary, stages, modalities, tasks]
+caveats: []
+acknowledgements: []
+last_verified: "2026-09-04"

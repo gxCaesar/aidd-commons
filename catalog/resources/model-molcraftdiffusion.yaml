@@ -1,0 +1,93 @@
+id: model-molcraftdiffusion
+name: MolCraftDiffusion
+kind: model
+summary: Modular platform for three-dimensional molecular generation in Cartesian space that puts de novo, property-directed, pocket-conditioned, fragment-linking, pharmacophore-driven, latent-diffusion and flow-matching approaches behind one configuration system, data pipeline, checkpoint system and command line.
+canonical_url: https://github.com/lcmd-epfl/MolCraftDiffusion
+identifiers:
+- scheme: code
+  value: MolCraftDiffusion source repository, lcmd-epfl/MolCraftDiffusion, and the molcraftdiffusion package on PyPI
+  url: https://github.com/lcmd-epfl/MolCraftDiffusion
+- scheme: dataset
+  value: Archived training sets, checkpoints and configuration files for the platform paper, Zenodo record 19511401
+  url: https://doi.org/10.5281/zenodo.19511401
+- scheme: dataset
+  value: Archived augmented and annotated training sets and the conditioned diffusion models, Zenodo record 20829155
+  url: https://doi.org/10.5281/zenodo.20829155
+stages:
+- design
+modalities:
+- three-dimensional-structure
+- small-molecule
+tasks:
+- molecular-generation
+- property-directed-generation
+- pocket-conditioned-generation
+- fragment-linking
+relations: []
+status:
+  value: unverified
+access_level:
+  value: gated
+  evidence:
+  - molcraft-readme
+openness:
+  inference_code:
+    value: available
+    evidence:
+    - molcraft-readme
+  training_code:
+    value: available
+    evidence:
+    - molcraft-readme
+  weights:
+    value: unverified
+  architecture:
+    value: available
+    evidence:
+    - molcraft-readme
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: available
+    evidence:
+    - molcraft-readme
+licenses:
+- name: MIT
+  scope: The repository LICENSE grants use, modification, redistribution and sale of the MolCraftDiffusion software and associated documentation with preservation of its notices. It does not establish terms for the separately hosted pretrained weights, datasets, private Hugging Face zoo assets or browser service. Those assets follow their own access routes and terms.
+  evidence:
+  - molcraft-license
+  - molcraft-readme
+evidence:
+- id: molcraft-repository
+  url: https://github.com/lcmd-epfl/MolCraftDiffusion
+  label: MolCraftDiffusion repository (reviewed 2026-10-23)
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - caveats
+- id: molcraft-readme
+  url: https://raw.githubusercontent.com/lcmd-epfl/MolCraftDiffusion/main/README.md
+  label: MolCraftDiffusion README (reviewed 2026-10-23)
+  supports:
+  - identifiers
+  - caveats
+- id: molcraft-license
+  url: https://raw.githubusercontent.com/lcmd-epfl/MolCraftDiffusion/main/LICENSE
+  label: MolCraftDiffusion MIT licence — MIT grant for repository software and associated documentation; the grant does not name the separately hosted model-zoo weights or datasets.
+  supports:
+  - caveats
+caveats:
+- The README states that the zoo repositories are currently private and that access requires a Hugging Face token with permission. This establishes gated access to zoo weights, datasets and runnable example configurations. The README also names separate Zenodo archives for paper assets; their availability and terms are not established by the code licence.
+- The repository LICENSE establishes MIT terms for software and documentation. The Creative Commons notice in the paper's BibTeX covers the article, and neither notice establishes the terms of private Hugging Face zoo assets or separately hosted data and checkpoints.
+- The README names no individual chemical dataset, dataset size or train and validation split. The archived material is described only as the data, models and configuration files behind the platform paper, so what corpus each released checkpoint was trained on cannot be established from the page.
+- The README gives one model identifier as an example and says the complete inventory is obtained through the zoo command, so the number of published checkpoints is not stated.
+- The assets are cached under a default directory and verified by sha256 on every fetch, which is a stated integrity check rather than an independence check.
+- A separate browser interface is mentioned. The README does not state the terms under which the service is offered, and the record did not open it.
+acknowledgements: []
+last_verified: '2026-10-23'

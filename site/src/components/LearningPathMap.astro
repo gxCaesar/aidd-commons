@@ -1,0 +1,44 @@
+---
+import { learningTracks } from "../data/tracks.js";
+
+interface Props {
+  chinese?: boolean;
+}
+
+const { chinese = false } = Astro.props;
+const entries = [
+  {
+    id: "core",
+    label: chinese ? "核心路径" : "Core route",
+    route: chinese
+      ? "/zh-cn/learn/foundations/curriculum-map/#core-route"
+      : "/learn/foundations/curriculum-map/#core-route",
+  },
+  {
+    id: "specialist",
+    label: chinese ? "专题路径" : "Specialist routes",
+    route: chinese
+      ? "/zh-cn/learn/foundations/curriculum-map/#specialist-routes"
+      : "/learn/foundations/curriculum-map/#specialist-routes",
+  },
+];
+---
+
+<div class="action-row" aria-label={chinese ? "学习入口" : "Learning entry routes"}>
+  {entries.map((entry) => <a class="button-secondary" href={entry.route}>{entry.label}</a>)}
+</div>
+
+<div class="track-grid" style="margin-top: 1rem">
+  {learningTracks.map((track, index) => (
+    <article class="track-card" data-track-summary data-entry={track.entry}>
+      <div>
+        <p class="meta-label">{index + 1} · {chinese ? (track.entry === "Foundations" ? "基础" : track.entry === "Research" ? "研究" : "工程") : track.entry}</p>
+        <h3>{chinese ? track.zhTitle : track.title}</h3>
+        <p>{chinese ? track.zhSummary : track.summary}</p>
+      </div>
+      <a href={chinese ? `/zh-cn/pathways/${track.id}/` : `/learn/${track.id}/${track.lesson}/`}>
+        {chinese ? "阅读中文路径摘要" : "Open introduction"}
+      </a>
+    </article>
+  ))}
+</div>

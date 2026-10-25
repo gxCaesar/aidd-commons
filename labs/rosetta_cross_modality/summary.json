@@ -1,0 +1,469 @@
+{
+  "computed_on": "2026-10-21",
+  "counts": {
+    "admitted_perturbations": 528,
+    "batch_mixed_perturbations": 19,
+    "batch_pure_perturbations": 509,
+    "exclusion_counts": {
+      "imaging_only_perturbation": 65
+    },
+    "imaging": {
+      "batches": 2,
+      "control_rows": 320,
+      "distinct_wells": 6144,
+      "input_rows": 6144,
+      "perturbations": 593,
+      "plates": 16,
+      "treated_rows": 5824
+    },
+    "transcriptome": {
+      "control_rows": 8,
+      "distinct_wells": 4232,
+      "input_rows": 4232,
+      "perturbations": 528,
+      "plates": 16,
+      "treated_rows": 4224
+    }
+  },
+  "evaluations": {
+    "apparent": {
+      "alphas": [
+        1000.0,
+        1000.0,
+        100.0,
+        1000.0,
+        1000.0
+      ],
+      "feature_r": 0.8255823644030211,
+      "folds": 5,
+      "perturbation_r": 0.8157978533297882,
+      "test_sizes": [
+        106,
+        106,
+        106,
+        105,
+        105
+      ],
+      "tested_perturbations": 528,
+      "train_sizes": [
+        422,
+        422,
+        422,
+        423,
+        423
+      ]
+    },
+    "batch_blocked": {
+      "alphas": [
+        1000.0,
+        100.0
+      ],
+      "feature_r": 0.6326167562181086,
+      "folds": 2,
+      "perturbation_r": 0.6886279681195899,
+      "test_sizes": [
+        238,
+        271
+      ],
+      "tested_perturbations": 509,
+      "train_sizes": [
+        271,
+        238
+      ]
+    },
+    "null_within_batch_permuted": {
+      "alphas": [
+        100.0,
+        1.0,
+        10000.0,
+        10000.0,
+        1.0
+      ],
+      "feature_r": 0.0033433582467451996,
+      "folds": 5,
+      "perturbation_r": 0.13174078823593352,
+      "test_sizes": [
+        106,
+        106,
+        106,
+        105,
+        105
+      ],
+      "tested_perturbations": 528,
+      "train_sizes": [
+        422,
+        422,
+        422,
+        423,
+        423
+      ]
+    },
+    "plate_blocked_imaging": {
+      "alphas": [
+        1000.0,
+        100.0,
+        100.0,
+        1000.0,
+        100.0,
+        1000.0,
+        100.0,
+        1000.0,
+        1000.0,
+        1000.0,
+        100.0,
+        100.0,
+        1000.0,
+        1000.0,
+        100.0,
+        100.0
+      ],
+      "feature_r": 0.6516466616586183,
+      "folds": 16,
+      "perturbation_r": 0.6921108563336504,
+      "test_sizes": [
+        257,
+        290,
+        290,
+        257,
+        290,
+        257,
+        290,
+        257,
+        257,
+        257,
+        290,
+        290,
+        257,
+        257,
+        290,
+        290
+      ],
+      "tested_perturbations": 528,
+      "train_sizes": [
+        271,
+        238,
+        238,
+        271,
+        238,
+        271,
+        238,
+        271,
+        271,
+        271,
+        238,
+        238,
+        271,
+        271,
+        238,
+        238
+      ]
+    },
+    "plate_blocked_transcriptome": {
+      "alphas": [
+        1000.0,
+        1000.0,
+        1000.0,
+        1000.0,
+        1000.0,
+        1000.0,
+        1000.0,
+        1000.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0
+      ],
+      "feature_r": 0.6694236547583905,
+      "folds": 16,
+      "perturbation_r": 0.7041289661800691,
+      "test_sizes": [
+        247,
+        243,
+        243,
+        248,
+        245,
+        244,
+        249,
+        247,
+        282,
+        280,
+        279,
+        282,
+        285,
+        278,
+        277,
+        276
+      ],
+      "tested_perturbations": 528,
+      "train_sizes": [
+        281,
+        285,
+        285,
+        280,
+        283,
+        284,
+        279,
+        281,
+        246,
+        248,
+        249,
+        246,
+        243,
+        250,
+        251,
+        252
+      ]
+    },
+    "size_matched_random_batch": {
+      "alphas": [
+        1000.0,
+        100.0
+      ],
+      "feature_r": 0.7876956788450131,
+      "folds": 2,
+      "perturbation_r": 0.7923217453097258,
+      "test_sizes": [
+        238,
+        271
+      ],
+      "tested_perturbations": 509,
+      "train_sizes": [
+        271,
+        238
+      ]
+    },
+    "size_matched_random_imaging_plate": {
+      "alphas": [
+        100.0,
+        100.0,
+        1000.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        1000.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        1000.0,
+        100.0,
+        100.0
+      ],
+      "feature_r": 0.8013887378556557,
+      "folds": 16,
+      "perturbation_r": 0.7930846471453323,
+      "test_sizes": [
+        257,
+        290,
+        290,
+        257,
+        290,
+        257,
+        290,
+        257,
+        257,
+        257,
+        290,
+        290,
+        257,
+        257,
+        290,
+        290
+      ],
+      "tested_perturbations": 528,
+      "train_sizes": [
+        271,
+        238,
+        238,
+        271,
+        238,
+        271,
+        238,
+        271,
+        271,
+        271,
+        238,
+        238,
+        271,
+        271,
+        238,
+        238
+      ]
+    },
+    "size_matched_random_transcriptome_plate": {
+      "alphas": [
+        1000.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        1000.0,
+        1000.0,
+        100.0,
+        100.0,
+        1000.0,
+        100.0,
+        100.0
+      ],
+      "feature_r": 0.8088513605851432,
+      "folds": 16,
+      "perturbation_r": 0.797240206280192,
+      "test_sizes": [
+        247,
+        243,
+        243,
+        248,
+        245,
+        244,
+        249,
+        247,
+        282,
+        280,
+        279,
+        282,
+        285,
+        278,
+        277,
+        276
+      ],
+      "tested_perturbations": 528,
+      "train_sizes": [
+        281,
+        285,
+        285,
+        280,
+        283,
+        284,
+        279,
+        281,
+        246,
+        248,
+        249,
+        246,
+        243,
+        250,
+        251,
+        252
+      ]
+    }
+  },
+  "examples": {
+    "least_agreeable": [
+      {
+        "allele": "MDM2_p.E421Q",
+        "gene_symbol": "MDM2",
+        "imaging_replicates": 8,
+        "perturbation": "BRDN0000554170",
+        "perturbation_r": -0.15251251225964846,
+        "transcriptome_replicates": 8
+      },
+      {
+        "allele": "RBM15B_WT.o",
+        "gene_symbol": "RBM15B",
+        "imaging_replicates": 8,
+        "perturbation": "TRCN0000481366",
+        "perturbation_r": -0.08022481731177938,
+        "transcriptome_replicates": 8
+      },
+      {
+        "allele": "NUP88_WT.o",
+        "gene_symbol": "NUP88",
+        "imaging_replicates": 8,
+        "perturbation": "TRCN0000481645",
+        "perturbation_r": -0.01165088316379487,
+        "transcriptome_replicates": 8
+      }
+    ],
+    "most_agreeable": [
+      {
+        "allele": "LAP3_WT.o",
+        "gene_symbol": "LAP3",
+        "imaging_replicates": 8,
+        "perturbation": "TRCN0000471191",
+        "perturbation_r": 0.9861183675244729,
+        "transcriptome_replicates": 8
+      },
+      {
+        "allele": "NFE2L2_WT.c",
+        "gene_symbol": "NFE2L2",
+        "imaging_replicates": 64,
+        "perturbation": "BRDN0000560336",
+        "perturbation_r": 0.9845928259871871,
+        "transcriptome_replicates": 8
+      },
+      {
+        "allele": "NFE2L2_p.T80K",
+        "gene_symbol": "NFE2L2",
+        "imaging_replicates": 8,
+        "perturbation": "BRDN0000553192",
+        "perturbation_r": 0.9837973450754032,
+        "transcriptome_replicates": 8
+      }
+    ]
+  },
+  "features": {
+    "imaging": 291,
+    "transcriptome": 978
+  },
+  "model_free_check": {
+    "neighbourhood_concordance": 0.7449153423397838,
+    "neighbourhood_concordance_permuted_null": 0.0006637758746329393
+  },
+  "protocol_id": "cpg0003-rosetta-luad-cross-modality-v1",
+  "schema_version": "aidd-commons.rosetta-cross-modality-summary.v1",
+  "software": {
+    "numpy": "2.4.6",
+    "python": "3.11.15"
+  },
+  "source": {
+    "batch_id": "LUAD-BBBC041-Caicedo",
+    "cell_line": "A549",
+    "files": {
+      "imaging_replicate": {
+        "byte_length": 15858878,
+        "s3_etag": "c79982a1d6eca9480e707c8d64c50b43"
+      },
+      "transcriptome_replicate": {
+        "byte_length": 11448797,
+        "s3_etag": "cca1d0129f0a8f94f322d0fded461225"
+      }
+    },
+    "study_id": "cpg0003-rosetta"
+  },
+  "survival": {
+    "batch_blocked_feature_r_survival": 0.76531688871467,
+    "batch_blocked_minus_size_matched_random_feature_r": -0.15507892262690448,
+    "definition": "survival_ratio = (blocked_feature_r - null_feature_r) / (apparent_feature_r - null_feature_r); the share of the above-null cross-modal agreement that remains when the batch or plate structure is held out of the training side",
+    "plate_blocked_imaging_feature_r_survival": 0.7884608958683427,
+    "plate_blocked_imaging_minus_size_matched_random_feature_r": -0.1497420761970374,
+    "plate_blocked_transcriptome_feature_r_survival": 0.8100811218204955,
+    "plate_blocked_transcriptome_minus_size_matched_random_feature_r": -0.13942770582675268
+  },
+  "variance_attribution": {
+    "imaging_batch": {
+      "between": 0.003610010807404989,
+      "total_mean_square": 787.4111255032188,
+      "within": 0.9963899891925947
+    },
+    "imaging_plate": {
+      "between": 0.02714734531626648,
+      "total_mean_square": 787.4111255032188,
+      "within": 0.9728526546837329
+    },
+    "transcriptome_plate": {
+      "between": 0.015646251802014937,
+      "total_mean_square": 17180.75891945986,
+      "within": 0.9843537481979859
+    }
+  }
+}

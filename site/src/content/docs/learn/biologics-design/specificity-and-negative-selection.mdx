@@ -1,0 +1,48 @@
+---
+title: Specificity and negative selection records
+description: Identify the second measurement a margin requires and audit partner coverage before drawing a claim.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/specificity-and-negative-selection" />
+
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [the independent unit in an affinity table](/learn/biologics-design/affinity-table-independent-unit/), this lesson asks what an observed partner table can support. You will distinguish an intended-partner measurement from an alternative-partner measurement, read the observed coverage counts, and specify the missing record needed for a margin. The [executable lab guide](/labs/specificity-margin-audit/) gives the mode, commands and complete per-protein table. The [canonical English lesson](/learn/biologics-design/specificity-and-negative-selection/) is this page.
+
+## A margin needs two measurements
+
+A margin compares the same declared endpoint for one candidate with an intended partner and an unintended partner. It needs a measured value for each partner under comparable units and conditions, with the endpoint's direction stated before interpretation. One observed pair supplies one side only. Repeated rows for that pair may describe more observations, but they do not become a measurement against another partner. The archive census counts coverage rather than subtracting values, because the pair table alone does not establish such a matched comparison. [Lab guide](/labs/specificity-margin-audit/).
+
+## Negative selection records
+
+A negative selection record would identify the same candidate, the prespecified alternative partner, the measurement endpoint and units, the measurement conditions, and whether a result was obtained or was missing. Its link to the intended-partner record must be explicit. Without the alternative record, the appropriate field is unmeasured. A protein absent from the table remains outside this archive's evidence, regardless of how many rows the archive contains for other proteins. The [upstream source](https://life.bsc.es/pid/skempi2/info/terms) and [mirror card](https://huggingface.co/datasets/LiteFold/SKEMPI2) do not turn a missing partner into a negative observation.
+
+## Worked case
+
+The local reader found 7085 rows, with 2544 rows carrying at least one parsed affinity. Only 2487 of those rows also have both protein labels in the aligned primary value. They describe 102 distinct pairs and 171 distinct protein labels. For the label `Eglin c`, the [audit](/labs/specificity-margin-audit/) counts 14 measurement rows across 3 distinct partners. This establishes that the table contains more than one partner label for that protein. It does not establish a margin, because these counts contain no matched endpoint comparison. By contrast, 154 of the 171 labels have exactly 1 measured partner. For each of those labels, the table supplies no alternative-partner side of a margin. The reader also leaves 57 measured rows without a complete pair of labels unassigned. [Lab guide](/labs/specificity-margin-audit/).
+
+## Independent exercise
+
+The summary reports 9 pairs whose two proteins each have more than 1 observed partner. A note calls all 171 proteins selective because 2487 measured rows are available. Identify the count that invalidates the note and state what record would be needed to evaluate a margin for a one-partner protein. Use the [lab guide](/labs/specificity-margin-audit/) to check the numbers.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Exactly 154 proteins have only 1 measured partner, so their alternative-partner side is absent from this table. The 2487 rows repeat measurements across pairs and cannot fill that absence. A margin would require a linked record for the same candidate against a specified alternative partner, with the same endpoint, units and comparable conditions. Even the 9 coverage-eligible pairs are not proof of a margin. [Lab guide](/labs/specificity-margin-audit/).
+
+</details>
+
+## What this material does not show
+
+This lesson does not estimate a selectivity margin, certify any protein as selective, predict an unmeasured protein, or rank proteins by row count. It does not treat a blank parsed field in the mirror as proof that the upstream source lacks a value. A coverage flag is an invitation to inspect measurement comparability, not a measured contrast. Reader learning has not been observed.
+
+## Sources and attribution
+
+The [upstream SKEMPI terms](https://life.bsc.es/pid/skempi2/info/terms) state CC BY 4.0 for the source data. The [LiteFold mirror card](https://huggingface.co/datasets/LiteFold/SKEMPI2) lists `other`. Both pages were read on 2026-10-23. The [lab guide](/labs/specificity-margin-audit/) explains the local counting procedure and the source boundary. Original lesson text is CC BY 4.0.
+
+Last reviewed: 2026-10-23.

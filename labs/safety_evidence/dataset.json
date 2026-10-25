@@ -1,0 +1,78 @@
+{
+  "schema_version": "aidd-commons.safety-evidence-dataset.v1",
+  "artifact_type": "constructed-safety-record",
+  "authored_on": "2026-09-11",
+  "provenance": "Authored by hand for teaching. No outcome here is a real result, no compound was tested, and nothing is a safety assessment of any substance. The records are shaped like real ones so the distinctions are legible, and they are not data.",
+  "stores": "Findings that someone would have had to run an experiment to obtain. Molecular alerts are never stored, because an alert is computed from the structure and storing one beside a measured outcome is the collapse this lab is about.",
+  "levels": {
+    "molecular-alert": {
+      "obtained_by": "matching a substructure pattern against the structure",
+      "what_it_establishes": "that a pattern is present",
+      "what_it_does_not_establish": "that anything was measured, that the compound is hazardous, or that the pattern is doing anything in this molecule",
+      "computed_here": true
+    },
+    "assay-outcome": {
+      "obtained_by": "running one assay in one system at one concentration",
+      "what_it_establishes": "a readout in that system at that concentration",
+      "what_it_does_not_establish": "behaviour in another system, at another concentration, or in an organism",
+      "computed_here": false
+    },
+    "organ-liability": {
+      "obtained_by": "attributing a pattern of findings to an organ, usually across several assays",
+      "what_it_establishes": "an interpretation of a battery",
+      "what_it_does_not_establish": "a mechanism, a dose at which it occurs, or that it transfers between species",
+      "computed_here": false
+    },
+    "organism-level": {
+      "obtained_by": "observing an intact organism",
+      "what_it_establishes": "what happened to that organism under that exposure",
+      "what_it_does_not_establish": "that the finding generalises to another species or another schedule",
+      "computed_here": false
+    }
+  },
+  "alerts": {
+    "what_they_are": "Named substructure patterns. Each is a pattern, and a pattern match is not a finding.",
+    "patterns": {
+      "nitroaromatic": "[$([NX3](=O)=O),$([NX3+](=O)[O-])][c]",
+      "aromatic-amine": "[NX3;H2,H1;!$(NC=O)][c]",
+      "michael-acceptor": "[CX3]=[CX3][CX3]=[OX1]",
+      "epoxide": "C1OC1",
+      "quinone": "O=C1C=CC(=O)C=C1",
+      "acyl-halide": "[CX3](=O)[F,Cl,Br,I]",
+      "thiol": "[SX2H]"
+    }
+  },
+  "compounds": [
+    { "id": "c01", "smiles": "O=[N+]([O-])c1ccc(C)cc1", "findings": [
+      { "level": "assay-outcome", "system": "bacterial reverse mutation", "outcome": "negative", "concentration_micromolar": 100.0 }
+    ] },
+    { "id": "c02", "smiles": "Nc1ccc(C)cc1", "findings": [
+      { "level": "assay-outcome", "system": "bacterial reverse mutation", "outcome": "positive", "concentration_micromolar": null }
+    ] },
+    { "id": "c03", "smiles": "CC(=O)C=CC", "findings": [] },
+    { "id": "c04", "smiles": "CC1CO1", "findings": [] },
+    { "id": "c05", "smiles": "O=C1C=CC(=O)C=C1", "findings": [] },
+    { "id": "c06", "smiles": "CCCCC(=O)Cl", "findings": [] },
+    { "id": "c07", "smiles": "CCCCS", "findings": [] },
+    { "id": "c08", "smiles": "CC(=O)Oc1ccccc1C(=O)O", "findings": [
+      { "level": "assay-outcome", "system": "cardiac ion channel", "outcome": "positive", "concentration_micromolar": 90.0 },
+      { "level": "assay-outcome", "system": "hepatocyte viability", "outcome": "negative", "concentration_micromolar": 50.0 }
+    ] },
+    { "id": "c09", "smiles": "CC(C)Cc1ccc(C(C)C(=O)O)cc1", "findings": [
+      { "level": "assay-outcome", "system": "hepatocyte viability", "outcome": "positive", "concentration_micromolar": 200.0 },
+      { "level": "organ-liability", "system": "hepatic", "outcome": "flagged", "concentration_micromolar": null }
+    ] },
+    { "id": "c10", "smiles": "CN1C=NC2=C1C(=O)N(C)C(=O)N2C", "findings": [
+      { "level": "assay-outcome", "system": "cardiac ion channel", "outcome": "negative", "concentration_micromolar": 100.0 },
+      { "level": "organism-level", "system": "rodent repeat dose", "outcome": "no adverse effect observed", "concentration_micromolar": null }
+    ] },
+    { "id": "c11", "smiles": "OCc1ccccc1", "findings": [
+      { "level": "assay-outcome", "system": "hepatocyte viability", "outcome": "negative", "concentration_micromolar": null }
+    ] },
+    { "id": "c12", "smiles": "CCOC(=O)c1ccccc1", "findings": [] }
+  ],
+  "exposure": {
+    "declared": false,
+    "why_it_matters": "Every assay outcome above is a readout at a concentration. Whether it is a risk depends on the exposure a dose actually produces, and no exposure is recorded anywhere in this file. Without it, a positive at 200 micromolar and a positive at 1 micromolar read the same on a profile page and mean entirely different things."
+  }
+}

@@ -1,0 +1,44 @@
+id: tool-pxmeter
+name: PXMeter
+kind: software
+summary: Structure-quality assessment toolkit for biomolecular structure predictions that establishes full-atom correspondence between a reference and a model structure, then computes LDDT, DockQ, pocket-aligned ligand RMSD and PoseBusters validity checks through a command line or a Python interface.
+canonical_url: https://github.com/bytedance/PXMeter
+identifiers:
+  - scheme: code
+    value: "PXMeter source repository, bytedance/PXMeter, and the pxmeter package on PyPI"
+    url: https://github.com/bytedance/PXMeter
+stages: [evaluation]
+modalities: [protein-structure, nucleic-acid-structure, small-molecule]
+tasks: [structure-quality-assessment, ligand-pose-quality, stereochemistry-check]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [pxmeter-readme] }
+openness:
+  inference_code: { value: available, evidence: [pxmeter-readme] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: available, evidence: [pxmeter-readme] }
+  data_recipe: { value: available, evidence: [pxmeter-readme] }
+  training_data: { value: available, evidence: [pxmeter-readme] }
+  evaluation_code: { value: available, evidence: [pxmeter-readme] }
+licenses:
+  - name: "Apache-2.0"
+    scope: "The repository README states 'The PXMeter project is made available under the Apache 2.0 License, it is free for both academic research and commercial use.' The scope covers the tool's source. The Chemical Component Dictionary it uses is bundled with Biotite under Biotite's own terms, and the reference structures are RCSB PDB files under the PDB's terms."
+    evidence: [pxmeter-readme]
+evidence:
+  - id: pxmeter-repository
+    url: https://github.com/bytedance/PXMeter
+    label: PXMeter repository (reviewed 2026-10-23)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: pxmeter-readme
+    url: https://raw.githubusercontent.com/bytedance/PXMeter/main/README.md
+    label: PXMeter README (reviewed 2026-10-23)
+    supports: [identifiers, caveats]
+caveats:
+  - "The benchmarking workflow is available only in the source repository and is not shipped with the PyPI package, so a reader who installs the published package gets the metrics but not the benchmark data or the evaluation driver."
+  - "The README names the PXM series datasets, the RecentPDB low-homology dataset and a legacy dataset, and describes the construction of the low-homology set in terms of filtering, homology scans, clustering and subset labelling. It lists no split name, sample count or release manifest in the page that was read."
+  - "The pipeline can rebuild the evaluation dataset from scratch over a chosen time window, which is what makes the benchmark's own dependence on its time window checkable, and the README says so."
+  - "The README names no roster of benchmarked models. AlphaFold3, Protenix and Boltz appear as input formats the preparation utility accepts, not as the set of models evaluated."
+  - "The Chemical Component Dictionary is taken from Biotite's bundle rather than downloaded, and reference structures are RCSB PDB CIF files, so the tool's inputs come from two other projects' terms."
+acknowledgements: []
+last_verified: "2026-10-23"

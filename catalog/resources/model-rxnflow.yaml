@@ -1,0 +1,51 @@
+id: model-rxnflow
+name: RxnFlow
+kind: model
+summary: "RxnFlow is a generative flow network for synthesis-aware drug design that builds a molecule together with a reaction pathway, generating diverse high-reward candidates over a building-block library."
+canonical_url: https://github.com/SeonghwanSeo/RxnFlow
+identifiers:
+  - scheme: paper
+    value: "Generative Flows on Synthetic Pathway for Drug Design; arXiv 2410.04542"
+    url: https://arxiv.org/abs/2410.04542
+stages: [design, hit-discovery, lead-optimization]
+modalities: [small-molecule, reaction, molecular-graph]
+tasks: [molecular-generation]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: not_available, evidence: [readme] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: "repository source code only, with the notice to be retained; no terms are stated for the ZINC, eMolecules or Enamine building blocks the environments draw on"
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/SeonghwanSeo/RxnFlow
+    label: SeonghwanSeo/RxnFlow repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: paper
+    url: https://arxiv.org/abs/2410.04542
+    label: arXiv abstract for the RxnFlow paper (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: readme
+    url: https://raw.githubusercontent.com/SeonghwanSeo/RxnFlow/main/README.md
+    label: RxnFlow README
+    supports: [caveats, acknowledgements]
+  - id: license
+    url: https://raw.githubusercontent.com/SeonghwanSeo/RxnFlow/main/LICENSE
+    label: RxnFlow MIT LICENSE
+    supports: []
+caveats:
+  - The README advertises no downloadable pretrained checkpoint; the sampling example only points at a checkpoint produced by a local training run.
+  - The example library ships 5,000 ZINC building blocks and the README mentions eMolecules and Enamine as alternatives, without stating terms for any of them.
+  - The repository requests citations for both the ICLR 2025 paper and a 2026 bioRxiv preprint, so the two references are not interchangeable.
+acknowledgements:
+  - The README asks users to cite the ICLR 2025 RxnFlow paper and the bioRxiv preprint on synthesis-aware generative design.
+last_verified: "2026-10-21"

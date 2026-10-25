@@ -1,0 +1,149 @@
+---
+title: Open generation assets of 2026
+description: Distinguish a published molecular generator from obtainable code, checkpoints, and training corpora by reading their separate evidence and licence terms.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="molecular-generation/open-generation-assets-2026" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Generative model mechanisms](/learn/molecular-generation/generative-model-mechanisms/)
+and [Choosing generation tools and evaluation tasks](/learn/molecular-generation/generation-resource-guide/),
+identify which model assets a reader can obtain, which terms apply to each
+asset, and what the named training data do not explain. This is a reading
+lesson with a written exercise. It does not run either generator.
+
+## Comparison contract
+
+Zatom-1 and MolCraftDiffusion both address three-dimensional generation, but
+their catalogue records establish different routes to using their assets. A
+published checkpoint listing does not by itself establish access, and a code
+licence does not supply terms for weights or training corpora. Compare what the
+records establish for each asset, then keep the resulting coordinate proposals
+separate from claims about physical plausibility or drug utility.
+
+## Zatom-1
+
+Zatom-1 is a multimodal flow-matching model for three-dimensional molecules
+and materials. It was built to share a pretrained model across generation and
+property-prediction tasks. Its repository publishes inference, training, and
+evaluation code, which a reader can inspect for those operations. A Zenodo
+record supplies the full checkpoint release and generated sample archives.
+The README also gives a script to fetch the named training corpora. These are
+routes to assets, not evidence that the lesson ran a model or reproduced its
+training.
+
+The repository's code uses a modified BSD-3-Clause licence with an added clause
+granting the University a licence to enhancements contributors make available.
+The Zenodo record places the checkpoints and generated samples under CC BY 4.0.
+Redistributing source
+and redistributing a checkpoint therefore involve different grants. The
+training datasets have their own terms, which this record does not establish.
+The README names QM9, MP20, GEOM-Drugs, QMOF150, OMol25, Matbench and MPtrj,
+but gives no filtering, splitting or curation procedure for them. It also
+lists checkpoint variants without choosing one for a downstream use. Neither
+the training recipe nor the physical validity of the archived coordinates is
+established.
+
+## MolCraftDiffusion
+
+MolCraftDiffusion is a modular platform for three-dimensional molecular
+generation in Cartesian space. It brings de novo, property-directed,
+pocket-conditioned and other generation approaches under a shared command
+line, configuration system, data pipeline and checkpoint system. Its repository
+documents inference, training and evaluation code. A reader can inspect those
+interfaces, but the README says the asset catalogue repositories are currently
+private and require a Hugging Face token with permission. It describes archived
+datasets, checkpoints and example configurations without establishing that a
+reader can obtain them.
+
+The README states no licence for the code. Its only licence-bearing line is in
+the article's BibTeX metadata and applies to the article, not the software.
+The record establishes no licence for the weights or datasets either. It names
+no individual chemical dataset or train and validation split, so the corpus
+behind any released checkpoint cannot be identified from the page. The number
+of published checkpoints is also unstated. Available training code does not
+fill those gaps.
+
+## Openness by dimension
+
+The seven columns preserve the catalogue's distinct dimensions. Available
+means the cited record established access or documentation, not that this
+lesson executed the asset. Unverified means the record did not establish that
+dimension. In particular, a data download script can support an available
+data-recipe cell without describing how a training corpus was constructed.
+
+| Resource | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Zatom-1 | available | available | available | available | available | available | available |
+| MolCraftDiffusion | available | available | unverified | available | unverified | unverified | available |
+
+## Worked case
+
+A reader wants to run one of these releases. From the records, what must the
+reader obtain, what licence covers each obtained artefact, and which part of
+the pipeline does that licence address? What remains to check before a claim
+about a trained model or its output is warranted?
+
+For Zatom-1, the source repository supplies code for inference, training and
+evaluation under the modified BSD-3-Clause terms. The reader would select and
+obtain a checkpoint from Zenodo for inference. That checkpoint, and any
+generated sample archive taken from the record, carries CC BY 4.0 rather than
+the code grant. The download script supplies a route to the named corpora, but
+their separate terms and the missing filtering and splitting decisions still
+need checking for a training reproduction. For MolCraftDiffusion, the reader
+can inspect the code and command line, but obtaining the stated checkpoints,
+datasets and runnable configurations requires a token with permission. The
+record establishes no software or asset licence for those steps. The article's
+metadata licence cannot fill that gap. Neither route establishes that a
+generated structure is physically possible or useful as a drug.
+
+## Independent exercise
+
+A colleague sees Zatom-1's available data-recipe cell and MolCraftDiffusion's
+archive references, then says both training corpora are fully documented.
+Using the openness table and the records, identify the unverified dimensions
+for each resource and explain why neither entry supplies a complete training
+recipe.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Zatom-1 has 0 unverified openness dimensions in the table. Its available
+data-recipe entry rests on a download script, while the record gives no
+filtering, splitting or curation procedure for the named corpora.
+MolCraftDiffusion has 3 unverified dimensions, `weights`, `data_recipe` and
+`training_data`. Its archive references do not overcome the stated token
+restriction or identify the corpus behind each checkpoint. Available training
+code in either row does not reconstruct those missing choices.
+
+</details>
+
+## Scope
+
+Neither model was run here and no sample was generated. A generated structure
+is a proposal, and a sample archive is a set of coordinates. The records do
+not establish that those coordinates are physically possible or that any
+compound is a drug. Neither record establishes a training recipe. This lesson
+names Zatom-1's corpora where the record names them without characterising
+their construction, and it leaves MolCraftDiffusion's unnamed corpora unknown.
+The resources retain their own licences, and only the records' readings of
+their scopes are carried here. Reading an openness cell does not execute an
+asset.
+
+## Sources
+
+The catalogue records `model-zatom-1` and `model-molcraftdiffusion` were last
+verified on 2026-10-23. Their access, openness, licence readings and caveats
+define this lesson.
+
+- `model-zatom-1` records the [Zatom-1 repository](https://github.com/Zatom-AI/zatom), [README](https://raw.githubusercontent.com/Zatom-AI/zatom/main/README.md), [licence file](https://github.com/Zatom-AI/zatom/blob/main/LICENSE) and [Zenodo checkpoint and sample record](https://zenodo.org/records/19766997).
+- `model-molcraftdiffusion` records the [MolCraftDiffusion repository](https://github.com/lcmd-epfl/MolCraftDiffusion) and [README](https://raw.githubusercontent.com/lcmd-epfl/MolCraftDiffusion/main/README.md).
+
+Original lesson prose is CC BY 4.0. Linked sources retain their own terms.
+
+Last reviewed: 2026-10-23.

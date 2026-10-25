@@ -1,0 +1,214 @@
+---
+title: 从图像读取结构
+description: 从图像恢复化学结构，并在该结构进入建模表之前，让恢复过程的来源与误差保持可见。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Reading a structure from an image](/learn/data-governance/structure-from-images/)。
+
+译文更新：2026-10-22。
+
+<LessonProgress lessonId="data-governance/structure-from-images" />
+
+<ScrollableRegions />
+
+## 学习目标与前置课
+
+[从测定记录到建模表](/zh-cn/learn/data-governance/records-to-model-table/)已经讲清记录是什么、实体如何对齐、建模表如何组装。本课补的是更早的一步。表中的一个结构，要么由人手工键入，要么由模型从图像读出，二者的证据分量并不相同。
+
+读完本课，你应当能够：
+
+1. 说明光学化学结构识别系统的输入输出契约，并指出注册表必须保留契约中的哪些部分。
+2. 读懂一个已发布产物的七个开放度维度，并说明每个维度不能证明什么。
+3. 按许可实际覆盖的资产来比较两个许可，而不是按它们所属的项目比较。
+4. 解释为什么恢复出的结构是一次带来源、带未测量误差的测量，并说出注册表条目需要哪些字段。
+5. 指出哪些边界使得从图像恢复的结构不能被当作已断言的化学事实使用。
+
+这是一篇带日期的前沿阅读。下文每一条陈述都是 2026-10-21 审阅的项目 Atlas 记录中的观察事实、项目决定、待解问题或未来工作。这一族中的任何产物都没有在本课中运行、复现或重新实现，本课也没有任何准确率数字来自执行这些产物。
+
+## 任务及其输入输出契约
+
+光学化学结构识别把一幅化学结构图读成机器可读的结构。输入是像素，输出是对所画分子的一个假设。
+
+这一族六个产物的输出契约并不一致。三个返回字符串。一个返回字符串、一份 molfile 和逐预测的置信度值。一个返回 MolFile 与字符串。一个是应用程序，在中间经过一次人工编辑步骤后返回字符串。molfile 还带有绘图和二维坐标，因此只保存一列字符串的消费者已经悄悄丢弃了它拿到的几何信息。置信度值让一次预测可被审查，裸字符串则不能。给所有产物同一个字段的注册表，无法说明自己存放的是哪一类东西。
+
+当来源是一整页而不是裁剪好的结构图时，任务还不止一个阶段。DECIMER.ai 那篇论文的标题是用于科学文献中自动化光学化学结构识别与分割的开放平台，DECIMER.ai 的 README 把分割、Transformer 和分类器实现放在各自独立的组件仓库里。于是页面上的一个结构先被定位，再被读取，其中的缩写或标记再被分类。只保存最终字符串的注册表没有记录它是哪一阶段的产物，而不同阶段的失败方式并不相同。
+
+| 产物 | 输入 | 输出 | 记录点名的架构 |
+| --- | --- | --- | --- |
+| [Img2Mol](/atlas/model-img2mol/) | 一幅化学结构图 | 一个 SMILES 字符串 | 记录中没有点名 |
+| [DECIMER Image Transformer](/atlas/model-decimer-image-transformer/) | 一幅化学结构图 | 一个 SMILES 字符串 | EfficientNet-V2 图像编码器加 Transformer 解码器 |
+| [DECIMER.ai](/atlas/tool-decimer-ai/) | 一幅化学结构图像 | 一个 SMILES 字符串，可在应用中编辑 | 记录中没有点名 |
+| [MolScribe](/atlas/model-molscribe/) | 一幅化学结构图像 | 原子与键，以 SMILES、molfile 和置信度值返回 | 图像到图模型 |
+| [MolNexTR](/atlas/model-molnextr/) | 一幅分子图像 | 原子与键，转换为 MolFile 与 SMILES | ConvNext 与 Vision Transformer 编码器 |
+| [SwinOCSR](/atlas/model-swinocsr/) | 一幅化学结构图像 | 一个 SMILES 字符串 | Swin Transformer 主干加 Transformer 解码器 |
+
+表中包含两种模型形态。序列模型读入图像并输出结构记号的字符串。图模型先预测原子与键，再把预测出的图转换成结构。这个差别不是细节。字符串可以解析通过，却仍然描述一个与所画不同的分子，而对字符串的任何校验都无法排除这种情况，因为校验检查的是字符串而不是图像。
+
+## 已发布产物做了什么
+
+[Img2Mol](/atlas/model-img2mol/)提供推理实现、两个示例 notebook 和一个检查点下载脚本。README 把该项目描述为同时服务于训练与推理，而记录指出完整文件树里既没有可运行的训练脚本，也没有评估脚本。仓库改为提供基准集合以及它们的图像到 SMILES 映射。
+
+[DECIMER Image Transformer](/atlas/model-decimer-image-transformer/)把一个 EfficientNet-V2 图像编码器与一个 Transformer 解码器配对，并随附预训练检查点和一个 benchmarking 文件夹。该仓库是 Kohulan/DECIMER-Image_Transformer 的 GitHub 分叉，而它的 CITATION.cff 指向一个名称不同的上游仓库，因此这个分叉与上游项目不是同一件产物。该仓库里还有两个文件指向不同的归档。CITATION.cff 把软件发布记为 DECIMER-V2 版本 2.2.0，对应 Zenodo DOI 10.5281/zenodo.7655952，而 README 的模型卡徽章指向记录 8300489。
+
+[DECIMER.ai](/atlas/tool-decimer-ai/)是交付界面而不是模型本身。它是一个网页应用和一个可自托管的 Docker 服务，带有一个用于纠正已识别结构的内置编辑器和一份 API 参考。应用仓库里没有训练代码，容器依赖固定了 TensorFlow 和 RDKit。README 的 Zenodo 徽章指向标识 486488537，而该标识与 4864885 在 2026-10-21 都没有解析到在线记录，分别返回 404 与 410，因此该项目唯一可解析的软件归档是记录 8139383。
+
+[MolScribe](/atlas/model-molscribe/)预测原子与键，并把结果以 SMILES 字符串、一份 molfile 和置信度值返回，附带训练与评估脚本。[MolNexTR](/atlas/model-molnextr/)用 ConvNext 与 Vision Transformer 编码器预测原子与键，并把预测转换为 MolFile 与 SMILES。
+
+[SwinOCSR](/atlas/model-swinocsr/)用 Swin Transformer 主干加 Transformer 解码器，确实提供推理、训练与评估脚本，其中包括一个图像推理脚本、一个位于交叉熵损失目录下的训练入口、一个评估脚本以及 pycocoevalcap 指标包。记录指出该仓库没有声明任何许可，因此这些脚本供使用的条件并未确立。
+
+记录没有把训练目标写到足以复现的程度。两个检查点文件名带有 char_aux 这样的片段，而没有任何记录说明这些片段指什么，因此本阅读不去解读它们。
+
+## 训练数据与发布的权重
+
+| 产物 | 记录对训练语料的说明 | 发布的权重及其存放处 |
+| --- | --- | --- |
+| [Img2Mol](/atlas/model-img2mol/) | README 没有点名任何训练语料。基准集合带有规模与渲染库的说明，但那份说明覆盖的是评估集合，而不是已发布权重所训练的数据。 | `model.ckpt`，约 2.4 GB，托管在 Google Drive。 |
+| [DECIMER Image Transformer](/atlas/model-decimer-image-transformer/) | 模型卡说明模型训练于用 RanDepict 1.1.3 生成的图像，却不给出语料构成、划分或数据条款。README 提到超过一百万张图像的数据集，却没有点名语料。 | Zenodo 记录 8300489 中的 DECIMER V2 检查点，记录版本 2.4。 |
+| [DECIMER.ai](/atlas/tool-decimer-ai/) | 应用仓库里没有训练代码，记录把训练数据与数据配方标为未验证。 | 未验证。容器固定了 TensorFlow 和 RDKit，而没有打开的页面点名检查点文件、检查点版本或所服务权重的来源。 |
+| [MolScribe](/atlas/model-molscribe/) | README 记录了配方与数据。训练用仓库内置的一份修改过的 Indigo 渲染图像，训练归档 `uspto_mol.zip` 与 `pubchem.zip` 被重新托管在模型仓库上。 | Hugging Face Hub 上的 `swin_base_char_aux_1m.pth` 与 `swin_base_char_aux_1m680k.pth`，记录同时提到 Dropbox。Hub 列表带三个检查点文件，而模型仓库的 README 文件是空的。 |
+| [MolNexTR](/atlas/model-molnextr/) | `train_pubchem.csv` 与 `train_uspto.zip` 位于一个 Hugging Face 数据集仓库，该仓库声明 apache-2.0 且 README 为空，因此派生文件的逐列来源以及上游 PubChem 与 USPTO 的条款都没有记录。 | Zenodo 记录 13304899 中的 `molnextr_best.pth`，版本 1.0.0，同一个检查点也出现在 Hugging Face 仓库上。 |
+| [SwinOCSR](/atlas/model-swinocsr/) | README 点名 DeepSMILES 划分文件，其中包括 `500wan_shuffle_DeepSMILES_train.pkl`，仓库还随附 .rar 数据归档。语料构成、分子来源与数据条款都没有记录。 | Kaggle 上的训练模型，有交叉熵损失版本与 focal loss 版本。记录指出这些页面在 2026-10-21 只渲染出标题。 |
+
+那张表里有两件事比其余内容更重要。第一，两件记录中写明了训练语料的产物，都是以重新托管归档的形式写明的，而不是语料描述，因此两种情况下被渲染进图像的分子的上游条款都没有记录。第二，读者最先会用到的那件应用，其记录根本没有点名任何权重。
+
+## 七个开放度维度
+
+Atlas 为每条资源保留七个互相分开的维度，每个维度都是一条带自己证据的主张。推理代码、训练代码、权重、架构、数据配方、训练数据、评估代码。某个维度标为 available，意思是可以从所引用的页面取得该资产。它不意味着该资产有文档说明、获得了预期用途的许可，或足以复现一个结果。
+
+| 产物 | 推理代码 | 训练代码 | 权重 | 架构 | 数据配方 | 训练数据 | 评估代码 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| [Img2Mol](/atlas/model-img2mol/) | available | not available | available | available | unverified | unverified | not available |
+| [DECIMER Image Transformer](/atlas/model-decimer-image-transformer/) | available | available | available | available | unverified | unverified | available |
+| [DECIMER.ai](/atlas/tool-decimer-ai/) | available | not available | unverified | unverified | unverified | unverified | unverified |
+| [MolScribe](/atlas/model-molscribe/) | available | available | available | available | available | available | available |
+| [MolNexTR](/atlas/model-molnextr/) | available | available | available | available | available | available | available |
+| [SwinOCSR](/atlas/model-swinocsr/) | unverified | unverified | unverified | unverified | unverified | unverified | unverified |
+
+这些取值是 2026-10-21 审阅时的记录主张。有两条记录把每个维度都记为 available。有一条记录把每个维度都记为 unverified，而它的仓库确实提供了推理、训练与评估脚本，因为一个没有许可文件的仓库并不确立可供使用的条件。这一族中从未 available 的维度，是那两个描述权重如何被做出来的维度。
+
+## 许可允许什么
+
+仓库上的许可是对源码的许可。除非记录明说，它对权重、训练归档、基准集合或托管服务都不作任何规定，而六条记录每一条都至少留下一件资产或一种组合未解决。
+
+| 产物 | 源码的许可 | 权重或归档的许可 | 尚未解决的部分 |
+| --- | --- | --- | --- |
+| [Img2Mol](/atlas/model-img2mol/) | Apache-2.0，附录版权行写的是 Bayer AG 的 Machine Learning Research | 训练参数本身适用 CC BY-NC 4.0，即知识共享 署名-非商业性使用 4.0（Creative Commons Attribution-NonCommercial 4.0） | 基准归档以及注明来自早期工作的集合都没有许可声明，非商业限制只出现在 README 里。 |
+| [DECIMER Image Transformer](/atlas/model-decimer-image-transformer/) | MIT，许可文件署名 Kohulan Rajan | Zenodo 记录 8300489 中的检查点适用 CC BY 4.0，即知识共享 署名 4.0（Creative Commons Attribution 4.0） | 没有任何打开过的页面说明这两种许可如何对把检查点载入这份代码的使用者组合生效。README 徽章写的是 License MIT 2.0，而许可文件与 GitHub 许可字段都写 MIT，仓库里并没有名为 MIT 2.0 的许可文件。 |
+| [DECIMER.ai](/atlas/tool-decimer-ai/) | MIT，许可文件署名 Otto Brinkhaus，README 署名 Steinbeck Lab 的 Kohulan | Zenodo 软件归档 8139383 只带 Zenodo 许可标识 other-open，没有附上许可名称或网址 | 托管服务声明保留所有权利且没有给出使用条款，仓库许可也没有说明它覆盖该服务。README 徽章指向的归档已经无法解析。 |
+| [MolScribe](/atlas/model-molscribe/) | MIT，许可文件署名 Yujie Qian | 承载检查点与训练归档的 Hugging Face 模型仓库标为 MIT | README 没有为这些归档背后的 USPTO Grant Red Book 与 PubChem 来源声明任何单独条款，渲染图像的逐列来源没有记录，仓库也没有说明内置那份 Indigo 副本的条款。 |
+| [MolNexTR](/atlas/model-molnextr/) | Apache-2.0，附录版权占位符从未填写 | Zenodo 资产适用 CC BY 4.0，即知识共享 署名 4.0（Creative Commons Attribution 4.0），包括记录 13304899 中的检查点与记录 13857412 中的文章 PDF | Hugging Face 仓库的 README 为空，因此上游 PubChem 与 USPTO 的条款没有记录，Zenodo 检查点记录也没有点名训练数据集。 |
+| [SwinOCSR](/atlas/model-swinocsr/) | 无 | 无 | GitHub 许可字段为 null，文件树里没有许可文件，因此代码、随附的数据归档与训练检查点都没有确立的条款。Kaggle 页面也没有给出使用条款。 |
+
+这三行决定了注册表能发布什么。Img2Mol 的检查点是非商业性的，而其代码是 Apache-2.0，因此对代码的商业使用并不带来对权重的商业使用。DECIMER Image Transformer 的代码与检查点适用不同许可，且没有说明二者如何组合，把检查点载入那份代码的读者因此处在一个未说明的情形里。DECIMER.ai 的软件归档不是自描述的，而读者最先会尝试的托管服务根本没有使用条款。
+
+## 记录能支撑的比较
+
+这一族没有任何一条记录带有匹配比较。每篇论文都是通过 Crossref 元数据确认的，因此那些论文内部的准确率表格不在本阅读所确立的范围内，这些产物也没有在任何记录中被放在同一协议下评分过。给这些方法排名会是一项发明，本课不做这样的排名。
+
+记录确实支持的比较是在开放度上，因为七个维度由同一套 schema 定义，并且是对六件产物从同一类页面读出的。那种比较讲的是读者能取得什么、能再分发什么，而不是哪种方法读结构读得更好。
+
+记录里有两条跨成员的联系，两条都很窄。[MolScribe](/atlas/model-molscribe/)的扰动基准取自 [Img2Mol](/atlas/model-img2mol/)仓库，因此两个成员共用一份评估数据集合。那条关系覆盖的是基准数据的复用，不覆盖 Img2Mol 的权重。[DECIMER.ai](/atlas/tool-decimer-ai/)的记录带有一条指向 [DECIMER Image Transformer](/atlas/model-decimer-image-transformer/) 模型的 used-by 关系，其状态为 unverified，而该应用链接的是上游仓库，而不是模型记录所描述的那个分叉。
+
+## 实体、划分、指标与资源
+
+这一族任务中的实体是一个被画出来的分子，而数据的单元是一张图。同一个化合物可以被画很多次，因此图像的计数不是化合物的计数，按图像做的划分也不是实体不重叠的划分。上一课的规则在这里提前一步适用，而且落在结构列本身上。
+
+记录点名了这些语料与集合。MolScribe 训练归档背后的 USPTO Grant Red Book 与 PubChem。MolNexTR 训练文件背后的 PubChem 与 USPTO。SwinOCSR 仓库里的 DeepSMILES 划分文件。Img2Mol 的基准集合。DECIMER Image Transformer 用 RanDepict 1.1.3 渲染的图像，而记录没有点名其语料。
+
+关于划分，MolScribe 的模型仓库带着 `uspto_mol.zip`、`pubchem.zip`、`real.zip`、`perturb.zip` 和 `synthetic.zip`。记录点名了这些归档，却没有描述它们的内容。SwinOCSR 仓库带着 DeepSMILES 划分文件，其中包括一个训练划分。没有任何记录说明某个划分是如何形成的，或它含有多少分子。
+
+关于指标，没有任何记录说明用哪个指标给恢复出的结构打分，Atlas 也没有为这一族的任何成员保存准确率数字。SwinOCSR 的文件树里有 pycocoevalcap 指标包，Img2Mol 仓库则提供基准集合与它们的图像到 SMILES 映射，以代替评估脚本。因此本课没有数字可报，读者也不该期待从这个材料里得到数字。
+
+资源是 Zenodo 记录 8300489、8139383、13304899 与 13857412，MolScribe 的一个 Hugging Face 模型仓库，MolNexTR 的一个 Hugging Face 数据集仓库，SwinOCSR 的 Kaggle 模型页与数据集页，Img2Mol 的一个 Google Drive 检查点与基准归档，以及 DECIMER.ai 的一个托管网页应用。这些存放处全部是第三方。检查点是否可用是存放处的属性，每条记录都以各自的方式说明了这一点。
+
+## 检查了什么，没有运行什么
+
+为本次阅读打开过的页面如下，全部审阅于 2026-10-21。六件产物的 GitHub 仓库页、README、许可文件、CITATION.cff 与递归仓库文件树，以及 SwinOCSR 的 GitHub 仓库元数据页。Img2Mol 的基准数据说明。Zenodo 记录 8300489、8139383、13304899 与 13857412，以及 8139383 的 Zenodo 记录元数据。MolScribe 的 Hugging Face Hub 模型元数据与 MolNexTR 的 Hub 数据集元数据。SwinOCSR 的 README 所链接的 Kaggle 模型页与数据集页。六篇论文的 Crossref 元数据。DECIMER 托管网页应用的页面。
+
+什么都没有执行。没有下载任何检查点，没有识别任何图像，没有复现任何基准，没有载入任何模型。论文是通过 Crossref 元数据确认的，其全文不作为本课的阅读材料，而对 SwinOCSR，出版方页面跳转到了登录流程，因此那篇文章自己的数据与代码可用性声明仍未被读到。上文每一条陈述都是关于一个被打开过的页面的陈述。
+
+## 一个构造示例
+
+下面的计数是为算术编造的。它们不是对任何方法的测量，也没有任何记录报告过这一族的错误率。
+
+一个文献与专利抽取项目建立一份注册表，收录文献中引用的化学结构。它从文档中抽出 500 张结构图，并以每个图一行的方式存入一张表，表有两列，一列是结构字符串，一列是来源字段。来源字段是空的。
+
+这 500 行的来源对项目而言是已知的。180 行携带的是人从来源文档自己的结构表里键入的结构。320 行携带的是模型从插图里读出的结构。
+
+项目对 320 行图像来源的行做两项检查。其中 27 行返回的字符串通不过化学合理性检查，因为返回的字符串有断开的片段或不可能的价态，这些行被留给人工纠正。剩下的 293 行中有 41 行携带的规范化结构表里已经有了，因为同一个化合物被画了不止一次。
+
+项目现在可以报告 432 个互不相同的结构，也就是 500 行减去 27 行再减去 41 行。它也可以报告这 432 个里有 252 个来自图像。它无法报告这 252 个里有多少就是文档所画的分子，因为流水线没有记录逐行的误差估计，也没有人工复核过它们。
+
+补上三个字段就能改变这张表能支撑什么。第一个是每个结构的来源，它把人工断言与机器测量分开。第二个是每个恢复结构背后的模型与检查点，这正是让该行的误差在原则上可估计、在实践中可追溯的东西。第三个是复核状态，它把人工纠正过的结构与仅仅通过校验的结构分开。
+
+流水线的其余部分并没有缺什么。432 是正确的行数，27 和 41 是正确的排除项，单位也是对的。这张表仍然不是一张装着 432 个已知分子的表，而这两句话之间的差距，恰好就是那三个字段所承载的东西。
+
+## 证据止于何处
+
+为本次阅读所读的材料中，没有任何地方确立这一族的错误率。恢复出的结构可能是与所画不同的分子，而只有错误但合法的结构才能逃过合理性检查。Atlas 没有为这六件产物中的任何一件保存准确率数字，因此读者无法从这些记录估计这一风险。
+
+DECIMER Image Transformer 的训练语料没有记录。模型卡点名了渲染器，没有点名语料、划分或数据条款，因此读者无法判断那些权重是被训练来读哪一类图的。
+
+读者最先会用到的那件应用没有点名任何权重。DECIMER.ai 的容器固定了 TensorFlow 和 RDKit，却没有点名检查点文件、检查点版本，也没有说明所服务权重的来源。
+
+有一件产物根本没有许可。SwinOCSR 提供了脚本、归档与检查点，却没有确立的条款，其 Kaggle 页面在 2026-10-21 只渲染出标题。
+
+许可的适用范围很窄，而且会转移。Img2Mol 的权重是非商业性的，代码却是 Apache-2.0。DECIMER Image Transformer 的代码与检查点适用不同许可，且没有说明二者如何组合。MolScribe 与 MolNexTR 都把训练归档重新托管在一个宽松的许可标签下，而上游 PubChem 与 USPTO 的条款没有记录。
+
+这份材料没有展示什么：
+
+- 它没有展示这些方法中任何一个被运行、复现或重新实现。都没有。
+- 它没有给这六件产物排名。记录没有匹配比较，上面那张开放度表也不是质量判断。
+- 它没有为这一族的任何成员确立准确率、错误率或可靠性数字。
+- 它没有展示 DECIMER.ai 应用或 DECIMER Image Transformer 分叉在任何一张具体图像上会输出什么。
+- 它没有确立模型名称意味着能力。这里每件产物都是用来读取一张图的，记录止步于这次读取所确立的边界。
+- 它没有展示许可陈述是完整的。每条记录都写明了范围，而其中若干范围以未解决的组合收尾。
+- 它没有提供关于这份材料的读者反馈。
+
+## 独立练习
+
+第二份导出有 800 行。其中 240 行携带的是人工键入的结构，560 行携带的是从图像恢复的结构。这 560 行里有 46 行通不过化学合理性检查。剩下的 514 行里有 93 行携带的规范化结构表里已经有了。
+
+1. 两项检查之后剩下多少行，其中多少行是图像来源？
+2. 说出第一张表需要的三个字段，并说明第二张表也需要其中哪几个。
+3. 通过合理性检查的 514 行被报告为已验证的结构。这个说法确立了什么，又留下了什么未决？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+两项检查去掉 46 行，再去掉 93 行，800 行减去 46 行再减去 93 行，剩下 661 行。图像来源的幸存行是 560 减去 46 减去 93，也就是 421 行，人工键入的幸存行是其余的 240 行。
+
+三个字段是结构来源、产生该结构的模型与检查点，以及复核状态。第二张表三个都需要，因为它以相近的比例混合了同样两类行。若一张表里的每个结构都来自人工键入的源表，那么三个字段一个都不需要，而这个差别正是来源字段值得占一列的理由。
+
+这个说法确立的是这 514 个字符串各自都能被解析成一个价态合法的分子。它留下未决的是该分子是否就是所画的那个分子，因为合理性检查检查的是返回的字符串而不是图像。错的环大小或错的键级会产生一个合法分子，任何针对字符串的检查都不会把它排除。报告应当写明这些结构通过了一次有效性检查，而不应称它们为已验证的结构。
+
+</details>
+
+## 来源与归属
+
+<div data-case-sources>
+
+- [Img2Mol 仓库](https://github.com/bayer-science-for-a-better-life/Img2Mol)、[README](https://raw.githubusercontent.com/bayer-science-for-a-better-life/Img2Mol/main/README.md)、[许可文件](https://raw.githubusercontent.com/bayer-science-for-a-better-life/Img2Mol/main/LICENSE)、[文件树](https://api.github.com/repos/bayer-science-for-a-better-life/Img2Mol/git/trees/main?recursive=1)、[基准数据说明](https://raw.githubusercontent.com/bayer-science-for-a-better-life/Img2Mol/main/benchmark_data/README.md)、[Google Drive 上的检查点](https://drive.google.com/file/d/1pk21r4Zzb9ZJkszJwP9SObTlfTaRMMtF/view) 与 [Img2Mol 论文](https://doi.org/10.1039/D1SC01839F)。
+- [DECIMER Image Transformer 仓库](https://github.com/Steinbeck-Lab/DECIMER-Image_Transformer)、[README](https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER-Image_Transformer/master/README.md)、[许可文件](https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER-Image_Transformer/master/LICENSE)、[CITATION.cff](https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER-Image_Transformer/master/CITATION.cff)、[文件树](https://api.github.com/repos/Steinbeck-Lab/DECIMER-Image_Transformer/git/trees/master?recursive=1)、[Zenodo 记录 8300489 中的 DECIMER V2 模型卡](https://zenodo.org/records/8300489) 与 [DECIMER 1.0 论文](https://doi.org/10.1186/s13321-021-00538-8)。
+- [DECIMER.ai 仓库](https://github.com/Steinbeck-Lab/DECIMER.ai)、[README](https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER.ai/main/README.md)、[许可文件](https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER.ai/main/LICENSE)、[文件树](https://api.github.com/repos/Steinbeck-Lab/DECIMER.ai/git/trees/main?recursive=1)、[Zenodo 记录 8139383 中的软件归档](https://zenodo.org/records/8139383)、[记录元数据](https://zenodo.org/api/records/8139383)、[托管应用](https://decimer.ai) 与 [DECIMER.ai 论文](https://doi.org/10.1038/s41467-023-40782-0)。
+- [MolScribe 仓库](https://github.com/thomas0809/MolScribe)、[README](https://raw.githubusercontent.com/thomas0809/MolScribe/main/README.md)、[许可文件](https://raw.githubusercontent.com/thomas0809/MolScribe/main/LICENSE)、[文件树](https://api.github.com/repos/thomas0809/MolScribe/git/trees/main?recursive=1)、[Hugging Face Hub 上的模型仓库](https://huggingface.co/yujieq/MolScribe)、[Hub 元数据](https://huggingface.co/api/models/yujieq/MolScribe) 与 [MolScribe 论文](https://doi.org/10.1021/acs.jcim.2c01480)。
+- [MolNexTR 仓库](https://github.com/CYF2000127/MolNexTR)、[README](https://raw.githubusercontent.com/CYF2000127/MolNexTR/main/README.md)、[许可文件](https://raw.githubusercontent.com/CYF2000127/MolNexTR/main/LICENSE)、[文件树](https://api.github.com/repos/CYF2000127/MolNexTR/git/trees/main?recursive=1)、[Hugging Face Hub 上的数据集仓库](https://huggingface.co/datasets/CYF200127/MolNexTR)、[Hub 元数据](https://huggingface.co/api/datasets/CYF200127/MolNexTR)、[Zenodo 记录 13304899 中的最佳检查点](https://zenodo.org/records/13304899)、[Zenodo 记录 13857412 中的出版归档](https://zenodo.org/records/13857412) 与 [MolNexTR 论文](https://doi.org/10.1186/s13321-024-00926-w)。
+- [SwinOCSR 仓库](https://github.com/suanfaxiaohuo/SwinOCSR)、[README](https://raw.githubusercontent.com/suanfaxiaohuo/SwinOCSR/main/README.md)、[文件树](https://api.github.com/repos/suanfaxiaohuo/SwinOCSR/git/trees/main?recursive=1)、[仓库元数据](https://api.github.com/repos/suanfaxiaohuo/SwinOCSR)、[Kaggle 上的训练模型](https://www.kaggle.com/gogogogo11/moedel)、[Kaggle 上的标注文件](https://www.kaggle.com/gogogogo11/datasetlabel) 与 [SwinOCSR 论文](https://doi.org/10.1186/s13321-022-00624-5)。
+
+</div>
+
+下面每一个链接都是记录在 2026-10-21 审阅时的规范页面。Atlas 中这些产物的条目完整保存了访问级别、许可范围与各项警告，见
+[Img2Mol](/atlas/model-img2mol/)、
+[DECIMER Image Transformer](/atlas/model-decimer-image-transformer/)、
+[DECIMER.ai](/atlas/tool-decimer-ai/)、
+[MolScribe](/atlas/model-molscribe/)、
+[MolNexTR](/atlas/model-molnextr/) 与
+[SwinOCSR](/atlas/model-swinocsr/)。
+
+接下来读[实体消歧、科学来源与使用权限](/zh-cn/learn/data-governance/identity-lineage-and-reuse/)，看一个恢复出的结构如何获得自己的来源谱系，再读[小分子表示](/zh-cn/learn/representations/small-molecule-representations/)，看一个结构进了表之后值多少。
+
+原创课程文字采用 CC BY 4.0，链接的来源保留各自条款。
+最后审阅：2026-10-22。

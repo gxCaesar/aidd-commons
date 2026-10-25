@@ -1,0 +1,84 @@
+---
+title: 核查证据包的主张链
+description: 沿机制、靶点、活性、选择性、暴露、安全性、合成和可复现性核查教学主张之间的链接。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[Audit an evidence-package claim chain](/labs/claim-chain-audit/)。
+
+## 准备与学习目标
+
+本实验对应 `t18-evidence-package-claim-chain`。运行前请阅读[候选药物提名综合练习](/zh-cn/learn/candidate-nomination/capstone-workbook/)。你将依据证据条目解析每个指定链接，区分书面练习与可运行任务，找出最弱链接，并比较项目记录与独立阅读。了解 YAML 会有所帮助，无须训练模型。
+
+## 模式与命令
+
+模式是依据冻结协议和仓库自身已提交的比较记录进行全新独立计算。使用 Python 3.11.15、PyYAML 6.0.3 和 CPU。命令不需要网络、下载或加速器。请在仓库根目录运行。`download`、`show` 和 `check` 不写入文件。导出程序仅在检查通过后覆盖本实验的精简汇总。
+
+```bash
+.venv/bin/python labs/claim_chain_audit/run_lab.py download
+.venv/bin/python labs/claim_chain_audit/inspect_claim_chain_audit.py show
+.venv/bin/python labs/claim_chain_audit/inspect_claim_chain_audit.py check
+.venv/bin/python labs/claim_chain_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/claim_chain_audit -q
+```
+
+## 链与链接
+
+协议固定了 2 条路径，每条包含 8 个链接。每个链接都是分类表中的一个主题。链接状态是按照比较审计的序数规则换算后的项目自评深度。没有可运行依据的 `assessed` 阅读按 `worked` 计。这样的书面练习不能支持测量结论。`executable` 或有可运行依据的 `assessed` 状态只支持在声明输入上执行相应任务。
+
+| 链 | 角色 | 主题 | 自评状态 |
+| --- | --- | --- | --- |
+| `candidate-evidence` | 机制 | `t06-mechanism-hypothesis-counterevidence` | `worked` |
+| `candidate-evidence` | 靶点 | `t06-causal-target-evidence` | `worked` |
+| `candidate-evidence` | 活性 | `t07-endpoint-definition` | `assessed` |
+| `candidate-evidence` | 选择性 | `t13-specificity-negative-selection` | `assessed` |
+| `candidate-evidence` | 暴露 | `t08-exposure-pk-endpoint` | `executable` |
+| `candidate-evidence` | 安全性 | `t08-safety-toxicity-endpoint` | `executable` |
+| `candidate-evidence` | 合成 | `t14-route-feasibility-material-safety` | `worked` |
+| `candidate-evidence` | 可复现性 | `t17-reproduction-reporting-receipt` | `executable` |
+| `decision-handoff` | 机制 | `t06-perturbation-genetic-validation` | `assessed` |
+| `decision-handoff` | 靶点 | `t06-tractability-target-risk` | `worked` |
+| `decision-handoff` | 活性 | `t09-affinity-ranking` | `executable` |
+| `decision-handoff` | 选择性 | `t09-screening-selection-repurposing-transfer` | `executable` |
+| `decision-handoff` | 暴露 | `t08-pkpd-translational-assumption` | `assessed` |
+| `decision-handoff` | 安全性 | `t08-metabolism-ddi-risk` | `executable` |
+| `decision-handoff` | 合成 | `t14-retrosynthetic-disconnection` | `executable` |
+| `decision-handoff` | 可复现性 | `t04-provenance-versioning` | `assessed` |
+
+## 最弱链接
+
+一条链的强度取决于最弱链接。检查程序取换算后深度的最小值，指出达到该深度的第一个主题，并统计同一条链中低于最高状态的链接。当前选取的 16 个链接都有标为 `opened` 的证据。证据列表为空，或其中的条目均不为 `opened` 时，链接成为未解决状态，整条链不能报告为受到支持。
+
+| 链 | 链接数 | 最弱主题 | 最弱状态 | 低于最高状态的链接 | 未解决 |
+| --- | ---: | --- | --- | ---: | ---: |
+| `candidate-evidence` | 8 | `t06-mechanism-hypothesis-counterevidence` | `worked` | 6 | 0 |
+| `decision-handoff` | 8 | `t06-tractability-target-risk` | `worked` | 5 | 0 |
+
+## 独立阅读
+
+项目记录与独立阅读在 9 个链接上一致，在 7 个链接上不同。独立阅读在全部 7 个差异中更深，在 0 个链接上更浅。这些差异涉及记录中的教学深度，不是独立的生物学测量。
+
+| 链 | 主题 | 自评状态 | 独立阅读状态 |
+| --- | --- | --- | --- |
+| `candidate-evidence` | `t08-exposure-pk-endpoint` | `executable` | `assessed` |
+| `candidate-evidence` | `t08-safety-toxicity-endpoint` | `executable` | `assessed` |
+| `candidate-evidence` | `t17-reproduction-reporting-receipt` | `executable` | `assessed` |
+| `decision-handoff` | `t09-affinity-ranking` | `executable` | `assessed` |
+| `decision-handoff` | `t09-screening-selection-repurposing-transfer` | `executable` | `assessed` |
+| `decision-handoff` | `t08-metabolism-ddi-risk` | `executable` | `assessed` |
+| `decision-handoff` | `t14-retrosynthetic-disconnection` | `executable` | `assessed` |
+
+## 独立核查
+
+设想第一条链的副本中，机制主题的证据条目不再标为 `opened`。在对构造的测试记录运行 `check` 前，先预测最弱链接和支持状态。该链接变为 `unresolved`，机制主题成为最弱链接，整条链不能报告为受到支持。对剩余深度取平均值会漏掉这项拒绝规则。
+
+## 材料局限
+
+一条链只表明每个指定链接的材料存在，并说明材料陈述了什么。它不能确立关于化合物、靶点或疗法的主张。链的端点仅限于它指定的主题。所选主题并不描述同一个候选物，项目自评的深度标签也不验证其背后材料在科学上正确。检查通过仅表示这些边界得到执行，并不测量读者学习结果。
+
+## 来源与条款
+
+已提交的项目记录、独立阅读和分类表于 2026-10-23 读取。项目记录的 `last_verified` 为 2026-10-23。独立阅读记录始于 2026-09-11，并记载了后续阅读。命令直接读取这 3 个本地 YAML 文件。原创指南文字采用 CC BY 4.0，实验代码采用 Apache-2.0。链接材料保留各自条款。

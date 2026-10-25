@@ -1,0 +1,51 @@
+---
+title: 数据契约与许可
+description: 在模型开发前让身份、溯源、法律范围和实体对齐可见。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Data contracts and licences](/learn/data-governance/data-contracts/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="data-governance/data-contracts" />
+
+## 基础
+
+数据契约列明生产者、版本、实体、标签、转换、许可使用、划分单位和预期输出。
+[RCSB PDB](https://www.rcsb.org/) 和 [PDBe](https://www.ebi.ac.uk/pdbe/) 等结构来源
+可以识别结构，而 [UniProt](https://www.uniprot.org/) 和
+[InterPro](https://www.ebi.ac.uk/interpro/) 支持蛋白质注释。这些主页观察都不能确定
+全部后续条款。
+
+## 实践工作流
+
+在连接化学、蛋白质、通路和测定表之前选择稳定标识符。保留未匹配实体和排除计数。
+对于反应记录，检查 [Open Reaction Database schema](https://github.com/open-reaction-database/ord-schema)，
+而不是将反应字符串视为完整的溯源记录。
+
+## 评估
+
+针对留出的实体测试连接，并审查各分区内跨分区的重复或近重复记录。一次成功的查询
+并不能确立因果联系、许可兼容性或有效的实验终点。
+
+## 前沿与开放问题
+
+模型卡和数据卡只有在将主张绑定到已发布资产时才有用。困难的问题是，数据配方能否在
+没有隐藏来源数据库、变动 API 或未记录人工整理的情况下重新运行。
+
+## v0.1 尚未教授的内容
+
+本课不提供法律建议或通用本体对齐服务。
+
+## 核心来源路径
+
+阅读 [BioGRID](https://thebiogrid.org/) 数据条目并与
+[ORD schema](https://github.com/open-reaction-database/ord-schema) 比较，然后使用 Atlas
+检查仍为 `unverified` 的字段。
+
+随后可用一条离线命令检查一份真实的冻结契约，包括它排除掉的那些行：
+[先读冻结契约，再看模型](/zh-cn/labs/chembl-contract-inspection/)。
+
+最后审阅：2026-09-04。

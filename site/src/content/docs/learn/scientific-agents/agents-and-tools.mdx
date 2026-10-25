@@ -1,0 +1,56 @@
+---
+title: Scientific agents and tools
+description: Bound language-model and tool-using workflows by their evidence, actions, and review points.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="scientific-agents/agents-and-tools" />
+
+## Foundations
+
+A scientific agent is a workflow that reads evidence, invokes bounded tools,
+and proposes or executes specified actions. Its output must identify the
+source, transformation, tool result, and human or experimental decision that
+would verify it.
+
+## Practical workflow
+
+Define read-only and write-capable tool boundaries, allowed sources, input and
+output schemas, recovery behavior, and a human review gate. Treat generated
+explanations as hypotheses. [ChemCrow](https://github.com/ur-whitelab/chemcrow-public)
+illustrates a chemistry-oriented tool-use implementation, not a general proof
+of scientific reliability.
+
+## Evaluation
+
+Evaluate against a fixed scientific task, exact tool environment, and
+independent unit. Measure source resolution, execution correctness, error
+handling, and whether experimental or expert review agrees with the result.
+Do not score polished prose as if it were a validated scientific conclusion.
+
+## Frontier and open questions
+
+Scientific language models such as
+[BioGPT](https://github.com/microsoft/BioGPT) and domain recipe collections
+such as [BioNeMo](https://github.com/NVIDIA-BioNeMo/bionemo-recipes) create questions
+about provenance, tool authority, action scope, and reproducibility. These
+questions must be evaluated in the workflow that uses them.
+
+## What v0.1 does not yet teach
+
+v0.1 does not authorize autonomous laboratory execution, provide a universal
+agent benchmark, or equate a tool trace with experimental validation.
+
+## Core-source path
+
+Read [ChemCrow](https://github.com/ur-whitelab/chemcrow-public), then inspect its
+tool boundaries against the evidence and action contract required by your
+project.
+
+Continue with [Choosing scientific-agent resources and evaluations](/learn/scientific-agents/agent-resource-guide/)
+to distinguish document question answering from tool orchestration and
+computational-biology evaluation. Its worked case separates answer correctness
+from execution records.
+
+Last reviewed: 2026-09-09 (resource links).

@@ -1,0 +1,56 @@
+id: benchmark-tdc
+name: Therapeutics Data Commons
+kind: benchmark
+summary: Official collection of therapeutic machine-learning tasks, datasets, and benchmarks.
+canonical_url: https://tdcommons.ai/
+identifiers:
+  - scheme: documentation
+    value: "Quick start"
+    url: https://tdcommons.ai/start/
+stages: [property-prediction, hit-discovery, lead-optimization, evaluation]
+modalities: [small-molecule, bioactivity]
+tasks: [benchmark-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [source-repository, source-license, dataset-terms] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: TDC Python codebase only; individual hosted datasets have their own licences, including non-commercial terms, and are not covered by this MIT grant.
+    evidence: [source-license]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://tdcommons.ai/
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [caveats, identifiers]
+  - id: official-page
+    url: https://tdcommons.ai/
+    label: Therapeutics Data Commons official site
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: terms-page
+    url: https://tdcommons.ai/
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+  - id: source-repository
+    url: https://github.com/mims-harvard/TDC
+    label: "Reviewed 2026-10-23: public TDC source and data-loader code; README says dataset terms are specified per dataset"
+    supports: [caveats]
+  - id: source-license
+    url: https://raw.githubusercontent.com/mims-harvard/TDC/main/LICENSE
+    label: "Reviewed 2026-10-23: MIT licence for the TDC codebase"
+    supports: [caveats]
+  - id: dataset-terms
+    url: https://tdcommons.ai/multi_pred_tasks/trialoutcome/
+    label: "Reviewed 2026-10-23: official TrialOutcome page restricts one TDC dataset and its source work to non-commercial use"
+    supports: [caveats]
+caveats:
+  - TDC code is MIT-licensed, while hosted datasets use separate per-dataset terms; the TrialOutcome page expressly limits its data and source work to non-commercial use, so the code grant does not clear the collection for unrestricted reuse.
+acknowledgements: []
+last_verified: "2026-10-23"

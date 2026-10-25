@@ -1,0 +1,406 @@
+---
+title: Three structures, read as evidence
+description: Read what three deposited EGFR crystal structures establish, then see how a binding site, a docking box, an interaction and a pose verdict each follow from a declared choice.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="egfr-structure-evidence" />
+
+## Before you run
+
+**Mode: runnable inspection of committed experimental structures.** Three
+deposited crystal structures of the human EGFR kinase domain are in the
+repository, unmodified apart from decompression. **No structure is prepared,
+protonated, minimised or docked, and no pocket-prediction method is run.** Both
+commands print to the terminal and write no file, so running them cannot
+overwrite anything.
+
+You need Python 3.11 or newer and NumPy, and no network access. From the
+repository root:
+
+```bash
+python labs/egfr_structures/inspect_state.py show
+python labs/egfr_structures/inspect_complex.py show
+```
+
+If you downloaded the files from this page instead, keep `cif.py`, the two
+commands and `entries.json` in one folder and put the three `.cif` files in a
+subfolder named `structures`. Each command runs in about a second.
+
+**What you should be able to do afterwards.**
+
+- Say what a deposited structure file is evidence of, and what its resolution and
+  R-free do not tell you.
+- Compare residues across entries only after mapping them to one reference
+  sequence, and check the mapping.
+- Treat a binding site, a docking box, an interaction and a pose verdict as
+  outputs of declared choices, and name the choice behind each.
+
+**Prerequisites.** [Protein, complex, cell-state and knowledge-graph
+representations](/learn/representations/complex-cell-and-knowledge-graphs/) and
+[pocket states, confidence and reusable structural
+evidence](/learn/structure-and-pockets/pocket-states-and-confidence/). The
+[docking protocol lab](/labs/docking-protocol/) is the companion: it separates the
+seven components a docking score comes out of, and this lab supplies the
+structures such a protocol would start from.
+
+## The three files
+
+| Entry | Ligand | Resolution | Why it is here |
+| --- | --- | --- | --- |
+| 1M17 | erlotinib | 2.60 A | The reference frame for every superposition |
+| 4HJO | erlotinib | 2.75 A | The same ligand in a kinase domain its depositors call inactive |
+| 1XKK | lapatinib | 2.40 A | A different quinazoline inhibitor with a larger substituent |
+
+They were downloaded on 2026-09-11 from the RCSB PDB file service. PDB archive
+data files are released under CC0 1.0. wwPDB asks that the original authors be
+credited, so both commands print each entry's primary citation. The manifest
+`entries.json` records each source address, byte size, PDB entry identifier,
+deposition date and latest deposited revision. Both checks validate these fields
+before reporting a verdict. They do not certify byte-for-byte identity.
+
+## Part A. What the files say, and how a site is defined
+
+### 1. A file is a model of an experiment
+
+```text
+1M17  X-RAY DIFFRACTION, 2.60 A, R-work 0.251, R-free 0.295 (gap 0.044)
+4HJO  X-RAY DIFFRACTION, 2.75 A, R-work 0.230, R-free 0.253 (gap 0.023)
+1XKK  X-RAY DIFFRACTION, 2.40 A, R-work 0.209, R-free 0.255 (gap 0.046)
+```
+
+A crystal structure is an atomic model refined against diffraction data.
+Resolution is the finest spacing in the data that were used. R-work measures how
+well the model reproduces the reflections it was refined against, and R-free does
+the same on a small set of reflections withheld from refinement. **R-free is the
+crystallographer's validation set**, and a large gap between the two is the same
+warning as a large gap between training and validation error.
+
+All three numbers describe the whole model. None of them says how well one atom,
+one residue or one ligand is determined.
+
+### 2. What was crystallised, and how it is numbered
+
+```text
+1M17  P00533 695-1022 aligned; author number + 24 = reference number
+      hinge methionine: author 769, reference 793
+4HJO  P00533 696-1022 aligned; author number + 24 = reference number
+      hinge methionine: author 769, reference 793
+      substitutions: VAL948ARG (engineered mutation)
+1XKK  P00533 695-1022 aligned; author number +  0 = reference number
+      hinge methionine: author 793, reference 793
+```
+
+**The same methionine is residue 769 in two files and 793 in the third.** The
+offset of 24 is the length of the signal peptide, which older numbering leaves
+out. The best-known resistance mutation in this kinase, T790M, appears as T766M
+in that convention. Comparing residues by the number printed in the file would
+therefore compare different residues.
+
+The command maps every residue to the UniProt reference sequence P00533 through
+the file's own alignment record, and the check confirms that five landmark
+positions hold the expected residue after mapping: Lys745, Glu762, Thr790, Met793
+and Asp855.
+
+The file also records what was actually crystallised. 4HJO carries one engineered
+substitution, V948R. **The file records that the substitution was engineered but
+not why**, and the reason belongs to its primary citation, not to this lab. Each
+construct also lacks residues the model does not contain: 16 in 1M17, 49 in
+4HJO and 39 in 1XKK, including the whole C-terminal stretch 985 to 1022 in 4HJO.
+A missing loop is a region the data did not determine, not a region that is
+absent from the protein.
+
+### 3. One state descriptor, and who assigned the label
+
+```text
+1M17  Lys745 NZ to Glu762 CD: 3.71 A
+4HJO  Lys745 NZ to Glu762 CD: 14.41 A
+1XKK  Lys745 NZ to Glu762 CD: 13.73 A
+```
+
+In an active kinase the catalytic lysine pairs with a glutamate on the C-helix.
+When that helix swings out, the two separate. The glutamate's CD atom stands in
+for its carboxylate so the number does not depend on which oxygen happens to be
+closer.
+
+The distance is computed here. **The word "inactive" in the 4HJO title is the
+depositors' label.** One distance agrees with that label, and it is not a state
+assignment on its own: a full assignment also reads the activation loop and the
+conformation of the DFG motif, which this lab does not.
+
+### 4. How well the ligand is determined, relative to its protein
+
+```text
+1M17  erlotinib (AQ4), 29 heavy atoms: mean B 72.8 against protein 63.0; waters modelled 20
+4HJO  erlotinib (AQ4), 29 heavy atoms: mean B 47.5 against protein 47.2; waters modelled 34
+1XKK  lapatinib (FMM), 40 heavy atoms: mean B 41.8 against protein 42.5; waters modelled 77
+```
+
+A B-factor describes how smeared an atom's position is in the model. In 1M17 the
+ligand is less well defined than the protein around it, in the other two it is
+not. No file models a hydrogen atom, so **protonation is not in the evidence at
+all**. Section 7 shows what that costs.
+
+### 5. The site is a definition
+
+| Entry | Residues within 4 A | within 5 A | within 6 A |
+| --- | --- | --- | --- |
+| 1M17 | 15 | 20 | 25 |
+| 4HJO | 17 | 20 | 26 |
+| 1XKK | 23 | 28 | 37 |
+
+"The binding site" is the set of residues within a chosen distance of a chosen
+ligand. **Every site grows at every step of the cutoff**, so its size is a
+property of the cutoff as much as of the protein.
+
+At 4 A the two erlotinib sites share a Jaccard index of 0.78, and Glu762 is in
+the 1M17 site but not in the 4HJO site: the same ligand, a different receptor
+state, a different site. The lapatinib site contains eight residues that neither
+erlotinib site reaches, 766, 775, 776, 777, 799, 803, 856 and 858.
+
+All three ligands sit in the ATP site. No file carries a ligand anywhere else, so
+**these entries cannot define an allosteric or transient pocket**, and no
+pocket-prediction method was run to suggest one.
+
+### 6. A docking box inherits its ligand and its frame
+
+```text
+4HJO onto 1M17: site C-alpha RMSD 57.78 A before, 1.45 A after superposition (20 residues)
+1XKK onto 1M17: site C-alpha RMSD 40.60 A before, 1.21 A after superposition (20 residues)
+4HJO  box volume at 0 A padding: 883 A^3 in its own frame, 393 A^3 in the 1M17 frame
+1XKK ligand atoms inside the 1M17 erlotinib box: 21/40 at 0 A, 32/40 at 2 A, 36/40 at 4 A, 37/40 at 5 A
+```
+
+Each deposited file sits in its own coordinate frame, which is why the site
+C-alpha atoms are tens of angstroms apart before superposition. Most docking
+programs take an axis-aligned search box in the frame of the receptor file. **The
+same pose gives a box of a different volume in another frame**, because the box
+edges follow the axes rather than the molecule.
+
+A box drawn around erlotinib and padded by 5 A still leaves 3 of the 40
+lapatinib atoms outside. A search box is a hypothesis about where a ligand can go,
+and it inherits the ligand it was drawn around.
+
+## Part B. Contacts, interactions and poses
+
+### 7. A contact is geometry; an interaction adds an assumption
+
+```bash
+python labs/egfr_structures/inspect_complex.py show
+```
+
+```text
+1M17  4 polar pairs, 2 donor-acceptor compatible
+      N2   acceptor   MET793 N    donor     2.70 A  could be a hydrogen bond
+      O4   acceptor   PRO794 O    acceptor  3.21 A  not a hydrogen bond under these roles
+      O4   acceptor   GLY796 N    donor     3.24 A  could be a hydrogen bond
+      O2   acceptor   LEU718 O    acceptor  3.27 A  not a hydrogen bond under these roles
+```
+
+A **contact** is two atoms closer than a cutoff, here 3.5 A between nitrogen and
+oxygen atoms. A **hydrogen bond** additionally needs one partner to carry a
+hydrogen and the other to accept it. No file models a hydrogen, so the roles are
+declared in the manifest: quinazoline ring nitrogens as acceptors, the anilino
+nitrogen as a donor, ether oxygens as acceptors, and the protein under a neutral
+pH assumption. The check verifies every declared ligand role against the ligand's
+own bonding before it reports any verdict.
+
+Two of the four 1M17 pairs pair two acceptors and cannot be hydrogen bonds under
+these roles, however short they are. The one pair every complex shares is the
+ring nitrogen facing the backbone NH of Met793, the hinge contact. **If that ring
+nitrogen were protonated it could no longer accept, and the same 2.70 A pair
+would stop being a possible hydrogen bond without any atom moving.** The test
+suite contains exactly that edit.
+
+### 8. Water-mediated contacts depend on which waters were modelled
+
+```text
+1M17  20 waters modelled; bridges: N3 - water - THR790 OG1
+4HJO  34 waters modelled; bridges: N3 - water - THR790 OG1; N3 - water - THR854 OG1
+1XKK  77 waters modelled; bridges: N20 - water - THR854 OG1
+```
+
+Every complex has at least one bridge through a water, including one to the
+gatekeeper Thr790. The number of modelled waters follows resolution and refinement
+choices, so **a representation that keeps waters inherits those choices, and one
+that drops them loses a real contact.**
+
+### 9. A fingerprint belongs to a complex, not to a ligand
+
+```text
+1M17 vs 4HJO (same ligand): Tanimoto 0.650, 0.667 without water bits
+1M17 vs 1XKK (different ligands): Tanimoto 0.458, 0.500 without water bits
+4HJO vs 1XKK (different ligands): Tanimoto 0.583, 0.591 without water bits
+```
+
+Each complex becomes a set of residue-interaction bits: polar, carbon-carbon
+within 4 A, and water-mediated. The same ligand in two receptor states shares only
+65 percent of its bits. Two different ligands in the two C-helix-out states, 4HJO
+and 1XKK, share more bits (0.583) than erlotinib in the reference state shares
+with lapatinib (0.458). **An interaction fingerprint encodes the receptor state as
+much as the ligand.**
+
+### 10. Two experimental poses of one ligand
+
+```text
+erlotinib, 29 atoms matched by name: RMSD 1.65 A; quinazoline core 0.80 A; everything else 1.96 A
+largest single displacement 3.55 A at C14
+1M17 mean B: core 53.6, rest 82.9
+```
+
+After superposing the two receptors on 20 site C-alpha atoms, the two erlotinib
+poses differ by 1.65 A. Under the common 2 A convention they are one pose. The
+core agrees to 0.80 A while one atom of a side chain moves 3.55 A, and in 1M17 the
+side chains are also the least determined part of the ligand. **A single RMSD
+averages a well-placed core with a loosely placed periphery.**
+
+### 11. One pose, three receptor states
+
+```text
+ligand from \ receptor             1M17            4HJO            1XKK
+1M17 erlotinib       0 (2.70 A)      0 (2.86 A)      0 (2.44 A)
+4HJO erlotinib       1 (1.97 A)      0 (2.89 A)      3 (0.71 A)
+1XKK lapatinib       6 (1.21 A)      0 (2.60 A)      0 (2.96 A)
+```
+
+Each cell places one ligand rigidly into one receptor after superposition and
+counts heavy atoms closer than 2.2 A to a protein heavy atom, with the closest
+distance in brackets. Every ligand fits its own receptor. **Lapatinib clashes with
+six atoms in the reference receptor and with none in the 4HJO state.** With side
+chains held fixed, one receptor conformation rejects a ligand that binds another
+conformation of the same protein. A clash says the pose does not fit that
+receptor state. It does not say the ligand cannot bind the protein.
+
+### 12. Three ways to judge a pose, and where they disagree
+
+```text
+crystal pose
+    RMSD 0.00 A (passes), hinge 2.70 A (kept), clashing atoms 0
+constructed: translated 1.5 A away from the hinge
+    RMSD 1.50 A (passes), hinge 4.20 A (lost), clashing atoms 0
+constructed: rotated 20 degrees about the hinge contact
+    RMSD 1.61 A (passes), hinge 2.70 A (kept), clashing atoms 4
+```
+
+The two constructed poses are **not predictions**. They are declared rigid motions
+of the 1M17 crystal pose, made to show that three common criteria answer three
+different questions. RMSD asks how far the atoms moved, the hinge criterion asks
+whether one key contact survived, and the clash count asks whether the pose fits
+the receptor. **Both constructed poses pass a 2 A RMSD convention**, one having
+lost the hinge contact and the other clashing with four atoms. A benchmark that
+reports only an RMSD success rate would count both as correct.
+
+```bash
+python labs/egfr_structures/inspect_state.py check
+python labs/egfr_structures/inspect_complex.py check
+```
+
+Sixteen state checks and fifteen complex checks recompute every relationship
+above. A missing or nonregular file, byte-size mismatch, wrong entry identifier
+or mismatched deposition or revision stops both commands before any verdict.
+
+## Independent exercise 1. Move one declared cutoff
+
+**Mode: editable student exercise, in a fresh folder.** Copy the lab so the
+committed manifest is never edited:
+
+```bash
+cp -R labs/egfr_structures ~/egfr-exercise
+```
+
+In `~/egfr-exercise/entries.json`, change `clash_angstrom` from `2.2` to `3.0`.
+Before running anything, predict which of the nine cells in the section 11 table
+stop being zero, and whether any check will fail. Then run:
+
+```bash
+python ~/egfr-exercise/inspect_complex.py show
+python ~/egfr-exercise/inspect_complex.py check
+```
+
+<details data-worked-answer>
+<summary>Worked answer, with the output this change produces</summary>
+
+Every cell becomes nonzero, including the three diagonal cells where each ligand
+sits in its own receptor:
+
+```text
+ligand from \ receptor             1M17            4HJO            1XKK
+1M17 erlotinib       1 (2.70 A)      2 (2.86 A)      4 (2.44 A)
+4HJO erlotinib       5 (1.97 A)      2 (2.89 A)      8 (0.71 A)
+1XKK lapatinib      12 (1.21 A)      7 (2.60 A)      1 (2.96 A)
+```
+
+Two checks fail: "every ligand fits its own receptor without a clash" and "the
+crystal pose passes all three criteria in its own receptor".
+
+The reason is in the 1M17 diagonal cell. Its closest contact is 2.70 A, and that
+contact is the hinge hydrogen bond from section 7. **A 3.0 A cutoff counts the
+crystal structure's own hydrogen bond as a clash.** Donor and acceptor atoms in a
+hydrogen bond sit closer than the sum of their van der Waals radii, so a clash
+cutoff has to sit below the closest legitimate contacts. The check that the
+crystal pose fits its own receptor exists to catch this choice, and it did.
+
+The largest cell is also instructive. It is still the lapatinib pose in 1M17, so
+the most visible result looks the same while every count underneath it changed.
+A wrong cutoff can leave the headline looking plausible.
+
+</details>
+
+## Independent exercise 2. A screening plan built on one structure
+
+A colleague plans to dock a library of 4-anilinoquinazolines into 1M17, using an
+axis-aligned box drawn around erlotinib and padded by 4 A, and to rank the library
+by score. Using only what the two commands print, give three reasons the ranking
+could reflect the setup rather than the compounds, and one change that addresses
+each.
+
+<details data-worked-answer>
+<summary>Worked answer — receptor state, box, and the pose check</summary>
+
+**The receptor state.** Section 11 shows the lapatinib pose clashing with six
+atoms in 1M17 and with none in 4HJO. A rigid 1M17 receptor will penalise any
+compound that binds the C-helix-out state, whatever its affinity. Dock into more
+than one receptor state, for example 1M17 and 4HJO, and report scores per state
+rather than one pooled ranking.
+
+**The box.** Section 6 shows 4 of the 40 lapatinib atoms outside the erlotinib
+box at 4 A of padding, and the box volume depends on the frame. Larger
+substituents will be truncated or forced into odd poses. Define the box from the
+site residues or from the union of known ligands, report its frame, and check how
+much of a reference ligand it encloses.
+
+**The pose check.** Section 12 shows two poses that pass a 2 A RMSD convention
+while losing the hinge contact or clashing. If the protocol is validated only by
+redocking erlotinib and reporting RMSD, it can pass validation with poses that
+are chemically wrong. Validate with RMSD, the hinge contact and a clash count
+together.
+
+A fourth reason is also defensible. Protonation of the ring nitrogen and the
+handling of waters change which interactions a scoring function can reward
+(sections 7 and 8), so both should be declared in the protocol, as in the
+[docking protocol lab](/labs/docking-protocol/).
+
+</details>
+
+## What this does not do
+
+It prepares no structure, protonates nothing, minimises nothing and docks nothing.
+Three structures of one protein cannot establish an allosteric or transient
+pocket, because every ligand here is in the ATP site. The distance in section 3
+agrees with a label and does not assign a conformational state. A rigid placement
+cannot say whether a ligand binds, only whether it fits one receptor conformation
+with side chains fixed. **None of the numbers on this page is a binding affinity.**
+
+For the surrounding argument see [structure, affinity and mechanism
+hypotheses](/learn/structure-and-pockets/structure-affinity-mechanisms/),
+[screening prevalence, affinity scales and
+transfer](/learn/dti-screening/screening-prevalence-and-transfer/) and the
+[co-folding claim separation lab](/labs/cofolding-claim-separation/).
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. The three
+structure files are CC0 1.0 and belong to their depositors. Last reviewed:
+2026-09-11.

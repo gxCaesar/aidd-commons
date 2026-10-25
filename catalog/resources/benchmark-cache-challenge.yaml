@@ -1,0 +1,40 @@
+id: benchmark-cache-challenge
+name: CACHE Challenge
+kind: benchmark
+summary: Challenge in which participants propose compounds for predefined disease-associated protein targets, the organisers procure and test them experimentally, and the winners are decided on the prospective phase rather than on the retrospective one.
+canonical_url: https://cache-challenge.org/
+identifiers:
+  - scheme: website
+    value: "the CACHE Challenge site, which states the licence and the round's dates"
+    url: https://cache-challenge.org/
+stages: [evaluation, hit-discovery]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [virtual-screening, prospective-validation]
+relations: []
+status: { value: active, evidence: [site] }
+access_level: { value: open_source, evidence: [site] }
+openness:
+  inference_code: { value: not_applicable, evidence: [site] }
+  training_code: { value: not_applicable, evidence: [site] }
+  weights: { value: not_applicable, evidence: [site] }
+  architecture: { value: not_applicable, evidence: [site] }
+  data_recipe: { value: available, evidence: [site] }
+  training_data: { value: unverified }
+  evaluation_code: { value: not_applicable, evidence: [site] }
+licenses:
+  - name: CC BY 4.0
+    scope: "The licence the site states for itself, and the terms it states for the released data: after the prediction and testing rounds all data, including chemical structures, are made publicly available without restrictions on use. The grant does not extend to the participation terms, which the site links separately and which the record did not read."
+    evidence: [site]
+evidence:
+  - id: site
+    url: https://cache-challenge.org/
+    label: The CACHE Challenge site, read on 2026-10-24, which states the two phases of the round, the dates, the cost arrangement, the licence and the data-sharing statement
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+caveats:
+  - "The round the site displays is the DREAM x CACHE Target 2035 Challenge, a DEL-ML challenge targeting PGK2, with a first retrospective submission deadline of 15 September and a last date to apply of 30 September 2026. The site states that the year is carried by the surrounding dates rather than in the deadline sentence itself."
+  - "The round has two phases. In the retrospective phase participants retrieve hits from an affinity selection mass spectrometry screen of 400,000 compounds, seeking the most diverse set of hidden hits; the top ten are then invited to predict novel hits prospectively from the Enamine catalogue, which the organisers procure and test experimentally at their own cost. The winners are decided on the number of novel chemical series identified in the prospective phase, with the total hit count as a secondary consideration."
+  - "This is the design that separates it from a retrospective benchmark: the number a participant is judged on is produced by an experiment that happens after the prediction. The record did not submit a prediction and did not see the experimental results."
+  - "Participation is through the Synapse platform and the site links a Terms of Participation document that the record did not read, so the record carries the site's own statements about the retrospective phase being free and about the data-sharing commitment, and not the participation terms."
+  - "The site's own statement that all data and results will be shared openly and publicly is a commitment about the round's outcome rather than a record of released data, and the record found no released dataset to point at."
+acknowledgements: []
+last_verified: "2026-10-24"

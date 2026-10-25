@@ -1,0 +1,56 @@
+{
+  "schema_version": "aidd-commons.az-clearance-system-protocol.v1",
+  "protocol_id": "chembl37-az-clearance-system-v1",
+  "issued_on": "2026-09-12",
+  "declared_question": "For real compounds with a measured intrinsic clearance in more than one of three real assay systems, how much does the value depend on which species and which matrix produced it, and what does a bare claim of 'this compound's clearance' risk collapsing when it does not name the system?",
+  "relation_to_sibling_protocols": "This reuses the parent-structure and duplicate-median admission discipline already established by labs/chembl_egfr/protocol.json and labs/cyp_assay_system/protocol.json, adapted to a real difference in this endpoint: intrinsic clearance (CL) here reports an exact value with an empty standard_relation field, and uses '<' or '>' only for a reading outside the assay's quantifiable range. The admission rule therefore requires standard_relation to be absent, not '='.",
+  "source": {
+    "database": "ChEMBL_37",
+    "release_date": "2026-05-01",
+    "status_url": "https://www.ebi.ac.uk/chembl/api/data/status.json",
+    "document_chembl_id": "CHEMBL3301361",
+    "document_title": "Experimental in vitro DMPK and physicochemical data on a set of publicly disclosed compounds",
+    "document_doi": "10.6019/CHEMBL3301361",
+    "document_type": "DATASET",
+    "document_authors": "Mark Wenlock and Nicholas Tomkinson (AstraZeneca)",
+    "why_this_source": "Deposited directly into ChEMBL by AstraZeneca as a formal dataset record (doc_type DATASET), not a proxy for a paywalled journal article. Three other candidate PK-exposure datasets (Obach 2008 half-life, Lombardo and Jing 2016 volume of distribution, Ma et al. 2008 oral bioavailability) were checked on 2026-09-12 and rejected: all three are ordinary closed-access subscription articles with no independently verifiable open licence, despite a third-party aggregator tagging every dataset in its catalog alike as CC BY 4.0. See docs/ROADMAP_V0.2.md."
+  },
+  "systems": {
+    "CHEMBL3301370": { "name": "Human liver microsomes", "species": "human", "matrix": "microsome" },
+    "CHEMBL3301371": { "name": "Rat hepatocytes", "species": "rat", "matrix": "hepatocyte" },
+    "CHEMBL3301372": { "name": "Human hepatocytes", "species": "human", "matrix": "hepatocyte" }
+  },
+  "entity": {
+    "unit": "ChEMBL parent molecule",
+    "child_parent_rule": "molecule_chembl_id must equal parent_molecule_chembl_id",
+    "structure": "RDKit canonical isomeric SMILES from the ChEMBL parent record"
+  },
+  "label_contract": {
+    "endpoint": "CL (intrinsic clearance)",
+    "target": "standard_value in the assay's own reported unit",
+    "parent_aggregation": "median across every admitted activity for that parent under that assay",
+    "filters": {
+      "standard_type": "CL",
+      "standard_relation": null,
+      "standard_flag": 1,
+      "potential_duplicate": 0,
+      "data_validity_comment": null
+    },
+    "value_consistency_tolerance": 1e-6,
+    "value_consistency_check": "the reported standard_value must agree with the raw value field to this tolerance"
+  },
+  "overlap_contract": {
+    "definition": "A parent admitted under both of a pair's two assays. A 'clean single pair' additionally requires exactly one admitted activity per assay for that parent, so its two clearance values are not medians over repeated measurements. All three assays share one ChEMBL document, so there is no separate 'shares a document' condition here.",
+    "pairs": [
+      { "primary": "CHEMBL3301372", "secondary": "CHEMBL3301371", "varies": "species (human vs. rat), matrix fixed at hepatocyte" },
+      { "primary": "CHEMBL3301370", "secondary": "CHEMBL3301372", "varies": "matrix (microsome vs. hepatocyte), species fixed at human" },
+      { "primary": "CHEMBL3301370", "secondary": "CHEMBL3301371", "varies": "species and matrix both differ" }
+    ],
+    "correlation": "Pearson r and Spearman rho, computed once over the full overlap and once over the clean single-pair subset only, as a robustness check of each other, for each of the three pairs. No fitted model of any kind is used anywhere in this protocol."
+  },
+  "excluded_by_design": [
+    "absorption, distribution (volume of distribution) and oral bioavailability: this protocol reads only in vitro intrinsic-clearance records, one of several measures its taxonomy topic names",
+    "any causal or clinical claim: an in vitro intrinsic-clearance difference between two assay systems is not a prospective human-dose or drug-interaction statement",
+    "any correction for cross-study heterogeneity: all records here come from one document, so cross-document heterogeneity does not apply, but within-assay measurement noise is not modelled beyond the reported duplicate range"
+  ]
+}

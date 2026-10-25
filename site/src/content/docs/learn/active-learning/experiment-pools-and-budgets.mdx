@@ -1,0 +1,206 @@
+---
+title: Experiment pools, budgets, and feasibility
+description: Separate candidate eligibility, label access, diversity selection, and budgeted recovery using synthetic arithmetic and a completed assay replay.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import PoolBudgetPanel from "../../../../components/PoolBudgetPanel.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="active-learning/experiment-pools-and-budgets" />
+
+<ScrollableRegions />
+
+## Learning objectives
+
+After this lesson, you should be able to define an acquisition pool without
+using its outcomes, compare policies at identical integer budgets, calculate
+top-decile recovery and its area under the curve, and explain why a retrospective
+ranking exercise does not demonstrate experimental feasibility.
+
+Prerequisite: [Design-make-test-analyze loops](/learn/active-learning/dmta-loops/).
+The [representation lesson](/learn/representations/small-molecule-representations/)
+provides the chemical-identity background. This lesson separates executable
+**synthetic teaching arithmetic** from a completed retrospective ChEMBL replay.
+
+## 1. Define three sets before looking at outcomes
+
+Let L₀ contain initially labelled molecules, U₀ the eligible acquisition pool,
+and E the separate evaluation reserve. Require pairwise disjoint identities.
+For a scaffold-disjoint question, require disjoint scaffold groups as well.
+At round t, a policy selects a batch Bₜ from Uₜ. After observing its outcomes,
+Lₜ₊₁ = Lₜ ∪ Bₜ and Uₜ₊₁ = Uₜ ∖ Bₜ. E never enters either selection or fitting.
+
+The unit here is the standardised parent molecule, not an assay-record row.
+Repeated measurements cannot become separate opportunities to acquire the same
+compound. Establish identity, eligibility, endpoint direction, missing-value
+handling, and replication rules before comparing policies. A retrospective
+pool containing only successfully measured compounds is conditional on that
+historical success; it cannot estimate how many future experiments will fail.
+
+The synthetic example targets 10% initial, 70% pool, and 20% reserve. It sorts
+whole scaffold groups by decreasing size, then key, and assigns each to the
+partition with greatest remaining target capacity. Capacity ties use initial,
+pool, reserve order. Whole groups can prevent exact fractions; report actual
+counts. Acyclic molecules use their canonical structures as singleton keys.
+This convention prevents one enormous empty-scaffold group but does not make
+similar acyclic molecules chemically independent.
+
+## 2. Integer budgets change the experiment
+
+Set q = floor(0.05 × |U₀|) and acquire q new molecules per round for four rounds.
+The checkpoints are 0, q, 2q, 3q, 4q. Always use the original pool size. Applying
+5% to the shrinking pool silently reduces later batches. Rounding the combined
+20% budget instead produces a different experiment.
+
+For |U₀| = 631, q = 31 and four batches acquire 124 molecules, not 126.
+The initial labels are an additional sunk cost shared by both policies. They
+are excluded from the horizontal axis below, so this is **incremental** recovery
+versus labels acquired, not recovery per total project cost.
+
+<PoolBudgetPanel />
+
+The numerical control changes only the budget arithmetic. The displayed curves
+are the checked-in output of the 42-candidate synthetic pool and do not change
+when the control changes.
+
+## 3. Compare two policies with the same information boundary
+
+The random baseline samples a permutation of U₀ without replacement, using
+seeds 0–4. Each round consumes the next q entries. Preserve every seed, including
+ones that recover no top-decile molecules.
+
+The diversity baseline uses binary Morgan fingerprints: radius 2, 2,048 bits,
+with chirality enabled. For bit sets A and B, Tanimoto similarity is
+|A ∩ B| / |A ∪ B| and distance is one minus similarity. Two empty fingerprints
+have distance zero in this implementation.
+
+At each pick, MaxMin chooses the candidate whose smallest distance to the
+initial molecules and all previously selected molecules is largest. Equal
+distances are resolved by the smaller original row index. It updates the
+reference set after each pick, including within a batch. No label is an input
+to the selector. The [RDKit diversity-picker documentation](https://www.rdkit.org/docs/source/rdkit.SimDivFilters.rdSimDivPickers.html)
+provides MaxMin APIs; this lab implements a small explicit greedy loop so its
+tie rule is visible and testable.
+
+MaxMin is a diversity baseline, not a calibrated uncertainty policy or Bayesian
+optimization. Its selections never use a fitted surrogate. The separate real
+replay fits a fixed Ridge predictor for evaluation only, not acquisition. By contrast,
+[BoTorch's getting-started example](https://botorch.org/) demonstrates
+model-based acquisition functions. A future uncertainty policy would need a
+specified surrogate, train-only fit, acquisition objective, and feedback timing.
+Do not attribute those mechanisms to this demonstration.
+
+## 4. Define the recovery denominator and integrate it
+
+For scoring only, rank the original pool by decreasing artificial score, with
+original row index breaking ties. The target set contains exactly
+ceil(0.10 × |U₀|) entries. This is a top-k convention, not a threshold that admits
+every tie at the tenth percentile. E and L₀ are outside this denominator.
+
+Recovery at checkpoint k is the number of acquired target entries divided by
+the fixed target-set size. Compute trapezoidal area across the declared
+checkpoints, including (0, 0), then divide by the final acquired count. The
+result lies between zero and one and measures early recovery within this budget.
+It is not ROC AUC, total-pool recall, or a prediction-error metric. Using every
+individual pick as a checkpoint instead of round boundaries can change the area.
+
+**Worked arithmetic.** A pool of 20 has two target molecules. Suppose four
+picks recover target, non-target, target, non-target. At checkpoints 0–4,
+recovery is 0, 0.5, 0.5, 1, 1. The four trapezoids have areas
+0.25 + 0.5 + 0.75 + 1 = 2.5. Dividing by 4 gives 0.625. A unit test checks
+this exact case and rejects duplicate picks and decreasing checkpoints.
+
+In the runnable example, MaxMin's synthetic AUC is 0.100. Random seeds 0–4
+give 0.125, 0.250, 0.000, 0.000, and 0.100. These artificial scores were
+generated from row indices, not an assay or a fitted structure–activity
+relationship. No medicinal conclusion follows from the ordering of policies.
+
+## 5. Feasibility and uncertainty are different questions
+
+An acquisition budget can count attempted synthesis, successful synthesis,
+assay slots, usable measurements, money, or elapsed time. These are not
+interchangeable. A prospective design should predeclare which failures consume
+the budget, how repeats are charged, and whether turnaround time changes the
+next available batch. This simulator charges one unit per selected entry and
+assumes every selected label is available. It has no failure or cost model.
+
+Five random seeds quantify algorithmic variation on the same pool. They are not
+five independent assays or five new scaffold collections. Scaffold-aware
+uncertainty would still need a justified resampling design, and generalisation
+to a new assay requires a genuinely separate campaign. No confidence interval
+or significance test is supplied here. In the synthetic program, E is reserved
+but not scored because no predictive model is fitted. The separate real replay
+scores E with fixed Ridge predictions after every prediction has been finalized.
+
+## 6. Read a negative real-campaign result
+
+The [completed ChEMBL replay](/labs/pool-budget-campaign/#real-campaign-title)
+preserves all six policy instances and five checkpoints in each of two assays.
+Primary CHEMBL5736995 had 90 initial, 631 pool, and 181 evaluation parents.
+Its four batches of 31 acquired 124 parents, or 19.65% of the original pool.
+MaxMin's recovery AUC was 0.05078125, below each fixed random instance, despite
+covering more pool scaffold groups at the final checkpoint.
+
+The separate CHEMBL3705421 assay had 12 initial, 130 pool, and 28 evaluation
+parents. Four batches of six acquired 24 parents, or 18.46%. MaxMin recovered
+none of the 13 top-decile targets, giving recovery AUC 0. Its pool contained
+one scaffold group, so every policy reached full scaffold coverage after the
+first batch. That metric could not distinguish policies in this pool.
+
+The lesson is not that random selection is universally better. A structural
+diversity objective does not directly optimize activity recovery, and a
+coarse diversity metric can be uninformative on the realized pool. Preserve
+both observations without changing the partition, seed set, or scoring rule.
+The five random seeds remain policy instances within each assay, not five
+independent biological validations.
+
+## 7. Exercises and worked answers
+
+1. A colleague recalculates 5% after each acquisition. For a pool of 42,
+   what batches result and why is that not the displayed protocol?
+2. Two tied top scores occupy rows 7 and 8, with only one target slot left.
+   Which is included? What changes if all ties are admitted instead?
+3. If MaxMin selections change when only labels are permuted, which boundary
+   has failed? Should its recovery necessarily stay the same?
+4. Draft a one-paragraph contract for an expensive assay: name eligibility,
+   objective direction, independent unit, failed-attempt charge, budget,
+   baseline, feedback timing, and stopping rule. Mark unavailable facts rather
+   than inventing costs or success rates.
+5. In the separate real assay, every policy reaches 100% scaffold coverage
+   after its first batch. Does that demonstrate broad chemical exploration?
+
+<details>
+<summary>Worked answers and assessment criteria</summary>
+
+1. Batches are 2, 2, 1, 1 when each round floors 5% of the remaining pool:
+   42 → 40 → 38 → 37 → 36. Six acquisitions do not match the frozen eight.
+2. Row 7 is included by the fixed index tie rule. Admitting all ties enlarges
+   the denominator and changes the metric; choose the convention in advance.
+3. The selection path has accessed labels or label-dependent state. Label-blind
+   picks must stay unchanged, but recovery can change because the target set
+   changes. A passing selection-invariance check alone does not validate scoring.
+4. A satisfactory contract resolves every listed field, keeps evaluation
+   outcomes outside selection, and distinguishes observed feasibility data from
+   assumptions. A budget that ignores failed attempts without saying so is
+   incomplete. There is no universal correct assay cost or stopping rule.
+5. No. The original pool has only one scaffold group. Covering it saturates
+   this denominator without demonstrating broad exploration or good target
+   recovery. Inspect the realized pool before interpreting a diversity score.
+
+</details>
+
+## Run the simulator and inspect the completed replay
+
+Continue to the [pool-budget simulator lab](/labs/pool-budget-campaign/).
+The ChEMBL replay is completed and must not be repeated to improve its result.
+It used labels shared with the [EGFR lab](/labs/chembl-egfr-representation-baselines/)
+and retained Ridge alpha=1 from T05 development. It is retrospective teaching,
+not independent corroboration of T05 or label-unseen discovery. The separate
+T05 and T11 evaluations have since completed without retuning. Do not tune on the labels exposed by T15 and
+then describe a subsequent evaluation as untouched.
+
+Next, read [Diversity, uncertainty, and experimental feedback](/learn/active-learning/diversity-uncertainty-feedback/)
+for four cases tracing selector inputs, predictor updates and the limits of replay.
+
+Last reviewed: 2026-09-08. Navigation updated: 2026-09-09.

@@ -1,0 +1,11 @@
+version: "0.2a"
+tracks:
+  - id: foundations
+    order: 2
+    topics:
+      - id: evidence-literacy
+        order: 1
+        title: Evidence literacy
+        description: Distinguish a directly supported observation from an inference or unknown.
+        core: true
+        prerequisites: []

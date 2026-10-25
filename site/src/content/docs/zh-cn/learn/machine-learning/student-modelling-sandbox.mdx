@@ -1,0 +1,100 @@
+---
+title: 学生沙箱：拟合、选择、检查与解释
+description: 运行可修改的纯 CPU 教学练习，不触碰已冻结的真实数据实验。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../../../components/LabDownloads.astro";
+
+英文原文：[Student sandbox — fit, select, inspect, explain](/learn/machine-learning/student-modelling-sandbox/)。
+
+<LessonProgress lessonId="machine-learning/student-modelling-sandbox" />
+<ScrollableRegions />
+
+<LabDownloads lab="student-modelling" />
+
+## 运行之前
+
+先完成[回归、分类与误差分析](/zh-cn/learn/qsar-properties/regression-classification-errors/)。本课把代码与前面的手算连接起来，让你检查一次实际拟合并解释失败。只用浏览器的读者可以阅读参考输出。优先下载上方中英文自包含 notebook，在 [Colab](https://colab.research.google.com/) 选择 **File → Upload notebook** 上传，或用本地 Python 3.11+ Jupyter 内核打开。[Notebook 实践指南](/zh-cn/labs/notebook-guide/)说明执行顺序和保存方法。Notebook 不需要源码副本或额外建模库。下方可选 CLI 则要求 Python 3.11 或 3.12、支持 POSIX 的 macOS/Linux；其他平台拒绝写报告的是 CLI，不是 notebook。
+
+这是**可修改的合成数据学生练习**，不是作者的冻结复现。十个虚构实体包含一个标量特征、一个连续响应，以及另行构造的二元 `hit` 目标。它们不是分子或测定数据。无需数据下载、额外建模库或 GPU；仅托管 Colab 路线需要 Google 账号。拟合代码通常在 CPU 上不足一秒，JSON 报告小于 0.01 MB；这是练习规模预期，不是硬件基准。
+
+Notebook 会新建临时输出目录，导出单元拒绝覆盖已有报告；结束运行时前保存 JSON、SVG 和 notebook。CLI 输出则必须保存在 `tmp/student-modelling/`，拒绝覆盖已有文件或使用符号链接输出路径。两种入口都不导入或修改 FreeSolv、ChEMBL、rMD17、池预算的代码和结果。真实数据复现与阅读已有结果仍是另外两种活动。
+
+## 拟合前检查全部输入
+
+`labs/student_modelling/run_lab.py` 在 `teaching_rows()` 中声明这些记录。实体在分区之间不重复。划分是教学固定设置，不是骨架划分，也不是对部署人群的抽样。
+
+| 实体             | 特征             | 连续响应          | 二元 hit         | 分区 |
+| ---------------- | ---------------- | ----------------- | ---------------- | ---- |
+| toy-01 至 toy-06 | 0, 1, 2, 3, 4, 5 | 1, 3, 5, 7, 9, 11 | 0, 0, 0, 1, 1, 1 | 训练 |
+| toy-07, toy-08   | 1.5, 3.5         | 4, 8              | 0, 1             | 验证 |
+| toy-09, toy-10   | 6, 7             | 10, 9             | 1, 0             | 测试 |
+
+训练响应沿一条直线分布，但测试响应没有延续这条直线。最后一个二元标签也与训练排序的延续相矛盾。这些选择刻意构造了训练范围外的失败，不能从其频率或大小推断生物学结论。
+
+## 理解代码，不只运行命令
+
+`run` 在拟合前检查实体唯一、数值有限、标签为二元，以及每个分区非空。`fit_ridge` 使用上一课不惩罚截距的闭式解。`fit_logistic` 使用训练集均值和尺度，以学习率 0.1 进行 500 次全批次梯度更新。二者都考虑 alpha 0、1、10。Ridge 使用残差平方和加 `alpha*w²`，逻辑回归使用平均交叉熵加 `alpha*w²/2`；两种惩罚约定不能互换。
+
+验证集按 MAE 选择回归模型，按 log loss 选择分类模型，并列时选择较小 alpha。阈值保持为 0.5，等于阈值也判阳性。选择后不使用验证标签重新拟合。测试目标只用于评分。报告保留全部候选参数及验证分数，便于追踪选择。
+
+当训练标签线性可分且 alpha 为 0 时，无正则逻辑似然没有有限最大值。固定 500 步定义的是教学迭代结果，不是收敛证明或概率校准。仅评分时将概率裁剪到 `[1e-15, 1−1e-15]`；未定义的 precision/recall 用 `null` 表示。
+
+## 可选命令行路径
+
+在包含 `labs/` 和 `pyproject.toml` 的仓库根目录打开终端。本实验不需要网站依赖或 `uv sync`。
+
+```sh
+python3 --version
+python3 labs/student_modelling/run_lab.py
+```
+
+终端会打印 `Synthetic student report written:` 和目标路径。打开 `tmp/student-modelling/report.json`。再次运行时选择新文件名：
+
+```sh
+python3 labs/student_modelling/run_lab.py --output tmp/student-modelling/attempt-02.json
+```
+
+如果没有 Python 或版本不符合说明，继续阅读参考输出，不要换成冻结实验的运行命令。如果项目环境已经存在，也可以使用 `.venv/bin/python`。
+
+## 阅读实际参考输出
+
+未修改程序于 2026-09-09 使用 Python 3.11.15 运行。两个选定 alpha 都是 0，回归拟合得到截距 1、斜率 2。这是虚构数据上的实际软件输出，不是科学测量。
+
+| 数量                             | 参考值                                 |
+| -------------------------------- | -------------------------------------- |
+| 回归验证 MAE                     | 0                                      |
+| 测试预测 / 目标                  | 13, 15 / 10, 9                         |
+| 测试残差                         | 3, 6                                   |
+| 回归测试 MAE                     | 4.5                                    |
+| 训练均值基线测试 MAE             | 3.5                                    |
+| 逻辑回归 / 阳性比例基线 accuracy | 0.5 / 0.5                              |
+| 逻辑回归 / 阳性比例基线 log loss | 5.359325802153142 / 0.6931471805599453 |
+
+拟合直线在这两个测试记录上不如训练均值。分类器和阳性比例基线的阈值化 accuracy 相同，但概率损失相差很大：学习模型对一个阴性测试实体高度自信。因此，代码成功执行和完美验证拟合都不能证明预测器有用。
+
+## 独立练习：先预测影响，再修改数据
+
+在自己的 notebook 副本中，只修改 `teaching_rows()` 的构造记录，再从头执行生成新结果。使用 CLI 时，每次选择新沙箱文件名。不要修改任何已有真实数据实验。
+
+1. 给两个测试响应都加 100。哪些参数、选择设置、预测和分数必须保持不变，哪些可以改变？
+2. 恢复原始数据，再把两个验证响应都替换为 6。是否有候选模型的拟合参数发生变化？此时哪个 alpha 获胜？
+3. 恢复数据，再让最后一条记录重复使用第一条实体 ID。程序应继续拟合吗？
+4. 用两句话解释为何零验证 MAE 没有保证测试提升，必须包含与常数基线的比较。
+
+<details data-worked-answer>
+<summary>参考答案 — 信息流与结果解释</summary>
+
+只改变测试响应，所有候选拟合、两个选定 alpha 及两类预测都不变；回归残差与分数会改变，分类标签没有改变，所以分类分数不变。将两个验证响应设为 6，候选参数仍不变，但回归 alpha 10 获胜，因为收缩使其验证预测最接近训练均值 6。重复实体 ID 会在拟合前被拒绝。
+
+原始训练与验证响应沿同一直线分布，但测试特征超出训练范围，其响应刻意打破这一关系。测试 MAE 4.5 高于训练均值基线的 3.5。这解释了构造例子，不能说明分子数据中这种失败有多常见。修改教学测试标签是诊断练习，不是提高可报告研究测试分数的有效途径。
+
+</details>
+
+## 迁移到真实研究
+
+阅读 [FreeSolv 已完成基线比较](/zh-cn/labs/freesolv-honest-baselines/)，指出沙箱缺少什么：真实结构与描述符、测量单位、考虑分组的划分、更多独立样本，以及具有科学定义的适用域。可以迁移的是流程机制，不是合成分数。要执行下一阶段，先使用[无标签分子检查器](/zh-cn/labs/molecule-representation-inspector/)，再进入[真实数据亲脂性 notebook](/zh-cn/labs/lipophilicity-notebook/)。完成基础主线后，在[课程地图](/zh-cn/learn/foundations/curriculum-map/)选择专题路线。
+
+原创软件：Apache-2.0。原创文字和虚构数据：CC BY 4.0。最后审阅及译文更新：2026-09-09。

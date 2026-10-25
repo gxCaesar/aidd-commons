@@ -1,0 +1,754 @@
+version: "0.2a"
+tracks:
+  - id: foundations
+    order: 1
+    topics:
+      - id: t01-evidence-claim-unknown
+        order: 1
+        title: Evidence, claims, and unknowns
+        description: Distinguish direct observations, bounded inferences, unsupported claims, and unresolved fields.
+        core: true
+        prerequisites: []
+      - id: t01-aidd-decision-unit
+        order: 2
+        title: AIDD decision units
+        description: Define the scientific object, intended action, experimental context, and unit of inference for an AIDD task.
+        core: true
+        prerequisites: []
+      - id: t01-source-review-scope
+        order: 3
+        title: Source review and claim scope
+        description: Bind a statement to the source surface, version, date, and exact material that was reviewed.
+        core: true
+        prerequisites: [t01-evidence-claim-unknown]
+      - id: t01-entity-glossary
+        order: 4
+        title: Chemical and biological entity glossary
+        description: Separate molecules, compounds, assays, targets, complexes, cell states, patients, and therapeutic candidates.
+        core: false
+        prerequisites: [t01-aidd-decision-unit]
+
+  - id: drug-discovery-foundations
+    order: 2
+    topics:
+      - id: t02-therapeutic-decision-context
+        order: 1
+        title: Therapeutic decision context
+        description: Connect disease need, intervention hypothesis, modality, evidence, and the next falsifiable decision.
+        core: true
+        prerequisites: [t01-aidd-decision-unit]
+      - id: t02-target-product-profile
+        order: 2
+        title: Target product profile
+        description: State the intended population, route, efficacy, safety, exposure, and developability requirements before optimization.
+        core: true
+        prerequisites: [t02-therapeutic-decision-context]
+      - id: t02-assay-endpoint-controls
+        order: 3
+        title: Assay endpoints and controls
+        description: Relate an assay readout, biological system, controls, measurement error, and decision-relevant endpoint.
+        core: true
+        prerequisites:
+          [t02-therapeutic-decision-context, t01-source-review-scope]
+      - id: t02-chemical-series-feedback
+        order: 4
+        title: Chemical-series decisions and experimental feedback
+        description: Use analogue series, medicinal-chemistry reasoning, and experimental feedback to update a discovery hypothesis.
+        core: true
+        prerequisites: [t02-target-product-profile, t02-assay-endpoint-controls]
+
+  - id: machine-learning
+    order: 3
+    topics:
+      - id: t03-prediction-target-loss
+        order: 1
+        title: Prediction targets and losses
+        description: Translate a scientific endpoint into model inputs, targets, objectives, and explicit mismatch risks.
+        core: true
+        prerequisites: [t01-aidd-decision-unit]
+      - id: t03-inductive-bias-selection
+        order: 2
+        title: Inductive-bias selection
+        description: Choose linear, tree, graph, geometric, sequence, or multimodal assumptions from the scientific object and data regime.
+        core: true
+        prerequisites: [t03-prediction-target-loss]
+      - id: t03-training-validation-selection
+        order: 3
+        title: Training, validation, and model selection
+        description: Separate fitting, hyperparameter choice, checkpoint choice, and locked evaluation under a frozen selection rule.
+        core: true
+        prerequisites: [t03-prediction-target-loss]
+      - id: t03-computational-uncertainty
+        order: 4
+        title: Computational limits and uncertainty representations
+        description: Relate finite data, optimization variability, predictive uncertainty, and compute cost to the intended decision.
+        core: false
+        prerequisites: [t03-training-validation-selection]
+
+  - id: data-governance
+    order: 4
+    topics:
+      - id: t04-entity-identity-resolution
+        order: 1
+        title: Entity identity and resolution
+        description: Resolve chemical, protein, assay, disease, and sample identifiers while retaining unmatched entities and ambiguity.
+        core: true
+        prerequisites: [t01-entity-glossary]
+      - id: t04-data-contract
+        order: 2
+        title: Data contracts
+        description: Declare producer, version, entities, labels, exclusions, inference unit, split, permitted use, and expected output.
+        core: true
+        prerequisites: [t01-aidd-decision-unit, t04-entity-identity-resolution]
+      - id: t04-provenance-versioning
+        order: 3
+        title: Provenance and versioning
+        description: Trace each record and transformation to a dated source, release, and reproducible processing stage.
+        core: true
+        prerequisites: [t01-source-review-scope, t04-data-contract]
+      - id: t04-cleaning-exclusion-rules
+        order: 4
+        title: Cleaning and exclusion rules
+        description: Define deduplication, normalization, censoring, missingness, conflict handling, and exclusion counts before modelling.
+        core: true
+        prerequisites: [t04-data-contract]
+      - id: t04-permitted-use-legal-scope
+        order: 5
+        title: Permitted use and legal scope
+        description: Separate access from licence, redistribution, commercial use, privacy, consent, and unresolved legal fields.
+        core: true
+        prerequisites: [t04-provenance-versioning]
+
+  - id: representations
+    order: 5
+    topics:
+      - id: t05-small-molecule-representation
+        order: 1
+        title: Small-molecule representations
+        description: Compare line notations, identifiers, descriptors, fingerprints, graphs, and conformers by retained chemical information.
+        core: true
+        prerequisites:
+          [t03-inductive-bias-selection, t04-entity-identity-resolution]
+      - id: t05-protein-sequence-structure-representation
+        order: 2
+        title: Protein sequence and structure representations
+        description: Relate sequence, alignment, residue, geometry, surface, and ensemble representations to the protein question.
+        core: true
+        prerequisites:
+          [t03-inductive-bias-selection, t04-entity-identity-resolution]
+      - id: t05-complex-interaction-representation
+        order: 3
+        title: Complex and interaction representations
+        description: Represent molecular complexes, interfaces, contacts, poses, and interaction graphs without collapsing distinct states.
+        core: true
+        prerequisites:
+          [
+            t05-small-molecule-representation,
+            t05-protein-sequence-structure-representation,
+          ]
+      - id: t05-omics-perturbation-representation
+        order: 4
+        title: Omics and perturbation representations
+        description: Encode molecular profiles, cell states, perturbations, time, and experimental context at the relevant biological unit.
+        core: false
+        prerequisites: [t03-inductive-bias-selection, t04-data-contract]
+      - id: t05-relational-knowledge-graph-representation
+        order: 5
+        title: Relational and knowledge-graph representations
+        description: Model typed entities, relations, evidence provenance, and missing edges without treating graph connectivity as causality.
+        core: false
+        prerequisites:
+          [
+            t04-entity-identity-resolution,
+            t05-complex-interaction-representation,
+          ]
+
+  - id: mechanism-targets
+    order: 6
+    topics:
+      - id: t06-disease-state-definition
+        order: 1
+        title: Disease-state definition
+        description: Define indication, phenotype, tissue, cell state, population, and temporal context for a target hypothesis.
+        core: true
+        prerequisites: [t02-therapeutic-decision-context, t04-data-contract]
+      - id: t06-mechanism-hypothesis-counterevidence
+        order: 2
+        title: Mechanism hypotheses and counterevidence
+        description: Connect a proposed disease mechanism to supporting evidence, alternative explanations, and a falsifying observation.
+        core: true
+        prerequisites:
+          [t01-evidence-claim-unknown, t06-disease-state-definition]
+      - id: t06-causal-target-evidence
+        order: 3
+        title: Causal target evidence
+        description: Separate association, prediction, intervention, mediation, and transport assumptions in target discovery.
+        core: true
+        prerequisites:
+          [t04-provenance-versioning, t06-mechanism-hypothesis-counterevidence]
+      - id: t06-perturbation-genetic-validation
+        order: 4
+        title: Perturbational and genetic validation
+        description: Evaluate genetic, pharmacological, cellular, and orthogonal perturbations at the correct independent unit.
+        core: true
+        prerequisites: [t02-assay-endpoint-controls, t06-causal-target-evidence]
+      - id: t06-tractability-target-risk
+        order: 5
+        title: Tractability and target risk
+        description: Assess modality access, binding or intervention opportunities, selectivity, safety liabilities, and translational uncertainty.
+        core: true
+        prerequisites: [t02-target-product-profile, t06-causal-target-evidence]
+
+  - id: qsar-properties
+    order: 7
+    topics:
+      - id: t07-endpoint-definition
+        order: 1
+        title: Property endpoint definition
+        description: Specify the measured property, assay, units, censoring, aggregation, and prediction unit before fitting a model.
+        core: true
+        prerequisites: [t02-assay-endpoint-controls, t03-prediction-target-loss]
+      - id: t07-chemical-standardisation
+        order: 2
+        title: Chemical standardisation
+        description: Freeze salt, charge, tautomer, stereochemistry, duplicate, mixture, and identifier rules for a property dataset.
+        core: true
+        prerequisites:
+          [t04-entity-identity-resolution, t04-cleaning-exclusion-rules]
+      - id: t07-property-representation-selection
+        order: 3
+        title: Property-task representation selection
+        description: Choose descriptors, fingerprints, graphs, or three-dimensional inputs from endpoint dependence and available data.
+        core: false
+        prerequisites:
+          [t05-small-molecule-representation, t07-endpoint-definition]
+      - id: t07-regression-formulation
+        order: 4
+        title: Regression formulation
+        description: Build constant, descriptor, and learned regression baselines with task-aligned errors and residual inspection.
+        core: true
+        prerequisites:
+          [t03-training-validation-selection, t07-endpoint-definition]
+      - id: t07-classification-formulation
+        order: 5
+        title: Classification formulation
+        description: Define class labels, imbalance treatment, thresholds, and cheap classification baselines without outcome leakage.
+        core: true
+        prerequisites:
+          [t03-training-validation-selection, t07-endpoint-definition]
+      - id: t07-property-task-split-design
+        order: 6
+        title: Property-task split design
+        description: Compare random, scaffold, series, time, and source-aware partitions for the intended property generalization claim.
+        core: true
+        prerequisites:
+          [t03-training-validation-selection, t07-chemical-standardisation]
+      - id: t07-calibration
+        order: 7
+        title: Property-model calibration
+        description: Check whether predictive probabilities or intervals match observed frequencies under a frozen calibration protocol.
+        core: true
+        prerequisites: [t07-property-task-split-design]
+      - id: t07-applicability-domain
+        order: 8
+        title: Applicability domain
+        description: Define when a property prediction is supported by chemical and endpoint coverage and when it should be withheld.
+        core: true
+        prerequisites:
+          [
+            t07-property-representation-selection,
+            t07-property-task-split-design,
+            t07-calibration,
+          ]
+      - id: t07-interpretability-sar
+        order: 9
+        title: Interpretability and structure-activity relationships
+        description: Use model explanations and analogue evidence to form testable SAR hypotheses without claiming causal atom effects.
+        core: false
+        prerequisites:
+          [t07-property-representation-selection, t07-endpoint-definition]
+      - id: t07-property-decision-use
+        order: 10
+        title: Property predictions in decisions
+        description: Convert calibrated property evidence into thresholds, trade-offs, experiment choices, and explicit abstention.
+        core: true
+        prerequisites: [t02-target-product-profile, t07-applicability-domain]
+
+  - id: admet-pk
+    order: 8
+    topics:
+      - id: t08-exposure-pk-endpoint
+        order: 1
+        title: Exposure and pharmacokinetic endpoints
+        description: Relate absorption, distribution, clearance, bioavailability, and exposure measures to species, matrix, and route.
+        core: true
+        prerequisites: [t02-target-product-profile, t07-endpoint-definition]
+      - id: t08-metabolism-ddi-risk
+        order: 2
+        title: Metabolism and drug-interaction risk
+        description: Interpret enzyme, transporter, metabolite, induction, inhibition, and drug-drug interaction evidence by assay system.
+        core: true
+        prerequisites: [t08-exposure-pk-endpoint]
+      - id: t08-safety-toxicity-endpoint
+        order: 3
+        title: Safety and toxicity endpoints
+        description: Separate molecular alerts, assay outcomes, organ liabilities, dose context, and organism-level safety evidence.
+        core: true
+        prerequisites: [t02-assay-endpoint-controls, t07-endpoint-definition]
+      - id: t08-pkpd-translational-assumption
+        order: 4
+        title: PK/PD and translational assumptions
+        description: Connect exposure, target engagement, response, species differences, and uncertainty in an explicit translational model.
+        core: true
+        prerequisites: [t06-disease-state-definition, t08-exposure-pk-endpoint]
+      - id: t08-multiendpoint-tradeoff
+        order: 5
+        title: Multi-endpoint ADMET trade-offs
+        description: Integrate exposure, interaction, toxicity, efficacy, and measurement uncertainty without collapsing them into one opaque score.
+        core: true
+        prerequisites:
+          [
+            t07-property-decision-use,
+            t08-metabolism-ddi-risk,
+            t08-safety-toxicity-endpoint,
+            t08-pkpd-translational-assumption,
+          ]
+
+  - id: dti-screening
+    order: 9
+    topics:
+      - id: t09-target-assay-screen-unit
+        order: 1
+        title: Target-assay-screen decision unit
+        description: Define target construct and state, ligand input, assay condition, candidate budget, and intended screening action.
+        core: true
+        prerequisites:
+          [t02-assay-endpoint-controls, t06-tractability-target-risk]
+      - id: t09-binding-mode-pose-hypothesis
+        order: 2
+        title: Binding-mode and pose hypotheses
+        description: Treat a proposed binding geometry as a structural hypothesis with protonation, state, and plausibility assumptions.
+        core: false
+        prerequisites:
+          [t05-complex-interaction-representation, t09-target-assay-screen-unit]
+      - id: t09-binder-classification
+        order: 3
+        title: Binder classification
+        description: Define positives, negatives, inactive compounds, decoys, class balance, and the generalization unit for binder detection.
+        core: true
+        prerequisites:
+          [t03-prediction-target-loss, t09-target-assay-screen-unit]
+      - id: t09-affinity-ranking
+        order: 4
+        title: Affinity prediction and ranking
+        description: Separate continuous affinity estimation, within-series ranking, cross-assay comparability, and ranking uncertainty.
+        core: true
+        prerequisites:
+          [t07-regression-formulation, t09-target-assay-screen-unit]
+      - id: t09-screening-selection-repurposing-transfer
+        order: 5
+        title: Screening selection and repurposing transfer
+        description: Evaluate enrichment, off-targets, repurposing evidence transport, and prospective experimental follow-up under a fixed budget.
+        core: true
+        prerequisites:
+          [
+            t06-causal-target-evidence,
+            t07-property-decision-use,
+            t09-binder-classification,
+            t09-affinity-ranking,
+          ]
+
+  - id: structure-and-pockets
+    order: 10
+    topics:
+      - id: t10-structure-evidence-state
+        order: 1
+        title: Structure evidence and molecular state
+        description: Identify experimental or predicted structure, construct, ligands, oligomeric state, conformation, and evidence limits.
+        core: true
+        prerequisites:
+          [
+            t01-source-review-scope,
+            t05-protein-sequence-structure-representation,
+          ]
+      - id: t10-binding-site-pocket-definition
+        order: 2
+        title: Binding-site and pocket definition
+        description: Define known, predicted, transient, orthosteric, and allosteric sites with the state used to support them.
+        core: true
+        prerequisites: [t10-structure-evidence-state]
+      - id: t10-complex-cofolding-hypothesis
+        order: 3
+        title: Complex and co-folding hypotheses
+        description: Distinguish monomer prediction, complex prediction, co-folding, pose generation, and experimental binding evidence.
+        core: true
+        prerequisites:
+          [t05-complex-interaction-representation, t10-structure-evidence-state]
+      - id: t10-structural-confidence-alternatives
+        order: 4
+        title: Structural confidence and alternatives
+        description: Inspect confidence, steric plausibility, disorder, alternate conformations, ensembles, and training-like overlap.
+        core: true
+        prerequisites:
+          [t03-computational-uncertainty, t10-structure-evidence-state]
+      - id: t10-asset-openness-reproducibility
+        order: 5
+        title: Structural asset openness and reproducibility
+        description: Audit inference code, training code, weights, data, recipes, evaluation assets, and use terms as separate fields.
+        core: true
+        prerequisites:
+          [t04-provenance-versioning, t04-permitted-use-legal-scope]
+
+  - id: physics-based-modeling
+    order: 11
+    topics:
+      - id: t11-physical-model-system-state
+        order: 1
+        title: Physical model and system state
+        description: Declare construct, coordinates, protonation, tautomers, solvent, ions, boundary conditions, and experimental comparator.
+        core: true
+        prerequisites:
+          [t02-assay-endpoint-controls, t10-structure-evidence-state]
+      - id: t11-docking-scoring-protocol
+        order: 2
+        title: Docking and scoring protocols
+        description: Separate search, pose generation, scoring, rescoring, constraints, decoys, and protocol-specific validation.
+        core: true
+        prerequisites:
+          [t10-binding-site-pocket-definition, t11-physical-model-system-state]
+      - id: t11-dynamic-simulation-observable
+        order: 3
+        title: Dynamic simulations and observables
+        description: Relate force fields, sampling, trajectories, ensembles, and calculated observables to a declared molecular question.
+        core: true
+        prerequisites: [t11-physical-model-system-state]
+      - id: t11-free-energy-endpoint-network
+        order: 4
+        title: Free-energy endpoints and networks
+        description: Distinguish relative and absolute free energies, transformation networks, estimators, assay endpoints, and failed edges.
+        core: true
+        prerequisites:
+          [t11-docking-scoring-protocol, t11-dynamic-simulation-observable]
+      - id: t11-convergence-protocol-uncertainty
+        order: 5
+        title: Convergence and protocol uncertainty
+        description: Test sampling convergence, replicate dependence, force-field sensitivity, numerical error, and decision value per compute cost.
+        core: true
+        prerequisites:
+          [
+            t03-computational-uncertainty,
+            t11-dynamic-simulation-observable,
+            t11-free-energy-endpoint-network,
+          ]
+
+  - id: molecular-generation
+    order: 12
+    topics:
+      - id: t12-design-objective-constraints
+        order: 1
+        title: Molecular design objectives and constraints
+        description: Freeze desired properties, prohibited motifs, target context, synthesis limits, and experimental decision before generation.
+        core: true
+        prerequisites: [t02-target-product-profile, t07-property-decision-use]
+      - id: t12-candidate-design-space
+        order: 2
+        title: Candidate design spaces
+        description: Define enumeration, fragment, scaffold, linker, graph, string, or three-dimensional spaces and their reachable chemistry.
+        core: false
+        prerequisites:
+          [t05-small-molecule-representation, t12-design-objective-constraints]
+      - id: t12-multiobjective-search-diversity
+        order: 3
+        title: Multi-objective search and diversity
+        description: Compare simple search, conditional generation, reinforcement learning, Pareto trade-offs, and diversity-aware selection.
+        core: true
+        prerequisites: [t12-candidate-design-space]
+      - id: t12-validity-novelty-synthetic-screen
+        order: 4
+        title: Validity, novelty, and synthetic screening
+        description: Keep chemical validity, uniqueness, novelty, memorization, synthesizability, and route feasibility as distinct checks.
+        core: true
+        prerequisites:
+          [t07-chemical-standardisation, t12-candidate-design-space]
+      - id: t12-generated-candidate-evaluation-batch
+        order: 5
+        title: Generated-candidate evaluation and batch proposal
+        description: Detect oracle exploitation, compare against simple generators, and propose a bounded batch for independent evaluation.
+        core: true
+        prerequisites:
+          [
+            t07-applicability-domain,
+            t12-multiobjective-search-diversity,
+            t12-validity-novelty-synthetic-screen,
+          ]
+
+  - id: biologics-design
+    order: 13
+    topics:
+      - id: t13-biologic-modality-construct
+        order: 1
+        title: Biologic modality and construct definition
+        description: Define protein, peptide, antibody, nucleic-acid, or multimodal construct, expression system, and intended function.
+        core: true
+        prerequisites:
+          [
+            t02-therapeutic-decision-context,
+            t05-protein-sequence-structure-representation,
+          ]
+      - id: t13-sequence-structure-function-objective
+        order: 2
+        title: Sequence-structure-function objectives
+        description: Separate sequence recovery, folding, structural plausibility, binding, catalysis, and biological function objectives.
+        core: true
+        prerequisites:
+          [t10-structure-evidence-state, t13-biologic-modality-construct]
+      - id: t13-specificity-negative-selection
+        order: 3
+        title: Specificity and negative selection
+        description: State desired partners, off-targets, antigen or state alternatives, and assays that can reject nonspecific designs.
+        core: true
+        prerequisites:
+          [
+            t02-assay-endpoint-controls,
+            t13-sequence-structure-function-objective,
+          ]
+      - id: t13-expression-developability-manufacturability
+        order: 4
+        title: Expression, developability, and manufacturability
+        description: Evaluate expression, stability, aggregation, immunogenicity, delivery, formulation, and manufacturing constraints by modality.
+        core: true
+        prerequisites:
+          [t02-target-product-profile, t13-biologic-modality-construct]
+      - id: t13-functional-validation
+        order: 5
+        title: Biologic functional validation
+        description: Progress from computational plausibility to expression, biophysical binding, specificity, cellular function, and in vivo relevance.
+        core: true
+        prerequisites:
+          [
+            t13-sequence-structure-function-objective,
+            t13-specificity-negative-selection,
+          ]
+
+  - id: synthesis-and-automation
+    order: 14
+    topics:
+      - id: t14-reaction-record-condition-unit
+        order: 1
+        title: Reaction records and condition units
+        description: Represent reactants, products, roles, conditions, equipment, provenance, outcomes, and failed reactions as distinct fields.
+        core: true
+        prerequisites: [t04-data-contract, t07-chemical-standardisation]
+      - id: t14-atom-mapping-transformation-class
+        order: 2
+        title: Atom mapping and transformation classes
+        description: Relate atom mappings, bond changes, reaction classes, ambiguity, and mapping errors to the modelling task.
+        core: false
+        prerequisites:
+          [
+            t05-small-molecule-representation,
+            t14-reaction-record-condition-unit,
+          ]
+      - id: t14-retrosynthetic-disconnection
+        order: 3
+        title: Retrosynthetic disconnections
+        description: Compare rule, retrieval, template, and learned disconnections without equating route recovery with laboratory feasibility.
+        core: true
+        prerequisites:
+          [t02-chemical-series-feedback, t14-atom-mapping-transformation-class]
+      - id: t14-route-feasibility-material-safety
+        order: 4
+        title: Route feasibility, materials, and safety
+        description: Evaluate building-block access, conditions, selectivity, protecting groups, purification, scale, hazards, cost, and uncertainty.
+        core: true
+        prerequisites:
+          [t04-permitted-use-legal-scope, t14-retrosynthetic-disconnection]
+      - id: t14-forward-reaction-lab-feedback
+        order: 5
+        title: Forward reactions and laboratory feedback
+        description: Separate product prediction and condition recommendation from execution, outcome capture, automation, and chemist review.
+        core: true
+        prerequisites:
+          [
+            t02-assay-endpoint-controls,
+            t14-reaction-record-condition-unit,
+            t14-route-feasibility-material-safety,
+          ]
+
+  - id: active-learning
+    order: 15
+    topics:
+      - id: t15-experiment-pool-budget-feasibility
+        order: 1
+        title: Experiment pools, budgets, and feasibility
+        description: Predeclare candidates, assays, costs, batch capacity, failures, constraints, and the independent experimental unit.
+        core: true
+        prerequisites: [t02-assay-endpoint-controls, t07-property-decision-use]
+      - id: t15-acquisition-policy-uncertainty
+        order: 2
+        title: Acquisition policies and uncertainty
+        description: Connect random, greedy, uncertainty, information, and improvement policies to calibrated predictive evidence.
+        core: true
+        prerequisites:
+          [
+            t03-computational-uncertainty,
+            t15-experiment-pool-budget-feasibility,
+          ]
+      - id: t15-batch-diversity-multiobjective-allocation
+        order: 3
+        title: Batch diversity and multi-objective allocation
+        description: Allocate a finite batch across exploitation, exploration, diversity, feasibility, and competing experimental objectives.
+        core: true
+        prerequisites:
+          [t07-property-decision-use, t15-acquisition-policy-uncertainty]
+      - id: t15-time-ordered-feedback-update
+        order: 4
+        title: Time-ordered feedback and updating
+        description: Preserve acquisition time, assay completion, failures, retraining data, and adaptive decisions across DMTA rounds.
+        core: true
+        prerequisites:
+          [t02-chemical-series-feedback, t15-experiment-pool-budget-feasibility]
+      - id: t15-stopping-rule-policy-evaluation
+        order: 5
+        title: Stopping rules and policy evaluation
+        description: Compare policies under identical budgets, assess realized utility and calibration, and stop under a frozen rule.
+        core: true
+        prerequisites:
+          [t15-acquisition-policy-uncertainty, t15-time-ordered-feedback-update]
+
+  - id: scientific-agents
+    order: 16
+    topics:
+      - id: t16-scientific-task-action-boundary
+        order: 1
+        title: Scientific task and action boundaries
+        description: Specify evidence inputs, allowed actions, prohibited actions, output claims, and human or experimental decision points.
+        core: true
+        prerequisites: [t01-aidd-decision-unit, t04-permitted-use-legal-scope]
+      - id: t16-source-retrieval-evidence-grounding
+        order: 2
+        title: Source retrieval and evidence grounding
+        description: Retrieve authoritative material, resolve citations, preserve uncertainty, and prevent generated prose from becoming evidence.
+        core: true
+        prerequisites: [t01-source-review-scope, t04-provenance-versioning]
+      - id: t16-tool-input-output-contract
+        order: 3
+        title: Tool input-output contracts
+        description: Define schemas, versions, environment, side effects, error states, and scientific meaning for every invoked tool.
+        core: true
+        prerequisites: [t04-data-contract, t16-scientific-task-action-boundary]
+      - id: t16-trace-recovery
+        order: 4
+        title: Execution traces and failure recovery
+        description: Record transformations and tool results, distinguish partial from complete work, and recover without fabricating outputs.
+        core: true
+        prerequisites:
+          [t04-provenance-versioning, t16-tool-input-output-contract]
+      - id: t16-human-review-authority-evaluation
+        order: 5
+        title: Human review, authority, and agent evaluation
+        description: Evaluate source resolution, execution correctness, recovery, claim accuracy, and action authorization on fixed tasks.
+        core: true
+        prerequisites: [t16-scientific-task-action-boundary, t16-trace-recovery]
+
+  - id: evaluation-and-reproducibility
+    order: 17
+    topics:
+      - id: t17-generalization-unit
+        order: 1
+        title: Estimands and generalization units
+        description: Define what quantity is estimated and whether generalization is across molecules, scaffolds, targets, assays, time, sites, or patients.
+        core: true
+        prerequisites: [t03-prediction-target-loss, t04-data-contract]
+      - id: t17-split-leakage-audit
+        order: 2
+        title: Split and leakage audits
+        description: Test duplicate, analogue, scaffold, target-family, temporal, donor, patient, site, and preprocessing leakage routes.
+        core: true
+        prerequisites: [t04-cleaning-exclusion-rules, t17-generalization-unit]
+      - id: t17-baseline-model-selection-protocol
+        order: 3
+        title: Baseline and model-selection protocols
+        description: Establish cheap baselines, recipe parity, train-only choices, frozen selection, locked-test boundaries, and headroom.
+        core: true
+        prerequisites:
+          [t03-training-validation-selection, t17-generalization-unit]
+      - id: t17-metric-endpoint-uncertainty
+        order: 4
+        title: Metrics, endpoints, and uncertainty
+        description: Match metrics to endpoints and decisions and report intervals over the actual independent unit rather than repeated runs alone.
+        core: true
+        prerequisites: [t03-computational-uncertainty, t17-generalization-unit]
+      - id: t17-ood-transportability
+        order: 5
+        title: Out-of-distribution evaluation and transportability
+        description: Evaluate explicit shifts, external populations, prospective settings, and assumptions required to transport a conclusion.
+        core: true
+        prerequisites:
+          [t17-split-leakage-audit, t17-metric-endpoint-uncertainty]
+      - id: t17-reproduction-reporting-receipt
+        order: 6
+        title: Reproduction and reporting receipts
+        description: Bind code, environment, data version, protocol, seeds, failures, outputs, and limitations to a rerunnable claim.
+        core: true
+        prerequisites:
+          [
+            t04-provenance-versioning,
+            t17-baseline-model-selection-protocol,
+            t17-metric-endpoint-uncertainty,
+          ]
+
+  - id: candidate-nomination
+    order: 18
+    topics:
+      - id: t18-evidence-package-claim-chain
+        order: 1
+        title: Evidence packages and claim chains
+        description: Connect mechanism, target, activity, selectivity, exposure, safety, synthesis, and reproducibility to bounded claims.
+        core: true
+        prerequisites:
+          [
+            t06-causal-target-evidence,
+            t08-multiendpoint-tradeoff,
+            t09-screening-selection-repurposing-transfer,
+            t17-reproduction-reporting-receipt,
+          ]
+      - id: t18-crossdomain-tradeoff-decision
+        order: 2
+        title: Cross-domain trade-off decisions
+        description: Compare benefit, risk, evidence quality, uncertainty, feasibility, and target-product requirements without an opaque aggregate score.
+        core: true
+        prerequisites:
+          [t02-target-product-profile, t18-evidence-package-claim-chain]
+      - id: t18-counterevidence-failure-analysis
+        order: 3
+        title: Counterevidence and failure analysis
+        description: Preserve contradictory evidence, failed candidates, assay limits, model failures, and alternative mechanisms in the nomination dossier.
+        core: true
+        prerequisites:
+          [
+            t06-mechanism-hypothesis-counterevidence,
+            t18-evidence-package-claim-chain,
+          ]
+      - id: t18-nomination-readiness-next-experiment
+        order: 4
+        title: Nomination readiness and the next experiment
+        description: Apply predeclared go, hold, and stop rules and name the independent experiment needed for the next decision.
+        core: true
+        prerequisites:
+          [
+            t02-assay-endpoint-controls,
+            t18-crossdomain-tradeoff-decision,
+            t18-counterevidence-failure-analysis,
+          ]
+      - id: t18-openness-biosecurity-governance-boundary
+        order: 5
+        title: Openness, biosecurity, and governance boundaries
+        description: Decide what can be released or acted on by separating reproducibility, licence, safety, dual-use, and human authority.
+        core: true
+        prerequisites:
+          [
+            t04-permitted-use-legal-scope,
+            t16-human-review-authority-evaluation,
+            t18-nomination-readiness-next-experiment,
+          ]

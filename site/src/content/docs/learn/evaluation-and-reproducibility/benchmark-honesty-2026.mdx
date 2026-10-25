@@ -1,0 +1,312 @@
+---
+title: What thirteen evaluation cases say about reported scores
+description: Read thirteen benchmark and evaluation cases whose authors examine how protocols shape reported scores, and see what each case does and does not license a reader to conclude.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="evaluation-and-reproducibility/benchmark-honesty-2026" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will read thirteen benchmark and evaluation cases, most of them published
+in 2026, that examine whether reported numbers can be compared and what limits
+their interpretation. You will see what each of them measures, what each of
+them found, and what each of them explicitly does not license a reader to
+conclude. You will do the
+arithmetic behind one of them, because the arithmetic is the finding. Read
+[Honest evaluation](/learn/evaluation-and-reproducibility/honest-evaluation/),
+[Generalization unit and estimand](/learn/evaluation-and-reproducibility/generalization-unit-and-estimand/)
+and [Leakage routes in an activity table](/learn/evaluation-and-reproducibility/split-leakage-routes/)
+first. This is a reading and hand-arithmetic lesson: this project ran none of
+these evaluations and measured none of their numbers.
+
+## The cases, and the question each one asked
+
+**PLABench** asked whether a reported deep-learning affinity number survives
+the removal of the training corpora the benchmark audited. It runs nine
+sequence- and structure-based models over the same targets under the same
+metrics, and it separates three regimes: a warm start, a cold drug and a cold
+target. On its ChEMBL35 arm the unfiltered set is 7,650 ligands across 84
+targets. The benchmark's similarity filter drops every test ligand within an
+ECFP4 Tanimoto of 0.85 of any ligand in the fourteen audited training
+corpora, and then drops the targets left with fewer than ten ligands. The
+resulting arm holds 4,862 ligands across 71 targets. The README reports that
+one audited corpus, SAIR, reaches that similarity threshold against 32.7% of
+the unfiltered benchmark, accounting for 2,413 removed rows, and that the
+leading model still leads after the filter, with the README's own sentence
+being that the filter is what makes the result readable.
+
+**The Multi-Paradigm Docking Benchmark** asked whether a docking score and a
+co-folding score could be placed on one leaderboard without misleading a
+reader. It scores six physics-based docking approaches, Vina, GNINA, ICM,
+ICM-RTCNN, SurfDock and UniDock2, and four co-folding models, AlphaFold 3,
+Boltz-1, Chai-1 and Protenix, and it publishes the poses and the per-system
+files alongside the aggregate tables.
+
+**Beyond Affinity** asked what a generation method's number actually says when
+the number is a docking score. It compares fifteen generation methods across
+the one-dimensional, two-dimensional and three-dimensional paradigms, and it
+reports that the three-dimensional methods generally produce stronger
+affinities while their chemical validity and pose consistency may be weaker,
+that the one-dimensional methods are dependable on the conventional molecular
+metrics but seldom reach the best affinities, and that the two-dimensional
+methods sit between them.
+
+**BenchTox** asked whether the toxicity models in the literature could be
+compared at all, given that the comparisons differed in datasets, in
+preprocessing and in evaluation protocol. It evaluates more than twenty
+approaches under consistent conditions across several datasets and several
+partitioning strategies, adds a structured literature analysis, and releases
+its framework as open-source software.
+
+**ShallowBench** asked what happens when the targets are the hard ones. It
+curates 5,780 shallow-pocket targets from CrossDocked2020, selected by
+comparing the Alpha Shape lid volume with the protein's atom-voxel volume so
+that the interfaces are shallow with low concavity and adequate binding
+surface area, and it reports that the generative drug-design models it tested
+produce weaker predicted binding affinity on them.
+
+**Beyond Random Splits** asked whether the kind of distribution shift changes
+which architecture looks best. It curates 718,800 unique drug-protein pairs
+from ChEMBL and BindingDB, compares a Morgan-fingerprint and protein-CNN
+baseline with twelve further architectures built from four drug
+representations and three ESM-2 interaction modes, and reports that the
+architectures agree at a rank correlation of 0.79 under two chemical shifts,
+0.39 under a protein shift, and -0.55 under a shift that combines them,
+where the order reverses.
+
+**CryptoBench** asked what it takes to call a binding site cryptic. It defines
+one by an apo and holo structure pair, publishes the creation scripts under an
+MIT licence, and puts the dataset on a public Open Science Framework project
+that states no licence.
+
+**PLINDER** asked what a protein-ligand interaction dataset has to do before
+its numbers can be compared with anyone else's. It versions the dataset by the
+month of the release, so a number is always about a named version, and it
+publishes pre-set train, validation and test splits curated to minimise
+information leakage, with test subsets of novel proteins, pockets,
+interactions and ligands.
+
+**CACHE Challenge** asked what a benchmark looks like when the number is
+produced by an experiment that happens after the prediction. In its
+retrospective phase participants retrieve hits from an affinity selection mass
+spectrometry screen of 400,000 compounds; the top ten are then invited to
+predict novel hits from the Enamine catalogue, which the organisers procure
+and test experimentally at their own cost, and the winners are decided on the
+number of novel chemical series found in that prospective phase.
+
+**PoseBench** asked how docking and co-folding methods behave with predicted
+protein structures, unknown binding pockets or multiple ligands. Its toolkit
+provides shared inference, relaxation, alignment and scoring workflows,
+datasets and benchmark predictions. Its paper reports method comparisons.
+
+**ProtDBench** asked what happens when the verifier is part of the
+measurement. It fixes the tasks, the protocol and the success criteria,
+evaluates structure-prediction models used as verifiers against wet-lab
+annotated data, and compares representative open-source generative methods on
+ten protein targets.
+
+**MAGI** is an agent study asking what limits a real lead-optimisation project.
+It replays nine historical projects from three pharmaceutical companies under
+fixed temporal cutoffs, with an LLM generation route and REINVENT 4 behind
+interchangeable scoring services.
+
+**BioStudyBench** asked how data analysis changes an agent's agreement with
+published findings beyond its prior knowledge. Its 25 tasks come from studies
+published after the evaluated models' developer-reported knowledge cutoffs.
+Each task runs with and without data and tool access, with three repeats per
+condition.
+
+## What each one licenses, and what each one does not
+
+Across these domains, the studies make parts of the measurement process
+explicit and show how they affect the reported result.
+
+PLABench's finding is not that the leading model changes. It is that the
+number changes when the leak is removed, and that the direction of the change
+depends on the regime: the README gives MixingDTA's RMSE rising from 0.462 to
+0.541 on Davis and from 0.404 to 0.598 on KIBA as the evaluation moves from a
+warm start to a cold target. A reader who reports one RMSE without naming the
+regime has not reported the measurement. What the benchmark does not do is
+settle which model is best, because the answer it gives is that the ranking
+survives the filter while the absolute numbers do not.
+
+The Multi-Paradigm Docking Benchmark's finding is about the granularity of the
+report rather than about the systems. It publishes per-system ranking scores
+alongside the aggregate tables, and its own stated point is that the aggregate
+is misleading when a co-folding model has memorised training-like targets, so
+a result has to be read inside a similarity stratum. What it does not do is
+provide a single ordering, and a reader who takes the aggregate tables alone
+loses the benchmark's main finding.
+
+Beyond Affinity's finding is that affinity is not a complete success
+criterion, because a favourable binding score can coexist with invalid
+chemistry or with an inaccurate docking pose. The same benchmark's affinity is
+a docking oracle score rather than an experimental measurement, so its
+ordering inherits the known biases of docking scores. What it does not do is
+establish a best paradigm, because it reports a trade-off and not a winner.
+
+BenchTox's finding is that consistent conditions are worth more than another
+method, because the literature's comparisons were hard to interpret for
+reasons of protocol rather than of chemistry. What it does not do is compare
+graph-based approaches with descriptor or fingerprint baselines: its scope is
+graph-based models, so a reader who takes its ordering as a field-wide
+ranking has read more into it than the paper claims.
+
+ShallowBench's finding is about the target family rather than the
+architecture, and its affinity is a predicted one, so the ordering inherits the
+biases of the scoring function that produced it. What it does not do is
+establish that a method fails on shallow pockets in general: the targets come
+from one geometric selection rule, and a reader who reads the number as a
+statement about all difficult targets is generalising past the selection.
+
+Beyond Random Splits' finding is that the error and the ranking move
+differently, which is the reason the paper's own conclusion is about the
+extrapolation setting rather than about average error. The validation RMSE
+rises from 0.950 and 0.945 under the two chemical shifts to 1.299 and 1.321
+under the protein and dual shifts, a modest change, while the agreement
+between architectures falls from 0.79 to 0.39 and then reverses to -0.55. A
+reader who chose an architecture on a chemical shift and then read the
+biological shift's error would not notice that the choice had become the
+opposite one. What the study does not do is tell the reader which shift they
+will face.
+
+CryptoBench's finding is that the definition decides the dataset: a ligand
+that binds a pocket absent in the apo structure is cryptic by construction,
+and a pocket present but differently shaped is not. What it does not do is
+license the use of the data. The scripts are MIT and the dataset is public,
+and the project states no licence, so a reader who needs a grant for the
+files has to ask the authors.
+
+PLINDER's finding is that the split construction is the contribution and the
+version is the other half of it. The test subsets are chosen for novel
+proteins, pockets, interactions and ligands, so a number reported against a
+random split of the same molecules is not the same measurement, and a number
+reported against last month's release is not the same measurement either.
+What it does not do is settle the terms of the data: the repository's
+Apache-2.0 grant covers the code and the generator, the dataset is served
+from a public monthly directory, and the project site states no terms for it.
+
+CACHE's finding is that the judging number is produced by an experiment that
+happens after the prediction, which is the design that separates it from a
+retrospective benchmark. What it does not do is make the retrospective phase
+comparable with anything else: those hits are retrieved from a screen the
+organisers had already run, and the score that decides the round comes from
+the prospective phase alone.
+
+PoseBench also exposes a measurement correction. Its repository notice records
+a scoring bug in version 1.0.0 affecting the primary-ligand datasets Astex
+Diverse, DockGen-E and PoseBusters Benchmark. Corrected version 1.1.0 reports
+about 15 percent lower performance on average for each benchmarked method and
+advises rerunning affected analyses. This is neither a 15-percentage-point
+reduction nor a universal adjustment across datasets. Its method comparisons
+remain tied to their dataset, metric and version.
+
+ProtDBench finds verifier-dependent bias and limited agreement under identical
+filtering protocols. Its filtering rules, success definitions and
+throughput-aware accounting change conclusions about efficiency, success rate
+and diversity. It releases an Apache-2.0 toolkit and reports method
+comparisons. Success for its newly generated binders means passing a
+computational filter, not a new experimental hit. Biases measured on the Cao
+energy-designed candidates may not fully transfer to deep generative designs.
+
+MAGI finds that objective attainment tracked scorer accuracy and applicability
+rather than the generation route. Four blinded chemists could not reliably
+distinguish agent proposals from held-out compounds and judged the SAR
+reasoning plausible but incomplete. Four campaigns use published GSK series,
+four use Sanofi RetroDMTA data, and one AstraZeneca programme remains
+confidential. Proposal endpoints are predictions, not new measurements. One
+backend and trajectory per condition, with no static-objective control, leave
+the agent's causal contribution to attainment unresolved.
+
+BioStudyBench reports that data and tools raise average pass rate by 47
+percentage points across eight models. The strongest open-weight model scores
+81.3 percent, compared with 94.7 percent for the strongest closed-weight
+model. This comparison does not identify a causal effect of weight access.
+Passing measures reference agreement within the scoring tolerance, not
+comprehensive methodological correctness. Temporal cutoffs and restricted
+retrieval reduce contamination risk without proving every answer was derived
+independently.
+
+That is the transferable lesson, and it is the same one this project applies
+to its own material. A benchmark's headline number is a statement about a
+protocol. The part of it that names the protocol is not a weakness of the
+number; it is the part that makes the number usable.
+
+## Handworked exercise
+
+**Handworked exercise (not runnable or empirical):** A benchmark's unfiltered
+arm holds 7,650 ligands across 84 targets. Its similarity filter removes
+2,413 rows, and a second rule then removes every target left with fewer than
+ten ligands, leaving an arm of 4,862 ligands across 71 targets. A second
+benchmark compares fifteen generation methods across three paradigms and
+reports that the three-dimensional methods reach the stronger affinities while
+their validity and pose consistency may be weaker. A third benchmark evaluates
+more than twenty approaches, all of them graph-based, under consistent
+conditions. (a) How many ligands does the similarity filter leave, and what
+fraction of the unfiltered arm is that? (b) How many rows does the sparse-target
+rule then remove, and which of the two rules does the larger share of the
+work? (c) State one number you would not report from the second benchmark
+without naming the regime, and one conclusion you would not draw from the
+third benchmark's ordering. (d) For each of the three, name the measurement
+that would turn its finding into a general claim about the field.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+(a) 7,650 − 2,413 = 5,237 ligands, which is 68.5% of the unfiltered arm.
+(b) The sparse-target rule then removes 5,237 − 4,862 = 375 rows, so the
+similarity filter removed about six and a half times as many rows as the
+target rule did. The two rules are not equivalent, and a reader who reports
+"we removed the near-duplicates" has named only the rule that did most of the
+work. (c) From the second benchmark, the affinity figure alone: it is a
+docking-oracle score, so it inherits the docking function's biases, and it
+says nothing about the chemical validity that the same benchmark reports
+separately. From the third benchmark, any statement of the form "graph-based
+models outperform simpler methods", because the comparison it ran was among
+graph-based models and a descriptor or fingerprint baseline was not among
+them. (d) For the first, a second target set built under a different corpus,
+so that the leakage-control result would not be a property of the fourteen
+audited corpora. For the second, experimental affinities rather than docking
+oracle scores, so that the trade-off between affinity and validity would be
+measured against the same quantity a reader would act on. For the third, the
+same protocol run over descriptor and fingerprint baselines, so that the
+ordering would say something about paradigms rather than about the graph-based
+family alone.
+
+</details>
+
+## Sources and next lesson
+
+The original nine source entries were reviewed on 2026-10-24. The PoseBench,
+ProtDBench, MAGI and BioStudyBench additions were checked against full texts
+and linked repositories on 2026-10-25. These sources support the cases' scope,
+findings and release statements, not the constructed exercise or any number
+this project measured.
+
+<div data-case-sources>
+
+- [PLABench repository](https://github.com/BioinfoMachineLearning/PLABench) — Wang and Cheng, *Leakage-controlled benchmarking reveals generalization limits of deep learning for protein-ligand binding affinity prediction*, manuscript in submission, with the data at [doi:10.5281/zenodo.22716174](https://doi.org/10.5281/zenodo.22716174).
+- [A Multi-Paradigm Benchmark of Molecular Docking: From Physics to Co-folding and Hybrid Models](https://doi.org/10.5281/zenodo.19560204) — Xu, Homing, Nakano and Katritch, Zenodo record 19560204, with the code at [AaronXu9/dockStrat](https://github.com/AaronXu9/dockStrat).
+- [Beyond Affinity: A Benchmark of 1D, 2D, and 3D Methods Reveals Critical Trade-offs in Structure-Based Drug Design](https://arxiv.org/abs/2601.14283) — Zheng, Zhang, Tan, Chen, Lu, Zhang, Sun, Zitnik, Fu and Liang, arXiv 2601.14283.
+- [Benchmarking graph-based models for in-silico toxicity prediction in drug discovery](https://arxiv.org/abs/2609.37555) — Suarez-Barro, Lama and Vidal, arXiv 2609.37555, with the framework at [noel.suarez/benchtox](https://gitlab.citius.gal/noel.suarez/benchtox).
+- [ShallowBench: Benchmarking Generative Drug Design Models on Shallow-Pocket Targets](https://arxiv.org/abs/2606.06717) — Reddy and Liu, arXiv 2606.06717.
+- [Beyond Random Splits: Evaluating Drug-Target Affinity Models Under Chemically and Biologically Motivated Distribution Shifts](https://arxiv.org/abs/2610.03456) — Chung and eleven further authors, arXiv 2610.03456.
+- [CryptoBench: cryptic protein-ligand binding sites dataset and benchmark](https://doi.org/10.1093/bioinformatics/btae745) — Skrhak, Novotny, Feidakis, Krivak and Hokska, Bioinformatics 2024, 41, 1, with the scripts at [skrhakv/CryptoBench](https://github.com/skrhakv/CryptoBench) and the dataset at [osf.io/pz4a9](https://osf.io/pz4a9/).
+- [PLINDER: The Protein-Ligand Interactions Dataset and Evaluation Resource](https://doi.org/10.1101/2024.07.17.603955) — Durairaj and twenty-five further authors, bioRxiv 2024, with the code at [plinder-org/plinder](https://github.com/plinder-org/plinder) and the monthly releases at [cameo3d.org/plinder](https://cameo3d.org/plinder/).
+- [CACHE Challenge](https://cache-challenge.org/) — the challenge site, with its round, dates, cost arrangement and data-sharing commitment.
+- [PoseBench](https://github.com/BioinfoMachineLearning/PoseBench) — the MIT-licensed toolkit and scoring-correction notice, with the study [Assessing the potential of deep learning for protein–ligand docking](https://doi.org/10.1038/s42256-025-01160-1), Morehead, Giri, Liu, Neupane and Cheng, Nature Machine Intelligence 8, 32–41 (2026), published online in 2025.
+- [ProtDBench: A Unified Benchmark of Protein Binder Design and Evaluation](https://arxiv.org/abs/2605.04118) — Liu, Ren, Guan, Gong, Sun, Chen and Xiao, arXiv 2605.04118, with its [full text](https://arxiv.org/html/2605.04118v2) and [Apache-2.0 toolkit](https://github.com/congliuUvA/ProtDBench).
+- [From Benchmark to Bench: Can Agents Survive Real-World Drug Discovery?](https://arxiv.org/abs/2610.06411) — Llompart, Guner, Lai, Tibo and Xu, arXiv 2610.06411, with [full-text methods, limitations and availability statements](https://arxiv.org/html/2610.06411v2).
+- [BioStudyBench: Evaluating Agents on Post-Cutoff Biomedical Studies](https://arxiv.org/abs/2610.07614) — Li, Karim and Gensbigler, arXiv 2610.07614, with [full-text scoring definitions and limitations](https://arxiv.org/html/2610.07614v1).
+
+</div>
+
+Continue to [Candidate nomination](/learn/candidate-nomination/evidence-to-validation/)
+to carry a graded protocol into the decision a nomination rests on. Original
+lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-10-25.

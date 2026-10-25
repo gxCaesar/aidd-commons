@@ -1,0 +1,56 @@
+id: tool-proteinflow
+name: ProteinFlow
+kind: software
+summary: Python pipeline that selects protein structures from the PDB or SAbDab, computes structural annotations, clusters chains by sequence or CDR similarity, and partitions the result into train, validation and test datasets for deep-learning work.
+canonical_url: https://github.com/adaptyvbio/ProteinFlow
+identifiers:
+  - scheme: documentation
+    value: "ProteinFlow documentation"
+    url: https://adaptyvbio.github.io/ProteinFlow/
+  - scheme: dataset
+    value: "Browser for the precomputed ProteinFlow dataset releases"
+    url: https://proteinflow-datasets.s3.eu-west-1.amazonaws.com/index.html
+stages: [data-intake, evaluation]
+modalities: [protein, protein-structure, protein-complex]
+tasks: [structure-dataset-construction]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license, repository] }
+openness:
+  inference_code: { value: available, evidence: [repository, documentation] }
+  training_code: { value: not_applicable, evidence: [repository, documentation] }
+  weights: { value: not_applicable, evidence: [repository] }
+  architecture: { value: not_applicable, evidence: [repository] }
+  data_recipe: { value: available, evidence: [documentation] }
+  training_data: { value: available, evidence: [documentation] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: BSD-3-Clause
+    scope: the proteinflow package and the data it releases, as the README states; the root LICENSE file carries the standard BSD 3-Clause text with "Copyright (c) 2023, adaptyvbio" and no separate clause for the data, and the terms of the upstream PDB and SAbDab records are not restated
+    evidence: [license, repository]
+evidence:
+  - id: repository
+    url: https://github.com/adaptyvbio/ProteinFlow
+    label: ProteinFlow repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, acknowledgements, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/adaptyvbio/ProteinFlow/main/README.md
+    label: ProteinFlow README (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/adaptyvbio/ProteinFlow/main/LICENSE
+    label: ProteinFlow BSD 3-Clause licence file (reviewed 2026-10-21)
+    supports: []
+  - id: documentation
+    url: https://adaptyvbio.github.io/ProteinFlow/
+    label: ProteinFlow documentation site (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+caveats:
+  - The README states that "The proteinflow package and data are released and distributed under the BSD 3-Clause License", while the LICENSE file itself is the standard BSD 3-Clause text without a data-specific clause, and the upstream terms of the PDB and SAbDab structures it repackages are not restated.
+  - The documentation lists precomputed releases dated up to 2023-12-21, so the packaged datasets are dated snapshots rather than current PDB contents and must be regenerated to track new structures.
+  - The documentation names no licence and describes the project only as open source, so the licence above rests on the repository README and LICENSE file.
+  - The documentation lists a default test proportion of 0.05 in the API defaults while the worked example passes a test split of 0.5, so the split recipe has to be read from the code before a split is reproduced.
+  - Model training is outside this repository, which links a separate ProteinFlow-models repository for a modelling use case, and the documentation mentions metric functionality that is installed only through the processing extra without naming an evaluation entry point.
+acknowledgements:
+  - The precomputed datasets are generated from Protein Data Bank and SAbDab structures, and the terms of those upstream sources are outside the licence scope recorded here.
+last_verified: "2026-10-21"

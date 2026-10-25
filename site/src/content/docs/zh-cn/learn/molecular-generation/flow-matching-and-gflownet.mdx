@@ -1,0 +1,182 @@
+---
+title: 流匹配与 GFlowNet 目标
+description: 从训练目标、资产可用性和许可范围出发，阅读注明日期的流匹配与 GFlowNet 产物记录。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Flow matching and GFlowNet objectives](/learn/molecular-generation/flow-matching-and-gflownet/)。
+
+<LessonProgress lessonId="molecular-generation/flow-matching-and-gflownet" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+在读完[流模型与受约束分子搜索](/zh-cn/learn/molecular-generation/flows-and-constrained-search/)之后，这份注明日期的阅读材料解释两件事：当生成模型被训练成把一个简单分布搬运到目标分布上时发生了什么改变，以及当它被训练成按奖励比例采样对象时又发生了什么改变。你将阅读十三份资源记录，弄清每一份就目标、已发布资产与许可条款确立了哪些内容，并把目标函数与产物当作两个分开的问题。请先读[生成模型机制](/zh-cn/learn/molecular-generation/generative-model-mechanisms/)。
+
+本课是带手算的来源阅读。只阅读了目录记录及其引用的页面。没有克隆任何仓库，没有下载任何数据集，没有加载任何检查点，也没有执行任何训练或采样命令。没有运行、复现或重新实现任何方法。
+
+## 目标函数决定采样器访问分布的哪一部分
+
+生成模型有一个目标分布，训练规则决定采样器最终收敛到哪一个。
+
+在最大似然目标下，目标就是数据分布 `p_data`，因此采样器复现语料，连同语料很少覆盖的区域一起复现。在流匹配目标下，目标仍然是数据分布，只是通过沿一条选定的概率路径搬运一个简单基础分布来达到。路径决定中间状态是什么、需要多少步求解，但不决定采样器最终落在哪个分布上。在 GFlowNet 目标下，目标与奖励 `R` 成比例，在终止状态上归一化，因此采样器会集中在奖励偏好的状态上，无论语料里是否有很多这样的状态。
+
+由此有两条结论适用于任何阅读候选列表的人。最大似然采样器与奖励比例采样器访问的是空间中不同的部分，因此它们的输出不是来自同一个总体的两次抽样，若不指明目标分布就不能合并或比较。而且奖励比例采样器的有效性完全依赖奖励是否忠实，因为目标函数里没有任何东西把一个高奖励状态与一个真实存在、稳定、可合成的对象绑定起来。
+
+目标函数也决定两个模型之间的比较可以意味着什么。在同一语料、同样采样器预算下、采用同一目标函数训练的两个模型可以比较。采用不同目标函数的两个模型是在回答不同的问题，其中一个更好的分数不能迁移到另一个。
+
+## 流匹配目标
+
+流匹配模型接收一个基础样本和一个时间，返回一个速度，由求解器沿路径从起点积分到终点。训练从基础分布 `p_0` 到数据分布 `p_1` 选一条概率路径，在两者之间选一个耦合，然后要求网络回归该路径的条件速度。对直线路径 `x_t = (1-t) x_0 + t x_1`，条件速度是常数 `x_1 - x_0`，因此一个配对样本的训练目标是一个不随时间变化的位移。对耦合取边缘化得到与匹配边缘速度场相同的最优解，因此配对不必是精确的最优传输映射。
+
+推断阶段积分所学的速度场。求解器步数与积分格式是影响代价和数值误差的选择，不改变目标函数。
+
+离散变体把连续路径换成离散状态上的调度，所学的对象变成每步在替换候选上的分布，而不是速度。[DeFoG](https://github.com/manuelmlmadeira/DeFoG)把离散流匹配用于图生成。[FragFM](https://github.com/lee-jwon/FragFM)以分层方式应用它，先生成随机片段袋，再做无损的由粗到细的原子级重建。采样器此时是在链上行走，而不是求解常微分方程。
+
+有两条限制应当紧挨着目标函数陈述。它不编码任何奖励，因此一个在语料上训练的流匹配模型没有办法在语料内部偏好更好的分子。它也不使解码出的对象有效，有效性来自表示以及解码之后运行的检查。
+
+## GFlowNet 目标
+
+GFlowNet 工作在一个由偏序组织的状态环境上，典型情况是一组不断增长的分子片段。前向策略选择把状态从空态推向终止态的动作，反向策略定义在反向转移上，奖励附着于终止状态。轨迹平衡损失要求两个策略彼此一致，
+
+`L_TB = (log Z + sum_t log P_F(s_{t+1} | s_t) - sum_t log P_B(s_t | s_{t+1}))^2`
+
+其中 `Z` 是一个学到的归一化项，两个求和各自遍历一条轨迹的动作。当前后向策略一致时，采样过程的终止分布与奖励成比例，而目标函数从不在整个状态空间上求值 `R(x)/Z`。相对轨迹平衡变体比较的是两条轨迹彼此，而不是与 `Z` 比较。
+
+因此语料不是目标。GFlowNet 可能偏好训练语料中很少出现的片段，因为设定目标分布的是奖励而不是语料。这既让这一族对目标导向生成有吸引力，也意味着 GFlowNet 的失效模式就是其奖励的失效模式。
+
+## 两个目标背后的库
+
+三份库记录位于这两个族之下，它们不能互换。
+
+[GFNOrg/gflownet仓库](https://github.com/GFNOrg/gflownet)是GFlowNet论文的最小PyTorch实现，覆盖网格、主动学习和分子实验。它的MIT许可只涵盖仓库源代码，需保留版权声明，而随仓库附带的300,000个分子文件没有来源、许可或再分发条款。README称该仓库是从内部的Mila Molecule Discovery仓库中抽出的最小可运行版本，因此其完整性未经核实。没有列出预训练检查点。
+
+[GFNOrg/torchgfn仓库](https://github.com/GFNOrg/torchgfn)是用于原型化GFlowNet算法的PyTorch库，把环境、采样与函数逼近器参数化分开，并提供离散与连续的示例环境。其源代码采用Apache-2.0。README列出示例环境却没有列出可下载数据集，仓库里有一个benchmark目录却没有展示任何benchmark结果，因此该benchmark代码测量什么未经核实。
+
+这两者是不同项目、不同许可，记录把它们分开。TacoGFN与CGFlow记录提到Recursion仓库的第三个GFlowNet库，它同样不同于上面两个仓库。
+
+[facebookresearch/flow_matching仓库](https://github.com/facebookresearch/flow_matching)是用于连续与离散流匹配算法的PyTorch库，带有图像和文本两个模态的示例。它的访问级别是research_only，因为代码采用CC BY-NC 4.0，该许可只授予NonCommercial用途下的改编与再分发，因此该库不能用于商业工作。README声明这个版本不发布任何预训练模型，示例模型必须从头训练，示例数据集只给出名称而没有声明许可条款。它的模态是图像和文本，因此它是通用目标库而非分子库。
+
+## 流匹配目标下的分子记录
+
+五份记录位于流匹配目标之下，其中只有一份没有发布权重。
+
+[FlowMol3](https://github.com/dunni3/FlowMol)是用于无条件三维从头小分子生成的流匹配模型，随仓库一起发布了源代码、GEOM-Drugs训练语料和可下载的已训练检查点。它的MIT许可只涵盖仓库源代码，需保留声明。GEOM-Drugs语料单独以CC BY 4.0发布并要求署名，见[GEOM-Drugs Zenodo记录](https://zenodo.org/doi/10.5281/zenodo.19150583)，而已训练检查点没有声明许可。记录把推断代码、训练代码、权重和训练数据标为可用，把架构、数据配方和评估代码标为未核实。已训练模型索引没有为检查点列出许可、署名要求或使用条件，该语料被描述为拆分由MiDi创建的GEOM子集，因此并不蕴含任何其他GEOM发布版本的成员构成。
+
+[FragFM](https://github.com/lee-jwon/FragFM)是分层的片段级离散流匹配框架。它的MIT许可只涵盖仓库源代码，已发布的MOSES、GuacaMol、ZINC250k和NPGen数据以及下载的检查点都没有单独的许可声明。原始与处理后的数据归档，以及由粗到细的自编码器和流生成器检查点，都通过Google Drive分发，没有声明许可或使用条件。README把该工作与ICLR 2026关联，除了这一关联之外没有核查任何接收文本。
+
+[DeFoG](https://github.com/manuelmlmadeira/DeFoG)是用于图生成的离散流匹配的PyTorch实现，在标准分子数据集上提供训练与采样脚本，并发布了检查点。MIT只涵盖仓库源代码，README对QM9、ZINC、MOSES、GuacaMol以及其他列出数据集都没有声明许可或使用条款。发布的检查点被描述为重新训练后放在第三方网盘上的模型，没有许可，蛋白质与EGO数据集被列为可按需索取且未声明条款。
+
+[MolFM](https://github.com/GenSI-THUAIR/MolFM)实现用于三维分子生成的等变流匹配与混合概率传输，训练与采样代码位于docker和sampling目录下。仓库没有列出LICENSE文件，也没有声明任何许可字符串，因此其访问级别与许可条款仍未核实。README没有给出训练数据集也没有给出检查点，因此从打开的页面既无法确立训练语料，也无法确立任何已发布权重。它的克隆命令指向另一个仓库路径，本次没有比较两者，NeurIPS 2023的归属依据仓库README与海报页，因为OpenReview条目要求浏览器验证而未被打开。
+
+[InstaFlow](https://github.com/gnobitab/InstaFlow)是使用rectified flow构建的一步文生图生成器，训练所用的文本、噪声与图像三元组由预训练的Stable Diffusion 1.5生成。它的仓库源代码是MIT，但预训练权重是CC BY-NC 4.0，并且额外受从Stable Diffusion 1.5继承的CreativeML Open RAIL-M许可约束，因此既不授予商业使用，也不授予移除继承使用限制的权利。README没有给出训练语料，并且要求用户在复现论文的MS COCO FID数字时关闭安全检查器，因此那些数字并非在默认采样路径下产生。InstaFlow不是分子模型。它出现在本阅读中，是因为它是这一组已发布产物里唯一一个代码许可与权重许可互相冲突的产物。
+
+## GFlowNet 目标下的分子记录
+
+其中三份记录直接构建GFlowNet形式。第四份把流匹配扩展到连续组合设定，并建立在其中两份之上，因此它被放在这里是因为它依赖什么，而不是因为它属于哪一族。
+
+[AGFN](https://github.com/diamondspark/AGFN)，即Atomic GFlowNets项目，以廉价奖励预训练并微调原子级GFlowNet以做分子图生成，使用轨迹平衡与相对轨迹平衡目标。MIT只涵盖仓库源代码，并未声明覆盖预训练检查点或Enamine化合物。AGFN-large检查点在6.75 million个Enamine化合物上训练，README没有给出该集合的来源、许可或使用条款。只发布了AGFN-large检查点，README声明较小AGFN模型的权重仍将提供。
+
+[RxnFlow](https://github.com/SeonghwanSeo/RxnFlow)是用于合成感知药物设计的生成流网络，同时构建分子与反应路径，在building-block库上生成多样的高奖励候选。它的MIT许可只涵盖仓库源代码，其环境所依赖的ZINC、eMolecules或Enamine building block没有声明条款。README没有宣传任何可下载的预训练检查点，采样示例指向的是本地训练产生的检查点。示例库附带5,000个ZINC building block。该仓库要求同时引用ICLR 2025论文和一篇2026年的bioRxiv预印本，因此两个引用不可互换。
+
+[TacoGFN](https://github.com/tsa87/tacogfn)是面向结构药物设计的条件于目标的GFlowNet，以蛋白口袋为条件生成分子，奖励结合亲和力、类药性和可合成性。MIT只涵盖仓库源代码，CrossDocked2020与ZINCDock-15M数据集，以及承载已训练权重、药效团和口袋图的Figshare包，都没有声明条款。代码修改的是Recursion维护的GFlowNet库。该仓库还可经由TacoGFN-SBDD路径访问，CGFlow的README链接的就是该路径。
+
+[CGFlow](https://github.com/tsa87/cgflow)把流匹配扩展到连续组合生成，针对给定蛋白靶点联合设计可合成分子、其合成路径和三维结合位姿，它建立在RxnFlow与TacoGFN之上。MIT只涵盖仓库源代码，CrossDocked2020口袋以及托管在Google Drive上的检查点都没有声明条款。README把Plinder位姿模型检查点标为将要提供，因此没有确立任何Plinder权重已发布。它的ICML 2025归属仅依据仓库README，因为OpenReview论坛要求浏览器验证而未被打开。
+
+## 流模型上的强化学习
+
+[Graph-GRPO](https://github.com/Zhubaoheng/Graph-GRPO)是在线强化学习框架，用可微的解析转移概率和迭代精化策略，把图流模型与可验证奖励对齐。它的仓库源代码是MIT，发布的检查点集合标有Apache-2.0标识符，没有附加条件且README为空，因此权重许可的适用范围仅以该标识符为限。README对ZINC250k、Planar、Tree和SBM数据集都没有声明许可或使用条款。它还把该模型描述为DeFoG式的离散流模型，可以直接使用已发布的DeFoG权重，因此两套检查点不是彼此独立的产物。
+
+目标函数在这一步发生改变。一个先按分布匹配训练、再用策略优化微调的流模型，不再按数据密度或按奖励成比例地采样。策略目标要求采样器集中在高奖励状态上，这与预训练建立的目标分布不同。记录没有确立终止分布移动了多远，也没有给出与基座检查点的匹配比较。比较这类模型时，读者必须说明基座检查点、奖励函数和优化预算，因为微调模型继承基座模型的资产，而不是替换它们。
+
+## 评估依赖于什么
+
+分布式目标的评估依赖语料和分割。奖励驱动目标的评估依赖奖励定义和检查器。策略优化模型的评估还依赖基座检查点与预算。记录让我们能说出这些依赖在哪里被命名、在哪里没有。
+
+FlowMol3给出了它的语料，即拆分由MiDi创建的GEOM-Drugs子集，其评估代码仍未核实。FragFM把MOSES、GuacaMol、ZINC250k和NPGen列为已发布数据，NPGen背后的COCONUT数据库没有声明条款，它的记录带有一条指向MOSES分布基准的关联却没有任何来自该基准的结果，其评估代码仍未核实。DeFoG列出QM9、ZINC、MOSES和GuacaMol，把蛋白质与EGO数据集列为可按需索取且未声明条款，评估代码保持未核实。AGFN把它的奖励描述为廉价的，却为分子层面的评估记录了指标、分割或实体清单。TacoGFN的奖励结合了结合亲和力、类药性和可合成性，因此每一项的定义都决定哪些候选看起来好，它的数据集是CrossDocked2020与ZINCDock-15M。CGFlow把靶点、分子、合成路径和三维位姿加进输出约定，因此评估必须说明每一部分如何评分。InstaFlow显示采样配置进入了数字，因为README要求在复现MS COCO FID数字时关闭安全检查器，所以那些数字并非在默认采样路径下产生。
+
+这些记录没有为它们列出的数据集携带分割规则、留出实体清单或指标表，因此这里的评估依赖只能被命名，不能被读出。
+
+## 按维度记录开放状态
+
+以下七列把目录中的不同维度分开。可用表示被引用的记录确立了访问或文档证据，不代表本课执行过资产。未核实表示记录没有确立该维度。
+
+| 资源 | 推断代码 | 训练代码 | 权重 | 架构 | 数据配方 | 训练数据 | 评估代码 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| flow_matching | 可用 | 可用 | 不可用 | 未核实 | 未核实 | 未核实 | 未核实 |
+| GFNOrg/gflownet | 可用 | 可用 | 不可用 | 未核实 | 未核实 | 未核实 | 可用 |
+| torchgfn | 可用 | 可用 | 不可用 | 未核实 | 未核实 | 未核实 | 可用 |
+| FlowMol3 | 可用 | 可用 | 可用 | 未核实 | 未核实 | 可用 | 未核实 |
+| FragFM | 可用 | 可用 | 可用 | 未核实 | 未核实 | 未核实 | 未核实 |
+| DeFoG | 可用 | 可用 | 可用 | 未核实 | 未核实 | 未核实 | 未核实 |
+| MolFM | 可用 | 可用 | 不可用 | 未核实 | 未核实 | 未核实 | 未核实 |
+| InstaFlow | 可用 | 可用 | 可用 | 未核实 | 未核实 | 未核实 | 未核实 |
+| AGFN | 可用 | 可用 | 可用 | 未核实 | 未核实 | 未核实 | 未核实 |
+| RxnFlow | 可用 | 可用 | 不可用 | 未核实 | 未核实 | 未核实 | 未核实 |
+| TacoGFN | 可用 | 可用 | 可用 | 未核实 | 未核实 | 未核实 | 未核实 |
+| CGFlow | 可用 | 可用 | 可用 | 未核实 | 未核实 | 未核实 | 未核实 |
+| Graph-GRPO | 可用 | 可用 | 可用 | 未核实 | 未核实 | 未核实 | 未核实 |
+
+两个模式承担了分量。架构与数据配方在十三份记录中全部未核实，因此没有读者能从这些记录重建训练配方。评估代码在其中十一份未核实，两个例外是两个GFlowNet库，其中一个根本没有展示任何benchmark结果。
+
+## 匹配比较需要什么
+
+十三份记录中没有一份带有共享协议下的比较，因此本阅读不给任何方法排名。单份记录内部可用的最强比较，是AGFN在同一条预训练与微调流程上并列trajectory balance与relative trajectory balance，而该记录不携带它们的数字。
+
+这两个族之间的匹配比较需要固定语料及其快照、分割与留出实体、指标及其分母、有效性检查器与身份规则、以求解器步数或轨迹数计的采样器预算、含每一项定义的奖励定义、任何经过微调模型的基座检查点，以及使用每个数据集和权重文件的许可。这三份记录已经说明最后一项为何与前面各项分开。Graph-GRPO直接使用已发布的DeFoG权重，因此Graph-GRPO与DeFoG的比较并不独立。CGFlow建立在RxnFlow与TacoGFN之上，因此CGFlow与RxnFlow的比较也不独立。TacoGFN与CGFlow的代码还修改了Recursion维护的GFlowNet库，那是两个GFNOrg项目之外的第三个库。
+
+## 已解案例
+
+本案例的全部数值均为**构造的教学数值**。一个生成器的任务是从三个候选状态A、B、C中提出一个。已接受记录的语料有100条，其中90条是A，5条是B，5条是C，因此最大似然目标是A占90%，B和C各占5%。奖励返回 `R(A) = 1`、`R(B) = 3`、`R(C) = 6`，其在三个终止状态上的归一化和为10，因此奖励比例目标是A占10%，B占30%，C占60%。
+
+| 目标 | A | B | C |
+| --- | ---: | ---: | ---: |
+| 最大似然 | 90% | 5% | 5% |
+| 奖励比例 | 10% | 30% | 60% |
+
+两个采样器访问空间中不同的部分。奖励比例目标把90%的质量放在语料欠覆盖的两个状态上，因为B和C合计只携带10%的语料质量。在100个样本上，期望计数对似然采样器是90、5和5，对奖励采样器是10、30和60。奖励采样器最常返回C，而语料中只有5个C的例子。要么语料在奖励喜欢的区域很稀薄，要么奖励在那里是错的，而数样本无法区分这两种情况。
+
+案例中与流匹配相关的一半是一个配对样本。设基础样本为 `x_0 = 0.4`，数据样本为 `x_1 = -1.2`。直线条件路径是 `x_t = (1-t) x_0 + t x_1`，展开为 `x_t = 0.4 - 1.6 t`，因此条件速度是常数 `x_1 - x_0 = -1.6`。在 `t = 0.25` 时状态是 `x_t = 0`，在 `t = 0.75` 时状态是 `x_t = -0.8`。两个时刻的回归目标都是 `-1.6`。速度是网络被要求预测的对象，路径的选择是改变模型经过哪些状态以及需要多少求解器步的建模决策，而终止分布仍然是数据分布。
+
+## 独立练习
+
+第二个**构造**案例使用一个有100条记录的语料，其中A占50条，B占30条，C占20条，奖励返回 `R(A) = 2`、`R(B) = 1`、`R(C) = 4`。流匹配这一侧，设基础样本为 `x_0 = -0.5`，数据样本为 `x_1 = 2.5`。计算最大似然目标与奖励比例目标，指出各自最常访问的状态以及两者差距最大的状态，然后计算 `x_1 - x_0`、`t = 0.2` 与 `t = 0.6` 时的状态 `x_t`，以及各时刻的回归目标。说出两项记录，避免之后的读者把这个比较当成实证结果。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+最大似然目标是A占50%，B占30%，C占20%。奖励比例目标是A占28.57%，B占14.29%，C占57.14%。似然采样器最常访问A，奖励采样器最常访问C。最大的差距在C，奖励目标比似然目标高37.14个百分点，而在B上差距为负。
+
+流匹配这一侧，`x_1 - x_0 = 3.0`，因此直线路径是 `x_t = -0.5 + 3.0 t`。`t = 0.2` 时状态是 `x_t = 0.1`，`t = 0.6` 时是 `x_t = 1.3`。两个时刻的回归目标都是 `3.0`，因为直线路径速度恒定。
+
+有用的记录包括语料快照及其成员规则、写明归一化和的奖励定义、判定哪些状态算同一个的身份规则、采样器预算，以及两个目标均为构造这一事实。这些数值都不确立任何真实分子的活性、有效性或可合成性。能阻止后来读者误解的两项记录，是构造数值声明和本课未运行任何方法这一声明。
+
+</details>
+
+## 本材料未展示什么
+
+这些记录确立的是截至2026-10-21所审阅的部分资产与许可声明。它们没有确立已复现的模型、已执行的基准测试、任何被链接数据集或检查点的无限制复用、十三份资源中任意两份之间的匹配比较，也没有确立任一目标函数对化学结局的实测效应。
+
+有三条边界成立。架构与数据配方在每份记录中都是未核实，因此这里无法重建训练配方。十三份记录中有八份发布权重，其中只有InstaFlow和Graph-GRPO检查点集合为它们声明了许可标识符，而FlowMol3的检查点、FragFM的Google Drive文件、DeFoG的第三方检查点、AGFN的预训练检查点、TacoGFN的Figshare包和CGFlow的Google Drive文件都没有。驱动GFlowNet族的奖励定义位于代码和论文中，而不是记录中，因此奖励比例性质是所述目标函数的性质，不是已发布检查点的实测行为。
+
+## 来源
+
+来源页面于2026-10-21审阅。各链接来源保留自己的许可及适用范围。
+
+- [GFNOrg/gflownet仓库](https://github.com/GFNOrg/gflownet)，[arXiv 2106.04399](https://arxiv.org/abs/2106.04399)
+- [GFNOrg/torchgfn仓库](https://github.com/GFNOrg/torchgfn)，[arXiv 2305.14594](https://arxiv.org/abs/2305.14594)
+- [facebookresearch/flow_matching仓库](https://github.com/facebookresearch/flow_matching)，[arXiv 2412.06264](https://arxiv.org/abs/2412.06264)
+- [FlowMol仓库](https://github.com/dunni3/FlowMol)，[arXiv 2508.12629](https://arxiv.org/abs/2508.12629)
+- [FragFM仓库](https://github.com/lee-jwon/FragFM)，[arXiv 2502.15805](https://arxiv.org/abs/2502.15805)
+- [DeFoG仓库](https://github.com/manuelmlmadeira/DeFoG)，[arXiv 2410.04263](https://arxiv.org/abs/2410.04263)
+- [AGFN仓库](https://github.com/diamondspark/AGFN)，[arXiv 2503.06337](https://arxiv.org/abs/2503.06337)
+- [RxnFlow仓库](https://github.com/SeonghwanSeo/RxnFlow)，[arXiv 2410.04542](https://arxiv.org/abs/2410.04542)
+- [TacoGFN仓库](https://github.com/tsa87/tacogfn)，[arXiv 2310.03223](https://arxiv.org/abs/2310.03223)
+- [CGFlow仓库](https://github.com/tsa87/cgflow)，[ICML 2025 OpenReview条目](https://openreview.net/forum?id=4aXfSLfM0Z)
+- [Graph-GRPO仓库](https://github.com/Zhubaoheng/Graph-GRPO)，[arXiv 2603.10395](https://arxiv.org/abs/2603.10395)，[检查点集合](https://huggingface.co/BaohengZhu/Graph-GRPO-checkpoints)
+- [InstaFlow仓库](https://github.com/gnobitab/InstaFlow)，[arXiv 2309.06380](https://arxiv.org/abs/2309.06380)，[模型卡](https://huggingface.co/XCLIU/instaflow_0_9B_from_sd_1_5)
+- [MolFM仓库](https://github.com/GenSI-THUAIR/MolFM)，[NeurIPS 2023海报页](https://neurips.cc/virtual/2023/poster/70795)
+
+Last reviewed: 2026-10-22.

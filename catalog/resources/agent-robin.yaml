@@ -1,0 +1,45 @@
+id: agent-robin
+name: Robin
+kind: agent
+summary: A multi-agent system for automated small-molecule discovery that runs search, design and analysis in one loop.
+canonical_url: https://github.com/Future-House/robin
+identifiers:
+  - scheme: documentation
+    value: "Robin repository and usage instructions"
+    url: https://github.com/Future-House/robin
+stages: [design, evaluation]
+modalities: [small-molecule, scientific-text]
+tasks: [tool-using-agent, molecular-generation]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: open_source, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: The source code of the repository, per the LICENSE file. It does not cover the models the agents call, the chemistry services, or any dataset the system consumes.
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/Future-House/robin
+    label: Robin repository, re-opened 2026-10-21
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/Future-House/robin/main/README.md
+    label: Robin README, re-opened 2026-10-21
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/Future-House/robin/main/LICENSE
+    label: Robin Apache License 2.0 file, re-opened 2026-10-21
+    supports: []
+caveats:
+  - The system depends on external model and chemistry services whose terms this repository licence does not grant.
+  - The released artefact is the system, not a frozen evaluation with a protocol this registry can inspect.
+acknowledgements: []
+last_verified: "2026-10-21"

@@ -1,0 +1,192 @@
+---
+title: Choosing biologics-design resources
+description: Select antibody, peptide, epitope, and therapeutic-reference resources according to the biological object and the claim they can support.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/modality-resource-guide" />
+<ScrollableRegions />
+
+## Start with the construct, not the database name
+
+Read [antibody and peptide design with negative selection](/learn/biologics-design/antibody-peptide-design/)
+first. A biologic is not interchangeable “sequence.” An antibody
+question can concern a variable domain, paired chains, format, antigen state,
+and discovery history. A peptide question can concern a sequence, an epitope,
+presentation, modification, or a functional assay. An oligonucleotide or
+degrader question adds delivery, linkage, target, and cellular context. Resource
+choice must therefore begin with a statement of the object and the evidence
+needed for the next decision.
+
+Write five fields before retrieving anything: modality and construct; input
+entity; desired output entity; inclusion and exclusion conditions; and the
+claim that the output cannot establish. For example, “find experimentally
+determined antibody–antigen structures near this paired variable-region query”
+is a structure retrieval task. “Find natural repertoire sequences from human
+IgG studies” is a distributional sequence task. Neither establishes binding,
+developability, patent freedom, clinical effect, or an optimal design.
+
+## Four resources, four distinct evidence contracts
+
+<table>
+  <thead>
+    <tr>
+      <th>Question and input</th>
+      <th>Returned entity</th>
+      <th>Resource</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        Which experimentally determined antibody or antibody-complex structures
+        meet a structural or sequence query?
+      </td>
+      <td>
+        Annotated structure records, heavy-light and antibody-antigen pairings,
+        and downloadable structures.
+      </td>
+      <td>
+        <a href="/atlas/db-sabdab2/">SAbDab2</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Which observed antibody repertoire sequences meet donor and repertoire
+        metadata constraints?
+      </td>
+      <td>
+        Study and data-unit sequence records with fields such as species,
+        isotype, chain, tissue, disease, and vaccination context.
+      </td>
+      <td>
+        <a href="/atlas/db-oas/">Observed Antibody Space</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Which WHO-recognised antibody- or single-domain-antibody-derived
+        therapeutics have released sequence and structural-coverage records?
+      </td>
+      <td>
+        Therapeutic entries searchable by INN, attributes, or variable-region
+        similarity.
+      </td>
+      <td>
+        <a href="/atlas/db-thera-sabdab/">Thera-SAbDab</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        What reported B-cell, T-cell, MHC, antigen, or receptor evidence is
+        associated with a defined epitope question?
+      </td>
+      <td>Curated immunological records and downloadable entity tables.</td>
+      <td>
+        <a href="/atlas/db-iedb/">Immune Epitope Database</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+SAbDab2 is the structural choice. It collects publicly available experimentally
+determined antibody structures and complexes, preserving experimental metadata,
+pairings, construct information, IMGT numbering, and antigen annotations. Its
+own download documentation warns that broad, unprocessed downloads can contain
+low-resolution structures, residue anomalies, and pathogenic antibodies. Define
+a resolution, construct, antigen, and leakage policy before calling the
+resulting files an ML dataset. Separately, the
+[SAbDab2 homepage](https://sabdab.opig.stats.ox.ac.uk/) explicitly provides a
+preprocessed AI/ML training release with standard train/test splits through
+[Zenodo](https://doi.org/10.5281/zenodo.20083994). Inspect its release and split
+definition before reuse: a supplied split does not establish independence for
+every new antigen or sequence-generalization question.
+
+Observed Antibody Space (OAS) is the repertoire-distribution choice. It organizes
+sequences into study-level data units and exposes donor and experimental context
+such as species, chain, isotype, tissue source, disease, and vaccination. OAS
+documentation says its filters are non-exclusive and that bulk downloads can
+exceed 700 GB. A metadata filter is a scientific cohort definition, not merely
+a storage convenience.
+
+Thera-SAbDab is the therapeutic-reference choice. Its searchable object is a
+WHO-recognised antibody or single-domain-antibody-derived therapeutic with a
+released sequence. It can link a name, format, target, development attribute,
+sequence-similarity query, and available structural coverage. It is valuable for
+checking a candidate against disclosed therapeutic space, but it cannot establish
+that an undisclosed programme does not exist or that a similar sequence is an
+infringement. Its scope is explicitly limited to released sequences.
+
+IEDB is an epitope-evidence choice rather than an antibody-structure repository.
+It exports curated experimental and submitted data across epitope, antigen,
+B-cell, T-cell, MHC ligand, and receptor entities, and states CC BY 4.0 for
+database exports. For a peptide or vaccine-related hypothesis, retain the assay
+type, organism, response context, experimental versus submitted provenance, and
+the exact epitope or antigen relationship. An epitope record does not alone
+prove immunogenicity of a new construct in a new population.
+
+This set does not present a primary registry for
+oligonucleotide or degrader design. Those modalities need their own construct,
+delivery, target, and cellular-context contracts. Do not silently substitute an
+antibody sequence or epitope resource and claim coverage of an oligonucleotide
+or induced-proximity design problem.
+
+## Constructed case: map a candidate to the right evidence
+
+This example is **constructed for teaching**. A team has paired heavy- and
+light-chain variable-region sequences for an antibody intended to recognize
+receptor R. They want one reference set for structural plausibility, one for
+therapeutic neighbourhood inspection, and one for natural-sequence distribution.
+They also wonder whether a peptide epitope reported for R creates an immune-risk
+claim.
+
+First use [SAbDab2](/atlas/db-sabdab2/) to find experimentally determined
+structures similar to the paired sequence, recording query region, identity
+threshold, antibody format, antigen state, and structure quality. This returns
+templates and annotations, not a structure of the candidate. Next use
+[Thera-SAbDab](/atlas/db-thera-sabdab/) to inspect released therapeutic sequences
+near the variable region, keeping its WHO-recognised and released-sequence scope
+visible. Use [OAS](/atlas/db-oas/) only for a separately specified natural-
+repertoire comparison, such as human heavy-chain sequences from a named tissue
+and isotype; never merge it with therapeutic sequences without cohort labels.
+Finally, use [IEDB](/atlas/db-iedb/) to inspect the reported peptide epitope,
+assay, organism, and response context. That record motivates a bounded
+immunological question; it does not establish that this antibody is
+immunogenic, binds that epitope, or has a clinical risk.
+
+## Independent resource-selection question
+
+You receive two requests: (A) make a nonredundant training collection of
+experimentally determined antibody–antigen complexes; (B) compare CDR-H3
+length distributions between vaccinated and unvaccinated human repertoire
+studies. Which resource serves each request, which metadata must be retained,
+and what would be a category error?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+For A, start with [SAbDab2](/atlas/db-sabdab2/) and retain the PDB or SAbDab2
+identifier, experimental structure provenance, antibody and antigen chains,
+construct and antigen type, quality filters, paired-chain status, and the rule
+used to remove related structures across the final split. For B, use
+[OAS](/atlas/db-oas/) and retain study and data-unit identity, donor linkage
+where present, species, chain, isotype, tissue, vaccine field, sequence
+processing state, and the definition of CDR-H3 length. A category error is to
+use SAbDab2 structures as a representative human repertoire sample, or to call
+an OAS distribution evidence that a sequence binds a specified antigen.
+
+</details>
+
+## Source and access notes
+
+The four Atlas entries link official pages opened on 2026-09-09. They distinguish
+retrieval and specific asset licences. SAbDab2 states CC BY 4.0 for its data;
+[OAS](https://opig.stats.ox.ac.uk/webapps/oas/) also states CC BY 4.0, as does
+IEDB for its database exports. These statements do not establish a source-code
+licence or rights over every linked third-party asset. Unknown fields remain
+unknown. They organize evidence,
+not protocols, recommendations, or confidential development maps.
+
+Last reviewed: 2026-09-09.

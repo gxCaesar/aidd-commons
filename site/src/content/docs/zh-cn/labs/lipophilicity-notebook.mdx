@@ -1,0 +1,58 @@
+---
+title: 亲脂性：划分、拟合与检查
+description: 一个以 notebook 为入口的可修改练习，在公开数据上学习考虑 scaffold 的 logD 回归流程。
+---
+
+import LabDownloads from "../../../../components/LabDownloads.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+英文原文：[Lipophilicity: split, fit, inspect](/labs/lipophilicity-notebook/)。
+
+<ScrollableRegions />
+<LabDownloads lab="lipophilicity-notebook" />
+
+## 从 notebook 开始
+
+第一次使用 notebook？先读[实践路线与执行指南](/zh-cn/labs/notebook-guide/)。
+[分子检查器](/zh-cn/labs/molecule-representation-inspector/)和
+[合成拟合 notebook](/zh-cn/learn/machine-learning/student-modelling-sandbox/)
+提供分子表示及 train/validation/test 的前置练习。
+
+模式：可修改的学生练习。它是在公开教学表上的一次新本地运行，不是阅读作者冻结评估的界面。运行时，notebook 会下载公开的 `Lipophilicity.csv`，在当前环境安装已固定的 Python 包，并且只在你的运行时或工作目录写入图和报告。它不会上传你的数据，也不使用自定义后端。
+
+默认入口是 [Google Colab](https://colab.research.google.com/)。下载上方中文 notebook，打开 Colab，选择 **File > Upload notebook**，再选择该 `.ipynb` 文件。这是上传入口，不是打开本仓库的“一键”链接。Google 的 [Colab FAQ](https://research.google.com/colaboratory/faq.html) 说明，上传的 notebook 在账号私有虚拟机运行，而运行时寿命、可用硬件和使用限制会变化；需要保留的工作应保存到这一临时运行时之外。
+
+本地 Jupyter 是替代方案。下载同一 notebook，在仓库根目录创建项目环境并打开它：
+
+```sh
+uv sync --python 3.11
+uv run jupyter lab labs/lipophilicity/lipophilicity_tutorial.zh-CN.ipynb
+```
+
+使用普通 CPU 运行时即可。本练习不要求 GPU 或远程计算。安装软件包和下载公开 CSV 需要网络。重复运行单元格可能改变本地输出目录；尝试另一种方案前，请使用新的目录或复制报告。
+
+## notebook 回答什么问题？
+
+学习问题是：_预测训练中未见 scaffold 分子的实测亲脂性时，简单表示之间如何比较？_ 目标是提供的 `exp` 列，即 pH 7.4 下的实测 logD。它不是结合亲和力、pChEMBL、logP、溶解度或临床终点。
+
+该表是包含 `CMPD_CHEMBLID`、`exp` 和 `smiles` 列的公开教学 CSV。它由读者下载，不随本包重新分发。整理来源见 [DeepChem 2.8.0 loader](https://github.com/deepchem/deepchem/blob/2.8.0/deepchem/molnet/load_function/lipo_datasets.py)，另见 notebook 中的[原始存档](https://doi.org/10.6019/CHEMBL3301361)与 [ChEMBL 数据许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/LICENSE)。请在自己的报告中保留下载日期。本 notebook 是教学练习，不声称新的 benchmark 或方法。
+
+## 按教学顺序完成
+
+1. **问题与目标。** 在拟合前说明终点、单位（logD）、分组单位（scaffold）和泛化主张。
+2. **数据与分子。** 下载 CSV，检查必需字段和无效结构，查看标签分布与选定结构；不要在看见误差后悄悄过滤提供的行。
+3. **Scaffold 划分。** 构造 Bemis–Murcko scaffold 键，把完整组分配到训练、验证和测试分区。检查计数，并断言 ID、完全相同结构和 scaffold 键均不跨分区。
+4. **表示。** 对比训练集均值、紧凑 RDKit 描述符和半径 2、2,048-bit Morgan 指纹。描述符基线中的 `MolLogP` 是计算特征，不是 logD 问题的答案。
+5. **训练与选择。** 仅用训练分子拟合预处理。仅根据验证 RMSE 从声明的 Ridge 正则化中选择；不要用测试标签选择表示或超参数。
+6. **图与误差。** 选择完成后，在保留划分上评估一次。把预测-观测图和残差图当作诊断。可以检查 scaffold 归属、端点值和最近邻相似性，但不能据此在同一测试集上重新调参。
+7. **练习与报告。** 改变方案时使用独立的探索副本；新目录本身不能使已看过的测试集变得独立。报告问题、数据来源和日期、划分、表示、验证选择规则、测试指标、误差示例与限制。结果劣于常数或为负也要保留。
+
+## 诚实地解读结果
+
+你的数值是本地练习输出。它们不是仓库中冻结的 FreeSolv、ChEMBL EGFR、rMD17 或 pool-budget 结果，也不能证明该数据集和划分之外的一般性能。表中各行不一定是独立测定重复；CSV 未提供批次、重复或实验不确定性字段。Scaffold 划分是一个声明的分组规则，不证明前瞻性化学新颖性或向另一测定迁移。
+
+不要通过删掉困难结构、看见测试标签后改变划分，或根据测试图选择模型来改善报告结果。如果公开下载或 Colab 运行时不可用，请记录失败，并在合适时使用本地 Jupyter；不要换用另一个数据集却保持原来的主张。
+
+## 下载
+
+上方英文和中文 notebook 是自包含教学材料。它们仅安装所需的固定库，并在读者环境下载公开 CSV。不假定任何仓库 URL，本页也不声称 notebook 已在 Colab 运行。历史数据检查、人工标签样例验证与已完成的本地真实数据执行另见 `labs/lipophilicity/README.zh-CN.md`。

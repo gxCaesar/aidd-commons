@@ -1,0 +1,63 @@
+id: model-gears
+name: GEARS
+kind: model
+summary: Graph-based deep learning model that predicts the transcriptional response of single and multi-gene perturbations by combining a gene embedding with a knowledge graph of gene-gene relationships.
+canonical_url: https://github.com/snap-stanford/GEARS
+identifiers:
+  - scheme: paper
+    value: "Predicting transcriptional outcomes of novel multigene perturbations with gears; Nature Biotechnology 42(6):927-935 (2024), DOI 10.1038/s41587-023-01905-6"
+    url: https://doi.org/10.1038/s41587-023-01905-6
+  - scheme: model-weights
+    value: "Model trained on Norman et al. 2019, used through the Colab notebook linked from the README"
+    url: https://github.com/snap-stanford/GEARS/blob/master/README.md
+stages: [representation-learning, model-development, evaluation]
+modalities: [perturbational-transcriptomics]
+tasks: [perturbation-comparison, benchmark-evaluation]
+relations:
+  - type: used-by
+    target: model-scfoundation
+status: { value: unverified }
+access_level: { value: open_source, evidence: [gears-license] }
+openness:
+  inference_code: { value: available, evidence: [gears-repository] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: available, evidence: [gears-paper] }
+  data_recipe: { value: unverified }
+  training_data: { value: available, evidence: [gears-readme, gears-pertdata] }
+  evaluation_code: { value: available, evidence: [gears-repository] }
+licenses:
+  - name: MIT
+    scope: "Repository source code. The LICENSE file reads 'MIT License' and 'Copyright (c) 2022 Yusuf Roohani, Kexin Huang, Jure Leskovec'. The README carries no licence section, and no terms are stated for the trained model or for the datasets loaded through the package."
+    evidence: [gears-license, gears-readme]
+evidence:
+  - id: gears-repository
+    url: "https://github.com/snap-stanford/GEARS"
+    label: GEARS repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: gears-readme
+    url: "https://raw.githubusercontent.com/snap-stanford/GEARS/master/README.md"
+    label: GEARS README (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: gears-pertdata
+    url: "https://raw.githubusercontent.com/snap-stanford/GEARS/master/gears/pertdata.py"
+    label: GEARS dataset loader that downloads the norman, adamson, and dixit archives from Harvard Dataverse (reviewed 2026-10-21)
+    supports: [caveats]
+  - id: gears-license
+    url: "https://raw.githubusercontent.com/snap-stanford/GEARS/master/LICENSE"
+    label: GEARS MIT license file (reviewed 2026-10-21)
+    supports: []
+  - id: gears-paper
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:%2210.1038/s41587-023-01905-6%22&resultType=core&format=json"
+    label: Europe PMC record for the GEARS paper (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+  - id: scfoundation-readme
+    url: "https://raw.githubusercontent.com/biomap-research/scFoundation/main/README.md"
+    label: scFoundation README, which runs GEARS for perturbation prediction (reviewed 2026-10-21)
+    supports: [relations]
+caveats:
+  - The README gives no download location for a pretrained model. The only route to the trained Norman model it names is a Colab notebook that requires Colab Pro, so the availability of released weights is unverified.
+  - The README has no licence section, so the MIT terms come from the repository LICENSE file alone.
+  - The README names Norman et al. 2019 as the training set of the linked model, and the package downloads the norman, adamson, and dixit processed archives from public Harvard Dataverse endpoints, but the README states no dataset versions, splits, or further pretraining corpus.
+acknowledgements: []
+last_verified: "2026-10-21"

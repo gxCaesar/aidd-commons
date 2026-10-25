@@ -1,0 +1,45 @@
+id: tool-autolabs
+name: AutoLabs
+kind: software
+summary: An open autonomous laboratory platform for running instrument-driven experiments under a software-controlled workflow.
+canonical_url: https://github.com/pnnl/AutoLabs
+identifiers:
+  - scheme: documentation
+    value: "AutoLabs repository and usage instructions"
+    url: https://github.com/pnnl/AutoLabs
+stages: [make, analysis]
+modalities: [experiment]
+tasks: [tool-using-agent, laboratory-automation]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: open_source, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: not_applicable, evidence: [repository] }
+  weights: { value: not_applicable, evidence: [repository] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: not_applicable, evidence: [repository] }
+  evaluation_code: { value: available, evidence: [readme] }
+licenses:
+  - name: BSD-2-Clause
+    scope: "The source code of the platform, per the LICENSE.md file on the default branch, which states two redistribution conditions: retain the copyright notice and the conditions in source redistributions, and reproduce them in the documentation of binary redistributions. The file carries no third condition and no named endorsement clause, so it is the two-clause form. It does not cover the instruments, the facility or any consumable."
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/pnnl/AutoLabs
+    label: AutoLabs repository, re-opened 2026-10-21
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/pnnl/AutoLabs/master/README.md
+    label: AutoLabs README on the default branch, re-opened 2026-10-21
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/pnnl/AutoLabs/master/LICENSE.md
+    label: AutoLabs licence file on the default branch, re-opened 2026-10-21
+    supports: []
+caveats:
+  - The platform runs laboratory instruments. The instrument licences, the facility terms and the consumable terms are not covered by this repository licence and are not established by this record.
+  - The default branch is master, not main, so a reader following a main-branch path finds no licence file.
+acknowledgements: []
+last_verified: "2026-10-21"

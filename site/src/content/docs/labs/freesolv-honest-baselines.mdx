@@ -1,0 +1,69 @@
+---
+title: FreeSolv v0.52 honest baselines
+description: A completed frozen FreeSolv protocol with one recorded scaffold-primary test evaluation.
+---
+
+import LabDownloads from "../../../components/LabDownloads.astro";
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<LabDownloads lab="freesolv" />
+
+<ScrollableRegions />
+
+## Before you run
+
+Default mode: read the completed results and aggregate-reading notebook; neither
+requires retraining or a new data download. Fresh reproduction belongs in a
+separate reader checkout under the documented protocol, not the author's result
+directory. Do not retune after reading the test values below. For editable fitting
+practice, use the [synthetic student sandbox](/learn/machine-learning/student-modelling-sandbox/).
+This entry clarification was added on 2026-09-09; the frozen result is unchanged.
+
+## Status and scope
+
+This completed lab records one final test evaluation from a frozen protocol. It
+does not make a SOTA claim. The pinned dataset is FreeSolv `v0.52`; the target
+is experimental hydration free energy in kcal/mol from the fourth
+semicolon-delimited field. Molecules are keyed by RDKit canonical isomeric
+SMILES while retaining the original `mobley_*` source ID for traceability.
+
+The protocol fixed seed `20260904`, 80/10/10 random and Bemis-Murcko scaffold
+splits, train-only fitting, Morgan fingerprints (radius 2, 2,048 bits,
+chirality enabled), a train mean, Ridge (`alpha=1.0`), and a 500-tree random
+forest. The scaffold split is the predeclared primary result; the random split
+is an easier contrast.
+
+## Scaffold-primary results
+
+The following values are read from the one recorded test artifact. MAE, RMSE,
+and interval width are in kcal/mol. Ridge and random-forest intervals use
+validation-only split-conformal radii.
+
+| Model                  |                MAE |               RMSE | 90% empirical coverage | Mean interval width |
+| ---------------------- | -----------------: | -----------------: | ---------------------: | ------------------: |
+| Train mean             |  2.590685189688716 | 3.2880606447088776 |                      — |                   — |
+| Morgan + Ridge         | 1.1280482645936036 | 1.7597471244251413 |                  0.875 |   5.478728133879933 |
+| Morgan + Random Forest | 1.2568836078869037 | 2.0375968699271554 |                0.90625 |   6.013026666666674 |
+
+The accompanying random-split contrast is retained in the result artifact and
+the paired notebook. It is not the headline result.
+
+## Reading the artifact safely
+
+The paired source notebook, `labs/freesolv/freesolv_honest_baselines.ipynb`,
+reads `reviewed-results.json`, an aggregate-only public summary derived from
+the frozen result. It does not fit models, alter splits, or invoke another test
+evaluation. The public reference environment is recorded in
+`labs/freesolv/environment.txt`; `pyproject.toml` pins the supported direct
+dependencies and `uv` resolves the runtime used for the lab commands.
+
+Empirical interval coverage is marginal coverage, not conditional calibration.
+The fixed models and representations are teaching controls, not evidence of an
+optimal predictor.
+
+## Licence uncertainty
+
+The v0.52 release metadata does not declare licence terms. Current repository
+README and branch licence files are not version-bound evidence for this
+historical release, so this lab does not transfer those current-branch licence
+claims to v0.52.

@@ -1,0 +1,36 @@
+---
+import { parse } from "yaml";
+import type { Curriculum } from "../../../scripts/curriculum/curriculum.js";
+import type { Resource } from "../data/resource.js";
+import curriculumSource from "../../../catalog/curriculum/tracks.yaml?raw";
+import resourceData from "../../public/data/resources.v1.json";
+import { withoutSiteBase } from "../lib/site-paths";
+
+interface Props { lessonId: string; }
+const { lessonId } = Astro.props;
+const chinese = withoutSiteBase(Astro.url.pathname, import.meta.env.BASE_URL).startsWith("/zh-cn/");
+const curriculum = parse(curriculumSource) as Curriculum;
+const resources = resourceData as Resource[];
+const [trackId, localId] = lessonId.split("/");
+const track = curriculum.tracks.find((item) => item.id === trackId);
+const lesson = track?.lessons.find((item) => item.id === localId);
+const sourceIds = [...new Set([
+  ...(lesson?.source_ids ?? []),
+  ...(track?.lessons.filter((item) => item.type === "core-source-path").flatMap((item) => item.source_ids) ?? []),
+])];
+const sources = sourceIds.map((id) => {
+  const resource = resources.find((item) => item.id === id);
+  if (!resource) throw new Error(`Unknown lesson resource: ${lessonId}: ${id}`);
+  return resource;
+});
+---
+
+{sources.length > 0 && (
+  <details class="lesson-resources" data-lesson-resources>
+    <summary>{chinese ? "本课与路径资源" : "Lesson and pathway resources"} ({sources.length})</summary>
+    <p>{chinese ? "本课及核心阅读路径登记的资源。Atlas 条目（英文）汇集来源、论文和文档链接，并列明访问与许可限制。" : "Registered reading for this lesson and its core-source path. Atlas entries collect source, paper and documentation links alongside access and licence notes."}</p>
+    <ul>
+      {sources.map((resource) => <li><a href={`/atlas/${resource.id}/`}>{resource.name}</a> · <a href={resource.canonical_url}>{chinese ? "访问资源" : "Visit resource"}</a></li>)}
+    </ul>
+  </details>
+)}

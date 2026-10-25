@@ -1,0 +1,54 @@
+id: db-alphafold-db
+name: AlphaFold Protein Structure Database
+kind: database
+summary: Public archive of predicted protein structures for the UniProt proteome, served with a global and a per-residue confidence value and with downloadable model files.
+canonical_url: https://alphafold.ebi.ac.uk/
+identifiers:
+  - scheme: api
+    value: "alphafold.ebi.ac.uk/api/prediction/{accession}"
+    url: https://alphafold.ebi.ac.uk/api-docs
+stages: [data-intake, structure-prediction]
+modalities: [protein]
+tasks: [structure-retrieval]
+relations: []
+status: { value: active, evidence: [homepage] }
+access_level: { value: source_available, evidence: [homepage] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [homepage] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC-BY-4.0
+    scope: AlphaFold Protein Structure Database data and model files
+    evidence: [homepage]
+evidence:
+  - id: homepage
+    url: https://alphafold.ebi.ac.uk/
+    label: AlphaFold Protein Structure Database home page read 2026-10-22
+    supports:
+      [
+        name,
+        kind,
+        summary,
+        identifiers,
+        stages,
+        modalities,
+        tasks,
+        caveats,
+        acknowledgements,
+      ]
+caveats:
+  - The database holds predicted structures. A prediction is not an observation of the conformation a protein adopts, and the confidence values are the database's own estimates.
+  - The page states that data is available for academic and commercial use under a CC BY 4.0 licence, and that EMBL-EBI expects attribution for its online services, databases and software.
+  - The page reports two counts of the predictions held, one for the database as a whole and one for the latest release, so a count taken from the page needs its sentence.
+  - The page states that AlphaFold data are provided by Google DeepMind and that the AlphaFold data are copyright DeepMind Technologies Limited, with separate copyright statements for data provided by third parties.
+  - The per-accession record is read from the archive's own API route, whose page is rendered in the browser and was not read as text on 2026-10-22.
+acknowledgements:
+  - Google DeepMind
+  - EMBL-EBI
+  - "Bertoni D. et al. AlphaFold Protein Structure Database 2025: a redesigned interface and updated structural coverage, Nucleic Acids Research (2025)"
+last_verified: "2026-10-22"

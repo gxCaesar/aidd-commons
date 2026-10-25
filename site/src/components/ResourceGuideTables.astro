@@ -1,0 +1,13 @@
+<span data-resource-guide-tables hidden></span>
+
+<style is:global>
+  .sl-markdown-content:has([data-resource-guide-tables]) table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .sl-markdown-content:has([data-resource-guide-tables]) :is(th, td) {
+    min-width: 9rem;
+  }
+</style>

@@ -1,0 +1,157 @@
+---
+title: The same score, three different causes
+description: Compare rule, retrieval and template disconnections on one constructed route set, and see why a recovery percentage says nothing about whether a route can be run.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="retro-disconnection" />
+
+## Before you run
+
+**Mode: runnable comparison over committed files.** The command reads two JSON
+files and applies reaction SMARTS with RDKit. **No model is trained or executed**,
+no reaction is run, and nothing here is a synthesis proposal.
+
+```bash
+python labs/retro_disconnection/inspect_disconnection.py compare
+```
+
+Four disconnection families are usually compared with one recovery percentage.
+That number hides two things: the families fail for different reasons, and
+recovering a recorded route says nothing about whether the route can be run.
+
+## 1. Three families run, and one says why it does not
+
+`rule` transforms are written by hand from chemical knowledge. `template`
+transforms have a dataset as their provenance rather than a person. `retrieval`
+looks the product up and returns what was recorded against it. `learned` is
+**declared without being run**, because no model is executed anywhere in these
+offline labs.
+
+That last line is the point of listing it. A comparison that quietly drops a
+family implies four were compared when three were, and the boundary should be
+printed rather than inferred.
+
+## 2. All three are perfect inside the precedent set
+
+The precedent set is both what retrieval may look up and what the templates were
+extracted from. Five of the ten routes are in it.
+
+Inside it, every family recovers 5 of 5. **Outside it they separate completely:**
+rules recover 5 of 5, templates 3 of 5, retrieval 0 of 5.
+
+The separation comes from one deliberate choice in the constructed set: **the
+precedent set contains no suzuki-biaryl reaction.** Retrieval misses those
+molecules because they are not in its table. Templates miss them because no
+template exists for a class the dataset never held. Hand-written rules cover the
+class because someone chose to write it.
+
+**Same score column, three different causes.** A percentage cannot tell you which
+one you are looking at, and the repair for each is different: collect different
+data, extract from a broader dataset, or write another rule.
+
+## 3. The same method, two scores, one split
+
+Retrieval recovers 5 of 5 routes that are in the precedent set. That is **100%**,
+and it is a lookup succeeding on its own table. Over every route it recovers 5 of
+10, **50%**.
+
+Neither number is wrong. Which one gets reported is decided entirely by the
+split, and **the method that memorises is the one most rewarded by choosing
+badly.** A retrieval baseline evaluated on molecules it has already seen will
+beat everything and generalise to nothing.
+
+## 4. Recovering a route is not being right
+
+On three of the ten products the rules propose **more than one** disconnection.
+Reductive amination admits two, and so does one of the biaryls.
+
+Recovery means the recorded route was **among** the proposals. It does not mean
+the method selected it, ranked it first, or preferred it to the alternative. A
+family that proposes many disconnections buys recovery cheaply, and a comparison
+that counts only recovery will reward it for that.
+
+```bash
+python labs/retro_disconnection/inspect_disconnection.py check
+```
+
+Thirteen checks run. A structure that does not parse stops the run before any
+family is applied, because a family cannot be compared on a set that does not
+read.
+
+## 5. What no score above establishes
+
+The route set records `laboratory_feasibility: not_assessed`. Nothing in this lab
+examines reagent availability, protecting groups, condition compatibility,
+selectivity, scale or cost.
+
+**Route recovery is a statement about a graph edit. Feasibility is a statement
+about a laboratory.** A disconnection that recovers the recorded route can still
+need a reagent nobody sells, a protecting group nobody added, or conditions that
+destroy the rest of the molecule. This is the same boundary the
+[generation gate](/labs/generation-gate/) records when it calls its structural
+filters a proxy and keeps `route_feasibility` unassessed.
+
+## Independent exercise
+
+A retrosynthesis paper reports: "our model achieves 92% top-1 route recovery on
+USPTO-50K, outperforming template-based methods at 87%. This demonstrates that
+learned disconnections are ready for production planning."
+
+Name what the comparison does not establish, and say which single number you
+would ask for first.
+
+<details data-worked-answer>
+<summary>Worked answer — three gaps, and the number to ask for</summary>
+
+**"Route recovery" is not correctness.** It measures agreement with one recorded
+route. A chemist proposing a different and better disconnection scores zero, and
+a model proposing many disconnections that happen to include the record scores
+one. Top-1 controls for the second of those, which is why it is the right thing
+to report, but it still leaves the first: the target is a single literature
+precedent, not a set of acceptable answers.
+
+**The two numbers may not be measuring the same difficulty.** Template methods
+inherit the coverage of the dataset the templates came from, and here that is the
+same dataset the model trained on. If the test split shares transformation
+classes with training, both methods are being asked an easier question than
+production planning poses, and the five-point gap is between two scores on that
+easier question.
+
+**Nothing here touches production.** Production planning needs available
+reagents, compatible conditions, acceptable selectivity, and a route that survives
+scale. A recovery percentage is silent on all of them, and the claim in the last
+sentence is a different kind of claim from the evidence in the first.
+
+**And the retrieval baseline is missing.** If a nearest-neighbour lookup over the
+training set scores anywhere near 87%, most of what both methods achieved is
+memorisation, and the comparison between them is measuring something small on top
+of something large.
+
+**The number to ask for first: the score on products whose transformation class
+does not appear in training.** It separates the three causes that a single
+percentage collapses, it exposes how much of the headline is retrieval, and it is
+the only one of these numbers that speaks to whether the method would help on a
+target nobody has made before. If that number is not available, the honest reading
+of 92% is that it describes the dataset.
+
+</details>
+
+## What this does not do
+
+This route does not run a reaction, evaluate a real retrosynthesis model, or
+establish that any route is makeable. The ten routes were authored for teaching,
+so the counts teach the structure of the comparison rather than the behaviour of
+any published method.
+
+For the surrounding argument see
+[reaction mapping and route search](/learn/synthesis-and-automation/reaction-mapping-and-route-search/)
+and
+[route feasibility and feedback](/learn/synthesis-and-automation/route-feasibility-and-feedback/).
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-11.

@@ -1,0 +1,51 @@
+id: tool-torchgfn
+name: torchgfn
+kind: software
+summary: "torchgfn is a PyTorch library for prototyping GFlowNet algorithms, separating environments, sampling and function-approximator parameterisation and shipping discrete and continuous example environments."
+canonical_url: https://github.com/GFNOrg/torchgfn
+identifiers:
+  - scheme: paper
+    value: "torchgfn: A PyTorch GFlowNet library; arXiv 2305.14594"
+    url: https://arxiv.org/abs/2305.14594
+stages: [design, hit-discovery]
+modalities: [small-molecule, molecular-graph]
+tasks: [molecular-generation, goal-directed-optimization]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: not_available, evidence: [repository] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: Apache-2.0
+    scope: "repository source code only, with the notice to be retained; the licence covers the code and no separate terms are stated for example datasets or third-party assets"
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/GFNOrg/torchgfn
+    label: GFNOrg/torchgfn repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/GFNOrg/torchgfn/master/README.md
+    label: torchgfn README
+    supports: [acknowledgements]
+  - id: paper
+    url: https://arxiv.org/abs/2305.14594
+    label: arXiv abstract for the torchgfn paper (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/GFNOrg/torchgfn/master/LICENSE
+    label: torchgfn Apache-2.0 LICENSE
+    supports: []
+caveats:
+  - The README names example environments but no downloadable dataset, and the repository lists no pretrained checkpoint.
+  - A benchmark directory is present but the README shows no benchmark results, so what the benchmark code measures is unverified.
+  - This repository is a different project from GFNOrg/gflownet, which carries a different licence; the two are recorded as separate resources.
+acknowledgements:
+  - The README asks users to cite the torchgfn paper when using the library.
+last_verified: "2026-10-21"

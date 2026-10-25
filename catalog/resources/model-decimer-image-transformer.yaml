@@ -1,0 +1,81 @@
+id: model-decimer-image-transformer
+name: DECIMER Image Transformer
+kind: model
+summary: Image-to-SMILES model for chemical structure depictions that pairs an EfficientNet-V2 image encoder with a transformer decoder, shipped with pretrained checkpoints and a benchmarking folder.
+canonical_url: https://github.com/Steinbeck-Lab/DECIMER-Image_Transformer
+identifiers:
+  - scheme: paper
+    value: "DECIMER 1.0: deep learning for chemical image recognition using transformers; Journal of Cheminformatics 13, article 61 (2021); DOI 10.1186/s13321-021-00538-8"
+    url: https://doi.org/10.1186/s13321-021-00538-8
+  - scheme: model-card
+    value: "DECIMER V2 Models, Zenodo record 8300489, record version 2.4"
+    url: https://zenodo.org/records/8300489
+  - scheme: repository
+    value: "Steinbeck-Lab/DECIMER-Image_Transformer, a GitHub fork of Kohulan/DECIMER-Image_Transformer"
+    url: https://github.com/Steinbeck-Lab/DECIMER-Image_Transformer
+stages: [data-intake, representation-learning, evaluation]
+modalities: [small-molecule, molecular-graph]
+tasks: [chemical-identity-resolution, molecular-representation-learning]
+relations:
+  - type: used-by
+    target: tool-decimer-ai
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository-tree] }
+  training_code: { value: available, evidence: [repository-tree] }
+  weights: { value: available, evidence: [model-card] }
+  architecture: { value: available, evidence: [readme] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [repository-tree] }
+licenses:
+  - name: MIT
+    scope: Repository source only; the LICENSE file reads "Copyright (c) 2021 Kohulan Rajan" and is the unmodified MIT text, while the README badge reads "License MIT 2.0" and points at the MIT licence page, and nothing on either page extends these terms to the checkpoints.
+    evidence: [license, readme]
+  - name: CC BY 4.0
+    scope: The DECIMER V2 checkpoints in Zenodo record 8300489, the model card the README links; the record states no extension of these terms to the repository code and the repository MIT file does not mention the checkpoints.
+    evidence: [model-card]
+evidence:
+  - id: repository
+    url: https://github.com/Steinbeck-Lab/DECIMER-Image_Transformer
+    label: DECIMER Image Transformer repository page, reviewed 2026-10-21
+    supports: [name, kind, summary, stages, modalities, tasks, relations, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER-Image_Transformer/master/README.md
+    label: DECIMER Image Transformer README, reviewed 2026-10-21
+    supports: [summary, identifiers, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER-Image_Transformer/master/LICENSE
+    label: DECIMER Image Transformer MIT licence file, reviewed 2026-10-21
+    supports: []
+  - id: citation
+    url: https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER-Image_Transformer/master/CITATION.cff
+    label: DECIMER Image Transformer CITATION.cff, reviewed 2026-10-21
+    supports: [caveats]
+  - id: repository-tree
+    url: https://api.github.com/repos/Steinbeck-Lab/DECIMER-Image_Transformer/git/trees/master?recursive=1
+    label: DECIMER Image Transformer repository file tree, reviewed 2026-10-21
+    supports: []
+  - id: model-card
+    url: https://zenodo.org/records/8300489
+    label: DECIMER V2 Models model card, Zenodo record 8300489, reviewed 2026-10-21
+    supports: [identifiers, acknowledgements]
+  - id: application-readme
+    url: https://raw.githubusercontent.com/Steinbeck-Lab/DECIMER.ai/main/README.md
+    label: DECIMER.ai README listing the DECIMER Transformer component, reviewed 2026-10-21
+    supports: [relations]
+  - id: crossref
+    url: https://api.crossref.org/works/10.1186/s13321-021-00538-8
+    label: Crossref metadata for the DECIMER 1.0 paper, reviewed 2026-10-21
+    supports: [identifiers]
+caveats:
+  - The repository is a GitHub fork of Kohulan/DECIMER-Image_Transformer and its CITATION.cff points to a differently named upstream repository, github.com/Kohulan/DECIMER-Image_Transformer-2, so this fork and the upstream project are not the same artefact.
+  - The application that uses this model, DECIMER.ai, links the upstream repository rather than this fork, so the relation recorded here follows the model card and the component name that both repositories share.
+  - The README licence badge reads "License MIT 2.0" while the LICENSE file and the GitHub licence field both read MIT; no licence file named "MIT 2.0" is present in the repository.
+  - The model card states the models were trained on images generated with RanDepict 1.1.3 but gives no corpus composition, no split and no data terms, and the README refers to "datasets of over 1 million images" without naming a corpus, so the training corpus is not documented here.
+  - The CITATION.cff records the software release as DECIMER-V2 version 2.2.0 with Zenodo DOI 10.5281/zenodo.7655952 while the README model card badge links record 8300489, so two files in one repository point at different archives.
+  - The checkpoints are published under CC BY 4.0 while the code is MIT, and no opened page states how the two licences combine for a user who loads a checkpoint into this code.
+acknowledgements:
+  - The Zenodo model card for the DECIMER V2 models lists Kohulan Rajan, Henning Otto Brinkhaus, Achim Zielesny and Christoph Steinbeck as the model creators.
+last_verified: "2026-10-21"

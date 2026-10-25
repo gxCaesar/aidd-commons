@@ -1,0 +1,52 @@
+id: model-cgflow
+name: CGFlow
+kind: model
+summary: "CGFlow extends flow matching to continuous compositional generation, jointly designing a synthesizable molecule, its synthesis pathway and its 3D binding pose for a given protein target."
+canonical_url: https://github.com/tsa87/cgflow
+identifiers:
+  - scheme: paper
+    value: "Compositional Flows for 3D Molecule and Synthesis Pathway Co-design, ICML 2025; OpenReview 4aXfSLfM0Z"
+    url: https://openreview.net/forum?id=4aXfSLfM0Z
+stages: [design, hit-discovery]
+modalities: [small-molecule, protein-pocket, reaction, molecular-geometry]
+tasks: [molecular-generation]
+relations:
+  - type: uses
+    target: model-rxnflow
+  - type: uses
+    target: model-tacogfn
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [readme] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: "repository source code only, with the notice to be retained; no terms are stated for the CrossDocked2020 pockets or for the checkpoints hosted on Google Drive"
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/tsa87/cgflow
+    label: tsa87/cgflow repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/tsa87/cgflow/main/README.md
+    label: CGFlow README
+    supports: [identifiers, relations, caveats, acknowledgements]
+  - id: license
+    url: https://raw.githubusercontent.com/tsa87/cgflow/main/LICENSE
+    label: CGFlow MIT LICENSE
+    supports: []
+caveats:
+  - The README marks the Plinder pose-model checkpoint as to be provided, so no Plinder weights are established as released.
+  - No licence or usage terms are stated for the CrossDocked2020 pockets or for the checkpoints hosted on Google Drive.
+  - The code builds on the GFlowNet library at github.com/recursionpharma/gflownet, which is a different repository from GFNOrg/gflownet.
+  - The OpenReview forum for the ICML 2025 paper asks for browser verification and was not opened, so the venue statement rests on the repository README alone.
+acknowledgements:
+  - The README asks users to cite the CGFlow, RxnFlow and TacoGFN papers and credits the Recursion GFlowNet repository and SemlaFlow as prior work.
+last_verified: "2026-10-21"

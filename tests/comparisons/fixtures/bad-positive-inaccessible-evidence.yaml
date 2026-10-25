@@ -1,0 +1,35 @@
+id: bad-positive-inaccessible-evidence
+name: Inaccessible positive coverage
+provider_class: curriculum
+canonical_url: https://example.org/inaccessible-positive
+summary: A fixture whose positive depth cites only an inaccessible page.
+audiences: [graduate-students]
+languages: [en]
+metadata_evidence: [overview]
+access:
+  content: { value: gated, evidence: [overview] }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage:
+  - topic_id: molecular-fingerprints
+    depth: worked
+    evidence: [restricted-lesson]
+    reviewed_scope: Restricted lesson URL
+    note: The lesson contents were not visible to the reviewer.
+evidence:
+  - id: overview
+    url: https://example.org/inaccessible-positive
+    title: Inaccessible curriculum overview
+    observed_scope: System identity and gated access.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: restricted-lesson
+    url: https://example.org/inaccessible-positive/lesson
+    title: Restricted molecular fingerprints lesson
+    observed_scope: The URL resolved to an access gate without visible lesson contents.
+    access: inaccessible
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

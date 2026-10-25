@@ -1,0 +1,51 @@
+id: db-pdbe
+name: PDBe
+kind: database
+summary: Protein Data Bank in Europe structural biology data resource.
+canonical_url: https://www.ebi.ac.uk/pdbe/
+identifiers:
+  - scheme: documentation
+    value: "PDBe REST API"
+    url: https://www.ebi.ac.uk/pdbe/pdbe-rest-api
+  - scheme: dataset
+    value: "PDBe download service"
+    url: https://www.ebi.ac.uk/pdbe/download/docs
+stages: [data-intake, structure-prediction]
+modalities: [protein, biomolecular-complex]
+tasks: [structure-retrieval]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [terms-of-use] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: EMBL-EBI Terms of Use
+    scope: The catalog records and contents. EMBL-EBI places no additional restrictions on the use or redistribution of the data available through its data resources, other than those provided by the original data owners, and expects attribution in accordance with good scientific practice. The original data may be subject to rights claimed by third parties, and a resource-specific licence or condition prevails over the general terms where it conflicts with them.
+    evidence: [terms-of-use]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://www.ebi.ac.uk/pdbe/
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [caveats, identifiers]
+  - id: official-page
+    url: https://www.ebi.ac.uk/pdbe/
+    label: PDBe official page
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: terms-page
+    url: https://www.ebi.ac.uk/pdbe/
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+  - id: terms-of-use
+    url: https://www.ebi.ac.uk/about/terms-of-use
+    label: EMBL-EBI terms of use read 2026-10-23
+    supports: [caveats]
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one.
+acknowledgements: []
+last_verified: "2026-10-23"

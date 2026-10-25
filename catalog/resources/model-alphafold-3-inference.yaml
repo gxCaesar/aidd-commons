@@ -1,0 +1,51 @@
+id: model-alphafold-3-inference
+name: AlphaFold 3 inference pipeline
+kind: software
+summary: Public AlphaFold 3 inference code with separately governed model parameters.
+canonical_url: https://github.com/google-deepmind/alphafold3
+identifiers:
+  - scheme: paper
+    value: "Accurate structure prediction of biomolecular interactions with AlphaFold 3; DOI 10.1038/s41586-024-07487-w"
+    url: https://doi.org/10.1038/s41586-024-07487-w
+stages: [structure-prediction, evaluation]
+modalities: [biomolecular-complex]
+tasks: [structure-prediction]
+relations:
+  - type: implements
+    target: paper-alphafold-3
+status: { value: unverified }
+access_level: { value: source_available, evidence: [readme] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: inference-code
+    evidence: [license]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/google-deepmind/alphafold3
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/google-deepmind/alphafold3
+    label: AlphaFold 3 repository
+    supports:
+      [name, kind, summary, stages, modalities, tasks, relations, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/google-deepmind/alphafold3/main/README.md
+    label: AlphaFold 3 README
+    supports: []
+  - id: license
+    url: https://raw.githubusercontent.com/google-deepmind/alphafold3/main/LICENSE
+    label: AlphaFold 3 Apache-2.0 license
+    supports: []
+caveats:
+  - The repository says parameters must be received directly from Google under separate terms, so this record does not claim unrestricted weights.
+acknowledgements: []
+last_verified: "2026-09-04"

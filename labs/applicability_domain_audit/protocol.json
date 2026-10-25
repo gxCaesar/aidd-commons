@@ -1,0 +1,44 @@
+{
+  "schema_version": "aidd-commons.applicability-domain-audit-protocol.v1",
+  "protocol_id": "freesolv-v052-applicability-domain-v1",
+  "issued_on": "2026-10-23",
+  "source": {
+    "path": ".cache/freesolv/freesolv-v0.52-database.txt",
+    "bytes": 144897,
+    "release": "FreeSolv v0.52",
+    "license": "unverified; the v0.52 release metadata does not declare licence terms",
+    "read_on": "2026-10-23",
+    "route": "local cache of https://raw.githubusercontent.com/MobleyLab/FreeSolv/v0.52/database.txt"
+  },
+  "representation": {
+    "kind": "RDKit computed 2D properties",
+    "properties": ["MolWt", "MolLogP", "TPSA", "NumHDonors", "NumHAcceptors"],
+    "scaling": "divide each absolute property difference by the training population standard deviation; use 1 when that deviation is 0",
+    "choice": "laboratory diagnostic choice, not a chemical or applicability-domain definition"
+  },
+  "distance": "mean of the five scaled absolute property differences to the nearest training molecule",
+  "split": {
+    "kind": "Bemis-Murcko scaffold",
+    "seed": 20260904,
+    "train_fraction": 0.8,
+    "target_rule": "floor(0.8 * molecule_count + 0.5)",
+    "assignment_rule": "descending scaffold-group size; sorted equal-size keys shuffled with the seed; assign whole groups to train until the target is reached, then to test",
+    "acyclic_rule": "acyclic:<canonical_isomeric_smiles> singleton group"
+  },
+  "baseline": {
+    "model": "Ridge",
+    "alpha": 1.0,
+    "fingerprint": "chirality-aware RDKit Morgan",
+    "radius": 2,
+    "bits": 2048,
+    "target_column": "fourth semicolon-delimited field, experimental hydration free energy in kcal/mol",
+    "role": "cheapest fitted model already taught by the curriculum, not best model for the data"
+  },
+  "error_halves": "sort test molecules by nearest-training distance, then source ID; lower floor(n/2) versus remaining upper half",
+  "excluded_by_design": [
+    "A claim that this chosen distance is the applicability domain",
+    "A performance estimate or inside-domain decision for a new molecule",
+    "Tuning the representation, distance, split or baseline to improve a number",
+    "A chemical-mechanism claim from a computed-property distance"
+  ]
+}

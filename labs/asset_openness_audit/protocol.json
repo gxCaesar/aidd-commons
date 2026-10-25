@@ -1,0 +1,20 @@
+{
+  "schema_version": "aidd-commons.asset-openness-audit-protocol.v1",
+  "protocol_id": "asset-openness-seven-fields-v1",
+  "issued_on": "2026-10-23",
+  "source": "catalog/resources/*.yaml",
+  "dimensions": ["inference_code", "training_code", "weights", "architecture", "data_recipe", "training_data", "evaluation_code"],
+  "claim_values": {
+    "openness": ["available", "not_available", "not_applicable", "unverified"],
+    "lifecycle_status": ["active", "legacy", "superseded", "unmaintained", "withdrawn", "unverified"],
+    "access_level": ["open_source", "open_weights", "source_available", "research_only", "gated", "api_only", "closed", "unverified"],
+    "license_fields": ["name", "scope", "evidence"]
+  },
+  "examined_record_ids": ["db-alphafold-db", "model-alphafold-2", "model-alphafold-3-inference", "model-boltz-1", "model-boltz-2", "model-chai-1", "model-chai-2", "model-protenix", "model-openfold", "model-rfdiffusion", "model-rfdiffusion2", "model-esm-c", "model-esmc", "model-boltzgen", "model-alphaproteo", "tool-bindcraft", "tool-gnina", "tool-smina", "tool-openmm", "tool-rdkit", "tool-psi4", "db-rcsb-pdb", "db-uniprot", "db-skempi"],
+  "review_date_rule": "last_verified is a valid YYYY-MM-DD calendar date",
+  "excluded_by_design": [
+    "Prediction of what a resource licence permits in a specific use",
+    "Legal opinion about whether a licence is enforceable",
+    "A claim that a resource is usable, safe or appropriate for a purpose"
+  ]
+}

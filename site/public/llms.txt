@@ -1,0 +1,17 @@
+# AIDD Commons
+
+> An English-canonical learning and reference system for AI drug discovery.
+
+## Product entry points
+
+- [Learn](/learn/foundations/getting-started/): Start with the AIDD pipeline and connected learning pathways.
+- [Atlas](/atlas/): Inspect source-grounded resources with evidence, caveats, licences, and openness dimensions.
+- [Labs](/labs/): Find reproducible exercises with frozen data and evaluation contracts.
+- [Audit](/audit/): Inspect bounded, source-adjacent coverage comparisons without treating unknowns as absences.
+- [Report](/report/): Read the living technical context for methods, data, benchmarks, and process knowledge.
+- [Contribute](/contribute/): Propose source corrections, lessons, labs, or other evidence for review.
+
+## Use notes
+
+- English is canonical; `/zh-cn/` provides onboarding and pathway navigation in Simplified Chinese.
+- Treat `unverified` fields as unknown rather than as a positive or negative claim.

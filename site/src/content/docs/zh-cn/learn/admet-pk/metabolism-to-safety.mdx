@@ -1,0 +1,197 @@
+---
+title: 从代谢到安全性决策
+description: 连接代谢路径、DDI 角色、毒性终点和多参数选择，而不把任一测定当作安全性裁决。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[From metabolism to safety decisions](/learn/admet-pk/metabolism-to-safety/)。
+
+<LessonProgress lessonId="admet-pk/metabolism-to-safety" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将辨认 victim 与 perpetrator DDI 角色，区分毒性终点和可迁移安全证据，并作出透明的多参数 ADMET 决策。请先读[暴露、清除率与 PK/PD](/zh-cn/learn/admet-pk/exposure-clearance-pkpd/)和[ADMET 评估](/zh-cn/learn/admet-pk/admet-evaluation/)。本课为概念和手算教学，不提供给药建议或实验室方案。
+
+## 代谢改变的是暴露问题
+
+代谢可把母体转为代谢物，改变两者随时间的浓度。酶和转运体可使候选项成为**受害者（victim）**：另一药物改变其暴露；或成为**施害者（perpetrator）**：它改变另一药物的暴露。这是特定相互作用中的角色，不是固有标签。现行 ICH M12 涉及酶和转运体介导的药代 DDI 潜力，并协调体外和临床评价概念 [FDA M12](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/m12-drug-interaction-studies-questions-and-answers)。
+
+`CL = rate of elimination / concentration` 表示声明时刻和模型下的清除率，单位为 volume/time。若 `F`、`D`、`CL` 固定，第一近似为 `AUC ∝ F·D / CL`。它是方向性模型，不是临床预测。代谢抑制信号可提示较低清除率和较高母体暴露，但不能在没有完整模型、浓度和验证时确定人体幅度。
+
+## 已工作案例：抑制一种酶能预测抑制另一种吗？
+
+"这个化合物抑制 CYP"还不是一个可核查的主张：它没有点名酶、检测或文献。
+[CYP 检测体系实验](/zh-cn/labs/cyp-assay-system/)读取两种不同细胞色素 P450
+酶——CYP3A4 与 CYP2D6——的实时 ChEMBL 37 IC50 记录，问一个更窄的问题：对于
+在**两种**酶下都有被准入记录的真实化合物，对一种酶的表观效力能否预测对另一
+种酶的效力？这里没有拟合任何模型；下面每个数字都是计数、中位数，或对已发表
+测量值的秩相关，于 2026-09-12 针对发行日期为 2026-05-01 的实时 ChEMBL 37 版本
+计算得到。
+
+| | CYP3A4（`CHEMBL340`） | CYP2D6（`CHEMBL289`） |
+| --- | ---: | ---: |
+| 被准入的母体分子 | 5,251 | 2,781 |
+
+其中 1,195 个母体分子在两种酶下都有被准入记录；其中 1,186 个在两个靶点间
+至少共享一篇来源文献；1,015 个是"干净"的单一配对，即每种酶各恰好一条被
+准入活性、且来自同一篇文献，因此任何一侧都不是跨研究的中位数。完整重叠集合
+上的 Spearman rho 为 0.2981（p=6.08e-26）；干净配对子集上为 0.3038
+（p=4.10e-23）。这两个估计彼此吻合，构成一次稳健性检验，且两者都远离 0 或
+1：在这里，表观 CYP3A4 效力对 CYP2D6 效力是一个真实但微弱的正向信号。
+
+干净配对子集中的两个具名例子，展示了这个微弱相关性掩盖了什么。阿巴康唑
+（`CHEMBL298817`）明显偏向 CYP3A4 选择性：同一篇文献中，对 CYP3A4 的
+pIC50 为 7.40，对 CYP2D6 为 4.50。奎尼丁（`CHEMBL1294`）根本不是一个干净
+配对，而这一缺失本身就有信息量：它唯一一条被准入的 CYP3A4 记录报告
+pIC50 4.55，旁边是 32 条独立的 CYP2D6 记录，其 pIC50 极差为 4.1，即报告
+效力跨度超过 10,000 倍，中位数 pIC50 为 7.37。要给"奎尼丁与 CYP"一个单一
+数字，得先在 33 项真实测量之间做出选择，才谈得上指代任何具体内容。
+
+**独立练习：** 一份安全性总结写道:"化合物 Z 抑制 CYP450，IC50 = 50 nM。"
+仅用本案例所作的检测体系区分，说出这句话遗漏的三个字段——在能把这个主张
+与一条 ChEMBL 式记录相互核对之前，这些字段都必须给出——并说明每处遗漏各
+带来什么风险。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+这句话遗漏了测的是哪种 CYP 酶（这里 CYP3A4 与 CYP2D6 的效力只呈微弱相关，
+因此一个值不能当作另一个的值）、是哪个检测产出了这个数字（这里单个靶点的
+记录并非一次测量，而是分散在许多独立检测和文献中，奎尼丁的 32 条 CYP2D6
+记录本身的 pIC50 极差就达到 4.1）、以及是哪篇文献报告的（没有共享文献，
+同一化合物的两个数字就不能像本实验定义的那样被当作同研究的"干净配对"）。
+缺了这三者中的任何一个,"化合物 Z 抑制 CYP450"都无法在本案例读取的这类真实
+记录中被定位或核对。
+
+</details>
+
+## 毒性终点有系统和推断边界
+
+毒性终点不是“安全/不安全”，而是命名系统、暴露窗口、读数和比较上的测量。细胞模型存活率变化可在其范围内用于排序，不证明器官毒性、无毒性、暴露相关性或临床迁移。迁移问题是：新语境是否保留主张所需生物机制、暴露关系和决策终点？若否，只报告语境特异关联。
+
+若高信号代表存活，且 `S_test` 和 `S_vehicle` 背景校正，则 `% viability = 100·S_test/S_vehicle`。若系统报告损伤或采用不同归一化，此式可能错误。定义构造安全分隔为 `M = C_risk / C_effect`，其中 `C_effect` 是声明的预期终点阈值浓度，`C_risk` 是可比较条件下风险终点的声明阈值浓度。只有这两个阈值浓度可比时 `M` 才无量纲；在这个有限模型中，较大 `M` 表示更大分隔。体外 `M` 是排序比，而非临床治疗指数。
+
+## 多参数优化暴露取舍
+
+对每个候选项保留原始终点、单位、系统、日期或批次、缺失情况和映射至决策的规则。硬门槛最易审计：所有预设最低值均满足者才推进。随后可有软排序，但有吸引力的平均值不能挽救门槛失败，因为效力、溶解度、清除率、渗透性、DDI 信号和模型特异安全信号可反向变化。
+
+<table>
+  <thead>
+    <tr>
+      <th>证据字段</th>
+      <th>可支持</th>
+      <th>不能单独建立</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>代谢路径 / 抑制信号</td>
+      <td>机制性 DDI 假设</td>
+      <td>临床相互作用幅度</td>
+    </tr>
+    <tr>
+      <td>清除率或暴露模型</td>
+      <td>有假设的暴露方向推理</td>
+      <td>无人类转化证据的人体暴露</td>
+    </tr>
+    <tr>
+      <td>细胞毒性终点</td>
+      <td>该测定语境的响应</td>
+      <td>整体安全性</td>
+    </tr>
+    <tr>
+      <td>多终点表</td>
+      <td>按已声明门槛的选择</td>
+      <td>候选提名或疗效</td>
+    </tr>
+  </tbody>
+</table>
+
+## 已构造案例：Pareto 决策
+
+下列均为**构造教学值**。团队预先设定：细胞 `pIC50 ≥ 6.00`；溶解度代理 `≥ 20`；清除率代理 `≤ 35`（低更好）；比较浓度的构造存活率 `≥ 75%`。另一个 DDI flag 不是通过/失败数，而需要解释和下一行动。
+
+<table>
+  <thead>
+    <tr>
+      <th>候选项</th>
+      <th>pIC50</th>
+      <th>溶解度代理</th>
+      <th>清除率代理</th>
+      <th>存活率</th>
+      <th>DDI 解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>R</td>
+      <td>6.30</td>
+      <td>25</td>
+      <td>31</td>
+      <td>82%</td>
+      <td>转运体信号未解决</td>
+    </tr>
+    <tr>
+      <td>S</td>
+      <td>6.65</td>
+      <td>18</td>
+      <td>28</td>
+      <td>88%</td>
+      <td>此构造筛中无信号</td>
+    </tr>
+    <tr>
+      <td>T</td>
+      <td>6.10</td>
+      <td>29</td>
+      <td>39</td>
+      <td>80%</td>
+      <td>代谢信号未解决</td>
+    </tr>
+  </tbody>
+</table>
+
+S 未过溶解度、T 未过清除率；R 过四个门槛但绝非“安全”，而是带未解转运体假设的条件性幸存者。若简化模型令 R `AUC_R ∝ 1/31`，T `AUC_T ∝ 1/39`，且 `F·D` 相同，则 `AUC_R/AUC_T = 39/31 = 1.26`。该构造 1.26 倍方向依赖不现实的相等条件，不说明人体暴露；它只说明比较 R 与 T 时不能忽略清除率。R 的下一步是预先指定的、范围适当的机制后续或更相关的暴露—风险模型，而不是以好看的列平均抵消 DDI flag。缺失测定仍应标作缺失。
+
+## 替代方法、局限与独立练习
+
+Pareto 选择在两个候选项互不支配时可同时保留它们，尤其适合权重没有正当含义时。加权 desirability function 可辅助资源分配，但需预先固定归一化和权重。若终点系统不同、浓度和预期暴露不可比或安全机制未知，两者均会失败。FDA DDI 框架是风险导向的，不会把体外结果变成临床标签 [FDA in-vitro DDI guidance](https://www.fda.gov/media/134582/download)。
+
+**手算练习（不可运行、非实证）：** 同一构造门槛下，U：`pIC50 5.95`、溶解度 `32`、清除率 `30`、存活 `91%`；V：`pIC50 6.20`、溶解度 `22`、清除率 `34`、存活 `72%`。各失败哪一门槛？第三个候选 W 若 `CL = 24`，R 为 `31`，且 `F·D` 相同，计算 `AUC_W/AUC_R`。为什么该比不是临床安全主张？若 W 改变另一药物暴露，哪个是其相关 DDI 角色？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+U 失败于效力（`5.95 < 6.00`），V 失败于存活（`72% < 75%`）。在给定简化假设下 `AUC_W/AUC_R = 31/24 = 1.29`。它忽略生物利用度、时间过程、代谢物、物种、浓度和转化，因此不是临床安全主张。若 W 改变另一药物暴露，W 是该特定相互作用的 perpetrator，另一药物为 victim。
+
+</details>
+
+## 自己把各层分开
+
+[安全性证据实验](/zh-cn/labs/safety-evidence/)把结构警报从结构现算出来，
+而只存需要做实验才能得到的发现，因此两者永远不会被打印成同一列。
+十二个化合物里七个触发警报、其中五个从未被测量过；
+让人安心的那个方向直接失效——在什么警报都没触发的化合物上出现了阳性发现；
+而带有整体动物层面证据的只有十二分之一。
+
+## 来源与下一课
+
+监管类来源于 2026-09-09 打开，支持机制与监管边界，不支持构造表格数值。ChEMBL CYP
+数字于 2026-09-12 实时抓取，用本实验自己的 `show` 命令即可复现。
+
+<div data-case-sources>
+
+- [ICH M12 Drug Interaction Studies: Questions and Answers — FDA](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/m12-drug-interaction-studies-questions-and-answers)
+- [In Vitro Drug Interaction Studies — FDA final guidance](https://www.fda.gov/media/134582/download)
+- [FDA examples of drugs that interact with CYP enzymes and transporters](https://www.fda.gov/drugs/drug-interactions-labeling/healthcare-professionals-fdas-examples-drugs-interact-cyp-enzymes-and-transporter-systems)
+- [ChEMBL 37 中 CYP3A4（CHEMBL340）与 CYP2D6（CHEMBL289）的活性记录](https://www.ebi.ac.uk/chembl/api/data/status.json)，通过 [CYP 检测体系实验](/zh-cn/labs/cyp-assay-system/) 读取
+
+</div>
+
+继续读 [CYP 检测体系实验](/zh-cn/labs/cyp-assay-system/) 亲自运行这个重叠与相关性计算，
+或读[筛选与亲和力](/zh-cn/learn/dti-screening/screening-and-affinity/)，使结合或排序分数
+与下游安全证据保持分离。原始课程文字为 CC BY 4.0；链接来源保留其自身条款。
+
+译文更新：2026-09-12。

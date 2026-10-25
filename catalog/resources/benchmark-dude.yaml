@@ -1,0 +1,45 @@
+id: benchmark-dude
+name: DUD-E
+kind: benchmark
+summary: Virtual-screening benchmark with target-associated decoys.
+canonical_url: https://dude.docking.org/
+identifiers:
+  - scheme: dataset
+    value: "DUD-E targets"
+    url: https://dude.docking.org/targets
+  - scheme: documentation
+    value: "DUD-E FAQ"
+    url: https://dude.docking.org/faq
+stages: [hit-discovery, evaluation]
+modalities: [small-molecule, protein]
+tasks: [virtual-screening]
+relations: []
+status: { value: unverified }
+access_level: { value: unverified }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://dude.docking.org/
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [caveats, identifiers]
+  - id: official-page
+    url: https://dude.docking.org/
+    label: DUD-E official site
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: terms-page
+    url: https://dude.docking.org/
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+caveats:
+  - "The canonical page could not be read on 2026-10-23 (<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c), so no terms statement was established."
+  - "The host was tried again on 2026-10-24 over HTTPS with the client's maximum TLS version pinned to 1.2 and over plain HTTP, and both failed before any content was returned, with the HTTPS attempt ending in a truncated handshake and the plain attempt returning no response at all. The record therefore states that the host could not be reached, and not what its terms are."
+acknowledgements: []
+last_verified: "2026-10-24"

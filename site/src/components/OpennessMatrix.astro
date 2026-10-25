@@ -1,0 +1,54 @@
+---
+import { opennessDimensions } from "../data/resource.js";
+import type { Resource } from "../data/resource.js";
+import ClaimEvidence from "./ClaimEvidence.astro";
+
+interface Props {
+  resource: Resource;
+}
+
+const { resource } = Astro.props;
+const labels = {
+  inference_code: "Inference code",
+  training_code: "Training code",
+  weights: "Weights",
+  architecture: "Architecture",
+  data_recipe: "Data recipe",
+  training_data: "Training data",
+  evaluation_code: "Evaluation code",
+};
+const valueLabels = {
+  available: "Available",
+  not_available: "Not available",
+  not_applicable: "Not applicable",
+  unverified: "Unknown",
+};
+---
+
+<div class="openness-matrix" role="region" aria-label="Openness matrix" tabindex="0">
+  <table>
+    <caption>Openness claims remain dimension-specific. Unknown is not a closed claim.</caption>
+    <thead>
+      <tr>
+        {opennessDimensions.map((dimension) => <th scope="col">{labels[dimension]}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {opennessDimensions.map((dimension) => {
+          const value = resource.openness[dimension].value;
+          return (
+            <td class={`openness-${value}`}>
+              <div>{valueLabels[value as keyof typeof valueLabels] ?? value}</div>
+              <ClaimEvidence
+                evidence={resource.evidence}
+                ids={resource.openness[dimension].evidence}
+                emptyMessage="Unknown — no direct evidence is recorded."
+              />
+            </td>
+          );
+        })}
+      </tr>
+    </tbody>
+  </table>
+</div>

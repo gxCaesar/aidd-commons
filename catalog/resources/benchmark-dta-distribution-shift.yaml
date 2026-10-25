@@ -1,0 +1,36 @@
+id: benchmark-dta-distribution-shift
+name: Beyond Random Splits
+kind: benchmark
+summary: Study of drug-target affinity prediction under chemically and biologically motivated distribution shifts, which finds that the agreement between architectures falls from 0.79 under two chemical shifts to 0.39 under a protein shift and reverses to -0.55 under a shift that combines them.
+canonical_url: https://arxiv.org/abs/2610.03456
+identifiers:
+  - scheme: paper
+    value: "Beyond Random Splits: Evaluating Drug-Target Affinity Models Under Chemically and Biologically Motivated Distribution Shifts; Chung, Li, Muthukumaran, Wang, Iyer, Tan, Sathu, Nnamdi, Tamo, Marteau and Wang, arXiv 2610.03456, submitted 2 October 2026"
+    url: https://arxiv.org/abs/2610.03456
+stages: [evaluation]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [affinity-prediction, benchmark-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: unverified }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: available, evidence: [paper-record] }
+  training_data: { value: available, evidence: [paper-record] }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: paper-record
+    url: https://arxiv.org/abs/2610.03456
+    label: The arXiv record of the paper, read on 2026-10-24, with its title, author list, submission date and abstract
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+caveats:
+  - "The arXiv page states no released repository, processed dataset or code location, so the record carries no licence and no established access level. The underlying sources it names are ChEMBL and BindingDB, which have their own terms."
+  - "The study curates 718,800 unique drug-protein pairs and compares a Morgan-fingerprint and protein-CNN baseline with twelve further architectures built from four drug representations and three ESM-2 interaction modes, which is a large comparison rather than a small one."
+  - "The reported validation RMSE is 0.950 for the scaffold shift and 0.945 for the fingerprint-cluster shift, against 1.299 for the protein-cluster shift and 1.321 for the dual shift, so the error rises under the biological shifts while the ranking behaviour changes far more sharply: the architectures agree at a rank correlation of 0.79 under the two chemical shifts, at 0.39 under the protein shift, and at -0.55 under the dual shift, where the order reverses."
+  - "The paper's own conclusion is that the model choice depends on the extrapolation setting rather than on the average error or on the quantity of training data, and it says that a drug-target affinity benchmark should reproduce the chemical and target shifts expected in deployment. The record did not run the comparison."
+acknowledgements: []
+last_verified: "2026-10-24"

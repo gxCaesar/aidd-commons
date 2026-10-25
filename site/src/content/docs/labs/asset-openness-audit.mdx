@@ -1,0 +1,84 @@
+---
+title: Audit the seven asset-openness fields
+description: Inspect separate openness claims, evidence, access and licence scope across 24 resource records.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+This laboratory serves `t10-asset-openness-reproducibility`. It teaches you to read inference code, training code, weights, architecture, data recipe, training data and evaluation code as separate claims. You will also trace each recorded claim to an evidence entry, distinguish access from licence scope, and identify records whose scope text limits a grant. Read [Asset openness and reuse](/learn/structure-and-pockets/asset-openness-and-reuse/) first. Familiarity with YAML is useful.
+
+Mode is fresh independent computation over a frozen protocol and the committed catalogue. Use the project Python 3.11 environment and CPU. The commands need no network, download or accelerator. The `check` and `show` commands write nothing. The exporter overwrites only the committed compact summary after all checks pass.
+
+```bash
+.venv/bin/python labs/asset_openness_audit/run_lab.py check
+.venv/bin/python labs/asset_openness_audit/inspect_asset_openness_audit.py show
+.venv/bin/python labs/asset_openness_audit/inspect_asset_openness_audit.py check
+.venv/bin/python labs/asset_openness_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/asset_openness_audit -q
+```
+
+## Source records and checks
+
+The input is the 228 committed YAML records in the resource catalogue snapshot recomputed on 2026-10-25. The protocol declares the examined 24 identifiers and their order. The loader refuses a missing identifier or invalid calendar date. The inspector prints each recorded dimension value with its evidence identifiers and review date. It also prints licence names and verbatim scopes, access evidence and caveats. A non-`unverified` claim must reference an evidence entry in its own record. A licence must carry a name, scope and resolving evidence reference.
+
+The scope flag uses a case-insensitive whole-word match for `only`, `not`, `no separate terms` or `does not`. It is a text filter for teaching. It does not decide what a licence legally permits. A missing one of the 7 openness fields is a defect, not an invitation to fill it with `unverified`.
+
+## Examined records
+
+The table is the committed 2026-10-25 computation with Python 3.11.15 and PyYAML 6.0.3. `A` means `available`, `N` means `not_available`, `NA` means `not_applicable` and `U` means `unverified`. `IC`, `TC`, `W`, `AR`, `DR`, `TD` and `EC` follow the protocol's 7 dimensions in order. Licence names and access values are recorded claims. The final column is the literal scope-text flag. The inspector supplies evidence identifiers, complete scope text and caveats for every row.
+
+| Record | IC | TC | W | AR | DR | TD | EC | Access | Licence names | Reviewed | Scope limit |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `db-alphafold-db` | U | U | A | U | U | U | U | source_available | CC-BY-4.0 | 2026-10-22 | no |
+| `model-alphafold-2` | A | U | U | A | U | U | U | open_source | Apache-2.0 | 2026-10-23 | no |
+| `model-alphafold-3-inference` | A | U | U | U | U | U | U | source_available | Apache-2.0 | 2026-09-04 | no |
+| `model-boltz-1` | A | A | A | A | A | A | U | open_source | MIT | 2026-10-21 | no |
+| `model-boltz-2` | A | U | A | A | A | A | U | open_source | MIT | 2026-10-23 | yes |
+| `model-chai-1` | A | U | A | A | U | U | U | open_source | Apache-2.0 | 2026-10-21 | yes |
+| `model-chai-2` | U | U | U | U | U | U | U | gated | none | 2026-10-23 | no |
+| `model-protenix` | A | A | A | A | A | A | U | open_source | Apache-2.0, Proprietary, no open-source licence | 2026-10-21 | yes |
+| `model-openfold` | A | U | A | U | U | U | U | open_source | Apache-2.0, CC-BY-4.0 | 2026-09-04 | no |
+| `model-rfdiffusion` | A | A | A | A | U | U | A | open_source | BSD-3-Clause | 2026-10-23 | no |
+| `model-rfdiffusion2` | A | U | A | A | U | U | U | open_source | BSD-3-Clause | 2026-10-21 | no |
+| `model-esm-c` | A | U | A | A | A | A | U | open_source | MIT | 2026-10-23 | yes |
+| `model-esmc` | A | U | A | A | A | A | U | open_source | MIT | 2026-10-23 | yes |
+| `model-boltzgen` | A | A | A | A | A | A | U | open_source | MIT | 2026-10-23 | yes |
+| `model-alphaproteo` | N | U | N | U | U | U | U | gated | Apache-2.0, CC-BY-4.0 | 2026-10-21 | yes |
+| `tool-bindcraft` | A | U | NA | A | U | U | U | open_source | MIT | 2026-10-21 | yes |
+| `tool-gnina` | A | U | U | U | U | U | U | open_source | Apache-2.0, GPL-2.0 | 2026-10-23 | no |
+| `tool-smina` | A | NA | NA | NA | NA | NA | U | open_source | Apache-2.0, GPL-2.0 | 2026-10-23 | no |
+| `tool-openmm` | A | NA | NA | NA | NA | NA | U | open_source | MIT, LGPL-2.1 | 2026-10-23 | no |
+| `tool-rdkit` | A | NA | NA | NA | NA | NA | U | open_source | BSD-3-Clause | 2026-10-23 | yes |
+| `tool-psi4` | A | NA | NA | NA | NA | NA | U | open_source | GPL-3.0 | 2026-10-23 | no |
+| `db-rcsb-pdb` | U | U | U | U | U | U | U | source_available | CC0 1.0 | 2026-10-23 | no |
+| `db-uniprot` | U | U | U | U | U | U | U | source_available | none | 2026-10-23 | no |
+| `db-skempi` | NA | NA | NA | NA | U | U | NA | source_available | CC-BY-4.0 | 2026-10-21 | no |
+
+## Counted claims
+
+The procedure counts each of the 7 dimension values in the 24 examined records, then counts records with a licence, without a verified access level, or with limiting scope text. It separately checks whether every catalogue record carries all 7 fields.
+
+| Population | Counted property | Count |
+| --- | --- | ---: |
+| 24 examined records | `available` cells | 57 |
+| 24 examined records | `not_applicable` cells | 26 |
+| 24 examined records | `unverified` cells | 83 |
+| 24 examined records | `not_available` cells | 2 |
+| 24 examined records | Records with a licence | 22 |
+| 24 examined records | Records without verified access | 0 |
+| 24 examined records | Records with limiting scope text | 9 |
+| 228 catalogue records | Records with 7 separate dimensions | 228 |
+
+## Limits of the material
+
+The audit checks what these catalogue records state and whether their references resolve internally. It does not reopen every linked external page, run a model or determine whether a resource can be used for a particular purpose. An `unverified` value is bounded by the source review and date recorded for that field. It is not evidence of absence. A `not_applicable` value states a different judgement about the resource type and retains its evidence entry. The frozen selection illustrates the distinctions and is not a representative sample of all resources.
+
+## Sources and terms
+
+The local catalogue snapshot was recomputed on 2026-10-25. Individual source-review dates appear in the table. Representative linked sources include the [Boltz repository](https://github.com/jwohlwend/boltz), whose record names MIT for code and weights while its scope excludes named evaluation sets, the [AlphaFold 3 inference repository](https://github.com/google-deepmind/alphafold3), whose record names Apache-2.0 for inference code, the [RDKit repository](https://github.com/rdkit/rdkit), whose record names BSD-3-Clause for its source code, and the [RCSB PDB usage policy](https://www.rcsb.org/pages/usage-policy), whose record names CC0 1.0 for served data. These are the catalogue's recorded licence claims. Follow each evidence URL and scope before any actual reuse decision.
+
+Original guide prose is CC BY 4.0 and laboratory code is Apache-2.0. Linked resources retain their own terms. Last reviewed on 2026-10-25.

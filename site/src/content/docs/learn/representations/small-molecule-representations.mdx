@@ -1,0 +1,510 @@
+---
+title: Small-molecule representations
+description: Choose identifiers, descriptors, fingerprints, graphs, strings, and conformers by the chemical distinctions an AIDD decision requires.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import RepresentationDecisionMap from "../../../../components/RepresentationDecisionMap.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="representations/small-molecule-representations" />
+<ScrollableRegions />
+
+**A representation is not the molecule.** It is a declared computational view
+of a chemical entity. Every view retains some distinctions, removes others, and
+adds implementation choices. A larger embedding is therefore not automatically
+more informative, and a valid string is not automatically the right scientific
+object.
+
+This chapter builds a decision framework from chemical identity through fixed
+and learned representations. Two CPU-only labs now support it: a label-free
+identity inspector and a frozen ChEMBL 37 EGFR comparison whose development
+pretest and paired evaluations have completed. Its separate summaries retain
+development selection, primary performance, and the failed Morgan assay transfer.
+
+<RepresentationDecisionMap />
+
+## Prerequisites
+
+You should be able to read common bond, charge, aromaticity, and stereochemical
+notation; distinguish an assay measurement from a molecule; and interpret a
+train/validation/evaluation split. Review [data contracts](/learn/data-governance/data-contracts/)
+and [scientific machine learning](/learn/machine-learning/scientific-computing/)
+if those boundaries are unfamiliar. Python is needed only for the worked lab.
+
+## Learning goals
+
+After this chapter, you should be able to:
+
+1. define whether a row denotes a parent structure, salt, mixture, protomer,
+   tautomer, stereoisomer, conformer, or assayed substance;
+2. explain what SMILES, InChI, descriptors, fingerprints, graphs, token
+   sequences, and 3D inputs preserve and collapse;
+3. choose a minimum sufficient representation from endpoint dependence rather
+   than model popularity;
+4. construct a matched descriptor-versus-fingerprint baseline without allowing
+   preprocessing or entity leakage;
+5. audit stereochemistry, protonation, tautomer, conformer, hashing, and
+   applicability-domain failures before trusting a score.
+
+## Scientific assumptions
+
+### Chemical identity comes before featurization
+
+“One compound” is not a complete unit definition. A database record may contain
+several disconnected components, an explicitly charged state, unspecified
+stereocentres, a particular isotopologue, or a coordinate set generated for one
+conformer. Removing a counterion, neutralizing a charge, selecting a canonical
+tautomer, or dropping stereochemistry changes the equivalence relation between
+records. Those operations can be appropriate, but only after the intended
+prediction unit is stated.
+
+Parsing is also not standardisation. A toolkit can accept a SMILES string,
+construct a graph, check valence, assign aromaticity, and emit a canonical
+SMILES without deciding that two salt forms or two protonation states are one
+experimental entity. RDKit exposes fragment, charge, isotope, stereo, and
+tautomer parent operations separately in its
+[MolStandardize API](https://www.rdkit.org/docs/cppapi/namespaceRDKit_1_1MolStandardize.html).
+That separation should remain visible in a data pipeline.
+
+### The endpoint determines required resolution
+
+A connectivity-only view may be sufficient for a useful baseline on some
+bulk molecular properties. It cannot, by itself, encode an assayed pH,
+solvation environment, protein state, binding pose, or conformational
+population. A single 3D conformer contains coordinates but still does not
+represent an ensemble or prove that the coordinates are relevant to the assay.
+Conversely, generating conformers for every task can introduce compute and
+method variance without adding endpoint-relevant information.
+
+Write the dependency hypothesis before choosing features:
+
+- **Identity or registry linkage:** retain the structure record and a suitable
+  identifier; do not substitute a learned embedding for entity resolution.
+- **Local structure–activity relationships:** begin with a circular fingerprint
+  or local graph representation.
+- **Global size, polarity, or flexibility trends:** begin with a small declared
+  descriptor vector.
+- **Quantum energy or force:** coordinates, elements, state, and physical
+  symmetries are load-bearing.
+- **Protein–ligand geometry:** ligand state, conformer or pose, target construct,
+  and interaction context are all part of the input.
+
+### Invariance is a scientific assumption
+
+The desired output for a molecular property usually should not change when atom
+indices are permuted. An energy should be invariant to rigid translation and
+rotation, while predicted forces transform with the coordinates. Message-passing
+graphs, geometric networks, and data augmentation implement different versions
+of these assumptions. None automatically supplies invariance to tautomer,
+protonation, stereochemical, assay, or batch changes.
+
+### Learned representations inherit their training history
+
+A pretrained molecular encoder is not a neutral compression of chemistry. Its
+tokenizer or graph features, pretraining corpus, standardisation rules,
+objective, negative sampling, conformer generation, and pooling determine which
+distinctions it can learn. Public weights alone do not establish the training
+data contract or fitness for a new endpoint. Compare learned encoders only after
+the entity set, labels, split, selection rule, and cheap baselines are fixed.
+
+## Data contract
+
+The v0.2b depth candidate uses a ChEMBL example so that the lesson has a
+concrete evaluation route. Its frozen development pretest, primary
+scaffold-disjoint evaluation and assay-level replication have completed without
+changing the selected parameters.
+
+| Field                         | Frozen declaration                                                                                                                                                                    |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Producer and version          | [ChEMBL 37](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README), released 2026-05-01                                                                       |
+| Primary task                  | Human EGFR single-protein binding assay [CHEMBL5736995](https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5736995.json)                                                               |
+| Assay-level replication       | Separate human wild-type EGFR binding assay [CHEMBL3705421](https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3705421.json)                                                           |
+| Entity                        | Standardised ChEMBL parent molecule; source molecule and activity identifiers must remain traceable                                                                                   |
+| Label                         | `pchembl_value` for exact IC50 rows with `standard_flag=1`, no potential-duplicate flag, and no data-validity comment                                                                 |
+| Dated feasibility observation | Primary: 966 retained rows, 902 parents, 238 Bemis–Murcko scaffolds. Replication: 173 rows, 170 parents, 23 scaffolds, with no parent overlap in the 2026-09-05 preflight             |
+| Inputs                        | Canonical parent structure; 214 frozen RDKit 2D descriptors; a 2,048-bit binary chirality-aware Morgan fingerprint                                                                    |
+| Independent unit              | Bemis–Murcko scaffold, not row, seed, fingerprint bit, or training run                                                                                                                |
+| Frozen partition              | Assign complete scaffold groups, ordered by descending group size and scaffold string, to 70% train, 15% validation, and 15% locked primary evaluation partitions                     |
+| Cheap comparison              | Descriptor Ridge versus Morgan Ridge; fit every learned preprocessing step on training molecules only and choose a declared regularisation grid on validation scaffolds only          |
+| Primary metric                | Mean absolute error in pChEMBL units on the locked scaffold-disjoint primary partition                                                                                                |
+| Secondary checks              | Root mean squared error and Spearman rank correlation; apply the frozen pipeline to the second assay as a separately reported replication                                             |
+| Permitted-use evidence        | ChEMBL 37 database content is distributed under [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE); upstream source terms remain separate |
+
+The feasibility counts establish that the variables and independent units
+coexist. They do not establish attainable accuracy, superiority of either
+representation, or transport across assays. The
+[completed predictive lab](/labs/chembl-egfr-representation-baselines/#chembl-locked-title)
+now shows the distinction directly: Morgan has the lowest primary MAE but the
+highest replication MAE, while descriptor Ridge has the lowest replication MAE.
+T15 accessed shared labels before T05 evaluation; this is disclosed and does
+not permit a claim of entirely untouched independent confirmation or subsequent retuning.
+
+## Representation families
+
+The families are complementary. A production pipeline commonly retains a source
+record and identifier for traceability, a fixed representation for a baseline,
+and a task-specific learned representation. Do not collapse those roles into one
+array called `features`.
+
+| Family                            | Computational object                                                 | What it can retain                                                                                                                   | What it commonly removes or aliases                                                  | Appropriate first use                                    |
+| --------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | -------------------------------------------------------- |
+| Structure record or line notation | Connection table serialized as MOL/SDF, SMILES, or another format    | Elements, connectivity, bond types, formal charges, isotopes, and stereo when present; records may also carry coordinates and fields | Assay environment and ensemble weights; SMILES can omit stereo and coordinates       | Interchange, parsing, traceability                       |
+| Identifier                        | Standard InChI layers or compressed InChIKey                         | A governed, normalized identity description at declared layers                                                                       | InChIKey is not reversible; neither is a task feature or an assay identifier         | Cross-database linkage and duplicate audit               |
+| Scalar descriptors                | Fixed vector of counts or computed properties                        | Size, composition, polarity proxies, flexibility, topology summaries                                                                 | Exact local arrangement, most stereochemistry, conformation, environment             | Transparent low-data baseline and range checks           |
+| Fingerprints                      | Sparse or fixed-width feature/count vector                           | Selected paths, atom environments, pharmacophore patterns, or keys                                                                   | Exact graph reconstruction, long-range geometry; hashing can collide                 | Similarity, retrieval, classical QSAR baseline           |
+| 2D molecular graph                | Atom nodes and bond edges with declared features                     | Connectivity and local chemical attributes; permutation-aware processing                                                             | 3D coordinates, conformer populations, assay context                                 | Message passing and atom-level readouts                  |
+| Molecular string tokens           | A chosen serialization plus tokenizer                                | Syntax, ordering, ring/branch tokens, and any encoded stereo                                                                         | Traversal invariance unless handled; tokenizer can merge chemically unlike fragments | Language modelling, generation, sequence pretraining     |
+| Single 3D conformer               | Elements plus one coordinate set                                     | Distances, angles, and one spatial state                                                                                             | Other conformers, populations, solvent, target-induced state                         | Geometry-sensitive baseline when one state is defensible |
+| Ensemble or complex context       | Multiple conformers, poses, or interacting entities with aggregation | State uncertainty and interaction geometry when sampled adequately                                                                   | Unsampled states and incorrect weights; aggregation adds assumptions                 | Binding, force, or state-dependent questions             |
+
+### Structure records, SMILES, and identifiers
+
+The [OpenSMILES specification source](https://github.com/opensmiles/OpenSMILES/blob/master/opensmiles.asciidoc) defines an
+open form of the SMILES line language. Multiple valid SMILES can traverse the
+same molecular graph. “Canonical SMILES” means that a particular algorithm and
+version selected one deterministic serialization. RDKit demonstrates this by
+mapping several pyridine strings to one toolkit-canonical output in its
+[Python guide](https://www.rdkit.org/docs/GettingStartedInPython.html). RDKit
+also documents releases in which canonical outputs changed, so the toolkit and
+version belong in the contract.
+
+Isomeric SMILES may encode tetrahedral and double-bond stereochemistry; a
+non-isomeric output deliberately removes those distinctions. Unspecified
+stereochemistry is not evidence for a racemate, one enantiomer, or an arbitrary
+assigned centre. A dot-separated SMILES denotes disconnected components. It is
+not safe to assume that the largest component is the assayed material without
+the source record and curation rule.
+
+[Standard InChI](https://iupac.org/who-we-are/divisions/division-details/inchi/)
+uses governed layers for connectivity, hydrogen, charge, stereochemistry, and
+isotopes. InChIKey is a fixed-length derivative useful for indexing. It cannot
+be decoded back to a structure without a lookup relation. Use it to test and
+record identity hypotheses, not as a chemically meaningful numeric feature.
+
+[SELFIES](https://doi.org/10.1088/2632-2153/aba947) constrains molecular strings
+so generated token sequences map to valid molecular graphs under its semantic
+rules. That robustness addresses invalid string generation. It does not ensure
+uniqueness, drug-likeness, synthesizability, the intended protonation state, or
+biological activity.
+
+### Fixed descriptors
+
+Descriptors convert a molecular object into declared scalars. Examples include
+molecular weight, atom or ring counts, formal charge, Wildman–Crippen logP,
+topological polar surface area, hydrogen-bond donor and acceptor counts, and
+rotatable bonds. The [RDKit descriptor guide](https://www.rdkit.org/docs/GettingStartedInPython.html#descriptor-calculation)
+exposes these computations, while the [RDKit Book](https://www.rdkit.org/docs/RDKit_Book.html#implementation-of-the-tpsa-descriptor)
+documents an important implementation detail: its default TPSA omits sulfur and
+phosphorus contributions unless an option requests them.
+
+This illustrates the correct interpretation. A descriptor name is not a
+complete definition. Record the toolkit version, arguments, hydrogen handling,
+standardised input object, missing-value policy, and train-only scaling. Inspect
+constant and near-constant columns on training data. A descriptor baseline is
+especially useful when the dataset is small because it exposes whether most of
+the learnable signal is already explained by simple size and composition.
+
+### Fingerprints and similarity
+
+Fingerprints are not one representation. Key-based fingerprints mark a fixed
+dictionary of patterns. Path and topological-torsion fingerprints enumerate
+bond paths. Atom-pair fingerprints combine typed atoms and topological
+distance. Pharmacophore fingerprints abstract features such as donors,
+acceptors, aromatic groups, and their separation. Circular fingerprints expand
+local atom environments.
+
+Morgan/ECFP-style fingerprints iteratively encode neighborhoods around atoms.
+The foundational [extended-connectivity fingerprint paper](https://doi.org/10.1021/ci100050t)
+developed circular features for molecular characterization and
+structure–activity modelling. An implementation still requires choices:
+
+- atom invariants or feature classes;
+- radius, where a radius of two covers environments up to two bonds from each
+  centre;
+- stereochemical information;
+- sparse identifiers versus hashed count or bit vectors;
+- vector width and count simulation;
+- similarity function.
+
+For binary vectors, Tanimoto similarity is commonly `c / (a + b - c)`, where
+`a` and `b` are occupied-bit counts and `c` is their intersection. A high value
+means similarity under that fingerprint contract, not equivalent chemistry or
+equivalent activity. Hashing different environments into the same position
+creates collisions. A bit vector also loses repeated-feature counts. The
+[RDKit fingerprint documentation](https://www.rdkit.org/docs/RDKit_Book.html#additional-information-about-the-fingerprints)
+therefore distinguishes sparse counts, hashed counts, and explicit bits rather
+than treating “Morgan” as a complete configuration.
+
+### Molecular graphs
+
+A 2D graph usually maps atoms to nodes and bonds to edges. Node features may
+include atomic number, formal charge, aromaticity, hybridization, hydrogen
+count, chirality, and ring membership. Edge features may include bond type,
+conjugation, ring membership, and stereo. Every omitted feature declares an
+invariance or information loss.
+
+[Message Passing Neural Networks](https://proceedings.mlr.press/v70/gilmer17a.html)
+provide a common framework in which nodes exchange messages through edges and a
+readout aggregates the graph. The network can learn task-specific features, but
+it cannot recover variables absent from the graph. Two protonation states fed as
+different graphs remain different examples; two stereoisomers fed without
+stereo features may become indistinguishable.
+
+Graph size and neighborhood depth also matter. A fixed number of message-passing
+steps limits how far information can propagate before readout. Adding a virtual
+node, global descriptors, long-range edges, or 3D distances changes the
+representation contract, not just the architecture.
+
+### Strings and learned sequence representations
+
+SMILES models see a serialization. Character, regex, atom-level, and subword
+tokenizers produce different vocabularies and sequence lengths. A canonical
+string removes traversal variation chosen by one toolkit; randomized SMILES
+expose several traversals of the same graph. Those traversals can be useful data
+augmentation, but they are not new molecules or new independent evidence.
+
+A fair string-model comparison freezes canonicalization, stereochemistry,
+tokenizer training data, vocabulary, maximum length, truncation, and the rule
+for aggregating multiple strings. Check whether alternate strings for the same
+molecule cross the split. Otherwise the task can become string recognition
+rather than chemical generalization.
+
+### 3D coordinates and conformer ensembles
+
+A 3D input needs more than Cartesian coordinates. Record the protonation and
+tautomer state, explicit hydrogens, conformer generator and version, random
+seed, number of attempts, pruning threshold, energy model, minimization, retained
+conformers, and aggregation rule. RDKit's
+[ETKDG documentation](https://www.rdkit.org/docs/RDKit_Book.html#conformer-generation)
+describes how distance geometry is combined with experimentally derived torsion
+preferences and exposes reproducibility controls such as `randomSeed`.
+
+Geometry-aware models should encode the required symmetry. [SchNet](https://papers.nips.cc/paper/2017/hash/303ed4c69846ab36c2904d3ba8573050-Abstract.html)
+uses continuous filters over atom positions for molecular energies and forces.
+This is appropriate evidence that coordinates can be load-bearing for a
+physical endpoint. It is not evidence that one generated ligand conformer will
+improve every bioactivity task.
+
+For a flexible ligand, an ensemble can be the honest input object. The model
+must then pool conformers, integrate predicted populations, or make a
+state-specific prediction. Reporting the best-scoring conformer after observing
+the label is outcome leakage. Treat conformers as repeated views nested within
+a molecule, not independent molecules.
+
+### Pretrained and hybrid representations
+
+Learned representations include graph encoders, chemical language models,
+3D geometric encoders, contrastive 2D–3D models, and multimodal encoders joined
+to text, proteins, or assays. Hybrid models can concatenate fixed descriptors,
+pool fingerprints, or fuse several views. They add capacity and assumptions at
+the same time.
+
+The [MoleculeNet paper](https://doi.org/10.1039/C7SC02664A) is useful here not as
+a permanent leaderboard, but as an early matched framework connecting datasets,
+featurizers, splits, and metrics. A modern comparison still needs recipe parity,
+current implementations, repeated seeds for algorithmic variability, and
+uncertainty over the actual independent chemical units.
+
+## Cheap baselines before learned encoders
+
+For the frozen EGFR candidate, the first decision is whether fixed global
+descriptors and local circular environments carry complementary signal. The
+baseline pair is therefore:
+
+1. a declared RDKit descriptor vector, train-only missing-value handling and
+   scaling, then Ridge regression;
+2. a declared chirality-aware Morgan representation and Ridge regression under
+   the same molecules, labels, partitions, selection metric, and regularisation
+   selection rule.
+
+The exact descriptor list, fingerprint form, and regularisation grid must be
+frozen before a locked evaluation is opened. No deep encoder should be added
+until this matched comparison, the train-mean control, data noise, and
+implementation variability show decision-relevant headroom. If a learned model
+is later evaluated, change the representation while holding the dataset and
+protocol fixed; then change the learner while holding the representation fixed.
+Otherwise the source of any difference is not identified.
+
+For classification, an analogous cheap model is logistic regression on the
+same fixed features, with class thresholds, imbalance handling, calibration,
+and selection metric declared first. Nearest-neighbour or similarity retrieval
+is a useful nonparametric control when local analogues are the intended evidence.
+
+## Worked case: one structure, several computational objects
+
+The [label-free representation inspector](/labs/molecule-representation-inspector/)
+uses seven authored examples. Run it from the repository root:
+
+```sh
+env UV_CACHE_DIR=.cache/uv uv run python labs/molecule_representations/run_lab.py inspect
+```
+
+It writes `tmp/molecule-representations/report.json` and records the installed
+RDKit version plus every fingerprint option. Inspect three contrasts:
+
+| Contrast                            | Expected observation                                                                        | Scientific lesson                                                         |
+| ----------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Kekule and aromatic pyridine SMILES | The input strings differ; RDKit emits the same canonical isomeric SMILES and InChIKey       | String equality is not graph identity; canonicalization is toolkit-scoped |
+| Two defined alanine enantiomers     | Isomeric SMILES and InChIKeys differ; non-isomeric SMILES is the same                       | Removing stereo creates a many-to-one mapping                             |
+| Acetic acid and sodium acetate      | The salt remains an ionic, two-component record even though its total formal charge is zero | Parsing must not silently choose a parent or protonation state            |
+
+The report also contains atom and bond counts, formula, formal charge, assigned
+and unassigned stereocentre counts, a Bemis–Murcko scaffold when one exists, six
+fixed descriptors, occupied Morgan bits, and nonzero Morgan count features.
+These are deterministic observations under the recorded software contract.
+They are not experimental measurements.
+
+As a sensitivity exercise, rerun with `--ignore-chirality`, another
+`--morgan-radius`, or another `--morgan-bits` value and compare the contract and
+representation fields. Do not treat the resulting views as additional molecules
+or as evidence that one configuration predicts an endpoint better.
+
+The companion [ChEMBL 37 EGFR representation-baseline lab](/labs/chembl-egfr-representation-baselines/)
+then moves from identity inspection to a matched predictive comparison. It
+uses 214 frozen RDKit 2D descriptors, a chirality-aware Morgan fingerprint,
+a scaffold-disjoint split, train-only preprocessing, and validation-only Ridge
+selection. Its reviewed page separates the historical development data funnel
+from the completed primary and separate-assay results, including the ranking
+reversal, without publishing molecule memberships or raw ChEMBL data.
+
+## Evaluation traps
+
+### 1. Entity leakage before the split
+
+Alternate SMILES, salt forms, tautomers, or stereochemistry-stripped records can
+place near-identical or identical entities on both sides of a split. Resolve and
+audit entity relations before featurization. Preserve the source record so the
+lossy parent mapping can be reviewed.
+
+### 2. Representation-dependent grouping
+
+A Bemis–Murcko scaffold is a 2D framework definition introduced by
+[Bemis and Murcko](https://pubmed.ncbi.nlm.nih.gov/8709122/). It is not a natural
+law or a guarantee of prospective generalization. Ring-free molecules require
+an explicit grouping rule. Different standardisation or aromaticity choices can
+change scaffold identities. Report the implementation and inspect train-to-test
+similarity after splitting rather than calling the partition “OOD” by default.
+
+### 3. Unmatched representation comparisons
+
+Changing features, network capacity, augmentation, pretraining data, tuning
+budget, and ensemble size at once compares systems, not representations. Use
+paired molecules and fixed partitions. Give cheap methods the same endpoint
+definition and honest model-selection budget.
+
+### 4. Preprocessing fitted outside training
+
+Descriptor imputation, scaling, variance filtering, vocabulary construction,
+feature selection, and learned tokenization can all inspect held-out examples.
+Fit every data-dependent transform on training only. A fixed chemistry algorithm
+such as a declared fingerprint is not “fitted,” but its parameters and software
+version still must be frozen.
+
+### 5. Multiple strings or conformers counted as independent units
+
+Randomized SMILES, conformers, augmentations, seeds, checkpoints, and ensemble
+members are nested computational views. They do not increase the number of
+independent molecules, scaffolds, assays, or chemical series. Split them as one
+entity and aggregate uncertainty at the declared independent unit.
+
+### 6. Endpoint context omitted from the representation
+
+Bioactivity can change with target construct, assay format, substrate, species,
+pH, and protocol. A molecular embedding cannot repair labels that pool
+incompatible experiments. Assay-aware modelling is a different input contract
+from molecule-only prediction.
+
+### 7. Applicability domain replaced by confidence
+
+A narrow prediction interval or high neural confidence does not show that a
+query lies inside supported chemical space. Inspect nearest training analogues,
+scaffold or series coverage, descriptor ranges, representation collisions, and
+assay coverage. Define an abstention rule before using predictions in a decision.
+
+### 8. Locked evaluation reused for representation selection
+
+Selecting radius, descriptor subsets, tokenizer, conformer policy, pretrained
+checkpoint, or fusion weights after reading test outcomes turns the locked set
+into validation data. Freeze those choices, record the selection budget, and
+evaluate the final comparison once. The existing FreeSolv lab demonstrates this
+separation for a different endpoint; its completed result must not be rerun or
+reused as an EGFR result.
+
+## Failure modes and cheapest checks
+
+| Failure                                                        | Cheapest decisive check                                                                                        | Response                                                                 |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Parser accepts a record but identity is wrong                  | Render source and parsed structures side by side; compare formula, charge, components, stereo, and source ID   | Correct the entity contract before modelling                             |
+| Canonicalization creates false duplicates                      | Compare source records, isomeric SMILES, InChI layers, and the exact standardisation transformations           | Keep ambiguous relations; do not force a merge                           |
+| Stereo is silently removed                                     | Count assigned and unassigned stereocentres before and after every transform                                   | Preserve stereo or declare why the endpoint is invariant                 |
+| Salt, tautomer, or protomer handling changes labels per entity | Tabulate many-to-one mappings and within-group label disagreement                                              | Revisit aggregation; retain state or formulation where needed            |
+| Fingerprint vector is saturated or collision-prone             | Inspect occupied-bit fraction and compare sparse counts with hashed bits on training molecules                 | Increase width or use counts only under a frozen sensitivity plan        |
+| Descriptor baseline depends on a few size proxies              | Inspect train-only coefficients, residuals, and matched errors by size and scaffold                            | Report the limitation; test complementary local features                 |
+| Graph model cannot distinguish needed states                   | Construct a paired counterexample that differs only in the omitted node, edge, stereo, or state feature        | Add the missing variable or narrow the claim                             |
+| 3D result changes across conformer seeds                       | Repeat conformer generation for the same molecules before model fitting and compare geometry-derived inputs    | Use an ensemble or abandon unjustified single-conformer claims           |
+| Pretrained embedding gives no matched gain                     | Compare against train-mean, descriptor Ridge, Morgan Ridge, and a train-only blend under the frozen split      | Stop adding architecture if gain is below the noise floor                |
+| External assay fails despite primary improvement               | Inspect assay definition, entity overlap, calibration, and residual shifts without retuning on the replication | Report non-transport; revise the scientific question rather than hide it |
+
+Experimental evidence overrides a representation score. A model can prioritize
+what to test; it cannot convert a collapsed chemical distinction or incompatible
+assay into a valid mechanistic conclusion.
+
+## Openness and licensing
+
+Representation work crosses several independent legal surfaces:
+
+- this lesson and original figures are CC BY 4.0, while the original lab code is
+  Apache-2.0;
+- specifications, software implementations, pretrained weights, training
+  corpora, benchmark labels, and generated conformers can have different terms;
+- ChEMBL 37 database content uses the licence named in its versioned release,
+  while publisher records and contributed upstream data may carry additional
+  attribution or reuse constraints;
+- an open-source tokenizer or featurizer does not make its input dataset, model
+  weights, or downstream predictions open.
+
+Record the source URL, version, licence scope, attribution, redistribution rule,
+and unresolved terms adjacent to each artifact. Never infer a dataset licence
+from the licence of the code that downloads or featurizes it.
+
+## Sources and further study
+
+### Standards and official implementation references
+
+- [OpenSMILES specification source](https://github.com/opensmiles/OpenSMILES/blob/master/opensmiles.asciidoc) — grammar
+  and semantics for an open SMILES specification.
+- [IUPAC InChI project](https://iupac.org/who-we-are/divisions/division-details/inchi/)
+  and [InChI 1.07 release notice](https://iupac.org/inchi-1-07-available-on-github/)
+  — identifier governance, validation, and current implementation boundary.
+- [RDKit Book](https://www.rdkit.org/docs/RDKit_Book.html),
+  [Python guide](https://www.rdkit.org/docs/GettingStartedInPython.html), and
+  [MolStandardize API](https://www.rdkit.org/docs/cppapi/namespaceRDKit_1_1MolStandardize.html)
+  — canonicalization, descriptors, fingerprints, conformers, and explicit
+  standardisation operations.
+- [ChEMBL 37 README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README),
+  [licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE),
+  and official assay API records — version, permitted-use scope, assay identity,
+  and the prospective worked-case data contract.
+
+### Foundational and benchmark papers
+
+- Rogers and Hahn, [Extended-connectivity fingerprints](https://doi.org/10.1021/ci100050t),
+  _Journal of Chemical Information and Modeling_ (2010).
+- Bemis and Murcko, [The properties of known drugs. 1. Molecular frameworks](https://pubmed.ncbi.nlm.nih.gov/8709122/),
+  _Journal of Medicinal Chemistry_ (1996).
+- Gilmer et al., [Neural Message Passing for Quantum Chemistry](https://proceedings.mlr.press/v70/gilmer17a.html),
+  ICML (2017).
+- Schütt et al., [SchNet](https://papers.nips.cc/paper/2017/hash/303ed4c69846ab36c2904d3ba8573050-Abstract.html),
+  NeurIPS (2017).
+- Wu et al., [MoleculeNet](https://doi.org/10.1039/C7SC02664A),
+  _Chemical Science_ (2018).
+- Krenn et al., [SELFIES](https://doi.org/10.1088/2632-2153/aba947),
+  _Machine Learning: Science and Technology_ (2020).
+
+We acknowledge the RDKit, ChEMBL, OpenSMILES, IUPAC/InChI, and SELFIES
+communities and the authors of the cited representation and benchmark work.
+Links are citations and learning routes, not a transfer of third-party content
+or licence terms into AIDD Commons.
+
+Last reviewed: 2026-09-08.

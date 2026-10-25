@@ -1,0 +1,51 @@
+id: tool-smina
+name: smina
+kind: software
+summary: Molecular docking fork.
+canonical_url: https://github.com/mwojcikowski/smina
+identifiers:
+  - scheme: project-homepage
+    value: "Original smina project (the canonical GitHub entry is a fork)"
+    url: https://sourceforge.net/projects/smina/
+stages: [hit-discovery, physics-based-modelling]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [molecular-docking]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license-apache, license-gnu] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: not_applicable, evidence: [repository] }
+  weights: { value: not_applicable, evidence: [repository] }
+  architecture: { value: not_applicable, evidence: [repository] }
+  data_recipe: { value: not_applicable, evidence: [repository] }
+  training_data: { value: not_applicable, evidence: [repository] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: covers the files under the repository's LICENSE.APACHE file, per that file
+    evidence: [license-apache]
+  - name: GPL-2.0
+    scope: covers the files under the repository's LICENSE.GNU file, per that file
+    evidence: [license-gnu]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/mwojcikowski/smina
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/mwojcikowski/smina
+    label: smina repository
+    supports: [caveats, kind, modalities, name, stages, summary, tasks]
+  - id: license-apache
+    url: https://raw.githubusercontent.com/mwojcikowski/smina/master/LICENSE.APACHE
+    label: Repository LICENSE.APACHE file (reviewed 2026-10-23)
+    supports: [caveats]
+  - id: license-gnu
+    url: https://raw.githubusercontent.com/mwojcikowski/smina/master/LICENSE.GNU
+    label: Repository LICENSE.GNU file (reviewed 2026-10-23)
+    supports: []
+caveats:
+  - The repository ships two licence files and the opened files state no scope, so which part of the distribution each covers is not established by this record.
+acknowledgements: []
+last_verified: "2026-10-23"

@@ -1,0 +1,63 @@
+id: model-boltzgen
+name: BoltzGen
+kind: model
+summary: BoltzGen is a generative binder design model that takes a design specification and returns ranked candidate designs for protein, peptide, antibody and small-molecule targets.
+canonical_url: https://github.com/HannesStark/boltzgen
+identifiers:
+  - scheme: paper
+    value: "BoltzGen: Toward Universal Binder Design; DOI 10.1101/2025.11.20.689494"
+    url: https://www.biorxiv.org/content/10.1101/2025.11.20.689494v2
+  - scheme: source-code
+    value: "BoltzGen repository"
+    url: https://github.com/HannesStark/boltzgen
+  - scheme: model-weights
+    value: "boltzgen/boltzgen-1 checkpoint collection"
+    url: https://huggingface.co/boltzgen/boltzgen-1
+stages: [design, candidate-nomination]
+modalities: [protein, peptide, antibody, small-molecule]
+tasks: [protein-design, protein-generation, target-conditioned-generation]
+relations:
+  - type: uses
+    target: model-boltz-2
+status: { value: unverified }
+access_level: { value: open_source, evidence: [readme, license, weights-card] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: available, evidence: [readme] }
+  weights: { value: available, evidence: [readme, weights-card] }
+  architecture: { value: available, evidence: [readme] }
+  data_recipe: { value: available, evidence: [model-boltzgen-readme] }
+  training_data: { value: available, evidence: [readme] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: covers the BoltzGen source code in the repository and the released checkpoints, whose model card is marked mit; the checkpoints are fine-tuned from a Boltz-2 base model that is itself distributed under MIT, and the repository states no separate terms for the released training archives
+    evidence: [license, readme, weights-card]
+evidence:
+  - id: repository
+    url: https://github.com/HannesStark/boltzgen
+    label: BoltzGen repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/HannesStark/boltzgen/main/README.md
+    label: BoltzGen README (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: weights-card
+    url: https://huggingface.co/boltzgen/boltzgen-1
+    label: BoltzGen-1 checkpoint model card (reviewed 2026-10-21)
+    supports: [identifiers, relations]
+  - id: license
+    url: https://raw.githubusercontent.com/HannesStark/boltzgen/main/LICENSE
+    label: BoltzGen MIT licence file (reviewed 2026-10-21)
+    supports: []
+  - id: model-boltzgen-readme
+    url: https://raw.githubusercontent.com/HannesStark/boltzgen/HEAD/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The README states that the training data and the checkpoints are downloaded, that the released archives hold target structures, multiple sequence alignments and a small-molecule dictionary, and that the large model expects additional distillation datasets that are to be released.
+  - The README states that the large model expects additional distillation datasets that are to be released later, so the published training material is partial.
+  - The released training archives hold target structures, MSAs and a small-molecule dictionary, and the README states no licence terms for them.
+  - The checkpoint model card states no training-data description beyond naming a Boltz-2 base model.
+acknowledgements: []
+last_verified: "2026-10-23"

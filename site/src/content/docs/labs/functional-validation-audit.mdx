@@ -1,0 +1,118 @@
+---
+title: What a measurement record can support
+description: Audit two cached public tables and keep endpoint values, response series and outcome claims separate.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+Read [the independent unit lesson](/learn/foundations/decision-unit-scope/) and
+[what an archived assay licenses](/labs/assay-endpoint-controls/) first. This
+laboratory asks you to identify the claim licensed by each record's own fields.
+You will distinguish a stated endpoint value, a bound and a numeric response
+series, then identify an outcome route that the tables cannot measure. Python
+3.11.15 in the project environment is sufficient. No accelerator is needed.
+
+## Run mode and commands
+
+The mode is a fresh independent computation under a frozen protocol. The first
+command copies the two already validated local snapshots into this laboratory's
+own cache. It makes no network request. Obtain the source caches through their
+owning laboratories before starting. Later commands read only local data. The
+exporter overwrites the derived summary only after its checks pass. It does not
+overwrite either source snapshot or any author result.
+
+```bash
+.venv/bin/python labs/functional_validation_audit/run_lab.py download
+.venv/bin/python labs/functional_validation_audit/inspect_functional_validation_audit.py show
+.venv/bin/python labs/functional_validation_audit/inspect_functional_validation_audit.py check
+.venv/bin/python labs/functional_validation_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/functional_validation_audit -q
+```
+
+## The two tables
+
+The ChEMBL 37 table contributes only rows admitted by the
+[decision-unit laboratory](/labs/decision-unit-scope/). Its rule retains the
+declared endpoint types in nM, with an equality or a stated bound. These are
+activity rows, not independent experiments. The PubChem BioAssay table
+contributes retained compound rows from the six assays read by the
+[assay-endpoint laboratory](/labs/assay-endpoint-controls/). Each row can carry
+one or more endpoint values and a series of concentration readings. The two
+tables are counted separately.
+
+The committed reading was computed on 2026-10-23 from snapshots read on
+2026-10-21 with Python 3.11.15 and RDKit 2025.09.6. The totals count records.
+They do not estimate rates for a broader database population.
+
+| Table | Total records | Point measurement | Bound | Concentration response table | No licensed claim |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| ChEMBL 37 admitted activity rows | 1004 | 488 | 516 | 0 | 0 |
+| PubChem BioAssay retained rows | 1257 | 0 | 38 | 1204 | 15 |
+
+## Record kinds and claim rule
+
+A point needs a stated endpoint type, unit, value and equality relation. A
+bound needs the same fields with a bound relation and does not license an
+exact value. A concentration response table needs at least five numeric
+concentration values and a stated activation or inhibition response
+definition in its assay description. If none of these rules applies, the row
+licenses no claim under this audit. A direct binding statement additionally
+requires a ChEMBL binding assay and Kd or Ki. A numeric series licenses a
+response statement in that assay, not a clinical outcome.
+
+Among the 1004 admitted ChEMBL rows, the standard-type counts are AC50 395,
+EC50 182, IC50 393, Kd 7 and Ki 27. The 516 bound rows state a side of a
+value. The point and bound rows are kept separate even when they share an
+endpoint label.
+
+The PubChem table has five endpoint labels. Endpoint columns are counted per
+value, while qualifier rows are counted per compound row. Assay 519 has two
+endpoint values per row. Its 272 rows therefore contribute 544 values, not
+544 independent records.
+
+| Assay | AC50 | EC50 | IC50 | Ki | MIC | Stated qualifier values | Equality values | Bound values | Unstated relation values |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 439 | 0 | 69 | 0 | 0 | 0 | 69 | 55 | 14 | 0 |
+| 464 | 706 | 0 | 0 | 0 | 0 | 706 | 591 | 115 | 0 |
+| 519 | 0 | 0 | 272 | 272 | 0 | 544 | 188 | 356 | 0 |
+| 548 | 0 | 0 | 94 | 0 | 0 | 94 | 64 | 30 | 0 |
+| 691 | 0 | 0 | 0 | 0 | 53 | 38 | 0 | 38 | 15 |
+| 1277 | 0 | 0 | 63 | 0 | 0 | 63 | 28 | 35 | 0 |
+
+Assay 691 has no numeric concentration series in its retained rows. Its 38
+bounded values license a bound statement. The remaining 15 values have no
+stated relation and license neither a point nor a bound under this rule. The
+other assays supply the 1204 response-table rows. A response table can also
+carry a stated endpoint relation, but the response and endpoint claims remain
+separate.
+
+## Routes outside the tables
+
+| Route | Why it cannot be measured |
+| --- | --- |
+| Clinical outcome | Neither snapshot carries a clinical endpoint or an outcome observation. |
+| Binding to response transfer | The snapshots do not pair a direct binding measurement with a response record for the same entity under a matched experiment. |
+| Response to clinical transfer | Neither snapshot links a response record to a clinical outcome record. |
+
+The audit does not turn a measurement into a response or a response into an
+outcome. A record without a clinical endpoint says nothing about a clinical
+result. It does not rank records or predict an outcome. Reader learning has
+not been observed. Continue to the
+[binding, response and outcome lesson](/learn/biologics-design/binding-functional-and-clinical-claims/)
+for a worked case and an independent exercise.
+
+## Sources and attribution
+
+<div data-case-sources>
+
+- [ChEMBL 37 release status](https://www.ebi.ac.uk/chembl/api/data/status.json) and [release licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE), read on 2026-10-21. The data licence is Creative Commons Attribution-ShareAlike 3.0 Unported. The [release README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README) requests attribution to ChEMBL and the release version.
+- [PubChem BioAssay archive](https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/) and [NCBI policies](https://www.ncbi.nlm.nih.gov/home/about/policies/), read on 2026-10-21. A terms statement specific to these archived assay records was not read, so their licence stays unverified.
+
+</div>
+
+Original prose is CC BY 4.0 and original laboratory code is Apache-2.0. Last
+reviewed on 2026-10-23.

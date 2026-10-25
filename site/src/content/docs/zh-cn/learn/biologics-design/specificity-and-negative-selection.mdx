@@ -1,0 +1,48 @@
+---
+title: 特异性与负向选择记录
+description: 识别边际所需的第二次测量，并在提出结论前审计伙伴覆盖度。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/specificity-and-negative-selection" />
+
+<ScrollableRegions />
+
+## 学习目标与先修内容
+
+阅读[亲和力表里的独立单元](/learn/biologics-design/affinity-table-independent-unit/)之后，本课讨论已观测伙伴表能够支持什么。你将区分针对预期伙伴和其他伙伴的测量，阅读实际覆盖度计数，并指出边际所需但缺失的记录。[可运行实验指南](/labs/specificity-margin-audit/)给出模式、命令和完整的逐蛋白表。[英文原版课程](/learn/biologics-design/specificity-and-negative-selection/)是规范版本。
+
+## 边际需要两次测量
+
+边际比较同一候选对象面对预期伙伴与非预期伙伴时，同一个事先声明的终点。两个伙伴都需要有测量值，单位和条件须可比，而且解读前须说明终点的方向。一个已观测配对只提供其中一侧。同一配对的重复行可以描述更多观测，却不会变成针对另一伙伴的测量。档案清点统计覆盖度而不相减，因为配对表本身不能确立这种匹配比较。[实验指南](/labs/specificity-margin-audit/)。
+
+## 负向选择记录
+
+负向选择记录应标明同一候选对象、预先指定的替代伙伴、测量终点与单位、测量条件，以及结果是已取得还是缺失。它与预期伙伴记录之间的关联也须明确。缺少替代记录时，相应字段应为未测量。表中没有的蛋白始终不在此档案的证据范围内，无论档案中其他蛋白有多少行。[上游来源](https://life.bsc.es/pid/skempi2/info/terms)和[镜像资料卡](https://huggingface.co/datasets/LiteFold/SKEMPI2)都不能把缺失的伙伴变成阴性观测。
+
+## 计算实例
+
+本地读取器发现 7085 行，其中 2544 行至少带有一个解析后的亲和力值。只有其中 2487 行在对齐的主值中同时含有两个蛋白标签。这些行构成 102 个不同配对和 171 个不同蛋白标签。对于 `Eglin c` 标签，[审计](/labs/specificity-margin-audit/)统计到 14 个测量行，涉及 3 个不同伙伴。这说明表中对该标签记录了不止一个伙伴，但计数没有提供匹配的终点比较，因而不能确立边际。相对地，171 个标签中有 154 个恰好只有 1 个已测量伙伴。对它们而言，表中没有边际的另一侧。读取器还将缺少完整配对标签的 57 个有测量值的行保留为未分配。[实验指南](/labs/specificity-margin-audit/)。
+
+## 独立练习
+
+汇总报告有 9 个配对，其两侧蛋白都各有超过 1 个已观测伙伴。一则笔记因为有 2487 个测量行，就称全部 171 个蛋白都具有特异性。指出哪个计数推翻这则笔记，并说明评估一个单伙伴蛋白的边际需要什么记录。可用[实验指南](/labs/specificity-margin-audit/)核对数字。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+恰有 154 个蛋白只有 1 个已测量伙伴，因此表中缺少它们针对替代伙伴的一侧。2487 行在配对间重复，无法补齐这个缺口。边际需要同一候选对象针对指定替代伙伴的关联记录，且终点、单位和条件须可比。即使 9 个配对满足覆盖度条件，也不能据此证明有边际。[实验指南](/labs/specificity-margin-audit/)。
+
+</details>
+
+## 材料没有显示的内容
+
+本课不估计特异性边际，不认定任何蛋白具有特异性，不预测未测量蛋白，也不按行数对蛋白排序。它不把镜像中解析字段的空值当作上游来源缺少数值的证明。覆盖度标志提示应检查测量的可比性，而不是已测得的差异。尚未观测到读者学习成效。
+
+## 来源与署名
+
+[SKEMPI 上游条款](https://life.bsc.es/pid/skempi2/info/terms)声明源数据采用 CC BY 4.0。[LiteFold 镜像资料卡](https://huggingface.co/datasets/LiteFold/SKEMPI2)标为 `other`。两页的读取日期均为 2026-10-23。[实验指南](/labs/specificity-margin-audit/)解释本地统计方法与来源边界。原创课程文字采用 CC BY 4.0。
+
+最近复核日期：2026-10-23。

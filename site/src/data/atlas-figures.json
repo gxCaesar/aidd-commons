@@ -1,0 +1,84 @@
+{
+  "name": "atlas-figures",
+  "description": "The figures the site publishes, drawn by the report's own generators and themed with the site's own properties.",
+  "generated_by": "site/scripts/make-site-figures.py",
+  "drawings_from": "report/figures/",
+  "captions_from": [
+    "report/figures/out/captions.json",
+    "report/figures/out/captions-schematics.json"
+  ],
+  "figures": [
+    {
+      "id": "artifacts",
+      "file": "schematic-01-artifacts.svg",
+      "alt": "The four artifacts are coupled by shared resource identifiers rather than by proximity: a correction recorded once on the identifier rail reaches the lesson, the catalogue record, the lab and the report, so the four surfaces cannot drift apart without the drift being visible.",
+      "caption": "Four artifacts, one system. (a) Each artifact is drawn with its own form. Learn is an ordered staircase of lesson tiles, Atlas a registry of record cells with one cell selected, Labs a console with a run control, and Report a ruled page carrying a figure. The four shapes recur wherever the four artifacts recur, and the four colours are what survive when the colour does not. (b) A rail under the four carries the shared resource identifier. One correction sits on the rail, and the dashed branches carry it to the identifier chip of each artifact, which is the route a correction takes. The figure shows the coupling and nothing more. It carries no counts, no coverage claim and no measured outcome.",
+      "pages": [
+        "/"
+      ]
+    },
+    {
+      "id": "decision-pipeline",
+      "file": "schematic-03-decision-pipeline.svg",
+      "alt": "Nine decision stages narrow a candidate set, and every stage draws the branch that leaves the funnel for the failure mode the stage table records, so the attrition and the way out of it are both visible.",
+      "caption": "Target to candidate. A stage table of nine stages becomes a pipeline that states what a funnel normally hides. Each cell carries the stage, the decision in question form, a narrowing drawn as a taper with candidates in it, and the branch that leaves the taper to the failure mode the table records for that stage. The route between the two rows gives the order. The dots in a taper are a drawing convention, and the figure reports no count, rate or probability. It also omits the strong cheap baseline that the same table records for every stage.",
+      "pages": [
+        "/"
+      ]
+    },
+    {
+      "id": "prerequisite-graph",
+      "file": "schematic-05-prerequisite-graph.svg",
+      "alt": "The specialist routes are not independent: a small set of lessons is a prerequisite for several routes at once, and the badge on each lesson counts how many routes require it, so the shared core of the curriculum can be seen without reading the edges.",
+      "caption": "Prerequisite graph over the six learning paths. Ten distinct lessons are named as a prerequisite somewhere in the catalogue, and twenty-one prerequisite relations connect them to the five specialist routes. A lesson's badge gives the number of routes that require it, so the hub is visible without reading the edges, and a route's badge gives the number of lessons the route lists. A solid edge is a prerequisite the catalogue states. A dashed edge is a lesson the core route also lists, which is a different relation and is drawn as a different relation. The core route names no prerequisite of its own. The badges are counts from the catalogue, not difficulty, depth or coverage.",
+      "pages": [
+        "/"
+      ]
+    },
+    {
+      "id": "coverage-bounds",
+      "file": "plot-2-coverage-bounds.svg",
+      "alt": "The audit reports an interval rather than a leaderboard: all 93 AIDD Commons cells are direct observations, so this project's own row is an exact count at every threshold, while every external row is a range that only the cells nobody has read can widen.",
+      "caption": "Coverage bounds for thirteen providers across five thresholds, each bound a lower and an upper count out of 93 topics. AIDD Commons is the first row and its bounds are equal at every threshold, 93 explained, 93 worked, 81 executable, 62 executable on real data and 81 assessed, because all 93 of its cells are direct observations. Every external row is an interval, because unobserved cells contribute to an upper bound and nothing to a lower one. The bounds are not confidence intervals and no probability attaches to them.",
+      "pages": [
+        "/audit/"
+      ]
+    },
+    {
+      "id": "second-reading",
+      "file": "plot-5-self-record-vs-reading.svg",
+      "alt": "A second reading by a reviewer from a different model family agreed with this project's own record on 93 of the 93 topics and read 0 deeper and 0 shallower, so the depth this project claims for itself is the part of the record a reader has to treat as unsettled.",
+      "caption": "This project's own record against a blind second reading of the same 93 topics by a reviewer from a different model family on 2026-09-11. The reading agreed with the record on 93 topics, read 0 deeper and 0 shallower. At the thresholds the reading gave 93 explained, 93 worked, 81 executable, 62 executable on real data and 81 assessed against the recorded 93 explained, 93 worked, 81 executable, 62 executable on real data and 81 assessed. The reviewer had also written parts of the course, so this is a second reading and not a blind replication.",
+      "pages": [
+        "/audit/"
+      ]
+    },
+    {
+      "id": "representation-flips",
+      "file": "plot-9-representation-ranking-flips.svg",
+      "alt": "The baseline that wins the primary partition loses the separate assay replication by a wide margin, so a frozen evaluation fixes a protocol and a result, not a ranking that holds on the next evaluation.",
+      "caption": "The same three baselines on the primary partition of 132 compounds and on the separate assay replication of 170 compounds. The Morgan ridge is the best of the three on the primary partition at 0.418 mean absolute error, while the descriptor ridge is the best on the replication at 0.579; the Morgan ridge reaches 3.132 there and its rank correlation falls from 0.505 to -0.041. The two evaluations are separate comparisons and success on one does not erase failure on the other, the acquisition lab had accessed labels shared with this evaluation before it ran, and no confidence intervals or p values are reported.",
+      "pages": [
+        "/labs/"
+      ]
+    },
+    {
+      "id": "frozen-lifecycle",
+      "file": "schematic-07-frozen-lifecycle.svg",
+      "alt": "A frozen lab writes the protocol before the held-out result is seen, runs its pretests on training and validation data, opens the test set once, and treats a bug found after the opening as an error that invalidates the protocol rather than a result to be reported.",
+      "caption": "Frozen evaluation. The protocol is frozen before the held-out test result is looked at, and the test set is opened once. The sequence runs from the written protocol through the freeze, the structural and finite-output pretests on training and validation data, the single opening, to the reviewed summary. A bug found after the test has been opened is reported as a protocol-invalidating error, and the barred loop is the prohibition on a second opening. The figure carries no measured value, and the two pretests are drawn as they pass rather than as they can fail.",
+      "pages": [
+        "/labs/"
+      ]
+    },
+    {
+      "id": "statement-classes",
+      "file": "schematic-02-statement-classes.svg",
+      "alt": "Every statement in the report belongs to one of four classes, and the two classes that assert something are drawn apart from the two that do not, so a reader can tell an observed fact from a decision, an open question or a plan.",
+      "caption": "Four classes of statement. The editorial guide makes each statement's authority visible, and the four classes differ in kind rather than in degree, so each is drawn instead of being placed on a scale. (a) An observed source fact shows the opened document and the link that ties it to a claim. (b) A project decision shows several inputs meeting at one node. (c) An open question shows an object that is not yet defined, ringed and spoked. (d) Future work shows tiles that are planned and not yet built. Solid borders mark the two classes that assert something and dashed borders the two that do not, which is the only grouping the guide supports.",
+      "pages": [
+        "/report/"
+      ]
+    }
+  ]
+}

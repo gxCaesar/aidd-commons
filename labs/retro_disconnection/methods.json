@@ -1,0 +1,42 @@
+{
+  "schema_version": "aidd-commons.retro-methods.v1",
+  "artifact_type": "declared-disconnection-methods",
+  "authored_on": "2026-09-11",
+  "families": {
+    "rule": {
+      "what_it_is": "Transforms written by hand from chemical knowledge, independent of any reaction dataset.",
+      "coverage_depends_on": "which transforms someone chose to write",
+      "runs_here": true,
+      "transforms": {
+        "amide-coupling": "[C:1](=[O:2])[NX3;H1,H2:3]>>[C:1](=[O:2])[OH].[N:3]",
+        "ester-formation": "[C:1](=[O:2])[OX2:3][C:4]>>[C:1](=[O:2])[OH].[O:3][C:4]",
+        "reductive-amination": "[C;H2:1][NX3;H1:2]>>[C:1]=O.[N:2]",
+        "suzuki-biaryl": "[c:1]-[c:2]>>[c:1][Br].[c:2]B(O)O"
+      }
+    },
+    "template": {
+      "what_it_is": "Transforms whose provenance is a reaction dataset rather than a person. A template exists for a transformation class only if that class appears in the precedent set.",
+      "coverage_depends_on": "which classes the precedent set happens to contain",
+      "runs_here": true,
+      "extracted_from": "precedent_set",
+      "how_these_were_obtained": "Extracted by hand from the precedent reactions rather than by an extraction algorithm. That mechanical difference is not what this lab teaches. What it teaches is the consequence of provenance: a template family inherits the coverage of the dataset it came from, and this set deliberately contains no suzuki-biaryl precedent.",
+      "transforms": {
+        "amide-coupling": "[C:1](=[O:2])[NX3;H1,H2:3]>>[C:1](=[O:2])[OH].[N:3]",
+        "ester-formation": "[C:1](=[O:2])[OX2:3][C:4]>>[C:1](=[O:2])[OH].[O:3][C:4]",
+        "reductive-amination": "[C;H2:1][NX3;H1:2]>>[C:1]=O.[N:2]"
+      }
+    },
+    "retrieval": {
+      "what_it_is": "Look the product up in the precedent set and return the reactants recorded against it.",
+      "coverage_depends_on": "whether this exact molecule was already in the precedent set",
+      "runs_here": true,
+      "generalises": false
+    },
+    "learned": {
+      "what_it_is": "A model trained to propose disconnections.",
+      "coverage_depends_on": "the training distribution, which is not inspectable from an output alone",
+      "runs_here": false,
+      "why_not_run": "No model is trained or executed anywhere in this repository's offline labs. The family is declared so that the comparison states its own boundary rather than implying four families were compared when three were."
+    }
+  }
+}

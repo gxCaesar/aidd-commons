@@ -1,0 +1,40 @@
+---
+title: Target-to-candidate map
+description: A decision map that binds AIDD tasks to evidence, experiments, and stop rules.
+---
+
+## Decision map
+
+Each row is a decision unit. The AI task is an input to that decision, not a
+replacement for the required experimental feedback. A failure gate is a reason
+to pause, revise, or stop rather than tune a score until it looks favorable.
+
+| Decision unit        | Required evidence                                                                                                              | AI tasks that may help                                                                    | Experimental feedback                                                              | Failure gate                                                                                            |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Disease mechanism    | Defined indication, relevant biological context, and a traceable mechanism hypothesis                                          | Literature retrieval, causal or pathway prioritization                                    | Perturbation, biomarker, or disease-model result that bears on the mechanism       | No linked evidence supports a mechanism distinct from correlation                                       |
+| Target hypothesis    | Target identity, disease link, tractability assumptions, and counterevidence                                                   | Knowledge-graph ranking, protein representation, target prioritization                    | Genetic, chemical, or functional perturbation in a relevant system                 | Target effect is not reproduced or conflicts with the intended therapeutic direction                    |
+| Assay-ready target   | Construct, target state, assay endpoint, controls, and expected decision                                                       | Structure or pocket hypothesis, assay-condition data checks                               | Assay qualification and control outcomes                                           | Assay cannot distinguish the proposed mechanism or has unacceptable controls                            |
+| Hit discovery        | Candidate pool, target state, screening endpoint, decoy or negative-control design, and chemical constraints                   | Similarity search, docking, pose prediction, virtual screening                            | Orthogonal binding or functional follow-up on selected candidates                  | No confirmed activity at the defined confirmation threshold or artifacts dominate                       |
+| Hit-to-lead          | Confirmed series, structure-activity evidence, selectivity panel, and synthesizability constraints                             | Property prediction, structure-conditioned design, retrosynthesis                         | Repeated potency and selectivity measurements across an interpretable series       | No coherent series-level relationship or the route cannot meet the project constraints                  |
+| Lead optimization    | Exposure and safety hypotheses, chemical series, target and off-target evidence, and a fixed objective                         | Multi-objective search, ADMET prediction, free-energy or dynamics calculations            | DMPK, safety, selectivity, and efficacy-relevant measurements                      | Improvement on one score degrades a decision-critical measured property without an acceptable trade-off |
+| DMPK and toxicology  | Exposure, metabolism, pharmacology, safety, formulation, and species/context assumptions                                       | ADMET prediction, PK modelling, property prediction, and uncertainty-aware prioritization | Matched in vitro and in vivo DMPK or safety observations under the stated protocol | Exposure or safety evidence cannot support the intended dose, route, or therapeutic window              |
+| Candidate nomination | A versioned package of mechanism, target, activity, selectivity, DMPK, safety, synthesis, uncertainty, and governance evidence | Evidence synthesis, traceability checks, constrained candidate ranking                    | Independent decision-review experiment or study specified before nomination        | Any required evidence stream is absent, contradicted, unqualified, or outside the stated authority      |
+
+## Operating rules
+
+1. Freeze the decision, comparator, and failure gate before observing a
+   candidate model's preferred result.
+2. Keep model inputs, evidence sources, predictions, and experimental outcomes
+   connected to the same candidate and target state.
+3. Preserve negative results and counterevidence in the candidate package.
+4. Escalate only when experimental feedback changes the decision; a benchmark
+   score alone is not a nomination receipt.
+
+The linked learning paths provide the underlying methods:
+[disease to target](/learn/mechanism-targets/disease-to-target/),
+[screening and affinity](/learn/dti-screening/screening-and-affinity/),
+[ADMET evaluation](/learn/admet-pk/admet-evaluation/),
+[design-make-test-analyze loops](/learn/active-learning/dmta-loops/), and the
+[candidate nomination capstone](/learn/candidate-nomination/capstone/).
+
+Last reviewed: 2026-09-04.

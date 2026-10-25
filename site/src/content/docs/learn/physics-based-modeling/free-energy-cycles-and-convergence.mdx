@@ -1,0 +1,197 @@
+---
+title: Free-energy cycles, endpoints, and convergence
+description: Define relative and absolute binding-free-energy questions before interpreting a thermodynamic cycle, lambda schedule, or convergence diagnostic.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="physics-based-modeling/free-energy-cycles-and-convergence" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will distinguish a relative from an absolute binding-free-energy endpoint,
+construct the sign convention of an alchemical cycle, and explain why an
+apparently stable estimate is not automatically converged or experimentally
+validated. Read [Force fields, solvent, and sampling](/learn/physics-based-modeling/force-fields-and-sampling/)
+first. This is a handworked conceptual lesson. It does not run an alchemical
+calculation, rank a ligand series, or claim experimental affinity.
+
+## Name the endpoint before drawing the cycle
+
+For a declared standard state and model, a free-energy difference between two
+states can be written `Delta G = -k_B T ln(Z_B/Z_A)`. The symbols hide a great
+deal of specification: the molecular system, protonation and tautomer states,
+restraints, solvent and ions, temperature, standard-state convention, and the
+definition of `A` and `B`. A thermodynamic calculation is meaningful only to the
+extent that these definitions match the intended decision.
+
+An **absolute binding free energy** asks for a modelled association endpoint,
+often schematically `Delta G_bind = G_complex - G_protein - G_ligand`, with
+standard-state and restraint corrections made explicit. A **relative binding
+free energy** compares two ligands under a matched convention:
+`DeltaDeltaG_bind = DeltaG_bind(L_B) - DeltaG_bind(L_A)`. The relative endpoint
+can be useful for an analogue decision, but it neither supplies an absolute
+experimental potency nor removes errors shared by both ligands.
+
+| Question                | Required definition                                                                    | A result does not establish alone                    |
+| ----------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| RBFE                    | ordered ligand transformation, target state, complex and solvent legs, sign convention | an absolute affinity or a new chemical-series claim  |
+| ABFE                    | restrained/unrestrained states, decoupling path, standard state and corrections        | that all poses or protonation states were considered |
+| experimental comparison | matched assay endpoint, units, construct and conditions                                | that simulation error equals assay error             |
+| network result          | graph, edge identities, cycle policy and aggregation rule                              | that every edge has mixed or equilibrated            |
+
+## A cycle is bookkeeping for a declared path
+
+For a ligand transformation `L_A -> L_B`, one common convention is
+
+`DeltaDeltaG_bind = DeltaG_complex(A -> B) - DeltaG_solvent(A -> B)`.
+
+The complex leg changes the ligand in the declared protein–ligand environment.
+The solvent leg changes it in the declared solvent environment. Their difference
+is not a binding measurement; it is the relative free-energy estimate under that
+cycle's force field, system construction, and sampling. Reversing the ligand
+order reverses the expected sign. Mixing a complex leg from one target state
+with a solvent leg from another molecular representation is a data-contract
+failure, not a clever approximation.
+
+Alchemical implementations often define a hybrid Hamiltonian `H_lambda` between
+endpoints, with `lambda` moving from `0` to `1`. A thermodynamic-integration
+identity is `Delta G = integral_0^1 <partial H_lambda/partial lambda>_lambda d lambda`.
+Other estimators use samples across windows, but all require adequate overlap of
+the states being connected. The OpenFE relative-hybrid-topology documentation
+describes paired endpoint systems, a hybrid topology, lambda windows, and
+analysis choices including MBAR and convergence information
+[OpenFE relative hybrid topology](https://docs.openfree.energy/en/v1.0.0/guide/protocols/relativehybridtopology.html).
+
+## Released OpenFE networks: estimates, not measurements
+
+The [OpenFE RBFE benchmark results](/atlas/dataset-openfe-rbfe-benchmark/)
+deposit on [Zenodo](https://zenodo.org/records/21797903) releases files for 8
+protein–ligand systems under CC BY 4.0. Each network file holds the chemical
+systems, ligand atom mappings that identify its edges, the transformations,
+and per-repeat and per-generation estimates with uncertainties. These values
+are computed estimates for declared paths, not binding measurements. No
+experimental value accompanies each estimate in the deposit, so the record
+alone cannot give the error of a single edge. Closing a cycle through these
+edges checks the declared network's bookkeeping, not experimental accuracy.
+
+The [OpenFE collaborative assessment](/atlas/paper-openfe-collaborative-assessment/)
+record describes an article involving 15 pharmaceutical companies. It
+attributes weighted RMSE values on 58 public systems (1.73 kcal/mol) and
+37 private systems (2.44 kcal/mol) to the article. These are article-reported
+figures, not measurements made by this project; the record did not verify
+them against the article text. The released network files support
+reproduction on the public side, while the private set is not released and
+cannot be reproduced from the deposit. Aggregate error figures do not supply
+the missing experimental value for any particular deposited edge.
+
+## Convergence has several failure modes
+
+An estimate may look numerically flat because the simulation remains in one
+metastable mode. It may drift when a slow solvent, protein, ligand, or proton
+configuration is first visited. It may have low within-window noise while nearby
+lambda states lack overlap. A small closed-cycle error can expose inconsistency,
+but a small value cannot prove correctness because correlated errors may cancel.
+
+At minimum, inspect a time-resolved estimate, replicate or independent-start
+agreement when available, overlap or state-space mixing diagnostics, and the
+forward/reverse or cycle discrepancy under a fixed protocol. Use the exact
+transformation and leg labels in every plot. The OpenFE tutorial represents RBFE
+as transformations between `ChemicalSystem` objects and makes separate complex
+and solvent contexts visible
+[OpenFE RBFE tutorial](https://docs.openfree.energy/en/stable/tutorials/rbfe_python_tutorial.html).
+That explicit graph is an aid to interpretation, not a certificate that any
+particular transformation converged.
+
+The [rMD17 observable and convergence lab](/labs/rmd17-dynamics-observable/) runs
+exactly the first of those minimums, a time-resolved estimate, on one real ab
+initio trajectory: a cumulative mean at several frame counts against the naive
+and block-averaged standard error. One molecule there looks converged well
+before the full trajectory; a second does not, still several block-SEMs from
+its final value at ten percent of the frames. It has no independent-start
+replicate and no second force field to compare against, so it cannot run the
+other three minimums; naming that boundary is itself part of what it teaches.
+
+## Worked case: an estimate with a stated uncertainty
+
+All values in this case are **constructed for teaching**. Every `+/-` value in
+this lesson is a constructed standard error; complex and solvent estimates are
+assumed independent only for these arithmetic exercises. Under one frozen
+convention, a transformation `L_A -> L_B` gives `DeltaG_complex = -3.4 +/- 0.6
+kcal/mol` and `DeltaG_solvent = -1.1 +/- 0.5 kcal/mol`. The cycle convention
+above gives `DeltaDeltaG_bind = -3.4 - (-1.1) = -2.3 kcal/mol`. The propagated
+standard error is `sqrt(0.6^2 + 0.5^2) = 0.78 kcal/mol`.
+
+Under the stated ligand ordering, the negative constructed value favours `L_B`
+relative to `L_A` in this modelled binding endpoint. It does not mean that
+`L_B` has measured potency, that a sign would survive a different protonation
+state, or that `0.78 kcal/mol` includes all model error. The most honest label
+is a conditional estimate with a method-specific uncertainty calculation.
+
+Suppose an alternative route through the same declared network sums to
+`-2.2 kcal/mol`. The constructed closure difference is `-2.3 - (-2.2) = -0.1
+kcal/mol`. It is worth recording, because a large closure discrepancy would
+flag a protocol or sampling concern. It is not enough to declare the direct edge
+converged: both routes can share an inadequate water model, state definition, or
+slow degree of freedom.
+
+## Limits and independent exercise
+
+Absolute and relative routes can fail for different reasons. An RBFE edge may be
+poorly matched, while an ABFE calculation may be dominated by restraints, pose
+or state enumeration. A cycle diagnoses internal consistency only in the graph
+that was actually run. Before selecting a next calculation, state which
+uncertainty is statistical, which is model-dependent, and which state variables
+remain untested.
+
+**Handworked exercise (not runnable or empirical):** Under the same
+constructed-independent-standard-error convention, an edge has
+`DeltaG_complex = +1.2 +/- 0.4 kcal/mol` and `DeltaG_solvent = +0.5 +/- 0.3
+kcal/mol`. Calculate `DeltaDeltaG_bind` and the propagated standard error. State
+the direction implied by the sign and one reason the answer is not an experimental
+affinity claim.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+`DeltaDeltaG_bind = +1.2 - (+0.5) = +0.7 kcal/mol`. Under the stated
+independence assumption for constructed standard errors, propagated standard
+error is `sqrt(0.4^2 + 0.3^2) = 0.5 kcal/mol`.
+With `L_A -> L_B` and the declared convention, the positive value predicts
+less favourable binding for `L_B` relative to `L_A` in this model. It is not an
+experimental affinity because its interpretation still depends on the system,
+force field, molecular states, sampling, standard-state choices, and the absence
+of unmeasured model bias.
+
+</details>
+
+## Sources and next lesson
+
+The OpenFE documentation pages below were opened on 2026-09-09. They support
+the named protocol objects and analysis vocabulary, not the constructed numbers
+or an accuracy claim. The two Atlas records were reviewed on 2026-10-23;
+the paper record attributes its figures to the article without verifying them
+against the article text.
+
+<div data-case-sources>
+
+- [OpenFE Relative Hybrid Topology Protocol](https://docs.openfree.energy/en/v1.0.0/guide/protocols/relativehybridtopology.html)
+- [OpenFE tutorial: setting up an RBFE network](https://docs.openfree.energy/en/stable/tutorials/rbfe_python_tutorial.html)
+- [OpenFE RBFE benchmark results](/atlas/dataset-openfe-rbfe-benchmark/)
+- [OpenFE collaborative binding free energy assessment](/atlas/paper-openfe-collaborative-assessment/)
+
+</div>
+
+The [relative free-energy network audit](/labs/free-energy-network-audit/) pairs
+the solvent edges with the complex edges of eight released networks and
+reports which cycles close, which do not, and by how much the failures are
+off.
+
+Continue to [QM/MM boundaries and reactive events](/learn/physics-based-modeling/qm-mm-and-reactive-events/)
+when the stated question includes electronic reorganization that a fixed-topology
+force field cannot represent. Original lesson prose is CC BY 4.0; linked sources
+retain their own terms.
+
+Last reviewed: 2026-10-23.

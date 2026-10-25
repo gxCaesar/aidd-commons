@@ -1,0 +1,170 @@
+{
+  "boundary": "Only intrinsic clearance is measured. Concentration, target occupancy and effect are illustrative model outputs under declared, unmeasured parameters. The within-cohort rat-to-human hepatocyte ratio interval is not validated species translation, and no clinical response or compound ranking follows.",
+  "counted_unit": {
+    "excluded_from_conversion": "Microsome clearance is per gram protein, not per million cells",
+    "measurements": "The parent median of exact, uncensored intrinsic-clearance activities admitted by the frozen AZ clearance-system reader in each named assay",
+    "modelled_if": "admitted in both human and rat hepatocyte assays",
+    "unit": "one admitted ChEMBL parent molecule"
+  },
+  "excluded_by_design": [
+    "a prediction of clinical exposure, efficacy or response",
+    "an assertion that target engagement or response was measured",
+    "a claim that rat-to-human species translation was externally validated",
+    "a ranking of compounds by predicted response",
+    "a silent conversion between microsome per-protein and hepatocyte per-cell clearance"
+  ],
+  "issued_on": "2026-10-23",
+  "model": {
+    "derived_input": {
+      "species_factor": {
+        "source": "paired parent clearances from the two ChEMBL 37 hepatocyte assays",
+        "unit": "dimensionless human-to-rat hepatocyte clearance ratio",
+        "value": "per-parent leave-one-out median with empirical quantile bounds"
+      }
+    },
+    "equations": [
+      "r_i = median(CL_h/CL_r among paired parents except i)",
+      "CL_h,model = CL_r * r_i * N_cells * 60 / 10^12 L/h",
+      "C_total(t) = (D/V) * exp(-CL_h,model * t/V)",
+      "C_free(t) = f_u * C_total(t)",
+      "occupancy(t) = C_free(t)/(K_d + C_free(t))",
+      "effect(t) = E_max * occupancy(t) * (1 + EC50_occupancy) / (EC50_occupancy + occupancy(t))"
+    ],
+    "measured_inputs": {
+      "human_hepatocyte_clearance": {
+        "source": "ChEMBL 37 assay CHEMBL3301372, admitted by the frozen az_clearance_system reader",
+        "unit": "uL.min-1.(10^6cells)-1",
+        "value": "per admitted parent, used for peer factors and comparison"
+      },
+      "rat_hepatocyte_clearance": {
+        "source": "ChEMBL 37 assay CHEMBL3301371, admitted by the frozen az_clearance_system reader",
+        "unit": "uL.min-1.(10^6cells)-1",
+        "value": "per admitted parent"
+      }
+    },
+    "parameters": {
+      "dose_umol": {
+        "source": "Project assumption for an illustrative one-compartment calculation, instantaneous input",
+        "unit": "umol",
+        "value": 1.0
+      },
+      "ec50_occupancy": {
+        "source": "Project assumption for an illustrative one-compartment calculation, unmeasured response coupling",
+        "unit": "occupied fraction",
+        "value": 0.5
+      },
+      "ec50_occupancy_lower": {
+        "source": "Project assumption for an illustrative one-compartment calculation, sensitivity bound",
+        "unit": "occupied fraction",
+        "value": 0.25
+      },
+      "ec50_occupancy_upper": {
+        "source": "Project assumption for an illustrative one-compartment calculation, sensitivity bound",
+        "unit": "occupied fraction",
+        "value": 0.75
+      },
+      "effective_cells": {
+        "source": "Project assumption for an illustrative one-compartment calculation, not a physiological liver count",
+        "unit": "cells",
+        "value": 100000000.0
+      },
+      "emax": {
+        "source": "Project assumption for an illustrative one-compartment calculation, unmeasured response scale",
+        "unit": "fractional effect increment",
+        "value": 1.0
+      },
+      "emax_lower": {
+        "source": "Project assumption for an illustrative one-compartment calculation, sensitivity bound",
+        "unit": "fractional effect increment",
+        "value": 0.5
+      },
+      "emax_upper": {
+        "source": "Project assumption for an illustrative one-compartment calculation, sensitivity bound",
+        "unit": "fractional effect increment",
+        "value": 1.0
+      },
+      "fu": {
+        "source": "Project assumption for an illustrative one-compartment calculation, unmeasured plasma binding",
+        "unit": "fraction",
+        "value": 0.1
+      },
+      "fu_lower": {
+        "source": "Project assumption for an illustrative one-compartment calculation, sensitivity bound",
+        "unit": "fraction",
+        "value": 0.05
+      },
+      "fu_upper": {
+        "source": "Project assumption for an illustrative one-compartment calculation, sensitivity bound",
+        "unit": "fraction",
+        "value": 0.2
+      },
+      "interval_h": {
+        "source": "Project assumption for an illustrative one-compartment calculation, evaluation after one interval",
+        "unit": "h",
+        "value": 24.0
+      },
+      "kd_lower_umol_l": {
+        "source": "Project assumption for an illustrative one-compartment calculation, sensitivity bound",
+        "unit": "umol/L",
+        "value": 0.1
+      },
+      "kd_umol_l": {
+        "source": "Project assumption for an illustrative one-compartment calculation, unmeasured target binding constant",
+        "unit": "umol/L",
+        "value": 0.2
+      },
+      "kd_upper_umol_l": {
+        "source": "Project assumption for an illustrative one-compartment calculation, sensitivity bound",
+        "unit": "umol/L",
+        "value": 0.4
+      },
+      "rat_clearance_relative_error": {
+        "source": "Project assumption for an illustrative one-compartment calculation, no assay error estimate is supplied",
+        "unit": "fraction",
+        "value": 0.2
+      },
+      "translation_lower_quantile": {
+        "source": "Project decision for leave-one-out paired-ratio distribution",
+        "unit": "fraction",
+        "value": 0.1
+      },
+      "translation_upper_quantile": {
+        "source": "Project decision for leave-one-out paired-ratio distribution",
+        "unit": "fraction",
+        "value": 0.9
+      },
+      "volume_l": {
+        "source": "Project assumption for an illustrative one-compartment calculation, apparent volume",
+        "unit": "L",
+        "value": 1.0
+      }
+    },
+    "translation_rule": "For each paired parent, derive a rat-to-human hepatocyte clearance factor from the other paired parents. Use their median for the central curve and their empirical quantiles for a variability interval. Never use the parent's own human measurement to derive its factor.",
+    "uncertainty_rule": "Interval arithmetic propagates assumed rat-assay uncertainty, leave-one-out species-factor variability, unbound fraction, binding constant, Emax and engagement EC50 through each monotone equation. These are sensitivity bounds, not confidence or prediction intervals."
+  },
+  "protocol_id": "chembl37-pkpd-translation-audit-v1",
+  "schema_version": "aidd-commons.pkpd-translation-protocol.v1",
+  "source": {
+    "assays": {
+      "CHEMBL3301370": "Human liver microsomes",
+      "CHEMBL3301371": "Rat hepatocytes",
+      "CHEMBL3301372": "Human hepatocytes"
+    },
+    "database": "ChEMBL_37",
+    "document_chembl_id": "CHEMBL3301361",
+    "document_doi": "10.6019/CHEMBL3301361",
+    "licence": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+    "licence_scope": "ChEMBL data records. An individual deposited document retains its owner's rights",
+    "licence_source": "ChEMBL 37 release LICENSE and README, reviewed 2026-10-21",
+    "read_route": "Cached ChEMBL REST snapshot at .cache/az_clearance_system, read and validated by aidd_commons.az_clearance_system.data.load_cached_systems",
+    "release_date": "2026-05-01",
+    "snapshot_bytes": 1518229,
+    "snapshot_fetched_on": "2026-09-12",
+    "snapshot_files_bytes": {
+      "activities-CHEMBL3301370.json": 701737,
+      "activities-CHEMBL3301371.json": 549808,
+      "activities-CHEMBL3301372.json": 266453,
+      "status.json": 231
+    }
+  }
+}

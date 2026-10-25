@@ -1,0 +1,58 @@
+id: model-byteff2
+name: ByteFF2
+kind: model
+summary: Repository for two graph-neural-network force fields, a non-polarisable classical force field for drug-like molecules and a polarisable one trained on high-level quantum-chemistry data, with the 2026 and 2025 weight releases published on a Hugging Face repository.
+canonical_url: https://github.com/ByteDance-Seed/byteff2
+identifiers:
+  - scheme: paper
+    value: "ByteFF: a non-polarisable force field for drug-like molecules parameterised by an edge-augmented, symmetry-preserving graph neural network; Digital Discovery, DOI 10.1039/D4SC06640E"
+    url: https://doi.org/10.1039/D4SC06640E
+  - scheme: paper
+    value: "ByteFF-Pol: a polarisable machine-learning force field trained on high-level quantum-chemistry data; Nature Communications, DOI 10.1038/s41467-026-73566-3"
+    url: https://doi.org/10.1038/s41467-026-73566-3
+  - scheme: code
+    value: "ByteFF2 source repository, ByteDance-Seed/byteff2"
+    url: https://github.com/ByteDance-Seed/byteff2
+  - scheme: model-weights
+    value: "ByteFF-26 and ByteFF-Pol-25 model weights, Hugging Face repository ByteDance-Seed/byteff2"
+    url: https://huggingface.co/ByteDance-Seed/byteff2
+  - scheme: dataset
+    value: "THEMol dataset, the training corpus named for the ByteFF-26 weights"
+    url: https://github.com/ByteDance-Seed/THEMol
+stages: [design, evaluation]
+modalities: [small-molecule]
+tasks: [force-field-parameterisation, molecular-simulation]
+relations:
+  - type: successor-to
+    target: model-byteff
+status: { value: unverified }
+access_level: { value: open_source, evidence: [byteff2-readme] }
+openness:
+  inference_code: { value: available, evidence: [byteff2-readme] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [byteff2-readme] }
+  architecture: { value: available, evidence: [byteff2-readme] }
+  data_recipe: { value: unverified }
+  training_data: { value: available, evidence: [byteff2-readme] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: "Apache-2.0"
+    scope: "The repository README carries the Apache Licence 2.0 badge and links the licence text. The grant covers the repository's source and the weights it publishes. The licence of the THEMol dataset is the dataset's own, and the licence of GROMACS and of the patched OpenMM a user must install is theirs."
+    evidence: [byteff2-readme]
+evidence:
+  - id: byteff2-repository
+    url: https://github.com/ByteDance-Seed/byteff2
+    label: ByteFF2 repository (reviewed 2026-10-23)
+    supports: [name, kind, summary, stages, modalities, tasks, relations, caveats]
+  - id: byteff2-readme
+    url: https://raw.githubusercontent.com/ByteDance-Seed/byteff2/main/README.md
+    label: ByteFF2 README (reviewed 2026-10-23)
+    supports: [identifiers, caveats]
+caveats:
+  - "The weights are versioned separately from the force-field names, and the page names two releases: ByteFF-26, the 2026 version trained on the THEMol dataset, and ByteFF-Pol-25, the 2025 release of the polarisable model. A reader has to choose one, and the page does not say which a downstream use should take."
+  - "The README does not state the training procedure for either force field beyond a reference to the ByteFF paper's joint-training workflow, and the repository's training code was not established by the page, so the data recipe is unverified."
+  - "The README gives no installation command for the force fields themselves, only that the dependencies are in pyproject.toml and that a user should run uv sync."
+  - "Running ByteFF2 requires a patched OpenMM at version 8.3.1 and a separate OpenMM-VelocityVerlet, both built from source with the repository's own install script, and GROMACS 2025.3 built from source, so the route a reader follows is a build rather than an install."
+  - "The polarisable force field is described as trained on high-level quantum-chemistry data without experimental calibration, which the record carries as the record's own statement and not as an independent measurement."
+acknowledgements: []
+last_verified: "2026-10-23"

@@ -1,0 +1,48 @@
+id: tool-botorch
+name: BoTorch
+kind: software
+summary: Bayesian optimization framework.
+canonical_url: https://github.com/meta-pytorch/botorch
+identifiers:
+  - scheme: documentation
+    value: "Official documentation"
+    url: https://botorch.org/docs/introduction
+  - scheme: paper
+    value: "Software paper"
+    url: https://arxiv.org/abs/1910.06403
+stages: [design, analyze]
+modalities: [experimental-measurement]
+tasks: [bayesian-optimization]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license-file] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [repository] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: MIT
+    scope: covers the source code in the repository, per the repository's LICENSE file, which states no narrower scope
+    evidence: [license-file]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/meta-pytorch/botorch
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/meta-pytorch/botorch
+    label: BoTorch repository
+    supports: [caveats, kind, modalities, name, stages, summary, tasks]
+  - id: license-file
+    url: https://raw.githubusercontent.com/meta-pytorch/botorch/HEAD/LICENSE
+    label: Repository LICENSE file (reviewed 2026-10-23)
+    supports: []
+caveats:
+  - The openness claims here rest on the repository's own file listing and README, read on 2026-10-23; the code was not run, and no claim is made that the released scripts reproduce the published numbers.
+  - This is a general Bayesian optimization framework rather than an AIDD benchmark.
+acknowledgements: []
+last_verified: "2026-10-23"

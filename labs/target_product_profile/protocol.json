@@ -1,0 +1,178 @@
+{
+  "schema_version": "aidd-commons.target-product-profile-protocol.v1",
+  "protocol_id": "chembl37-target-product-profile-v1",
+  "issued_on": "2026-10-23",
+  "source_release_date": "2026-05-01",
+  "sources": [
+    {
+      "name": "decision_unit_scope",
+      "snapshot": "ChEMBL_37",
+      "snapshot_byte_length": 11883104,
+      "archive": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/",
+      "licence": {
+        "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+      },
+      "read_route": "aidd_commons.decision_unit_scope.data.load_cached_cohort",
+      "read_on": "2026-10-21",
+      "cache_directory": ".cache/decision_unit_scope",
+      "files": {
+        "status.json": 231,
+        "molecules.json": 4003,
+        "activities-CHEMBL109.json": 5440753,
+        "activities-CHEMBL1144.json": 1491763,
+        "activities-CHEMBL13829.json": 2030,
+        "activities-CHEMBL23393.json": 116508,
+        "activities-CHEMBL25.json": 3504249,
+        "activities-CHEMBL275835.json": 23503,
+        "activities-CHEMBL441.json": 97917,
+        "activities-CHEMBL588.json": 218661,
+        "activities-CHEMBL593.json": 730939,
+        "activities-CHEMBL906.json": 3616,
+        "assays.json": 248931
+      }
+    },
+    {
+      "name": "az_clearance_system",
+      "snapshot": "ChEMBL_37",
+      "snapshot_byte_length": 1518229,
+      "archive": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/",
+      "licence": {
+        "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+      },
+      "read_route": "aidd_commons.az_clearance_system.data.load_cached_systems",
+      "read_on": "2026-09-12",
+      "cache_directory": ".cache/az_clearance_system",
+      "files": {
+        "status.json": 231,
+        "activities-CHEMBL3301370.json": 701737,
+        "activities-CHEMBL3301371.json": 549808,
+        "activities-CHEMBL3301372.json": 266453
+      }
+    },
+    {
+      "name": "cyp_assay_system",
+      "snapshot": "ChEMBL_37",
+      "snapshot_byte_length": 6693611,
+      "archive": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/",
+      "licence": {
+        "name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+        "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE"
+      },
+      "read_route": "aidd_commons.cyp_assay_system.data.load_cached_targets",
+      "read_on": "2026-09-12",
+      "cache_directory": ".cache/cyp_assay_system",
+      "files": {
+        "status.json": 231,
+        "activities-CHEMBL289.json": 2231098,
+        "activities-CHEMBL340.json": 4462282
+      }
+    }
+  ],
+  "run_basis": "This illustrative profile and every threshold were declared before cached measurements are read. Thresholds are teaching decisions, not estimates or cutoffs derived or tuned from this cohort. The three owning readers and the multi-endpoint integration join are reused without download or parsing.",
+  "profile": {
+    "intended_population": "Illustrative adults with advanced solid tumours",
+    "intended_route": "oral",
+    "requirements": [
+      {
+        "id": "response_ic50",
+        "kind": "gate",
+        "family": "efficacy",
+        "measurement": "IC50 response-potency point in each admitted assay and document",
+        "selector": {
+          "endpoint_type": "IC50"
+        },
+        "comparison": "all_lte",
+        "threshold": 1000,
+        "unit": "nM"
+      },
+      {
+        "id": "human_microsome_clearance",
+        "kind": "gate",
+        "family": "exposure",
+        "measurement": "Intrinsic clearance in human liver microsomes",
+        "selector": {
+          "assay_system": "Human liver microsomes"
+        },
+        "comparison": "all_lte",
+        "threshold": 50,
+        "unit": "mL.min-1.g-1"
+      },
+      {
+        "id": "cyp3a4_inhibition",
+        "kind": "gate",
+        "family": "interaction",
+        "measurement": "CYP3A4 inhibition potency",
+        "selector": {
+          "target": "CYP3A4"
+        },
+        "comparison": "all_lte",
+        "threshold": 5,
+        "unit": "pChEMBL (dimensionless)"
+      },
+      {
+        "id": "rat_hepatocyte_clearance",
+        "kind": "preference",
+        "family": "exposure",
+        "measurement": "Intrinsic clearance in rat hepatocytes",
+        "selector": {
+          "assay_system": "Rat hepatocytes"
+        },
+        "comparison": "all_lte",
+        "threshold": 30,
+        "unit": "uL.min-1.(10^6cells)-1"
+      },
+      {
+        "id": "cyp2d6_inhibition",
+        "kind": "preference",
+        "family": "interaction",
+        "measurement": "CYP2D6 inhibition potency",
+        "selector": {
+          "target": "CYP2D6"
+        },
+        "comparison": "all_lte",
+        "threshold": 5,
+        "unit": "pChEMBL (dimensionless)"
+      },
+      {
+        "id": "clinical_response",
+        "kind": "gate",
+        "family": "clinical_efficacy",
+        "measurement": "Objective response rate in the intended population",
+        "selector": null,
+        "comparison": "all_gte",
+        "threshold": 30,
+        "unit": "%"
+      },
+      {
+        "id": "immunogenicity",
+        "kind": "preference",
+        "family": "immunogenicity",
+        "measurement": "Treatment-emergent anti-drug antibody incidence",
+        "selector": null,
+        "comparison": "all_lte",
+        "threshold": 5,
+        "unit": "%"
+      }
+    ]
+  },
+  "counted_unit": {
+    "name": "one admitted ChEMBL parent molecule",
+    "cohort_rule": "Parents with at least two measured families in the existing integration join",
+    "join_rule": "Join families only by equal parent_molecule_chembl_id returned by their validated readers. Never join by structure, name, assay or row position."
+  },
+  "rules": {
+    "gate_failure": "Any measured mandatory gate failure excludes a parent from the profile-satisfying set.",
+    "preference_miss": "A missed preference is reported separately and does not exclude a parent.",
+    "unmeasured": "A requirement without a matching measurement is unmeasured, never passed or satisfied.",
+    "satisfaction": "Only a parent passing every mandatory gate is profile-satisfying."
+  },
+  "excluded_by_design": [
+    "any claim that passing measured gates makes a compound a development candidate",
+    "any ranking of compounds by the number of gates they pass",
+    "any claim that a requirement without a measurement has been met",
+    "any fold change between microsome and hepatocyte clearance bases",
+    "any clinical conclusion from in vitro response, clearance or CYP measurements"
+  ]
+}

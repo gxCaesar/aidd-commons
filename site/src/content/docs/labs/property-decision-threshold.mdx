@@ -1,0 +1,176 @@
+---
+title: The band where you cannot decide
+description: Apply a frozen threshold rule to calibrated FreeSolv intervals, and see why the model with the lowest error is not the model whose intervals support a decision.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="property-decision" />
+
+## Before you run
+
+**Mode: runnable inspection of committed files.** Two commands read the completed
+FreeSolv baselines and a frozen decision rule. Nothing is fitted, no model is
+run, and no compound is recommended for anything.
+
+```bash
+python labs/property_decision/inspect_decision.py evidence
+```
+
+A point prediction always yields a decision, because a number is always on one
+side of a threshold. **An interval does not.** Everything below follows from
+taking that seriously.
+
+## 1. One of four combinations reaches the coverage it was built for
+
+The intervals are split-conformal, calibrated on the validation partition, built
+for a nominal coverage of 0.9. The first command prints each split and model
+beside the coverage it actually achieved on test.
+
+Only **scaffold morgan_random_forest** reaches it, at 0.90625. The other three
+fall short, and one of them badly: **random morgan_ridge covers 0.734375**, a
+shortfall of 0.1656 against what it was built for.
+
+Now read the band column beside it. Random morgan_ridge has the **narrowest**
+band of the four, at 3.1653 kcal/mol. The combination that actually covers has
+the **widest**, at 6.0130.
+
+**A tighter interval is not a better interval unless it still covers.** The
+narrowest band here is the least trustworthy one, and nothing about its width
+announces that.
+
+## 2. The abstention band
+
+```bash
+python labs/property_decision/inspect_decision.py decide
+```
+
+The frozen rule advances a candidate when the whole interval lies below the
+threshold, rejects it when the whole interval lies above, and **abstains when the
+interval straddles it**. The abstention band is therefore two radii wide, centred
+on the threshold, and the command prints its bounds.
+
+Applied to the point estimate alone, all 29 grid points receive a decision. Under
+the interval rule they do not. The difference is exactly the band, and it is not
+a small correction: the widest case leaves 13 of 29 undecidable.
+
+## 3. More trustworthy intervals decide less
+
+This is the trade-off the topic is really about, and the committed numbers make
+it monotone. Ordered by band width:
+
+| Split and model | Abstains on | Coverage |
+| --- | --- | --- |
+| random morgan_ridge | 7 of 29 | short by 0.1656 |
+| random morgan_random_forest | 11 of 29 | short by 0.0250 |
+| scaffold morgan_ridge | 11 of 29 | short by 0.0250 |
+| scaffold morgan_random_forest | 13 of 29 | meets nominal |
+
+**The combination that reaches its nominal coverage abstains the most.** As the
+band widens the coverage shortfall falls, without exception, and a check locks
+that ordering.
+
+Deciding more is not the same as being right more often. A model that decides
+everything has not solved the problem; it has declined to represent its own
+uncertainty, and the split that looks easier buys its confidence on credit.
+
+## 4. The two criteria disagree, in the same direction, on both splits
+
+The rule declares both selection criteria **before** the numbers are read: lowest
+mean absolute error for the point criterion, coverage closest to nominal from
+above for the interval criterion.
+
+On both splits the point criterion picks `morgan_ridge` and the interval
+criterion picks `morgan_random_forest`. **The model with the lowest error is not
+the model whose intervals support a threshold decision.** Because the
+disagreement points the same way on both splits, it is not a split artefact, and
+a check requires that too.
+
+Declaring both criteria in advance is what makes this reportable. Chosen
+afterwards, either one justifies a model that was already preferred.
+
+## 5. What this cannot compute
+
+**How many real compounds fall inside the band.** The completed lab committed
+aggregate metrics and split membership, not per-compound test predictions, so the
+band can be measured on the prediction axis but not populated.
+
+The grid counts above are arithmetic over a declared range. They are **not a
+sample of molecules** and must not be read as a yield. The command prints this
+limit rather than leaving it to be noticed, which is the same class of admitted
+record gap that the
+[counterevidence dossier](/labs/counterevidence-dossier/) inventories elsewhere
+in this repository.
+
+```bash
+python labs/property_decision/inspect_decision.py check
+```
+
+Twenty checks run. Rule completeness is a precondition: when the rule is
+incomplete it is **not applied to the evidence at all**.
+
+## Independent exercise
+
+A colleague proposes: "Our model's MAE is 1.13 kcal/mol, so let's advance
+everything predicted below −5 and reject the rest. We can revisit the borderline
+ones later if the first batch disappoints."
+
+Say what is wrong with each of the three clauses, and give the one number you
+would ask for before agreeing to any version of this plan.
+
+<details data-worked-answer>
+<summary>Worked answer — three clauses, and the number to ask for</summary>
+
+**"MAE is 1.13, so advance everything below −5."** The MAE does not license the
+threshold. A mean absolute error is an average over the test set; it says nothing
+about how far any individual prediction may be from its truth, and a threshold
+decision is made one compound at a time. The quantity that governs this is the
+calibrated radius, which on the same split and model is 2.7394 — **more than
+twice the MAE.** Using the MAE as if it were the interval understates the
+uncertainty by a factor of about two, in the direction that makes the plan look
+safer.
+
+**"and reject the rest."** This is the clause that hides the band. Everything not
+advanced becomes a rejection, so the compounds the evidence cannot resolve are
+resolved anyway, silently, by whichever side the point estimate fell on. Those
+are exactly the compounds nearest the threshold, which is to say the ones where
+the decision matters most and the evidence is thinnest.
+
+**"revisit the borderline ones later if the first batch disappoints."** This
+treats abstention as a contingency rather than an outcome. The borderline
+compounds have already been rejected by the second clause, so there is no
+recorded set to revisit. Abstention only functions if it is a declared outcome at
+decision time, which is why the frozen rule has three branches and not two.
+
+**The number to ask for: the calibrated interval radius, with the coverage it
+actually achieved on test and the nominal coverage it was built for.** One number
+is not enough on its own — a radius with no coverage attached is a claim about
+width, not about reliability, and this lab's own evidence shows the narrowest
+radius belonging to the worst-covering model. With the radius you can compute the
+band; with the coverage you know whether the band means anything.
+
+A complete answer also notices that no threshold is defensible from this
+evidence. The rule in the lab says so explicitly: the value was declared for
+teaching, and nothing in the repository establishes that −5 separates useful
+compounds from useless ones.
+
+</details>
+
+## What this does not do
+
+This route does not fit a model, evaluate one, or establish that the threshold is
+correct. It applies a frozen rule to committed aggregates and reports what the
+rule cannot resolve. An advance outcome means a calibrated interval cleared a
+declared threshold on a retrospective benchmark, and nothing more.
+
+The evidence comes from the
+[FreeSolv honest baselines](/labs/freesolv-honest-baselines/) lab. For the
+surrounding argument see
+[uncertainty to decisions](/learn/qsar-properties/uncertainty-to-decisions/) and
+[metrics and uncertainty](/learn/evaluation-and-reproducibility/metrics-and-uncertainty/).
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-11.

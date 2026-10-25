@@ -1,0 +1,47 @@
+id: db-rcsb-pdb
+name: RCSB Protein Data Bank
+kind: database
+summary: Official structural biology data resource for macromolecular structures.
+canonical_url: https://www.rcsb.org/
+identifiers:
+  - scheme: documentation
+    value: "Web APIs overview"
+    url: https://www.rcsb.org/docs/programmatic-access/web-apis-overview
+  - scheme: dataset
+    value: "File download services"
+    url: https://www.rcsb.org/docs/programmatic-access/file-download-services
+stages: [data-intake, structure-prediction]
+modalities: [protein, biomolecular-complex]
+tasks: [structure-retrieval]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [terms-page] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC0 1.0
+    scope: covers the data provided by the RCSB Protein Data Bank, including the data served by its programmatic APIs, per the site's usage policy
+    evidence: [terms-page]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://www.rcsb.org/
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [caveats, identifiers]
+  - id: official-page
+    url: https://www.rcsb.org/
+    label: RCSB PDB official page
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: terms-page
+    url: https://www.rcsb.org/pages/usage-policy
+    label: RCSB PDB usage policy (reviewed 2026-10-23)
+    supports: []
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one.
+acknowledgements: []
+last_verified: "2026-10-23"

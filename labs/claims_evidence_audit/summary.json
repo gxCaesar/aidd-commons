@@ -1,0 +1,150 @@
+{
+  "schema_version": "aidd-commons.claims-evidence-audit-summary.v1",
+  "protocol_id": "aidd-commons.claims-evidence-audit-v1",
+  "computed_on": "2026-10-24",
+  "software": {
+    "python": "3.11.15",
+    "pyyaml": "6.0.3"
+  },
+  "examined_provider_ids": [
+    "agil",
+    "aidd-commons",
+    "build-ai-drug-discovery-pipelines",
+    "chembl-training",
+    "deepchem-tutorials",
+    "european-aidd-network",
+    "ml4drug-book",
+    "o3dc",
+    "openmm-cookbook",
+    "practical-cheminformatics",
+    "rdkit-cookbook",
+    "teachopencadd",
+    "therapeutics-data-commons"
+  ],
+  "examined_track_id": "foundations",
+  "examined_topic_ids": [
+    "t01-evidence-claim-unknown",
+    "t01-aidd-decision-unit",
+    "t01-source-review-scope",
+    "t01-entity-glossary"
+  ],
+  "source_counts": {
+    "default_unverified_cells": 618,
+    "direct_cells": 591,
+    "total_cells": 1209
+  },
+  "state_counts": {
+    "agil": {
+      "direct-observation": 0,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 4
+    },
+    "aidd-commons": {
+      "direct-observation": 4,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 0
+    },
+    "build-ai-drug-discovery-pipelines": {
+      "direct-observation": 4,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 0
+    },
+    "chembl-training": {
+      "direct-observation": 0,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 4
+    },
+    "deepchem-tutorials": {
+      "direct-observation": 0,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 4
+    },
+    "european-aidd-network": {
+      "direct-observation": 1,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 3
+    },
+    "ml4drug-book": {
+      "direct-observation": 0,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 4
+    },
+    "o3dc": {
+      "direct-observation": 1,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 3
+    },
+    "openmm-cookbook": {
+      "direct-observation": 0,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 4
+    },
+    "practical-cheminformatics": {
+      "direct-observation": 0,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 4
+    },
+    "rdkit-cookbook": {
+      "direct-observation": 0,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 4
+    },
+    "teachopencadd": {
+      "direct-observation": 4,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 0
+    },
+    "therapeutics-data-commons": {
+      "direct-observation": 0,
+      "bounded-inference": 0,
+      "unsupported-claim": 0,
+      "unresolved-field": 4
+    }
+  },
+  "unsupported_claims": [],
+  "disagreements": [],
+  "claims": {
+    "most_comprehensive": {
+      "status": "not_established",
+      "bound_condition_satisfied": true,
+      "bound_condition_measured": true,
+      "measured_values": {
+        "self_lower_at_explained": 93,
+        "strongest_external_upper_at_explained": 92
+      },
+      "condition": "Own explained lower bound exceeds every external explained upper bound",
+      "correction_window_condition": "Public 30-day correction window must be completed",
+      "correction_window_status": "not_recorded"
+    },
+    "most_detailed": {
+      "status": "not_established",
+      "bound_condition_satisfied": true,
+      "bound_condition_measured": true,
+      "measured_values": {
+        "self_lower_at_worked": 93,
+        "strongest_external_upper_at_worked": 91,
+        "executable_or_assessed_self_tracks": 18,
+        "real_data_executable_or_assessed_self_tracks": 17
+      },
+      "condition": "At least 12 own tracks are executable or assessed and own worked lower bound exceeds every external worked upper bound",
+      "correction_window_condition": "Public 30-day correction window must be completed",
+      "correction_window_status": "not_recorded"
+    }
+  },
+  "interpretation_limits": [
+    "A default unknown does not establish that a provider lacks the topic.",
+    "The project's own depth is its stated floor, not a measure of teaching quality."
+  ]
+}

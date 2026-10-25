@@ -1,0 +1,71 @@
+id: tutorial-openfe
+name: OpenFE tutorials
+kind: tutorial
+summary: Worked entry points for relative and absolute free-energy calculations, molecular dynamics, and post-simulation analysis.
+canonical_url: https://docs.openfree.energy/en/latest/tutorials/index.html
+identifiers: []
+stages:
+- physics-based-modelling
+- evaluation
+modalities:
+- small-molecule
+- protein-ligand-complex
+tasks:
+- free-energy-learning
+- simulation-analysis
+relations:
+- type: demonstrates
+  target: tool-openfe
+status:
+  value: unverified
+access_level:
+  value: open_source
+  evidence:
+  - official-collection
+  - notebook-license
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: MIT
+  scope: Software and associated documentation in the public OpenFreeEnergy/ExampleNotebooks repository, including the tutorial notebook source; it does not relicense external simulation engines, force fields or separately obtained data.
+  evidence:
+  - notebook-license
+evidence:
+- id: official-collection
+  url: https://docs.openfree.energy/en/latest/tutorials/index.html
+  label: Official tutorial collection inspected 2026-09-09
+  supports:
+  - caveats
+  - kind
+  - modalities
+  - name
+  - relations
+  - stages
+  - summary
+  - tasks
+- id: terms-page
+  url: https://docs.openfree.energy/en/latest/
+  label: Terms page read 2026-10-23
+  supports:
+  - caveats
+- id: notebook-license
+  url: https://raw.githubusercontent.com/OpenFreeEnergy/ExampleNotebooks/main/LICENSE
+  label: OpenFE example notebooks MIT licence — The tutorial collection links a public cloneable notebook repository; its LICENSE grants use, modification and redistribution of the software and associated documentation under MIT terms.
+  supports: []
+caveats:
+- The tutorial collection links a public notebook repository that provides a direct archive download. Its MIT grant covers the notebook software and associated documentation; external simulation dependencies and independently obtained inputs keep their own terms.
+acknowledgements: []
+last_verified: '2026-10-23'

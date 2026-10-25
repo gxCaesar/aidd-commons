@@ -1,0 +1,110 @@
+---
+title: 不做合成分的跨域提名决策
+description: 用候选提名工作簿自己的规则,在它的教学表与 58 个实测 ChEMBL 母体上各跑一遍,看清每个候选缺的是哪一个必需输入。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+英文原文：[Cross-domain nomination decisions without a composite score](/labs/crossdomain-tradeoff/)。
+
+## 准备与学习目标
+
+请先读[提名工作簿](/zh-cn/learn/candidate-nomination/capstone-workbook/)
+及其"Case 5——带一个缺失要求的跨域提名",再读[多终点整合实验](/zh-cn/labs/multi-endpoint-integration/)。
+本实验执行的就是那一课所教的规则。你将为每个候选解析五个必需输入,指出阻断提名的是哪一个,
+报告证据指向的下一步决策,并看到:终点族覆盖的普查不等于提名决策。
+
+## 全新独立计算
+
+模式是在冻结的 ChEMBL 37 协议下做全新独立计算。用项目的 Python 3.11 环境。第一条命令只校验
+已有缓存、不写任何东西;快照就位后,其余命令都不用网络、不需要加速器。导出命令只在契约与
+汇总检查全部通过后才覆盖已提交的汇总。
+
+```bash
+.venv/bin/python labs/crossdomain_tradeoff/run_lab.py download
+.venv/bin/python labs/crossdomain_tradeoff/inspect_crossdomain_tradeoff.py show
+.venv/bin/python labs/crossdomain_tradeoff/inspect_crossdomain_tradeoff.py check
+.venv/bin/python labs/crossdomain_tradeoff/export_summary.py
+.venv/bin/python -m pytest labs/tests/crossdomain_tradeoff -q
+```
+
+## 本实验执行的规则
+
+规则来自课程,不是来自实验。工作簿给出一个虚构项目的教学阈值与五个必需输入,本实验
+在同一个地方原样跑这条规则。
+
+| 必需输入 | 规则 | 来源 |
+| --- | --- | --- |
+| 效价 | 匹配效价不高于 50 nM | 被采纳的反应效力点 |
+| 选择性比 | 对预期靶点的比值不低于 20 | 实测族未覆盖 |
+| 暴露比 | 暴露与有效浓度之比不低于 3 | 实测族未覆盖 |
+| 安全包 | 经独立审查的安全包 | 实测族未覆盖 |
+| 功能验证 | 可解释的功能验证 | 实测族未覆盖 |
+
+这些阈值是那个虚构项目的教学阈值,不是药理判据。实验不产出任何合成分、加权和、总体
+合意值,也不对候选排序;审计会拒绝带有规则未命名字段的决策、被默认值填上的缺失输入,
+以及指向"修改产品要求"的下一步决策。
+
+## 教学表的判定
+
+工作簿自己的三个候选由同一段代码执行,算出来的答案与课文的答案一致。
+
+| 候选 | 被阻断于 | 证据指向的下一步决策 |
+| --- | --- | --- |
+| N1 | 选择性比(8,要求 20) | 修改候选 |
+| N2 | 暴露比(2,要求 3) | 修改候选 |
+| N3 | 缺少安全包 | 补齐证据缺口 |
+
+三者都不满足完整要求,也没有一个指向修改要求:把阈值改成让某个"心头好"通过,是对要求的
+修改,不是发现。
+
+## 实测队列的判定
+
+实测队列是已验证的整合实验所读到的、带至少两个实测终点族的母体——因为只带一个实测族
+就无法提出跨域决策。队列里 7,908 个母体中,8 个只带效力、1,062 个只带暴露、6,780 个只带
+相互作用,1 个带效力与暴露,57 个带暴露与相互作用,这 58 个就是实测候选。
+
+这条规则在它们任何一个上都提不出来,理由是具体的。
+
+| 必需输入 | 实测候选 | 原因 |
+| --- | --- | --- |
+| 效价 | 57 个缺失,1 个不确定 | 唯一有效力点位的候选混了端点类型,该族因此没有单一效价值 |
+| 选择性比 | 58 个未覆盖 | CYP3A4 与 CYP2D6 之间的比较不是对预期靶点的选择性比 |
+| 暴露比 | 58 个未覆盖 | 体外内在清除不是暴露,没有声明的有效浓度就形不成这个比值 |
+| 安全包 | 58 个未覆盖 | 此处没有实测安全材料,而审查是人做的决定,任何测量都提供不了 |
+| 功能验证 | 58 个未覆盖 | 本仓库的实测活性记录是在归类活性记录,不是在验证某个化合物的功能 |
+
+58 个全部在效价输入处被阻断,全部指向补齐证据缺口,没有一个完成提名。这就是终点计数实验
+无法说出的那一点:一份报告 7,908 个化合物、1,120 条暴露中位数与 6,837 条 CYP 抑制测量的
+普查,描述的是实测族的覆盖,而不是"提名决策所需的输入是否在其中"。这里它们不在:队列里
+最充裕的两个族,不是规则要的那两个。
+
+## 独立练习
+
+检查 `CHEMBL1144`,唯一带有效力点位的实测候选。说出五个输入各自的状态,指出阻断提名的
+是哪一个输入,并解释为什么即使两个酶都有测量,也无法从队列的 CYP 抑制记录形成选择性比。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+它的效价输入是不确定的:被采纳的记录混了端点类型,该族因此没有单一效价值,判据无法判定。
+它的选择性比、暴露比、安全包与功能验证则各自都未覆盖,原因见表。效价输入因此阻断了提名,
+下一步决策是补齐证据缺口,提名未完成。选择性比比较的是化合物对两个药物代谢酶的活性,而工作簿
+要求的输入是**对预期靶点**的比值;两个代谢酶之间的比较,无论数字多干净,都不能确立它对
+该化合物预期作用靶点的任何事情。
+
+</details>
+
+## 来源与署名
+
+| 快照 | 来源与许可 | 读取日期 |
+| --- | --- | --- |
+| 决策单位活性 | [ChEMBL 37 发布](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/)与 [CC BY-SA 3.0 许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-10-21 |
+| 内在清除 | ChEMBL 37 中的 [AstraZeneca 数据集 CHEMBL3301361](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361),同一份 [CC BY-SA 3.0 许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+| CYP 抑制 | [ChEMBL 37 发布](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/),同一份 [CC BY-SA 3.0 许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+| 教学表 | [提名工作簿](/zh-cn/learn/candidate-nomination/capstone-workbook/)的 Case 5,原创教学材料,CC BY 4.0 | 2026-10-24 |
+
+实测记录不带置信区间,所以在某个族的代表值上判定的判据,陈述的是被采纳的记录,而不是一个
+带误差棒的量。课程正文原始许可为 CC BY 4.0,实验代码原始许可为 Apache-2.0。最后审阅:2026-10-24。

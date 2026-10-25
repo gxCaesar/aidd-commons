@@ -1,0 +1,61 @@
+---
+title: Count the units behind an activity table
+description: Recount admitted ChEMBL 37 measurements as molecules, parents, scaffolds, assays, targets and documents.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+This laboratory serves `t17-generalization-unit`. Read [the decision-unit lesson](/learn/foundations/decision-unit-scope/) and [generalization unit and estimand](/learn/evaluation-and-reproducibility/generalization-unit-and-estimand/) first. You will distinguish a reported row from an admitted independent measurement, count the values available under each candidate unit, and explain why the unit must accompany any generalization claim. Familiarity with ChEMBL identifiers and the idea of grouped evaluation is useful.
+
+Mode is fresh independent computation over a frozen protocol and a cached ChEMBL 37 snapshot. Use the project Python 3.11 environment and CPU. The snapshot is already cached locally, so these commands need no network or accelerator. The download command copies only validated artifacts into a separate cache. `show` and `check` write nothing. The exporter overwrites only the compact summary after all checks pass.
+
+```bash
+.venv/bin/python labs/generalization_unit_audit/run_lab.py download
+.venv/bin/python labs/generalization_unit_audit/inspect_generalization_unit_audit.py show
+.venv/bin/python labs/generalization_unit_audit/inspect_generalization_unit_audit.py check
+.venv/bin/python labs/generalization_unit_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/generalization_unit_audit -q
+```
+
+## Measurement and unit rule
+
+The declared cohort contains 15 seed molecules resolving to 10 parents. The decision-unit admission rule retains nanomolar point values for AC50, EC50, IC50, Kd or Ki after its ordered exclusions. It yields 488 point rows. Rows with the same parent, assay, document and endpoint type collapse to 486 independent measurements. Bounds do not enter this count. The audit assigns each measurement to every candidate value present on its source rows, then counts measurements per value. First and third quartiles use inclusive linear interpolation. The count of values with exactly 1 measurement identifies values that lose their only same-value observation when that measurement is left out.
+
+## Per-unit counts
+
+The table is the committed computation on 2026-10-23 with Python 3.11.15 and RDKit 2025.09.6. A measurement may carry more than 1 tested molecule ID. The molecule-record membership total is therefore 487 although there are 486 distinct measurements. The declared cohort has 10 parents, but only 9 carry admitted point measurements. The remaining parent has no value in this per-measurement table.
+
+| Candidate unit | Distinct values | Measurement memberships | Median per value | Q1–Q3 per value | Values with 1 measurement |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Molecule record | 15 | 487 | 9 | 4.5–29.5 | 1 |
+| Parent molecule | 9 | 486 | 27 | 4–51 | 1 |
+| Bemis-Murcko scaffold | 10 | 486 | 18.5 | 2.5–47.25 | 1 |
+| Assay | 481 | 486 | 1 | 1–1 | 476 |
+| Target | 100 | 486 | 1 | 1–2.25 | 57 |
+| Document | 221 | 486 | 1 | 1–2 | 136 |
+
+The scaffold key is a chirality-aware RDKit Bemis-Murcko scaffold. When RDKit returns an empty scaffold for an acyclic structure, the key instead uses its canonical isomeric molecular form. This preserves a named value without treating all acyclic structures as one scaffold.
+
+## Units the table cannot name
+
+| Unit | Missing field |
+| --- | --- |
+| Time point | No measurement time point is present. |
+| Site | No collection site identifier is present. |
+| Patient | No patient identifier is present. |
+
+## Two-unit comparison
+
+Assay and parent molecule differ most in distinct value count under the declared candidates. Both views contain the same 486 measurements. The assay view has 481 values, a median of 1 measurement per value, Q1–Q3 of 1–1, and 476 singleton values. The parent view has 9 values, a median of 27 measurements per value, Q1–Q3 of 4–51, and 1 singleton value. A set of rows is therefore not a count of independent parents. These counts describe the available cohort. They do not choose a split or establish performance on unseen units.
+
+## Limits of the material
+
+The seeds were deliberately selected to exercise the admission rule. Their unit distribution is not an estimate for ChEMBL as a whole. A scaffold is a structural grouping rule, not a complete measure of analogue relatedness. An assay ID does not reveal all laboratory conditions. The table cannot support time, site or patient generalization. The laboratory does not fit a model, score a prediction or declare one unit correct. A leave-one-unit-out split would, by design, leave every held-out unit without same-unit training observations. The singleton count instead describes leave-one-measurement-out at the value level.
+
+## Sources and terms
+
+The counts use [ChEMBL 37 activity records](https://www.ebi.ac.uk/chembl/api/data/activity.json) and [release status](https://www.ebi.ac.uk/chembl/api/data/status.json), captured in the frozen snapshot on 2026-10-21 and recounted on 2026-10-23. ChEMBL 37 was released on 2026-05-01 under [Creative Commons Attribution-ShareAlike 3.0 Unported](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE). The [RDKit source licence](https://github.com/rdkit/rdkit/blob/master/license.txt) was recorded as BSD 3-Clause on 2026-09-09. Original guide prose is CC BY 4.0 and laboratory code is Apache-2.0. Last reviewed 2026-10-23.

@@ -1,0 +1,71 @@
+id: model-scgpt
+name: scGPT
+kind: model
+summary: Generative pretrained transformer for single-cell multi-omics that embeds gene expression into cell and gene representations used for cell annotation, batch integration, regulatory-network inference, and perturbation-effect prediction.
+canonical_url: https://github.com/bowang-lab/scGPT
+identifiers:
+  - scheme: paper
+    value: "scGPT: Towards Building a Foundation Model for Single-Cell Multi-omics Using Generative AI; bioRxiv DOI 10.1101/2023.04.30.538439"
+    url: https://doi.org/10.1101/2023.04.30.538439
+  - scheme: paper
+    value: "scGPT: Towards Building a Foundation Model for Single-Cell Multi-omics Using Generative AI; Nature Methods 21(8):1470-1480 (2024), PMID 38409223"
+    url: https://pubmed.ncbi.nlm.nih.gov/38409223/
+  - scheme: model-weights
+    value: "Pretrained scGPT model zoo (whole-human, brain, blood, heart, lung, kidney, pan-cancer, continual pretrained) hosted on Google Drive"
+    url: https://github.com/bowang-lab/scGPT#pretrained-scgpt-model-zoo
+stages: [representation-learning, model-development]
+modalities: [single-cell-transcriptomics, perturbational-transcriptomics]
+tasks: [cell-context-inspection, perturbation-comparison]
+relations:
+  - type: used-by
+    target: model-zeroshot-scfoundation
+status: { value: unverified }
+access_level: { value: open_source, evidence: [scgpt-license, scgpt-repository] }
+openness:
+  inference_code: { value: available, evidence: [scgpt-repository] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [scgpt-readme] }
+  architecture: { value: available, evidence: [scgpt-paper] }
+  data_recipe: { value: available, evidence: [model-scgpt-readme] }
+  training_data: { value: available, evidence: [model-scgpt-readme] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: "Repository source code. The LICENSE file reads 'MIT License' and 'Copyright (c) 2022 suber', a holder and year that do not match the scGPT authors, and the README states no separate terms for the Google Drive checkpoints in the model zoo."
+    evidence: [scgpt-license, scgpt-readme]
+evidence:
+  - id: scgpt-repository
+    url: "https://github.com/bowang-lab/scGPT"
+    label: scGPT repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: scgpt-readme
+    url: "https://raw.githubusercontent.com/bowang-lab/scGPT/main/README.md"
+    label: scGPT README (reviewed 2026-10-21)
+    supports: [identifiers, caveats]
+  - id: scgpt-license
+    url: "https://raw.githubusercontent.com/bowang-lab/scGPT/main/LICENSE"
+    label: scGPT MIT license file (reviewed 2026-10-21)
+    supports: []
+  - id: scgpt-paper
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:%2210.1101/2023.04.30.538439%22&resultType=core&format=json"
+    label: Europe PMC record for the scGPT preprint (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+  - id: scgpt-journal-record
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=TITLE:%22scGPT%3A%20towards%20building%20a%20foundation%20model%20for%20single-cell%20multi-omics%20using%20generative%20AI%22&resultType=core&format=json"
+    label: Europe PMC record for the Nature Methods version of scGPT (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: zeroshot-repository
+    url: "https://github.com/microsoft/zero-shot-scfoundation"
+    label: Microsoft zero-shot single-cell foundation model evaluation repository (reviewed 2026-10-21)
+    supports: [relations]
+  - id: model-scgpt-readme
+    url: https://raw.githubusercontent.com/bowang-lab/scGPT/HEAD/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The README states that the whole-human model is pretrained on 33 million normal human cells and the brain model on 13.2 million brain cells, and it links the download for each.
+  - The README lists "Provide the pretraining code with generative attention masking" as an open item and describes a separate integrate-huggingface-model branch as preliminary support for the pretraining workflow, so the release state of the training code is not settled by the opened pages.
+  - The MIT LICENSE file carries the copyright line "Copyright (c) 2022 suber" rather than the scGPT authors, so this record follows the file as the repository licence without resolving who holds it.
+  - The model zoo lists cell counts per population and the paper abstract reports a corpus of more than 33 million cells, but no named public corpus is identified as the pretraining data; CellxGene appears in the README only as a source for the reference-mapping feature.
+acknowledgements: []
+last_verified: "2026-10-23"

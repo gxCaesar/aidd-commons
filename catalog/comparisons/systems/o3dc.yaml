@@ -1,0 +1,74 @@
+id: o3dc
+name: O3DC Drug Discovery Benchmark Index
+provider_class: benchmark-hub
+canonical_url: https://o3dc.org/
+summary: A community benchmark-index interface designed to record benchmark identity, maintenance, code links, caveats, and correction discussions.
+audiences: [academic-researchers, industry-researchers, independent-researchers]
+languages: [en]
+metadata_evidence: [benchmark-index]
+access:
+  content: { value: open, evidence: [benchmark-index] }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: not_applicable, evidence: [benchmark-index] }
+licenses: []
+correction_url: https://o3dc.org/
+correction_evidence: [benchmark-index]
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence was encoded for omitted taxonomy topics in this dated review.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t01-source-review-scope
+    depth: worked
+    evidence: [benchmark-data]
+    reviewed_scope: The benchmark data file behind the index, reviewed on 2026-09-11, holding 152 entries across ten categories, each carrying a name, category, author, repository, site, consortium, description, task list and a required caveat note
+    note: Every one of the 152 entries binds a claim to a named repository, site and consortium, and the caveat field states the scope in which each benchmark's numbers should be read. A review on 2026-09-04 recorded this index as not exposing a populated record. The landing page renders its contents with JavaScript and a static fetch shows zero entries, so that conclusion described the fetch rather than the resource. The data file behind it holds 152 entries.
+  - topic_id: t17-baseline-model-selection-protocol
+    depth: explained
+    evidence: [benchmark-data]
+    reviewed_scope: The benchmark data file behind the index, reviewed on 2026-09-11, holding 152 entries across ten categories, each carrying a name, category, author, repository, site, consortium, description, task list and a required caveat note
+    note: Fourteen caveat notes discuss baselines and what a reported comparison rests on. The index explains where a comparison can mislead without prescribing a selection protocol. A review on 2026-09-04 recorded this index as not exposing a populated record. The landing page renders its contents with JavaScript and a static fetch shows zero entries, so that conclusion described the fetch rather than the resource. The data file behind it holds 152 entries.
+  - topic_id: t18-counterevidence-failure-analysis
+    depth: worked
+    evidence: [benchmark-data]
+    reviewed_scope: The benchmark data file behind the index, reviewed on 2026-09-11, holding 152 entries across ten categories, each carrying a name, category, author, repository, site, consortium, description, task list and a required caveat note
+    note: All 152 entries carry a required caveat naming a specific weakness of that benchmark, with a median length of 272 characters, so counterevidence about other people's resources is preserved systematically rather than case by case. A review on 2026-09-04 recorded this index as not exposing a populated record. The landing page renders its contents with JavaScript and a static fetch shows zero entries, so that conclusion described the fetch rather than the resource. The data file behind it holds 152 entries.
+  - topic_id: t04-provenance-versioning
+    depth: worked
+    evidence: [benchmark-data]
+    reviewed_scope: The benchmark data file behind the index, reviewed on 2026-09-11, holding 152 entries across ten categories, each carrying a name, category, author, repository, site, consortium, description, task list and a required caveat note
+    note: Every entry carries its maintainer, repository, consortium and site, and the index live-checks the last push to each of the 90 repositories it links, so maintenance status is a field rather than an impression.
+  - topic_id: t17-split-leakage-audit
+    depth: worked
+    evidence: [benchmark-data]
+    reviewed_scope: The benchmark data file behind the index, reviewed on 2026-09-11, holding 152 entries across ten categories, each carrying a name, category, author, repository, site, consortium, description, task list and a required caveat note
+    note: Twenty-two of the caveat notes address splitting and fourteen address leakage, with concrete direction rather than generic warning. The MoleculeNet entry records that random splits leak badly and directs the reader to scaffold splits and to treating small-set results as noise unless averaged over seeds.
+  - topic_id: t17-reproduction-reporting-receipt
+    depth: worked
+    evidence: [benchmark-data]
+    reviewed_scope: The benchmark data file behind the index, reviewed on 2026-09-11, holding 152 entries across ten categories, each carrying a name, category, author, repository, site, consortium, description, task list and a required caveat note
+    note: Thirty-five caveat notes address reproducibility, and the index records where the code lives and whether it is still being updated, so a reader can tell whether a reported number can be reproduced at all.
+  - topic_id: t17-metric-endpoint-uncertainty
+    depth: mentioned
+    evidence: [benchmark-data]
+    reviewed_scope: The benchmark data file behind the index, reviewed on 2026-09-11, holding 152 entries across ten categories, each carrying a name, category, author, repository, site, consortium, description, task list and a required caveat note
+    note: Each entry states what its benchmark measures and lists its tasks. The index does not work through how a metric relates to a decision, and it points at benchmarks rather than teaching the question.
+evidence:
+  - id: benchmark-data
+    url: https://o3dc.org/data/benchmarks.json
+    title: O3DC benchmark index data
+    observed_scope: The data file the index renders from, holding 152 benchmark entries across agent, affinity, ADMET, target, structure, docking, generative, platform, synthesis and clinical categories. Every entry carries a required caveat note, 90 carry a repository, and the landing page live-checks each repository's last push. The landing page itself renders with JavaScript and shows zero entries to a static fetch.
+    access: opened
+    reviewed_on: 2026-09-11
+  - id: benchmark-index
+    url: https://o3dc.org/
+    title: O3DC Drug Discovery Benchmark Index
+    observed_scope: Public index purpose, current rendered counts, candidate submission fields, mandatory caveats, community participation, and correction route.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats:
+  - The rendered page displayed 0 benchmarks, 0 categories, and 0 consortia on the review date, so this record does not attribute any populated benchmark coverage to O3DC.
+  - Code, data, licence, and hosted evaluation availability remain unverified.
+last_verified: 2026-09-11

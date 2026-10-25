@@ -1,0 +1,77 @@
+---
+title: Docking through FEP
+description: Match physical modelling methods to a declared molecular decision and protocol.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="physics-based-modeling/docking-to-fep" />
+
+## Foundations
+
+Docking, scoring, molecular dynamics, free-energy calculations, and quantum
+chemistry trade different approximations for different decisions. A docking
+pose is not a free-energy estimate, and a relative free-energy calculation is
+not a proof of experimental potency.
+
+## Practical workflow
+
+Write the decision, protein construct and state, ligand series, protonation
+assumptions, force field, solvent model, and experimental comparator before a
+calculation. Use a cheap baseline first, then increase protocol cost only when
+it changes a decision. The [Open Force Field Toolkit](https://docs.openforcefield.org/projects/toolkit/en/stable/)
+and [OpenMM](https://openmm.org/) document distinct pieces of such workflows.
+
+## Evaluation
+
+Evaluate against an experimental endpoint matched to the protocol. Report
+failed transformations, uncertainty, convergence diagnostics, and the
+independent chemical series or target state used for generalization. Do not
+compare methods whose inputs or thermodynamic endpoints differ.
+
+## Frontier and open questions
+
+[OpenFE](https://github.com/OpenFreeEnergy/openfe),
+[Perses](https://github.com/choderalab/perses), and
+[GROMACS](https://www.gromacs.org/) make different workflow choices. The open
+question is whether the available protocol, compute budget, and assay noise
+support the decision at hand, not which brand has a universal advantage.
+
+## State-resolved energy modelling
+
+For a worked example in which geometry, units, trajectory order, and the
+independent molecular-system unit are all explicit, continue to [Physical model
+and system state](/learn/physics-based-modeling/physical-model-system-state/).
+Its companion [rMD17 system-state energy-baselines worked-lab
+route](/labs/rmd17-system-state-energy-baselines/) separates development
+evidence from a procedural locked boundary; the link does not itself establish
+a locked result.
+
+## Choose a resource for the next quantity
+
+Use the [physical-modelling resource guide](/learn/physics-based-modeling/physics-resource-guide/)
+to separate docking, parameter assignment, simulation, trajectory analysis and
+free-energy endpoints. Its constructed file-reading case explains why a completed
+calculation may still be missing the requested quantity.
+
+## What v0.1 does not yet teach
+
+v0.1 does not supply a production free-energy campaign, force-field validation
+for every target class, or a claim that simulation replaces measurement.
+
+## Check whether two scores may be compared
+
+The [docking protocol lab](/labs/docking-protocol/) separates the seven components
+a score comes out of and works out which reported numbers are on one scale. Two
+protocols differing in a single component report -8.2 and -10.7 for the same
+ligand on the same structure, no pair in its set is comparable, and a protocol
+declaring no validation still produces a full column of numbers.
+
+## Core-source path
+
+Start with [OpenMM](https://openmm.org/), then inspect
+[MDAnalysis](https://www.mdanalysis.org/) and
+[OpenFE](https://github.com/OpenFreeEnergy/openfe) for executable workflow and
+analysis boundaries.
+
+Last reviewed: 2026-09-04.

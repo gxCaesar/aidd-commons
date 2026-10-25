@@ -1,0 +1,101 @@
+---
+title: 公共蛋白质记录的目标阶梯
+description: 分别读取序列恢复、折叠、结构合理性、结合、催化和功能的公共记录。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## 准备与学习目标
+
+本实验属于 `t13-sequence-structure-function-objective`，对应[构建体身份与目标课程](/learn/biologics-design/construct-identity-and-objectives/)。它要回答每项目标是否有公共记录承载相应层面的证据，以及那条记录是什么。完成实验后，你应能指出相应记录、解释其适用范围，并说明为什么不能用另一项目标的证据填补空白单元格。了解登录号、沉积结构和表格记录即可开始。这里可返回[英文原文](/labs/objective-ladder/)。
+
+运行模式是按冻结协议重新独立计算。读取使用项目 Python 环境和 CPU。首次下载需要网络，后续步骤读取缓存，不需要加速器。协议在读取记录之前固定受检实体、目标、来源路径和坐标审计容差。
+
+## 各项目标的证据
+
+### 序列恢复
+
+结构档案的比对记录标明沉积聚合物区域及其 UniProtKB 参考序列。实验只在该比对覆盖的区域逐位比较序列。匹配比例不描述比对范围以外的位置，也不能证明整个登录号的序列均已恢复。
+
+### 折叠
+
+实验沉积结构记录实验所产生状态下的一种构象。模型档案也为每个登录号保存一个预测。预测模型是计算输出，不是折叠的实验观测。两类记录都不能证明该构象适用于其他状态。
+
+### 结构合理性
+
+实验以 2.0 angstrom 的碰撞距离和 0.45 angstrom 的键长容差审计沉积坐标行。只有至少 500 行坐标的条目才接受审计。行数包括受检实体、其他组分、配体和水。几何形状可接受只说明坐标文件内部一致，不能证明文件描绘的折叠正确。
+
+### 结合
+
+只有结构档案本身将结构关联到受检登录号时，SKEMPI 2.0 的行才可提供实测亲和力值。沉积结构中的组分不能替代该测量。沉积条目中也会出现结晶添加剂和离子，因此单凭组分存在不能认定实测亲和力。
+
+### 催化
+
+UniProtKB 登录号可能带有命名反应和目录编号的催化活性注释。注释记录来源所述内容，不是实测速率。注释数量与不同目录编号的数量应分别计数。
+
+### 功能
+
+UniProtKB 登录号可能带有功能注释。注释存在说明来源对功能作了陈述，不等于直接测量序列恢复、折叠、几何形状、结合或催化。
+
+## 公共记录的读取结果
+
+已提交的结果在 2026-10-22 使用 Python 3.11.15、numpy 2.4.6 和 scipy 1.17.1，从 2026-10-22 读取的记录计算。序列单元格给出档案比对区域内的匹配位数和评估位数。折叠单元格列出实验结构、参考序列覆盖范围，以及模型条目和全局指标。所有模型条目的日期均为 2025-08-01，它们仍是预测。几何单元格依次给出全部受审计行数、其中属于受检实体的行数、键长异常值和碰撞数。这些几何计数由坐标计算，并非摘录档案分数。结合单元格给出单位为 M 的实测野生型值、突变体值及测量方法。催化单元格保留档案原文的命名反应。功能单元格标明登录号的注释，而不把注释文字转成另一种测量。
+
+| 受检实体 | 序列恢复 | 折叠 | 结构合理性 | 结合 | 催化 | 功能 |
+| --- | --- | --- | --- | --- | --- | --- |
+| EGFR · P00533 · 6 条记录，0 项空白 | 1IVO 对照 P00533 · 1244/1244 · 1.0000 | 1IVO · X-RAY DIFFRACTION · P00533 25-646，622 个残基，分布于两条链 · AF-P00533-F1，75.94 | 1IVO · 8892/7903 行 · 0 个异常值 · 0 次碰撞 | 1YY9 · LD29P · 野生型 1.31e-09 M · 突变体 1.38e-09 M · SPR | P00533 · 1 条注释 · 2.7.10.1 · L-tyrosyl-[protein] + ATP = O-phospho-L-tyrosyl-[protein] + ADP + H(+) | UniProtKB P00533 功能注释 |
+| ERBB2 · P04626 · 6 条记录，0 项空白 | 3MZW 对照 P04626 · 624/624 · 1.0000 | 3MZW · X-RAY DIFFRACTION · P04626 23-646，624 个残基 · AF-P04626-F1，74.00 | 3MZW · 4882/4387 行 · 0 个异常值 · 0 次碰撞 | 1N8Z · LC525A · 野生型 1.31e-09 M · 突变体 1.26e-09 M · SPR | P04626 · 1 条注释 · 2.7.10.1 · L-tyrosyl-[protein] + ATP = O-phospho-L-tyrosyl-[protein] + ADP + H(+) | UniProtKB P04626 功能注释 |
+| DHFR · P00374 · 5 条记录，1 项空白 | 1BOZ 对照 P00374 · 185/186 · 0.9946 · A 链第 31 位，沉积序列为 G，参考序列为 F | 1BOZ · X-RAY DIFFRACTION · P00374 2-187，186 个残基 · AF-P00374-F1，96.12 | 1BOZ · 1693/1495 行 · 0 个异常值 · 1 次碰撞 | 无，`no-affinity-record` | P00374 · 1 条注释 · 1.5.1.3 · (6S)-5,6,7,8-tetrahydrofolate + NADP(+) = 7,8-dihydrofolate + NADPH + H(+) | UniProtKB P00374 功能注释 |
+| TP53 · P04637 · 5 条记录，1 项空白 | 1YCS 对照 P04637 · 199/199 · 1.0000 | 1YCS · X-RAY DIFFRACTION · P04637 94-292，199 个残基 · AF-P04637-F1，75.06 | 1YCS · 3291/1501 行 · 0 个异常值 · 0 次碰撞 | 1YCS · RA273H · 野生型 2.2e-06 M · 突变体 1.8e-06 M · ITC | 无，`no-catalysis-annotation` | UniProtKB P04637 功能注释 |
+| ESR1 · P03372 · 4 条记录，2 项空白 | 11SD 对照 P03372 · 30/30 · 1.0000 | 11SD · X-RAY DIFFRACTION · P03372 581-595，15 个残基，分布于两条链 · AF-P03372-F1，66.44 | 11SD · 3845/93 行 · 0 个异常值 · 0 次碰撞 | 无，`no-affinity-record` | 无，`no-catalysis-annotation` | UniProtKB P03372 功能注释 |
+| ABCD1 · P08183 · 5 条记录，1 项空白 | 6C0V 对照 P08183 · 1278/1280 · 0.9984 · A 链第 556 和 1201 位，沉积序列为 Q，参考序列为 E | 6C0V · ELECTRON MICROSCOPY · P08183 1-1280，1280 个残基 · AF-P08183-F1，84.56 | 6C0V · 8976/8912 行 · 0 个异常值 · 0 次碰撞 | 无，`no-affinity-record` | P08183 · 7 条注释 · 7.6.2.2 和 7.6.2.1 · ATP + H2O + xenobioticSide 1 = ADP + phosphate + xenobioticSide 2. | UniProtKB P08183 功能注释 |
+
+六个实体与六项目标构成 36 个单元格。其中 31 个单元格有记录，5 个为空。按目标统计，有记录的实体数分别为序列恢复 6、折叠 6、结构合理性 6、结合 3、催化 4、功能 6。EGFR 和 ESR1 的声明结构各跨两条链，因此评估位数可能多于单条链的残基跨度。DHFR 的结构审计发现一对相距 1.92 angstrom 的原子，位于 NADPH 辅因子，而非受检实体。ABCD1 登录号有 7 条催化活性注释和 2 个不同的目录编号。
+
+## 空白单元格
+
+DHFR 的结合单元格因 `no-affinity-record` 而为空。亲和力档案没有任何一行命名该目标的结构，声明结构 1BOZ 也没有结合组分。ESR1 同样没有实测亲和力记录，尽管 11SD 带有 A1DAI。ABCD1 也没有实测亲和力记录，尽管 6C0V 带有 ATP 和 MG。这些组分都不能把空白单元格变成测量。TP53 和 ESR1 的催化单元格因 `no-catalysis-annotation` 而为空，它们的登录号既没有催化活性注释，也没有酶目录编号。空白单元格描述的是对指定来源的这次读取，并不能证明其他地方不存在此类证据。
+
+## 演算解释与独立练习
+
+ESR1 的审计包含 3845 行坐标，但只有 93 行属于受检实体。按照预先声明的阈值，0 次碰撞描述的是整个受审计条目，包括条目中的其他材料。不能据此单独认定文件描绘的折叠正确。
+
+练习。一份报告把 6C0V 中的 ATP 组分视为 ABCD1 有实测结合值的证据。指出填补结合单元格实际需要什么记录，并说明目前该单元格的状态。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+结合单元格需要一条带有实测亲和力值的 SKEMPI 2.0 记录，而且结构档案本身要把记录所指结构关联到 P08183。读取的快照中没有找到这种记录。该单元格仍因 `no-affinity-record` 而为空，6C0V 中的组分不是实测亲和力。
+
+</details>
+
+## 重新计算结果
+
+下载步骤一次性收集协议声明的公共记录，并在读取亲和力快照前校验其字节长度。再次运行时会复用缓存。检查器先展示各项目标的记录或缺失原因，再把重新读取的结果与已提交摘要比对。导出步骤在成功读取后写入并覆盖现有摘要。最后一条命令检查实验协议和分析。亲和力快照保存在缓存的 `skempi` 子目录。请从仓库根目录依次运行以下命令。
+
+```bash
+.venv/bin/python labs/objective_ladder/run_lab.py download
+.venv/bin/python labs/objective_ladder/inspect_objective_ladder.py show
+.venv/bin/python labs/objective_ladder/inspect_objective_ladder.py check
+.venv/bin/python labs/objective_ladder/export_summary.py
+.venv/bin/python -m pytest labs/tests/objective_ladder -q
+```
+
+公开的 LiteFold 镜像大小为 6148969 字节，包含 7085 行。每次运行均校验字节长度。下载首次需要网络，其余命令读取本地缓存。
+
+## 材料无法证明的内容
+
+这是对指定日期的公共记录的读取，不是预测或评分练习。实验不预测或评分任何数值，也不对受检实体排名。一项目标有记录不能替代另一项目标的证据。尚未观察到读者学习结果，因此可运行的测试不能证明学习成效。这次读取描述的是 2026-10-22 可用的记录，不保证以后查询档案时得到相同内容。
+
+## 来源
+
+| 来源 | 路径与读取材料 | 许可 | 读取日期 |
+| --- | --- | --- | --- |
+| UniProtKB | `https://rest.uniprot.org/uniprotkb/{accession}.json` · 序列、催化活性与功能注释 | CC BY 4.0 | 2026-10-22 |
+| RCSB Protein Data Bank | `https://data.rcsb.org/rest/v1/core/entry/{entry_id}` 和 `https://search.rcsb.org/rcsbsearch/v2/query` · 结构、组分、坐标与参考序列比对 | CC0 1.0 | 2026-10-22 |
+| AlphaFold Protein Structure Database | `https://alphafold.ebi.ac.uk/api/prediction/{accession}` · 模型条目、日期与全局指标 | CC BY 4.0 | 2026-10-22 |
+| SKEMPI 2.0 | 上游表格的 [LiteFold 镜像文件](https://huggingface.co/datasets/LiteFold/SKEMPI2/resolve/main/tables/labeled_skempi2_skempi_v2.csv.jsonl) · 实测亲和力行 | 根据[上游条款](https://life.bsc.es/pid/skempi2/info/terms)使用 CC BY 4.0 | 2026-10-22 |
+
+再分发源材料或派生材料时，应注明 SKEMPI 2.0 和 Barcelona Supercomputing Center。AlphaFold Protein Structure Database 的数据依 CC BY 4.0 可用于学术和商业用途，EMBL-EBI 要求注明来源。其 Atlas 记录为 `db-alphafold-db`。原创导读文字采用 CC BY 4.0，原创实验代码采用 Apache-2.0。Last reviewed: 2026-10-22.

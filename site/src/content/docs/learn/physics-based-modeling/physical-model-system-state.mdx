@@ -1,0 +1,125 @@
+---
+title: Physical model and system state
+description: Build and audit an energy-only molecular-state baseline without confusing correlated trajectory frames for independent systems.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import Rmd17DevelopmentPanel from "../../../../components/Rmd17DevelopmentPanel.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="physics-based-modeling/physical-model-system-state" />
+
+**A molecular energy model predicts a declared state, not “a molecule” in the abstract.** A state here is a named molecular system with atomic identities and one Cartesian geometry. This boundary makes every input, split, baseline, and claim inspectable. It is not a force-field benchmark, a proof of cross-system generalisation, or a replacement for an experimental decision.
+
+<Rmd17DevelopmentPanel />
+
+The panel preserves the reviewed development artifact. The companion lab reports the [completed benzene and uracil evaluations](/labs/rmd17-system-state-energy-baselines/#rmd17-locked-title) separately. The text below explains what both evidence stages can and cannot establish.
+
+<ScrollableRegions />
+
+## Prerequisites
+
+Review [Docking through FEP](/learn/physics-based-modeling/docking-to-fep/), [data contracts](/learn/data-governance/data-contracts/), and [scientific machine learning](/learn/machine-learning/scientific-computing/) first. You should be able to distinguish an input array from a target, a validation choice from an evaluation result, and repeated measurements from independent units.
+
+## Learning goals
+
+After this lesson, you should be able to:
+
+1. specify a molecular-state row, its units, and the arrays allowed to enter an energy-only baseline;
+2. reproduce stable original-index selection without mistaking order for independence;
+3. construct a translation- and rotation-invariant element-pair distance representation and name what it discards;
+4. audit train-only preprocessing and shared validation selection across molecular systems; and
+5. distinguish the two development systems from the two later evaluation systems, without treating correlated frames as independent replicates.
+
+## State anatomy and observed variables
+
+The source is the [revised MD17 (rMD17) Figshare version-4 record](https://doi.org/10.6084/m9.figshare.12672038.v4), updated 2026-02-28. It contains trajectories for named molecular systems. A frame is a repeated configuration within one system; it is not a new molecule and is not an independent generalisation unit.
+
+| Role                   | Observed variable                      | Interpretation                                                      |
+| ---------------------- | -------------------------------------- | ------------------------------------------------------------------- |
+| System identity        | Named molecule                         | Defines the independent molecular-system context.                   |
+| Atomic composition     | `nuclear_charges`                      | Identifies element types and available pair channels.               |
+| Geometry               | `coords`                               | Cartesian configuration for one frame.                              |
+| Energy target          | `energies`                             | The only target used by the baseline.                               |
+| Validation-only arrays | `forces`, `old_energies`, `old_forces` | Checked for schema integrity but never used as features or targets. |
+| Traceability           | `old_indices`                          | Preserves the source trajectory ordering used for sampling.         |
+
+The four-system protocol names ethanol, malonaldehyde, benzene, and uracil. Only ethanol and malonaldehyde are development systems. Benzene and uracil completed their paired evaluation after alpha was frozen. The source labels are public, so the one-time boundary was procedural rather than secrecy-based.
+
+## NPZ data and unit contract
+
+Each real development input has 100,000 frames. The NPZ contract requires `nuclear_charges`, `coords`, `energies`, `forces`, `old_indices`, `old_energies`, and `old_forces`. Coordinates are in Angstrom, energies in kcal/mol, and forces in kcal/mol/Angstrom. Shapes must agree: one energy and one force slice correspond to each coordinate frame, while `nuclear_charges` describes atoms shared by every frame of that system.
+
+The model boundary is deliberately energy-only. Features may use only `nuclear_charges` and `coords`; `forces`, `old_energies`, and `old_forces` are not auxiliary supervision, regularisers, normalisation inputs, or post hoc labels. If a pipeline consumes a prohibited array, the teaching comparison has changed and its recorded result no longer applies.
+
+The version-4 record declares CC0 for dataset files and record metadata. That evidence does not transfer a licence to this lesson, software, a model, or any separate asset. It also does not establish access or openness claims for training code, weights, architecture, data preparation, or evaluation code.
+
+## Original-index ordering and nested dependence
+
+The protocol applies a stable ascending sort to `old_indices`, then selects 1,000 ranks using `rint(linspace(0, n_frames - 1, 1000)).astype(int64)`. In that ordered sample, the first 600 frames are training rows, the next 200 are validation rows, and the final 200 are evaluation rows: a 600/200/200 split. This gives a deterministic, inspectable order before the protocol rejects non-increasing selected indices. It does not make frames independent or erase time correlation.
+
+The five source-provided train/test CSV pairs are not used in this lesson. The source record says that they contain split indices, but it does not identify those CSV indices as a temporal order, explain their mapping to the version-4 NPZ rows, or make them independent molecular-system units. They therefore cannot silently replace the declared `old_indices` procedure.
+
+Molecular-dynamics frames are time-correlated and nested in a molecular system. The system—not a frame, bin, seed, or repeated fit—is the relevant independent unit for a cross-system claim. The current development observation spans n=2 systems. Therefore do not pool frame residuals into a confidence interval, and do not turn two within-system results into a population inference.
+
+The public summary reports only aggregate partition counts and ordering/gap diagnostics. It does not publish membership arrays, source positions, targets, or predictions. That redaction prevents a teaching page from becoming a second uncontrolled evidence store.
+
+## Invariant representation and its limits
+
+For each system, enumerate lexicographic unordered element-pair channels. For each frame, calculate distances for atom pairs in a channel, bin them into 100 bins from 0 to 10 Angstrom plus one overflow bin, and normalise by the fixed atom-pair count for that channel. Ethanol has five channels and 505 dimensions; malonaldehyde has six channels and 606 dimensions. The difference is expected because the systems do not have the same element-pair composition.
+
+Pair distances make this representation invariant to translation, rotation, and same-element permutation. Those invariances are appropriate for a scalar energy at a fixed geometry. They do not make the representation continuous at bin edges, equivariant for forces, aware of atom identities beyond declared element pairs, or suitable as a force-field representation. The overflow bin also compresses all distances beyond the stated range into one feature. Those are scientific choices, not harmless implementation details.
+
+## Train-only fitting and shared alpha selection
+
+The control is the per-system mean of training energies. The learned comparison fits a separate model within each molecular system: `StandardScaler` is fit on training features only, the target is centred by its training-energy mean, and Ridge uses the frozen feature matrix. Validation and evaluation frames never fit a scaler, target centre, feature statistic, or coefficient.
+
+Regularisation is selected once across the two development systems. For each frozen alpha, compute one validation MAE per system, take their median, then choose the best value; exact ties choose larger alpha. This is not two separate hyperparameter searches. It is a shared selection rule applied before the evaluation rows are inspected.
+
+## System-level evaluation and the development boundary
+
+Report MAE, RMSE, and target range separately for each system, then describe the median of the two system-level MAEs. The reviewed artifact shows a lower Ridge error than the train-mean control for each development system. That is a development observation under this representation and split. It is not a SOTA claim, proof that the feature is a physical potential, or evidence of generalisation to benzene, uracil, another molecule, another trajectory, or an experimental endpoint.
+
+Benzene and uracil now have completed metrics in the companion lab. Ridge improves on the training-mean control in each system, but it was fitted on that system's own training frames. This is not zero-shot transfer. Both results remain descriptive; the original run did not retain per-frame Ridge predictions, so post-run checks recomputed only the control scores and target ranges. Do not retune the model or replace that limitation with a claim of independent full recomputation.
+
+## Worked lab route and commands
+
+The [rMD17 system-state energy-baselines worked-lab route](/labs/rmd17-system-state-energy-baselines/) is the companion interface for this lesson. It retains development evidence, completed evaluation scores, worked answers and assessment criteria separately.
+
+For reproduction in a fresh workspace, the development workflow starts at the repository root:
+
+```bash
+uv run python labs/rmd17_system_state/run_lab.py validate-protocol
+uv run python labs/rmd17_system_state/run_lab.py download-development
+uv run python labs/rmd17_system_state/run_lab.py pretest
+```
+
+The first command checks the frozen contract. The second retrieves only the two development systems. The third runs the development pretest and writes the aggregate public summary. None authorises or starts the paired locked action. The completed author workspace refuses a new pretest or evaluation; inspect its delivered summaries instead. Do not replace the declared route with a shortcut that changes inputs, partitions, alpha selection or the public-summary boundary.
+
+## Exercises
+
+1. List which variables would change under a rigid translation, an atom-index permutation, and a new conformer. State whether the histogram should remain unchanged in each case.
+2. Sketch a dependency graph from frames to molecular system. Mark which nodes are eligible to affect preprocessing, alpha selection, and final claims.
+3. Propose one representation change that might improve a force task. Explain why that would define a different teaching protocol rather than a fair extension of this energy-only result.
+4. Given two exactly equal median validation scores, apply the frozen tie rule without reading evaluation metrics.
+
+## Failure gates and limitations
+
+Stop rather than reinterpret the result if any of the following happens:
+
+- NPZ keys, shapes, units, or finiteness checks fail;
+- a prohibited force or old-label array reaches a feature or target path;
+- selected ranks, partition counts, or global original-index ordering differ from the frozen contract;
+- a scaler, target centre, or Ridge coefficient sees validation or evaluation rows during fitting;
+- alpha selection differs across systems or is changed after evaluation rows are observed; or
+- a report pools frames, emits a confidence interval over frames, or calls the n=2 development result cross-system generalisation.
+
+The pair-distance histogram is a deliberately inexpensive invariant baseline. It is discontinuous at bin boundaries, loses angular and higher-order structure, and does not model force equivariance. The time-ordered split is a useful leakage audit, not a substitute for a molecular-system held-out study.
+
+## Sources and attribution
+
+- Revised MD17 dataset rMD17, [Figshare article 12672038, version 4](https://doi.org/10.6084/m9.figshare.12672038.v4), updated 2026-02-28; CC0 applies to the record's dataset files and metadata as described above.
+- Anders S. Christensen and O. Anatole von Lilienfeld, [_On the role of gradients for machine learning of molecular energies and forces_](https://doi.org/10.1088/2632-2153/abba6f), arXiv:2007.09593.
+- [MDAnalysis](https://www.mdanalysis.org/) and [OpenMM](https://openmm.org/) are relevant trajectory-analysis and molecular-simulation tools; neither source establishes the rMD17 protocol or the reviewed result.
+
+Last reviewed: 2026-09-08.

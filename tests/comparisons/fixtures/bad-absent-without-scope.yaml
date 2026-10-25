@@ -1,0 +1,29 @@
+id: bad-absent-without-scope
+name: Unscoped absence observation
+provider_class: specialist-reference
+canonical_url: https://example.org/unscoped-absence
+summary: A fixture that does not define where an absence observation was made.
+audiences: [engineers]
+languages: [en]
+metadata_evidence: [overview]
+access:
+  content: { value: open, evidence: [overview] }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: not_applicable, evidence: [overview] }
+licenses: []
+coverage:
+  - topic_id: antibody-design
+    depth: absent
+    evidence: [overview]
+    reviewed_scope: " "
+    note: No antibody-design material was found in the declared review surface.
+evidence:
+  - id: overview
+    url: https://example.org/unscoped-absence
+    title: Specialist reference index
+    observed_scope: Complete public index.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

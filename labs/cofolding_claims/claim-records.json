@@ -1,0 +1,718 @@
+{
+  "source": "site/public/data/resources.v1.json",
+  "source_records": 228,
+  "claim_classes": {
+    "monomer prediction": [
+      "structure-prediction"
+    ],
+    "co-folded complex": [
+      "co-folding"
+    ],
+    "generated pose": [
+      "molecular-docking"
+    ],
+    "pose check": [
+      "pose-validation"
+    ],
+    "affinity estimate": [
+      "affinity-prediction",
+      "drug-target-affinity-prediction"
+    ]
+  },
+  "openness_order": [
+    "inference_code",
+    "training_code",
+    "weights",
+    "architecture",
+    "data_recipe",
+    "training_data",
+    "evaluation_code"
+  ],
+  "records": [
+    {
+      "id": "asset-gnina-models",
+      "name": "GNINA trained models",
+      "kind": "model-asset",
+      "tasks": [
+        "molecular-docking"
+      ],
+      "modalities": [
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "unverified",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "benchmark-dta-distribution-shift",
+      "name": "Beyond Random Splits",
+      "kind": "benchmark",
+      "tasks": [
+        "affinity-prediction",
+        "benchmark-evaluation"
+      ],
+      "modalities": [
+        "small-molecule",
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-24",
+      "openness": {
+        "inference_code": "unverified",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "benchmark-multipardigm-docking",
+      "name": "Multi-Paradigm Docking Benchmark",
+      "kind": "benchmark",
+      "tasks": [
+        "docking",
+        "pose-validation",
+        "benchmark-evaluation"
+      ],
+      "modalities": [
+        "small-molecule",
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-24",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "not_applicable",
+        "weights": "not_applicable",
+        "architecture": "not_applicable",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "available"
+      }
+    },
+    {
+      "id": "benchmark-plabench",
+      "name": "PLABench",
+      "kind": "benchmark",
+      "tasks": [
+        "affinity-prediction",
+        "benchmark-evaluation"
+      ],
+      "modalities": [
+        "small-molecule",
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-24",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "not_applicable",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "available"
+      }
+    },
+    {
+      "id": "benchmark-plinder",
+      "name": "PLINDER",
+      "kind": "benchmark",
+      "tasks": [
+        "affinity-prediction",
+        "benchmark-evaluation",
+        "structure-retrieval"
+      ],
+      "modalities": [
+        "protein-ligand-complex",
+        "protein-pocket"
+      ],
+      "last_verified": "2026-10-24",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "not_applicable",
+        "weights": "not_applicable",
+        "architecture": "not_applicable",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "available"
+      }
+    },
+    {
+      "id": "benchmark-posebench",
+      "name": "PoseBench",
+      "kind": "benchmark",
+      "tasks": [
+        "protein-complex",
+        "pose-validation",
+        "benchmark-evaluation"
+      ],
+      "modalities": [
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-25",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "not_applicable",
+        "weights": "not_applicable",
+        "architecture": "not_applicable",
+        "data_recipe": "available",
+        "training_data": "not_applicable",
+        "evaluation_code": "available"
+      }
+    },
+    {
+      "id": "benchmark-posebusters",
+      "name": "PoseBusters",
+      "kind": "benchmark",
+      "tasks": [
+        "pose-validation"
+      ],
+      "modalities": [
+        "small-molecule",
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "unverified",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "benchmark-protdbench",
+      "name": "ProtDBench",
+      "kind": "benchmark",
+      "tasks": [
+        "protein-generation",
+        "structure-prediction",
+        "benchmark-evaluation"
+      ],
+      "modalities": [
+        "protein",
+        "protein-protein-complex"
+      ],
+      "last_verified": "2026-10-25",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "not_applicable",
+        "weights": "not_applicable",
+        "architecture": "not_applicable",
+        "data_recipe": "available",
+        "training_data": "not_applicable",
+        "evaluation_code": "available"
+      }
+    },
+    {
+      "id": "model-alphafold-2",
+      "name": "AlphaFold 2",
+      "kind": "software",
+      "tasks": [
+        "structure-prediction"
+      ],
+      "modalities": [
+        "protein"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "available",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-alphafold-3-inference",
+      "name": "AlphaFold 3 inference pipeline",
+      "kind": "software",
+      "tasks": [
+        "structure-prediction"
+      ],
+      "modalities": [
+        "biomolecular-complex"
+      ],
+      "last_verified": "2026-09-04",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-aqaffinity",
+      "name": "AQAffinity",
+      "kind": "model",
+      "tasks": [
+        "affinity-prediction",
+        "structure-free-binding-affinity"
+      ],
+      "modalities": [
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "unverified",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-boltz-1",
+      "name": "Boltz-1",
+      "kind": "model",
+      "tasks": [
+        "co-folding"
+      ],
+      "modalities": [
+        "biomolecular-complex"
+      ],
+      "last_verified": "2026-10-21",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-boltz-2",
+      "name": "Boltz-2",
+      "kind": "model",
+      "tasks": [
+        "co-folding",
+        "affinity-prediction"
+      ],
+      "modalities": [
+        "biomolecular-complex"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-chai-1",
+      "name": "Chai-1",
+      "kind": "model",
+      "tasks": [
+        "co-folding"
+      ],
+      "modalities": [
+        "biomolecular-complex"
+      ],
+      "last_verified": "2026-10-21",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-deepdta",
+      "name": "DeepDTA",
+      "kind": "model",
+      "tasks": [
+        "drug-target-affinity-prediction"
+      ],
+      "modalities": [
+        "small-molecule",
+        "protein"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-diffdock",
+      "name": "DiffDock",
+      "kind": "model",
+      "tasks": [
+        "molecular-docking"
+      ],
+      "modalities": [
+        "small-molecule",
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "available"
+      }
+    },
+    {
+      "id": "model-equibind",
+      "name": "EquiBind",
+      "kind": "model",
+      "tasks": [
+        "molecular-docking"
+      ],
+      "modalities": [
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-esm-c",
+      "name": "ESM Cambrian",
+      "kind": "model",
+      "tasks": [
+        "protein-representation-learning",
+        "structure-prediction",
+        "protein-design"
+      ],
+      "modalities": [
+        "protein",
+        "sequence"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-graphdta",
+      "name": "GraphDTA",
+      "kind": "model",
+      "tasks": [
+        "drug-target-affinity-prediction"
+      ],
+      "modalities": [
+        "small-molecule",
+        "protein"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-mattersim",
+      "name": "MatterSim",
+      "kind": "model",
+      "tasks": [
+        "molecular-energy-regression",
+        "force-learning",
+        "molecular-dynamics",
+        "structure-prediction",
+        "model-training"
+      ],
+      "modalities": [
+        "molecular-geometry",
+        "molecular-conformation"
+      ],
+      "last_verified": "2026-10-21",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-openfold",
+      "name": "OpenFold",
+      "kind": "software",
+      "tasks": [
+        "structure-prediction"
+      ],
+      "modalities": [
+        "protein"
+      ],
+      "last_verified": "2026-09-04",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-protenix",
+      "name": "Protenix",
+      "kind": "software",
+      "tasks": [
+        "structure-prediction"
+      ],
+      "modalities": [
+        "biomolecular-complex"
+      ],
+      "last_verified": "2026-10-21",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-ribonannanet",
+      "name": "RibonanzaNet",
+      "kind": "model",
+      "tasks": [
+        "structure-prediction"
+      ],
+      "modalities": [
+        "sequence"
+      ],
+      "last_verified": "2026-10-21",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "unverified",
+        "architecture": "available",
+        "data_recipe": "unverified",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-rna-fm",
+      "name": "RNA-FM",
+      "kind": "model",
+      "tasks": [
+        "molecular-representation-learning",
+        "structure-prediction"
+      ],
+      "modalities": [
+        "sequence"
+      ],
+      "last_verified": "2026-10-21",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "available",
+        "training_data": "available",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "model-rosettafold-all-atom",
+      "name": "RoseTTAFold All-Atom",
+      "kind": "model",
+      "tasks": [
+        "structure-prediction"
+      ],
+      "modalities": [
+        "biomolecular-complex"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "available",
+        "weights": "available",
+        "architecture": "available",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "available"
+      }
+    },
+    {
+      "id": "paper-alphafold-3",
+      "name": "AlphaFold 3 primary article",
+      "kind": "paper",
+      "tasks": [
+        "structure-prediction"
+      ],
+      "modalities": [
+        "biomolecular-complex"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "unverified",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "tool-autodock-vina",
+      "name": "AutoDock Vina",
+      "kind": "software",
+      "tasks": [
+        "molecular-docking"
+      ],
+      "modalities": [
+        "small-molecule",
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "tool-colabfold",
+      "name": "ColabFold",
+      "kind": "software",
+      "tasks": [
+        "structure-prediction"
+      ],
+      "modalities": [
+        "protein"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "available",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "tool-gnina",
+      "name": "GNINA",
+      "kind": "software",
+      "tasks": [
+        "molecular-docking"
+      ],
+      "modalities": [
+        "small-molecule",
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "unverified",
+        "weights": "unverified",
+        "architecture": "unverified",
+        "data_recipe": "unverified",
+        "training_data": "unverified",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "tool-smina",
+      "name": "smina",
+      "kind": "software",
+      "tasks": [
+        "molecular-docking"
+      ],
+      "modalities": [
+        "small-molecule",
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "not_applicable",
+        "weights": "not_applicable",
+        "architecture": "not_applicable",
+        "data_recipe": "not_applicable",
+        "training_data": "not_applicable",
+        "evaluation_code": "unverified"
+      }
+    },
+    {
+      "id": "tool-uni-dock",
+      "name": "Uni-Dock",
+      "kind": "software",
+      "tasks": [
+        "molecular-docking"
+      ],
+      "modalities": [
+        "small-molecule",
+        "protein-ligand-complex"
+      ],
+      "last_verified": "2026-10-23",
+      "openness": {
+        "inference_code": "available",
+        "training_code": "not_applicable",
+        "weights": "not_applicable",
+        "architecture": "not_applicable",
+        "data_recipe": "not_applicable",
+        "training_data": "not_applicable",
+        "evaluation_code": "unverified"
+      }
+    }
+  ]
+}

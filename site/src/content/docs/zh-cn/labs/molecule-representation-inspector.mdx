@@ -1,0 +1,109 @@
+---
+title: 无标签分子表示检查器
+description: 在没有标签或模型拟合的情况下检查规范化、身份丢失、描述符、指纹、图和盐。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../../components/LabDownloads.astro";
+
+英文原文：[Label-free molecule representation inspector](/labs/molecule-representation-inspector/)。
+
+译文更新：2026-09-09。
+
+<ScrollableRegions />
+
+<LabDownloads lab="representation-inspector" />
+
+## 运行之前
+
+模式是可修改的无标签 CPU 练习，不是预测训练。下载上方一种语言的 notebook，在 [Colab](https://colab.research.google.com/) 选择 **File → Upload notebook** 上传，或用本地 Jupyter 打开。七个输入和可见检查代码已内嵌，无需另传辅助文件或克隆仓库。[实践指南](/zh-cn/labs/notebook-guide/)解释执行顺序与保存。使用声明的 Python/RDKit 环境；安装可能需要网络，但不需要下载数据集。Notebook 会新建临时输出目录。可选 CLI 的默认输出为 `tmp/molecule-representations/report.json`，可能覆盖同名文件；保留先前尝试时要选新路径。拟合练习见[学生建模沙箱](/zh-cn/learn/machine-learning/student-modelling-sandbox/)。入口说明更新：2026-09-09。
+
+## 状态与范围
+
+这是一个可执行的、仅 CPU 的表示实验。它将七个编写的 SMILES 示例转换为带版本的 JSON
+报告，并使若干多对一表示映射可见。它不加载活性标签、不训练模型、不创建数据集划分，
+也不报告预测性能。
+
+本练习支持[小分子表示章节](/zh-cn/learn/representations/small-molecule-representations/)。
+它独立于该章节冻结数据契约中描述的已完成预测比较。
+
+## 输入与输出契约
+
+正典输入文件是 `labs/molecule_representations/examples.csv`。每一行包含一个编写的 ID、
+一个 SMILES 字符串，以及该行的教学要点。实验保留行顺序，并在标识符为空、标识符重复、
+SMILES 无效或分子零原子时失败。
+
+JSON 输出记录：
+
+- 已安装的 RDKit 版本和规范化工具包；
+- 规范异构和非异构 SMILES，以及 InChIKey；
+- 分子式、原子和键计数、不连通组分计数以及形式电荷；
+- 已指定和未指定的立体中心计数；
+- 结构具有骨架时的 Bemis–Murcko 骨架；
+- 六个已命名的 2D 描述符；
+- 具有完整记录的 Morgan 配置下的占用位和非零计数特征。
+
+没有字段被解读为实验性质。输出是在一个软件契约下的检查工件。
+
+## 运行实验
+
+有关环境设置和简短的已解练习，请从[你的第一次学习](/zh-cn/learn/foundations/first-session/)开始。
+
+从仓库根目录运行：
+
+```sh
+env UV_CACHE_DIR=.cache/uv uv run python labs/molecule_representations/run_lab.py inspect
+```
+
+默认输出为 `tmp/molecule-representations/report.json`。`tmp/` 目录有意从公开发行版中排除。
+如要在其他位置保留本地副本，请传入 `--output PATH`。
+
+默认 Morgan 配置为半径 2、2,048 位，并启用手性。以下敏感性运行会改变表示，并在其自身输出
+中记录该变化：
+
+```sh
+env UV_CACHE_DIR=.cache/uv uv run python labs/molecule_representations/run_lab.py inspect \
+  --ignore-chirality \
+  --morgan-radius 3 \
+  --morgan-bits 4096 \
+  --output tmp/molecule-representations/sensitivity.json
+```
+
+这份敏感性输出是同七个分子的另一个计算视图。它不是独立样本，也不提供预测质量的证据。
+
+## 预期关系
+
+请检查关系，而不要抄录对版本敏感的数值：
+
+1. `pyridine-kekule` 和 `pyridine-aromatic` 具有不同的输入字符串，但具有相同的 RDKit
+   规范异构 SMILES 和 InChIKey。
+2. `alanine-one` 和 `alanine-two` 保留不同的异构 SMILES 和 InChIKey。它们的非异构
+   规范 SMILES 相同。
+3. `alanine-unspecified` 记录一个未指定立体中心，而不是被悄然指定为任一定义的对映体。
+4. `sodium-acetate` 保持为一条具有两个不连通组分的输入记录。实现不选择片段母体，也不
+   将其进行中和。
+5. 因此，即使另一种明确声明的母体策略可以将 `acetic-acid` 和 `sodium-acetate` 联系
+   起来，它们仍保持为不同的计算对象。
+
+如果在依赖项更新后任何关系失败，请在改变预期值之前检查已安装的 RDKit 版本和发行说明。
+规范字符串的改变可能是实现改变，而不是化学改变。
+
+## 解读限制
+
+- 规范化受工具包和版本约束。它不是通用标准化策略。
+- 分子描述符是计算摘要，不是测得的测定值。
+- 哈希指纹可能碰撞，且不能重建完整图。
+- Bemis–Murcko 骨架是一种分组定义，而不是独立前瞻性化学的证明。
+- 本实验不包含 3D 坐标、构象集合、靶点、测定、环境、合成路线、效力或安全性证据。
+- 本实验不能对表示家族排序。这需要单独冻结的终点、实体集、划分、低成本基线、指标和
+  外部验证路径。
+
+编写的示例是原始的 AIDD Commons 教学输入。RDKit 仍受其自身软件条款约束，而 OpenSMILES
+和 InChI 仍是分别受治理的标准和实现。
+
+## 继续到预测比较
+
+[阅读已完成的 ChEMBL 比较](/zh-cn/labs/chembl-egfr-representation-baselines/#chembl-locked-title)
+以了解表示选择如何与评估集相互作用。阅读已保存的结果不需要下载数据或重新运行评估。
+
+最后审阅：2026-09-08。

@@ -1,0 +1,56 @@
+---
+title: Screening and affinity
+description: Design drug-target interaction and virtual-screening comparisons around the actual experimental decision.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="dti-screening/screening-and-affinity" />
+
+## Foundations
+
+Virtual screening, binding-affinity prediction, pose prediction, and
+repurposing answer different questions. The decision unit must include the
+target state, chemical input, assay condition, and intended action. Benchmarks
+such as [DUD-E](https://dude.docking.org/) and
+[LIT-PCBA](https://drugdesign.unistra.fr/LIT-PCBA/) make specific benchmark
+design choices; they are not natural distributions.
+
+## Practical workflow
+
+Start with an explicit target and assay plan, then use a cheap docking or
+similarity baseline before a learned pose or affinity system. Record decoy
+construction, protein preparation, protonation, and the candidate budget.
+[PoseBusters](https://github.com/maabuu/posebusters) can test pose plausibility,
+not biological activity.
+
+## Evaluation
+
+Separate binder detection from ranking affinity among binders. Check target and
+scaffold overlap, retrospective versus prospective evaluation, and whether a
+pose is chemically reasonable. A generated pose or score must be followed by
+experimental binding and functional feedback.
+
+## Frontier and open questions
+
+Systems such as [DiffDock](https://github.com/gcorso/DiffDock),
+[Uni-Dock](https://github.com/dptech-corp/Uni-Dock), and
+[NeuralPLexer](https://github.com/zrqiao/NeuralPLexer) expose distinct assets
+and protocols; do not merge their reported numbers into one leaderboard.
+
+## What v0.1 does not yet teach
+
+v0.1 does not provide a prospective screening campaign or a claim of clinical
+or biochemical efficacy.
+
+## Core-source path
+
+Inspect [GNINA](https://github.com/gnina/gnina), its separate
+[model-asset repository](https://github.com/gnina/models), and the Atlas record
+for each asset-level evidence gap.
+
+For the screening unit made explicit, with a measured failure to transfer
+between two assays on one target, run
+[read the frozen contract before the model](/labs/chembl-contract-inspection/).
+
+Last reviewed: 2026-09-04.

@@ -1,0 +1,90 @@
+id: model-nequip
+name: NequIP
+kind: model
+summary: NequIP is a code base for building E(3)-equivariant machine-learned interatomic potentials, and it distributes pretrained foundation potentials through the nequip.net model host.
+canonical_url: https://github.com/mir-group/nequip
+identifiers:
+  - scheme: model-weights
+    value: "nequip.net:mir-group/NequIP-OAM-L:0.1"
+    url: https://www.nequip.net/models/mir-group/NequIP-OAM-L:0.1
+  - scheme: release-doi
+    value: "10.5281/zenodo.18775904"
+    url: https://doi.org/10.5281/zenodo.18775904
+  - scheme: paper
+    value: "Fast and Accurate Equivariant Foundation Models for Atomistic Simulation; arXiv:2607.28461"
+    url: https://arxiv.org/abs/2607.28461
+  - scheme: documentation
+    value: "Foundation potentials guide in the NequIP documentation"
+    url: https://raw.githubusercontent.com/mir-group/nequip/main/docs/guide/getting-started/foundation_potentials.md
+stages: [physics-based-modelling, model-development, evaluation]
+modalities: [molecular-geometry, molecular-conformation]
+tasks: [molecular-energy-regression, force-learning, molecular-dynamics, model-training]
+relations:
+  - type: used-by
+    target: model-sevennet
+status: { value: active, evidence: [github-api] }
+access_level: { value: open_source, evidence: [code-license] }
+openness:
+  inference_code: { value: available, evidence: [repository, foundation-doc] }
+  training_code: { value: available, evidence: [repository, foundation-doc] }
+  weights: { value: available, evidence: [model-page, model-artifact] }
+  architecture: { value: available, evidence: [repository, foundation-doc] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified, evidence: [model-page, foundation-doc] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: the NequIP Python package in this repository only. The copyright notice names The President and Fellows of Harvard College (2021) and The NequIP Developers (2025), and the licence requires the notice to be retained in copies. It does not cover the pretrained potentials, which are published separately under CC BY 4.0.
+    evidence: [code-license]
+  - name: CC-BY-4.0
+    scope: the pretrained foundation potential packages listed on nequip.net, including mir-group/NequIP-OAM-L:0.1, whose Zenodo record is DOI 10.5281/zenodo.18775904. The listing carries a single licence field, CC-BY-4.0, with no separate code licence and no further restriction, and the Zenodo record names the Creative Commons Attribution 4.0 International licence, under which reuse and redistribution are allowed on the condition that the creator is appropriately credited.
+    evidence: [model-page, model-artifact]
+evidence:
+  - id: repository
+    url: https://github.com/mir-group/nequip
+    label: NequIP repository
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: foundation-doc
+    url: https://raw.githubusercontent.com/mir-group/nequip/main/docs/guide/getting-started/foundation_potentials.md
+    label: NequIP foundation potentials guide
+    supports: [identifiers, caveats]
+  - id: foundation-paper
+    url: https://arxiv.org/abs/2607.28461
+    label: arXiv abstract page for the NequIP foundation potentials paper
+    supports: [identifiers, caveats]
+  - id: model-page
+    url: https://www.nequip.net/models/mir-group/NequIP-OAM-L:0.1
+    label: nequip.net listing for mir-group/NequIP-OAM-L:0.1
+    supports: [identifiers, caveats]
+  - id: model-artifact
+    url: https://zenodo.org/records/18775904
+    label: Zenodo record 18775904 for the NequIP and Allegro foundation potentials
+    supports: [caveats]
+  - id: omat24-dataset
+    url: https://huggingface.co/datasets/facebook/OMat24
+    label: Meta Open Materials 2024 dataset card on the Hugging Face Hub
+    supports: [caveats]
+  - id: omat24-weights
+    url: https://huggingface.co/facebook/OMAT24
+    label: OMat24 checkpoint collection card on the Hugging Face Hub
+    supports: [caveats]
+  - id: code-license
+    url: https://raw.githubusercontent.com/mir-group/nequip/main/LICENSE
+    label: NequIP licence file
+    supports: []
+  - id: github-api
+    url: https://api.github.com/repos/mir-group/nequip
+    label: GitHub repository metadata for mir-group/nequip
+    supports: []
+  - id: sevennet-readme
+    url: https://raw.githubusercontent.com/MDIL-SNU/SevenNet/main/README.md
+    label: SevenNet README, which states that the SevenNet core model is based on NequIP
+    supports: [relations]
+caveats:
+  - The nequip.net listing gives one licence field, CC-BY-4.0, for the model package and does not separate code terms from weight terms, so the MIT terms recorded here come from the repository licence file alone.
+  - The foundation potentials are pre-trained on OMat24 and fine-tuned on sAlex and MPtrj. The documentation describes sAlex as a subsample of Alexandria, and no opened page states the redistribution terms for that corpus, so the openness of the complete training corpus is unverified.
+  - Two different assets share the OMat24 name. The OMat24 dataset on the Hugging Face Hub is tagged cc-by-4.0, while the OMat24 checkpoint collection published by the same organisation is tagged other and carries a bespoke OMat24 License that incorporates the FAIR Acceptable Use Policy by reference, is non-transferable, and requires a copy of the agreement to be given to third parties. Neither statement covers the sAlex part of the NequIP training corpus.
+  - The documentation cites the foundation potentials paper under the title "Fast and Accurate Foundation Models for Equivariant Machine-Learned Interatomic Potentials", while the arXiv page for the same identifier 2607.28461 gives the title "Fast and Accurate Equivariant Foundation Models for Atomistic Simulation".
+  - The Zenodo record states that the MP models train solely on MPTrj of about 1.5 million frames and are only recommended for benchmarking and not production work, and that the OAM models are pre-trained on OMat24 of about 101 million frames and then fine-tuned on sAlex of about 10.5 million frames and MPTrj.
+acknowledgements: []
+last_verified: "2026-10-21"

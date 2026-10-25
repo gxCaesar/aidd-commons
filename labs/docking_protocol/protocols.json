@@ -1,0 +1,52 @@
+{
+  "schema_version": "aidd-commons.docking-protocol.v1",
+  "artifact_type": "declared-docking-protocols",
+  "authored_on": "2026-09-11",
+  "provenance": "Authored by hand for teaching. No docking program was run, no structure was prepared, and the reported numbers are illustrative values chosen to be plausible in shape. They are not results.",
+  "components": {
+    "search": { "affects_the_number": true, "why": "A different amount of searching finds different poses, so the best score found is a property of the search as much as of the ligand." },
+    "pose_generation": { "affects_the_number": true, "why": "How conformers and protonation states are produced decides what the search is allowed to find." },
+    "scoring": { "affects_the_number": true, "why": "The scoring function defines what the number means. Two functions do not share a scale even when they share units." },
+    "rescoring": { "affects_the_number": true, "why": "A rescored pose carries a number from a second function. Reporting it in the same column as an unrescored score compares two different quantities." },
+    "constraints": { "affects_the_number": true, "why": "A constraint removes poses from consideration, so it changes which pose is best and therefore the reported score." },
+    "decoys": { "affects_the_number": false, "why": "Decoys do not change any single score. They decide what an enrichment figure means, and a protocol without them cannot report one." },
+    "validation": { "affects_the_number": false, "why": "Validation does not change a score. It is the only thing that gives a score evidence of meaning anything, and a protocol without it reports numbers whose behaviour was never checked." }
+  },
+  "comparability_rule": "Two protocols may have their scores compared only when they are identical on every component marked as affecting the number. Shared units are not shared scale.",
+  "protocols": [
+    {
+      "id": "p-baseline",
+      "search": "exhaustiveness 8, box centred on the reference ligand with 5 angstrom padding",
+      "pose_generation": "conformers from the docking program, single protonation state at pH 7.4",
+      "scoring": "function A, reported in kcal per mole",
+      "rescoring": "none",
+      "constraints": "none",
+      "decoys": "property-matched, 30 per active",
+      "validation": "redocking of the reference ligand, RMSD reported",
+      "reported_score_for_reference_ligand": -8.2
+    },
+    {
+      "id": "p-rescored",
+      "search": "exhaustiveness 8, box centred on the reference ligand with 5 angstrom padding",
+      "pose_generation": "conformers from the docking program, single protonation state at pH 7.4",
+      "scoring": "function A, reported in kcal per mole",
+      "rescoring": "function B applied to the top pose, reported in kcal per mole",
+      "constraints": "none",
+      "decoys": "property-matched, 30 per active",
+      "validation": "redocking of the reference ligand, RMSD reported",
+      "reported_score_for_reference_ligand": -10.7
+    },
+    {
+      "id": "p-constrained",
+      "search": "exhaustiveness 32, box centred on the reference ligand with 5 angstrom padding",
+      "pose_generation": "conformers from the docking program, single protonation state at pH 7.4",
+      "scoring": "function A, reported in kcal per mole",
+      "rescoring": "none",
+      "constraints": "hydrogen bond to the hinge required",
+      "decoys": "none",
+      "validation": "none",
+      "reported_score_for_reference_ligand": -9.1
+    }
+  ],
+  "what_a_score_is_not": "A reported docking score is the best number a particular search found under a particular scoring function with particular constraints. It is not a binding free energy, not a prediction of activity, and not comparable to a number produced by a different protocol."
+}

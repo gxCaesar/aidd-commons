@@ -1,0 +1,89 @@
+---
+import summary from "../../../labs/pool_budget/real-summary.json";
+
+const percent = (value: number) => `${(100 * value).toFixed(2)}%`;
+const download = `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(summary, null, 2))}`;
+---
+
+<section class="real-pool-panel" aria-labelledby="real-campaign-title">
+  <h2 id="real-campaign-title">Real ChEMBL campaign results</h2>
+  <p>Completed {summary.completed_on}. Two retrospective assay replays with fixed
+    Morgan Ridge alpha=1; these are observed assay scores, not the artificial
+    scores in the synthetic calculator.</p>
+  <p><strong>MaxMin recovered fewer top-decile targets than every fixed random
+    policy instance in both assays, with lower recovery AUC.</strong> Greater
+    structural diversity did not imply better target recovery in this exercise.
+    Final evaluation MAE did not consistently favor MaxMin.</p>
+  {Object.entries(summary.assays).map(([id, assay]) => (
+    <section aria-labelledby={`real-${id}`}>
+      <h3 id={`real-${id}`}>{id}</h3>
+      <p>Initial / pool / evaluation: {assay.partitions.initial.parents} / {assay.partitions.pool.parents} / {assay.partitions.evaluation.parents} parents;
+        {" "}{assay.partitions.initial.groups} / {assay.partitions.pool.groups} / {assay.partitions.evaluation.groups} scaffold groups.</p>
+      <p>Four batches of {assay.budget.batch_size} acquire {assay.budget.acquired_count} of {assay.budget.original_pool_parent_count} original-pool parents
+        ({percent(assay.budget.actual_budget_fraction)}).
+        Recovery denominator: {assay.budget.top_decile_size} top-decile pool targets.
+        MAE denominator: {assay.partitions.evaluation.parents} evaluation parents.</p>
+      {assay.partitions.pool.groups === 1 && <p class="limitation">
+        Its original pool contains one scaffold group. Every policy covers that
+        group after the first batch, so scaffold coverage cannot distinguish the policies.
+        The frozen partition was not changed after this observation.
+      </p>}
+      <div class="table-scroll" role="region" aria-label={`${id} final campaign scores`} tabindex="0">
+        <table>
+          <caption>Final checkpoint: {assay.budget.acquired_count} acquired parents; every policy shown</caption>
+          <thead><tr>
+            <th scope="col">Policy</th><th scope="col">Recovery AUC</th>
+            <th scope="col">Final recovery</th><th scope="col">Scaffold coverage</th>
+            <th scope="col">Evaluation MAE</th>
+          </tr></thead>
+          <tbody>{assay.policies.map(policy => <tr>
+            <th scope="row">{policy.name}</th>
+            <td title={String(policy.normalized_auc)}>{policy.normalized_auc.toFixed(8)}</td>
+            <td title={String(policy.recovery[4])}>{percent(policy.recovery[4])}</td>
+            <td title={String(policy.scaffold_fraction[4])}>{percent(policy.scaffold_fraction[4])}</td>
+            <td title={String(policy.evaluation_mae[4])}>{policy.evaluation_mae[4].toFixed(6)}</td>
+          </tr>)}</tbody>
+        </table>
+      </div>
+      <details>
+        <summary>All checkpoints for {id}</summary>
+        <div class="table-scroll" role="region" aria-label={`${id} all checkpoint scores`} tabindex="0">
+          <table>
+            <caption>Five fixed checkpoints per policy; no omitted seeds or rounds</caption>
+            <thead><tr>
+              <th scope="col">Policy</th><th scope="col">Acquired parents</th>
+              <th scope="col">Recovery</th><th scope="col">Scaffold coverage</th>
+              <th scope="col">Evaluation MAE</th>
+            </tr></thead>
+            <tbody>{assay.policies.flatMap(policy => assay.budget.checkpoints.map((count, round) => <tr>
+              <th scope="row">{policy.name}</th><td>{count}</td>
+              <td title={String(policy.recovery[round])}>{percent(policy.recovery[round])}</td>
+              <td title={String(policy.scaffold_fraction[round])}>{percent(policy.scaffold_fraction[round])}</td>
+              <td title={String(policy.evaluation_mae[round])}>{policy.evaluation_mae[round].toFixed(6)}</td>
+            </tr>))}</tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  ))}
+  <p>Recovery AUC integrates recovery at the declared acquired-count checkpoints,
+    divided by the final acquired count; it is not ROC AUC. Scaffold coverage
+    divides acquired groups by the original pool's groups. Initial labels are
+    shared sunk costs, excluded from the incremental acquisition budget.</p>
+  <ul>{summary.interpretation.map(note => <li>{note}</li>)}</ul>
+  <p>Tables round for readability. <a href={download} download="pool-budget-real-summary.json">Download all aggregate scores (JSON)</a>
+    {" "}for full precision. No compound identities, labels, predictions, or
+    acquisition memberships are included.</p>
+</section>
+
+<style>
+  .real-pool-panel { min-width: 0; padding: 1rem; margin-block: 2rem; border: 1px solid var(--sl-color-gray-4); border-radius: .6rem; }
+  .real-pool-panel section { min-width: 0; margin-block: 1.5rem; }
+  .table-scroll { max-width: 100%; overflow-x: auto; }
+  table { display: table; overflow: visible; width: 100%; font-variant-numeric: tabular-nums; }
+  th, td { padding: .5rem; white-space: nowrap; }
+  caption { text-align: left; white-space: normal; }
+  details { margin-top: .75rem; }
+  summary { cursor: pointer; padding-block: .5rem; }
+  .limitation { padding: .75rem; border-left: 3px solid var(--sl-color-text-accent); background: var(--sl-color-gray-6); }
+</style>

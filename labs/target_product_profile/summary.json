@@ -1,0 +1,190 @@
+{
+  "schema_version": "aidd-commons.target-product-profile-summary.v1",
+  "protocol_id": "chembl37-target-product-profile-v1",
+  "computed_on": "2026-10-23",
+  "software": {
+    "aidd_commons_labs": "0.2.0rc1",
+    "python": "3.11.15",
+    "numpy": "2.4.6",
+    "rdkit": "2025.09.6"
+  },
+  "profile": {
+    "intended_population": "Illustrative adults with advanced solid tumours",
+    "intended_route": "oral",
+    "requirements": [
+      {
+        "id": "response_ic50",
+        "kind": "gate",
+        "family": "efficacy",
+        "measurement": "IC50 response-potency point in each admitted assay and document",
+        "selector": {
+          "endpoint_type": "IC50"
+        },
+        "comparison": "all_lte",
+        "threshold": 1000,
+        "unit": "nM"
+      },
+      {
+        "id": "human_microsome_clearance",
+        "kind": "gate",
+        "family": "exposure",
+        "measurement": "Intrinsic clearance in human liver microsomes",
+        "selector": {
+          "assay_system": "Human liver microsomes"
+        },
+        "comparison": "all_lte",
+        "threshold": 50,
+        "unit": "mL.min-1.g-1"
+      },
+      {
+        "id": "cyp3a4_inhibition",
+        "kind": "gate",
+        "family": "interaction",
+        "measurement": "CYP3A4 inhibition potency",
+        "selector": {
+          "target": "CYP3A4"
+        },
+        "comparison": "all_lte",
+        "threshold": 5,
+        "unit": "pChEMBL (dimensionless)"
+      },
+      {
+        "id": "rat_hepatocyte_clearance",
+        "kind": "preference",
+        "family": "exposure",
+        "measurement": "Intrinsic clearance in rat hepatocytes",
+        "selector": {
+          "assay_system": "Rat hepatocytes"
+        },
+        "comparison": "all_lte",
+        "threshold": 30,
+        "unit": "uL.min-1.(10^6cells)-1"
+      },
+      {
+        "id": "cyp2d6_inhibition",
+        "kind": "preference",
+        "family": "interaction",
+        "measurement": "CYP2D6 inhibition potency",
+        "selector": {
+          "target": "CYP2D6"
+        },
+        "comparison": "all_lte",
+        "threshold": 5,
+        "unit": "pChEMBL (dimensionless)"
+      },
+      {
+        "id": "clinical_response",
+        "kind": "gate",
+        "family": "clinical_efficacy",
+        "measurement": "Objective response rate in the intended population",
+        "selector": null,
+        "comparison": "all_gte",
+        "threshold": 30,
+        "unit": "%"
+      },
+      {
+        "id": "immunogenicity",
+        "kind": "preference",
+        "family": "immunogenicity",
+        "measurement": "Treatment-emergent anti-drug antibody incidence",
+        "selector": null,
+        "comparison": "all_lte",
+        "threshold": 5,
+        "unit": "%"
+      }
+    ]
+  },
+  "counts": {
+    "cohort_compound_count": 58,
+    "contradicted_compound_count": 21,
+    "no_observed_gate_failure_count": 37,
+    "profile_satisfying_compound_count": 0,
+    "source_union_compound_count": 7908,
+    "single_family_excluded_count": 7850
+  },
+  "per_gate": {
+    "response_ic50": {
+      "pass": 0,
+      "fail": 1,
+      "unmeasured": 57,
+      "failing_parent_ids": [
+        "CHEMBL1144"
+      ]
+    },
+    "human_microsome_clearance": {
+      "pass": 24,
+      "fail": 5,
+      "unmeasured": 29,
+      "failing_parent_ids": [
+        "CHEMBL1276308",
+        "CHEMBL17157",
+        "CHEMBL205807",
+        "CHEMBL296419",
+        "CHEMBL6966"
+      ]
+    },
+    "cyp3a4_inhibition": {
+      "pass": 19,
+      "fail": 20,
+      "unmeasured": 19,
+      "failing_parent_ids": [
+        "CHEMBL1073",
+        "CHEMBL114",
+        "CHEMBL1269858",
+        "CHEMBL1276308",
+        "CHEMBL17157",
+        "CHEMBL1829763",
+        "CHEMBL1951444",
+        "CHEMBL1963249",
+        "CHEMBL205807",
+        "CHEMBL2070137",
+        "CHEMBL212521",
+        "CHEMBL254328",
+        "CHEMBL29609",
+        "CHEMBL296419",
+        "CHEMBL397983",
+        "CHEMBL413",
+        "CHEMBL575448",
+        "CHEMBL655",
+        "CHEMBL6966",
+        "CHEMBL84"
+      ]
+    },
+    "clinical_response": {
+      "pass": 0,
+      "fail": 0,
+      "unmeasured": 58,
+      "failing_parent_ids": []
+    }
+  },
+  "per_preference": {
+    "rat_hepatocyte_clearance": {
+      "met": 15,
+      "miss": 12,
+      "unmeasured": 31
+    },
+    "cyp2d6_inhibition": {
+      "met": 11,
+      "miss": 19,
+      "unmeasured": 28
+    },
+    "immunogenicity": {
+      "met": 0,
+      "miss": 0,
+      "unmeasured": 58
+    }
+  },
+  "unmeasured_requirements": [
+    "clinical_response",
+    "immunogenicity"
+  ],
+  "satisfying_parent_ids": [],
+  "no_contradictions_note": null,
+  "boundary_statement": "This illustrative profile judges only admitted in vitro response potency, intrinsic clearance and CYP inhibition measurements in the joined cohort. These are not clinical efficacy, systemic exposure, clinical safety or development-candidate evidence. Clinical efficacy and immunogenicity remain unmeasured. Microsome clearance per gram of protein and hepatocyte clearance per million cells are never divided.",
+  "rules": {
+    "gate_failure": "Any measured mandatory gate failure excludes a parent from the profile-satisfying set.",
+    "preference_miss": "A missed preference is reported separately and does not exclude a parent.",
+    "unmeasured": "A requirement without a matching measurement is unmeasured, never passed or satisfied.",
+    "satisfaction": "Only a parent passing every mandatory gate is profile-satisfying."
+  }
+}

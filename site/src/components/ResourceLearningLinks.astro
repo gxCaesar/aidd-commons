@@ -1,0 +1,21 @@
+---
+import { parse } from "yaml";
+import type { Curriculum } from "../../../scripts/curriculum/curriculum.js";
+import source from "../../../catalog/curriculum/tracks.yaml?raw";
+
+interface Props { resourceId: string; }
+const { resourceId } = Astro.props;
+const curriculum = parse(source) as Curriculum;
+const lessons = curriculum.tracks.flatMap((track) => track.lessons
+  .filter((lesson) => lesson.type !== "core-source-path" && lesson.source_ids.includes(resourceId))
+  .map((lesson) => ({ ...lesson, path: `${track.id}/${lesson.id}` })));
+---
+
+{lessons.length > 0 && <section data-resource-learning aria-labelledby="learning-use-title">
+  <h2 id="learning-use-title">Learn with this resource · 相关课程</h2>
+  <p>Registered chapter reading, not a claim that this resource has been executed or validated here.</p>
+  <ul>{lessons.map((lesson) => <li>
+    <a href={`/learn/${lesson.path}/`}>{lesson.title}</a>
+    {" · "}<a href={`/zh-cn/learn/${lesson.path}/`}>{lesson.title_zh ?? "中文课程"}</a>
+  </li>)}</ul>
+</section>}

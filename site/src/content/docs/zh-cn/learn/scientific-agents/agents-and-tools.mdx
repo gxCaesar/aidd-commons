@@ -1,0 +1,49 @@
+---
+title: 科学智能体与工具
+description: 用其证据、行动和审查点约束语言模型及工具使用工作流。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Scientific agents and tools](/learn/scientific-agents/agents-and-tools/)。
+
+译文更新：2026-09-09。
+
+<LessonProgress lessonId="scientific-agents/agents-and-tools" />
+
+## 基础
+
+科学智能体是一种读取证据、调用有边界的工具，并提出或执行指定行动的工作流。其输出必须
+标识来源、转换、工具结果，以及将验证它的人类或实验决策。
+
+## 实践工作流
+
+定义只读和可写工具边界、允许的来源、输入和输出模式、恢复行为以及人工审查关口。将
+生成的解释视为假设。[ChemCrow](https://github.com/ur-whitelab/chemcrow-public) 展示了
+面向化学的工具使用实现，而非科学可靠性的通用证明。
+
+## 评估
+
+针对固定的科学任务、确切的工具环境和独立单位进行评估。测量来源解析、执行正确性、
+错误处理，以及实验或专家审查是否与结果一致。不要将润色过的散文当作已验证的科学结论
+来评分。
+
+## 前沿与开放问题
+
+[BioGPT](https://github.com/microsoft/BioGPT) 等科学语言模型，以及
+[BioNeMo](https://github.com/NVIDIA-BioNeMo/bionemo-recipes) 等领域配方集合，提出了关于
+溯源、工具权限、行动范围和可复现性的问题。这些问题必须在使用它们的工作流中得到评估。
+
+## v0.1 尚未教授的内容
+
+v0.1 不授权自主实验室执行，不提供通用智能体基准，也不将工具轨迹等同于实验验证。
+
+## 核心来源路径
+
+阅读 [ChemCrow](https://github.com/ur-whitelab/chemcrow-public)，然后按照项目所需的证据和
+行动契约检查其工具边界。
+
+继续读[选择科学智能体资源与评测](/zh-cn/learn/scientific-agents/agent-resource-guide/)，
+区分文档问答、工具调度与计算生物学评测。其构造案例将答案正确与执行记录分开检查。
+
+最后审阅：2026-09-09（资源链接）。

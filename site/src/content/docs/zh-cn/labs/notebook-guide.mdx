@@ -1,0 +1,148 @@
+---
+title: Notebook 实践路线
+description: 练习分子表示、合成数据拟合、实测 logD 与 PaperQA 来源核查，理解执行和保存边界。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+import NotebookGuideTables from "../../../../components/NotebookGuideTables.astro";
+
+<ScrollableRegions />
+<NotebookGuideTables />
+
+英文原文：[Notebook practice route](/labs/notebook-guide/)。
+
+这是现有教程的实践路线，不代替[核心与专题课程地图](/zh-cn/learn/foundations/curriculum-map/)。
+先读每课的科学问题，再用 notebook 检查机制。下列四项练习的默认模式不需要 GPU、API key
+或克隆仓库；PaperQA 可选实时推理另需准备模型服务。选择英文或中文即可，同一对 notebook
+执行相同代码。完成运行得到的是工作记录，
+不等于已经掌握内容。
+
+## 选择下一项练习
+
+| 顺序与 notebook                                                                 | 要学会什么                                 | 输入与依赖                                                | 保存并解释                                                  |
+| ------------------------------------------------------------------------------- | ------------------------------------------ | --------------------------------------------------------- | ----------------------------------------------------------- |
+| 1. [分子表示检查器](/zh-cn/labs/molecule-representation-inspector/)             | 字符串、标识符、描述符和指纹保留哪些区别？ | 内嵌七个教学结构；RDKit；无标签、无需下载数据、不拟合     | 检查 JSON；指出字符串别名、丢失的立体化学区别和保留的盐组分 |
+| 2. [合成数据建模沙箱](/zh-cn/learn/machine-learning/student-modelling-sandbox/) | 拟合、验证选参和测试误差如何连接？         | 十个虚构实体；Python 标准库和 notebook 界面；无需下载数据 | 模型报告和图；解释拟合模型为何可能输给常数                  |
+| 3. [亲脂性训练](/zh-cn/labs/lipophilicity-notebook/)                            | 分子与实测 logD 如何进入同样的信息流程？   | 公开 4,200 行 CSV，约 0.283 MB；固定科学计算库            | 汇总、划分、预测和图；在这一协议下比较模型                  |
+| 4. [PaperQA 来源核查](/zh-cn/learn/scientific-agents/agent-resource-guide/) | 引用段落是否支持答案及其限定条件？ | 内嵌两篇带署名文章和五条已保存答案；默认离线 Python，无需模型或 API | 学生报告；区分来源副本与受支持的主张、拒答与不存在的证明 |
+
+前两项是刻意缩小的教学例子，不是实证研究。第三项已完成一次本地 CPU 执行，作者保留了
+Morgan 劣于常数的结果，没有重新调参。第四项读取实际保存的答案，保留扩写部分的引用支持错误，
+并展示拒答证据的局限。PaperQA 双语离线版均已本地执行；批量集成另行跑通，但 notebook
+首次 CPU-only 实时尝试在首篇文档 embedding 时超时，没有产生新答案。随后使用四个模型线程、
+更长超时的执行副本完成了一道题，但这不验证未修改的默认 CPU 时限，也不代表整段回答正确。
+这四对 notebook 都尚未在真实 Colab 运行时验证。
+本地执行成功与云端执行成功是不同检查。
+
+## 打开自己的副本
+
+从练习页下载一个 `.ipynb`。打开 [Google Colab](https://colab.research.google.com/)，登录后选择
+**File → Upload notebook**，保存自己的副本。默认练习使用 CPU 运行时，不需要加速器或挂载 Drive。
+PaperQA 保持 `ENABLE_LOCAL_INFERENCE = False`；Colab 不能通过 `127.0.0.1` 访问你自己电脑上的
+Ollama 服务。
+Colab 的资源并非保证可用，虚拟机也是临时的；断开前单独下载输出文件。分享 notebook 会分享
+其保存的文字、代码与输出，不会连同运行时的其他文件和已安装库一起分享。
+详见 [Colab 官方 FAQ](https://research.google.com/colaboratory/faq.html)。
+
+本地使用时，在 Jupyter 中打开下载的 notebook，选择 Python 3.11 或更新版本的独立内核。
+合成数据练习与 PaperQA 默认来源核查模式不需要额外建模库；两个分子练习在设置单元中声明
+固定依赖，允许安装前先阅读。
+本地 Jupyter 应用本身需要已经安装。若使用源码副本且项目环境已准备好，可运行：
+
+```sh
+uv run jupyter lab labs/student_modelling/student_modelling_tutorial.ipynb
+```
+
+[Jupyter 运行指南](https://docs.jupyter.org/en/latest/running.html)解释本地服务和 notebook 界面。
+执行 notebook 不需要安装网站的 Node.js 依赖。只阅读网页的读者也可以使用各课的例子和答案，
+无需账号或安装。
+
+## 按顺序执行，理解变量状态
+
+先读 Markdown 单元，预测下一步结果，再执行代码。notebook 内核在执行之间保留变量；
+页面上的上下顺序不保证实际执行顺序，重启内核才会清除这些状态。
+见 [Jupyter notebook 文档](https://jupyter-notebook.readthedocs.io/en/stable/notebook.html)。
+
+在**新建的草稿 notebook** 中尝试这个小例子，不要改冻结结果。先运行 A，再运行 B：
+
+```python
+# Cell A
+scale = 2
+```
+
+```python
+# Cell B
+prediction = 3 * scale
+print(prediction)
+```
+
+输出为 `6`。现在把 A 改成 `scale = 4`，但**不执行 A**。此时 B 会输出什么？仍是 `6`，
+因为内核中还是 `scale = 2`。依次运行 A 和 B 后才会输出 `12`。修改文字没有更新变量。
+这个构造例子解释的是旧状态，不是分子模型。
+
+修改练习后，重启内核并从头运行，检查结果是否依赖隐藏状态。设置单元若替换了已加载的库，
+可能要求重启；按提示操作后再继续。不要把这个建议套用到作者的一次性评估命令上。
+
+## 保存能够解释的结果
+
+每个可修改 notebook 都新建自己的临时输出目录，并打印路径。`.ipynb` 与代码导出的文件
+是不同对象；结束临时会话前要分别下载。把输入选择和修改说明与结果一起保存。单张图不能
+重建选参过程，也不能代替逐条预测。
+
+用下列文件名检查保留的内容：
+
+- 分子表示检查器：`representation-report.json`。
+- 合成数据沙箱：`student_report.json` 和 `fitted_models.svg`。
+- 实测 logD：`summary.json`、`split-membership.csv`、`test-predictions.csv`
+  和 `prediction-errors.png`。
+- PaperQA 离线模式：`student_report.json`。可选实时推理还导出
+  `student_local_answers.json`、`student_network_events.json` 和 `student_execution.json`；
+  它们是新运行的输出，不是已保存的作者答案。
+
+检查器、合成沙箱与 PaperQA 在当前工作目录下创建输出文件夹。logD notebook 使用系统临时目录，
+可能不在 Jupyter 文件浏览器的可见根目录内。本地 Jupyter 用户可用操作系统文件管理器
+打开打印的绝对路径，将文件复制到准备长期保存的位置。Colab 用户在 Files 侧栏中找到
+该路径，再把文件下载到自己的电脑。下载 `.ipynb` 是另一个操作。
+打开保存后的 JSON 与图片，确认能够读取；不要为了检查保存而删除运行时或重新训练。
+
+简短实验记录应回答：
+
+1. 输入、表示和目标分别是什么？没有目标时也要说明。
+2. 哪些记录参与了拟合、选择与最终评分？
+3. 哪个实际比较支持结论？它不能说明什么？
+
+无标签 notebook 应回答“没有目标、拟合或选参”，不要杜撰预测任务。合成数据 notebook
+要注明数字是虚构的；logD notebook 要保留常数基线和负结果。PaperQA 则说明问题、检索来源，
+以及原文实际支持什么；离线练习不拟合预测模型或计算基准分数。修改测试标签是允许的合成
+调试练习，不是改善真实数据 notebook 报告性能的方法。
+
+## 某个单元失败时
+
+| 现象                                   | 首先检查                               | 下一项安全操作                                                                     |
+| -------------------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------- |
+| `NameError`，或结果与刚改的单元矛盾    | 定义变量的单元是否在此内核执行过？     | 重启，从头执行可修改练习                                                           |
+| `ModuleNotFoundError`                  | 设置单元是否在当前内核运行？           | 阅读依赖提示，不要安装另一个名字相似的包                                           |
+| 设置单元要求重启                       | 库是否在版本改变前已经导入？           | 重启，再运行设置和后续单元                                                         |
+| 公开 CSV 下载失败                      | 是请求失败，还是预期的本地文件不存在？ | 保留错误，网络恢复后重试或使用说明中的本地 CSV；不换另一个数据集                   |
+| 断开后文件消失                         | 是否已从临时运行时下载？               | 检查保存的副本，不把 notebook 自动保存当成导出文件备份                             |
+| 重复执行导出单元出现 `FileExistsError` | 该单元是否已经创建过 JSON 或 SVG？     | 保留已有输出；新的合成练习从头执行以创建新文件夹。不要删除旧结果或改掉独占创建模式 |
+| 拟合模型输给常数                       | 导出比较是否使用相同测试记录？         | 报告失败，检查预先说明的诊断，不在该测试集上调参                                   |
+| PaperQA 没有生成新的模型答案 | `ENABLE_LOCAL_INFERENCE` 是否仍为 `False`？ | 这是预期离线模式，阅读已保存答案即可。只有另外准备好文档指定的本地服务后，才开启实时推理 |
+| PaperQA 实时推理在索引或问答阶段超时 | 选择的是哪个 `EXECUTION_PROFILE`？机器是否有 GPU？ | `as-observed` 沿用一次 GPU 运行的上限，首次 CPU 尝试就在 150 秒处停止。先读 notebook 中的配置对照表，再判断 `cpu-extended` 是否适合你的机器。保留超时记录；两个配置都不是经过验证的默认配方，任何配置都不改动模型、问题与检索设置 |
+
+Colab 不可用时，可以走本地 Jupyter 路径，或使用网页中的例子和答案。本教学路线本身不要求
+付费订阅或 GPU。PaperQA 实时推理是另行选择的流程，不是自动安装步骤，也不是已验证的 Colab 路径。
+
+## 接着阅读已完成证据
+
+| 既有材料                                                         | 正确活动                               | 重要边界                                                     |
+| ---------------------------------------------------------------- | -------------------------------------- | ------------------------------------------------------------ |
+| [FreeSolv](/zh-cn/labs/freesolv-honest-baselines/)               | 阅读结果 notebook 和已复核汇总文件     | 不是可修改的 logD 训练 notebook；其目标是水合自由能          |
+| [ChEMBL EGFR](/zh-cn/labs/chembl-egfr-representation-baselines/) | 解释跨测定的表示排名反转               | 共享标签暴露使其不能被称为未触碰的独立确认                   |
+| [rMD17](/zh-cn/labs/rmd17-system-state-energy-baselines/)        | 比较体系内的能量拟合                   | 不把帧合并当成独立体系，也不声称零样本迁移                   |
+| [实验预算](/zh-cn/labs/pool-budget-campaign/)                    | 区分可修改合成模拟器和已完成的测定回放 | 回顾性选择不是前瞻发现；真实回放不是 notebook-first 学生重训 |
+
+这些是不同活动模式，不是可互换的训练按钮。只有确实打算在新位置复现相应协议时，
+才使用实验单独的复现说明；不覆盖其参考结果。
+
+路线更新：2026-09-10。翻译日期：2026-09-10。尚未测量读者理解程度。

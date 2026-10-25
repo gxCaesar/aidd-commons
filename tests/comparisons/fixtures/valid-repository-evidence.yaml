@@ -1,0 +1,34 @@
+id: repository-evidence-system
+name: Repository evidence system
+provider_class: curriculum
+canonical_repository_path: README.md
+summary: A fixture whose public claims resolve to a repository-relative source file.
+audiences: [graduate-students]
+languages: [en]
+metadata_evidence: [lesson]
+access:
+  content: { value: open, evidence: [lesson] }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence is encoded for omitted taxonomy topics.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t01-evidence-claim-unknown
+    depth: explained
+    evidence: [lesson]
+    reviewed_scope: Canonical lesson source in the public repository tree
+    note: The lesson explicitly distinguishes supported claims from unknown fields.
+evidence:
+  - id: lesson
+    repository_path: site/src/content/docs/learn/foundations/getting-started.mdx
+    title: Start with the AIDD pipeline
+    observed_scope: Public lesson source, content access, and evidence-status explanation.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

@@ -1,0 +1,47 @@
+---
+title: 科学机器学习
+description: 建立审查 AIDD 模型所需的数学和实现习惯。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Scientific machine learning](/learn/machine-learning/scientific-computing/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="machine-learning/scientific-computing" />
+
+## 基础
+
+科学 ML 结合预测目标、表示、目标函数、优化程序和不确定性陈述。几何和图方法编码有用的
+归纳偏置，但没有任何架构能修复不匹配的标签或受污染的划分。
+[DGL-LifeSci](https://github.com/awslabs/dgl-lifesci) 和
+[PyTorch Geometric](https://github.com/pyg-team/pytorch_geometric) 提供常见的图学习构建模块。
+
+## 实践工作流
+
+从固定的数据表、仅在训练集上拟合的预处理流水线，以及正则化线性回归、随机森林或简单
+指纹模型等基线开始。记录种子处理、检查点选择和确切的推理输入。只有在低成本基线和
+数据契约稳定后，才加入几何复杂性。
+
+## 评估
+
+报告独立单位，而不仅是行数或优化步数。不要在测试集上选择模型。在相同的划分、预算和
+选择规则下比较模型；否则，更高的分数可能反映的是协议差异而不是方法差异。
+
+## 前沿与开放问题
+
+基础模型和诸如 [BioNeMo Recipes](https://github.com/NVIDIA-BioNeMo/bionemo-recipes) 的
+科学配方集合可以降低实现成本，但其迁移的假设和资产条款必须逐任务审查。
+
+## v0.1 尚未教授的内容
+
+v0.1 不提供几何模型优越性的通用证明，也不提供 GPU 规模的训练课程。
+
+## 核心来源路径
+
+学习 [TorchDrug](https://github.com/DeepGraphLearning/torchdrug)，然后检查
+[Graphormer](https://github.com/microsoft/Graphormer) 中的图架构和
+[DIG](https://github.com/divelab/DIG) 研究库。
+
+最后审阅：2026-09-04。

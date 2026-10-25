@@ -1,0 +1,50 @@
+id: model-kermt
+name: "Contrastive KERMT"
+kind: model
+summary: Graph-transformer foundation model for reusable molecular representations in ADMET and DMPK prediction, pretrained without labels on a single joint objective that combines SMILES reconstruction, in-batch contrastive discrimination and chemistry-specific self-supervision.
+canonical_url: https://huggingface.co/nvidia/NV-KERMT-70M-v2
+identifiers:
+  - scheme: model-weights
+    value: "NV-KERMT-70M-v2 model weights, Hugging Face repository nvidia/NV-KERMT-70M-v2"
+    url: https://huggingface.co/nvidia/NV-KERMT-70M-v2
+  - scheme: code
+    value: "KERMT source repository, NVIDIA-BioNeMo/KERMT"
+    url: https://github.com/NVIDIA-BioNeMo/KERMT
+  - scheme: dataset
+    value: "Pretraining pool named on the model card: an 11M ZINC15 and ChEMBL base pool with Biogen ADMET, ExpansionRX and ChEMBL-MT added"
+    url: https://huggingface.co/nvidia/NV-KERMT-70M-v2
+stages: [design, evaluation]
+modalities: [small-molecule]
+tasks: [admet-prediction, representation-learning, pretraining]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [kermt-card] }
+openness:
+  inference_code: { value: available, evidence: [kermt-card] }
+  training_code: { value: available, evidence: [kermt-card] }
+  weights: { value: available, evidence: [kermt-card] }
+  architecture: { value: available, evidence: [kermt-card] }
+  data_recipe: { value: available, evidence: [kermt-card] }
+  training_data: { value: available, evidence: [kermt-card] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: "Apache-2.0"
+    scope: "The model card states 'The source code is made available under Apache License, Version 2.0.' The grant covers the source code and not the weights."
+    evidence: [kermt-card]
+  - name: "NVIDIA Open Model License"
+    scope: "The model card states 'The model weights are made available under the NVIDIA Open Model License' and 'This model is ready for commercial or non-commercial use.' The card's own metadata records the licence name and the terms page. The grant covers the weights, and the record did not read the terms page itself, so the detail of the grant is not established from the file."
+    evidence: [kermt-card]
+evidence:
+  - id: kermt-card
+    url: https://huggingface.co/nvidia/NV-KERMT-70M-v2
+    label: NV-KERMT-70M-v2 model card (reviewed 2026-10-23)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+caveats:
+  - "The model is a pretrained backbone and not a ready-made predictor. The card states that users are expected to fine-tune it on their own labelled datasets for specific ADMET endpoints, so the record carries no ADMET prediction from this model."
+  - "The pretraining is fully unsupervised and uses no dedicated testing dataset, and the card reports no numerical benchmark result, so the representation's quality is not established by the record."
+  - "The card states that predictions are statistical estimates and should not be used as substitutes for experimental measurement in safety-critical drug development decisions."
+  - "The training pool is described as about 11.1 million unique canonical SMILES after pooling and deduplication, with a ZINC15 and ChEMBL base pool plus the Biogen ADMET, ExpansionRX and ChEMBL-MT additions, and the card states the pool is scaffold-balanced by Bemis-Murcko scaffolds for the train and validation split. The record did not open the corpora themselves, so the record carries the sizes and the deduplication rule rather than a check of the files."
+  - "The decoder's recommended maximum SMILES length is 512 tokens, and longer structures are to be truncated or omitted."
+  - "The card describes the deployment target as Linux with NVIDIA GPUs, and recommends compute capability 7.0 or newer with 32 gigabytes of memory for training."
+acknowledgements: []
+last_verified: "2026-10-23"

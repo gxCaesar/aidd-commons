@@ -1,0 +1,45 @@
+id: benchmark-multipardigm-docking
+name: Multi-Paradigm Docking Benchmark
+kind: benchmark
+summary: Benchmark that scores six physics-based docking approaches and four co-folding models on the same systems with RMSD and PoseBusters tables, and publishes the poses and the per-system ranking scores so that a reader can read the result inside one similarity stratum rather than in one aggregate.
+canonical_url: https://doi.org/10.5281/zenodo.19560204
+identifiers:
+  - scheme: dataset
+    value: "the released result tables, poses and archives, Zenodo record 19560204, published 13 April 2026"
+    url: https://doi.org/10.5281/zenodo.19560204
+  - scheme: code
+    value: "the benchmark repository, AaronXu9/dockStrat"
+    url: https://github.com/AaronXu9/dockStrat
+stages: [evaluation, hit-discovery]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [docking, pose-validation, benchmark-evaluation]
+relations: []
+status: { value: active, evidence: [zenodo-record] }
+access_level: { value: open_source, evidence: [zenodo-record, repository] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: not_applicable, evidence: [repository] }
+  weights: { value: not_applicable, evidence: [repository] }
+  architecture: { value: not_applicable, evidence: [repository] }
+  data_recipe: { value: available, evidence: [zenodo-record] }
+  training_data: { value: available, evidence: [zenodo-record] }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: CC BY 4.0
+    scope: "The Creative Commons Attribution 4.0 licence the Zenodo deposit states for itself. The grant covers the released tables, poses and archives. The licences of the docking engines and the co-folding models the benchmark calls are their own and are not settled by this deposit."
+    evidence: [zenodo-record]
+evidence:
+  - id: zenodo-record
+    url: https://zenodo.org/api/records/19560204
+    label: The Zenodo record of the released benchmark results, read on 2026-10-24, which states the licence as cc-by-4.0 and the access rights as open
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: repository
+    url: https://github.com/AaronXu9/dockStrat
+    label: The benchmark repository, which is public and carries an MIT licence, read on 2026-10-24
+    supports: [identifiers, caveats]
+caveats:
+  - "The deposit holds RMSD and PoseBusters result tables for six docking approaches, Vina, GNINA, ICM, ICM-RTCNN, SurfDock and UniDock2, with the ligand poses in SDF archives, the inputs as Vina and GNINA PDBQT files and precomputed ICM docking maps, and co-folding tables for AlphaFold 3, Boltz-1, Chai-1 and Protenix with each method's top-five protein-ligand complexes in CIF archives and per-system ranking_scores.csv files."
+  - "The record carries the deposit's own inventory. It did not run any docking engine or co-folding model, and it does not report a ranking of the systems."
+  - "The benchmark's own point, as the index that lists it puts it, is that results have to be read inside a similarity stratum, because aggregate numbers mislead when a co-folding model has memorised training-like targets. A reader who takes the aggregate tables alone loses the benchmark's main finding."
+acknowledgements: []
+last_verified: "2026-10-24"

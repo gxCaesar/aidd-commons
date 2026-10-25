@@ -1,0 +1,48 @@
+id: model-opendde
+name: OpenDDE Preview
+kind: software
+summary: Preview all-atom drug-discovery engine with public source and downloadable weights.
+canonical_url: https://github.com/aurekaresearch/OpenDDE
+identifiers:
+  - scheme: paper
+    value: "OpenDDE: An Open-source Drug Discovery Engine; arXiv:2607.03787"
+    url: https://arxiv.org/abs/2607.03787
+stages: [structure-prediction, lead-optimization, design, evaluation]
+modalities: [biomolecular-complex]
+tasks: [drug-design]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [readme] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: source-code
+    evidence: [license]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/aurekaresearch/OpenDDE
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/aurekaresearch/OpenDDE
+    label: OpenDDE repository
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/aurekaresearch/OpenDDE/main/README.md
+    label: OpenDDE README
+    supports: []
+  - id: license
+    url: https://raw.githubusercontent.com/aurekaresearch/OpenDDE/main/LICENSE
+    label: OpenDDE Apache-2.0 license
+    supports: []
+caveats:
+  - The repository calls this a preview and warns that its interface and checkpoints may change.
+acknowledgements: []
+last_verified: "2026-09-04"

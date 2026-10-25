@@ -1,0 +1,70 @@
+---
+title: Relative free-energy network audit
+description: Pair OpenFE solvent and complex legs, close a cycle basis, and retain inconsistent cycles.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+This laboratory gives the [free-energy cycles lesson](/learn/physics-based-modeling/free-energy-cycles-and-convergence/) a runnable network. It addresses `t11-free-energy-endpoint-network`. You will recover transformations and their repeat estimates, distinguish the two alchemical legs, close a declared cycle basis, and retain discrepancies that exceed the declared uncertainty. The prerequisites are free-energy differences, directed graphs, and standard errors.
+
+Mode is fresh independent computation under a frozen protocol. Use the project Python 3.11 environment and CPU. Network access is needed for the first download only. Once the validated source snapshot is cached, inspection and export run offline. The download writes separate cache files, inspection does not write, and export replaces only the small summary after validation.
+
+```bash
+.venv/bin/python labs/free_energy_network_audit/run_lab.py download
+.venv/bin/python labs/free_energy_network_audit/inspect_free_energy_network_audit.py show
+.venv/bin/python labs/free_energy_network_audit/inspect_free_energy_network_audit.py check
+.venv/bin/python labs/free_energy_network_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/free_energy_network_audit -q
+```
+
+## Endpoint and uncertainty rule
+
+The endpoint is a relative binding free-energy difference for an ordered ligand pair. For each mapping, `DeltaDeltaG_bind(A to B) = DeltaG_complex(A to B) - DeltaG_solvent(A to B)`. The complex and solvent edges refer to different chemical systems and cannot be substituted for one another. This calculation does not give an absolute binding free energy.
+
+The archive links each transformation to protocol DAGs and unit results. Each edge has 3 selected estimates with distinct repeat IDs. The reader takes the highest recorded generation in each repeat, averages the 3 selected values, and keeps unit records without an estimate out of that mean. Its leg standard error is the larger of the propagated reported error of the mean and the between-repeat standard error. Complex and solvent errors are combined in quadrature. The source provides uncertainties for the unit estimates. This propagation treats the repeats, paired legs, and different edges as independent, which may understate uncertainty if they share errors.
+
+The laboratory builds a deterministic spanning forest of the paired binding edges. Each remaining edge closes one fundamental cycle along the unique tree path. A cycle closes only when the absolute signed sum is at most 2 times the quadrature sum of its edge standard errors. The 2-standard-error tolerance was fixed in the protocol before reading the residuals. A failed cycle remains in the result with its name and discrepancy. This basis does not enumerate every simple cycle.
+
+## Per-system network audit
+
+The local computation on 2026-10-23 counted one transformation as one edge and one successful unit estimate as one estimate. It recovered 566 transformation edges, or 283 paired binding edges, with 1698 estimates. All 566 transformation edges carry 3 selected repeat estimates. The source also contains 29 unit records without an estimate. The 92 fundamental cycles include 87 closed and 5 failed cycles.
+
+| System | Solvent edges | Complex edges | Solvent estimates | Complex estimates | Cycles | Closed | Failed | Unit records without estimate |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| jnk1 | 27 | 27 | 81 | 81 | 7 | 7 | 0 | 0 |
+| bace | 49 | 49 | 147 | 147 | 14 | 12 | 2 | 1 |
+| tyk2 | 22 | 22 | 66 | 66 | 7 | 7 | 0 | 0 |
+| thrombin | 14 | 14 | 42 | 42 | 4 | 4 | 0 | 0 |
+| mcl1 | 62 | 62 | 186 | 186 | 21 | 20 | 1 | 0 |
+| ptp1b | 34 | 34 | 102 | 102 | 12 | 12 | 0 | 2 |
+| cdk2 | 24 | 24 | 72 | 72 | 9 | 9 | 0 | 26 |
+| p38 | 51 | 51 | 153 | 153 | 18 | 16 | 2 | 0 |
+| Total | 283 | 283 | 849 | 849 | 92 | 87 | 5 | 29 |
+
+The `show` command prints each cycle's signed sum, standard error, tolerance, and classification. The committed summary keeps the same cycle-level results without copying archive rows or raw unit estimates.
+
+## Failed cycles
+
+These 5 fundamental cycles exceed their predeclared tolerance. Discrepancy size is the absolute signed sum in kcal/mol, not the amount above the tolerance.
+
+| System | Cycle | Discrepancy size in kcal/mol |
+| --- | --- | ---: |
+| bace | CAT-13b -> CAT-13c -> CAT-13a -> CAT-13b | 2.427387 |
+| bace | CAT-13d -> CAT-17h -> CAT-13a -> CAT-13d | 1.195884 |
+| mcl1 | 28 -> 39 -> 27 -> 28 | 2.322782 |
+| p38 | 2o -> 3fln -> 2n -> 2o | 2.543487 |
+| p38 | 3flq -> 2v -> 3fly -> 2aa -> 3flq | 7.866367 |
+
+## Limits of the material
+
+A closed cycle checks internal consistency under the stated edge selection and uncertainty rule. It is not a measurement of truth and does not establish that an edge is correct, converged, or experimentally validated. A failed cycle identifies a discrepancy in this basis; it does not by itself identify which edge or simulation caused it. The calculation makes no absolute binding-free-energy claim, assay comparison, or ranking of systems by closure. No reader learning outcome has been observed.
+
+## Sources and attribution
+
+The [OpenFE JACS-set Zenodo record](https://zenodo.org/records/21797903) supplies the 8 compressed alchemical network archives under CC BY 4.0. Its metadata and the archive structures were read on 2026-10-23. Original guide prose is CC BY 4.0 and original laboratory code is Apache-2.0.
+
+Last reviewed on 2026-10-23.

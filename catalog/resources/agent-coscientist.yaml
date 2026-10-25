@@ -1,0 +1,48 @@
+id: agent-coscientist
+name: Coscientist
+kind: agent
+summary: An autonomous chemistry research agent that plans and executes multi-step experiments with laboratory hardware and language models.
+canonical_url: https://github.com/gomesgroup/coscientist
+identifiers:
+  - scheme: paper
+    value: "Autonomous chemical research with large language models; DOI 10.1038/s41586-023-06792-0"
+    url: https://doi.org/10.1038/s41586-023-06792-0
+  - scheme: documentation
+    value: "Coscientist repository and usage instructions"
+    url: https://github.com/gomesgroup/coscientist
+stages: [design, make, analysis]
+modalities: [reaction, scientific-text]
+tasks: [tool-using-agent, autonomous-experiment-planning]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: open_source, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0 with Commons Clause v1.0
+    scope: The Apache License 2.0 grant is conditioned by the Commons Clause License Condition v1.0, whose text states that the grant does not include the right to Sell the Software. The clause limits commercial reuse as a competing product, and it does not cover the hardware, the chemistry services or any third-party data the agent calls.
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/gomesgroup/coscientist
+    label: Coscientist repository, re-opened 2026-10-21
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/gomesgroup/coscientist/main/README.md
+    label: Coscientist README, re-opened 2026-10-21
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/gomesgroup/coscientist/main/LICENSE
+    label: Coscientist licence file, re-opened 2026-10-21, stating the Commons Clause License Condition v1.0 on top of the Apache License and excluding the right to Sell the Software
+    supports: []
+caveats:
+  - The agent calls laboratory and chemistry services. Those services carry their own terms, and the repository licence does not grant access to them.
+  - The published evaluation depends on hardware the project operated; the record does not establish that the result can be reproduced on other hardware.
+acknowledgements: []
+last_verified: "2026-10-21"

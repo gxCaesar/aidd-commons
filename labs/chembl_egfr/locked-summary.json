@@ -1,0 +1,72 @@
+{
+  "schema_version": "aidd-commons.chembl37-egfr-representation-v1.locked-summary.v1",
+  "artifact_type": "reviewed-locked-summary",
+  "status": "completed",
+  "protocol_id": "chembl37-egfr-representation-v1",
+  "reviewed_on": "2026-09-08",
+  "software": {
+    "python": "3.11.15",
+    "numpy": "2.4.6",
+    "scikit_learn": "1.9.0",
+    "rdkit": "2025.09.6"
+  },
+  "selected_alphas": {
+    "descriptor_ridge": 1000.0,
+    "morgan_ridge": 1.0
+  },
+  "results": {
+    "primary_test": {
+      "count": 132,
+      "metrics": {
+        "train_mean": {
+          "mae": 0.47889315075040634,
+          "rmse": 0.6495843791022325,
+          "spearman": null,
+          "spearman_status": "undefined_constant_prediction"
+        },
+        "descriptor_ridge": {
+          "mae": 0.4685270107977128,
+          "rmse": 0.6351792580844096,
+          "spearman": 0.12912484977725286,
+          "spearman_status": "defined"
+        },
+        "morgan_ridge": {
+          "mae": 0.41833032711934154,
+          "rmse": 0.5496120042196945,
+          "spearman": 0.5050760258476744,
+          "spearman_status": "defined"
+        }
+      }
+    },
+    "assay_replication": {
+      "count": 170,
+      "metrics": {
+        "train_mean": {
+          "mae": 0.898379755056597,
+          "rmse": 1.0791288848195268,
+          "spearman": null,
+          "spearman_status": "undefined_constant_prediction"
+        },
+        "descriptor_ridge": {
+          "mae": 0.57926487123557,
+          "rmse": 0.7696649596666987,
+          "spearman": 0.11339681823688325,
+          "spearman_status": "defined"
+        },
+        "morgan_ridge": {
+          "mae": 3.1316760122202343,
+          "rmse": 3.2242088095499253,
+          "spearman": -0.04095526286121213,
+          "spearman_status": "defined"
+        }
+      }
+    }
+  },
+  "interpretation": [
+    "T15 accessed labels shared with T05 before this evaluation; this is not an entirely untouched independent confirmatory evaluation.",
+    "The frozen split, alpha grid and selected alphas were not retuned after that exposure.",
+    "Primary evaluation and assay replication are separate comparisons; success on one does not erase failure on the other.",
+    "Descriptor alpha is at the upper edge of the frozen grid.",
+    "No confidence intervals, p values or pooled-assay superiority claims are reported."
+  ]
+}

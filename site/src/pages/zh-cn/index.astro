@@ -1,0 +1,89 @@
+---
+import AtlasFigure from "../../components/AtlasFigure.astro";
+import LearningPathMap from "../../components/LearningPathMap.astro";
+import PipelineMap from "../../components/PipelineMap.astro";
+import SiteShell from "../../components/SiteShell.astro";
+---
+
+<SiteShell
+  lang="zh-CN"
+  title="中文入门"
+  description="AIDD Commons 的中文入门与十八条学习路径导航。"
+>
+  <section class="hero" aria-labelledby="zh-home-title">
+    <p class="eyebrow">AIDD Commons 中文导航</p>
+    <h1 id="zh-home-title">从这里开始</h1>
+    <p class="hero__lede">
+      英语内容是规范版本。中文页面提供 18 条学习路径，以及现有课程正文和 56 个实验说明的译文。数值面板和下载文件保留原始格式；这不代表全部主题已经有完整深度课程。
+    </p>
+    <div class="action-row">
+      <a class="button-link" href="/zh-cn/learn/foundations/first-session/">开始第一次学习</a>
+      <a class="button-secondary" href="/zh-cn/labs/">中文实验说明</a>
+      <a class="button-secondary" href="/atlas/">浏览科学图谱</a>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="zh-artifacts-title">
+    <div class="section__header">
+      <div>
+        <p class="eyebrow">四个互相连接��产物</p>
+        <h2 id="zh-artifacts-title">学习、检视、复现、贡献。</h2>
+      </div>
+    </div>
+    <div class="artifact-grid">
+      <article class="artifact-card">
+        <p class="meta-label">学习</p>
+        <h3>18 条互相连接的轨道</h3>
+        <p>从基础、研究或工程三种入口走同一张图谱。</p>
+      </article>
+      <article class="artifact-card">
+        <p class="meta-label">图谱</p>
+        <h3>带主张限定的资源</h3>
+        <p>查看证据、注意事项、许可、署名与复核日期。</p>
+      </article>
+      <article class="artifact-card">
+        <p class="meta-label">实验</p>
+        <h3>冻结的评测契约</h3>
+        <p>从声明的数据集、划分、指标与基线出发，而不是从暗示的结果出发。</p>
+      </article>
+      <article class="artifact-card">
+        <p class="meta-label">报告</p>
+        <h3>活的技术说明</h3>
+        <p>让方法选择、开放性维度与失败模式保持可检视。</p>
+      </article>
+    </div>
+    <p class="section-intro">
+      看四个产物下面那条横轴：在共享标识符上记录一次更正，会同时到达课文、目录记录、实验与报告，
+      这正是四个界面所依赖的耦合。
+    </p>
+    <AtlasFigure id="artifacts" />
+  </section>
+
+  <section class="section" aria-labelledby="zh-pipeline-title">
+    <div class="section__header">
+      <div>
+        <p class="eyebrow">流水线图</p>
+        <h2 id="zh-pipeline-title">带着证据走完发现流水线。</h2>
+      </div>
+    </div>
+    <PipelineMap />
+    <p class="section-intro">
+      看每一段收窄处分出的那条支线：流水线记录的是候选在哪里丢失，而不只是还剩多少。
+    </p>
+    <AtlasFigure id="decision-pipeline" />
+  </section>
+
+  <section class="section" aria-labelledby="zh-paths-title">
+    <div class="section__header">
+      <div>
+        <p class="eyebrow">学习路径</p>
+        <h2 id="zh-paths-title">18 条学习路径</h2>
+      </div>
+    </div>
+    <LearningPathMap chinese />
+    <p class="section-intro">
+      看每课上的标记：一门被多条路线同时要求的课就是课程的核心，因此各专业路线彼此并不独立。
+    </p>
+    <AtlasFigure id="prerequisite-graph" />
+  </section>
+</SiteShell>

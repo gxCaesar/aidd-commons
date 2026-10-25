@@ -1,0 +1,111 @@
+---
+title: Protein language models and their release boundaries
+description: Read four dated protein language model records through their released assets, training evidence and licence scope.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="representations/protein-language-models" />
+
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Protein, complex, cell-state and knowledge-graph representations](/learn/representations/complex-cell-and-knowledge-graphs/), this dated reading examines what four protein language model records make available. You should be able to distinguish a described model from a reachable checkpoint, read openness by asset, and identify which training and licence questions the released material leaves unanswered.
+
+This is a source reading with a written exercise. No model was run, no checkpoint was loaded, and no dataset was downloaded. The records do not share a measured comparison protocol, so they support no performance ranking.
+
+## Task contract
+
+A protein language model takes a protein sequence as its declared input. The output depends on the particular release. ESMC is presented as a sequence representation model, while Prot42 and PPI-Llama2 are described for target-conditioned binder generation. The ESM Cambrian record covers a collection that also includes a folding model, sparse autoencoders, an atlas and a binder design system. Those companion assets are not all outputs of the ESMC checkpoint.
+
+The contract for this reading is narrower than a model's proposed use. A paper can describe an architecture or a task without supplying the code, weights or data needed to inspect it. A model card can establish a checkpoint while leaving its training recipe and reuse terms unresolved. Each record below is read at that asset level.
+
+## ESM Cambrian
+
+The [Biohub ESM repository](https://github.com/Biohub/esm) releases ESMC 6B, ESMFold2 and ESMC sparse autoencoders, and announces the ESM Atlas and a binder design system alongside them. Its README states that ESMC code, weights and model variants are available through Hugging Face. The repository describes ESM Atlas as a map of 6.8 billion proteins and says ESMFold2 throughput enabled predictions of more than 1 billion structures. These are release descriptions, not measurements made in this lesson.
+
+The [MIT licence file](https://raw.githubusercontent.com/Biohub/esm/main/LICENSE.md) and README cover released source code and weights. The README assigns no separate terms to the atlas or binder design system. The ESMC 6B and sparse-autoencoder cards also show `other` beside `mit` and link an Acceptable Use Policy without explaining that additional label. Only the [ESMFold2 card](https://huggingface.co/biohub/ESMFold2) names a training corpus, the Protein Data Bank and AlphaFold DB. It does not establish the data recipe for the wider Cambrian collection.
+
+## ESMC
+
+The [ESMC 6B model card](https://huggingface.co/biohub/ESMC-6B) identifies a 6 billion parameter checkpoint from the same Biohub project. It names UniRef, MGnify and the Joint Genome Institute as training sequence sources but states no licence or usage terms for those sources. The project README establishes released inference code and weights for ESMC 6B and does not establish whether training code is included.
+
+This card and the ESM Cambrian repository describe overlapping assets. They are not independent model releases or independent evidence of performance. The card lists `mit` and `other` as licence labels and links an Acceptable Use Policy without saying what `other` covers. The MIT statement for project code and weights therefore does not resolve every reuse question raised by the card.
+
+## Prot42
+
+The [Prot42 paper](https://arxiv.org/abs/2504.04453) describes autoregressive decoder-only models, including Prot42-B and Prot42-L, for target-aware binder generation with contexts up to 8,192 residues. It names UniRef50 for pretraining and STRING and PDIdb 2010 for fine-tuning. Those names describe corpora in the paper, not verified access to Prot42 training material.
+
+The abstract says the models are publicly available, but the linked [Hugging Face organisation](https://huggingface.co/inceptionai) says it is reserved and lists no public model. The catalogue's Hugging Face model search and GitHub repository search found no Prot42 release. No reachable weights, code or model licence were established. Its access level and all seven openness dimensions remain unverified, even though the paper describes the model family.
+
+## PPI-Llama2
+
+The [PPI-Llama2 card](https://huggingface.co/ChatterjeeLab/PPI-Llama2) holds published weights for a model that adapts Meta's Llama2 architecture to generate binders from a target sequence without structural input. The work appears in an [ICLR 2024 workshop listing](https://iclr.cc/virtual/2024/22792). Access to the weights is manually gated. The card's conditions require a research or education purpose, non-commercial use and an agreement not to file patents on generated sequences. The weights carry CC BY-NC-ND 4.0, and the card does not restate the terms of the underlying Llama2 weights.
+
+No model source repository was located, and the card gives no code link. It says the model was trained on protein-protein interaction sequences but names neither the corpus nor its assembly procedure. Code and data dimensions therefore remain unverified. Available weights here means an identified, gated checkpoint, not unrestricted access or a complete reproduction package.
+
+## Openness by dimension
+
+Available means the catalogue establishes an asset or its documentation, not that this lesson used it. Unverified means the opened evidence did not establish the dimension. The ESM Cambrian training-data entry refers to the corpus named by its ESMFold2 card, not to a verified recipe for the whole collection.
+
+| Record | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| ESM Cambrian | available | unverified | available | available | unverified | available | unverified |
+| ESMC | available | unverified | available | available | unverified | available | unverified |
+| Prot42 | unverified | unverified | unverified | unverified | unverified | unverified | unverified |
+| PPI-Llama2 | unverified | unverified | available, gated | available | unverified | unverified | unverified |
+
+The first two rows share one project. Prot42 supplies a paper claim without a located distribution. PPI-Llama2 supplies a gated checkpoint but no located implementation. Collapsing those states into one open or closed label would erase the decision a reader needs to make.
+
+## Training corpora and coverage
+
+| Record | Corpus statement | What remains unverified |
+| --- | --- | --- |
+| ESM Cambrian | ESMFold2 card names Protein Data Bank and AlphaFold DB | Cambrian collection recipe and the role of ESM Atlas in training |
+| ESMC | Card names UniRef, MGnify and Joint Genome Institute | Source terms and data recipe |
+| Prot42 | Paper names UniRef50, STRING and PDIdb 2010 | Prot42-specific data availability and recipe |
+| PPI-Llama2 | Card says protein-protein interaction sequences | Corpus identity and assembly procedure |
+
+The ESM Atlas scale describes a released map, not a verified training-set inventory. A named source also does not establish that the exact training rows, filtering and partitions can be recovered. None of these records supports an inference about coverage of a particular target sequence or a matched result across models.
+
+## Worked case
+
+Consider a reader preparing an asset inventory for a study of protein representations. The reader needs a checkpoint that can be identified, its governing terms and a documented training source. This is a constructed source-audit case, not a model experiment.
+
+1. ESMC has an identified checkpoint and a card naming three training sequence sources. Its project describes an MIT release for code and weights, while the card's unexplained `other` label and Acceptable Use Policy remain to be resolved before a reuse decision.
+2. ESM Cambrian adds companion assets, but its atlas scale is not a training recipe. The ESMFold2 corpus statement cannot be assigned to every Cambrian asset.
+3. Prot42 names corpora in a paper, yet the stated distribution route has no public model. A paper claim cannot fill the weights or code cells.
+4. PPI-Llama2 has identifiable weights, but access is gated, the corpus is unnamed and the base-model terms are not restated. Identifying a checkpoint does not make it freely reusable.
+
+The defensible inventory lists each asset and unresolved term. It does not claim that any model has been reproduced or that one model performs better.
+
+## Independent exercise
+
+A colleague proposes to treat the ESM Atlas count as ESMC's training-set size, download Prot42 from the organisation named in its paper, and treat PPI-Llama2's published weights as unrestricted because the card is public. Identify one missing piece of evidence for each claim and state what the current records permit you to say.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The atlas is described as a map of 6.8 billion proteins. Neither the repository nor the ESMC card identifies it as the ESMC training set, so its count cannot become a training-set size. Prot42's cited organisation lists no public model, and searches found no release, so its weights remain unverified. PPI-Llama2's card identifies weights but gates access and states research or education, patent and non-commercial conditions. Its CC BY-NC-ND 4.0 label does not resolve the unstated Llama2 base terms. The current record supports an asset inventory with these limits, not the proposed downloads or unrestricted reuse.
+
+</details>
+
+## Scope and what the material does not show
+
+These four records were verified on 2026-10-21. They establish distinct release states, source statements and licence boundaries. They do not establish a common benchmark, a reproduced inference, complete training provenance, permission for every downstream use or a reader outcome. No model was executed for this reading.
+
+## Sources
+
+<div data-case-sources>
+
+- [Biohub ESM repository](https://github.com/Biohub/esm), [ESMC 6B card](https://huggingface.co/biohub/ESMC-6B), [ESMFold2 card](https://huggingface.co/biohub/ESMFold2) and [MIT licence file](https://raw.githubusercontent.com/Biohub/esm/main/LICENSE.md)
+- [Prot42 paper](https://arxiv.org/abs/2504.04453) and its cited [Hugging Face organisation](https://huggingface.co/inceptionai)
+- [PPI-Llama2 card](https://huggingface.co/ChatterjeeLab/PPI-Llama2) and [ICLR 2024 workshop listing](https://iclr.cc/virtual/2024/22792)
+
+</div>
+
+Original lesson prose is CC BY 4.0. Linked assets retain their own terms.
+
+Last reviewed: 2026-10-23.

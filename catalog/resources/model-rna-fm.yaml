@@ -1,0 +1,64 @@
+id: model-rna-fm
+name: RNA-FM
+kind: model
+summary: RNA language model that encodes RNA sequences as nucleotide embeddings, pretrained by masked-token prediction on 23.7 million non-coding RNA sequences and used for downstream structure and function work.
+canonical_url: https://github.com/ml4bio/RNA-FM
+identifiers:
+  - scheme: paper
+    value: "Interpretable RNA Foundation Model from Unannotated Data for Highly Accurate RNA Structure and Function Predictions; arXiv 2204.00300"
+    url: https://arxiv.org/abs/2204.00300
+  - scheme: model-weights
+    value: "cuhkaih/rnafm, the checkpoint host the repository README names for download"
+    url: https://huggingface.co/cuhkaih/rnafm
+  - scheme: model-weights
+    value: "ml4bio/RNA-FM, the weights link in the repository README related-model table"
+    url: https://huggingface.co/ml4bio/RNA-FM
+stages: [representation-learning]
+modalities: [sequence]
+tasks: [molecular-representation-learning, structure-prediction]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [readme, license] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [readme, checkpoint-host] }
+  architecture: { value: available, evidence: [readme] }
+  data_recipe: { value: available, evidence: [readme] }
+  training_data: { value: available, evidence: [readme] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: repository source code, as stated in the README and covered by the root LICENSE file, which reads "MIT License" and "Copyright (c) 2022 Jiayang Chen"; the README does not say this licence covers the hosted checkpoints
+    evidence: [readme, license]
+  - name: Apache-2.0
+    scope: 'the checkpoint host cuhkaih/rnafm declares "License: apache-2.0" in its model metadata; this is the licence of the copy that the README directs users to download, and it differs from the repository README licence statement'
+    evidence: [checkpoint-host]
+evidence:
+  - id: repository
+    url: https://github.com/ml4bio/RNA-FM
+    label: RNA-FM repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: readme
+    url: https://raw.githubusercontent.com/ml4bio/RNA-FM/main/README.md
+    label: RNA-FM README (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/ml4bio/RNA-FM/main/LICENSE
+    label: RNA-FM MIT licence file (reviewed 2026-10-21)
+    supports: []
+  - id: checkpoint-host
+    url: https://huggingface.co/cuhkaih/rnafm
+    label: RNA-FM checkpoint host on Hugging Face (reviewed 2026-10-21)
+    supports: [caveats]
+  - id: paper
+    url: https://arxiv.org/abs/2204.00300
+    label: RNA-FM preprint abstract page (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+caveats:
+  - The README states that "This source code is licensed under the MIT license" and separately lists RNA-FM as MIT in a related-model table whose scope is not defined, while the checkpoint host cuhkaih/rnafm that the README names for download declares license apache-2.0. Both statements are recorded and neither is withdrawn.
+  - The model card at the ml4bio/RNA-FM weights link returned HTTP 401 without authentication, so the licence of that copy could not be confirmed and the Hugging Face model API returned the same status for it.
+  - The README names RNAcentral100 as the pretraining corpus and the 15 percent masked-token objective, but pins no corpus snapshot, so the exact pretraining set cannot be reconstructed from the repository.
+  - The repository documents the model description and inference scripts but names no training script and no benchmark evaluation harness, so the training and evaluation dimensions stay unverified.
+acknowledgements: []
+last_verified: "2026-10-21"

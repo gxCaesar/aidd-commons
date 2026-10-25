@@ -1,0 +1,55 @@
+id: model-nesso
+name: Nesso-1
+kind: model
+summary: Coarse-grained co-folding model for protein-ligand binding affinity that takes a protein sequence and a ligand in SMILES, CCD code or SDF form, and returns an affinity scalar together with a binder probability.
+canonical_url: https://github.com/recursionpharma/nesso
+identifiers:
+  - scheme: paper
+    value: "Nesso-1: Accelerating Open-Source Binding Affinity Predictions; Valence Labs technical report, 2026"
+    url: https://www.biorxiv.org/content/10.64898/2026.08.01.742196v1
+  - scheme: code
+    value: "Nesso source repository, recursionpharma/nesso"
+    url: https://github.com/recursionpharma/nesso
+  - scheme: model-weights
+    value: "Nesso-1 model weights, Hugging Face repository recursionpharma/nesso, with the weights and a parameter file at version v1.0.0"
+    url: https://huggingface.co/recursionpharma/nesso
+stages: [hit-discovery, lead-optimization]
+modalities: [protein-ligand-complex]
+tasks: [binding-affinity-prediction, coarse-grained-cofolding]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [nesso-readme, nesso-card] }
+openness:
+  inference_code: { value: available, evidence: [nesso-readme] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [nesso-card] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [nesso-readme] }
+licenses:
+  - name: "Apache-2.0"
+    scope: "The repository README states 'This project is licensed under Apache License 2.0' and links the licence file, and the model card's front matter carries the same licence. The grant covers the source code and the published weights. The licence of the third-party components the README links separately is their own."
+    evidence: [nesso-readme, nesso-card]
+evidence:
+  - id: nesso-repository
+    url: https://github.com/recursionpharma/nesso
+    label: Nesso repository (reviewed 2026-10-23)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: nesso-readme
+    url: https://raw.githubusercontent.com/recursionpharma/nesso/main/README.md
+    label: Nesso README (reviewed 2026-10-23)
+    supports: [identifiers, caveats]
+  - id: nesso-card
+    url: https://huggingface.co/recursionpharma/nesso
+    label: Nesso-1 model card (reviewed 2026-10-23)
+    supports: [identifiers, caveats]
+caveats:
+  - "The README carries no training-data statement at all. It gives no dataset, no label, no preprocessing, no split and no description of how the model was constructed, and it defers the method and the evaluations to the technical report, so the data recipe and the training data both stay unverified."
+  - "The weights are published without a checkpoint name, a download command or a statement about whether the model fetches them automatically, so the reader has to find them from a link on the page rather than from an instruction."
+  - "The accelerated kernels are stated to be CUDA 12 only, and a reader on CPU or on another CUDA version must use the default installation or pass --no_kernels at runtime, so the published performance figures may not be reachable on every machine."
+  - "Two capabilities are stated as still pending on the page, pocket conditioning and structural templating, so the model as published is the plain sequence-and-ligand route."
+  - "The page states no units, no sign convention, no confidence measure and no result-file schema for the affinity output, and points to a separate document for the output format."
+  - "The paper is recorded from the technical report the model card and the repository both cite. The report's text was not opened, so the reported accuracy and speed are not carried here."
+acknowledgements: []
+last_verified: "2026-10-23"

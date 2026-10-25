@@ -1,0 +1,37 @@
+---
+import { labDownloads } from "../data/lab-downloads.js";
+import { withoutSiteBase } from "../lib/site-paths";
+interface Props { lab: (typeof labDownloads)[number]["lab"]; }
+const artifacts = labDownloads.filter((artifact) => artifact.lab === Astro.props.lab);
+const chinese = withoutSiteBase(Astro.url.pathname, import.meta.env.BASE_URL).startsWith("/zh-cn/");
+const standalone = ["lipophilicity-notebook", "student-modelling", "representation-inspector"].includes(Astro.props.lab);
+const labels: Record<string, string> = {
+  "Read-only results notebook": "只读结果 notebook",
+  "Reference environment": "参考环境",
+  "Reviewed aggregate results": "已复核汇总结果",
+  "Frozen protocol": "冻结协议",
+  "Execution amendment": "执行修订说明",
+  "Completed primary and assay-replication results": "已完成的主实验与另一项实验复现结果",
+  "Historical development snapshot": "历史开发快照",
+  "Completed paired-system results": "已完成的配对体系结果",
+  "Synthetic simulator protocol": "人工构造示例协议",
+  "Retrospective ChEMBL protocol": "回顾性 ChEMBL 协议",
+  "Synthetic simulator results": "人工构造示例结果",
+  "Completed retrospective results": "已完成的回顾性结果",
+  "Seven label-free input examples": "七个无标签输入示例",
+  "English editable tutorial notebook": "英文可修改教学 notebook",
+  "Chinese editable tutorial notebook": "中文可修改教学 notebook",
+};
+---
+
+<section class="detail-panel" data-lab-downloads aria-label={chinese ? "实验材料下载" : "Lab downloads"}>
+  <h2>{chinese ? "下载教学材料" : "Download teaching materials"}</h2>
+  <ul>
+    {artifacts.map((artifact) => <li><a href={`/downloads/${artifact.path}`} download>{chinese ? labels[artifact.label] ?? artifact.label : artifact.label}</a></li>)}
+  </ul>
+  {standalone ? (
+    <p>{chinese ? "每个 notebook 都是自包含的学生练习，包含环境说明、输入和可见代码。下载一种语言的文件即可上传到 Colab，不需要额外的辅助源码文件；是否需要安装依赖或下载数据，请看该练习的设置单元。" : "Each notebook is a self-contained student exercise with setup guidance, inputs and visible code. Download either language to upload into Colab; no additional helper source files are required. Its setup cell explains whether dependencies or data need downloading."}</p>
+  ) : (
+    <p>{chinese ? "这些文件是本页所述的精选协议、示例或汇总结果，保持原始英文和机器可读格式。历史开发快照与已完成评估分开。源代码和完整环境说明仍在仓库发布包中。" : "These files are the curated protocol, examples or aggregate results described on this page. Historical development snapshots are distinct from completed evaluations. Source code and full setup instructions remain in the repository distribution."}</p>
+  )}
+</section>

@@ -1,0 +1,66 @@
+id: model-scfoundation
+name: scFoundation
+kind: model
+summary: Asymmetric transformer pretrained on more than 50 million human single-cell transcriptomes that produces cell and gene embeddings for cell-type annotation, drug-response prediction, and perturbation prediction.
+canonical_url: https://github.com/biomap-research/scFoundation
+identifiers:
+  - scheme: paper
+    value: "Large-scale foundation model on single-cell transcriptomics; Nature Methods DOI 10.1038/s41592-024-02305-7"
+    url: https://doi.org/10.1038/s41592-024-02305-7
+  - scheme: model-weights
+    value: "Pretrained weights and usage instructions in the model directory of the repository"
+    url: https://github.com/biomap-research/scFoundation/tree/main/model
+  - scheme: documentation
+    value: "Online inference and command-line tooling"
+    url: https://aigp.biomap.com/
+stages: [representation-learning, model-development, property-prediction]
+modalities: [single-cell-transcriptomics, perturbational-transcriptomics]
+tasks: [cell-context-inspection, perturbation-comparison]
+relations:
+  - type: uses
+    target: model-gears
+status: { value: unverified }
+access_level: { value: research_only, evidence: [scfoundation-model-license] }
+openness:
+  inference_code: { value: available, evidence: [scfoundation-repository] }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [scfoundation-repository] }
+  architecture: { value: available, evidence: [scfoundation-paper] }
+  data_recipe: { value: available, evidence: [scfoundation-readme] }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: "Source code of the repository, including the preprocessing and model directories. The README states separately that any use or exploitation of the model weights is subject to the model licence, so this licence does not carry over to the weights."
+    evidence: [scfoundation-license, scfoundation-readme]
+  - name: The scFoundation License
+    scope: "Model weights only. The text defines the Software as the parameters of the scFoundation model, grants use solely for non-commercial research purposes, and prohibits use, copying, modification, publication, distribution, reproduction, or derivative works of the parameters for any commercial, military, or illegal purpose. It is governed by the laws of the People's Republic of China."
+    evidence: [scfoundation-model-license]
+evidence:
+  - id: scfoundation-repository
+    url: "https://github.com/biomap-research/scFoundation"
+    label: scFoundation repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: scfoundation-readme
+    url: "https://raw.githubusercontent.com/biomap-research/scFoundation/main/README.md"
+    label: scFoundation README (reviewed 2026-10-21)
+    supports: [identifiers, relations, caveats, acknowledgements]
+  - id: scfoundation-license
+    url: "https://raw.githubusercontent.com/biomap-research/scFoundation/main/LICENSE"
+    label: scFoundation Apache-2.0 source license (reviewed 2026-10-21)
+    supports: []
+  - id: scfoundation-model-license
+    url: "https://raw.githubusercontent.com/biomap-research/scFoundation/main/MODEL_LICENSE"
+    label: scFoundation model weights license (reviewed 2026-10-21)
+    supports: []
+  - id: scfoundation-paper
+    url: "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:%2210.1038/s41592-024-02305-7%22&resultType=core&format=json"
+    label: Europe PMC record for the scFoundation paper (reviewed 2026-10-21)
+    supports: [identifiers, summary]
+caveats:
+  - The repository code is Apache-2.0 while the weights are governed by a separate non-commercial research licence, so the two terms are not interchangeable and a reader must pick the one that matches the asset being used.
+  - The README gives the pretraining scale as over 50 million human single-cell transcriptomes and ships DataSupplement1.xlsx and DataSupplement2.xlsx with the collection workflow, but it does not name the source datasets, so the corpus composition is not verifiable from the opened pages.
+  - The online inference and command-line tooling is hosted at aigp.biomap.com, and the opened pages state no terms for that service.
+acknowledgements:
+  - The repository acknowledgements list scvi-tools, SAVER, DeepCDR, SCAD, GEARS, DeepSpeed, Docker, einops, MMF, NumPy, Pandas, PyTorch, PyTorch Lightning, PyYAML, Scipy, and tqdm, and note that third-party software referred to in that section may be governed by separate terms and conditions.
+last_verified: "2026-10-21"

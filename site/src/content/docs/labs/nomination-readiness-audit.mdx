@@ -1,0 +1,101 @@
+---
+title: Apply a predeclared readiness rule
+description: Apply a frozen go, hold and stop rule to ChEMBL 37 measurement counts and name the evidence each parent still lacks.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+This laboratory serves `t18-nomination-readiness-next-experiment`. You will apply a rule fixed before this readiness audit is run, distinguish its states from a judgement about a compound, and turn every failed condition into a named missing observation. Read [The scope of one decision unit](/learn/foundations/decision-unit-scope/) and [Readiness rules and the next experiment](/learn/candidate-nomination/readiness-rules-and-next-experiment/) first.
+
+The inputs are real ChEMBL activity records. The thresholds and their decision meanings are this laboratory's teaching rule. They are not a ChEMBL recommendation or a validated standard for candidate nomination.
+
+## Run mode and commands
+
+The mode is fresh independent computation over a frozen protocol and a cached ChEMBL 37 snapshot. Use the project's Python 3.11 environment and CPU. No accelerator is needed. The preparation command reuses the validated decision-unit snapshot in this checkout and copies its artefacts into this laboratory's cache. A cold preparation may contact the ChEMBL API. Once the snapshot is cached, inspection, checks and export need no network.
+
+Run these commands from the repository root. `show` prints the rule, each parent's counts and state, and its missing measurements. `check` recomputes the invariants and exits non-zero on a failure. The exporter writes the compact committed summary only after the checks pass.
+
+```bash
+.venv/bin/python labs/nomination_readiness_audit/run_lab.py download
+.venv/bin/python labs/nomination_readiness_audit/inspect_nomination_readiness_audit.py show
+.venv/bin/python labs/nomination_readiness_audit/inspect_nomination_readiness_audit.py check
+.venv/bin/python labs/nomination_readiness_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/nomination_readiness_audit -q
+```
+
+| Command | Output location | Write behaviour |
+| --- | --- | --- |
+| `download` | `.cache/nomination_readiness_audit/` | Prepares the validated snapshot and writes no analysis result |
+| `show`, `check` | Terminal | Writes no files |
+| Exporter | `labs/nomination_readiness_audit/summary.json` | Overwrites the derived summary after successful checks |
+
+No model is fitted, no split is drawn and no prediction is made. The commands recount the fixed cohort. An independent student exercise appears in the linked lesson and does not overwrite author results.
+
+## Measurement and frozen rule
+
+The protocol declares 15 seed molecule records that resolve to 10 parents. It reuses the decision-unit laboratory's admission rule and exclusion priority. The endpoint types are AC50, EC50, IC50, Kd and Ki in nM. Only admitted point rows with relation `=` contribute to this count. Bounds with relations `<`, `<=`, `>` or `>=` remain outside the point count.
+
+Within each parent, one independent measurement is one distinct tuple of `assay_chembl_id`, `document_chembl_id` and `standard_type`. Repeated rows with the same tuple count once. Assays and documents are distinct identifiers among these admitted measurements. This is a declared grouping convention. Different identifiers alone do not establish biological independence.
+
+The protocol `chembl37-nomination-readiness-v1`, issued on 2026-10-23, fixes the following conditions before the readiness tally is computed.
+
+| Condition | Minimum |
+| --- | ---: |
+| Independent measurements | 5 |
+| Distinct assays | 3 |
+| Distinct documents | 2 |
+
+All conditions met gives `go`. Some met and some failed gives `hold`. None met gives `stop`. A `hold` or `stop` names every failed condition and its shortfall. The rule does not replace a missing field with a favourable guess.
+
+| Failed condition | Observation that would add coverage | Required fields on the admitted activity point record |
+| --- | --- | --- |
+| Independent measurements | A measurement with a previously unseen tuple for this parent | `assay_chembl_id`, `document_chembl_id`, `standard_type` |
+| Distinct assays | A measurement from a previously unrepresented assay | `assay_chembl_id` |
+| Distinct documents | A measurement reported in a previously unrepresented document | `document_chembl_id` |
+
+One observation can reduce several shortfalls. Repeating an existing tuple cannot increase any of these counts. A new document identifier is documentary coverage, not evidence that the underlying experiment was independent.
+
+## Per-parent results
+
+The following table is read from the committed summary computed on 2026-10-23 with Python 3.11.15, NumPy 2.4.6 and RDKit 2025.09.6. The total is 486 independent measurements over 10 parents. Each shortfall is an additional count required by the frozen rule.
+
+| Parent | Compound | Independent measurements | Distinct assays | Distinct documents | State | Missing coverage |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| CHEMBL109 | VALPROIC ACID | 27 | 27 | 15 | `go` | None under this rule |
+| CHEMBL1144 | PRAVASTATIN | 36 | 34 | 17 | `go` | None under this rule |
+| CHEMBL13829 | MIXTURE OF MMC AND TA | 1 | 1 | 1 | `stop` | 4 measurements, 2 assays, 1 document |
+| CHEMBL23393 | SODIUM LAURYL SULFATE | 4 | 4 | 3 | `hold` | 1 measurement |
+| CHEMBL25 | ASPIRIN | 103 | 103 | 75 | `go` | None under this rule |
+| CHEMBL275835 | DARBUFELONE | 12 | 12 | 5 | `go` | None under this rule |
+| CHEMBL441 | THIOPENTAL | 2 | 2 | 2 | `hold` | 3 measurements, 1 assay |
+| CHEMBL588 | FENOLDOPAM | 51 | 51 | 18 | `go` | None under this rule |
+| CHEMBL593 | DELAVIRDINE | 250 | 250 | 90 | `go` | None under this rule |
+| CHEMBL906 | MINOXIDIL SULFATE | 0 | 0 | 0 | `stop` | 5 measurements, 3 assays, 2 documents |
+
+## State counts and closest non-go parent
+
+| State | Parent count | Members |
+| --- | ---: | --- |
+| `go` | 6 | CHEMBL109, CHEMBL1144, CHEMBL25, CHEMBL275835, CHEMBL588, CHEMBL593 |
+| `hold` | 2 | CHEMBL23393, CHEMBL441 |
+| `stop` | 2 | CHEMBL13829, CHEMBL906 |
+
+The closest non-`go` parent is SODIUM LAURYL SULFATE, CHEMBL23393. It meets the assay and document minima and lacks 1 independent measurement. The selection rule first minimizes the number of failed conditions, then the sum of missing counts, then the parent identifier in lexicographic order. It measures distance to these conditions, not biological promise.
+
+For this parent, a newly admitted point record with an unseen assay, document and endpoint tuple would close the counting gap. The tuple must be unseen as a combination. All its individual fields need not be new. The [lesson's worked case](/learn/candidate-nomination/readiness-rules-and-next-experiment/#worked-case-and-next-observation) explains how to state that proposed observation without treating it as a result already obtained.
+
+## Limits of the material
+
+A count does not say a compound is good. A `go` compound is not thereby a candidate, and a `stop` compound is not thereby inactive. These conditions measure the amount and recorded coverage of admitted evidence. They do not assess effect size, agreement, target relevance, selectivity, safety or exposure.
+
+The cohort was selected for teaching and is not a random sample of ChEMBL. The state counts estimate no population rate. The grouping convention and duplicate flags cannot establish experimental independence from the records alone. The laboratory neither tests whether these thresholds are the right thresholds nor changes them after seeing the counts. It proposes missing observations and performs no new biological experiment. Reader learning outcomes remain not observed.
+
+## Sources and terms
+
+The Atlas source identifiers are `dataset-chembl-activity` and `db-chembl-37`. The [ChEMBL activity records](https://www.ebi.ac.uk/chembl/api/data/activity.json) and [release status](https://www.ebi.ac.uk/chembl/api/data/status.json) were captured in the source laboratory's snapshot on 2026-10-21. ChEMBL 37 was released on 2026-05-01. This audit reads that validated snapshot on 2026-10-23 rather than treating a later live API response as the same input.
+
+The [release README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README), [schema documentation](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/schema_documentation.txt) and [release licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) were read on 2026-10-23. ChEMBL data retain Creative Commons Attribution-ShareAlike 3.0 Unported terms. Original guide prose is CC BY 4.0 and original laboratory code is Apache-2.0. The committed summary carries counts and no activity rows. Last reviewed on 2026-10-23.

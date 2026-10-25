@@ -1,0 +1,59 @@
+id: benchmark-ogb
+name: Open Graph Benchmark
+kind: benchmark
+summary: Official graph machine-learning benchmark suite.
+canonical_url: https://ogb.stanford.edu/
+identifiers:
+  - scheme: documentation
+    value: "OGB data loaders and evaluators"
+    url: https://ogb.stanford.edu/docs/home/
+  - scheme: source-code
+    value: "OGB repository"
+    url: https://github.com/snap-stanford/ogb
+stages: [property-prediction, evaluation]
+modalities: [molecular-graph]
+tasks: [benchmark-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [download-guide, code-license, molecular-dataset-license] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: OGB repository software, data loaders and evaluators; the molecular graph datasets on the OGB graph-property page are separately marked MIT, but this does not cover every OGB dataset or upstream source.
+    evidence: [code-license, molecular-dataset-license]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://ogb.stanford.edu/
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [caveats, identifiers]
+  - id: official-page
+    url: https://ogb.stanford.edu/
+    label: Open Graph Benchmark official site
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: terms-page
+    url: https://ogb.stanford.edu/docs/
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+  - id: download-guide
+    url: https://ogb.stanford.edu/docs/home/
+    label: "Reviewed 2026-10-23: OGB loader downloads data and standardized splits without a stated account requirement"
+    supports: [caveats]
+  - id: code-license
+    url: https://raw.githubusercontent.com/snap-stanford/ogb/master/LICENSE
+    label: "Reviewed 2026-10-23: OGB repository software is MIT-licensed"
+    supports: [caveats]
+  - id: molecular-dataset-license
+    url: https://ogb.stanford.edu/docs/graphprop/
+    label: "Reviewed 2026-10-23: molecular graph-property datasets are marked MIT on the official dataset page"
+    supports: [caveats]
+caveats:
+  - Licences are dataset-specific across OGB; the MIT statement here applies to the molecular graph-property datasets and repository software, not every dataset in the collection or its upstream sources.
+acknowledgements: []
+last_verified: "2026-10-23"

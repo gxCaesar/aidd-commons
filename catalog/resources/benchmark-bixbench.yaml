@@ -1,0 +1,58 @@
+id: benchmark-bixbench
+name: BixBench
+kind: benchmark
+summary: Computational-biology evaluation using question-linked data capsules, code-execution trajectories and separate answer grading.
+canonical_url: https://github.com/Future-House/BixBench
+identifiers:
+  - scheme: dataset
+    value: Dataset card with original v1.0 and revised v1.5 scope
+    url: https://huggingface.co/datasets/futurehouse/BixBench
+  - scheme: source-code
+    value: Zero-shot answer grading entry point
+    url: https://github.com/Future-House/BixBench/blob/main/grade_outputs.py
+  - scheme: paper
+    value: BixBench paper
+    url: https://arxiv.org/abs/2503.00096
+stages: [evaluation, analysis]
+modalities: [biological-data, text, notebook]
+tasks: [computational-biology-agent-evaluation, data-analysis]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [source-license] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [repository, grader] }
+licenses:
+  - name: Apache-2.0
+    scope: Evaluation repository source code; capsule-level third-party data terms were not inspected
+    evidence: [source-license]
+evidence:
+  - id: repository
+    url: https://raw.githubusercontent.com/Future-House/BixBench/main/README.md
+    label: Official evaluation modes, data entry and execution requirements, reviewed 2026-09-09
+    supports:
+      [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: dataset-card
+    url: https://huggingface.co/datasets/futurehouse/BixBench/raw/main/README.md
+    label: Dataset card with 2025-09-23 question revision notice
+    supports: [caveats]
+  - id: grader
+    url: https://raw.githubusercontent.com/Future-House/BixBench/main/grade_outputs.py
+    label: Grade entry point with answer-mode branches and input CSV overwrite
+    supports: [caveats]
+  - id: source-license
+    url: https://raw.githubusercontent.com/Future-House/BixBench/main/LICENSE
+    label: BixBench repository LICENSE
+    supports: []
+caveats:
+  - The dataset card documents revised questions and flattened rows in v1.5; results from v1.0 and v1.5 are not interchangeable.
+  - Agentic execution requires the configured container and model services; automated scripts can incur substantial API costs. No capsules, containers or trajectories were downloaded or executed here.
+  - The grader has distinct multiple-choice and open-answer branches and writes grading columns back into its input CSV. Use a working copy if following upstream instructions.
+  - Public evaluation questions are not designated model-training data by this entry. Dataset-card licence metadata does not settle every capsule's third-party terms.
+acknowledgements: []
+last_verified: "2026-09-09"

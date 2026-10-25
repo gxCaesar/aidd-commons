@@ -1,0 +1,176 @@
+---
+title: From computational evidence to a validation decision
+description: Turn an AIDD prediction into competing explanations, a discriminating observation, and a bounded next decision.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="candidate-nomination/evidence-to-validation" />
+<ScrollableRegions />
+
+## Before you start
+
+Read the [nomination introduction](/learn/candidate-nomination/capstone/) and
+[assay controls lesson](/learn/drug-discovery-foundations/assay-controls-dose-response/).
+This research-planning exercise teaches how to choose an observation that can
+change a claim. It is not an executable lab, wet-lab procedure, candidate
+nomination, or treatment recommendation. It needs no installation, data download,
+or GPU. All compounds, measurements and decisions in the worked case are invented.
+
+By the end, distinguish prediction, measurement, target engagement and mechanism;
+write competing explanations for a result; and specify how positive, negative
+and uninterpretable follow-up outcomes change the next decision.
+
+## Start with the decision, not the model score
+
+Suppose a model ranks compound B above A for a target-associated cellular endpoint.
+The immediate question is whether either compound merits mechanistic follow-up
+in a named cell context. It is not whether B is a drug candidate. A model score
+can prioritize a measurement only within its endpoint and applicability limits;
+it does not fill missing selectivity, exposure or safety fields.
+
+For an empirical example of that limitation, read the existing
+[cross-assay prediction failure case](/learn/evaluation-and-reproducibility/assay-shift-diagnosis/).
+Its failed transfer does not identify a biological cause, but prevents treating
+the primary-assay ranking as a generally reliable activity model. No new fit or
+selection using those exposed evaluation labels is part of this lesson.
+
+Write the proposed claim as a causal sentence: “B changes endpoint Y through
+target T in context C.” This makes three links visible: B reaches and engages T;
+changing T alters Y; and the measured signal represents Y in C. An attractive
+structure prediction or an endpoint correlation does not establish all three.
+
+## Give different observations different jobs
+
+The [SGC chemical-tools guidance](https://www.thesgc.org/chemical-tools) distinguishes
+target-directed chemical probes from broader chemical tool collections and
+emphasizes selectivity and suitable controls. A named probe is therefore a
+reagent with a defined evidence scope, not an automatic validation of every
+phenotype observed after its use.
+
+For our invented reporter-based case, consider three explanations that can coexist:
+
+| Explanation                                                  | Observation that would help distinguish it                                                                  | What that observation still cannot establish                               |
+| ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Target-related biology changes Y                             | A suitably validated target-engagement readout plus a biologically relevant, detection-independent endpoint | Engagement alone does not show that T mediates the phenotype               |
+| B changes the reporter or detection signal                   | A matched detection-interference control                                                                    | Interference does not rule out simultaneous biological activity            |
+| The total signal falls because fewer viable cells contribute | An independently validated viable-cell measurement aligned to the endpoint's timing                         | Cell loss does not identify its cause or establish therapeutic selectivity |
+
+An orthogonal assay asks about the intended biology through a different
+measurement method. A counterscreen asks about a competing source of signal.
+They are not interchangeable, and merely repeating the original assay is
+neither. Even orthogonal agreement does not by itself establish the intended
+mechanism. These distinctions follow the
+[Assay Guidance Manual discussion of reporter interference](https://www.ncbi.nlm.nih.gov/books/NBK374281/).
+
+Choose an orthogonal measurement whose own sensitivity, dynamic range and failure
+modes have been characterized for the question. An insensitive follow-up cannot
+turn a missing signal into evidence that the biology is absent. Likewise, a
+control compound must be informative in the tested context, not just carry a
+“negative control” label in a catalog.
+
+## Worked case: is the larger signal decrease more informative?
+
+Assume a teaching model in which total reporter signal `S = N × r`: `N` is the
+number of viable contributing cells and `r` is mean reporter signal per such
+cell. Assume linear detection, comparable background correction and matched
+sampling times. Normalize both columns independently to their vehicle values.
+These assumptions enable the arithmetic; they are not guaranteed in a real assay.
+
+| Invented condition | Relative total reporter signal | Relative viable-cell count |
+| ------------------ | -----------------------------: | -------------------------: |
+| Vehicle            |                            100 |                        100 |
+| A                  |                             72 |                         90 |
+| B                  |                             44 |                         55 |
+
+The raw signal decreases are 28% for A and 56% for B. Under the stated model,
+the relative per-cell signal is `(S / 100) / (N / 100)`. It is `0.72 / 0.90 = 0.80`
+for A and `0.44 / 0.55 = 0.80` for B. Thus the larger total decrease for B does
+not show a larger per-cell effect. The same calculation would hold without any
+target-specific mechanism at all.
+
+This is a counterexample to an inference, not a recommended normalization
+pipeline. Dividing by a noisy or treatment-dependent cell count can change the
+estimand and introduce its own problems. Do not post-hoc repair a failed endpoint
+with this ratio and report it as a prespecified result.
+
+### A bounded next decision
+
+The observed teaching pattern makes both a cell-number contribution and a
+per-cell signal change relevant. A useful proposed follow-up would pair a
+validated measurement of the intended endpoint using different detection with
+a context-matched detection-interference control, while retaining the cell-count
+information. Repeating only the model ranking would not distinguish the three
+explanations. If the original measurement system has not been validated, establish
+that first; this is not a universal order for every project.
+
+Before obtaining new outcomes, agree what each branch means:
+
+- If the independent endpoint is unchanged and the interference control reproduces
+  the signal change, do not use the original reporter as evidence of target-mediated
+  biology. Check that the independent measurement could have detected the proposed effect.
+- If the endpoint changes without the tested interference and without a corresponding
+  loss of viable cells, that supports a biological response. Target engagement and
+  a separate intervention that tests target dependence are still needed for the causal claim.
+- If controls fail or measurements disagree outside their characterized uncertainty,
+  retain the outcome as unresolved. It is neither a confirmed hit nor proof of inactivity.
+
+These are proposed interpretations, not observations from an experiment. Effect
+thresholds, precision, sample size, allocation and exclusion rules require the
+actual assay's validation data and a project-specific protocol. Do not manufacture
+them from the teaching table. Technical wells can characterize measurement
+variation, but cannot substitute for independent biological preparations.
+
+## Independent exercise
+
+In a second invented table, A has reporter signal 60 and viable-cell count 75;
+B has 72 and 90; C has 72 and 100. Vehicle remains 100 and 100. Under the same
+teaching assumptions, calculate all three relative per-cell signals. Can you
+nominate C? Write one next observation that could weaken its target-mediated
+interpretation, and distinguish “stop this interpretation” from “discard the compound.”
+
+<details data-worked-answer>
+<summary>Worked answer and decision limits</summary>
+
+A and B both give 0.80; C gives 0.72. C has the larger per-cell decrease in
+this constructed example, but there is still no evidence that the decrease
+represents the intended biology, involves T, is selective, or has useful exposure.
+The arithmetic therefore does not nominate C.
+
+For example, a valid interference control that reproduces C's signal change,
+together with an adequately sensitive orthogonal endpoint that does not change,
+would weaken the reporter-based target claim. It would not prove that C has no
+biological activity. Stop using that signal as mechanistic evidence; whether
+to characterize C further is a separate decision about the project's question
+and resources. Conversely, an independent endpoint response is not enough to
+declare T causal. State what engagement and target-dependence evidence is still missing.
+
+</details>
+
+## Inspect a real dossier's counterevidence
+
+The argument above is easier to accept than to practise, because the pressure is
+always to report the comparison that worked. This repository's own completed labs
+kept both. The
+[counterevidence dossier lab](/labs/counterevidence-dossier/) inventories six
+kinds of preserved counterevidence across those artifacts with one offline
+command, and recomputes the case where the model with the lowest error on one
+evaluation is several times the baseline error on the other.
+
+## A research meeting deliverable
+
+Prepare a one-page decision memo, not a composite “candidate quality” score.
+State the candidate, endpoint and context; separate measured quantities from
+predictions; name the leading alternative explanation; describe the discriminating
+measurement and its control; and predeclare the outcome that would change course.
+Keep unknown selectivity, exposure and safety visible rather than assigning zeros
+or favorable guesses. See the [PK/PD lesson](/learn/admet-pk/exposure-clearance-pkpd/)
+for why a concentration or potency number cannot replace an exposure argument.
+
+For a reader exercise, a complete answer connects each proposed observation to a
+decision and explains one remaining ambiguity. A list of assay names without
+those links is incomplete. This evaluates the written reasoning only; no learner
+outcomes or experimental validation have been collected here.
+
+Last reviewed: 2026-09-09.

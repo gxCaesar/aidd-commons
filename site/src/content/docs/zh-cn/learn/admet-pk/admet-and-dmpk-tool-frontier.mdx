@@ -1,0 +1,215 @@
+---
+title: ADMET 与 DMPK 工具前沿
+description: 把开放的 ADMET 与 DMPK 工具当作带日期的证据来读，看清每件产物提供什么、许可允许什么，以及记录在哪里停住。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="admet-pk/admet-and-dmpk-tool-frontier" />
+<ScrollableRegions />
+
+英文原文：[The ADMET and DMPK tool frontier](/learn/admet-pk/admet-and-dmpk-tool-frontier/)。
+
+译文更新：2026-10-23。
+
+## 学习目标与前置知识
+
+本轨道已经教过暴露、代谢与安全分别意味着什么。本阅读沿着同一条边界再往前走一步，走向把这些概念变成预测的开放工具，以及每一件已发布产物实际提供了什么。请先读[从代谢到安全性决策](/zh-cn/learn/admet-pk/metabolism-to-safety/)和[选择 ADMET 与 PK 资源](/zh-cn/learn/admet-pk/admet-resource-guide/)。这里不重复那两课，下文也不提供给药建议、法规解读或实验室方案。
+
+完成本课后，你应能：
+
+1. 说出本家族每个工具的输入输出契约；
+2. 说明记录关于表示、目标、训练与推理确立了什么、又没有确立什么；
+3. 读懂一条记录的七个开放度维度，并指出某个具体主张依赖其中哪一个；
+4. 把许可问题、访问问题与科学问题分开；
+5. 说明为什么一个公开的终点计数并不能确立预测是在像你手上那样的化合物上做出的；以及
+6. 说明在把两个工具并排之前，一项匹配比较需要具备什么。
+
+这项工作是一次阅读。本课没有安装、运行或复现任何工具，也没有产生任何预测。四条软件与平台记录最后核验于 2026-10-21，Therapeutics Data Commons 记录核验于 2026-09-04，Contrastive KERMT 记录核验于 2026-10-23。本页每一个数字都是这些记录陈述的数字。
+
+## 任务与输入输出契约
+
+本家族里有六件产物。它们接受的输入、返回的输出，以及留给读者自己完成的部分各不相同。
+
+| 产物 | 它作用于什么 | 输入 | 输出 |
+| --- | --- | --- | --- |
+| ADMET-AI | 一个小分子和一组 ADME 终点 | 分子结构 | 预测的 ADME 终点取值 |
+| ADMETlab | 一个小分子和一份 ADME 与毒性终点目录 | 分子结构 | 预测的理化、ADME 与毒性取值，以及 toxicophore 规则命中 |
+| Polaris | 一个数据集、一条基准划分和一个方法 | 一个方法和一个基准 | 针对某条由他人整理的划分所得的分数 |
+| Therapeutics Data Commons | 数据集、任务与基准 | 数据集名称 | 数据与划分，而不是预测 |
+| OpenADMET Models | 一个数据集、一套表示和一个训练例程 | 数据集与训练例程 | 仍需使用者自己去评估的预测器 |
+| Contrastive KERMT | 面向 ADMET 与 DMPK 任务的预训练分子表示 | 分子，以及用户用于微调的带标签终点数据 | 有待微调的骨干模型，而不是现成的终点预测 |
+
+[ADMET-AI](https://github.com/swansonk14/admet_ai) 是一个 Python 包、一个命令行工具和一个托管的网页服务，用在 Therapeutics Data Commons（TDC）数据集上训练的 Chemprop 模型预测 ADME 终点。Zenodo 上另有一个归档，存放 version 1 的 Chemprop 与 Chemprop-RDKit 模型、TDC ADMET 数据、RDKit 特征，以及五组基准划分文件。
+
+[ADMETlab](https://admetlab3.scbdd.com/) 是一个预测小分子理化、ADME 与毒性性质的网页平台。托管的 ADMETlab 3.0 服务基于 DMPNN 模型构建，网站把后者描述为 Directed Message Passing Neural Network 框架。另有一个仓库分发 2018 年论文所述的早期模型归档，以及在本地运行它们所需的代码，而该仓库的 README 并没有声明它实现了网站所服务的 3.0 版本。因此本地归档与服务是两件不同的产物，本地那些并不是服务所用的模型。
+
+[Polaris](https://github.com/polaris-hub/polaris) 是一个用于共享药物发现数据集与基准的托管平台，配有一个 Python 客户端库，可下载数据集、载入基准划分，并把一个方法拿到一个基准上评估。
+
+一个相关数据集 [ADME-Fang-v1](https://polarishub.io/datasets/biogen/adme-fang-v1) 是 Biogen 从 [Fang 等人的工业验证研究](https://doi.org/10.1021/acs.jcim.3c00160)发布的实验室 ADME 测量整理集。数据集页面在摘要栏报告 3,521 个数据点，而整理后报告 3,516 个分子，没有解释两项数字的差别。测量来自同一实验室团队在 20 个月内依照一致条件完成的工作，并非多站点测量。页面没有声明训练、验证或测试划分，已发布的[整理 notebook](https://raw.githubusercontent.com/polaris-hub/polaris-recipes/main/org-Biogen/fang2023_ADME/01_polaris_adme-fang_data_curation.ipynb)配置了分子整理、分布检查、异常值检测和立体异构体活性变化检测，却未定义基准划分。数据集按其声明的 CC BY 4.0 许可开放下载，但已打开页面没有将其声明为训练发布物或特定模型的划分，因此其训练数据维度仍为未核实。
+
+[Therapeutics Data Commons](https://tdcommons.ai/) 是官方的治疗机器学习任务、数据集与基准集合。它提供材料而不提供预测，并且是 ADMET-AI 的 README 点名的训练来源。
+
+[OpenADMET Models](https://github.com/OpenADMET/openadmet-models) 是一组模型实现与训练例程，用于构建、测试和原型化 ADMET 预测器。
+
+[Contrastive KERMT](/atlas/model-kermt/) 是 NVIDIA 用于分子表示学习的预训练图 Transformer 骨干模型。其[模型卡](https://huggingface.co/nvidia/NV-KERMT-70M-v2)说明，用户应当用自己的带标签数据集针对具体 ADMET 终点进行微调。该记录没有给出这个模型的任何 ADMET 预测。
+
+把它们分开的边界说出口很容易，丢掉却很容易。托管服务为你的分子返回一个取值。基准为你的方法在别人整理的划分上返回一个分数。工具包提供构建预测器的例程。数据集返回行。预训练骨干模型提供仍需针对终点微调的表示。这里只有服务返回的取值是对某个化合物的预测，而预测并不是测量。
+
+## 表示、目标、训练与推理
+
+较早的工具记录对第二个问题给出的答案很有限。Contrastive KERMT 的模型记录则更直接地描述了表示与预训练目标。
+
+**表示。** Contrastive KERMT 是一个由 GROVER 和 KERMT 衍生、拥有 70.6 million 个参数的图 Transformer。另一处明确的表示陈述是同一个包两个发行版之间的一处差别，因为 ADMET-AI 记录说 version 2 用 Chemprop v2 且不带 RDKit 指纹从头重训。归档中的 version 1 模型是用那些指纹构建的，归档也随附对应的特征。ADMETlab 记录点名的是一个框架而不是一套表示，OpenADMET Models 记录把架构标为 available 而没有在记录内部描述它。TDC 记录完全没有描述任何表示。
+
+**目标。** Contrastive KERMT 在无标签条件下以单一联合目标预训练，结合 SMILES 重建、批内对比区分以及化学特定的自监督任务。其他记录点名了终点，却没有陈述训练目标。终点是模型要预测的标签，而不是损失函数或优化目标；这些记录没有说明损失如何构成。
+
+**训练。** 训练的故事是本家族中最具体的一部分，而且它们的种类各不相同。ADMET-AI 的 README 点名 TDC ADMET 数据集为训练来源，归档随附该数据与划分文件，包内则带有一个 scripts 目录，记录把它当作训练代码、数据配方与评估代码的证据。ADMETlab 说明其模型训练于一个跨 77 个终点的 0.37M 条记录内部数据库，而该数据库、训练代码与模型定义都没有公开发布。OpenADMET Models 提供了训练例程，而数据配方、训练数据与按终点划分的数据来源都未确立。Contrastive KERMT 的模型卡描述了在约 11.1 million 个唯一规范化 SMILES 上进行 100 epochs 的无监督预训练。数据池以 ZINC15 和 ChEMBL 为基础，加入 Biogen ADMET、ExpansionRX 和 ChEMBL-MT，按规范化 SMILES 去重，并按骨架平衡训练与验证划分。该记录没有检查底层语料文件，预训练也没有专用测试数据集。
+
+**推理。** 在这里本家族分得很清楚。ADMET-AI 给读者一个包、一个命令行工具和一个托管服务。OpenADMET Models 给出推理代码与训练例程。Polaris 给出对方法打分的评估代码。ADMETlab 给出一个托管服务，而本地归档属于一个更早的发行版，它自己的 README 并不声称具备 3.0 的行为。Contrastive KERMT 提供预训练骨干模型的代码与权重，而不是现成的 ADMET 预测器。解码器建议的 SMILES 最大长度是 512 tokens；更长的结构应截断或省略。模型卡把 Linux 与 NVIDIA GPU 描述为部署目标。
+
+其中有一个后果贯穿始终。ADMET-AI 记录说明 version 2 的预测与归档中的 version 1 模型、与已发表论文中的模型都不完全一致，因此安装这个包的读者与下载归档的读者，跑的是两代不同的模型、受两套不同的许可约束。
+
+## 开放度与许可姿态
+
+每条记录都带同样的七个开放度维度，每个维度各自带自己的证据。写着 unverified 的格子表示没有就此作出主张，不表示该产物是封闭的。写着 not applicable 的格子表示该维度对这个产物根本不适用。
+
+| 维度 | [ADMET-AI](/atlas/tool-admet-ai/) | [ADMETlab](/atlas/tool-admetlab/) | [Polaris](/atlas/tool-polaris/) | [TDC](/atlas/benchmark-tdc/) | [OpenADMET Models](/atlas/tool-openadmet-models/) | [Contrastive KERMT](/atlas/model-kermt/) |
+| --- | --- | --- | --- | --- | --- | --- |
+| 访问级别 | open source | source available | open source | unverified | open source | open source |
+| 推理代码 | available | available | available | unverified | available | available |
+| 训练代码 | available | unverified | not applicable | unverified | available | available |
+| 权重 | available | available | unverified | unverified | unverified | available |
+| 架构 | available | unverified | unverified | unverified | available | available |
+| 数据配方 | available | unverified | unverified | unverified | unverified | available |
+| 训练数据 | available | unverified | unverified | unverified | unverified | available |
+| 评估代码 | available | unverified | available | unverified | unverified | unverified |
+
+ADMET-AI 是本家族中唯一一份七个维度全部确立的记录。仓库中的 MIT 许可文件覆盖包源码、随包附带的 version 2 Chemprop 检查点与随包附带的 CSV 数据文件，并且没有附加条件。Zenodo 记录上另有一份许可，覆盖所存的数据与模型归档，其中存放 version 1 的 Chemprop 与 Chemprop-RDKit 模型、TDC ADMET 数据、RDKit 特征以及 benchmark-group 划分，并要求向记录创建者署名。随包附带的 version 2 检查点除仓库的 MIT 文件外没有任何许可声明，而归档上的许可并不延伸到它们。
+
+Contrastive KERMT 的模型卡说明，源代码采用 Apache 2.0，权重采用 NVIDIA Open Model License。模型卡称该模型可用于商业或非商业用途。该记录没有查阅链接中的许可条款页面，因此这里没有确立权重许可的详细条款。尽管其余六个维度标为 available，评估代码维度仍为 unverified。
+
+TDC 那一列值得读两遍。那条记录的状态、访问级别与七个开放度维度全部保持未验证，而且完全没有登记任何许可。它同时又是 ADMET-AI 的 README 点名的训练来源，因此本家族中开放度最高的那条记录，靠的是一条什么都不主张的记录。这两件事并不矛盾，因为 ADMET-AI 自己的记录是分开确立训练数据的，依据是随归档一起发布的那批数据。TDC 记录留空的是这一集合自身的访问与许可地位，这与归档的许可是不同的问题。
+
+Polaris 恰好从相反方向回答了同一个问题。它的客户端库是 open source，训练代码维度写作 not applicable，因为一个负责下载划分并给方法打分的客户端并不训练模型。权重维度保持未验证，因为 Hub 的模型列表列出六个模型，却没有权重或检查点下载入口，也没有单个模型的许可。
+
+本家族里的许可问题不止一个，而其中两个的失效方式是读者必须知道的。
+
+ADMETlab 仓库的 LICENSE 文件是 GNU Affero General Public License v3，而那是该仓库中唯一的许可文件，同一仓库的 README 却为该软件及其关联数据和文档点名了 New BSD 许可。记录把两种说法都保留下来，并且不认定任何一种具有支配力，因此复用的实际条款是未验证的。这一冲突是被记录下来而不是被裁定的，读者需要向作者询问究竟哪一份说法管用。
+
+3.0 服务是另一个问题，而且更难。网站对预测服务没有声明任何许可，而它唯一的 LICENSE 链接指向一个并不存在的 GitHub 仓库路径，返回 HTTP 404。因此，关于服务的输出能否保留、发布或再分发，其条款是未验证的，读遍仓库的许可文件也回答不了这个问题。
+
+OpenADMET Models 的许可遇到的是同一类问题。该文件声明为 Apache License, Version 2.0，其中第 1 至 9 节完整，标准 Appendix 样板被截断，而 Appendix 处放着项目声明 "Copyright 2025 Open Molecular Software Foundation"，取代了通常放在那里的标准声明。同一仓库的 README 则声明该库以 MIT 开源许可提供。记录以许可文件为准，并保留这一冲突。该文件的范围覆盖仓库源码，不延伸到该项目使用的任何数据集、模型或依赖。
+
+Polaris 把这两件事分得最清楚，因此它是本家族中最清楚的案例。Apache-2.0 许可覆盖的是以 PyPI 上的 polaris-lib 和 conda-forge 上的 polaris 分发的 Python 客户端源码，并且只覆盖该客户端代码。它不授予使用、再分发或重新托管托管的 Polaris Platform 及其所服务的数据集、基准与模型的任何权利。托管服务由 Valence Labs 运营，受 2024 年 4 月 3 日最后更新的 Polaris Platform Agreement 约束，该协议以可撤销、非独占、不可转让且不可再许可的方式授权文档，且仅限于使用该平台，禁止再许可、出售、出租、出借、租赁或分发该平台及其知识产权，并禁止将其用于构建类似或竞争性的产品或服务。由另一位用户上传的数据集受该数据集随附许可的约束，若无随附许可，则默认只授予通过该平台使用、显示和执行它的权利，以及按 Valence Labs 允许的方式在平台上复现它的权利。
+
+## 记录不支持的比较
+
+在匹配协议下最强的相关比较，在这些记录里并不可得，其原因不是这些工具难以比较，而是这项比较从未被规定过。
+
+ADMET-AI 的归档随附五组基准划分文件，其 README 点名 TDC ADMET 数据集为训练来源。所打开的页面没有记录用于构建已发布基准划分的整理、筛选或划分规则。没有构建规则的划分无法被重新推导出来，而两条这样的划分上的两个分数不构成比较。
+
+Polaris 提供了做匹配比较的机制。它的客户端库载入基准划分并把一个方法拿到一个基准上评估，Hub 上列出数据集、基准、竞赛与模型。Hub 自己的整理指引是不完整的，因为小分子指引页面把 Data Curation 论文标为 Planned、把 Splitting Methods 论文标为 In Progress，因此没有可用的已发表整理规则或划分规则。模型页面列出六个模型，却没有权重或检查点下载，也没有单个模型的许可，因此权重维度保持未验证，就 Hub 目前的状态而言那些模型无法从中运行。
+
+在 ADMET-AI 内部，记录自己给出了一处比较。version 2 模型与归档中的 version 1 模型、与已发表论文中的模型并不完全一致。这是对一项已发布产物的实测陈述，也是本家族给出的唯一一处内部比较。
+
+Contrastive KERMT 的模型卡没有报告数值基准，无监督预训练也没有使用专用测试数据集。其经过骨架平衡的训练与验证划分用于预训练，不是终点评估。因此该记录既不提供 ADMET 预测，也不提供与 ADMET-AI、ADMETlab、Polaris 或 Therapeutics Data Commons 之间的排名。
+
+想要比较的读者必须自行补上记录所没有的那份协议。它需要一条划分及其公开的构建规则、一套带单位的终点定义、一个指标、两侧使用同一份权重，以及一个声明过的适用域。没有这些而给这个家族排名，是一项发明而不是一次阅读。
+
+## 实体、划分、指标与资源
+
+这些工具底下的实体就是本轨道的实体。一个训练化合物、一个带单位的标注终点、一条划分、一个指标和一个决策阈值，这些才是预测所指的对象。
+
+ADMET-AI 的记录提供了模型检查点、数据和划分文件。ADMETlab 的记录提供了一个跨 77 个终点、规模 0.37M 条记录的内部数据库，而它不公开该数据库。Polaris 的记录提供了受第三方许可约束的数据集与基准。TDC 记录提供了一个访问、许可与七个开放度维度全部未验证的集合。Contrastive KERMT 的记录点名了约 11.1 million 个唯一规范化 SMILES 构成的无标签预训练数据池，但没有来自该骨干模型的终点标签或预测。这就是读者必须面对的实体图景。
+
+ADMET-AI 点名了五组基准划分文件，却没有说明其构建规则，也没有附上指标。Contrastive KERMT 点名了无标签预训练所用的骨架平衡训练与验证划分，没有专用测试集，也没有数值基准。两者都没有为本家族提供匹配的终点指标。
+
+读者能够触及的资源是各个项目仓库、Zenodo 归档、托管服务、Hub 列表、Contrastive KERMT 的模型卡、权重和[代码仓库](https://github.com/NVIDIA-BioNeMo/KERMT)，以及两篇 ADMETlab 论文和 ADMET-AI 论文。支配它们的那条区分，正是记录一再作出的区分。一个已发表的基准划分不是下一个模型的训练集，而一份终点目录也不是这份目录曾从你的化学空间取过料的证据。
+
+## 检查了什么，运行了什么
+
+什么都没有运行。本课没有安装任何包、没有调用任何服务、没有载入任何模型、没有下载任何权重、也没有产生任何预测。上面的每一句陈述都读自那六条 Atlas 记录以及这些记录所引用的页面。
+
+每条记录都指明支撑它的页面，其中包括许可文件、README 文件、归档的模型与数据清单、平台条款、支撑较早维护状态主张的带日期提交历史，以及于 2026-10-23 核验的 Contrastive KERMT 模型卡。
+
+ADMET-AI 所见到的最近一次提交日期为 2026 年 2 月 22 日，该次提交把包版本升到 2.0.1。Polaris 客户端库所见到的最近一次提交日期为 2025 年 7 月 30 日，而托管服务仍在线，列出数据集、基准、竞赛与模型。ADMETlab 仓库所见到的最近一次提交是 2024 年 6 月 20 日，网站自述的最后更新是 2024 年 1 月 31 日。OpenADMET Models 仓库所见到的最近一次提交日期为 2026 年 10 月 13 日，发布页把 v0.2.0 列为最新标签。
+
+## 推导案例
+
+以下是一个**教学构造案例**。它把句子对着记录逐条审计，不是一次执行过的会话、一次基准运行，也不是一份法律意见。
+
+一个团队想为它的类似物系列写一页内部笔记，说明有哪些开放工具可用。什么都没有运行。这页笔记会有六句话。
+
+| 笔记会写的句子 | 判定 | 记录说了什么 |
+| --- | --- | --- |
+| ADMET-AI 用在 Therapeutics Data Commons 数据集上训练的 Chemprop 模型预测 ADME 终点，并发布推理代码、训练代码与权重。 | 成立 | 七个开放度维度全部确立。MIT 文件覆盖包源码、随包附带的 version 2 检查点与随包附带的 CSV 数据文件，Zenodo 上的归档则在另一份要求署名的许可下存放 version 1 模型、数据、特征与划分文件。 |
+| ADMETlab 3.0 在本家族中终点覆盖最广，有 34 个 ADME 终点、36 个毒性终点和 8 条 toxicophore 规则。 | 不成立 | 网站报告了后三个数字，同时另行报告可预测终点数从 88 升到 119，而其底层数据库跨 77 个终点，该页面并未把这些数字相互对账。工具之间的覆盖度排名同样不是记录所能承载的比较。 |
+| ADMETlab 的模型归档与服务输出可以在一份开放许可下再分发。 | 不成立 | 该仓库的条款在 AGPL-3.0 的 LICENSE 文件与 README 点名的 New BSD 许可之间存在冲突。3.0 服务没有声明任何许可，其唯一的 LICENSE 链接返回 HTTP 404。 |
+| Polaris 可以把我们的模型拿到已发表的划分上做基准，并与 Hub 上列出的模型并排。 | 不成立 | 客户端库能载入划分并评估一个方法，但 Hub 的整理规则与划分规则未发表，模型页面列出六个模型却没有权重或检查点下载，也没有单个模型的许可。 |
+| 我们模型背后的 Therapeutics Data Commons 数据集是开放许可且可复现的。 | 不成立 | 那条记录的状态、访问级别、七个开放度维度和全部许可字段都是未验证，且完全没有登记许可。ADMET-AI 自己的记录另行确立了训练数据，依据是随归档一起发布的那批数据，而已发布基准划分背后的整理、筛选与划分规则没有记录。 |
+| Contrastive KERMT 能直接从输入分子预测 ADMET 终点。 | 不成立 | 记录描述的是需要使用用户的带标签终点数据微调的预训练骨干模型。记录既没有预测，也没有数值基准。 |
+
+只有第一句话是记录所承载的。第二句是本课要防止的错误，因为一个宽泛的终点计数并不能说明预测是否是在像你手上那样的化合物上做出的。ADMETlab 的训练数据库没有公开，因此其预测成立的化学空间区域无法被检查，网站也没有把自己的终点数字相互对账。第三句与第四句把权限和功能混为一谈。第五句陈述了一条记录里并不存在的许可。第六句把表示骨干模型误当作终点预测器。
+
+## 这些材料没有展示什么
+
+这里没有确立这些工具中任何一个对任何化合物能准确预测某个终点，这里也没有把它们互相比较。记录里没有匹配协议、没有共同划分、没有共同指标，因此给这个家族排名会是一项发明而不是一项发现。
+
+记录也没有确立某个工具的预测可以迁移到像你手上那样的化合物上。一个公开的终点计数是服务能被要求返回什么的目录。适用域活在训练数据里。ADMETlab 的数据未公开，ADMET-AI 的数据发布时没有整理规则与划分规则，而 TDC 记录没有作出训练数据主张。OpenADMET Models 的数据不在覆盖其代码的许可范围内。Contrastive KERMT 记录所点名的预训练数据池没有经过文件检查，也没有带标签的终点评估，不能确立 ADMET 预测准确性。
+
+Contrastive KERMT 陈述了一套表示和一项预训练目标。其他记录没有陈述训练目标，其表示细节也没有超出 ADMET-AI 两个发行版之间的差别。KERMT 模型卡还提醒，预测是统计估计，在安全关键的决策中不能替代实验测量。
+
+时效性同样是有边界的。较早的软件记录说明它们所见到的最近一次提交日期，而 ADMETlab 的两个日期，即网站的 2024 年 1 月 31 日与仓库的 2024 年 6 月 20 日，是最限制关于该服务能说什么的那两个。一件已发布的产物是关于一个接口和一份许可的、带日期的陈述，而不是某个科学领域的固定属性。
+
+最后，本阅读是一次检查而不是一次执行。没有运行模型、没有下载权重、没有预测终点、也没有复现任何基准分数。想从这些工具里得到一个数字的读者，必须在自行声明的协议下运行它们，而本页不提供那个协议。
+
+## 独立练习
+
+一个项目为一份报告写下如下句子。
+
+> 我们用 ADMETlab 3.0 对我们的类似物系列按 ADMET 风险做了排序，该服务报告 34 个 ADME 终点、36 个毒性终点和 8 条 toxicophore 规则，我们还把结果与 Polaris Hub 上列出的模型做了对照。我们打算在开放许可下发布这则笔记和服务输出。
+
+仅用本家族的 Atlas 记录回答以下问题。
+
+1. 把这则笔记里的句子拆成科学主张、功能主张和权限主张，并指出记录支持其中哪一类。
+2. 说明终点计数确立了什么，以及它对笔记中那个化合物不能确立什么。
+3. 说出在发布任何东西之前，笔记必须回答的两个许可问题，并指出各由哪条记录回答。
+4. 说明在 ADMETlab 服务与 Hub 模型之间做一项匹配比较需要什么，并说明记录为何没有提供这些。
+5. 用记录支撑的表述把这则笔记改写为一句话。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+1. 科学主张是这一排序反映了 ADMET 风险，而记录完全不支持它。没有任何模型在声明过的协议下运行，ADMETlab 那 0.37M 条记录的内部训练数据库没有公开，服务预测成立的区域无法被检查，因此这个排序没有声明过的适用范围。功能主张是 ADMETlab 报告了所列的终点计数，并且 Hub 可以用来把结果与列出的模型对照。服务确实报告了那些数字，客户端库也确实能载入基准划分并把一个方法拿到一个基准上评估，但 Hub 的整理规则与划分规则未发表，模型页面列出六个模型却没有权重或检查点下载，也没有单个模型的许可，而且网站并未把自己的三个终点数字与 88 到 119 的数字、以及 77 个终点的数据库相互对账。权限主张是服务输出与这则笔记可以在一份开放许可下发布，而记录不支持它。3.0 网站对预测服务没有声明任何许可，其唯一的 LICENSE 链接返回 HTTP 404，因此保留与再分发服务输出的条款是未验证的。该仓库自身的条款则在 AGPL-3.0 的 LICENSE 文件与 README 点名的 New BSD 许可之间存在冲突。Polaris 的 Apache-2.0 许可只覆盖客户端代码，而平台协议限制再分发该平台以及将其用于竞争性服务。
+2. 终点计数确立了服务能被要求返回什么。它们是一份输出槽位的目录，而它们对预测是否在像笔记中那个化合物那样的化合物上做出什么也没说。这份信息活在训练数据里，而网站不公开它，也没有记录划分规则。一个能返回 34 个 ADME 终点和 36 个毒性终点的服务，可以被施加到一个位于其训练邻域之外的化合物上，而没有任何信号表明这件事发生过。
+3. 两个问题，由两条不同记录回答。服务输出的问题由 ADMETlab 3.0 网站回答，因为只有那里能声明预测服务的条款，而它并没有声明，因为它唯一的许可链接指向一个不存在的路径。模型归档的问题由 ADMETlab 仓库回答，那里的 LICENSE 文件与 README 互相矛盾，因此复用的实际条款同样未验证。关于 Hub 模型的另一个问题则仍然悬着，因为模型列表既没有下载入口也没有单个模型的许可。
+4. 匹配比较需要把同一个协议施加到两侧。它需要同一条划分及其公开的构建规则、同一个带单位的终点定义、同一个指标、两侧使用同一份权重，以及一个声明过的适用域。记录没有提供其中任何一项。ADMETlab 服务既不公开其 0.37M 条记录的训练数据库，也不公开模型定义，Hub 的整理指引标着 Planned 与 In Progress，Hub 的模型列表不提供检查点，Therapeutics Data Commons 记录既无许可也无开放度主张，而 ADMET-AI 自己的记录说明其 version 2 模型与其 version 1 模型及已发表论文并不完全一致。给这个家族排名会是一项发明。
+5. 一句站得住脚的话是这样。我们检查了本家族六件产物的记录，以及它们的许可文件、README、归档、平台条款与提交历史。ADMETlab 3.0 公开一份含 34 个 ADME 终点、36 个毒性终点与 8 条 toxicophore 规则的目录，其模型训练于一个它不予公开的内部数据库，而该网站并未把这些数字与它同样报告的 88 到 119 的数字、以及 77 个终点的数据库相互对账。该服务没有声明任何许可，其唯一的许可链接无法解析，而仓库的 LICENSE 文件与 README 点名了不同的许可，因此归档与服务输出的条款是未验证的。Polaris 客户端能载入划分并评估一个方法，但 Hub 的整理规则未发表，其模型列表不提供检查点。没有运行模型、没有预测终点，也不主张任何排序或基准分数。
+
+</details>
+
+## 来源与归属
+
+<div data-case-sources>
+
+- [ADMET-AI 仓库](https://github.com/swansonk14/admet_ai) 及其 [MIT 许可文件](https://raw.githubusercontent.com/swansonk14/admet_ai/main/LICENSE.txt)
+- [Zenodo 上的 ADMET-AI 数据与模型归档，记录 10372419，版本 v1.0.0](https://zenodo.org/records/10372419)
+- [ADMET-AI 论文，Bioinformatics 40(7), btae416](https://doi.org/10.1093/bioinformatics/btae416)
+- [ADMETlab 3.0 服务首页](https://admetlab3.scbdd.com/) 及其[许可链接目标](https://github.com/antwiser/ADMETlab-3.0/blob/main/LICENSE)
+- [ADMETlab 模型归档仓库](https://github.com/ifyoungnet/ADMETlab) 及其 [LICENSE 文件](https://raw.githubusercontent.com/ifyoungnet/ADMETlab/master/LICENSE)
+- [ADMETlab 2.0 论文，Nucleic Acids Research 49(W5), W5-W14, 2021](https://doi.org/10.1093/nar/gkab255)
+- [ADMETlab 论文，Journal of Cheminformatics 10, 29, 2018](https://doi.org/10.1186/s13321-018-0283-x)
+- [Polaris 仓库](https://github.com/polaris-hub/polaris) 及其 [Apache-2.0 许可文件](https://raw.githubusercontent.com/polaris-hub/polaris/main/LICENSE)
+- [Polaris Python 客户端文档](https://polaris-hub.github.io/polaris/stable/)
+- [Polaris Hub](https://polarishub.io/)、其[模型列表](https://polarishub.io/models)、其[小分子整理指引](https://polarishub.io/guidelines/small-molecules)，以及 [Polaris Platform Agreement 使用条款](https://polarishub.io/legal/terms-of-use)
+- [Therapeutics Data Commons](https://tdcommons.ai/) 及其[快速开始](https://tdcommons.ai/start/)
+- [OpenADMET Models 仓库](https://github.com/OpenADMET/openadmet-models) 及其 [LICENSE 文件](https://raw.githubusercontent.com/OpenADMET/openadmet-models/main/LICENSE)
+- [Contrastive KERMT 模型卡及权重](https://huggingface.co/nvidia/NV-KERMT-70M-v2)和[代码仓库](https://github.com/NVIDIA-BioNeMo/KERMT)
+
+</div>
+
+四条软件与平台记录最后核验于 2026-10-21，Therapeutics Data Commons 记录核验于 2026-09-04，Contrastive KERMT 记录核验于 2026-10-23。推导案例与练习均为构造。本页没有运行、复现或重新实现任何东西，也不主张任何预测。原创课程文字采用 CC BY 4.0；链接的来源保留各自条款。
+
+最后审阅：2026-10-23。

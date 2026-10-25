@@ -1,0 +1,56 @@
+---
+title: 生物学表示
+description: 按保留的信息比较分子、蛋白质、复合物、组学和图表示。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Biological representations](/learn/representations/biological-representations/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="representations/biological-representations" />
+
+## 基础
+
+SMILES、分子图、构象、序列、结构和相互作用图编码不同的对象，也丢弃不同的信息。
+[PCQM4Mv2](https://github.com/snap-stanford/ogb) 和
+[GEOM](https://github.com/learningmatter-mit/geom) 的记录说明，性质靶标和构象集合不是可
+互换的输入。
+
+## 实践工作流
+
+先询问测量可能依赖于什么。生成简单的 2D 指纹或描述符基线，再在不改变数据和划分规则
+的条件下将其与 3D 或序列模型比较。将构象生成和质子化选择保留为输入契约的一部分。
+
+继续阅读专门的[小分子表示](/zh-cn/learn/representations/small-molecule-representations/)
+章节，了解决策矩阵、冻结的数据契约和无标签可执行检查器。
+
+随后阅读[蛋白、复合物、细胞状态与知识图谱表示](/zh-cn/learn/representations/complex-cell-and-knowledge-graphs/)，
+手算掩码序列池化、姿态依赖接触图、计数归一化和带证据的图关系。
+该章包含完整构造案例和独立练习，不是新表示基准。
+
+## 评估
+
+检查一种表示是否无意中跨划分携带了靶点、骨架或时间信息。表示的维度或预训练规模
+不是独立评估单位。
+
+## 前沿与开放问题
+
+[ESM](https://github.com/facebookresearch/esm)、[ESM3](https://github.com/Biohub/esm) 和
+[ProtTrans](https://github.com/agemagician/ProtTrans) 等蛋白质语言模型带来了有用的迁移问题，
+但公开仓库的可见性不能确定权重或训练数据条款。
+
+## 本导论尚未教授的内容
+
+本概述不会在一个匹配的任务协议下对每种表示进行基准评测。专门的小分子章节定义了第一
+个 v0.2b 深度批次，但不声称有未运行的性能结果。
+
+## 核心来源路径
+
+检查 [Datamol](https://github.com/datamol-io/datamol)、
+[MolFeat](https://github.com/datamol-io/molfeat)、
+[Uni-Mol](https://github.com/deepmodeling/Uni-Mol) 和
+[Foldseek](https://github.com/steineggerlab/foldseek)，它们是互补工具。
+
+最后审阅：2026-09-05。

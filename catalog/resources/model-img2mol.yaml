@@ -1,0 +1,66 @@
+id: model-img2mol
+name: Img2Mol
+kind: model
+summary: Model that predicts a molecule from a picture of a chemical structure; the repository ships the inference implementation, two example notebooks and a downloadable checkpoint.
+canonical_url: https://github.com/bayer-science-for-a-better-life/Img2Mol
+identifiers:
+  - scheme: paper
+    value: "Img2Mol - accurate SMILES recognition from molecular graphical depictions; Chemical Science 12(42), 14174-14181 (2021); DOI 10.1039/D1SC01839F"
+    url: https://doi.org/10.1039/D1SC01839F
+  - scheme: model-weights
+    value: Img2Mol default model checkpoint model.ckpt, about 2.4 GB, hosted on Google Drive
+    url: https://drive.google.com/file/d/1pk21r4Zzb9ZJkszJwP9SObTlfTaRMMtF/view
+stages: [data-intake, representation-learning]
+modalities: [small-molecule, molecular-graph]
+tasks: [chemical-identity-resolution, molecular-representation-learning]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [repository-tree] }
+  training_code: { value: not_available, evidence: [repository-tree] }
+  weights: { value: available, evidence: [readme] }
+  architecture: { value: available, evidence: [repository-tree] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: not_available, evidence: [repository-tree] }
+licenses:
+  - name: Apache-2.0
+    scope: Repository source only; the LICENSE file is the Apache License 2.0 text with the appendix copyright line "Copyright 2021 Machine Learning Research @ Bayer AG".
+    evidence: [license]
+  - name: CC BY-NC 4.0
+    scope: The trained parameters only; the README states the Img2Mol parameters are made available for non-commercial use only under the Creative Commons Attribution-NonCommercial 4.0 International licence, so the downloaded checkpoint cannot be used commercially even though the code around it is Apache-2.0.
+    evidence: [readme]
+evidence:
+  - id: repository
+    url: https://github.com/bayer-science-for-a-better-life/Img2Mol
+    label: Img2Mol repository page, reviewed 2026-10-21
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/bayer-science-for-a-better-life/Img2Mol/main/README.md
+    label: Img2Mol README, reviewed 2026-10-21
+    supports: [summary, identifiers, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/bayer-science-for-a-better-life/Img2Mol/main/LICENSE
+    label: Img2Mol Apache-2.0 licence file, reviewed 2026-10-21
+    supports: []
+  - id: repository-tree
+    url: https://api.github.com/repos/bayer-science-for-a-better-life/Img2Mol/git/trees/main?recursive=1
+    label: Img2Mol repository file tree, reviewed 2026-10-21
+    supports: []
+  - id: benchmark-data
+    url: https://raw.githubusercontent.com/bayer-science-for-a-better-life/Img2Mol/main/benchmark_data/README.md
+    label: Img2Mol benchmark data description, reviewed 2026-10-21
+    supports: [caveats]
+  - id: crossref
+    url: https://api.crossref.org/works/10.1039/D1SC01839F
+    label: Crossref metadata for the Img2Mol paper, reviewed 2026-10-21
+    supports: [identifiers]
+caveats:
+  - 'No training entry point ships in this repository: the complete file tree holds the inference modules, two example notebooks, a checkpoint download script, the environment files and the benchmark maps, so the README phrase "for training and inference" is not matched by a runnable training script.'
+  - No evaluation script ships either; the repository supplies the benchmark collections and their image-to-SMILES maps instead.
+  - The README names no training corpus. The benchmark collections are described in benchmark_data/README.md with sizes and rendering libraries, but that document covers the evaluation collections and not the data the released weights were trained on.
+  - The benchmark archives and the checkpoint are hosted on Google Drive, and the collections obtained from earlier work are credited without a licence statement in the opened pages.
+  - The non-commercial restriction on the checkpoint appears only in the README; the LICENSE file covers the source and states nothing about the parameters.
+acknowledgements: []
+last_verified: "2026-10-21"

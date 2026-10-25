@@ -1,0 +1,126 @@
+---
+title: Your first session
+description: Follow a small label-free exercise, find its output, and interpret a completed predictive comparison.
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<ScrollableRegions />
+<LessonProgress lessonId="foundations/first-session" />
+
+For a sustained course, open the [core and specialist curriculum map](/learn/foundations/curriculum-map/).
+It separates available teaching from planned units. The short session below
+remains an orientation; its three background options are not complete courses.
+
+For the first training sequence, follow [records to a modelling table](/learn/data-governance/records-to-model-table/)
+→ [baseline fitting](/learn/machine-learning/baseline-training-validation/)
+→ [regression and classification errors](/learn/qsar-properties/regression-classification-errors/)
+→ [the independent student sandbox](/learn/machine-learning/student-modelling-sandbox/).
+That optional sequence uses invented data to teach fitting, not a new assay study.
+
+For hands-on practice, follow the [notebook route](/labs/notebook-guide/):
+label-free representations → synthetic fitting → measured lipophilicity.
+Each stage has self-contained English/Chinese notebooks for Colab upload or local
+Jupyter. The logD notebook completed one local real-data CPU run; actual Colab
+execution remains unverified. This optional sequence is separate from the
+no-account, no-training orientation below.
+
+## Choose a route
+
+You need basic chemistry vocabulary and, for the optional command-line step,
+the ability to open a terminal and change folders. No GPU, account, activity
+dataset, or model training is needed for this session.
+
+- **Foundations:** read the example relationships and explain which molecular
+  distinctions each representation keeps. You can do this entirely in the browser.
+- **Research:** follow the same example, then compare the two completed ChEMBL
+  evaluations. Identify why a primary-test winner is not a universal winner.
+- **Engineering:** also run the seven-example inspector locally and compare
+  its JSON output with the documented relationships.
+
+Start with [what representations preserve and discard](/learn/representations/small-molecule-representations/).
+Use the [18-track map](/) to explore other subjects after this session.
+
+## Optional local setup
+
+Use a source checkout or extracted source package. The **repository root** is
+the folder containing `pyproject.toml`, `package.json`, and `labs/`. Open your
+terminal in that folder. Reading the website does not require installing the
+website's Node.js dependencies.
+
+For the Python example, use Python 3.11 and
+[uv's official installation instructions](https://docs.astral.sh/uv/getting-started/installation/).
+Check that the command is available, then create the project environment:
+
+```sh
+uv --version
+uv sync --python 3.11
+```
+
+The first sync downloads the declared dependencies; it does not download a
+scientific dataset or run a model. The pins are in `pyproject.toml`. A clean
+source package may not include a lockfile, so complete transitive dependency
+identity across installations is not promised. If installation fails, keep the
+error message and continue with the browser-only route.
+
+If `uv` is not found, install it using its official instructions and open a new
+terminal. If the project file cannot be found, change to the repository root.
+Do not run the ChEMBL or rMD17 download, pretest, or evaluation commands for
+this first session.
+
+## Run one small example
+
+[Run the label-free inspector](/labs/molecule-representation-inspector/) for
+the full input contract and expected relationships. The minimal command is:
+
+```sh
+uv run python labs/molecule_representations/run_lab.py inspect
+```
+
+The terminal prints `Representation report written:` followed by the output
+path. Open `tmp/molecule-representations/report.json` in a text editor. Expect
+seven molecule records plus a software and representation contract. This
+output contains computed representations, not measured activity labels or
+predictive scores. The example can be rerun; it is not a locked evaluation.
+
+## Check your understanding
+
+Locate the two pyridine records, the two defined alanine enantiomers, and the
+sodium-acetate record. Answer before reading the worked answer:
+
+1. Do different input strings always mean different molecules?
+2. Which stored representation collapses the alanine stereochemical distinction?
+3. Does the salt record become a single neutral molecule?
+
+<details>
+  <summary>Worked answer and completion criteria</summary>
+
+The two pyridine strings produce the same RDKit canonical isomeric SMILES and
+InChIKey. The two defined alanine enantiomers retain different isomeric SMILES
+and InChIKeys, but their non-isomeric SMILES coincide. Sodium acetate retains
+two disconnected components; the inspector does not select or neutralize a
+parent fragment.
+
+A complete answer names the relevant output fields and one limitation:
+toolkit-scoped identity agreement does not establish protonation, a binding
+pose, potency, or biological equivalence.
+
+</details>
+
+## Read an observed result without rerunning it
+
+[Read the completed ChEMBL comparison](/labs/chembl-egfr-representation-baselines/#chembl-locked-title).
+Compare Morgan Ridge with descriptor Ridge on **both** evaluation sets. Do
+not select a new alpha or representation after seeing these results.
+
+Your final note should name the winner in each set, the ranking reversal,
+and the earlier shared-label exposure from T15. Those observations prevent an
+untouched-independent-confirmation claim. Use the lab's worked answers to
+check your interpretation.
+
+For a different example, read [rMD17 system-level results](/labs/rmd17-system-state-energy-baselines/)
+or the [retrospective experiment-budget campaign](/labs/pool-budget-campaign/).
+They are completed teaching evidence, not prerequisites for this session.
+
+First-session sources last reviewed: 2026-09-08. Curriculum navigation updated: 2026-09-09.

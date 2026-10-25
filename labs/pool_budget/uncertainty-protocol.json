@@ -1,0 +1,38 @@
+{
+  "schema_version": "aidd-commons.pool-budget-uncertainty-protocol.v1",
+  "protocol_id": "chembl37-egfr-pool-budget-uncertainty-v1",
+  "issued_on": "2026-09-11",
+  "protocol_role": "A new one-time acquisition-policy arm under the same real partition, budget, representation and scoring rules the completed chembl37-egfr-pool-budget-v1 campaign already used. It does not read, write, retune or reselect anything the completed campaign wrote, and it adds no new source query, filter, split, or entity rule of its own.",
+  "frozen_reference": {
+    "path": "labs/pool_budget/real-protocol.json",
+    "protocol_id": "chembl37-egfr-pool-budget-v1",
+    "inherits_unchanged": [
+      "the frozen T05 source contract (labs/chembl_egfr/protocol.json)",
+      "the 10/70/20 whole-group partition rule and its tie order",
+      "the four-round budget of floor(pool/20) parents per round",
+      "the frozen 2048-bit radius-2 Morgan representation with chirality, bond types and ring membership",
+      "the ceil(pool/10) top-decile target definition and the recovery-AUC formula",
+      "the fixed Ridge(alpha=1.0, fit_intercept=True, solver='lsqr', tol=1e-8, max_iter=10000) evaluation model"
+    ],
+    "does_not_reuse": "build_plan in pool_budget_campaign.py, which is specific to the MaxMin and five fixed-seed random policies already completed; this protocol computes its own plan from the same public utility functions instead."
+  },
+  "new_policy": {
+    "name": "ensemble-variance-uncertainty",
+    "declared_before_running": true,
+    "label_access": "Unlike MaxMin, this selector is not label-blind. At each of the four rounds it may read the labels of the initial parents and every parent this same run has already acquired in an earlier round. It never reads a pool label before this run has acquired it, and it never reads any evaluation-partition label before every round's picks are finalized and closed.",
+    "acquisition_rule": "At each round, split the current training rows (initial plus everything acquired so far) into 5 deterministic contiguous folds by stable sort order, with no random state anywhere. Fit one fixed Ridge model per fold on the other folds, predict every remaining pool parent with all fold models, and rank candidates by the variance (ddof=1) of those predictions across folds, ties broken by the smallest global row index. Acquire that round's fixed batch size from the top of that ranking.",
+    "calibration_disclosure": "Ensemble variance is used only as a ranking signal for acquisition order. This protocol does not check whether it is a calibrated predictive interval (for example, by interval-coverage on held-out labels), and the lesson states that boundary explicitly."
+  },
+  "output_contract": {
+    "directory": "labs/pool_budget/uncertainty-results/",
+    "note": "A separate directory from the completed campaign's labs/pool_budget/results/. Nothing in this protocol's execution reads or writes a file under that other directory.",
+    "one_time_marker": "uncertainty-locked-evaluation.started.json",
+    "metrics_file": "uncertainty-locked-metrics.json",
+    "details_file": "uncertainty-locked-details.json"
+  },
+  "interpretation_and_scope": [
+    "This is one deterministic run of one new acquisition policy under the same real, previously frozen partition as the six already-completed policies. It is not a sweep, a tuning search, or a comparison across alternative fold counts or ensemble sizes.",
+    "T15 exposed labels shared with T05 before T05's own evaluation, as the sibling real protocol already states; this run inherits that same exposure and is retrospective teaching only, not label-unseen discovery.",
+    "No confidence interval, p value, or claim of prospective acquisition performance is reported."
+  ]
+}

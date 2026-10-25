@@ -1,0 +1,689 @@
+{
+  "admitted_measurement_count": 486,
+  "admitted_point_row_count": 488,
+  "cohort": {
+    "declared_seed_count": 15,
+    "resolved_parent_count": 10
+  },
+  "compounds_with_empty_family": [
+    {
+      "missing_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL109",
+      "pref_name": "VALPROIC ACID",
+      "present_named_family_count": 1
+    },
+    {
+      "missing_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL1144",
+      "pref_name": "PRAVASTATIN",
+      "present_named_family_count": 1
+    },
+    {
+      "missing_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL13829",
+      "pref_name": "MIXTURE OF MMC AND TA",
+      "present_named_family_count": 1
+    },
+    {
+      "missing_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL23393",
+      "pref_name": "SODIUM LAURYL SULFATE",
+      "present_named_family_count": 1
+    },
+    {
+      "missing_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL25",
+      "pref_name": "ASPIRIN",
+      "present_named_family_count": 1
+    },
+    {
+      "missing_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL275835",
+      "pref_name": "DARBUFELONE",
+      "present_named_family_count": 1
+    },
+    {
+      "missing_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL441",
+      "pref_name": "THIOPENTAL",
+      "present_named_family_count": 1
+    },
+    {
+      "missing_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL588",
+      "pref_name": "FENOLDOPAM",
+      "present_named_family_count": 1
+    },
+    {
+      "missing_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL593",
+      "pref_name": "DELAVIRDINE",
+      "present_named_family_count": 1
+    },
+    {
+      "missing_families": [
+        "efficacy",
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL906",
+      "pref_name": "MINOXIDIL SULFATE",
+      "present_named_family_count": 0
+    }
+  ],
+  "computed_on": "2026-10-23",
+  "families": {
+    "efficacy": {
+      "compounds_without_measurement_count": 1,
+      "distinct_assay_count": 459,
+      "distinct_document_count": 208,
+      "independent_measurement_count": 462,
+      "interquartile_range": 9839.5,
+      "median": 1885.0,
+      "q1": 160.5,
+      "q3": 10000.0,
+      "unit": "nM"
+    },
+    "exposure": {
+      "compounds_without_measurement_count": 10,
+      "distinct_assay_count": 0,
+      "distinct_document_count": 0,
+      "independent_measurement_count": 0,
+      "interquartile_range": null,
+      "median": null,
+      "q1": null,
+      "q3": null,
+      "unit": "nM"
+    },
+    "other": {
+      "compounds_without_measurement_count": 6,
+      "distinct_assay_count": 24,
+      "distinct_document_count": 14,
+      "independent_measurement_count": 24,
+      "interquartile_range": 6970.0325,
+      "median": 1600.0,
+      "q1": 38.87,
+      "q3": 7008.9025,
+      "unit": "nM"
+    },
+    "toxicity": {
+      "compounds_without_measurement_count": 10,
+      "distinct_assay_count": 0,
+      "distinct_document_count": 0,
+      "independent_measurement_count": 0,
+      "interquartile_range": null,
+      "median": null,
+      "q1": null,
+      "q3": null,
+      "unit": "nM"
+    }
+  },
+  "per_compound_coverage": [
+    {
+      "families": {
+        "efficacy": {
+          "distinct_assay_count": 27,
+          "distinct_document_count": 15,
+          "independent_measurement_count": 27,
+          "interquartile_range": 51440.0,
+          "median": 11730.0,
+          "q1": 4660.0,
+          "q3": 56100.0,
+          "unit": "nM"
+        },
+        "exposure": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "other": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "toxicity": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        }
+      },
+      "missing_named_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL109",
+      "pref_name": "VALPROIC ACID",
+      "present_named_families": [
+        "efficacy"
+      ]
+    },
+    {
+      "families": {
+        "efficacy": {
+          "distinct_assay_count": 33,
+          "distinct_document_count": 16,
+          "independent_measurement_count": 33,
+          "interquartile_range": 5071.0,
+          "median": 329.0,
+          "q1": 29.0,
+          "q3": 5100.0,
+          "unit": "nM"
+        },
+        "exposure": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "other": {
+          "distinct_assay_count": 3,
+          "distinct_document_count": 2,
+          "independent_measurement_count": 3,
+          "interquartile_range": 26800.0,
+          "median": 52000.0,
+          "q1": 27700.0,
+          "q3": 54500.0,
+          "unit": "nM"
+        },
+        "toxicity": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        }
+      },
+      "missing_named_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL1144",
+      "pref_name": "PRAVASTATIN",
+      "present_named_families": [
+        "efficacy"
+      ]
+    },
+    {
+      "families": {
+        "efficacy": {
+          "distinct_assay_count": 1,
+          "distinct_document_count": 1,
+          "independent_measurement_count": 1,
+          "interquartile_range": 0.0,
+          "median": 1600.0,
+          "q1": 1600.0,
+          "q3": 1600.0,
+          "unit": "nM"
+        },
+        "exposure": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "other": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "toxicity": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        }
+      },
+      "missing_named_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL13829",
+      "pref_name": "MIXTURE OF MMC AND TA",
+      "present_named_families": [
+        "efficacy"
+      ]
+    },
+    {
+      "families": {
+        "efficacy": {
+          "distinct_assay_count": 3,
+          "distinct_document_count": 2,
+          "independent_measurement_count": 3,
+          "interquartile_range": 2749.889,
+          "median": 2300.0,
+          "q1": 1150.111,
+          "q3": 3900.0,
+          "unit": "nM"
+        },
+        "exposure": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "other": {
+          "distinct_assay_count": 1,
+          "distinct_document_count": 1,
+          "independent_measurement_count": 1,
+          "interquartile_range": 0.0,
+          "median": 2000.0,
+          "q1": 2000.0,
+          "q3": 2000.0,
+          "unit": "nM"
+        },
+        "toxicity": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        }
+      },
+      "missing_named_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL23393",
+      "pref_name": "SODIUM LAURYL SULFATE",
+      "present_named_families": [
+        "efficacy"
+      ]
+    },
+    {
+      "families": {
+        "efficacy": {
+          "distinct_assay_count": 98,
+          "distinct_document_count": 71,
+          "independent_measurement_count": 98,
+          "interquartile_range": 39485.0,
+          "median": 20935.0,
+          "q1": 5515.0,
+          "q3": 45000.0,
+          "unit": "nM"
+        },
+        "exposure": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "other": {
+          "distinct_assay_count": 5,
+          "distinct_document_count": 4,
+          "independent_measurement_count": 5,
+          "interquartile_range": 51000.0,
+          "median": 27900.0,
+          "q1": 1000.0,
+          "q3": 52000.0,
+          "unit": "nM"
+        },
+        "toxicity": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        }
+      },
+      "missing_named_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL25",
+      "pref_name": "ASPIRIN",
+      "present_named_families": [
+        "efficacy"
+      ]
+    },
+    {
+      "families": {
+        "efficacy": {
+          "distinct_assay_count": 12,
+          "distinct_document_count": 5,
+          "independent_measurement_count": 12,
+          "interquartile_range": 557.5,
+          "median": 605.0,
+          "q1": 320.0,
+          "q3": 877.5,
+          "unit": "nM"
+        },
+        "exposure": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "other": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "toxicity": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        }
+      },
+      "missing_named_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL275835",
+      "pref_name": "DARBUFELONE",
+      "present_named_families": [
+        "efficacy"
+      ]
+    },
+    {
+      "families": {
+        "efficacy": {
+          "distinct_assay_count": 2,
+          "distinct_document_count": 2,
+          "independent_measurement_count": 2,
+          "interquartile_range": 14610.0,
+          "median": 14890.0,
+          "q1": 7585.0,
+          "q3": 22195.0,
+          "unit": "nM"
+        },
+        "exposure": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "other": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "toxicity": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        }
+      },
+      "missing_named_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL441",
+      "pref_name": "THIOPENTAL",
+      "present_named_families": [
+        "efficacy"
+      ]
+    },
+    {
+      "families": {
+        "efficacy": {
+          "distinct_assay_count": 36,
+          "distinct_document_count": 11,
+          "independent_measurement_count": 36,
+          "interquartile_range": 7543.949999999999,
+          "median": 1369.3,
+          "q1": 121.22500000000001,
+          "q3": 7665.174999999999,
+          "unit": "nM"
+        },
+        "exposure": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "other": {
+          "distinct_assay_count": 15,
+          "distinct_document_count": 7,
+          "independent_measurement_count": 15,
+          "interquartile_range": 1878.26,
+          "median": 790.0,
+          "q1": 31.74,
+          "q3": 1910.0,
+          "unit": "nM"
+        },
+        "toxicity": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        }
+      },
+      "missing_named_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL588",
+      "pref_name": "FENOLDOPAM",
+      "present_named_families": [
+        "efficacy"
+      ]
+    },
+    {
+      "families": {
+        "efficacy": {
+          "distinct_assay_count": 250,
+          "distinct_document_count": 90,
+          "independent_measurement_count": 250,
+          "interquartile_range": 2440.0,
+          "median": 761.5,
+          "q1": 70.0,
+          "q3": 2510.0,
+          "unit": "nM"
+        },
+        "exposure": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "other": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "toxicity": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        }
+      },
+      "missing_named_families": [
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL593",
+      "pref_name": "DELAVIRDINE",
+      "present_named_families": [
+        "efficacy"
+      ]
+    },
+    {
+      "families": {
+        "efficacy": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "exposure": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "other": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        },
+        "toxicity": {
+          "distinct_assay_count": 0,
+          "distinct_document_count": 0,
+          "independent_measurement_count": 0,
+          "interquartile_range": null,
+          "median": null,
+          "q1": null,
+          "q3": null,
+          "unit": "nM"
+        }
+      },
+      "missing_named_families": [
+        "efficacy",
+        "toxicity",
+        "exposure"
+      ],
+      "parent_molecule_chembl_id": "CHEMBL906",
+      "pref_name": "MINOXIDIL SULFATE",
+      "present_named_families": []
+    }
+  ],
+  "protocol_id": "chembl37-multi-endpoint-tradeoff-v1",
+  "schema_version": "aidd-commons.multi-endpoint-tradeoff-summary.v1",
+  "software": {
+    "numpy": "2.4.6",
+    "python": "3.11.15",
+    "rdkit": "2025.09.6"
+  },
+  "source": {
+    "database": "ChEMBL_37"
+  }
+}

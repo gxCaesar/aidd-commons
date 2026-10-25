@@ -1,0 +1,62 @@
+id: dataset-chembl-activity
+name: ChEMBL activity records
+kind: dataset
+summary: The activity table of the ChEMBL database, one row per reported measurement, carrying the value and its relation, the standard type and units, the assay, the document, the target and the entity the row was filed under.
+canonical_url: https://www.ebi.ac.uk/chembl/api/data/activity.json
+identifiers:
+  - scheme: api-endpoint
+    value: activity.json
+    url: https://www.ebi.ac.uk/chembl/api/data/activity.json
+  - scheme: chembl-table
+    value: activities
+    url: https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/schema_documentation.txt
+stages: [target-discovery, hit-discovery, lead-optimization]
+modalities: [bioactivity, small-molecule]
+tasks: [bioactivity-retrieval, measurement-count-audit]
+relations:
+  - type: surfaced-by
+    target: db-chembl-37
+status: { value: active, evidence: [chembl-37-status-endpoint] }
+access_level: { value: source_available, evidence: [chembl-37-release-licence, chembl-37-release-readme] }
+openness:
+  inference_code: { value: not_applicable, evidence: [chembl-37-release-directory] }
+  training_code: { value: not_applicable, evidence: [chembl-37-release-directory] }
+  weights: { value: not_applicable, evidence: [chembl-37-release-directory] }
+  architecture: { value: not_applicable, evidence: [chembl-37-release-directory] }
+  data_recipe: { value: unverified }
+  training_data: { value: available, evidence: [chembl-37-release-directory] }
+  evaluation_code: { value: not_applicable, evidence: [chembl-37-release-directory] }
+licenses:
+  - name: Creative Commons Attribution-ShareAlike 3.0 Unported
+    scope: The ChEMBL 37 activity records and the activity data files of the release. It does not cover the code of this repository, lesson prose, or any model, weight or derivative dataset built from the records.
+    evidence: [chembl-37-release-licence, chembl-37-release-readme]
+evidence:
+  - id: chembl-37-release-directory
+    url: https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/
+    label: ChEMBL 37 release directory listing, fetched 2026-10-21
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, relations, caveats]
+  - id: chembl-37-status-endpoint
+    url: https://www.ebi.ac.uk/chembl/api/data/status.json
+    label: ChEMBL REST status endpoint, fetched 2026-10-21, reporting chembl_db_version ChEMBL_37, chembl_release_date 2026-05-01 and status UP
+    supports: [identifiers, caveats]
+  - id: chembl-37-release-licence
+    url: https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE
+    label: "ChEMBL 37 release LICENSE file, read directly 2026-10-21: Creative Commons Attribution-ShareAlike 3.0 Unported"
+    supports: [caveats]
+  - id: chembl-37-release-readme
+    url: https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README
+    label: ChEMBL 37 release README, read directly 2026-10-21, naming the licence and the required attribution wording
+    supports: [summary, caveats]
+  - id: chembl-37-schema-documentation
+    url: https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/schema_documentation.txt
+    label: ChEMBL 37 schema documentation, fetched 2026-10-21, defining the activities and assays tables
+    supports: [summary, caveats]
+caveats:
+  - One activity row is one reported value, not one independent measurement. A row carries the entity it was filed under (parent_molecule_chembl_id) separately from the form that was tested (molecule_chembl_id), so a salt formulation of a compound appears as its own molecule with its own rows, and ChEMBL's entity curation is not consistent about whether a counterion is stripped.
+  - A row with a relation of ">" or "<" is a bound rather than a value, and a row with no relation symbol at all carries a number whose constraint is unstated. The number of rows is therefore not the number of measurements.
+  - The REST activity endpoint does not carry the assay organism or the assay confidence score; both live on the assay record and have to be fetched separately to be read.
+  - The release directory ships data files, chemical representations and schema documentation. It ships no inference implementation, no training code, no model weights and no evaluation harness, so those four dimensions are recorded as not applicable rather than as open. The curation recipe that turns a deposited paper into a standard_type row is not published as a runnable artefact in this release, so data_recipe is left unverified.
+  - "The bulk artefacts of this release are large: the SQLite dump is 5,764,252,857 bytes, the MySQL dump 2,101,694,224 bytes, the PostgreSQL dump 2,088,889,426 bytes and the SDF 931,156,420 bytes, all measured from the release directory on 2026-10-21. The SDF carries structures only."
+  - ChEMBL's own schema documentation states that POTENTIAL_DUPLICATE set to zero does not guarantee that a measurement is novel or independent, and that a data_validity_comment records a curator's judgement about the value rather than a correction of it.
+acknowledgements: []
+last_verified: "2026-10-21"

@@ -1,0 +1,33 @@
+id: alpha-resource
+name: Alpha Resource
+kind: fixture
+summary: Local fixture whose filename is intentionally not its ID order.
+canonical_url: https://example.org/alpha-resource
+identifiers: []
+stages: [discovery]
+modalities: [small-molecule]
+tasks: [catalog-testing]
+relations:
+  - type: relates-to
+    target: zeta-resource
+status:
+  value: unverified
+access_level:
+  value: unverified
+openness:
+  inference_code: { value: available, evidence: [fixture-source] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: fixture-source
+    url: https://example.org/alpha-resource/source
+    label: Local fixture source
+    supports: [name, kind, summary, stages, modalities, tasks, relations]
+caveats: []
+acknowledgements: []
+last_verified: "2026-09-04"

@@ -1,0 +1,58 @@
+---
+title: From disease mechanism to target
+description: Form target hypotheses from disease, causal, and perturbational evidence without collapsing correlation into causation.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="mechanism-targets/disease-to-target" />
+
+## Foundations
+
+A target hypothesis should connect disease context, molecular mechanism,
+perturbation, and an intervention that can be tested. The
+[DepMap portal](https://depmap.org/portal/), [Reactome](https://reactome.org/),
+and [BioGRID](https://thebiogrid.org/) provide different evidence types; no one
+source makes a causal claim complete.
+
+## Practical workflow
+
+Specify the target decision unit: a gene, a protein complex, a pathway node, or
+a biomarker-defined subgroup. Keep the sample provenance, perturbation design,
+and endpoint attached. Use a traceable evidence table before applying any
+ranking model.
+
+## Evaluation
+
+Look for cohort, donor, lineage, and temporal leakage. Correlated dependency
+and expression signals can agree while still failing to predict intervention
+response. The cheapest falsifier is an orthogonal perturbation or assay rather
+than another model score.
+
+## Frontier and open questions
+
+Biomedical language models such as [BioGPT](https://github.com/microsoft/BioGPT)
+may help retrieve hypotheses, but retrieval quality cannot turn unsupported
+text into causal evidence.
+
+## What v0.1 does not yet teach
+
+v0.1 does not provide disease-specific target nominations or restricted patient
+data workflows.
+
+## Continue with genetic and perturbation evidence
+
+Start by writing down the disease state a hypothesis is about. [Define the disease
+state before the target](/learn/mechanism-targets/disease-state-definition/) works
+one randomised trial through six fields. The [genetic-evidence lesson](/learn/mechanism-targets/genetics-to-target-evidence/)
+works through fine mapping, colocalization and instrumental-variable assumptions.
+Then compare [perturbation across contexts](/learn/mechanism-targets/perturbation-context-generalization/).
+Neither association nor transferred prediction is a complete causal target validation.
+
+## Core-source path
+
+Trace a pathway in [Reactome](https://reactome.org/), inspect interactions in
+[BioGRID](https://thebiogrid.org/), and use the target-to-candidate lesson's
+explicit failure gates.
+
+Last reviewed: 2026-09-04.

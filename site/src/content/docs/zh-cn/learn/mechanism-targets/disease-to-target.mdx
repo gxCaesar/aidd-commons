@@ -1,0 +1,52 @@
+---
+title: 从疾病机制到靶点
+description: 在不将相关性等同于因果性的前提下，从疾病、因果和扰动证据形成靶点假设。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[From disease mechanism to target](/learn/mechanism-targets/disease-to-target/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="mechanism-targets/disease-to-target" />
+
+## 基础
+
+一个靶点假设应连接疾病语境、分子机制、扰动和能够检验的干预。
+[DepMap portal](https://depmap.org/portal/)、[Reactome](https://reactome.org/) 和
+[BioGRID](https://thebiogrid.org/) 提供不同类型的证据；没有任何一个来源能使因果主张完整。
+
+## 实践工作流
+
+明确靶点决策单位：一个基因、一个蛋白质复合物、一个通路节点，或一个以生物标志物
+定义的亚组。保持样本溯源、扰动设计和终点相连。在应用任何排序模型之前，先使用可追溯
+的证据表。
+
+## 评估
+
+寻找队列、供体、谱系和时间泄漏。相关的依赖性和表达信号可能一致，却仍不能预测干预
+反应。最廉价的证伪器是正交扰动或测定，而不是另一个模型评分。
+
+## 前沿与开放问题
+
+[BioGPT](https://github.com/microsoft/BioGPT) 等生物医学语言模型可能有助于检索假设，
+但检索质量不能将未支持的文本转化为因果证据。
+
+## v0.1 尚未教授的内容
+
+v0.1 不提供疾病特异的靶点提名或受限患者数据工作流。
+
+## 继续学习遗传与扰动证据
+
+先写下一个假设所针对的疾病状态。[先定义疾病状态，再谈靶点](/zh-cn/learn/mechanism-targets/disease-state-definition/)
+用六个字段推演了一项随机试验。[遗传证据课程](/zh-cn/learn/mechanism-targets/genetics-to-target-evidence/)通过案例解释
+精细定位、共定位和工具变量假设，再比较[跨语境扰动预测](/zh-cn/learn/mechanism-targets/perturbation-context-generalization/)。
+关联和迁移预测都不是完整的因果靶点验证。
+
+## 核心来源路径
+
+在 [Reactome](https://reactome.org/) 中追踪一条通路，在
+[BioGRID](https://thebiogrid.org/) 中检查相互作用，并使用靶点至候选项课程的明确失败关口。
+
+最后审阅：2026-09-04。

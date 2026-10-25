@@ -1,0 +1,224 @@
+---
+title: ChEMBL 37 EGFR 表示基线
+description: 一项冻结的描述符与指纹比较，分别呈现开发、主要评估和失败的检测迁移证据。
+---
+
+import ChemblPretestPanel from "../../../../components/ChemblPretestPanel.astro";
+import ChemblLockedPanel from "../../../../components/ChemblLockedPanel.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="chembl-egfr" />
+
+## 运行之前
+
+默认模式是阅读已完成实证结果，查看面板无需安装或下载。下方开发与独立复现命令具有各自的数据和输出契约，不是在作者源码中随意修改的学生练习。不要使用这些测试标签选择新模型。独立拟合练习见[学生沙箱](/zh-cn/learn/machine-learning/student-modelling-sandbox/)。入口说明更新：2026-09-09，原协议和结果不变。
+
+[阅读英文规范原文](/labs/chembl-egfr-representation-baselines/)。
+
+本中文译文日期：2026-09-08。
+
+本实验将一次表示选择转化为可审计的科学比较。相同的分子、终点、划分、线性模型家族、正则化网格和指标均保持固定。只有输入表示发生变化。公开证据现在包括已完成的主要评估和复现评估。开发快照与这些结果分开保留。
+
+以下结果面板保留为英文规范表格。
+
+<div lang="en">
+  <ChemblPretestPanel />
+</div>
+
+<div lang="en">
+  <ChemblLockedPanel />
+</div>
+
+## 学习目标
+
+完成实验后，你应能够：
+
+1. 将检测 API 记录转化为明确的终点和实体契约；
+2. 说明为什么行、母体分子和 scaffold 是不同单位；
+3. 拟合描述符预处理，且不泄漏验证或保留数据；
+4. 在匹配的 Ridge 协议下比较固定描述符和指纹；
+5. 将开发证据与主要评估和检测层面复现分开；
+6. 识别重复标签噪声和在冻结网格边界上选出的超参数。
+
+推荐的前置课程是[数据契约](/zh-cn/learn/data-governance/data-contracts/)、[科学机器学习](/zh-cn/learn/machine-learning/scientific-computing/)和[小分子表示](/zh-cn/learn/representations/small-molecule-representations/)。
+
+## 来源和终点契约
+
+来源是官方 ChEMBL 37 REST API。在构建任何特征之前，检查发布状态、检测元数据、活性筛选条件和预期计数。这个在线终点是有时间边界的便利措施：当服务版本超过 ChEMBL 37 时，下载器会失败关闭。
+
+| 字段       | 冻结值                                                  |
+| ---------- | ------------------------------------------------------- |
+| 数据库     | ChEMBL 37，发布于 2026-05-01                            |
+| 主要检测   | `CHEMBL5736995`，人类 EGFR 结合，单蛋白，置信度 9       |
+| 复现检测   | `CHEMBL3705421`，人类野生型 EGFR 结合，单蛋白，置信度 9 |
+| 靶标       | `CHEMBL203`                                             |
+| 终点       | 精确 IC50，`standard_flag=1`，`potential_duplicate=0`   |
+| 单位       | nM，与 `pchembl_value` 交叉核对                         |
+| 有效性规则 | 没有 `data_validity_comment`；结构和标签均非空          |
+
+检查 `pChEMBL = 9 - log10(IC50 in nM)` 会以记录在 `protocol.json` 中的冻结 0.011 pChEMBL 容差执行。这会在建模前捕捉单位或字段不一致。两个检测共享同一靶标，但它们仍然是不同的实验来源。因此，第二个检测是迁移检查，而非额外训练数据。
+
+## 实体和标签契约
+
+针对主要检测的 API 查询返回 975 行。九行缺少可用结构，剩下 966 个精确且有效的行。这些行折叠为 902 个母体分子。所有保留行已经将被检测分子标识为其母体，因此可以使用记录的结构，无需第二次查询母体结构。
+
+当一个母体有重复的合格测量时，冻结标签是其 `pchembl_value` 的中位数。这一规则在开发前已声明。它并不声称重复值可互换：
+
+- 57 个主要母体有不止一个保留测量；
+- 它们的母体内 pChEMBL 范围中位数为 0.48；
+- 观察到的最大范围为 3.60。
+
+这些不一致揭示了实质性的检测噪声和整理限制。它们被保留并汇总，而不是在看到模型残差后删除。
+
+复现查询贡献 173 行和 170 个母体分子。其中有三个重复母体，与主要检测不存在母体分子重叠。
+
+## 冻结表示
+
+三个基线共享相同的训练和验证分子。
+
+### 训练均值
+
+训练标签的均值会重复用于每个预测。它检查表示模型是否在开发切片上优于仅含目标的常数。其 Spearman 相关性按构造未定义，存储为 `null`，状态为 `undefined_constant_prediction`。
+
+### Descriptor Ridge
+
+描述符向量包含来自 RDKit 2025.09.6 的 214 个具名 RDKit 2D 描述符。排除 `FpDensityMorgan1`、`FpDensityMorgan2` 和 `FpDensityMorgan3`，因此描述符分支不包含指纹密度摘要。
+
+缺失值使用训练列中位数插补。对每个训练分子都缺失的列赋值为零。插补后的列用训练均值中心化，并除以训练总体标准差；零尺度用一替代。没有验证、主要保留或复现分子对这些统计量作出贡献。
+
+### Morgan Ridge
+
+指纹为一个 RDKit 二元 `ExplicitBitVect`，半径为 2，长度为 2,048 bits。启用手性、键类型和环成员资格。禁用计数模拟。该 bit 向量没有数据拟合的预处理。
+
+两种表示模型均使用带截距的 Ridge，`solver="lsqr"`、`tol=1e-8` 和 `max_iter=10000`。冻结 alpha 网格为：
+
+```text
+0.001, 0.01, 0.1, 1, 10, 100, 1000
+```
+
+最小验证 MAE 选择 alpha；精确并列时选择较小值。选出的仅训练集模型不会在训练集加验证集上重新拟合。
+执行 v1.1 澄清（2026-09-08）允许对原始仅训练集开发拟合进行一次确定性重放。完整重建的预检必须与保存的证据精确匹配，包括所选 alpha 和验证预测。随后将这些相同模型对象用于两项锁定评估；不从锁定结果中作出新选择。原始协议和开发摘要将保留，澄清内容位于 `labs/chembl_egfr/execution-amendment.json`。
+
+## Scaffold 划分
+
+独立分组单位是考虑手性的 RDKit Bemis-Murcko scaffold。无环分子会获得显式键 `acyclic:<canonical isomeric SMILES>`，而不是共享一个空 scaffold。
+
+scaffold 组按分子计数降序，再按 scaffold 字符串排序。完整组依次填充训练、验证和主要保留分区。名义目标和实现计数为：
+
+| 分区     | 目标计数 | 实现计数 | 用途                 |
+| -------- | -------: | -------: | -------------------- |
+| 训练     |      631 |      634 | 拟合预处理和所有模型 |
+| 验证     |      135 |      136 | 选择两个 Ridge alpha |
+| 主要锁定 |      136 |      132 | 已完成的一次性评估   |
+
+由于一个 scaffold 组绝不会为达到精确百分比而被拆分，这种不匹配是预期的。全部 902 个母体分子恰好各出现一次，且没有 scaffold 键跨越分区。主要检测含有 238 个考虑手性的 scaffold 组；复现检测含有 23 个。
+
+这种构造是一项严格的结构分组规则，而非证明保留分子代表每一种真实前瞻性分布偏移。
+
+## 仅开发观察
+
+开发预检针对冻结网格运行了一次。以下数值适用于验证 scaffold，仅保留以记录模型选择。
+
+| 基线             | 所选 alpha | 验证 MAE | 验证 RMSE | 验证 Spearman |
+| ---------------- | ---------: | -------: | --------: | ------------: |
+| 训练均值         |          — | 0.508710 |  0.642329 |        `null` |
+| Descriptor Ridge |       1000 | 0.446681 |  0.608036 |      0.363916 |
+| Morgan Ridge     |          1 | 0.372864 |  0.520720 |      0.649509 |
+
+在这个冻结开发划分中，Morgan Ridge 的验证误差较低。这个观察选择开发配置；它并不确立任一锁定评估上的优越性。描述符 alpha 位于已声明网格的上边界。现在扩展网格将是结果知情的重新调参，因此网格保持不变，边界选择是一项已声明的局限。
+
+## 运行实验
+
+若要在新的工作区复现，请从仓库根目录同步固定环境并下载经过版本检查的来源快照：
+
+```sh
+uv sync --group dev
+env UV_CACHE_DIR=.cache/uv uv run python labs/chembl_egfr/run_lab.py download
+```
+
+在该新工作区中运行开发路径：
+
+```sh
+env UV_CACHE_DIR=.cache/uv uv run python labs/chembl_egfr/run_lab.py pretest
+```
+
+请勿在已完成的作者工作区重复这些命令。其一次性状态会阻止另一次预检或评估。交付的开发和锁定摘要可以在不拟合或下载任何内容的情况下检查。
+
+对于长期来源恢复，请使用官方版本化的 [ChEMBL 37 release directory](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/)。它将 `chembl_37_sqlite.tar.gz` 数据库归档与发布 README、说明、模式文档和许可证一同保留。在拟合前，从 `protocol.json` 重建两个检测查询，并要求每个冻结计数都匹配。当前 CLI 尚未自动化归档导入；不要通过静默使用较新的 ChEMBL 版本来绕过在线发布版本不匹配。
+
+公开的 `development-summary.json` 仅为聚合数据。本地执行可在 `labs/chembl_egfr/results/` 下创建更丰富的工件，并在 `.cache/chembl_egfr/` 下创建缓存的 ChEMBL 响应；两个目录均不属于经整理的公开工件。
+
+在解释输出前阅读 `labs/chembl_egfr/protocol.json`。显式描述符注册表很重要，因为当软件版本添加、移除或重新排序函数时，“RDKit descriptors”可能变化。
+
+## 已完成的评估和剩余边界
+
+主要 scaffold 测试和检测层面复现均为 `completed`。公开的 `labs/chembl_egfr/locked-summary.json` 包含配对运行中每个基线和指标。它不替代 `development-summary.json`。
+
+受保护的 `evaluate-locked` 操作有意与 `pretest` 分开。它在一次已确认调用中评估两个表面，且不重新调参。一次性的本地标记保持原位；不要移除它或重复运行。
+
+这是程序性锁定，不是关于公开 ChEMBL 标签是秘密的主张。开发路径会解析所有记录以执行来源、实体、计数和 scaffold 契约，但只有训练和验证记录会进入已拟合模型或开发指标路径。T15 在 T05 评估之前访问了共享标签。这种暴露已披露：此结果不是完全未触及的独立确认性测试。暴露后未重新调整划分、网格或所选 alpha。
+
+请将三项事实分开：基于验证的选择、主要 scaffold 性能，以及向第二个检测的迁移。Morgan 优于主要均值基线，但在复现中严重失败。Descriptor Ridge 在复现 MAE 上最佳。这并不确立普遍更优的表示，也不确立迁移失败的因果解释。
+
+如要从已完成的本地结果重新生成聚合，请使用 `uv run python labs/chembl_egfr/export_locked_summary.py`。这只导出现有分数；它不运行评估或重建模型。
+
+## 练习
+
+1. **契约追踪。**从 `protocol.json` 选取五个字段，并在 Python 实现中定位执行每一个字段的精确断言。
+2. **分组审计。**检查保存的开发划分，并说明为什么 70/15/15 目标会变为 634/136/132，而不将该差异称为随机误差。
+3. **噪声审计。**比较重复母体标签范围的中位数和最大值。说明这种变异削弱哪些性能主张。
+4. **表示反例。**构造一对分子，其中考虑手性和忽略手性的指纹在科学含义上不同。不要假定该检测必须分辨这种差异。
+5. **边界诊断。**说明 Descriptor Ridge 选择 alpha 1000 的三种可能原因。提出未来预注册的敏感性分析，不修改本冻结运行。
+6. **评估备忘录。**使用已完成分数比较主要和复现 MAE。保持每个基线和两个结果可见，并说明较早的 T15 标签访问如何限制解释。
+
+<details>
+<summary>参考答案和评估标准</summary>
+
+1. 一条有效的五字段追踪使用 `data.validate_chembl_status` 处理发布，使用 `data._exclusion_reason` 处理 `standard_flag`，并使用 `data.normalise_activity_rows` 处理 nM 单位、0.011 pChEMBL 一致性容差，以及分子与母体 ID 的相等性。这些函数位于 `labs/src/aidd_commons/chembl_egfr/data.py`。得分要求给出执行分支和一个具体被拒绝的输入，而不只是常数声明。
+2. 完整 scaffold 组不能被划分以精确填充目标。实现计数之和为 902，且保持组不相交。正确答案会检查两种性质，并区分名义目标和实际计数；为了得到精确百分比而改变成员资格不是可接受的修复。
+3. 重复母体范围的中位数为 0.48 pChEMBL，最大值为 3.60。这些是母体内重复范围，不是 MAE 的测量下界，也不是删除母体的理由。得分要求保留这一差异。
+4. `F[C@H](Cl)Br` 和 `F[C@@H](Cl)Br` 编码相反的四面体构型。忽略立体化学的视图会移除这一差异；考虑手性的输入可以保留它。正确答案不会仅由表示差异推断检测活性不同。
+5. 强正则化可能由相关描述符、弱信号或有噪声的开发标签所偏好；这些是假设，而非已确立的原因。有效的未来研究会在观察结果前声明新网格、预算、选择规则和新的评估数据。它不会扩展本次运行的网格。
+6. Morgan 的主要 MAE 最低但复现 MAE 最高，而 Descriptor Ridge 的复现 MAE 最低。一份合格备忘录包括全部三个基线、132 个主要和 170 个复现母体、未改变的 alpha、T15 共享标签暴露，以及没有合并或普遍优胜者主张。
+
+</details>
+
+## 局限和失败闸门
+
+- 一个主要检测和一个复现检测并不能全面覆盖 EGFR 化学、实验形式、突变状态或实验室。
+- pChEMBL 一致性检查不能移除所有检测、整理或化学身份错误。
+- 中位数聚合将重复测量的分布从模型中隐藏，同时摘要保留其不一致。
+- 考虑手性的 scaffold 是由实现定义的分组启发式方法，不保证前瞻性新颖性。
+- 固定 Ridge 基线在一个线性目标下衡量一种表示。它们并未穷尽任一表示可达到的价值。
+- 所选描述符超参数位于网格边界。
+- 验证差异不是不确定性估计，也不支持一般表示排名。
+- 公开标签使一次性锁定成为可审计的工作流纪律，而非密码学盲化。
+
+如果来源元数据或冻结计数变化、一个母体映射到不一致结构、划分组重叠、任何学习式变换看到非训练 ID、预测非有限，或锁定操作似乎之前已启动，应停止并调查。不要通过悄悄修改预期计数来修复科学契约不匹配。
+
+## 研究进阶
+
+使用[跨测定预测失效案例](/zh-cn/learn/evaluation-and-reproducibility/assay-shift-diagnosis/)，
+从这些已完成结果构建诊断备忘录。它不增加评估运行，也不把迁移失败转化为已确立的原因解释。
+
+## 来源和署名
+
+- [ChEMBL 37 release README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README)
+  和[版本化 SQLite 归档](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/chembl_37_sqlite.tar.gz)
+  以及[许可证](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)
+  确立 ChEMBL 数据库内容的版本、发布日期、署名要求和 CC BY-SA
+  3.0 条款。
+- [CHEMBL5736995](https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5736995.json)
+  和 [CHEMBL3705421](https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3705421.json) 的官方 ChEMBL 记录确立检测身份和上下文。
+- Rogers and Hahn, [Extended-connectivity fingerprints](https://doi.org/10.1021/ci100050t)，
+  _Journal of Chemical Information and Modeling_ (2010)。
+- Bemis and Murcko, [The properties of known drugs. 1. Molecular frameworks](https://pubmed.ncbi.nlm.nih.gov/8709122/)，
+  _Journal of Medicinal Chemistry_ (1996)。
+- [RDKit documentation](https://www.rdkit.org/docs/) 记录软件操作；协议固定此处使用的确切注册表和参数。
+
+ChEMBL 数据仍受其来源条款约束。AIDD Commons 在此实验中不再分发原始 ChEMBL 活性表。原创实验代码采用 Apache-2.0，原创课程文字采用 CC BY 4.0。
+
+最后审阅：2026-09-08。

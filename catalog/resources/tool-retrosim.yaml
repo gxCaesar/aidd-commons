@@ -1,0 +1,37 @@
+id: tool-retrosim
+name: RetroSim
+kind: software
+summary: Template-based retrosynthesis baseline repository.
+canonical_url: https://github.com/connorcoley/retrosim
+identifiers: []
+stages: [make, evaluation]
+modalities: [reaction, small-molecule]
+tasks: [retrosynthesis-planning]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license-file] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: not_applicable, evidence: [repository] }
+  weights: { value: not_applicable, evidence: [repository] }
+  architecture: { value: not_applicable, evidence: [repository] }
+  data_recipe: { value: not_applicable, evidence: [repository] }
+  training_data: { value: not_applicable, evidence: [repository] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: covers the source code in the repository, per the repository's LICENSE file, which states no narrower scope
+    evidence: [license-file]
+evidence:
+  - id: repository
+    url: https://github.com/connorcoley/retrosim
+    label: RetroSim repository
+    supports: [caveats, kind, modalities, name, stages, summary, tasks]
+  - id: license-file
+    url: https://raw.githubusercontent.com/connorcoley/retrosim/HEAD/LICENSE
+    label: Repository LICENSE file (reviewed 2026-10-23)
+    supports: []
+caveats:
+  - The repository holds a classical implementation rather than a trained model, so the dimensions that describe training a model do not apply to it; the code was not run.
+acknowledgements: []
+last_verified: "2026-10-23"

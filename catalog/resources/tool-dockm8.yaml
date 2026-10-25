@@ -1,0 +1,55 @@
+id: tool-dockm8
+name: DockM8
+kind: software
+summary: Open-source platform for consensus virtual screening that puts pocket detection, ligand preparation, docking, rescoring and consensus ranking into one modular workflow, offering five docking engines, seventeen pose-selection methods, seventeen scoring functions and five consensus methods through both a graphical interface and a Python interface.
+canonical_url: https://github.com/DrugBud-Suite/DockM8
+identifiers:
+  - scheme: paper
+    value: "DockM8: an all-in-one open-source platform for consensus virtual screening in drug design; Journal of Cheminformatics 18, article 4260794, published 18 September 2026, DOI 10.1186/s13321-026-01287-2"
+    url: https://doi.org/10.1186/s13321-026-01287-2
+  - scheme: code
+    value: "DockM8 source repository, DrugBud-Suite/DockM8"
+    url: https://github.com/DrugBud-Suite/DockM8
+stages: [hit-discovery]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [virtual-screening, docking, consensus-scoring, pose-selection]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [dockm8-license] }
+openness:
+  inference_code: { value: available, evidence: [dockm8-repository] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: available, evidence: [dockm8-paper] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: available, evidence: [dockm8-repository] }
+licenses:
+  - name: "GPL-3.0"
+    scope: "The repository carries a GPL 3.0 licence file and identifies itself as GPL-3.0 licensed, and the paper states that DockM8 is freely available under the GNU General Public License. The grant covers the platform's source. The licences of the docking engines and scoring functions it calls are their own."
+    evidence: [dockm8-license, dockm8-paper]
+  - name: "CC BY 4.0"
+    scope: "The article is published under a Creative Commons Attribution licence, recorded here for the paper rather than for the software."
+    evidence: [dockm8-paper]
+evidence:
+  - id: dockm8-paper
+    url: https://doi.org/10.1186/s13321-026-01287-2
+    label: The DockM8 paper (reviewed 2026-10-24)
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: dockm8-repository
+    url: https://github.com/DrugBud-Suite/DockM8
+    label: DockM8 repository (reviewed 2026-10-24)
+    supports: [caveats]
+  - id: dockm8-license
+    url: https://github.com/DrugBud-Suite/DockM8/blob/main/LICENSE
+    label: DockM8 GNU General Public Licence file (reviewed 2026-10-24)
+    supports: [caveats]
+caveats:
+  - "The paper's own evaluation reports median relative enrichments of 100 percent on DEKOIS 2.0, 82.59 percent on DUD-E and 8.85 percent on Lit-PCBA. Those are the paper's reported figures and not a measurement this project made."
+  - "The paper states that no pose-selection or consensus strategy excels universally and that workflows have to be tailored to the target. A reader who takes the best number from the evaluation and applies it to an unrelated target is using the number the paper warns against."
+  - "The paper describes DockM8 as, in its own words, the most comprehensive open-source platform to integrate the complete consensus structure-based virtual screening pipeline, and it reports over 55 million configurable protocols. That is the paper's characterisation of its own scope, and this record does not turn it into an independent comparison of platforms."
+  - "The repository's analysis directory is described as carrying the download and extraction scripts, the analysis pipeline and committed literature baselines, and as sufficient to reproduce all figures from the paper. The record did not run them. The repository also states that DockM8 runs on Linux only, with Python 3.10 on Ubuntu 22.04."
+  - "The record establishes the platform's scope and its licence. It does not establish that any pose a reader obtains is correct, and no docking was run here."
+  - "The evaluation used DEKOIS 2.0, DUD-E and Lit-PCBA. The last of them is a benchmark this project already carries a record for, and the record does not compare DockM8's enrichment on it with any other platform's."
+acknowledgements: []
+last_verified: "2026-10-24"

@@ -1,0 +1,219 @@
+---
+title: rMD17 system-state energy baselines
+description: A completed rMD17 teaching lab with separate development and paired evaluation results, per-system models, and explicit evidence limits.
+---
+
+import Rmd17DevelopmentPanel from "../../../components/Rmd17DevelopmentPanel.astro";
+import Rmd17LockedPanel from "../../../components/Rmd17LockedPanel.astro";
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="rmd17" />
+
+## Before you run
+
+Default mode: read the completed energy comparison and its limitations; the
+panels require no local fitting. Fresh development/reproduction uses the named
+data and output directories below in a separate reader checkout. It is not a
+new locked evaluation or permission to alter the author's results. For editable
+CPU fitting, use the [student sandbox](/learn/machine-learning/student-modelling-sandbox/).
+Entry guidance updated: 2026-09-09; no scientific values changed.
+
+This worked lab separates the preserved development exercise from the completed
+paired evaluation. It keeps the data contract, selection rule, and the
+limitations of within-system evaluation visible alongside the scores.
+
+<Rmd17DevelopmentPanel />
+
+<Rmd17LockedPanel />
+
+## Learning objectives
+
+After completing this lab, you should be able to:
+
+1. distinguish validation-based model selection from completed evaluation;
+2. trace a molecular system state into a normalized pair-distance histogram;
+3. explain why different element compositions legitimately produce different
+   feature dimensions;
+4. fit a separate within-system baseline while selecting one shared
+   regularisation value from validation evidence;
+5. recognize original-index ordering as a time-correlation challenge rather
+   than an independence guarantee; and
+6. state why descriptive development evidence cannot establish cross-system
+   generalization or a SOTA claim.
+
+## Source and schema contract
+
+The source is the revised MD17 v4 release on
+[Figshare](https://doi.org/10.6084/m9.figshare.12672038.v4), with the source
+paper identified by its [published DOI](https://doi.org/10.1088/2632-2153/abba6f).
+The machine-readable contract is `labs/rmd17_system_state/protocol.json` and
+the public numerical authorities are the separate reviewed
+`labs/rmd17_system_state/development-summary.json` and `locked-summary.json`.
+
+The local NPZ schema requires nuclear charges, coordinates, energies, forces,
+and original-index fields. The teaching model may use only `nuclear_charges`
+and `coords` as features, and `energies` as the target. Forces and historical
+arrays are validated for schema integrity but are not feature inputs or
+targets. This prevents an apparently convenient array from changing the
+scientific question silently.
+
+## System-state variables
+
+Each row is a molecular configuration belonging to one named system. The
+system state consists of atom identities and coordinates. Those inputs define
+which unordered element-pair channels exist, then each channel becomes a
+distance histogram normalized by its fixed atom-pair count. A channel that is
+absent from one molecule need not exist in another molecule's feature vector.
+
+This is why the panel reports layouts per system rather than pretending that
+the same column space is shared across molecules with different compositions.
+It is a representation contract, not a cross-molecule transfer model.
+
+## Sampling and split
+
+The frozen procedure stably sorts frames by original index, samples the
+declared ranks, and assigns contiguous portions of that selected order to
+training, validation, and within-system evaluation. The panel is the
+numerical authority for the split timeline and the aggregate spacing
+diagnostics.
+
+Original-index ordering preserves an ordering cue. Molecular-dynamics frames
+remain correlated in time, so an ordered split gives an inspectable dependence
+challenge but does not remove time correlation or turn configurations into
+independent biological or chemical replicates.
+
+The five source-provided train/test CSV pairs are not used here. The source
+record describes them as split-index files but does not identify those indices
+as a temporal order, document their mapping to the version-4 NPZ rows, or make
+them independent molecular-system units. They cannot substitute silently for
+this lab's declared `old_indices` procedure.
+
+## Feature and model contract
+
+The feature builder uses lexicographic unordered element pairs, fixed
+distance-bin edges, an overflow bin, and per-channel normalization. Within a
+given system, the same channel layout must hold across training, validation,
+and evaluation partitions. Across systems, layout differences are expected and
+checked rather than rejected.
+
+For each system, the control repeats its training-energy mean. The learned arm
+fits a train-only scaler, centers training energies, and fits Ridge with the
+frozen alpha grid. Validation MAE from each development system contributes a
+scalar to the shared selection rule. The selected alpha is shared; fitted
+scalers and coefficients are not.
+
+## Development observations
+
+The reviewed summary reports lower within-system Ridge MAE than the train-mean
+control for both development systems. This is descriptive evidence on the
+open development slice only. It does not show that one representation or model
+transfers to another molecular system, and it does not rank methods beyond the
+frozen teaching controls.
+
+Use the panel's metric table, selected-alpha callout, and gap diagnostics
+rather than copying values into prose. Keeping a single numerical authority
+makes it easier to audit a regenerated public summary.
+
+## Run the public development workflow
+
+For reproduction in a fresh workspace, run these commands from the repository
+root in order. Do not rerun them in the completed author workspace:
+
+```sh
+uv run python labs/rmd17_system_state/run_lab.py validate-protocol
+uv run python labs/rmd17_system_state/run_lab.py download-development
+uv run python labs/rmd17_system_state/run_lab.py pretest
+```
+
+The first command checks the frozen source and method contract. The second
+retrieves only the named development inputs. The third fits development-only
+baselines and writes the reviewed public summary after internal evidence has
+been validated.
+
+## Completed evaluation and remaining boundaries
+
+Benzene and uracil completed together with the development-selected alpha.
+Their `locked-summary.json` is separate from the historical development
+snapshot, whose `not_run` fields still describe the pre-evaluation state.
+The source files are public, so the one-time boundary is procedural rather
+than a claim of restricted access.
+
+Do not use locked outcomes to choose a new alpha, alter the feature map, or
+replace a baseline. A locked result changes the evidence state; it is not a
+new development loop. The completed author workspace refuses another pretest
+or evaluation; retain that guard.
+
+Both within-system Ridge comparisons improve on their training-mean controls,
+but each model used its own system's training frames. These results do not
+establish zero-shot cross-system transfer or force accuracy.
+
+Post-run validation recomputed the training-mean metrics and target ranges
+from both source files. The original run did not save per-frame Ridge
+predictions, so its Ridge scores were not independently recomputed after the
+run. The public result retains that evidence limitation.
+
+`uv run python labs/rmd17_system_state/export_locked_summary.py` projects
+already completed scores only. It neither downloads data nor fits a model.
+
+## Exercises
+
+1. Inspect the panel's per-system channel lists. Explain why a channel can be
+   present for one composition and absent for another without indicating an
+   implementation error.
+2. Compare the train-mean and Ridge rows for each development system. Which
+   conclusion is supported, and which cross-system conclusion remains outside
+   the evidence?
+3. Read the aggregate original-index gaps. Describe what they reveal about the
+   ordered sampling procedure and what they cannot reveal about independence.
+4. Propose a new molecular system. Before fitting anything, list the fields
+   that would need a new frozen source, split, feature layout, and evaluation
+   contract.
+
+<details>
+<summary>Worked answers and assessment criteria</summary>
+
+1. Channels represent unordered element pairs that actually occur within a
+   system. A composition without an eligible pair has no such channel. A
+   passing answer links the charge vector to pair counts and checks the same
+   channel layout across that system's partitions; it does not force unrelated
+   molecules into an undocumented shared feature space.
+2. Ridge has lower MAE on both development systems and on each separately
+   evaluated locked system. The supported conclusion is within-system
+   improvement over the declared control. Credit requires stating that each
+   model was trained on its own system and that two correlated trajectories
+   are not hundreds of independent replications or zero-shot transfer evidence.
+3. Positive, ordered gaps verify the original-index sampling convention and
+   separation of selected positions. They do not measure decorrelation time
+   or guarantee independent errors. A passing answer distinguishes index
+   spacing from a temporal-independence claim.
+4. A new contract needs a named versioned source file, element identities,
+   coordinate and energy units, permitted arrays, sampling and split rules,
+   pair-channel layout, model and frozen alpha policy, metrics, and reporting
+   unit. Credit requires declaring these before evaluating that system and
+   retaining its results even if Ridge fails to beat its control.
+
+</details>
+
+## Limitations and failure gates
+
+- A missing required array, non-finite value, inconsistent atom count, or
+  partition layout mismatch is a data-contract failure, not a reason to patch
+  the result manually.
+- A non-increasing original-index membership or a malformed public summary
+  fails closed before it can be projected into aggregate diagnostics.
+- The observed development comparison has no independent cross-system holdout.
+  Do not describe it as a generalization result.
+- The public summaries exclude frame identities, split membership, individual
+  predictions and scaler state. Completed aggregate metrics are included.
+  If frame-level or internal execution material appears in a release
+  artifact, stop and repair the public boundary before publication.
+
+## Source attribution
+
+This lab uses the revised MD17 v4 source record and associated paper cited
+above. The code, protocol, separate reviewed summaries, and CLI are released
+as a curated teaching surface. Raw development inputs and internal pretest
+evidence remain outside the public release tree.

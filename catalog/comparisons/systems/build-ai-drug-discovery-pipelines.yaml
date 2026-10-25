@@ -1,0 +1,633 @@
+id: build-ai-drug-discovery-pipelines
+name: Build AI Drug Discovery Pipelines
+provider_class: curriculum
+canonical_url: https://github.com/nrflynn2/ml-drug-discovery
+summary: A code-and-data companion repository for a commercial book, with runnable chapter notebooks spanning cheminformatics, machine learning, structure, generation, DTI, and active learning.
+audiences: [learners]
+languages: [en]
+metadata_evidence: [project-readme]
+access:
+  content: { value: mixed, evidence: [project-readme] }
+  code: { value: open, evidence: [project-readme] }
+  data: { value: open, evidence: [project-readme] }
+  solutions: { value: unverified }
+licenses:
+  - name: Apache License 2.0
+    scope: Public repository code and notebooks; companion-book prose, repository data, and external assets require separate review
+    evidence: [project-readme, repository-license]
+correction_url: https://github.com/nrflynn2/ml-drug-discovery/issues
+correction_evidence: [project-readme]
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence was encoded for omitted taxonomy topics in this dated review.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t07-regression-formulation
+    depth: executable
+    run_basis: unverified
+    evidence: [solubility-notebook]
+    reviewed_scope: Chapter 4 solubility notebook
+    note: The notebook supplies a runnable linear-model property workflow with declared splits and outputs.
+  - topic_id: t07-property-task-split-design
+    depth: executable
+    run_basis: unverified
+    evidence: [solubility-notebook]
+    reviewed_scope: Chapter 4 train, validation, test, and scaffold-split assets
+    note: The notebook uses a defined scaffold-aware partition in a runnable property task.
+  - topic_id: t07-classification-formulation
+    depth: executable
+    run_basis: unverified
+    evidence: [cyp-notebook]
+    reviewed_scope: Chapter 5 CYP inhibition classification notebook
+    note: The notebook implements a defined classification task with code and outputs.
+  - topic_id: t07-calibration
+    depth: executable
+    run_basis: unverified
+    evidence: [cyp-notebook]
+    reviewed_scope: Chapter 5 model-calibration workflow
+    note: The notebook includes an executable calibration section for the classification case.
+  - topic_id: t08-metabolism-ddi-risk
+    depth: executable
+    run_basis: unverified
+    evidence: [cyp-notebook]
+    reviewed_scope: Chapter 5 cytochrome P450 inhibition case
+    note: The notebook uses a CYP inhibition endpoint in a runnable metabolism and interaction-risk modelling case.
+  - topic_id: t11-docking-scoring-protocol
+    depth: executable
+    run_basis: real-data
+    evidence: [active-structure-notebook]
+    reviewed_scope: Chapter 9 structure-based design and docking workflow
+    note: The notebook provides a runnable docking stack and iterative scoring workflow; its free-energy section has no accompanying code.
+  - topic_id: t15-experiment-pool-budget-feasibility
+    depth: executable
+    run_basis: real-data
+    evidence: [active-structure-notebook]
+    reviewed_scope: Chapter 9 candidate pool, budget, docking, and active-learning loop
+    note: The notebook defines a finite selection setting with iterative outputs.
+  - topic_id: t15-acquisition-policy-uncertainty
+    depth: executable
+    run_basis: unverified
+    evidence: [active-structure-notebook, ch09-local-read]
+    reviewed_scope: Chapter 9 four acquisition functions, greedy, expected improvement, probability of improvement and uncertainty, with predictive uncertainty estimated by keeping dropout active at inference and averaging 100 Monte Carlo passes over the pool, and a Gaussian-process surrogate available as an alternative
+    note: Uncertainty is computed rather than assumed, and the helper restores the model's training mode in a finally block so a later prediction cannot silently sample dropout. The 2026-09-04 review recorded only that a bounded loop existed.
+  - topic_id: t15-time-ordered-feedback-update
+    depth: executable
+    run_basis: unverified
+    evidence: [active-structure-notebook]
+    reviewed_scope: Chapter 9 iterative update workflow
+    note: The notebook carries selected observations forward through ordered active-learning rounds.
+  - topic_id: t05-complex-interaction-representation
+    depth: executable
+    run_basis: unverified
+    evidence: [dti-notebook]
+    reviewed_scope: Chapter 11 dual-graph drug-target affinity notebook
+    note: The notebook constructs paired molecular and target inputs for a runnable affinity task.
+  - topic_id: t09-affinity-ranking
+    depth: executable
+    run_basis: unverified
+    evidence: [dti-notebook]
+    reviewed_scope: Chapter 11 drug-target affinity workflow
+    note: The notebook fits and evaluates a defined drug-target affinity model.
+  - topic_id: t12-candidate-design-space
+    depth: executable
+    run_basis: real-data
+    evidence: [generative-notebook]
+    reviewed_scope: Chapter 10 character-level autoencoder and variational autoencoder trained on 1,584,663 MOSES molecules to give a continuous, samplable latent space, with a SmilesPE tokenizer vocabulary and reconstruction accuracy as the stated metric
+    note: The design space is constructed rather than enumerated, and the chapter states that a deterministic autoencoder fails to generate valid molecules, which is why the variational model is used. The 2026-09-04 review had only the chapter inventory.
+  - topic_id: t12-validity-novelty-synthetic-screen
+    depth: executable
+    run_basis: unverified
+    evidence: [generative-notebook, unsupervised-notebook]
+    reviewed_scope: Chapter 10 stating that deterministic autoencoders fail to produce valid molecules, which drives the choice of a variational model; Chapter 7 kernel density estimation used for novelty detection and occupancy analysis alongside combinatorial and retrosynthetic library design
+    note: Validity and novelty are treated as separate checks and novelty is computed rather than asserted. This review did not observe memorisation or synthesizability scored as their own quantities.
+  - topic_id: t05-protein-sequence-structure-representation
+    depth: executable
+    run_basis: real-data
+    evidence: [protein-transformer-readme]
+    reviewed_scope: Chapter 12 supplying a protein language model trained by masked-token prediction, a Transformer antibody classifier and ESM-2 mutation scoring, with training, evaluation and tuning scripts, B-cell receptor parquet datasets and three notebooks
+    note: The representations are sequence-level. Despite the chapter title naming structure prediction, the released code produces language-model embeddings, a classifier and mutation scores rather than structures, so no structural representation is credited here.
+  - topic_id: t10-complex-cofolding-hypothesis
+    depth: executable
+    run_basis: real-data
+    evidence: [multimodal-notebook]
+    reviewed_scope: Chapter 13 calling a co-folding affinity model per ligand and a diffusion pose predictor returning twenty ranked poses, then comparing recovered poses against the chain A co-crystal by root-mean-square deviation
+    note: The complex hypothesis is generated and then checked against an experimental structure. The chapter states that pose confidence is an unbounded logit and not an affinity estimate, so the two outputs are not conflated.
+  - topic_id: t09-binding-mode-pose-hypothesis
+    depth: executable
+    run_basis: real-data
+    evidence: [multimodal-notebook]
+    reviewed_scope: Chapter 13 twenty poses per ligand ranked by confidence, with pose confidence correlating at -0.245 against measured potency while predicted affinity correlates at 0.80
+    note: The measured contrast is the teaching content, since it shows a pose score failing to track potency while an affinity head tracks it.
+  - topic_id: t09-binder-classification
+    depth: executable
+    run_basis: unverified
+    evidence: [multimodal-notebook]
+    reviewed_scope: Chapter 13 gating on a binary binder probability at 0.5 before any potency value is read, with four compounds near the threshold whose gate decision flips between replicates
+    note: The gate is declared before the continuous estimate is used, and its instability near the threshold is reported rather than smoothed.
+  - topic_id: t09-screening-selection-repurposing-transfer
+    depth: executable
+    run_basis: real-data
+    evidence: [unsupervised-notebook]
+    reviewed_scope: Chapter 7 self-organising maps and UMAP over fingerprint similarity to surface repurposing candidates from a drug repurposing hub file, alongside a COVID Moonshot activity set of 2,062 compounds
+    note: The transfer argument rests on structural similarity implying shared activity, which the chapter states rather than tests. No prospective or held-out confirmation of a repurposing candidate was observed.
+  - topic_id: t12-multiobjective-search-diversity
+    depth: worked
+    evidence: [unsupervised-notebook]
+    reviewed_scope: Chapter 7 clustering for library curation and diversity, dimensionality reduction by two methods, and combinatorial and retrosynthetic library design
+    note: Diversity-aware selection is executed. This review observed no Pareto treatment and no reinforcement-learning comparison, so the topic is covered in part.
+  - topic_id: t17-metric-endpoint-uncertainty
+    depth: executable
+    run_basis: unverified
+    evidence: [multimodal-notebook]
+    reviewed_scope: Chapter 13 bootstrap confidence intervals on the rank correlation, a replicate-stability measurement repeating one ligand three times, and stated range compression and per-target bias
+    note: The uncertainty reported is over the correlation and over repeated calls to the same model, and the chapter names the systematic errors separately rather than folding them into the interval.
+  - topic_id: t18-counterevidence-failure-analysis
+    depth: executable
+    run_basis: unverified
+    evidence: [multimodal-notebook]
+    reviewed_scope: Chapter 13 retaining a dimensionally incoherent response field with its systematic factor of 1.364, the statement that pose confidence is an unbounded logit rather than an affinity, one ligand falling below the gate, four ligands whose gate decision is unstable between replicates, and stated range compression and per-target bias
+    note: The failures are kept in the executed notebook beside the result they qualify, which is what distinguishes this from a limitations paragraph.
+  - topic_id: t18-nomination-readiness-next-experiment
+    depth: worked
+    evidence: [multimodal-notebook]
+    reviewed_scope: Chapter 13 a predeclared gate under which a potency value is only read once a binder call passes, applied to two compound sets
+    note: A go rule is declared before the numbers are read. This review observed no hold or stop rule and no named independent experiment for the next decision.
+  - topic_id: t14-retrosynthetic-disconnection
+    depth: mentioned
+    evidence: [unsupervised-notebook]
+    reviewed_scope: Chapter 7 retrosynthetic library design named alongside combinatorial design
+    note: Retrosynthetic construction is used to build a library rather than taught as a comparison between disconnection strategies.
+  - topic_id: t07-interpretability-sar
+    depth: executable
+    run_basis: real-data
+    evidence: [rna-target-notebook]
+    reviewed_scope: Chapter 6 gradient-boosted models over conformer-aware three-dimensional descriptors for HIV TAR RNA binders, interpreted with SHAP values and partial derivatives
+    note: The explanation is computed on a fitted model rather than asserted from chemistry. This review observed no analogue-pair evidence and no statement that the attributions are not causal atom effects.
+  - topic_id: t07-chemical-standardisation
+    depth: executable
+    run_basis: unverified
+    evidence: [rna-target-notebook, ligand-filter-notebook]
+    reviewed_scope: Chapter 6 protomer and tautomer enumeration before descriptor calculation, with multiple conformers generated, aligned and Boltzmann weighted; Chapter 2 by contrast loading molecules directly from a supplied file with ambiguous stereochemistry and valence warnings and no salt, charge or duplicate handling
+    note: The ionisation and conformer treatment is executed where the endpoint needs it. The two chapters differ on whether standardisation happens at all, and this record credits the chapter that performs it.
+  - topic_id: t08-safety-toxicity-endpoint
+    depth: executable
+    run_basis: real-data
+    evidence: [herg-notebook]
+    reviewed_scope: Chapter 3 hERG channel blockade over 587 compounds as a cardiotoxicity endpoint, modelled as a binary class with continuous pIC50 also supplied, evaluated by precision, recall, F1 and Matthews correlation on an imbalanced set of roughly 70 percent positives
+    note: A toxicity liability is treated as its own modelled endpoint with metrics chosen for imbalance. Dose context and organ-level evidence are not addressed.
+  - topic_id: t17-baseline-model-selection-protocol
+    depth: executable
+    run_basis: unverified
+    evidence: [herg-notebook]
+    reviewed_scope: Chapter 3 a dummy classifier as the cheap baseline, cross-validation with several metrics, grid and randomised hyperparameter search, and both scaffold and random split columns supplied in the dataset
+    note: The baseline is executed rather than named, and two split definitions ship with the data so the reader can see the choice. No locked-test boundary or headroom estimate was observed.
+  - topic_id: t05-small-molecule-representation
+    depth: executable
+    run_basis: real-data
+    evidence: [drug-process-notebook, rna-target-notebook, deep-learning-notebook]
+    reviewed_scope: Chapter 1 ECFP6 fingerprints reduced by principal components over FDA-approved drugs grouped by naming stem; Chapter 6 conformer- and protomer-aware three-dimensional descriptors; Chapter 8 2048-bit Morgan fingerprints as network input
+    note: Three representation families are built and used in downstream tasks across the book. This review observed no side-by-side comparison of them on one endpoint.
+  - topic_id: t07-endpoint-definition
+    depth: executable
+    run_basis: real-data
+    evidence: [rna-target-notebook, deep-learning-notebook]
+    reviewed_scope: Chapter 6 association and dissociation rate constants and the dissociation constant kept as separate targets with log transforms; Chapter 8 pooling three activity measurement types into one affinity target with an activity threshold of 6.3
+    note: Chapter 6 separates kinetic endpoints that a single potency number would hide. Chapter 8 pools measurement types instead, so the two chapters make opposite choices and neither states the trade-off.
+  - topic_id: t11-physical-model-system-state
+    depth: worked
+    evidence: [rna-target-notebook]
+    reviewed_scope: Chapter 6 multiple conformers generated and aligned, protomer and tautomer states enumerated, and conformer energies Boltzmann weighted before aggregation into descriptors
+    note: The molecular state is treated as an ensemble rather than a single structure. No dynamics, solvent model or trajectory is produced.
+  - topic_id: t04-cleaning-exclusion-rules
+    depth: executable
+    run_basis: real-data
+    evidence: [ligand-filter-notebook, unsupervised-notebook]
+    reviewed_scope: Chapter 2 a rule-of-five filter with stated limits on mass, partition coefficient and hydrogen-bond counts allowing at most one violation, applied to a 212,670-compound library, with alert lists referenced; Chapter 7 activity labelling at a 5 micromolar threshold giving 782 active, 1,144 inactive and 136 unknown compounds
+    note: Thresholds are declared before filtering and the surviving counts are visible. Chapter 2 references further alert sets whose filtering was not executed in the reviewed code.
+  - topic_id: t03-prediction-target-loss
+    depth: executable
+    run_basis: real-data
+    evidence: [deep-learning-notebook]
+    reviewed_scope: Chapter 8 a single regression head over 2048-bit fingerprints predicting a pooled negative-log affinity across 7,280 EGFR compounds, split into 5,384 training, 599 validation and 1,297 test
+    note: The target, the input and the output head are declared together. This review observed no baseline comparison in that chapter and no statement of the mismatch introduced by pooling three measurement types.
+  - topic_id: t01-entity-glossary
+    depth: mentioned
+    evidence: [drug-process-notebook]
+    reviewed_scope: Chapter 1 grouping approved drugs by naming stem into chemical classes such as anaesthetics, antibiotics and antivirals
+    note: Chemical classes are used as labels for a classification demonstration rather than taught as distinctions between molecules, assays, targets and candidates.
+  - topic_id: t03-training-validation-selection
+    depth: executable
+    run_basis: unverified
+    evidence: [herg-notebook, deep-learning-notebook]
+    reviewed_scope: Chapter 3 cross-validation over several metrics with grid and randomised hyperparameter search against a dummy baseline; Chapter 8 a declared train, validation and test split of 5,384, 599 and 1,297 compounds
+    note: Selection is executed on validation rather than described. Neither chapter states a locked-test boundary.
+  - topic_id: t17-split-leakage-audit
+    depth: mentioned
+    evidence: [herg-notebook]
+    reviewed_scope: Chapter 3 shipping both a scaffold split and a random split as columns of the supplied dataset
+    note: The existence of two split definitions makes the choice visible, but no leakage audit or comparison between them was observed.
+  - topic_id: t16-tool-input-output-contract
+    depth: executable
+    run_basis: real-data
+    evidence: [multimodal-notebook]
+    reviewed_scope: Chapter 13 one request per ligand against two model services, raw response fields inspected cell by cell, a unit conversion verified against the returned value, cached results supplied so the notebook runs without live calls, and a response field identified as dimensionally incoherent
+    note: The response contract is read and checked rather than trusted, and the incoherent field is reported rather than silently corrected.
+  - topic_id: t07-property-decision-use
+    depth: executable
+    run_basis: unverified
+    evidence: [multimodal-notebook]
+    reviewed_scope: Chapter 13 a declared gate on binder probability at 0.5, with potency read only for compounds that pass, applied to two compound sets
+    note: The decision rule precedes the prediction it consumes. No cost or consequence model accompanies the gate.
+  - topic_id: t09-target-assay-screen-unit
+    depth: worked
+    evidence: [multimodal-notebook]
+    reviewed_scope: Chapter 13 eighteen inhibitors from one radiometric assay in a single paper treated separately from sixteen compounds drawn from a free-energy benchmark
+    note: The two sets are kept apart and their provenance is stated, which is what allows the reported per-target bias to be read as a property of the pairing.
+  - topic_id: t17-ood-transportability
+    depth: worked
+    evidence: [multimodal-notebook]
+    reviewed_scope: Chapter 13 the same models applied to two unrelated targets with per-target bias and range compression reported as observed limits
+    note: Transfer is examined across two targets rather than asserted. No declared shift or external population is constructed.
+  - topic_id: t03-computational-uncertainty
+    depth: worked
+    evidence: [multimodal-notebook, deep-learning-notebook]
+    reviewed_scope: Chapter 13 bootstrap intervals on a rank correlation and a replicate-stability measurement repeating one ligand three times, with four compounds whose gate flips between replicates; Chapter 8 seeds fixed across libraries and a stated runtime of a few minutes without a GPU
+    note: Variability between repeated calls to the same service is measured and tied to a decision that flips. Compute cost is stated once rather than related to a decision.
+  - topic_id: t17-reproduction-reporting-receipt
+    depth: worked
+    evidence: [deep-learning-notebook, multimodal-notebook]
+    reviewed_scope: Chapter 8 seeds fixed across Python, the array library, the deep-learning framework and the accelerator; Chapter 13 cached result files supplied so the notebook reproduces without live service calls
+    note: Reproducibility is addressed through seeds and cached inputs. No environment manifest, version pin or hash receipt was observed.
+  - topic_id: t11-free-energy-endpoint-network
+    depth: mentioned
+    evidence: [active-structure-notebook]
+    reviewed_scope: Chapter 9 a free-energy section present in the chapter with no accompanying code, as recorded in the 2026-09-04 review
+    note: Named without an executable or worked treatment, so it is scored below the docking material in the same chapter.
+  - topic_id: t10-structure-evidence-state
+    depth: mentioned
+    evidence: [multimodal-notebook]
+    reviewed_scope: Chapter 13 naming a specific co-crystal entry and chain as the reference for pose recovery
+    note: One structure is identified precisely enough to compare against. Resolution, method and alternative states are not discussed.
+  - topic_id: t10-asset-openness-reproducibility
+    depth: explained
+    evidence: [project-readme, repository-license]
+    reviewed_scope: The repository stating that it publishes runnable code and section titles while explanations, illustrations, equations and pseudocode remain in the commercial book, under an Apache-2.0 licence for the code with data and external assets left to separate review
+    note: The openness boundary between code, prose and data is stated explicitly, which is unusual enough to record. It is a statement about the repository rather than a per-asset openness record.
+  - topic_id: t03-inductive-bias-selection
+    depth: mentioned
+    evidence: [deep-learning-notebook, dti-notebook]
+    reviewed_scope: Chapter 8 a feed-forward network over fingerprints and Chapter 11 a graph network over paired molecular and target inputs, in different chapters on different tasks
+    note: Two families appear across the book but never on one task under one procedure, so no comparison of assumptions is available.
+  - topic_id: t11-dynamic-simulation-observable
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none produces a trajectory or a dynamic observable. Chapter 9 performs docking and active learning, and its free-energy section carries no code.
+    note: Not found in the declared reviewed surfaces on 2026-09-10.
+  - topic_id: t01-evidence-claim-unknown
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents direct evidence separated from inference and from unverified fields.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t01-aidd-decision-unit
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents an AIDD task stated as object, intended action, context and inference unit.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t01-source-review-scope
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents a statement bound to the source surface, version and date it rests on.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t02-therapeutic-decision-context
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents a therapeutic decision context linking mechanism, intervention and the next decision.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t02-target-product-profile
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents a target product profile stating population, route, efficacy and safety requirements.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t02-assay-endpoint-controls
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents assay controls, measurement error and a decision-relevant endpoint related to a readout.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t02-chemical-series-feedback
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents a chemical series advanced by medicinal-chemistry reasoning and experimental feedback.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t04-entity-identity-resolution
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents identifier resolution across sources with ambiguity retained.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t04-data-contract
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents a declared data contract fixing producer, version, entities, labels and exclusions before retrieval.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t04-provenance-versioning
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents records traced to a dated source release and processing stage.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t04-permitted-use-legal-scope
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents access separated from licence, redistribution, commercial use and consent.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t05-omics-perturbation-representation
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents molecular profiles, cell states or perturbations encoded at a biological unit.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t05-relational-knowledge-graph-representation
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents typed entities and relations with evidence provenance.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t06-disease-state-definition
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents indication, tissue, cell state and temporal context defined for a target hypothesis.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t06-mechanism-hypothesis-counterevidence
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents a mechanism hypothesis carried with its counterevidence.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t06-causal-target-evidence
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents association, intervention and transport assumptions separated in target discovery.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t06-perturbation-genetic-validation
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents genetic or pharmacological perturbation evaluated at an independent unit.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t06-tractability-target-risk
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents tractability and target risk assessed as a decision of their own.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t07-property-representation-selection
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents descriptors, fingerprints, graphs and three-dimensional inputs compared on one endpoint.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t07-applicability-domain
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents a criterion for when a prediction is supported and when it should be withheld.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t08-exposure-pk-endpoint
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents an exposure or pharmacokinetic endpoint derived from a model.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t08-pkpd-translational-assumption
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents exposure, engagement and response connected in a translational model.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t08-multiendpoint-tradeoff
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents a trade-off across potency, exposure and safety endpoints.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t11-convergence-protocol-uncertainty
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents sampling convergence, replicate dependence or force-field sensitivity.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t13-biologic-modality-construct
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents a biologic construct with its expression system and intended function.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t13-sequence-structure-function-objective
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents a biologic design objective over sequence, structure and function.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t13-specificity-negative-selection
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents desired partners and off-targets with assays that could reject a design.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t13-expression-developability-manufacturability
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents expression, stability, aggregation or formulation constraints.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t13-functional-validation
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents progression from computational plausibility to expression, binding and cellular function.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t14-reaction-record-condition-unit
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents reactants, products, conditions and failed reactions as distinct fields.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t14-atom-mapping-transformation-class
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents atom mappings and reaction classes related to a modelling task.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t14-route-feasibility-material-safety
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents route feasibility with material and safety constraints.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t14-forward-reaction-lab-feedback
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents forward product prediction separated from execution and chemist review.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t16-scientific-task-action-boundary
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents the boundary between a scientific task and an autonomous action.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t16-source-retrieval-evidence-grounding
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents retrieved sources grounding a generated claim with citations resolved.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t16-trace-recovery
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents an execution trace preserved and recovered without fabricating outputs.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t16-human-review-authority-evaluation
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents human review authority or a fixed agent-evaluation task set.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t17-generalization-unit
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents the unit a generalisation claim is made about, stated before evaluation.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t18-evidence-package-claim-chain
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents an evidence package assembling a claim chain for a candidate.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t18-crossdomain-tradeoff-decision
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents a cross-domain trade-off decided without an opaque aggregate score.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t18-openness-biosecurity-governance-boundary
+    depth: absent
+    evidence: [project-readme]
+    reviewed_scope: All thirteen chapters in the published inventory were read on 2026-09-10, and none of them presents release, dual-use or human-authority boundaries.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about an openly published code companion, not a statement that the book or the provider has no such material.
+  - topic_id: t10-binding-site-pocket-definition
+    depth: executable
+    run_basis: real-data
+    evidence: [active-structure-notebook]
+    reviewed_scope: Chapter 9 computing a docking box from the co-crystallised ligand coordinates, taking its bounding box and extending it by half the declared padding on each side, over structure 6VHN with its 34-atom bound ligand
+    note: The site is defined by a stated rule and executed rather than chosen by hand. No pocket detection is performed, so the definition inherits whatever the co-crystallised ligand already occupied.
+  - topic_id: t10-structural-confidence-alternatives
+    depth: mentioned
+    evidence: [active-structure-notebook]
+    reviewed_scope: Chapter 9 repairing missing residues and atoms in a single structure before docking
+    note: The structure is treated as incomplete and repaired, which names the problem, but a single conformation is used throughout and no alternative state or confidence estimate is considered.
+  - topic_id: t12-design-objective-constraints
+    depth: worked
+    evidence: [active-structure-notebook]
+    reviewed_scope: Chapter 9 an active-learning loop optimising predicted binding affinity, with the stated aim of spending less docking
+    note: A single objective is declared and optimised in runnable code, and the resource being conserved is named. No constraint set such as mass, synthetic accessibility or selectivity is declared, so the topic is covered in part.
+  - topic_id: t12-generated-candidate-evaluation-batch
+    depth: mentioned
+    evidence: [active-structure-notebook, ch09-local-read]
+    reviewed_scope: Chapter 9 enumerating candidates from a supplied commercial library, scoring them through a surrogate, and using a proxy oracle that reads pre-computed docking scores, with acquisition policies compared against each other
+    note: A bounded candidate set is proposed and policies are compared, but the candidates are enumerated rather than generated, and no oracle-exploitation check is present. The proxy oracle bounds what the loop demonstrates to the mechanics of iterative selection.
+  - topic_id: t15-stopping-rule-policy-evaluation
+    depth: executable
+    run_basis: unverified
+    evidence: [active-structure-notebook, ch09-local-read]
+    reviewed_scope: Chapter 9 an experiment manager running a configuration grid over initial selection, acquisition function, initial sample count and per-iteration budget, comparing runs by top-molecule recovery, plotting learning curves and building a summary table, with the iteration count fixed as the budget under which every policy is compared
+    note: Policies are compared under identical budgets and the comparison is executed. The stopping condition is a fixed iteration count rather than a rule derived from the observed curve.
+  - topic_id: t15-batch-diversity-multiobjective-allocation
+    depth: executable
+    run_basis: unverified
+    evidence: [active-structure-notebook, ch09-local-read]
+    reviewed_scope: Chapter 9 initial selection by either random draw or RDKit MaxMin diversity picking over fingerprint bit vectors, with a principal-component plot of sampled molecules against the remaining pool to show coverage
+    note: Diversity enters at initialisation rather than in the per-round batch, which is a narrower placement than the topic describes, and coverage is inspected visually rather than scored.
+evidence:
+  - id: project-readme
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/README.md
+    title: Build AI Drug Discovery Pipelines repository README
+    observed_scope: Repository identity, chapter inventory, code and data statement, notebook execution routes, licence scope, omitted book prose, and issue-report request.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: repository-license
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/LICENSE
+    title: Build AI Drug Discovery Pipelines repository licence
+    observed_scope: Apache-2.0 terms for the repository software.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: solubility-notebook
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH04_FLYNN_ML4DD.ipynb
+    title: Chapter 4 — Solubility Deep Dive with Linear Models
+    observed_scope: Runnable regression workflow, supplied data assets, train-validation-test treatment, scaffold split, and outputs.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: cyp-notebook
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH05_FLYNN_ML4DD.ipynb
+    title: Chapter 5 — Classification of Cytochrome P450 Inhibition
+    observed_scope: Runnable classification, model calibration, CYP endpoint context, code, and outputs.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: active-structure-notebook
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH09_FLYNN_ML4DD.ipynb
+    title: Chapter 9 — Structure-based Drug Design with Active Learning
+    observed_scope: Runnable docking and active-learning workflow, budgets, iterations, outputs, and a free-energy section without accompanying code.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: dti-notebook
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH11_FLYNN_ML4DD.ipynb
+    title: Chapter 11 — Graph Neural Networks for Drug-target Affinity Prediction
+    observed_scope: Paired drug-target representations, runnable affinity model, evaluation, and notebook outputs.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: generative-notebook
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH10_FLYNN_ML4DD.ipynb
+    title: Chapter 10 — Generative Models for De Novo Design
+    observed_scope: Character-level autoencoder and variational autoencoder over 1,584,663 MOSES molecules, SmilesPE tokenisation, reconstruction accuracy, the stated failure of deterministic autoencoders to produce valid molecules, and pre-trained checkpoints. No exercises observed.
+    access: opened
+    reviewed_on: 2026-09-10
+  - id: unsupervised-notebook
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH07_FLYNN_ML4DD.ipynb
+    title: Chapter 7 — Unsupervised Learning for Repurposing, Curation and Fragments
+    observed_scope: UMAP and self-organising maps for repurposing candidates, clustering for library curation, combinatorial and retrosynthetic library design, kernel density estimation for novelty and occupancy, a COVID Moonshot activity set of 2,062 compounds labelled at a 5 micromolar threshold, a repurposing hub file and a fragment file. No exercises observed.
+    access: opened
+    reviewed_on: 2026-09-10
+  - id: multimodal-notebook
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH13_FLYNN_ML4DD.ipynb
+    title: Chapter 13 — Multimodal AI Systems for End-to-End Pipelines
+    observed_scope: A co-folding affinity model and a diffusion pose predictor chained into a gated screening decision over 18 and 16 compound sets, rank correlations of 0.80 for affinity and -0.245 for pose confidence against measured potency, pose recovery against a co-crystal, bootstrap intervals, replicate stability, and retained model failures including a dimensionally incoherent field and an unstable gate near threshold. No exercises observed.
+    access: opened
+    reviewed_on: 2026-09-10
+  - id: protein-transformer-readme
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH12_FLYNN_ML4DD/README.md
+    title: Chapter 12 — Protein Language Models with Transformers
+    observed_scope: A packaged codebase declaring a masked-language protein model, a Transformer antibody classifier and ESM-2 mutation scoring, with source modules, training, evaluation and tuning scripts, B-cell receptor datasets, three notebooks and installation instructions that direct the reader to the book for the explanatory material.
+    access: opened
+    reviewed_on: 2026-09-10
+  - id: drug-process-notebook
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH01_FLYNN_ML4DD.ipynb
+    title: Chapter 1 — The Drug Discovery Process
+    observed_scope: SMILES parsing, ECFP6 fingerprints, molecule rendering, principal components and logistic regression over FDA-approved drugs grouped by naming stem, plus a research-productivity dataset. No decision-stage or product-profile definition and no exercises.
+    access: opened
+    reviewed_on: 2026-09-10
+  - id: ligand-filter-notebook
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH02_FLYNN_ML4DD.ipynb
+    title: Chapter 2 — Ligand-based Screening, Filtering and Similarity
+    observed_scope: A rule-of-five filter with declared limits and a one-violation allowance over a 212,670-compound library, referenced alert lists, similarity measures named in the objectives, molecules loaded without salt, charge, tautomer or duplicate handling, and no enrichment computation. No exercises.
+    access: opened
+    reviewed_on: 2026-09-10
+  - id: herg-notebook
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH03_FLYNN_ML4DD.ipynb
+    title: Chapter 3 — Ligand-based Screening with Machine Learning
+    observed_scope: A dummy-classifier baseline, linear classification, cross-validation over several metrics, grid and randomised search, scaffold and random split columns, and an imbalanced 587-compound hERG blockade set evaluated with precision, recall, F1 and Matthews correlation. No exercises.
+    access: opened
+    reviewed_on: 2026-09-10
+  - id: rna-target-notebook
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH06_FLYNN_ML4DD.ipynb
+    title: Chapter 6 — Small Molecule Binding to an RNA Target
+    observed_scope: Conformer generation and alignment, protomer and tautomer enumeration, Boltzmann-weighted conformer energies, three-dimensional descriptors, principal components, gradient-boosted models and SHAP with partial-derivative interpretation over 48 HIV TAR binders with association and dissociation rate constants. No poses or pockets and no exercises.
+    access: opened
+    reviewed_on: 2026-09-10
+  - id: deep-learning-notebook
+    url: https://raw.githubusercontent.com/nrflynn2/ml-drug-discovery/main/CH08_FLYNN_ML4DD.ipynb
+    title: Chapter 8 — Introduction to Deep Learning
+    observed_scope: A feed-forward network over 2048-bit fingerprints predicting pooled negative-log affinity on 7,280 EGFR compounds with a declared train, validation and test split, seeds fixed for reproducibility, a stated CPU runtime, no baseline comparison and no exercises.
+    access: opened
+    reviewed_on: 2026-09-10
+  - id: ch09-local-read
+    url: https://github.com/nrflynn2/ml-drug-discovery/blob/main/CH09_FLYNN_ML4DD.ipynb
+    title: Chapter 9 notebook read in full through the repository API
+    observed_scope: All 106 cells retrieved and parsed locally after two web fetches truncated before the active-learning section. Contains the acquisition loop with four acquisition functions, Monte Carlo dropout uncertainty over 100 passes, a Gaussian-process surrogate, random or MaxMin diversity initialisation, a configuration-grid experiment manager with learning curves and summary tables, top-molecule recovery as the comparison metric, and a proxy oracle reading pre-computed scores.
+    access: opened
+    reviewed_on: 2026-09-10
+caveats:
+  - Correction of 2026-09-10. Stopping rules and policy evaluation were briefly recorded as absent for this provider on the strength of a web retrieval that stopped before the active-learning section. Reading the notebook in full through the repository API showed a configuration-grid comparison with learning curves, so the cell is now executable. An absent state must rest on a surface that was read to its end, and that one was not.
+  - The proxy-oracle table for the active-learning section is named for a different structure than the one the docking section prepares. That is an observation about a filename rather than about the data it holds, which was not opened, so the two sections are not assumed to form one continuous pipeline in either direction.
+  - The Chapter 9 active-learning section uses a proxy oracle that looks up pre-computed docking scores rather than running the expensive scorer each round. That is a legitimate teaching device and it is recorded here because it bounds what the loop demonstrates, which is the mechanics of iterative selection rather than a discovery.
+  - Every chapter in the published inventory has been read, Chapter 9 last on 2026-09-10. Forty-two topics are recorded as absent from those surfaces. One topic remains unverified, batch diversity and allocation, because the acquisition loop exists but its selection mechanism was not resolved from the retrieved content, and a negative finding there would need the selection code itself.
+  - The repository states that it supplies runnable code and section titles while the explanations, illustrations, equations and pseudocode stay in the commercial book. No chapter reviewed here carries an exercise, a quiz or a self-check, so no topic is scored at assessed for this provider. That is a property of what is published openly, not a judgement of the book.
+  - Chapter 12 is titled for protein structure prediction, but its released code trains a protein language model, an antibody classifier and a mutation scorer. No structure is produced, so no structural or pocket topic is credited from it.
+  - Nine of the thirteen chapters have now been reviewed. Chapters 1, 2, 3, 6 and 8 remain unread, so this record still understates the provider and omitted topics stay unverified rather than absent.
+  - Public notebooks contain runnable code and section titles but omit explanatory paragraphs, figures, equations, and pseudocode from the commercial companion book.
+  - The Apache-2.0 statement is not extended to companion-book prose, repository data, or external datasets without separate evidence.
+  - The Chapter 9 free-energy section has no accompanying code and is not scored as executable free-energy coverage.
+last_verified: 2026-09-10

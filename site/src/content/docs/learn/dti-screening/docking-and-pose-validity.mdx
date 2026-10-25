@@ -1,0 +1,153 @@
+---
+title: Docking, pose generation, and physical validity
+description: Separate a pose's geometric accuracy from its internal physical validity, and see how much of a reported docking success rate depends on which one, and which test set, was actually measured.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="dti-screening/docking-and-pose-validity" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will separate two questions a docking or pose-generation method answers
+differently: how close is this pose to the true experimental geometry, and is
+this pose even physically possible on its own terms. You will read a real
+published comparison across both questions and across two test sets of
+different difficulty, then decide what each number licenses. Read [Screening
+and affinity](/learn/dti-screening/screening-and-affinity/) and [Screening
+prevalence, affinity scales, and transfer](/learn/dti-screening/screening-prevalence-and-transfer/)
+first; this lesson deepens that lesson's opening claim that "a pose may be
+physically impossible even if a model score is high." This is a reading and
+hand-arithmetic lesson, not a runnable docking exercise or a reproduction of
+the cited benchmark.
+
+## Two questions a pose score can answer, and why they diverge
+
+**Geometric accuracy** asks how close a predicted pose is to a known reference
+structure, typically an RMSD in Angstroms between predicted and co-crystallized
+ligand atoms. It requires a ground-truth structure and says nothing about the
+pose on its own. **Physical validity** asks whether the pose is internally
+sane: bond lengths and angles inside empirically normal ranges, a ring
+conformation that matches a known-good template, consistent stereochemistry,
+and no severe clash with the protein. It needs no reference structure at all,
+because it is a property of the single generated pose.
+
+A pose-generation model trained to imitate co-crystal geometry can score well
+on the first question while failing the second: RMSD, computed only from atom
+positions against a reference, does not penalize a locally strained bond, an
+out-of-range ring pucker, or a clash the model reproduced along with the parts
+it got right. A physics- or scoring-function–based search rarely produces an
+internally impossible pose in the first place, because clash and strain terms
+are part of what it optimizes; but its search and scoring approximations can
+still land it in the wrong sub-pocket or rotamer, far from the true reference
+geometry. These are close to opposite failure modes, and a single reported
+RMSD number, by itself, hides the first one completely.
+
+## Worked case: one benchmark, two metrics, two test sets
+
+[PoseBusters](https://arxiv.org/abs/2308.05777) (Buttenschoen, Morris and
+Deane, *Chemical Science* 2024, 15, 3130–3139) built exactly this internal-
+validity check, independent of any reference structure, and applied it
+alongside ordinary RMSD to several docking and pose-generation methods on two
+test sets: the older, widely used Astex Diverse set, and a newer PoseBusters
+Benchmark set built to reduce overlap with what deep-learning methods had
+already seen in training.
+
+On the Astex Diverse set, DiffDock's RMSD-only success rate, poses within 2 Å
+of the crystallographic ligand with no validity requirement, was 72%, the best
+of the methods compared. Once physical validity is required as well, the same
+combined criterion (RMSD ≤ 2 Å **and** passing every PoseBusters check) gives
+Gold 64%, AutoDock Vina 56%, and DiffDock 47%. Twenty-five percentage points of
+DiffDock's headline number, on this reading, came from poses that were
+geometrically close but not independently physically sane.
+
+On the PoseBusters Benchmark set, built specifically to be harder to have
+memorized, the same combined criterion gives AutoDock Vina 58%, Gold 55%, and
+DiffDock only 12%. Which classical method scores higher is not even stable
+between the two sets, sixty-four against fifty-six on Astex, fifty-five
+against fifty-eight on the newer set, which by itself cautions against reading
+either single number as a fixed ranking. What is stable is the gap to the best
+deep-learning method: both classical tools stay far ahead of DiffDock on both
+sets, and DiffDock's own combined score falls from 47% to 12%, a much larger
+drop than either classical method's shift across the same two sets. On this
+reading, AutoDock Vina's combined-criterion success rate on the newer set is
+about 4.8 times DiffDock's (58/12). The paper's own stated conclusion is that
+"no DL-based method yet outperforms standard docking methods when both
+physical plausibility and binding mode RMSD is taken into account." A
+concrete failure mode the same paper reports for one of the other deep
+learning methods compared, EquiBind, is that it "commonly generated severe
+protein-ligand clashes," exactly the internal-plausibility failure that an
+RMSD-only number cannot see.
+
+Two separate risks are visible in the same table: the risk of reporting only
+one of the two axes, and the risk of reporting a number from an easier,
+possibly memorized test set as if it generalizes to newer targets. This
+project has not independently re-run any of these methods; the figures above
+are read directly from one published comparison, using the authors' own
+pinned tool versions, their own validity-check definitions, and their own two
+test sets, not a universal or current ranking.
+
+## Alternatives, limits, and independent exercise
+
+Sequence-based scorers such as DeepDTA and GraphDTA never produce a pose at
+all; they trade away the option of any plausibility check for a label or
+affinity output that can be evaluated without a structure. Neither axis in
+this lesson applies to them, which is a design choice, not a gap in either
+kind of model. Passing every validity check also does not establish that a
+pose is the true binding mode: a physically possible geometry can still be the
+wrong one, the same caution the previous lesson raised about a chemically
+plausible pose not proving binding. Accuracy-to-reference, physical validity,
+and binding truth are three separate questions, and a single number answers at
+most one of them.
+
+**Handworked exercise (not runnable or empirical):** A method's cited headline
+is "68% of poses within 2 Å RMSD" on Benchmark Set 1, reported with no
+physical-validity requirement mentioned. An independent audit re-measures it
+under the combined criterion (RMSD ≤ 2 Å and passing every internal-validity
+check) and finds 19% on Benchmark Set 1, and 6% on Benchmark Set 2, a newer
+set built to reduce training overlap. (a) Name the two axes the 68% headline
+conflates. (b) How many percentage points does adding the validity requirement
+alone cost, holding the test set fixed at Set 1? (c) Is the further drop from
+19% to 6% evidence about the same problem as (b), or a different one? (d)
+Name one screening decision for which the 68% number alone would be
+sufficient, and one for which it would not.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+(a) Geometric accuracy to a reference structure, and internal physical
+validity; the 68% figure measures only the first. (b) 68% − 19% = 49
+percentage points, on the same test set, attributable to poses that were
+geometrically close but not independently physically sane. (c) A different
+one: it is the generalization gap between an easier, possibly memorized test
+set and a newer one built to reduce that overlap, not a restatement of the
+validity gap already counted in (b). (d) The 68% RMSD-only number could
+suffice for a purely comparative ranking task that does not depend on any
+single pose being physically deployable, for example prioritizing which
+candidates get a downstream binding assay. It would not suffice for a
+decision that consumes the geometry itself, for example proposing a specific
+analogue or a synthesis route from the predicted contacts, since a headline
+that never required physical validity or newer-target performance says
+nothing about either.
+
+</details>
+
+## Sources and next lesson
+
+The following primary source was opened on 2026-09-12. It supports the
+reported figures and the paper's own stated conclusion, not the constructed
+exercise.
+
+<div data-case-sources>
+
+- [PoseBusters: AI-based docking methods fail to generate physically valid poses or generalise to novel sequences](https://arxiv.org/abs/2308.05777) — Buttenschoen, Morris and Deane, *Chemical Science* 2024, 15, 3130–3139.
+
+</div>
+
+Continue to [Structure, affinity, and mechanism](/learn/structure-and-pockets/structure-affinity-mechanisms/)
+to inspect which structural assumptions a score has inherited. Original lesson
+prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-12.

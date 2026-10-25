@@ -1,0 +1,116 @@
+---
+title: 选择物理建模资源
+description: 将姿势、参数化体系、轨迹、自由能差和电子结构问题对应到能够产生该对象的工具。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+import ResourceGuideTables from "../../../../../components/ResourceGuideTables.astro";
+
+<LessonProgress lessonId="physics-based-modeling/physics-resource-guide" />
+<ScrollableRegions />
+<ResourceGuideTables />
+
+英文原文：[Choosing physical-modelling resources](/learn/physics-based-modeling/physics-resource-guide/)。
+
+## 学习目标与前置知识
+
+本页训练三件事：按所需的量选择物理建模工具，区分参数分配、模拟与分析，并识别
+“计算完成”但仍缺少请求终点的情况。先读[力场与采样](/zh-cn/learn/physics-based-modeling/force-fields-and-sampling/)
+和[自由能循环与收敛](/zh-cn/learn/physics-based-modeling/free-energy-cycles-and-convergence/)。
+本页包含阅读和手算，不是已执行的 docking、动力学、自由能或量子化学工作流。
+
+## 从请求的输出开始
+
+一个三维结构并没有定义物理计算。选择软件前，先声明分子身份、蛋白构建体与状态、
+质子化/互变异构假设、溶剂或环境，以及请求的量。“哪种姿势适合这个口袋”不同于
+“两个配体的结合自由能相差多少”。轨迹可以为后者提供信息，却不等于该终点。
+
+| 请求的对象       | 资源                                                 | 输入与输出                                                              | 主要边界                                         |
+| ---------------- | ---------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------ |
+| 对接姿势假设     | [AutoDock Vina](/atlas/tool-autodock-vina/)          | 准备好的受体/配体文件、搜索区域与评分配置 → 姿势及 docking 分数         | 评分函数身份和准备流程属于结果的一部分。         |
+| 参数化分子体系   | [OpenFF Toolkit](/atlas/tool-openff-toolkit/)        | 分子 topology、SMIRNOFF 力场定义与电荷选择 → 参数分配或 OpenMM `System` | 分配参数不是模拟，也不验证化学覆盖范围。         |
+| 指定体系的动力学 | [OpenMM](/atlas/tool-openmm/)                        | System、topology、初始坐标、积分器与模拟设置 → 配置的轨迹和状态输出     | 轨迹完成不表示采样充分。                         |
+| 已有轨迹的测量   | [MDAnalysis](/atlas/tool-mdanalysis/) 或 [MDTraj](/atlas/tool-mdtraj/) | 匹配的 topology 与 trajectory → 原子选择及轨迹导出的测量            | 原子顺序、时间、单位和选择必须匹配。             |
+| 炼金自由能终点   | [OpenFE](/atlas/tool-openfe/)                        | 化学体系、变换/协议与设置 → 自由能估计和诊断                            | 请求的终点可能需要不止一条模拟支路。             |
+| 指定电子结构量   | [Psi4](/atlas/tool-psi4/) 或 [xTB](/atlas/tool-xtb/) | 几何、电子态与方法设置 → 能量、几何或其他请求性质                       | 方法层级和环境定义答案；几何优化不是结合自由能。 |
+
+这些角色互补，不是软件质量排名。OpenFF 的
+[ForceField API](https://docs.openforcefield.org/projects/toolkit/en/stable/api/generated/openff.toolkit.typing.engines.smirnoff.ForceField.html)
+说明如何从支持的分子 topology 创建 OpenMM 体系，但不表示一个小分子力场能为
+复合物中所有蛋白、金属和辅因子赋参数。模拟前先解决各组分的覆盖问题。
+
+## 官方示例中的三个边界
+
+[Vina 基础教程](https://autodock-vina.readthedocs.io/en/latest/docking_basic.html)
+明确提醒 AutoDock4 与 Vina 分数不可直接比较，并区分配体准备、搜索配置和输出
+转换。相同的能量单位不使两个评分函数成为同一种估计器。
+
+[OpenMM 模拟示例](https://docs.openmm.org/latest/userguide/application/02_running_sims.html)
+将 `System`、`Integrator`、初始坐标与输出 reporter 分开。
+[MDAnalysis Universe](https://userguide.mdanalysis.org/stable/universe.html)
+读取已有 topology/trajectory，轨迹坐标必须按 topology 的原子顺序排列。若原子
+顺序错配，平滑好看的接触曲线也没有正确的物理解释。
+
+OpenFE 的[相对混合拓扑协议](https://docs.openfree.energy/en/stable/guide/protocols/relativehybridtopology.html)
+每个协议实例运行热力学循环的一条支路；结合比较需要复合物和溶剂两条支路。
+[绝对结合协议](https://docs.openfree.energy/en/stable/guide/protocols/absolutebinding.html)
+则在一个协议图内包含两条支路，并处理定向约束及其解除。应检查所选协议的输出
+定义，不能把每个写着 `Delta G` 的文件都当作最终结合量。相对协议文档还提示，
+dummy group 的贡献不能抵消时可能出现系统误差。改用
+[OpenFE 教程](/atlas/tutorial-openfe/)前，应阅读这类具体协议的限制。
+
+## 构造案例：当前文件能决定什么？
+
+团队提供以下**虚构教学材料**：
+
+- 配体 A：Vina 分数 `-8.2 kcal/mol`；
+- 配体 B：AutoDock4 分数 `-9.1 kcal/mol`；
+- 一条具有匹配 topology 的轨迹：`50,000` 步、步长 `2 fs`，每 `1,000` 步保存一次，不额外输出初始帧；
+- 一个已完成的 OpenFE 相对协议结果，但只有复合物支路。
+
+请求是“按结合亲和力排序 A 和 B”。现有对象都不能解决该请求。两项 docking
+分数使用不同评分函数。轨迹模拟时长为
+`50,000 × 2 fs = 100,000 fs = 100 ps = 0.1 ns`，保存帧数为
+`50,000 / 1,000 = 50`。50 帧不是 50 次独立结合实验，时长本身也不证明收敛。
+复合物支路结果还缺少构成相对结合终点所需的溶剂支路。
+
+有用的下一输出因此是纠正解释，而不是排序。分开保留两项 docking 分数，明确比较
+姿势时所需的准备与评分一致性。只用 MDAnalysis 分析有明确单位、原子选择和采样
+限制的轨迹可观测量。若问题是结合自由能，应先核对两条支路的定义、方向和诊断，
+再合并结果。这份材料不授权新模拟，也不表示每个任务都应顺序运行所有工具。
+
+## 问题属于电子结构而非构象采样时
+
+给定几何后，[Psi4 输入指南](https://psicode.org/psi4manual/master/psithoninput.html)
+区分方法、基组与计算 driver；`energy()` 返回请求的总能量，单位为 hartree。
+[xTB 手册](https://github.com/grimme-lab/xtb/blob/main/man/xtb.1.adoc)
+说明其近似方法，以及电荷和未配对电子等输入。两者的软件名称都不对应统一的“QM
+精度”。若问题涉及蛋白环境中的反应位点，继续读
+[QM/MM 边界](/zh-cn/learn/physics-based-modeling/qm-mm-and-reactive-events/)，
+先定义环境和耦合；不能用孤立分子的优化能量替代蛋白体系中经采样得到的自由能垒。
+
+## 独立练习
+
+另一份**构造材料**包含 `200,000` 步、步长 `2 fs`，每 `5,000` 步保存坐标，且无
+初始帧输出。配体重原子 RMSD 一直接近起始值。分析者称“40 个独立重复证明结合”。
+计算时长与帧数，纠正该主张，并判断检查这一可观测量需要哪类工具。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+时长为 `200,000 × 2 fs = 400 ps = 0.4 ns`；有 `200,000 / 5,000 = 40` 个保存帧，
+不是 40 个独立重复。RMSD 是轨迹导出的结构可观测量，在 topology、原子对应、
+对齐/参考和单位明确后，可使用 MDAnalysis 分析。在指定模拟中停留于起始姿势附近
+不证明结合、平衡亲和力或对其他状态的充分探索。应只描述 RMSD 及模拟范围，不
+给出结合结论。
+
+</details>
+
+## 来源与执行边界
+
+官方文档审阅于 2026-09-09。上述输入输出描述不承诺相同的安装要求或运行时间。
+软件、力场数据与可选后端保留各自条款。本轮没有执行上游计算，构造数字不是本站
+运行 Vina、OpenMM、OpenFE、Psi4 或 xTB 得到的输出。
+
+译文更新：2026-09-09。

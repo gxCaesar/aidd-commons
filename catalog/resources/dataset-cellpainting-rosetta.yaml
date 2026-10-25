@@ -1,0 +1,68 @@
+id: dataset-cellpainting-rosetta
+name: ROSETTA cross-modality perturbation data in the Cell Painting Gallery
+kind: dataset
+summary: "Public preprocessed ROSETTA measurements from the Cell Painting Gallery: replicate-level L1000 transcriptomic and replicate-level Cell Painting imaging releases of the same genetic perturbations in A549 lung adenocarcinoma cells, so one perturbation can be read in two modalities at once."
+canonical_url: https://cellpainting-gallery.s3.amazonaws.com/cpg0003-rosetta/broad/workspace/preprocessed_data/LUAD-BBBC041-Caicedo/
+identifiers:
+  - scheme: cell-painting-gallery-study
+    value: cpg0003-rosetta
+  - scheme: cell-painting-gallery-batch
+    value: LUAD-BBBC041-Caicedo
+  - scheme: object
+    value: LUAD-BBBC041-Caicedo/L1000/replicate_level_l1k.csv.gz
+    url: https://cellpainting-gallery.s3.amazonaws.com/cpg0003-rosetta/broad/workspace/preprocessed_data/LUAD-BBBC041-Caicedo/L1000/replicate_level_l1k.csv.gz
+  - scheme: object
+    value: LUAD-BBBC041-Caicedo/CellPainting/replicate_level_cp_normalized_variable_selected.csv.gz
+    url: https://cellpainting-gallery.s3.amazonaws.com/cpg0003-rosetta/broad/workspace/preprocessed_data/LUAD-BBBC041-Caicedo/CellPainting/replicate_level_cp_normalized_variable_selected.csv.gz
+  - scheme: doi
+    value: 10.1038/s41592-022-01667-0
+    url: https://doi.org/10.1038/s41592-022-01667-0
+  - scheme: doi
+    value: 10.1038/s41592-024-02399-z
+    url: https://doi.org/10.1038/s41592-024-02399-z
+  - scheme: documentation
+    value: Cell Painting Gallery repository
+    url: https://github.com/broadinstitute/cellpainting-gallery
+stages: [disease-mechanism, target-discovery]
+modalities: [perturbational-transcriptomics, cell-morphology, perturbational-imaging]
+tasks: [perturbation-comparison, cross-modal-agreement, batch-structure-audit]
+relations: []
+status: { value: active, evidence: [gallery-readme, rosetta-object-listing] }
+access_level: { value: open_source, evidence: [gallery-readme-licence, rosetta-object-listing] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: not_applicable, evidence: [gallery-readme] }
+  architecture: { value: not_applicable, evidence: [gallery-readme] }
+  data_recipe: { value: unverified }
+  training_data: { value: available, evidence: [rosetta-object-listing] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC0 1.0 Universal
+    scope: all data in the Cell Painting Gallery
+    evidence: [gallery-readme-licence]
+evidence:
+  - id: gallery-readme
+    url: https://github.com/broadinstitute/cellpainting-gallery
+    label: "Cell Painting Gallery repository README, read 2026-10-21: its complete-datasets table lists cpg0003-rosetta with the Haghighi et al. 2022 publication, its preprint, its associated data repository and its storage size"
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks]
+  - id: gallery-readme-licence
+    url: https://github.com/broadinstitute/cellpainting-gallery
+    label: "Citation/license section of the Cell Painting Gallery README, read 2026-10-21: 'All the data is released with CC0 1.0 Universal (CC0 1.0).'"
+    supports: [caveats]
+  - id: gallery-citing-page
+    url: https://broadinstitute.github.io/cellpainting-gallery/citing.html
+    label: "Citing the Cell Painting Gallery, read 2026-10-21: per-dataset citations and the acknowledgement of the Registry of Open Data hosting"
+    supports: [acknowledgements, caveats]
+  - id: rosetta-object-listing
+    url: https://cellpainting-gallery.s3.amazonaws.com/?list-type=2&prefix=cpg0003-rosetta/
+    label: "Listing of the ROSETTA study's published objects, read 2026-10-21: the byte length and the entity tag of every preprocessed release, and the two objects of the LUAD-BBBC041-Caicedo batch named above"
+    supports: [identifiers, caveats]
+caveats:
+  - "A bucket listing is a manifest, not a licence grant. The licence is the one the gallery README states, and it applies to the whole gallery rather than to a single object."
+  - "The gallery publishes both a full-feature and a variable-selected imaging release for this batch. Which one an analysis reads changes the feature set, and the two are not interchangeable: the variable-selected release carries no empty or infinite cell in any imaging feature, while the full-feature release contains features that do."
+  - "The preprocessed releases are the gallery's own normalisation. A study that needs the raw images, the unnormalised feature table or the per-well annotations must read the study's associated data repository, which this record does not verify."
+  - "Only the LUAD-BBBC041-Caicedo batch was read for the cross-modality comparison. The study's other four batches cover different cell lines and different perturbation types, and nothing measured on one of them transfers to another without being re-measured."
+acknowledgements:
+  - "The Cell Painting Gallery is hosted on the AWS Registry of Open Data, and the gallery asks that this hosting be acknowledged."
+last_verified: "2026-10-21"

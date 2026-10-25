@@ -1,0 +1,53 @@
+---
+title: Property prediction
+description: Build honest QSAR and molecular-property baselines before using frontier representations.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="qsar-properties/property-prediction" />
+
+## Foundations
+
+Property prediction maps a declared molecular input to a declared endpoint. The
+endpoint can be measured with different assays, units, and censoring rules, so
+"the dataset" is not enough. [Therapeutics Data Commons](https://tdcommons.ai/)
+and [OGB](https://ogb.stanford.edu/) organize tasks but do not remove the need
+to read each split and licence.
+
+## Practical workflow
+
+Freeze canonicalization, descriptors, split, metric, and validation selection
+before fitting models. Compare a fingerprint or descriptor model with a
+[Chemprop](https://github.com/chemprop/chemprop) model under the same folds.
+For the executable lab, FreeSolv remains version-bound and split-audited rather
+than a general scorecard.
+
+## Evaluation
+
+Report the error distribution, calibration where relevant, and the independent
+chemical unit. Random splits can overstate extrapolation if analogues or
+scaffolds overlap. Do not select a checkpoint with locked test labels.
+
+## Frontier and open questions
+
+Pretrained graph and 3D representations can help when they carry relevant
+signal. Their value must be measured against a strong cheap baseline and a
+noise floor, not inferred from model size.
+
+## What v0.1 does not yet teach
+
+v0.1 has one carefully bounded FreeSolv lab; it does not certify all QSAR
+benchmarks or property endpoints.
+
+## Core-source path
+
+Read the [FreeSolv repository](https://github.com/MobleyLab/FreeSolv), then
+inspect [Graphormer](https://github.com/microsoft/Graphormer) and the relevant
+task definitions in [TDC](https://tdcommons.ai/).
+
+To see an endpoint decided rather than described, including what the admitted
+relation and units exclude, run
+[read the frozen contract before the model](/labs/chembl-contract-inspection/).
+
+Last reviewed: 2026-09-04.

@@ -1,0 +1,52 @@
+{
+  "schema_version": "aidd-commons.l1000-perturbation-context-protocol.v1",
+  "protocol_id": "lincs-l1000-perturbation-context-v1",
+  "issued_on": "2026-09-12",
+  "declared_question": "For a real small-molecule perturbation measured in two different real cell lines, how well does its transcriptional signature in one cell line predict its signature in the other, and does a naive comparison on absolute expression overstate that agreement?",
+  "source": {
+    "database": "GEO series GSE70138",
+    "title": "L1000 Connectivity Map perturbational profiles from Broad Institute LINCS Center for Transcriptomics LINCS PHASE II",
+    "series_url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70138",
+    "files_used": [
+      "GSE70138_Broad_LINCS_inst_info_2017-03-06.txt.gz",
+      "GSE70138_Broad_LINCS_cell_info_2017-04-28.txt.gz",
+      "GSE70138_Broad_LINCS_gene_info_2017-03-06.txt.gz",
+      "GSE70138_Broad_LINCS_pert_info_2017-03-06.txt.gz",
+      "GSE70138_Broad_LINCS_Level2_GEX_n345976x978_2017-03-06.gctx.gz"
+    ],
+    "why_these_files": "This series also ships a 2015-dated Level 2 release using simplified column labels (for example 'A375-trt_cp-5') that do not join to the current metadata files at all; verified directly by fetching it and finding zero of its column labels present in inst_info. Only the 2017-03-06 files, whose column IDs are real inst_id values, were used. The full 12,328-gene Level 4 (Z-score) and Level 5 (aggregated signature) releases for this series are 14 GB and 5.4 GB respectively, well outside this project's CPU-first scale; this protocol instead computes its own vehicle-control-relative differential signature from the 978-landmark-gene Level 2 data already cached, using only directly measured (not inferred) values."
+  },
+  "fixed_condition": {
+    "cell_lines": { "primary": "MCF7", "secondary": "PC3" },
+    "pert_time": "24.0",
+    "pert_time_unit": "h",
+    "pert_dose": "10.0",
+    "pert_dose_unit": "um"
+  },
+  "entity": {
+    "unit": "one real small-molecule compound (pert_id) in one of the two fixed cell lines",
+    "structure": "canonical_smiles from GSE70138's own pert_info catalog, validated as RDKit-parseable; a literal 'restricted' or missing value is excluded, not treated as a valid structure"
+  },
+  "label_contract": {
+    "raw_value": "Level 2 (directly measured, deconvolved, 978 landmark genes) expression, one profile per instance well",
+    "baseline_correction": "each admitted compound-treated instance's profile has the median profile of every ctl_vehicle well on that exact same det_plate subtracted before aggregation; an instance whose plate has no vehicle-control well is excluded, not paired with a control from a different plate",
+    "entity_aggregation": "median, taken across an entity's replicate differential profiles after baseline correction, not before",
+    "filters": {
+      "pert_type": "trt_cp",
+      "pert_time": "24.0",
+      "pert_dose": "10.0",
+      "pert_dose_unit": "um"
+    }
+  },
+  "comparison_contract": {
+    "definition": "For every compound admitted in both fixed cell lines, the Spearman correlation between its two 978-gene differential profiles.",
+    "null_background": "A single fixed, deterministic mismatch: the sorted shared-compound list rotated by one position, so each compound's cell-A profile is paired with a different, fixed compound's cell-B profile. This is one illustrative mismatched background, not a resampled null distribution, and uses no random state.",
+    "significance_test": "A two-sided Mann-Whitney U test between the matched and null Spearman-rho distributions.",
+    "why_baseline_correction_is_declared_here": "Computed once on raw Level 2 values with no correction, the matched-pair median rho was 0.79 against a null median of 0.70: both cell lines' raw profiles share enough baseline structure that even mismatched compound pairs correlate strongly. The vehicle-control subtraction this protocol requires exists specifically to remove that shared baseline before any correlation is computed."
+  },
+  "excluded_by_design": [
+    "any of the several thousand other real cell lines, doses, timepoints or perturbation types (shRNA, overexpression) this same GEO series also contains: this protocol fixes exactly two cell lines, one dose and one timepoint",
+    "the 11,350 computationally inferred genes outside the 978 directly measured landmark genes: this protocol uses only directly measured values",
+    "any claim that a cross-cell-line signature correlation predicts a clinical or in vivo outcome for any named compound"
+  ]
+}

@@ -1,0 +1,787 @@
+id: teachopencadd
+name: TeachOpenCADD
+provider_class: tutorial-collection
+canonical_url: https://projects.volkamerlab.org/teachopencadd/all_talktorials.html
+summary: A sequenced collection of notebook-based computer-aided drug-design talktorials with rendered theory, code, and outputs.
+audiences: [researchers, students]
+languages: [en]
+metadata_evidence: [talktorial-index, official-repository]
+access:
+  content: { value: open, evidence: [talktorial-index] }
+  code: { value: open, evidence: [official-repository] }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses:
+  - name: Creative Commons Attribution 4.0 International
+    scope: TeachOpenCADD repository material; third-party packages, services, and datasets require separate review
+    evidence: [repository-license]
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence was encoded for omitted taxonomy topics in this dated review.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t03-training-validation-selection
+    depth: assessed
+    run_basis: unverified
+    evidence: [machine-learning-talktorial, gnn-talktorial]
+    reviewed_scope: T007 K-fold workflow, model fitting and displayed evaluation; T035 explicit 80/10/10 train/validation/test split with per-epoch validation loss and a quiz on which parameters to tune
+    note: T035 separates validation from test, normalises the target using training statistics only, and asks the learner which parameters remain tunable.
+  - topic_id: t05-small-molecule-representation
+    depth: assessed
+    run_basis: unverified
+    evidence: [machine-learning-talktorial, representations-talktorial, neural-network-talktorial, equivariant-gnn-talktorial, rnn-talktorial, similarity-talktorial, one-hot-talktorial]
+    reviewed_scope: T007 molecular encoding in a runnable classification workflow; T033 SMILES, Morgan and RDKit fingerprints, adjacency-matrix graphs and 3D conformer coordinates with a five-question quiz; T022 MACCS encoding; T036 3D point clouds with the statement that one conformation has infinitely many valid point-cloud representations; T034 SMILES tokenisation and one-hot sequence encoding
+    note: Five talktorials construct different representation families and each states what its own choice cannot distinguish, so representation limits are taught alongside construction.
+  - topic_id: t07-classification-formulation
+    depth: executable
+    run_basis: unverified
+    evidence: [machine-learning-talktorial]
+    reviewed_scope: T007 activity-label construction, classifiers, validation, and metrics
+    note: The talktorial defines a compound-activity classification problem and runs multiple classifiers.
+  - topic_id: t07-property-task-split-design
+    depth: worked
+    evidence: [machine-learning-talktorial]
+    reviewed_scope: T007 K-fold and random-partition treatment
+    note: The talktorial works through random partitioning and cross-validation but does not establish a general leakage audit.
+  - topic_id: t08-exposure-pk-endpoint
+    depth: worked
+    evidence: [adme-talktorial]
+    reviewed_scope: T002 ADME and lead-likeness theory, calculations, supplied compounds, and outputs
+    note: The talktorial calculates and applies selected physicochemical and ADME-oriented filters; it is not a full PK curriculum.
+  - topic_id: t09-binding-mode-pose-hypothesis
+    depth: assessed
+    run_basis: real-data
+    evidence: [docking-talktorial, interactions-talktorial, pharmacophore-talktorial]
+    reviewed_scope: T015 docking execution and pose output; T016 PLIP profiling of EGFR complex 3POZ resolving one hinge hydrogen bond to MET793, five hydrophobic contacts and three halogen contacts with named residues, closing with a quiz on which interactions matter
+    note: T016 characterises an experimentally determined complex rather than a predicted pose, which gives the learner a reference against which a docking hypothesis can be judged.
+  - topic_id: t10-binding-site-pocket-definition
+    depth: assessed
+    run_basis: real-data
+    evidence: [docking-talktorial, binding-site-detection-talktorial, automated-pipeline-talktorial]
+    reviewed_scope: T015 docking-box preparation; T014 DoGSiteScorer detection on PDB 3w32 chain A reporting volume 306.176 cubic angstroms, depth 15.72 angstroms and 89.74 percent ligand coverage, validated against 85 KLIFS residues with 23 of 25 overlapping, and a quiz that asks the learner to repeat the overlap check on another EGFR structure; T018 automated pocket selection by ligand and pocket coverage
+    note: The quiz sets a transfer task on an unseen structure rather than a recall question, and the KLIFS comparison supplies an external reference for the predicted pocket.
+  - topic_id: t11-docking-scoring-protocol
+    depth: executable
+    run_basis: real-data
+    evidence: [docking-talktorial, automated-pipeline-talktorial]
+    reviewed_scope: T015 docking search, scoring, preparation and result inspection; T018 Smina docking inside an automated pipeline with frozen inputs
+    note: T015 exposes a bounded protocol with inputs, code and pose outputs. T018 states that the highest-affinity pose need not match the experimental binding mode.
+  - topic_id: t11-physical-model-system-state
+    depth: executable
+    run_basis: real-data
+    evidence: [md-talktorial]
+    reviewed_scope: T019 molecular-dynamics theory, system preparation, force-field setup, and simulation
+    note: The talktorial builds a molecular system and records the state and protocol inputs needed to run a simulation.
+  - topic_id: t11-dynamic-simulation-observable
+    depth: executable
+    run_basis: real-data
+    evidence: [md-talktorial]
+    reviewed_scope: T019 runnable molecular-dynamics workflow and generated trajectory outputs
+    note: The talktorial provides a local and Colab execution route for a defined simulation workflow.
+  - topic_id: t17-metric-endpoint-uncertainty
+    depth: assessed
+    run_basis: real-data
+    evidence: [machine-learning-talktorial, uncertainty-talktorial, kinase-perspectives-talktorial, ligand-profile-talktorial, kinase-sequence-talktorial]
+    reviewed_scope: T037 aleatoric versus epistemic uncertainty, ensembles, a held-out calibration factor and confidence-interval coverage plots on a runnable EGFR regression; T028 a ligand-profile distance that violates the triangle inequality; T024 the note that one minus similarity is pragmatic but not metric-validated; T027 two kinase pairs sharing an identical 0.35 similarity computed over 893 compounds in one case and 52 in the other
+    note: T027 states that the differing denominator cannot be inferred from the reported fraction and asks in its quiz whether promiscuity comparisons stay valid under unequal coverage, which teaches the denominator as part of the metric rather than as a footnote.
+  - topic_id: t04-entity-identity-resolution
+    depth: assessed
+    run_basis: real-data
+    evidence: [chembl-acquisition-talktorial, representations-talktorial, api-webservices-talktorial, pubchem-talktorial]
+    reviewed_scope: T011 UniProt accession to sequence and nested KLIFS-to-UniProt mapping, T013 name-to-CID lookup with SMILES escaping and null filtering, T001 resolution of UniProt P00533 to ChEMBL target CHEMBL203 and extraction of canonical SMILES per molecule; T033 quiz on whether one molecule can correspond to different molecular graphs
+    note: T001 resolves an external protein identifier to a database target before any activity query. T033 states that canonicalisation is algorithm-dependent and that fingerprints do not uniquely identify a molecule.
+  - topic_id: t04-data-contract
+    depth: executable
+    run_basis: real-data
+    evidence: [chembl-acquisition-talktorial, pdb-query-talktorial, kissim-talktorial]
+    reviewed_scope: T025 structures filtered to human origin, DFG-in conformation, resolution at or below 3 angstroms and quality score 6 or above, T001 declared contract of binding assays only, IC50 with an exact relation and nanomolar units, executed against the ChEMBL client; T008 a structural contract of resolution, experimental method, ligand size, chain count and deposition date executed against the PDB
+    note: Both talktorials fix the admissible records before retrieval rather than filtering opportunistically afterwards, and both report the surviving count against the unfiltered total.
+  - topic_id: t04-cleaning-exclusion-rules
+    depth: assessed
+    run_basis: real-data
+    evidence: [chembl-acquisition-talktorial, unwanted-substructures-talktorial]
+    reviewed_scope: T001 removal of non-nanomolar, missing and structureless rows taking 17,107 records to 5,568 compounds; T003 PAINS filtering removing 408 of 4,635 and Brenk unwanted-substructure filtering removing a further 3,234 to leave 2,088, with a quiz asking when such substructures should not be removed
+    note: Every exclusion prints its surviving count, so the denominator stays visible. T003 states that about 5 percent of FDA-approved drugs contain PAINS and treats the rules as warnings for expert review rather than automatic deletion.
+  - topic_id: t04-provenance-versioning
+    depth: assessed
+    run_basis: real-data
+    evidence: [chembl-acquisition-talktorial, automated-pipeline-talktorial, pdb-query-talktorial, api-webservices-talktorial]
+    reviewed_scope: T001 dataset frozen to ChEMBL 27 with the reproducibility reason stated; T018 a USE_FROZEN_DATASETS switch selecting frozen inputs over live retrieval; T008 a deposition-date cutoff; T011 status-code checking, a demonstrated fallback when a scraped page changes shape, the statement that endpoints may be versioned unpredictably, and a quiz task to query a live API for a named ligand
+    note: The provider treats a live source as a moving target and supplies a frozen route beside it. T011 makes the learner issue a live query, so the fragility is experienced rather than described.
+  - topic_id: t07-endpoint-definition
+    depth: assessed
+    run_basis: real-data
+    evidence: [chembl-acquisition-talktorial, ligand-profile-talktorial]
+    reviewed_scope: T001 IC50 definition, the pIC50 transformation applied in code and a quiz on IC50 against EC50; T027 binarisation of pIC50 at a 6.3 cutoff to define a hit
+    note: The endpoint and its transformation are defined before modelling. T027 turns the continuous endpoint into a binary one at a declared cutoff, which is a second endpoint decision rather than a convenience.
+  - topic_id: t07-chemical-standardisation
+    depth: mentioned
+    evidence: [chembl-acquisition-talktorial]
+    reviewed_scope: T001 use of the canonical SMILES supplied by ChEMBL, with a discussion note that tools such as Standardiser or MolVS would be beneficial
+    note: Standardisation is named as needed and explicitly left uncovered, so this review records mention rather than instruction.
+  - topic_id: t07-regression-formulation
+    depth: assessed
+    run_basis: real-data
+    evidence: [gnn-talktorial, neural-network-talktorial, uncertainty-talktorial]
+    reviewed_scope: T035 QM9 dipole-moment graph-level regression with MSE and test loss 0.597 for GCN against 0.308 for GIN; T022 EGFR pIC50 regression reaching MAE 0.84 pIC50 units; T037 EGFR affinity regression under ensembles
+    note: Three separate talktorials formulate a continuous endpoint, fit it and report error in the endpoint's own units, each closing with a quiz.
+  - topic_id: t07-calibration
+    depth: assessed
+    run_basis: unverified
+    evidence: [uncertainty-talktorial]
+    reviewed_scope: T037 calibration adjustment factor computed on a held-out calibration set after training, with confidence-interval coverage plots across confidence levels
+    note: Calibration is performed as a separate post-training step on held-out data, and the coverage plot exposes whether nominal intervals match observed coverage.
+  - topic_id: t07-property-decision-use
+    depth: worked
+    evidence: [neural-network-talktorial]
+    reviewed_scope: T022 application of the trained model to a 60-compound external set and selection of the top three predicted compounds at pIC50 around 8.48, 8.14 and 8.12
+    note: The selection is worked through to a shortlist, and the talktorial states that the model reports neither side effects nor toxicity.
+  - topic_id: t03-inductive-bias-selection
+    depth: assessed
+    run_basis: unverified
+    evidence: [representations-talktorial, gnn-talktorial, equivariant-gnn-talktorial, rnn-talktorial]
+    reviewed_scope: T033 permutation and SE(3) invariance with a graph-isomorphism demonstration; T035 GCN against GIN with the Weisfeiler-Lehman argument, test loss 0.597 against 0.308; T036 plain GNN against EGNN at matched parameter counts of 52,417 and 51,969, test MAE 32.61 against 4.34; T034 vanilla RNN against GRU, test loss 0.437 against 0.319
+    note: Three separate talktorials run a matched architecture comparison on the same dataset family and report the measured consequence of the symmetry or gating choice, which makes the inductive bias an observed effect rather than an assertion.
+  - topic_id: t03-computational-uncertainty
+    depth: assessed
+    run_basis: unverified
+    evidence: [uncertainty-talktorial]
+    reviewed_scope: T037 aleatoric against epistemic uncertainty, single deterministic methods, ensembles, bagging and test-time augmentation, with a quiz asking when uncertainty estimation fails
+    note: The talktorial separates data noise from model uncertainty and states that ensemble variety is often too small, so uncertainty is underestimated.
+  - topic_id: t09-target-assay-screen-unit
+    depth: assessed
+    run_basis: real-data
+    evidence: [chembl-acquisition-talktorial]
+    reviewed_scope: T001 EGFR kinase as the screening target, binding assays as the retained assay class, and a quiz on what the extracted data can be used for
+    note: The screening unit is one target with one assay class, and the record count is reported before and after filtering.
+  - topic_id: t09-affinity-ranking
+    depth: executable
+    run_basis: real-data
+    evidence: [neural-network-talktorial, klifs-talktorial]
+    reviewed_scope: T022 ranking of external-set compounds by predicted pIC50 against known ChEMBL values; T012 retrieval of 338 measured gefitinib bioactivities and ranking of nine kinases below 100 nanomolar, including GAK at 7 nanomolar
+    note: T012 ranks measured rather than predicted affinity across targets and states that profiling bioactivity is not cellular selectivity or pharmacokinetics. No enrichment or ranking-metric evaluation was observed.
+  - topic_id: t17-ood-transportability
+    depth: explained
+    evidence: [uncertainty-talktorial]
+    reviewed_scope: T037 in-domain against out-of-domain uncertainty and domain-shift discussion
+    note: The distinction is explained and tied to when uncertainty estimates fail. This review did not observe a transportability experiment across a declared shift.
+  - topic_id: t11-convergence-protocol-uncertainty
+    depth: absent
+    evidence: [md-analysis-readme]
+    reviewed_scope: The official repository README for T020 names the analyses that talktorial performs, root-mean-square deviation for protein and ligand, selected atomic distances, hydrogen bonding and structural alignment, over a 1 nanosecond trajectory of 100 frames, and names no convergence, block-averaging, replicate or equilibration diagnostic. Read on 2026-09-10.
+    note: Recorded as absent from the surfaces read rather than left unverified, now that a smaller surface for T020 could be retrieved. The rendered talktorial page itself still exceeds this review's size limit, so this rests on the repository README rather than on the notebook.
+  - topic_id: t02-assay-endpoint-controls
+    depth: explained
+    evidence: [unwanted-substructures-talktorial, klifs-talktorial]
+    reviewed_scope: T012 the statement that profiling mixes IC50, Kd and Ki formats and inherits measurement variability, T003 explanation of pan-assay interference compounds as molecules active at many targets through unspecific binding or interaction with assay components
+    note: The talktorial teaches that an activity readout can be an assay artefact rather than target engagement. This review observed no dose-response or control-plate treatment.
+  - topic_id: t05-complex-interaction-representation
+    depth: assessed
+    run_basis: real-data
+    evidence: [interactions-talktorial, interaction-prediction-talktorial, pharmacophore-talktorial, klifs-talktorial, kinase-ifp-talktorial]
+    reviewed_scope: T016 PLIP representation of a complex as eight typed interaction classes detected by distance and angle rules, tabulated per residue with coordinates and distances and rendered in three dimensions, with a quiz comparing PLIP against KLIFS annotation
+    note: The complex is reduced to an explicit typed interaction profile rather than a similarity score, and the talktorial states that its hydrophobic set is a subset of the kinase-specific KLIFS annotation.
+  - topic_id: t09-screening-selection-repurposing-transfer
+    depth: assessed
+    run_basis: real-data
+    evidence: [automated-pipeline-talktorial, binding-site-comparison-talktorial, kinase-perspectives-talktorial, similarity-talktorial, klifs-talktorial]
+    reviewed_scope: T018 structure-based screening of PubChem analogues to a ranked shortlist against EGFR 3W32; T010 imatinib off-target search across seven structures where binding-site RMSD separates the non-kinase quinone reductase 2 at 15.0 angstroms from the DFG-out tyrosine kinases at 2.7 to 6.2; T028 nine kinases compared under four similarity perspectives with a quiz task to rerun the pipeline on a different published kinase set
+    note: T010 supplies the repurposing and off-target case with a checkable outcome, and T028 shows the perspectives disagreeing, so the learner sees that the chosen similarity view decides the answer.
+  - topic_id: t10-structure-evidence-state
+    depth: assessed
+    run_basis: real-data
+    evidence: [binding-site-detection-talktorial, pdb-query-talktorial]
+    reviewed_scope: T014 PDB 3w32 chain A with its bound ligand and the apo-versus-holo caveat; T008 an EGFR query filtered on resolution at or below 3.0 angstroms, X-ray method, ligand molecular weight above 100 daltons, single chain and a deposition-date cutoff, returning 110 of 385 structures, with a quiz asking what resolution means and why it is filtered
+    note: The structure is treated as one experimental state selected under declared quality filters, and the quiz makes the learner state the reason for the resolution threshold rather than recall it.
+  - topic_id: t10-structural-confidence-alternatives
+    depth: worked
+    evidence: [binding-site-detection-talktorial, binding-site-comparison-talktorial, kinase-overview-talktorial]
+    reviewed_scope: T014 statement that another structure of the same protein can yield different pockets through ligand-induced conformational change, with KLIFS residue overlap and a quiz task on a second structure; T010 separation of DFG-in from DFG-out conformations of the same kinase family by binding-site RMSD
+    note: Both talktorials treat one protein as several structural states. T010 shows a conformational state, not sequence identity, driving the measured similarity.
+  - topic_id: t12-candidate-design-space
+    depth: executable
+    run_basis: real-data
+    evidence: [automated-pipeline-talktorial, pubchem-talktorial]
+    reviewed_scope: T013 an asynchronous PubChem similarity search at a 75 percent threshold capped at 10 records, T018 PubChem similarity search from CID 2426 at a 70 percent Tanimoto threshold, capped at 30 retrieved analogues and reduced to the top 20 by a weighted drug-likeness score
+    note: The candidate set is defined by a stated similarity threshold and an explicit cap, so the denominator of the search is visible. The space is analogue enumeration, not generative design.
+  - topic_id: t12-design-objective-constraints
+    depth: executable
+    run_basis: unverified
+    evidence: [automated-pipeline-talktorial]
+    reviewed_scope: T018 weighted drug-likeness objective combining QED at triple weight, a custom QED at double weight and the Lipinski rule at single weight, then a final ranking on affinity, interaction count and drug score together
+    note: The weights are declared before the run and applied in code. The talktorial does not justify the particular weights or test their sensitivity.
+  - topic_id: t15-batch-diversity-multiobjective-allocation
+    depth: assessed
+    run_basis: real-data
+    evidence: [clustering-talktorial]
+    reviewed_scope: T005 Butina clustering of 4,635 EGFR compounds on 2,048-bit RDKit fingerprints at a 0.2 Tanimoto distance cutoff, producing 1,128 clusters with mean intra-cluster similarity 0.82 against inter-cluster 0.22, framed as selecting diverse representatives for experimental testing, with a quiz on clustering principles
+    note: Diversity selection is executed with a declared threshold and reported separation. The talktorial states that singletons may have neighbours captured by a stronger centroid, so cluster membership depends on processing order.
+  - topic_id: t17-reproduction-reporting-receipt
+    depth: worked
+    evidence: [automated-pipeline-talktorial]
+    reviewed_scope: T018 statement that results vary across Ubuntu, macOS and Windows with the tracking issue named, that Pybel produces different coordinates on each run, and that frozen datasets are therefore supplied
+    note: Non-determinism is named at the level of the specific component that causes it and answered with a frozen-input route. No environment manifest or hash receipt was observed in this surface.
+  - topic_id: t05-protein-sequence-structure-representation
+    depth: assessed
+    run_basis: real-data
+    evidence: [kinase-perspectives-talktorial, interaction-prediction-talktorial, kinase-sequence-talktorial, kissim-talktorial]
+    reviewed_scope: T028 four representations of the same nine kinases, KLIFS pocket sequence, KiSSim pocket-structure fingerprint, interaction fingerprint and ChEMBL bioactivity profile, compared as normalised distance matrices, heatmaps and UPGMA dendrograms; T038 proteins encoded as alpha-carbon graphs with a 7 angstrom contact threshold and one-hot residue features
+    note: T028 shows the four views disagreeing, for example KDR and p38a clustering together in every view except sequence, and states that the ligand-profile distance violates the triangle inequality so it is not a metric.
+  - topic_id: t09-binder-classification
+    depth: assessed
+    run_basis: real-data
+    evidence: [interaction-prediction-talktorial]
+    reviewed_scope: T038 binary binding classification on KIBA reduced to 20,475 interactions over 76 ligands and 275 proteins, split 70/20/10, with paired graph encoders, binary cross-entropy and a reported accuracy near 0.5 after one epoch, closing with a three-question quiz
+    note: The talktorial keeps a result that did not work and states the task complexity rather than tuning until the number improves. It is labelled a proof of concept, not a benchmark.
+  - topic_id: t17-split-leakage-audit
+    depth: mentioned
+    evidence: [equivariant-gnn-talktorial]
+    reviewed_scope: T036 statement that random splits assess molecular generalisation poorly and are bad practice, made while the talktorial itself uses a random 80/10/10 split
+    note: The problem is named but no scaffold, cluster or temporal alternative is constructed and no leakage audit is performed, so this review records mention rather than instruction.
+  - topic_id: t06-disease-state-definition
+    depth: explained
+    evidence: [kinase-overview-talktorial]
+    reviewed_scope: T023 kinase phosphorylation as a signalling switch, frequent mutation in tumours, and the link to cancer and inflammatory disease
+    note: The disease link is explained at the level of a protein family and its signalling role. This review observed no patient stratification, disease subtype definition or cohort discussion.
+  - topic_id: t06-tractability-target-risk
+    depth: worked
+    evidence: [kinase-overview-talktorial]
+    reviewed_scope: T023 the ATP pocket as the tractable site with 67 approved inhibitors named, conserved hinge, glycine-rich loop and gatekeeper features, executable cells that build a KinMap coverage view from KLIFS structures and ChEMBL bioactivities, and the statement that a large fraction of the kinome is unexplored with highly unbalanced data
+    note: Tractability is shown as measured coverage across a family rather than asserted for one target, and the unexplored fraction is stated as a limit on that evidence.
+  - topic_id: t07-interpretability-sar
+    depth: executable
+    run_basis: real-data
+    evidence: [mcs-talktorial]
+    reviewed_scope: T006 maximum common substructure over 186 EGFR compounds at pIC50 above 9, where threshold 0.8 with ring-only matching yields a 28-atom, 30-bond scaffold against 24 atoms and 26 bonds under defaults
+    note: The shared scaffold is derived from the active set rather than assumed, and the two parameter settings give different scaffolds, so the talktorial exposes the interpretation's dependence on matching rules. A Quiz heading was not retrievable in this review.
+  - topic_id: t16-tool-input-output-contract
+    depth: assessed
+    run_basis: real-data
+    evidence: [api-webservices-talktorial, klifs-talktorial, pubchem-talktorial]
+    reviewed_scope: T011 three service architectures, machine-readable formats against HTML, parameter encoding, status-code validation and generated clients from an OpenAPI specification, with a quiz task to query a live API for all kinases binding a named ligand; T012 the same service reached through a raw REST client and through a typed abstraction layer; T013 an asynchronous job contract with polling against a stated 30 second server limit
+    note: The contract is taught as request shape, response format and failure mode together, and two access layers over one service let the learner see what the abstraction hides. The quiz sets a live query rather than a recall question.
+  - topic_id: t04-permitted-use-legal-scope
+    depth: mentioned
+    evidence: [klifs-talktorial]
+    reviewed_scope: T012 note that the talktorial code is open source while the KLIFS data is academic-use compliant through its publication
+    note: The distinction between code licence and data terms is stated once. This review observed no per-field permitted-use treatment or downstream redistribution discussion.
+  - topic_id: t03-prediction-target-loss
+    depth: assessed
+    run_basis: unverified
+    evidence: [gnn-talktorial, interaction-prediction-talktorial, rnn-talktorial]
+    reviewed_scope: T035 graph-level regression on a named target with mean squared error and a quiz asking how the model would change for a classification task; T038 the binary cross-entropy expression written out beside its binary binding target; T034 the same dipole target reached through a sequence encoder
+    note: The target, the representation and the objective are varied independently across three talktorials, and the quiz makes the learner state what changing the target would require.
+  - topic_id: t07-property-representation-selection
+    depth: assessed
+    run_basis: unverified
+    evidence: [representations-talktorial, similarity-talktorial, gnn-talktorial]
+    reviewed_scope: T033 SMILES, fingerprints, graphs and 3D point clouds constructed side by side with a quiz on what each cannot distinguish; T004 MACCS against Morgan on one query with the statement that no fingerprint choice is universally optimal; T035 the same molecules as graphs
+    note: The choice is argued from what the representation can express rather than from downstream accuracy alone, and the divergent rankings in T004 are shown rather than described.
+  - topic_id: t12-multiobjective-search-diversity
+    depth: worked
+    evidence: [clustering-talktorial, automated-pipeline-talktorial]
+    reviewed_scope: T005 Butina clustering framed as picking diverse representatives for testing; T018 a ranked shortlist combining affinity, interaction count and a weighted drug-likeness score
+    note: Diversity-aware selection and a weighted multi-objective ranking are both executed. This review observed no conditional generation, reinforcement learning or explicit Pareto treatment, so the topic is covered in part.
+  - topic_id: t17-baseline-model-selection-protocol
+    depth: worked
+    evidence: [gnn-talktorial, equivariant-gnn-talktorial, uncertainty-talktorial]
+    reviewed_scope: T035 GIN reported against a GCN baseline on one task; T036 an EGNN against a plain GNN at matched parameter counts of 52,417 and 51,969; T037 a held-out calibration set kept separate from training
+    note: Recipe parity is practised, most explicitly by matching parameter counts before attributing a difference to the symmetry constraint. This review observed no headroom estimate and no locked-test boundary.
+  - topic_id: t10-asset-openness-reproducibility
+    depth: explained
+    evidence: [klifs-talktorial, automated-pipeline-talktorial]
+    reviewed_scope: T012 the note separating the open-source code from academic-use data terms; T018 a frozen-dataset switch supplied because live retrieval and non-deterministic coordinate generation would otherwise change results
+    note: Reproducibility is addressed as a property of the inputs and the environment. Asset-level openness is stated once rather than recorded per dimension.
+  - topic_id: t07-applicability-domain
+    depth: explained
+    evidence: [uncertainty-talktorial]
+    reviewed_scope: T037 in-domain against out-of-domain uncertainty and the discussion of when uncertainty estimation fails
+    note: The domain question is raised and tied to when an estimate should not be trusted. This review did not observe a constructed applicability-domain criterion or a withholding rule.
+  - topic_id: t01-entity-glossary
+    depth: explained
+    evidence: [chembl-acquisition-talktorial, klifs-talktorial]
+    reviewed_scope: T001 a protein target, an assay class, an activity record and a parent molecule kept as distinct objects through one query; T012 kinases, structures and ligands separated in the retrieval model
+    note: The separations are made in the course of a workflow rather than assembled as a glossary, and they cover the chemistry and structure entities rather than cells, patients or candidates.
+  - topic_id: t01-source-review-scope
+    depth: mentioned
+    evidence: [chembl-acquisition-talktorial, api-webservices-talktorial]
+    reviewed_scope: T001 the dataset pinned to ChEMBL 27 with the reproducibility reason; T011 the warning that endpoints may be versioned unpredictably
+    note: A version is bound to a result in both places. This review observed no procedure for recording which surface and date a particular claim rests on.
+  - topic_id: t01-evidence-claim-unknown
+    depth: mentioned
+    evidence: [kinase-perspectives-talktorial, klifs-talktorial]
+    reviewed_scope: T028 the statement that the ligand-profile distance violates the triangle inequality and is not a metric; T012 coverage and mixed-endpoint caveats attached to the profiling data
+    note: Limits on what a number supports are stated next to the number. This review observed no explicit separation of direct evidence, inference and unverified fields as a practice.
+  - topic_id: t17-generalization-unit
+    depth: mentioned
+    evidence: [equivariant-gnn-talktorial]
+    reviewed_scope: T036 the statement that random splits assess molecular generalisation poorly, made while the talktorial itself uses a random split
+    note: The unit question is named once and not developed, and no alternative grouping is constructed.
+  - topic_id: t01-aidd-decision-unit
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents an AIDD task stated as object, intended action, experimental context and inference unit. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t02-therapeutic-decision-context
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents a therapeutic decision context linking mechanism, intervention and the next decision. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t02-target-product-profile
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents a target product profile stating population, route, efficacy, safety and exposure requirements. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t02-chemical-series-feedback
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents a chemical series advanced by medicinal-chemistry reasoning and experimental feedback. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t05-omics-perturbation-representation
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents molecular profiles, cell states or perturbations encoded at a biological unit. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t05-relational-knowledge-graph-representation
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents typed entities and relations with provenance in a knowledge graph. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t06-mechanism-hypothesis-counterevidence
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents a mechanism hypothesis carried together with its counterevidence. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t06-causal-target-evidence
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents association, intervention, mediation or transport assumptions separated in target discovery. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t06-perturbation-genetic-validation
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents genetic or pharmacological perturbation evaluated at an independent unit. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t08-metabolism-ddi-risk
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents metabolic route or drug-interaction risk related to an exposure change. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t08-safety-toxicity-endpoint
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents molecular alerts, assay outcomes and organ liabilities separated by dose context. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t08-pkpd-translational-assumption
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents exposure, target engagement and response connected in a translational model. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t08-multiendpoint-tradeoff
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents a trade-off across potency, exposure and safety endpoints without an opaque total. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t10-complex-cofolding-hypothesis
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents a complex or co-folding hypothesis with its confidence treatment. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t11-free-energy-endpoint-network
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents relative or absolute free energies, transformation networks or failed edges. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t12-validity-novelty-synthetic-screen
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents validity, uniqueness, novelty and synthesizability kept as distinct checks on generated candidates. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t12-generated-candidate-evaluation-batch
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents oracle exploitation, a simple-generator comparison or a bounded batch proposal. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t13-biologic-modality-construct
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents a protein, peptide, antibody or nucleic-acid construct with its expression system. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t13-sequence-structure-function-objective
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents a biologic design objective stated over sequence, structure and function. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t13-specificity-negative-selection
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents desired partners and off-targets with assays that could reject a nonspecific design. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t13-expression-developability-manufacturability
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents expression, stability, aggregation, immunogenicity or formulation constraints. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t13-functional-validation
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents progression from computational plausibility to expression, binding and cellular function. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t14-reaction-record-condition-unit
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents reactants, products, conditions, provenance and failed reactions as distinct fields. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t14-atom-mapping-transformation-class
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents atom mappings, bond changes and reaction classes related to a modelling task. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t14-retrosynthetic-disconnection
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents rule, template or learned retrosynthetic disconnections. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t14-route-feasibility-material-safety
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents route feasibility with material and safety constraints. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t14-forward-reaction-lab-feedback
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents forward product prediction separated from execution and chemist review. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t15-experiment-pool-budget-feasibility
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents an experiment pool with a declared budget and feasibility constraints. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t15-acquisition-policy-uncertainty
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents an acquisition policy selecting experiments under uncertainty. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t15-time-ordered-feedback-update
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents time-ordered feedback updating a model between rounds. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t15-stopping-rule-policy-evaluation
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents policies compared under identical budgets with a frozen stopping rule. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t16-scientific-task-action-boundary
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents the boundary between a scientific task and an autonomous action. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t16-source-retrieval-evidence-grounding
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents retrieved sources grounding a generated claim, with citations resolved. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t16-trace-recovery
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents an execution trace preserved and recovered without fabricating outputs. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t16-human-review-authority-evaluation
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents human review authority or a fixed agent-evaluation task set. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t18-evidence-package-claim-chain
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents an evidence package assembling a claim chain for a candidate. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t18-crossdomain-tradeoff-decision
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents a cross-domain trade-off decided without an opaque aggregate score. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t18-counterevidence-failure-analysis
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents contradictory evidence, failed candidates or model failures retained in a dossier. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t18-nomination-readiness-next-experiment
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents predeclared go, hold and stop rules naming the next independent experiment. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+  - topic_id: t18-openness-biosecurity-governance-boundary
+    depth: absent
+    evidence: [talktorial-index]
+    reviewed_scope: Thirty-two of the thirty-four talktorials in the official index were read on 2026-09-10, and none of them presents release, dual-use or human-authority boundaries. T017 and T020 exceeded this review's retrieval limit and were not read.
+    note: Not found in the declared reviewed surfaces on 2026-09-10. This is an observation about a computer-aided drug-design notebook collection, not a statement that the provider has no such material anywhere.
+evidence:
+  - id: talktorial-index
+    url: https://projects.volkamerlab.org/teachopencadd/all_talktorials.html
+    title: TeachOpenCADD complete list of talktorials
+    observed_scope: Complete rendered inventory, project navigation, online reading availability, contact, citation, and licence links.
+    access: opened
+    reviewed_on: 2026-09-04
+    version: "2026.4.1.post38 documentation"
+  - id: official-repository
+    url: https://github.com/volkamerlab/teachopencadd
+    title: TeachOpenCADD official repository
+    observed_scope: Public source repository for talktorial notebooks, documentation, environment files, and contribution workflow.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: repository-license
+    url: https://raw.githubusercontent.com/volkamerlab/teachopencadd/master/LICENSE
+    title: TeachOpenCADD repository licence
+    observed_scope: CC BY 4.0 licence text for the repository material.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: adme-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T002_compound_adme.html
+    title: T002 Molecular filtering — ADME and lead-likeness criteria
+    observed_scope: Theory, practical notebook cells, compound inputs, property calculations, filtering, outputs, and stated limits.
+    access: opened
+    reviewed_on: 2026-09-04
+    version: "2026.4.1.post38 documentation"
+  - id: machine-learning-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T007_compound_activity_machine_learning.html
+    title: T007 Ligand-based screening — machine learning
+    observed_scope: Molecular encoding, activity labels, classifiers, K-fold validation, runnable cells, and displayed metrics.
+    access: opened
+    reviewed_on: 2026-09-04
+    version: "2026.4.1.post38 documentation"
+  - id: docking-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T015_protein_ligand_docking.html
+    title: T015 Protein-ligand docking
+    observed_scope: Docking theory and limits, protein and ligand preparation, pocket definition, runnable workflow, scores, and poses.
+    access: opened
+    reviewed_on: 2026-09-04
+    version: "2026.4.1.post38 documentation"
+  - id: md-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T019_md_simulation.html
+    title: T019 Molecular dynamics simulation
+    observed_scope: MD theory, force fields, system-state preparation, local and Colab route, simulation cells, runtime caveats, and outputs.
+    access: opened
+    reviewed_on: 2026-09-04
+    version: "2026.4.1.post38 documentation"
+  - id: chembl-acquisition-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T001_query_chembl.html
+    title: T001 Compound data acquisition (ChEMBL)
+    observed_scope: Target resolution from UniProt to ChEMBL, declared assay/relation/unit filters, exclusion counts, canonical SMILES, pIC50 transformation, ChEMBL 27 version pin, Colab and local routes, and a closing quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: representations-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T033_molecular_representations.html
+    title: T033 Molecular representations
+    observed_scope: SMILES, Morgan and RDKit fingerprints, adjacency-matrix graphs, conformer coordinates, permutation and SE(3) invariance, graph-isomorphism demonstration, stated representation failure modes, and a five-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: gnn-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T035_graph_neural_networks.html
+    title: T035 GNN-based molecular property prediction
+    observed_scope: Message passing, GCN against GIN with the Weisfeiler-Lehman argument, QM9 dipole regression, 80/10/10 split, per-epoch validation loss, test losses, scatter plots, stated data dependence, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: neural-network-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T022_ligand_based_screening_neural_network.html
+    title: T022 Ligand-based screening — neural networks
+    observed_scope: MACCS encoding of EGFR compounds, 70/30 split, dense-network regression on pIC50, batch-size comparison, MAE in endpoint units, external-set ranking, stated chemical-space and toxicity limits, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: uncertainty-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T037_uncertainty_estimation.html
+    title: T037 Uncertainty estimation
+    observed_scope: Aleatoric against epistemic uncertainty, in-domain against out-of-domain discussion, standard and bagging ensembles, held-out calibration factor, confidence-interval coverage and ranking curves on an EGFR regression, stated underestimation caveat, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: md-analysis-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T020_md_analysis.html
+    title: T020 Analyzing molecular dynamics simulations
+    observed_scope: Listed in the official talktorial index. The rendered page exceeded this review's retrieval size limit, so no content state was established.
+    access: inaccessible
+    reviewed_on: 2026-09-10
+  - id: unwanted-substructures-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T003_compound_unwanted_substructures.html
+    title: T003 Molecular filtering — unwanted substructures
+    observed_scope: PAINS and Brenk unwanted-substructure rationale, RDKit FilterCatalog application to 4,635 EGFR compounds with per-filter surviving counts, the most frequent flagged substructures, the note that about 5 percent of approved drugs contain PAINS, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: clustering-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T005_compound_clustering.html
+    title: T005 Compound clustering
+    observed_scope: Jarvis-Patrick and Butina algorithms, Tanimoto similarity on 2,048-bit RDKit fingerprints, a 0.2 distance cutoff over 4,635 EGFR compounds giving 1,128 clusters, intra- and inter-cluster similarity, the singleton caveat, quadratic runtime note, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: binding-site-detection-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T014_binding_site_detection.html
+    title: T014 Binding site detection
+    observed_scope: Four algorithm families, DoGSiteScorer difference-of-Gaussian detection and druggability model, pocket descriptors on PDB 3w32 chain A, KLIFS residue-overlap validation, the apo-versus-holo caveat, Colab and local routes, and a quiz whose third item is a transfer task on another structure.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: interactions-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T016_protein_ligand_interactions.html
+    title: T016 Protein-ligand interactions
+    observed_scope: Eight PLIP interaction classes with geometric rules, profiling of EGFR complex 3POZ with named residues per interaction type, tabular and three-dimensional output, stated PLIP and KLIFS coverage differences, Colab and local routes, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: automated-pipeline-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T018_automated_cadd_pipeline.html
+    title: T018 Automated pipeline for lead optimization
+    observed_scope: An eight-stage pipeline from input validation through pocket detection, PubChem analogue search, Smina docking and PLIP analysis to a ranked shortlist on EGFR 3W32, with declared thresholds and weights, a frozen-dataset switch, cross-platform and non-determinism caveats. A Quiz heading is present but its questions were not retrievable in this review.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: binding-site-comparison-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T010_binding_site_comparison.html
+    title: T010 Binding site similarity and off-target prediction
+    observed_scope: On-target and off-target definitions, a three-step encode-compare-rank workflow, seven imatinib-bound structures retrieved under stated resolution and chain filters, binding-site RMSD separating a non-kinase off-target and a DFG-in kinase from DFG-out kinases, alignment and residue-selection caveats, and a four-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: kinase-perspectives-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T028_kinase_similarity_compare_perspectives.html
+    title: T028 Kinase similarity — compare different perspectives
+    observed_scope: Four similarity perspectives over nine kinases, normalised distance matrices, heatmaps and UPGMA dendrograms, named agreements and disagreements between views, the orthosteric-only and data-sparsity limitations, the triangle-inequality violation of the ligand-profile distance, and a six-question quiz ending in a rerun task on another published kinase set.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: rnn-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T034_recurrent_neural_networks.html
+    title: T034 RNN-based molecular property prediction
+    observed_scope: SMILES tokenisation and one-hot encoding, vanilla RNN recurrence, vanishing gradients, GRU gating, QM9 dipole regression on a 50,000-molecule subset split 40,000/5,000/5,000, test losses 0.437 against 0.319, the stated subset and hyperparameter limits, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: equivariant-gnn-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T036_e3_equivariant_gnn.html
+    title: T036 An introduction to E(3)-invariant graph neural networks
+    observed_scope: Formal invariance and equivariance definitions, point-cloud non-uniqueness, QM9 electronic spatial extent regression on 21,800 molecules split 80/10/10, plain GNN against EGNN at matched parameter counts with test MAE 32.61 against 4.34, complexity, chirality and random-split limitations, and a four-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: interaction-prediction-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T038_protein_ligand_interaction_prediction.html
+    title: T038 Protein-ligand interaction prediction
+    observed_scope: KIBA preprocessing to 20,475 interactions over 76 ligands and 275 proteins, alpha-carbon protein graphs at a 7 angstrom threshold, paired GIN encoders and an MLP head, binary cross-entropy, a reported accuracy near 0.5 after one epoch retained as a negative result, stated runtimes, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: kinase-overview-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T023_what_is_a_kinase.html
+    title: T023 What is a kinase?
+    observed_scope: Kinase signalling and disease role, ATP-pocket druggability with 67 approved inhibitors, DFG and alpha-C conformational states, conserved hinge, glycine-rich loop and gatekeeper, three executable cells building KinMap and pocket views from KLIFS and ChEMBL, and stated kinome under-exploration and data imbalance. No quiz section was observed.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: similarity-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T004_compound_similarity.html
+    title: T004 Ligand-based screening — compound similarity
+    observed_scope: The similar-property principle, one-, two- and three-dimensional descriptors, MACCS against Morgan fingerprints, Tanimoto and Dice formulas, a gefitinib query against 4,635 EGFR compounds with divergent rankings between fingerprints, and the statement that no fingerprint choice is universally optimal. Quiz questions were not retrievable in this review.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: mcs-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T006_compound_maximum_common_substructures.html
+    title: T006 Maximum common substructure
+    observed_scope: MCS as a graph-isomorphism problem, the FMCS algorithm and its pruning, a run over 186 EGFR compounds above pIC50 9 giving different scaffolds under two parameter settings, and stated NP-completeness, parameter sensitivity and interpretability limits. Quiz questions were not retrievable in this review.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: pdb-query-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T008_query_pdb.html
+    title: T008 Protein data acquisition — Protein Data Bank
+    observed_scope: PDB content and the meaning of resolution, an EGFR query filtered on resolution, method, ligand mass, chain count and deposition date returning 110 of 385 structures, selection of four high-resolution complexes, structure alignment and ligand extraction, the multi-package access limitation, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: pharmacophore-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T009_compound_ensemble_pharmacophores.html
+    title: T009 Ligand-based pharmacophores
+    observed_scope: The IUPAC pharmacophore definition, structure-based against ligand-based derivation, feature extraction from four aligned EGFR ligands giving 10 donors, 25 acceptors and 5 hydrophobic contacts, k-means clustering with a stated quotient and a 75 percent prevalence threshold, the pre-defined cluster-count limitation, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: api-webservices-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T011_query_online_api_webservices.html
+    title: T011 Querying online API webservices
+    observed_scope: Static, server-rendered and client-rendered service architectures, machine-readable formats against HTML, UniProt and KLIFS queries, generated clients from OpenAPI, HTML scraping with a fallback when page structure changes, status-code validation, stated versioning and availability risks, and a three-question quiz whose first item is a live API task.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: klifs-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T012_query_klifs.html
+    title: T012 Data acquisition from KLIFS
+    observed_scope: REST and OpenAPI access with a typed abstraction layer, the 85-residue pocket and 595-bit interaction fingerprint, 565 EGFR structures and 338 gefitinib bioactivities, nine off-target kinases below 100 nanomolar, hinge position 48 as a selectivity anchor, coverage, mixed-endpoint and allosteric limitations, a code-versus-data licence note, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: pubchem-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T013_query_pubchem.html
+    title: T013 Data acquisition from PubChem
+    observed_scope: PUG-REST access, name-to-CID lookup, property retrieval, an asynchronous similarity search at a 75 percent threshold capped at 10 records with job polling against a stated 30 second limit, SMILES escaping and null filtering before molecule construction. A Quiz section is referenced but its questions were not retrievable in this review.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: one-hot-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T021_one_hot_encoding.html
+    title: T021 One-hot encoding
+    observed_scope: Categorical to numerical conversion, two-character element substitution, 36 unique characters and a 267-character maximum over 3,905 ChEMBL compounds, padding to a fixed 36 by 267 matrix, stated sparsity, multicollinearity and dataset-adaptation limits, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: kinase-sequence-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T024_kinase_similarity_sequence.html
+    title: T024 Kinase similarity — sequence
+    observed_scope: Identity against BLOSUM62 substitution scoring over the 85-residue pocket with normalisation formulas, an EGFR to MET comparison at 0.46 and 0.71, nine-by-nine similarity and distance matrices, the orthosteric-only and non-metric-conversion limitations, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: kissim-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T025_kinase_similarity_kissim.html
+    title: T025 Kinase similarity — kinase pocket (KiSSim fingerprint)
+    observed_scope: Physicochemical and spatial pocket encoding, 1,611 structures filtered on human origin, DFG-in conformation, resolution and quality score, reduction of a structure distance matrix to a kinase matrix by minimum distance, coverage imbalance from 850 structures for one kinase to 4 for another, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: kinase-ifp-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T026_kinase_similarity_ifp.html
+    title: T026 Kinase similarity — interaction fingerprints
+    observed_scope: The 595-bit fingerprint as 85 residues by 7 interaction types, 1,466 structures over nine kinases, Jaccard distances from 0.250 to 0.821, the caveat that fingerprints see only interactions made by co-crystallised ligands and that only the closest pair per kinase is used, and a three-question quiz.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: ligand-profile-talktorial
+    url: https://projects.volkamerlab.org/teachopencadd/talktorials/T027_kinase_similarity_ligand_profile.html
+    title: T027 Kinase similarity — ligand profile
+    observed_scope: Shared-activity similarity over compounds tested on both kinases, ChEMBL29 bioactivities binarised at a pIC50 cutoff of 6.3, promiscuity from 0.54 to 0.81, an EGFR to ErbB2 pair over 1,170 tested compounds against a pair sharing none, the statement that two pairs at identical 0.35 similarity rest on 893 and 52 compounds, and a three-question quiz on coverage validity.
+    access: opened
+    reviewed_on: 2026-09-10
+    version: "2026.4.1.post38 documentation"
+  - id: md-analysis-readme
+    url: https://raw.githubusercontent.com/volkamerlab/teachopencadd/master/teachopencadd/talktorials/T020_md_analysis/README.md
+    title: T020 talktorial README in the official repository
+    observed_scope: The talktorial's own README naming its target complex, its analyses of protein and ligand RMSD, atomic distances, hydrogen bonding and alignment, its 1 nanosecond and 100 frame trajectory, and the absence of any sampling-adequacy or convergence assessment.
+    access: opened
+    reviewed_on: 2026-09-10
+caveats:
+  - Every taxonomy topic now carries a direct observation. Forty are recorded as absent, meaning not found across the thirty-two talktorials read on 2026-09-10. Absent contributes nothing to either bound, so those cells narrow this provider's upper bounds rather than its lower ones. They describe a computer-aided drug-design notebook collection and must not be read as a claim that the provider has no such material anywhere, nor as a judgement of the collection against a scope it never claimed.
+  - The rendered pages for T017 on advanced visualisation and T020 on trajectory analysis both exceed this review's retrieval limit. T020 was later resolved through its repository README, a smaller surface, which is cited where it is used. T017 remains unread, and no topic was recorded as absent on its account.
+  - Dataset access and third-party terms were not inferred from the public notebook and code availability.
+  - The molecular-dynamics page warns about long runtimes without a GPU and current Windows limitations; no universal low-compute claim is made.
+  - The official index enumerates 34 talktorials, with identifiers running from T001 to T038 and T029 to T032 absent. This record now rests on 32 of them, so only T017 and T020 remain unread.
+  - T018, T004, T006 and T013 show a Quiz heading or section whose questions were not retrievable in this review, so their topics are scored at executable rather than assessed. A later review with the questions in hand may raise them.
+  - Two surfaces exceeded this review's retrieval size limit and were not read, T017 on advanced visualisation and T020 on trajectory analysis. T020 is recorded as an explicit unverified observation. T017 has no clear taxonomy topic to attach and is named here instead. Neither is absent.
+  - Quiz sections are counted as assessed because they supply an exercise that tests the learner. The reviewed quizzes do not publish answers or a rubric, and no graded or verified completion route was observed.
+  - The 2026-09-10 tranche raised three cells that the 2026-09-04 review had scored lower. That is a correction of this project's review depth, not an upstream change by the provider.
+last_verified: 2026-09-10

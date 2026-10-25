@@ -1,0 +1,147 @@
+---
+title: What the error is an error over
+description: Inspect the observable, the feature boundary, the frame sampling and the metric contract of the frozen rMD17 lab with one offline command, and check that the committed artifacts still agree.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="rmd17-contract" />
+
+## Before you run
+
+**Mode: runnable inspection of committed files.** The command reads only JSON
+already stored in this repository. It makes no network request, downloads no
+trajectory, imports no third-party package and fits nothing. The frozen rMD17
+lab is already complete. What this page adds is the route to read its contract
+before, or instead of, running it.
+
+```bash
+python labs/rmd17_system_state/inspect_contract.py show
+```
+
+## 1. The observable, and the arrays that may not predict it
+
+The target is the energy array, in kcal per mol. Only two arrays may become
+features, the nuclear charges and the coordinates. Three are prohibited: the
+forces, and the energies and forces from the original dataset before it was
+recomputed.
+
+That prohibition is the whole leakage rule, and it is worth seeing why it has to
+be written down. All three prohibited arrays are present in the same file the
+lab reads. Two of them are the quantity the model is asked to predict, recorded
+at an earlier stage. Nothing in the file format stops you using them. A contract
+that only listed what is allowed would leave the question open; this one names
+what is forbidden and the checker confirms the two lists never overlap.
+
+## 2. A thousand frames are a sample, not a trajectory
+
+Each system has 100000 frames and the lab uses 1000 of them, chosen by a stated
+rank expression over evenly spaced positions and then sorted by original index.
+The 1000 become 600 training, 200 validation and 200 evaluation frames.
+
+The command prints how far apart the selected frames actually are. For ethanol
+the smallest gap between neighbouring selected frames is 404 positions in the
+original trajectory; for malonaldehyde it is 689. No two selected frames are
+adjacent, so the split is not leaky in the obvious way.
+
+That is not independence, and the lab says so rather than leaving you to assume
+it. Stable ordering does not remove molecular-dynamics time correlation. The
+frames within one system remain correlated observations of one trajectory, which
+is why the protocol forbids frame-pooled metrics and confidence intervals
+outright. A forbidden-metric list is a stronger instrument than a caveat,
+because it cannot be skipped while reading.
+
+## 3. An error is unreadable without its range
+
+Every per-system result is reported as MAE, RMSE and target range together. The
+reason is visible as soon as you compare two systems.
+
+For benzene the Ridge model reaches an MAE of 1.6022730996053722 against a
+constant-model MAE of 2.2343735356479013, over a target range of
+16.804794804076664. For uracil the Ridge MAE is 3.1238744298947863 against a
+constant of 3.720448133704194, over a range of 33.140174655098235. The benzene
+error is numerically smaller. It is not obviously the better result: the uracil
+range is roughly twice as wide, and in both systems the model improves on the
+constant by a similar fraction of the range.
+
+An MAE quoted alone invites a comparison between systems that the number cannot
+support. Printing the range beside it makes the comparison answerable.
+
+## 4. Check that the artifacts still agree
+
+```bash
+python labs/rmd17_system_state/inspect_contract.py check
+```
+
+Fourteen checks run. They confirm that all three artifacts declare the same
+protocol, that the allowed and prohibited arrays are disjoint and the target is
+not among the features, that every prohibited array really exists in the source
+file rather than being hypothetical, that the partitions sum to the selected
+frames and match the locked run, that each feature dimension is exactly the
+channel count times the bins per channel, that the selected alpha of 100.0
+belongs to the frozen grid and replays from the stored validation grid under the
+protocol's own rule, that the locked run reused it rather than reselecting, that
+both runs report the same Python, NumPy and scikit-learn, that every locked
+result carries its target range, and that the selected frames are ordered and
+never consecutive.
+
+Note the tie rule. This protocol resolves an exact tie in favour of the **larger**
+alpha, which is the opposite of the
+[ChEMBL contract](/labs/chembl-contract-inspection/), where ties choose the
+smaller. Neither is more correct. What matters is that each is declared before
+selection runs, because a tie rule invented afterwards is a free parameter.
+
+## Independent exercise
+
+A reader compares the two locked systems and concludes that the model works
+better on benzene than on uracil, because 1.6022730996053722 is smaller than
+3.1238744298947863. Using only the values the command prints, say what is wrong
+with that conclusion, what a defensible version of it would be, and which single
+quantity the protocol forbids that would otherwise settle it.
+
+<details data-worked-answer>
+<summary>Worked answer — the range, the fraction and the forbidden interval</summary>
+
+**What is wrong.** The two errors are measured over different ranges. Uracil's
+target range of 33.140174655098235 is close to twice benzene's
+16.804794804076664, so a larger absolute error there does not by itself indicate
+a worse fit. Comparing raw MAE across systems compares two different questions.
+
+**A defensible version.** Compare each model against the control that shares its
+range. On benzene the Ridge error is 1.6022730996053722 against a constant
+2.2343735356479013; on uracil it is 3.1238744298947863 against 3.720448133704194.
+Both improve on their own constant, and the improvement is a modest fraction of
+the range in both cases. The defensible statement is that the model beats a
+constant within each system, not that it is better at one molecule than another.
+
+**The forbidden quantity.** A confidence interval on each error would let you say
+whether the two improvements differ by more than noise. The protocol forbids
+confidence intervals here, and the reason is in the previous section: the frames
+within a system are correlated, so an interval computed as though they were
+independent would be too narrow and would make the difference look decided.
+Reporting nothing is the honest option when the assumption behind the interval
+does not hold.
+
+A complete answer notices that the forbidden-metric list is not a limitation of
+the lab but a consequence of the sampling, and that removing the prohibition
+would require a different sampling design rather than a different formula.
+
+</details>
+
+## Where this sits
+
+This page is an inspection route into the completed
+[rMD17 system-state energy baselines](/labs/rmd17-system-state-energy-baselines/).
+It changes no protocol, no split and no result. Its companion is the
+[ChEMBL contract inspection](/labs/chembl-contract-inspection/), which walks the
+same three questions for a bioactivity dataset. Continue to
+[force fields and sampling](/learn/physics-based-modeling/force-fields-and-sampling/)
+for what a frame count does and does not buy, and to
+[metrics and uncertainty](/learn/evaluation-and-reproducibility/metrics-and-uncertainty/)
+for the denominator question in a wider setting.
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-10.

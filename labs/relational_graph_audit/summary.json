@@ -1,0 +1,334 @@
+{
+  "schema_version": "aidd-commons.relational-graph-audit-summary.v1",
+  "protocol_id": "aidd-commons.relational-graph-audit-v1",
+  "computed_on": "2026-10-25",
+  "software": {
+    "python": "3.11.15",
+    "pyyaml": "6.0.3"
+  },
+  "node_count": 228,
+  "edge_count": 39,
+  "node_counts_by_kind": {
+    "agent": 11,
+    "benchmark": 26,
+    "database": 22,
+    "dataset": 14,
+    "model": 81,
+    "model-asset": 1,
+    "paper": 4,
+    "software": 59,
+    "standard": 3,
+    "tutorial": 7
+  },
+  "edge_counts_by_type": {
+    "analyses": 2,
+    "demonstrates": 5,
+    "implements": 2,
+    "measured-by": 1,
+    "reproduces": 1,
+    "successor-to": 5,
+    "surfaced-by": 3,
+    "used-by": 8,
+    "uses": 12
+  },
+  "isolated_nodes": {
+    "agent": [
+      "agent-agent-laboratory",
+      "agent-agentd",
+      "agent-chemcrow",
+      "agent-coscientist",
+      "agent-litenexus",
+      "agent-mdcrow",
+      "agent-paperqa",
+      "agent-retroagent",
+      "agent-robin",
+      "agent-syn-rrag",
+      "benchmark-magi"
+    ],
+    "benchmark": [
+      "benchmark-ai-researcher",
+      "benchmark-benchtox",
+      "benchmark-beyond-affinity",
+      "benchmark-biostudybench",
+      "benchmark-bixbench",
+      "benchmark-cache-challenge",
+      "benchmark-chem-bench",
+      "benchmark-cryptobench",
+      "benchmark-drugood",
+      "benchmark-dta-distribution-shift",
+      "benchmark-dude",
+      "benchmark-guacamol",
+      "benchmark-lab-bench",
+      "benchmark-lit-pcba",
+      "benchmark-moses",
+      "benchmark-multipardigm-docking",
+      "benchmark-o3dc",
+      "benchmark-ogb",
+      "benchmark-plabench",
+      "benchmark-plinder",
+      "benchmark-posebench",
+      "benchmark-posebusters",
+      "benchmark-protdbench",
+      "benchmark-shallowbench",
+      "benchmark-tdc"
+    ],
+    "database": [
+      "db-alphafold-db",
+      "db-biogrid",
+      "db-chembl",
+      "db-chembl-37",
+      "db-comptox-chemicals-dashboard",
+      "db-depmap",
+      "db-drugbank",
+      "db-gtex-portal",
+      "db-gwas-catalog",
+      "db-human-protein-atlas",
+      "db-iedb",
+      "db-interpro",
+      "db-oas",
+      "db-open-targets-platform",
+      "db-pdbe",
+      "db-pk-db",
+      "db-pubchem",
+      "db-rcsb-pdb",
+      "db-reactome",
+      "db-sabdab2",
+      "db-thera-sabdab",
+      "db-uniprot"
+    ],
+    "dataset": [
+      "dataset-cellpainting-rosetta",
+      "dataset-cellxgene-census",
+      "dataset-connectivity-map-l1000",
+      "dataset-geom",
+      "dataset-jump-cell-painting",
+      "dataset-openfe-rbfe-benchmark",
+      "dataset-pcqm4mv2",
+      "dataset-prism-repurposing",
+      "dataset-rmd17",
+      "db-skempi",
+      "freesolv-v0-52"
+    ],
+    "model": [
+      "model-agfn",
+      "model-alphaproteo",
+      "model-aqaffinity",
+      "model-biogpt",
+      "model-boltz-1",
+      "model-cellfm",
+      "model-chai-1",
+      "model-chai-2",
+      "model-chemformer",
+      "model-chgnet",
+      "model-chroma",
+      "model-cpa",
+      "model-deepdta",
+      "model-defog",
+      "model-diffdock",
+      "model-dynamicbind",
+      "model-equibind",
+      "model-esm",
+      "model-esm3",
+      "model-esmc",
+      "model-graphdta",
+      "model-graphormer",
+      "model-grover",
+      "model-img2mol",
+      "model-instaflow",
+      "model-isodde",
+      "model-kermt",
+      "model-ligandmpnn",
+      "model-mace",
+      "model-mattersim",
+      "model-molclr",
+      "model-molcraftdiffusion",
+      "model-molfm",
+      "model-molnextr",
+      "model-nesso",
+      "model-neuralplexer",
+      "model-nise",
+      "model-pephar",
+      "model-pertformer",
+      "model-pocket2mol",
+      "model-ppi-llama2",
+      "model-progen",
+      "model-prot42",
+      "model-proteinmpnn",
+      "model-prottrans",
+      "model-raygun",
+      "model-reinvent-3",
+      "model-rfdiffusion",
+      "model-rfdiffusion2",
+      "model-ribonannanet",
+      "model-rna-fm",
+      "model-rosettafold-all-atom",
+      "model-rxnflow",
+      "model-swinocsr",
+      "model-targetdiff",
+      "model-tgpt",
+      "model-torchani",
+      "model-uce",
+      "model-uni-mol",
+      "model-zatom-1"
+    ],
+    "model-asset": [],
+    "paper": [
+      "agent-ai-coscientist",
+      "paper-alphafold-3",
+      "standard-fair-principles"
+    ],
+    "software": [
+      "model-alphafold-2",
+      "model-opendde",
+      "model-protenix",
+      "tool-admet-ai",
+      "tool-admetlab",
+      "tool-aizynthfinder",
+      "tool-alf",
+      "tool-askcos",
+      "tool-autodock-vina",
+      "tool-autolabs",
+      "tool-ax",
+      "tool-bindcraft",
+      "tool-bionemo-recipes",
+      "tool-botorch",
+      "tool-chemprop",
+      "tool-datamol",
+      "tool-decimer-ai",
+      "tool-deepchem",
+      "tool-dgl-lifesci",
+      "tool-dig",
+      "tool-dockm8",
+      "tool-flow-matching",
+      "tool-foldseek",
+      "tool-gflownet",
+      "tool-gnina",
+      "tool-gromacs",
+      "tool-mdanalysis",
+      "tool-mdtraj",
+      "tool-mmseqs2",
+      "tool-moleculex",
+      "tool-molfeat",
+      "tool-molscore",
+      "tool-openadmet-models",
+      "tool-openbabel",
+      "tool-openfe",
+      "tool-openff-evaluator",
+      "tool-openff-toolkit",
+      "tool-openmm",
+      "tool-perses",
+      "tool-pk-sim",
+      "tool-polaris",
+      "tool-proteinflow",
+      "tool-psi4",
+      "tool-pxmeter",
+      "tool-pytorch-geometric",
+      "tool-rdkit",
+      "tool-reinvent-4",
+      "tool-retrosim",
+      "tool-rxnmapper",
+      "tool-smina",
+      "tool-torchdrug",
+      "tool-torchgfn",
+      "tool-trids",
+      "tool-uni-dock",
+      "tool-xtb"
+    ],
+    "standard": [
+      "standard-ord-schema",
+      "standard-osaid",
+      "standard-spdx"
+    ],
+    "tutorial": [
+      "tutorial-multiobjective-al",
+      "tutorial-teachopencadd"
+    ]
+  },
+  "evidenced_edge_count": 39,
+  "unevidenced_edge_count": 0,
+  "candidate_edge_count": 10100,
+  "highest_candidate_nodes": [
+    [
+      "model-opendde",
+      158
+    ],
+    [
+      "model-pocket2mol",
+      158
+    ],
+    [
+      "model-targetdiff",
+      158
+    ],
+    [
+      "benchmark-tdc",
+      153
+    ],
+    [
+      "model-rosettafold-all-atom",
+      150
+    ],
+    [
+      "model-chai-1",
+      149
+    ],
+    [
+      "model-molnextr",
+      149
+    ],
+    [
+      "model-reinvent-3",
+      149
+    ],
+    [
+      "model-swinocsr",
+      149
+    ],
+    [
+      "tool-reinvent-4",
+      149
+    ]
+  ],
+  "highest_degree_nodes": [
+    [
+      "model-scgpt",
+      4
+    ],
+    [
+      "model-zeroshot-scfoundation",
+      4
+    ],
+    [
+      "model-cgflow",
+      3
+    ],
+    [
+      "model-geneformer",
+      3
+    ],
+    [
+      "model-alphafold-2",
+      2
+    ],
+    [
+      "model-boltz-2",
+      2
+    ],
+    [
+      "model-byteff",
+      2
+    ],
+    [
+      "model-byteff2",
+      2
+    ],
+    [
+      "model-gears",
+      2
+    ],
+    [
+      "model-nequip",
+      2
+    ]
+  ]
+}

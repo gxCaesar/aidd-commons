@@ -1,0 +1,62 @@
+id: agent-ai-coscientist
+name: AI co-scientist
+kind: paper
+summary: A proposal for an agent that generates, critiques and ranks research hypotheses alongside a human scientist.
+canonical_url: https://arxiv.org/abs/2502.18864
+identifiers:
+- scheme: paper
+  value: Towards an AI co-scientist; arXiv 2502.18864
+  url: https://arxiv.org/abs/2502.18864
+stages:
+- model-development
+- evaluation
+modalities:
+- scientific-text
+tasks:
+- scientific-question-answering
+- tool-using-agent
+relations: []
+status:
+  value: unverified
+access_level:
+  value: open_source
+  evidence:
+  - paper
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: CC BY 4.0
+  scope: The arXiv preprint only, per the licence the arXiv record carries. The record does not establish a licence for any implementation, because no code repository was located.
+  evidence:
+  - paper
+evidence:
+- id: paper
+  url: https://arxiv.org/abs/2502.18864
+  label: arXiv abstract page for 2502.18864, re-opened 2026-10-21
+  supports:
+  - name
+  - kind
+  - summary
+  - identifiers
+  - stages
+  - modalities
+  - tasks
+  - caveats
+caveats:
+- No code repository was located for this work, so every openness dimension stays unverified and nothing here may be read as a released implementation.
+- A proposal evaluated on a closed set of tasks is a statement about those tasks.
+acknowledgements: []
+last_verified: '2026-10-21'

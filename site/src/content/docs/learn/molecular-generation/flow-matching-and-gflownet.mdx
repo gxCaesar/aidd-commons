@@ -1,0 +1,180 @@
+---
+title: Flow matching and GFlowNet objectives
+description: Read dated records for flow-matching and GFlowNet artefacts through their training objective, asset availability and licence scope.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="molecular-generation/flow-matching-and-gflownet" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Flows and constrained molecular search](/learn/molecular-generation/flows-and-constrained-search/), this dated reading explains what changes when a generative model is trained to transport a simple distribution onto a target, and what changes again when it is trained to sample objects in proportion to a reward. You will read thirteen resource records for what each establishes about the objective, the released assets and the licence terms, and you will keep the objective and the artefact as separate questions. Read [Generative model mechanisms](/learn/molecular-generation/generative-model-mechanisms/) first.
+
+This is a source reading with a hand calculation. Only the catalogue records and the pages they cite were read. No repository was cloned, no dataset was downloaded, no checkpoint was loaded, and no training or sampling command was executed. No method was run, reproduced or re-implemented.
+
+## The objective decides which part of the distribution the sampler visits
+
+A generative model has a target distribution, and the training rule decides which one the sampler converges to.
+
+Under a maximum-likelihood objective the target is the data distribution `p_data`, so the sampler reproduces the corpus together with the regions the corpus barely covers. Under a flow-matching objective the target is still the data distribution, reached by transporting a simple base distribution along a chosen probability path. The path decides what the intermediate states are and how many steps the solver needs, but not the distribution the sampler ends at. Under a GFlowNet objective the target is proportional to a reward `R`, normalised over the terminal states, so the sampler concentrates on the states the reward prefers whether or not the corpus contains many of them.
+
+Two consequences follow for anyone reading a candidate list. A maximum-likelihood sampler and a reward-proportional sampler visit different parts of the space, so their outputs are not two draws from one population and cannot be pooled or compared without naming the target. And the validity of a reward-proportional sampler rests entirely on the reward being a faithful proxy, because nothing in the objective ties a high-reward state to an object that exists, is stable, or can be made.
+
+The objective also fixes what a comparison between two models can mean. Two models trained under the same objective on the same corpus with the same sampler budget are comparable. Two models trained under different objectives are answering different questions, and a better score from one does not transfer to the other.
+
+## The flow matching objective
+
+A flow-matching model takes a base sample and a time and returns a velocity that a solver integrates from the start of the path to its end. Training picks a probability path from a base distribution `p_0` to the data distribution `p_1`, picks a coupling between the two, and asks the network to regress the conditional velocity of that path. For the straight path `x_t = (1-t) x_0 + t x_1` the conditional velocity is the constant `x_1 - x_0`, so the training target for a paired sample is a displacement that does not change with time. Marginalising over the coupling gives the same optimum as matching the marginal velocity field, so the pairing need not be an exact optimal-transport map.
+
+Inference integrates the learned field. The number of solver steps and the integration scheme are choices that change cost and numerical error, and they leave the objective unchanged.
+
+The discrete variant replaces the continuous path with a schedule over discrete states, and the learned object becomes a per-step distribution over replacements rather than a velocity. [DeFoG](https://github.com/manuelmlmadeira/DeFoG) applies discrete flow matching to graph generation. [FragFM](https://github.com/lee-jwon/FragFM) applies it hierarchically, generating molecular graphs as stochastic fragment bags followed by a lossless coarse-to-fine atom-level reconstruction. The sampler then walks the chain instead of solving an ordinary differential equation.
+
+Two limits belong next to the objective. It encodes no reward, so a flow-matching model trained on a corpus has no way to prefer a better molecule within that corpus. And it makes no decoded object valid, because validity comes from the representation and from checks run after decoding.
+
+## The GFlowNet objective
+
+A GFlowNet works on an environment of states ordered by a partial order, typically a set of molecular fragments that grows. A forward policy chooses actions that move from an empty state to a terminal state, a backward policy is defined on the reversed transitions, and a reward attaches to terminal states. The trajectory balance loss asks the two policies to agree,
+
+`L_TB = (log Z + sum_t log P_F(s_{t+1} | s_t) - sum_t log P_B(s_t | s_{t+1}))^2`
+
+where `Z` is a learned normalising term and each sum runs over the actions of one trajectory. When the forward and backward policies are consistent, the terminal distribution of the sampling process is proportional to the reward, and the objective never evaluates `R(x)/Z` over the whole state space. The relative trajectory balance variant compares two trajectories with each other instead of with `Z`.
+
+The corpus is therefore not the target. A GFlowNet can end up preferring fragments that the training corpus rarely contained, because the reward and not the corpus sets the target distribution. That is what makes the family attractive for goal-directed generation, and it is also why the failure modes of a GFlowNet are the failure modes of its reward.
+
+## Libraries behind the two objectives
+
+Three library records sit underneath the two families, and they are not interchangeable.
+
+The [GFNOrg/gflownet repository](https://github.com/GFNOrg/gflownet) is a minimal PyTorch implementation of the GFlowNet paper covering grid, active-learning and molecule experiments. Its MIT licence covers the repository source code only, with the copyright notice to be retained, and the bundled 300,000-molecule file carries no provenance, licence or redistribution terms. The README calls the repository a minimum working version extracted from the internal Mila Molecule Discovery repository, so its completeness is unverified. No pretrained checkpoint is listed.
+
+The [GFNOrg/torchgfn repository](https://github.com/GFNOrg/torchgfn) is a PyTorch library for prototyping GFlowNet algorithms that separates environments, sampling and function-approximator parameterisation, and it ships discrete and continuous example environments. Its source is Apache-2.0. The README names example environments but no downloadable dataset, and a benchmark directory is present without any benchmark results shown, so what the benchmark code measures is unverified.
+
+These two are different projects under different licences, and the records keep them apart. The TacoGFN and CGFlow records name a third GFlowNet library at the Recursion repository, which is again a different repository from the two above.
+
+The [facebookresearch/flow_matching repository](https://github.com/facebookresearch/flow_matching) is a PyTorch library for continuous and discrete flow-matching algorithms with worked examples for image and text. Its access level is research_only because the code is CC BY-NC 4.0, which grants adaptation and redistribution for NonCommercial purposes only, so the library cannot be used for commercial work. The README states that this version releases no pre-trained models and that the example models must be trained from scratch, and the example datasets are named without stated licence terms. Its modalities are image and text, so it is a generic objective library rather than a molecular one.
+
+## Molecular records under the flow matching objective
+
+Five records sit under the flow matching objective, and only one of them has no released weights.
+
+[FlowMol3](https://github.com/dunni3/FlowMol) is a flow-matching model for unconditional 3D de novo small-molecule generation, released with its source code, the GEOM-Drugs training corpus and downloadable trained checkpoints. Its MIT licence covers the repository source code only, with the notice to be retained. The GEOM-Drugs corpus is separately published under CC BY 4.0 with attribution required, on the [GEOM-Drugs Zenodo record](https://zenodo.org/doi/10.5281/zenodo.19150583), and the trained checkpoints carry no stated licence. The record marks inference code, training code, weights and training data as available and architecture, data recipe and evaluation code as unverified. The trained-model index lists no licence, attribution requirement or usage condition for the checkpoints, and the corpus is described as a GEOM subset whose splits were created for MiDi, so the membership of any other GEOM release is not implied.
+
+[FragFM](https://github.com/lee-jwon/FragFM) is a hierarchical fragment-level discrete flow-matching framework. Its MIT licence covers the repository source code only, and the released MOSES, GuacaMol, ZINC250k and NPGen data and the downloaded checkpoints carry no separate licence statement. The raw and processed data archives and the coarse-to-fine autoencoder and flow-generator checkpoints are distributed through Google Drive with no stated licence or usage condition. The README associates the work with ICLR 2026, and no acceptance text beyond that association was checked.
+
+[DeFoG](https://github.com/manuelmlmadeira/DeFoG) is a PyTorch implementation of discrete flow matching for graph generation, with training and sampling scripts over standard molecule datasets and released checkpoints. MIT covers the repository source code only, and the README states no licence or usage terms for QM9, ZINC, MOSES, GuacaMol or the other listed datasets. The released checkpoints are described as retrained models hosted on a third-party drive with no licence, and the protein and EGO datasets are listed as available on request without stated terms.
+
+[MolFM](https://github.com/GenSI-THUAIR/MolFM) implements equivariant flow matching with hybrid probability transport for 3D molecule generation, with training and sampling code under docker and sampling directories. The repository lists no LICENSE file and states no licence string, so its access level and licence terms stay unverified. The README names no training dataset and no checkpoint, so neither the training corpus nor any released weights can be established from the opened page. Its clone command points at a different repository path that was not compared here, and the NeurIPS 2023 attribution rests on the repository README and the poster page because the OpenReview entry asks for browser verification and was not opened.
+
+[InstaFlow](https://github.com/gnobitab/InstaFlow) is a one-step text-to-image generator built with rectified flow, trained on text, noise and image triplets generated from pre-trained Stable Diffusion 1.5. Its repository source is MIT, but its pre-trained weights are CC BY-NC 4.0 and additionally subject to the CreativeML Open RAIL-M licence inherited from Stable Diffusion 1.5, so neither commercial use nor removal of the inherited use restrictions is granted. The README names no training corpus, and it asks users to disable the safety checker when reproducing the paper's MS COCO FID numbers, so those numbers are not produced under the default sampling path. InstaFlow is not a molecular model. It belongs in this reading because it is the released artefact in this set whose code licence and weight licence disagree.
+
+## Molecular records under the GFlowNet objective
+
+Three of these records build the GFlowNet form directly. The fourth extends flow matching into a continuous compositional setting and builds on two of the others, so it is placed here by what it depends on rather than by which family it started from.
+
+[AGFN](https://github.com/diamondspark/AGFN), the Atomic GFlowNets project, pretrains and fine-tunes atom-level GFlowNets for molecular graph generation with inexpensive rewards, using trajectory balance and relative trajectory balance objectives. MIT covers the repository source code only and is not stated to cover the pretrained checkpoint or the Enamine compounds. The AGFN-large checkpoint is trained on 6.75 million Enamine compounds, and the README gives no provenance, licence or usage terms for that set. Only the AGFN-large checkpoint is released, and the README states that weights for the smaller AGFN models are still to come.
+
+[RxnFlow](https://github.com/SeonghwanSeo/RxnFlow) is a generative flow network for synthesis-aware drug design that builds a molecule together with a reaction pathway, generating diverse high-reward candidates over a building-block library. Its MIT licence covers the repository source code only, and no terms are stated for the ZINC, eMolecules or Enamine building blocks the environments draw on. The README advertises no downloadable pretrained checkpoint, and the sampling example points at a checkpoint produced by a local training run. The example library ships 5,000 ZINC building blocks. The repository requests citations for both the ICLR 2025 paper and a 2026 bioRxiv preprint, so the two references are not interchangeable.
+
+[TacoGFN](https://github.com/tsa87/tacogfn) is a target-conditioned GFlowNet for structure-based drug design that generates molecules conditioned on a protein pocket, rewarding binding affinity, drug-likeness and synthesizability. MIT covers the repository source code only, and no terms are stated for the CrossDocked2020 and ZINCDock-15M datasets or for the Figshare package that holds the trained weights, pharmacophores and pocket graphs. The code modifies the GFlowNet library maintained at the Recursion repository. The repository is also reachable at a TacoGFN-SBDD path, which is the path the CGFlow README links to.
+
+[CGFlow](https://github.com/tsa87/cgflow) extends flow matching to continuous compositional generation, jointly designing a synthesizable molecule, its synthesis pathway and its 3D binding pose for a given protein target, and it builds on RxnFlow and TacoGFN. MIT covers the repository source code only, and no terms are stated for the CrossDocked2020 pockets or for the checkpoints hosted on Google Drive. The README marks the Plinder pose-model checkpoint as to be provided, so no Plinder weights are established as released. Its ICML 2025 attribution rests on the repository README alone, because the OpenReview forum asks for browser verification and was not opened.
+
+## Reinforcement learning on a flow model
+
+[Graph-GRPO](https://github.com/Zhubaoheng/Graph-GRPO) is an online reinforcement-learning framework that aligns graph flow models with verifiable rewards, using a differentiable analytic transition probability and an iterative refinement strategy. Its repository source is MIT, and its published checkpoint collection carries the Apache-2.0 identifier with no additional conditions and an empty README, so the scope of the weight licence is only as wide as that identifier. The README states no licence or usage terms for the ZINC250k, Planar, Tree or SBM datasets. It also describes the model as a DeFoG-style discrete flow model whose released DeFoG weights can be used directly, so the two checkpoint sets are not independent artefacts.
+
+The objective changes at this step. A flow model trained by matching a distribution and then fine-tuned by policy optimisation is no longer sampling in proportion to a data density or to a reward. The policy objective asks the sampler to concentrate on high-reward states, which is a different target distribution from the one the pre-training established. The record does not establish how far the terminal distribution moves, and it carries no matched comparison against the base checkpoint. A reader comparing two such models must state the base checkpoint, the reward function and the optimisation budget, because a fine-tuned model inherits the base model's assets rather than replacing them.
+
+## What the evaluation depends on
+
+A distributional objective is evaluated on a corpus and a split. A reward-driven objective is evaluated on a reward definition and a checker. A policy-optimised model is evaluated on the base checkpoint and the budget as well. The records let us say where those dependencies are named and where they are not.
+
+FlowMol3 names its corpus, the GEOM-Drugs subset with splits created for MiDi, and its evaluation code remains unverified. FragFM names MOSES, GuacaMol, ZINC250k and NPGen as the released data, with the COCONUT database behind NPGen carrying no stated terms, its record carries a relation to the MOSES distribution benchmark and no result from it, and its evaluation code remains unverified. DeFoG names QM9, ZINC, MOSES and GuacaMol, lists protein and EGO datasets as available on request without stated terms, and leaves evaluation code unverified. AGFN describes its reward as inexpensive and records no metric, split or entity list for a molecule-level evaluation. TacoGFN's reward combines binding affinity, drug-likeness and synthesizability, so the definition of each term decides which candidates look good, and its datasets are CrossDocked2020 and ZINCDock-15M. CGFlow adds the target, the molecule, the synthesis pathway and the 3D pose to the output contract, so the evaluation must state how each part is scored. InstaFlow shows the sampling configuration entering the number, because the README asks for the safety checker to be disabled when reproducing the MS COCO FID figures and those figures are therefore not produced under the default sampling path.
+
+The records do not carry a split rule, a held-out entity list or a metric table for the datasets they name, so the evaluation dependency can be named here but not read off.
+
+## Openness by dimension
+
+The seven columns keep the catalogue's dimensions apart. Available means the cited record established access or documentation, not that this lesson executed the asset. Unverified means the record did not establish that dimension.
+
+| Resource | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| flow_matching | available | available | not available | unverified | unverified | unverified | unverified |
+| GFNOrg/gflownet | available | available | not available | unverified | unverified | unverified | available |
+| torchgfn | available | available | not available | unverified | unverified | unverified | available |
+| FlowMol3 | available | available | available | unverified | unverified | available | unverified |
+| FragFM | available | available | available | unverified | unverified | unverified | unverified |
+| DeFoG | available | available | available | unverified | unverified | unverified | unverified |
+| MolFM | available | available | not available | unverified | unverified | unverified | unverified |
+| InstaFlow | available | available | available | unverified | unverified | unverified | unverified |
+| AGFN | available | available | available | unverified | unverified | unverified | unverified |
+| RxnFlow | available | available | not available | unverified | unverified | unverified | unverified |
+| TacoGFN | available | available | available | unverified | unverified | unverified | unverified |
+| CGFlow | available | available | available | unverified | unverified | unverified | unverified |
+| Graph-GRPO | available | available | available | unverified | unverified | unverified | unverified |
+
+Two patterns carry the weight. The architecture and the data recipe are unverified in every one of the thirteen records, so no reader can reconstruct a training recipe from these records. The evaluation code is unverified in eleven of them, and the two exceptions are the two GFlowNet libraries, one of which shows no benchmark results at all.
+
+## What a matched comparison would need
+
+None of the thirteen records carries a comparison under a shared protocol, so this reading ranks nothing. The strongest comparison available inside a single record is AGFN's naming of trajectory balance against relative trajectory balance for one pretraining and fine-tuning pipeline, and the record carries no numbers for it.
+
+A matched comparison between these families would have to fix the corpus and its snapshot, the split and the held-out entities, the metric and its denominator, the validity checker and the identity rule, the sampler budget in solver steps or trajectories, the reward definition with each of its terms, the base checkpoint for any fine-tuned model, and the permission to use every dataset and weight file. Three of these records already show why the last item is separate from the rest. Graph-GRPO uses the released DeFoG weights directly, so a Graph-GRPO and DeFoG comparison is not independent. CGFlow builds on RxnFlow and TacoGFN, so a CGFlow and RxnFlow comparison is not independent either. The TacoGFN and CGFlow code also modify the GFlowNet library maintained at the Recursion repository, which is a third library beside the two GFNOrg projects.
+
+## Worked case
+
+All values in this case are **constructed for teaching**. A generator's task is to propose one of three candidate states A, B and C. The corpus of accepted records has 100 entries, of which 90 are A, 5 are B and 5 are C, so the maximum-likelihood target is 90% for A and 5% each for B and C. A reward returns `R(A) = 1`, `R(B) = 3` and `R(C) = 6`, and its normalising sum over the three terminal states is 10, so the reward-proportional target is 10% for A, 30% for B and 60% for C.
+
+| Target | A | B | C |
+| --- | ---: | ---: | ---: |
+| Maximum likelihood | 90% | 5% | 5% |
+| Reward proportional | 10% | 30% | 60% |
+
+The two samplers visit different parts of the space. The reward-proportional target puts 90% of its mass on the two states the corpus under-represents, because B and C together carry only 10% of the corpus mass. Over 100 samples the expected counts are 90, 5 and 5 for the likelihood sampler and 10, 30 and 60 for the reward sampler. The reward sampler returns C most often, and the corpus contains only 5 examples of C. Either the corpus is thin in a region the reward likes, or the reward is wrong there, and counting samples cannot separate the two.
+
+The flow-matching half of the case is one paired sample. Let the base sample be `x_0 = 0.4` and the data sample be `x_1 = -1.2`. The straight conditional path is `x_t = (1-t) x_0 + t x_1`, which expands to `x_t = 0.4 - 1.6 t`, so the conditional velocity is the constant `x_1 - x_0 = -1.6`. At `t = 0.25` the state is `x_t = 0` and at `t = 0.75` the state is `x_t = -0.8`. The regression target at both times is `-1.6`. The velocity is what the network is asked to predict, the choice of path is a modelling decision that changes the states the model passes through and the solver steps it needs, and the terminal distribution is still the data distribution.
+
+## Independent exercise
+
+A second **constructed** case uses a corpus of 100 entries with 50 for state A, 30 for B and 20 for C, and a reward returning `R(A) = 2`, `R(B) = 1` and `R(C) = 4`. For the flow-matching side, let the base sample be `x_0 = -0.5` and the data sample be `x_1 = 2.5`. Compute the maximum-likelihood target and the reward-proportional target, name the state visited most often under each and the state with the largest gap between the two, then compute `x_1 - x_0`, the state `x_t` at `t = 0.2` and at `t = 0.6`, and the regression target at each. Name two records that would stop a later reader from taking this comparison for an empirical result.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The maximum-likelihood target is 50% for A, 30% for B and 20% for C. The reward-proportional target is 28.57% for A, 14.29% for B and 57.14% for C. The likelihood sampler visits A most often and the reward sampler visits C most often. The largest gap sits at C, where the reward target is 37.14 percentage points above the likelihood target, and the gap is negative at B.
+
+For the flow-matching side, `x_1 - x_0 = 3.0`, so the straight path is `x_t = -0.5 + 3.0 t`. The state at `t = 0.2` is `x_t = 0.1` and at `t = 0.6` it is `x_t = 1.3`. The regression target is `3.0` at both times, because the straight path has constant speed.
+
+Useful records are the corpus snapshot and its membership rule, the reward definition with the normalising sum stated, the identity rule that says which states count as the same, the sampler budget, and the fact that both targets are constructed. None of these values establishes activity, validity or synthesisation for any real molecule. The two records that would stop a later reader are the constructed-values statement and the statement that no method was run for this lesson.
+
+</details>
+
+## What this material does not show
+
+The records establish selected asset and licence statements as reviewed on 2026-10-21. They do not establish a reproduced model, an executed benchmark, an unrestricted reuse of any linked dataset or checkpoint, a matched comparison between any two of the thirteen resources, or a measured effect of either objective on a chemical outcome.
+
+Three boundaries hold. The architecture and the data recipe are unverified in every record, so no training recipe can be reconstructed here. Eight of the thirteen records release weights, and only InstaFlow and the Graph-GRPO collection state a licence identifier for them, while the FlowMol3 checkpoints, the FragFM Google Drive files, the DeFoG third-party checkpoints, the AGFN pretrained checkpoint, the TacoGFN Figshare package and the CGFlow Google Drive files carry none. And the reward definitions that drive the GFlowNet family live in code and papers rather than in the records, so the reward-proportional property is a property of the objective as described and not a measured behaviour of the released checkpoints.
+
+## Sources
+
+The source pages were reviewed on 2026-10-21. Each linked source retains its own licence and scope.
+
+- [GFNOrg/gflownet repository](https://github.com/GFNOrg/gflownet), [arXiv 2106.04399](https://arxiv.org/abs/2106.04399)
+- [GFNOrg/torchgfn repository](https://github.com/GFNOrg/torchgfn), [arXiv 2305.14594](https://arxiv.org/abs/2305.14594)
+- [facebookresearch/flow_matching repository](https://github.com/facebookresearch/flow_matching), [arXiv 2412.06264](https://arxiv.org/abs/2412.06264)
+- [FlowMol repository](https://github.com/dunni3/FlowMol), [arXiv 2508.12629](https://arxiv.org/abs/2508.12629)
+- [FragFM repository](https://github.com/lee-jwon/FragFM), [arXiv 2502.15805](https://arxiv.org/abs/2502.15805)
+- [DeFoG repository](https://github.com/manuelmlmadeira/DeFoG), [arXiv 2410.04263](https://arxiv.org/abs/2410.04263)
+- [AGFN repository](https://github.com/diamondspark/AGFN), [arXiv 2503.06337](https://arxiv.org/abs/2503.06337)
+- [RxnFlow repository](https://github.com/SeonghwanSeo/RxnFlow), [arXiv 2410.04542](https://arxiv.org/abs/2410.04542)
+- [TacoGFN repository](https://github.com/tsa87/tacogfn), [arXiv 2310.03223](https://arxiv.org/abs/2310.03223)
+- [CGFlow repository](https://github.com/tsa87/cgflow), [ICML 2025 OpenReview entry](https://openreview.net/forum?id=4aXfSLfM0Z)
+- [Graph-GRPO repository](https://github.com/Zhubaoheng/Graph-GRPO), [arXiv 2603.10395](https://arxiv.org/abs/2603.10395), [checkpoint collection](https://huggingface.co/BaohengZhu/Graph-GRPO-checkpoints)
+- [InstaFlow repository](https://github.com/gnobitab/InstaFlow), [arXiv 2309.06380](https://arxiv.org/abs/2309.06380), [model card](https://huggingface.co/XCLIU/instaflow_0_9B_from_sd_1_5)
+- [MolFM repository](https://github.com/GenSI-THUAIR/MolFM), [NeurIPS 2023 poster page](https://neurips.cc/virtual/2023/poster/70795)
+
+Last reviewed: 2026-10-22.

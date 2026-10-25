@@ -1,0 +1,68 @@
+id: dataset-connectivity-map-l1000
+name: LINCS L1000 public perturbation profiles
+kind: dataset
+summary: Archived Broad LINCS L1000 perturbational expression profiles, with public Phase I and Phase II data releases in GEO; distinct from the retired CLUE query service.
+canonical_url: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE92742
+identifiers:
+  - scheme: geo-series
+    value: GSE92742
+    url: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE92742
+  - scheme: geo-series
+    value: GSE70138
+    url: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70138
+  - scheme: documentation
+    value: Broad guide to GEO L1000 data releases
+    url: https://clue.io/connectopedia/guide_to_geo_l1000_data
+stages: [disease-mechanism, target-discovery]
+modalities: [perturbational-transcriptomics]
+tasks: [perturbation-signature-inspection, expression-data-retrieval]
+relations: []
+status: { value: legacy, evidence: [geo-release-guide] }
+access_level: { value: source_available, evidence: [terms-of-use] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: United States Government work, public domain
+    scope: The molecular data on the site. The National Library of Medicine states that information created by or for the United States government on the site is within the public domain, that the Library itself places no restrictions on the use or distribution of the data in its molecular databases, and that appropriate acknowledgment is requested in any subsequent use.
+    evidence: [terms-of-use]
+evidence:
+  - id: geo-release-guide
+    url: https://clue.io/connectopedia/guide_to_geo_l1000_data
+    label: Broad guide identifying public LINCS Phase I and Phase II GEO releases
+    supports:
+      [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: retirement-notice
+    url: https://assets.clue.io/resources/CLUE_Software_License_T_and_C.pdf
+    label: CLUE tool retirement notice effective 2026-01-31
+    supports: [summary, caveats]
+  - id: clue-interface
+    url: https://clue.io/
+    label: Historical CLUE interface and current retirement announcement
+    supports: [caveats]
+  - id: gse70138-join-probe-2026-09-12
+    url: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70138
+    label: "Direct fetch and join check of GSE70138's 2015- and 2017-dated Level 2 releases against its own metadata, 2026-09-12"
+    supports: [caveats]
+  - id: terms-page
+    url: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE92742
+    label: Terms page read 2026-10-23
+    supports: [caveats]
+  - id: terms-of-use
+    url: https://www.ncbi.nlm.nih.gov/home/about/policies/
+    label: NCBI policies read 2026-10-23
+    supports: [caveats]
+caveats:
+  - The text the canonical page returned on 2026-10-23 states no licence term, and the page renders its content in the browser, so a terms page this review did not open may carry one.
+  - CLUE announced retirement of its site and tools effective 2026-01-31; a reachable historical page does not establish a functioning query service. The notice points public data users to GEO.
+  - The historical nine-cell-line Touchstone reference is not the scope of every public LINCS release. Select the GEO accession, data level, perturbation and cell metadata explicitly.
+  - "Within one series (checked on GSE70138), an older dated Level 2 release can use simplified, non-joinable column labels (for example `A375-trt_cp-5`) that do not appear anywhere in the current inst_info/sig_info metadata files, verified by fetching it directly and finding zero matching labels; only a release whose column IDs are real inst_id/sig_id values (checked: the 2017-03-06 files) joins to compound identity, dose and time. Always verify a fetched file's column IDs against its own metadata before assuming a join."
+  - "The 978-landmark-gene Level 2 files for GSE70138 are a few hundred MiB and directly measured; the full 12,328-gene Level 4 (Z-score) and Level 5 (aggregated signature) releases for the same series are 14 GB and 5.4 GB respectively (checked 2026-09-12), well outside a CPU-first teaching scale, and include computationally inferred genes alongside the measured landmark set."
+  - "The GEO series record for this release states no per-series licence, so the licence and the reuse terms of the archived files stay unverified. The archive's general submission and download conditions are not a statement about this series."
+acknowledgements: []
+last_verified: "2026-10-23"

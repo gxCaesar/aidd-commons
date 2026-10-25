@@ -1,0 +1,52 @@
+id: tool-gnina
+name: GNINA
+kind: software
+summary: Deep-learning docking software.
+canonical_url: https://github.com/gnina/gnina
+identifiers:
+  - scheme: paper
+    value: "GNINA 1.3: the next increment in molecular docking with deep learning"
+    url: https://link.springer.com/article/10.1186/s13321-025-00973-x
+stages: [hit-discovery, physics-based-modelling, evaluation]
+modalities: [small-molecule, protein-ligand-complex]
+tasks: [molecular-docking]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license-apache, license-gnu] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: covers the files under the repository's LICENSE.APACHE file, per that file
+    evidence: [license-apache]
+  - name: GPL-2.0
+    scope: covers the files under the repository's LICENSE.GNU file, per that file
+    evidence: [license-gnu]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/gnina/gnina
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/gnina/gnina
+    label: GNINA repository
+    supports: [caveats, kind, modalities, name, stages, summary, tasks]
+  - id: license-apache
+    url: https://raw.githubusercontent.com/gnina/gnina/master/LICENSE.APACHE
+    label: Repository LICENSE.APACHE file (reviewed 2026-10-23)
+    supports: [caveats]
+  - id: license-gnu
+    url: https://raw.githubusercontent.com/gnina/gnina/master/LICENSE.GNU
+    label: Repository LICENSE.GNU file (reviewed 2026-10-23)
+    supports: []
+caveats:
+  - The openness claims here rest on the repository's own file listing and README, read on 2026-10-23; the code was not run, and no claim is made that the released scripts reproduce the published numbers.
+  - The repository ships two licence files and the opened files state no scope, so which part of the distribution each covers is not established by this record.
+acknowledgements: []
+last_verified: "2026-10-23"

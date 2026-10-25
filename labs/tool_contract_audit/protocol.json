@@ -1,0 +1,132 @@
+{
+  "contract": {
+    "environment": {
+      "required": [
+        "software.python",
+        "environment.requires",
+        "environment.unavailable",
+        "environment.can_attest_external_execution"
+      ],
+      "rule": "The return must name a Python software version and nonempty requirement and unavailable lists. can_attest_external_execution must be false. These are declarations, not an independent process trace.",
+      "unavailable": [
+        "external execution attestation",
+        "proof of runtime hardware from a return record"
+      ]
+    },
+    "error_states": {
+      "field": "outcome_status",
+      "must_stop": [
+        "halt"
+      ],
+      "no_usable_result": [
+        "no_result",
+        "halt"
+      ],
+      "observed_field_names": [
+        "run_status",
+        "status",
+        "error",
+        "errors"
+      ],
+      "rule": "The outcome_status field must have one declared value. no_result licenses no usable result and halt requires stopping. Missing status cannot be inferred as complete. Existing laboratories have no uniform top-level error field.",
+      "statuses": [
+        "complete",
+        "no_result",
+        "halt"
+      ]
+    },
+    "schema": {
+      "field_coverage": [
+        "schema_version",
+        "protocol_id",
+        "computed_on",
+        "software",
+        "environment",
+        "side_effects",
+        "outcome_status",
+        "scientific_meaning",
+        "software.python",
+        "environment.requires",
+        "environment.unavailable",
+        "environment.can_attest_external_execution",
+        "side_effects.allowed_writes",
+        "scientific_meaning.licenses",
+        "scientific_meaning.does_not_license",
+        "boundary",
+        "does_not_do",
+        "does_not_show",
+        "excluded_by_design",
+        "interpretation_limits",
+        "limit_statement",
+        "limits",
+        "run_status",
+        "status",
+        "error",
+        "errors"
+      ],
+      "required": {
+        "computed_on": "iso_date",
+        "environment": "object",
+        "outcome_status": "status",
+        "protocol_id": "nonempty_string",
+        "schema_version": "nonempty_string",
+        "scientific_meaning": "object",
+        "side_effects": "object",
+        "software": "version_map"
+      },
+      "rule": "Each required field must be present with its declared type and a value. Missing and empty or invalid values are distinct failures. Extra result fields are allowed because laboratories have different outputs."
+    },
+    "scientific_meaning": {
+      "field": "scientific_meaning",
+      "limit_field_names": [
+        "boundary",
+        "does_not_do",
+        "does_not_show",
+        "excluded_by_design",
+        "interpretation_limits",
+        "limit_statement",
+        "limits"
+      ],
+      "required": [
+        "licenses",
+        "does_not_license"
+      ],
+      "rule": "Both meaning statements must be nonempty strings. A pass licenses only a self-describing artefact, not measurement truth or independent reproduction. Count existing limit declarations separately without treating them as this full statement."
+    },
+    "side_effects": {
+      "field": "side_effects.allowed_writes",
+      "rule": "Declare a list of repository-relative paths that the tool may write. An empty list makes a no-write claim checkable against a separate trace. The return record alone cannot prove that actual writes obeyed it."
+    },
+    "version": {
+      "fields": [
+        "schema_version",
+        "protocol_id"
+      ],
+      "rule": "Both fields must be nonempty strings. Without either field the record cannot be read as a versioned artefact. This does not validate the protocol's science."
+    }
+  },
+  "counted_unit": {
+    "admission": "Every immediate laboratory directory with a summary.json, except this audit, whose return record is the file this audit writes; no sample or ranking.",
+    "record": "One laboratory return record at labs/*/summary.json."
+  },
+  "excluded_by_design": [
+    "Any claim that a passing record establishes that the laboratory's measurement is correct.",
+    "Any claim that a return record proves a tool ran in its named environment.",
+    "Any claim that a reader can reproduce a result from the return record alone.",
+    "Any ranking of laboratories by record completeness."
+  ],
+  "issued_on": "2026-10-23",
+  "protocol_id": "aidd-commons-lab-return-contract-v1",
+  "run_basis": "Fresh independent CPU computation over committed local laboratory return records. No network, download or accelerator is used.",
+  "schema_version": "aidd-commons.tool-contract-audit-protocol.v1",
+  "source": {
+    "audited_directory": "labs",
+    "download": "none",
+    "exclude_laboratory": "tool_contract_audit",
+    "network": "none",
+    "protocol_file": "protocol.json",
+    "reader": "Local pathlib glob and JSON read at run time",
+    "readme_file": "README.md",
+    "return_glob": "*/summary.json"
+  }
+}

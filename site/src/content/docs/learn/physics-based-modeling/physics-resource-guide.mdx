@@ -1,0 +1,139 @@
+---
+title: Choosing physical-modelling resources
+description: Match a pose, parameterized system, trajectory, free-energy difference or electronic-structure question to the tool that produces that object.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+import ResourceGuideTables from "../../../../components/ResourceGuideTables.astro";
+
+<LessonProgress lessonId="physics-based-modeling/physics-resource-guide" />
+<ScrollableRegions />
+<ResourceGuideTables />
+
+## Learning goals and prerequisites
+
+You will choose a physical-modelling tool by the quantity it can produce,
+distinguish parameter assignment from simulation and analysis, and identify
+when an apparently finished calculation is missing the requested endpoint.
+Read [Force fields and sampling](/learn/physics-based-modeling/force-fields-and-sampling/)
+and [Free-energy cycles and convergence](/learn/physics-based-modeling/free-energy-cycles-and-convergence/)
+first. This guide contains reading and hand calculations, not an executed
+docking, dynamics, free-energy or quantum-chemistry workflow.
+
+## Start with the requested output
+
+A three-dimensional structure does not specify a physical calculation. Before
+choosing software, state the molecular identity, protein construct and state,
+protonation/tautomer assumptions, solvent/environment and requested quantity.
+“Which pose fits this pocket?” differs from “What is the binding-free-energy
+difference between these ligands?” A trajectory can inform the latter workflow
+without being that endpoint itself.
+
+| Requested object                          | Resource                                             | Inputs and output                                                                                                    | Main boundary                                                                                         |
+| ----------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Docked pose hypotheses                    | [AutoDock Vina](/atlas/tool-autodock-vina/)          | Prepared receptor/ligand files, search region and scoring configuration → poses and docking scores                   | Score identity and preparation belong to the result.                                                  |
+| A parameterized molecular system          | [OpenFF Toolkit](/atlas/tool-openff-toolkit/)        | Molecular topology, a SMIRNOFF force-field definition and charge choices → assigned parameters or an OpenMM `System` | Parameter assignment is not simulation or validation of chemical coverage.                            |
+| Dynamics of a specified system            | [OpenMM](/atlas/tool-openmm/)                        | System, topology, initial positions, integrator and simulation settings → configured trajectory and state outputs    | A completed trajectory does not establish sufficient sampling.                                        |
+| Measurements from an existing trajectory  | [MDAnalysis](/atlas/tool-mdanalysis/) or [MDTraj](/atlas/tool-mdtraj/) | Matching topology and trajectory → atom selections and trajectory-derived measurements                          | Atom order, time, units and selections must match.                                                    |
+| An alchemical free-energy endpoint        | [OpenFE](/atlas/tool-openfe/)                        | Chemical systems, transformation/protocol and settings → free-energy estimates and diagnostics                       | The requested endpoint may require more than one simulation leg.                                      |
+| A specified electronic-structure quantity | [Psi4](/atlas/tool-psi4/) or [xTB](/atlas/tool-xtb/) | Geometry, electronic state and method settings → energy, geometry or other requested properties                      | Method level and environment define the answer; a geometry optimization is not a binding free energy. |
+
+These are complementary roles, not a ranking of software quality. OpenFF's
+[ForceField API](https://docs.openforcefield.org/projects/toolkit/en/stable/api/generated/openff.toolkit.typing.engines.smirnoff.ForceField.html)
+documents creating an OpenMM system from supported molecular topology. It does
+not imply that one small-molecule force field parameterizes every protein,
+metal or cofactor in a complex. Resolve component coverage before simulation.
+
+## Three boundaries to inspect in the official examples
+
+The [Vina basic tutorial](https://autodock-vina.readthedocs.io/en/latest/docking_basic.html)
+explicitly warns that AutoDock4 and Vina scores are not comparable. It also
+separates ligand preparation, search configuration and output conversion.
+A common energy unit does not make two scoring functions the same estimator.
+
+The [OpenMM simulation example](https://docs.openmm.org/latest/userguide/application/02_running_sims.html)
+separates `System`, `Integrator`, starting positions and output reporters.
+[MDAnalysis Universe](https://userguide.mdanalysis.org/stable/universe.html)
+then reads existing topology/trajectory information; trajectory coordinates
+must follow the topology's atom order. A plausible contact plot from a
+mismatched atom ordering is not rescued by smooth-looking curves.
+
+OpenFE's [relative hybrid-topology protocol](https://docs.openfree.energy/en/stable/guide/protocols/relativehybridtopology.html)
+runs one thermodynamic-cycle leg per protocol instance. Binding comparisons
+need both complex and solvent legs. Its [absolute binding protocol](https://docs.openfree.energy/en/stable/guide/protocols/absolutebinding.html)
+instead includes both legs in one protocol graph, with orientational restraints
+and their release treatment. Check the selected protocol's output contract;
+do not assume that every file labelled `Delta G` is the final binding quantity.
+The relative-protocol documentation also flags possible systematic errors when
+dummy-group contributions do not cancel. Read such protocol-specific limitations
+before adapting the [OpenFE tutorials](/atlas/tutorial-openfe/).
+
+## Constructed case: what can the current files decide?
+
+A team supplies the following **invented teaching packet**:
+
+- ligand A: Vina score `-8.2 kcal/mol`;
+- ligand B: AutoDock4 score `-9.1 kcal/mol`;
+- one trajectory with matching topology, run for `50,000` steps at `2 fs`,
+  saved every `1,000` steps, with no initial-frame output;
+- one completed OpenFE relative-protocol result for the complex leg only.
+
+The request is “rank A and B by binding affinity.” None of the supplied objects
+settles that request. The docking scores use different functions. The trajectory
+has `50,000 × 2 fs = 100,000 fs = 100 ps = 0.1 ns` of simulated time and
+`50,000 / 1,000 = 50` saved frames. Fifty frames are not 50 independent binding
+experiments, and duration alone does not establish convergence. The complex-leg
+result is missing the solvent leg needed for the relative binding endpoint.
+
+The useful next output is therefore a corrected interpretation, not a ranking.
+Keep the two docking scores separate; identify preparation and scoring parity
+needed for a pose comparison. Use MDAnalysis only for a named trajectory
+observable with units, atom selection and sampling limits. For a binding-free-
+energy question, inspect both leg definitions, their direction and diagnostics
+before combining results. This packet does not authorize a new simulation and
+does not imply that doing every step in sequence is always necessary.
+
+## When the question is electronic rather than configurational
+
+For a selected geometry, [Psi4's input guide](https://psicode.org/psi4manual/master/psithoninput.html)
+distinguishes the method, basis and calculation driver; `energy()` returns the
+requested total energy in hartree. The [xTB manual](https://github.com/grimme-lab/xtb/blob/main/man/xtb.1.adoc)
+documents its approximate methods and inputs such as charge and unpaired
+electrons. Neither software name specifies a universal “QM accuracy.”
+If the question concerns a reactive site in a protein environment, continue to
+[QM/MM boundaries](/learn/physics-based-modeling/qm-mm-and-reactive-events/)
+to define the environment and coupling. Do not substitute an isolated-molecule
+optimized energy for a sampled protein free-energy barrier.
+
+## Independent exercise
+
+A second **constructed packet** has `200,000` steps at `2 fs`, coordinates
+saved every `5,000` steps and no initial-frame output. Its ligand-heavy-atom
+RMSD stays near its starting value. The analyst reports “40 independent
+replicates prove binding.” Calculate the duration and frame count, correct the
+claim, and identify the tool category needed to inspect the stated observable.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The duration is `200,000 × 2 fs = 400 ps = 0.4 ns`; there are
+`200,000 / 5,000 = 40` saved frames, not 40 independent replicates. RMSD is a
+trajectory-derived structural observable, so MDAnalysis is an appropriate
+analysis resource once topology, atom correspondence, alignment/reference and
+units are fixed. Staying near a starting pose under a particular simulation
+does not establish binding, an equilibrium affinity, or adequate exploration of
+alternative states. The statement should describe the observed RMSD and its
+simulation scope, without a binding conclusion.
+
+</details>
+
+## Source and execution boundary
+
+The linked official documentation was reviewed on 2026-09-09. These input/output
+descriptions do not promise identical installation requirements or runtime.
+Software, force-field data and optional backends retain their own terms. No
+upstream calculation was executed, and the constructed numbers are not outputs
+of Vina, OpenMM, OpenFE, Psi4 or xTB runs in this project.
+
+Last reviewed: 2026-09-09.

@@ -1,0 +1,8 @@
+id,smiles,teaching_point
+pyridine-kekule,C1=CC=CN=C1,Equivalent graph written with explicit alternating bonds
+pyridine-aromatic,n1ccccc1,Equivalent graph written with aromatic atoms
+alanine-one,N[C@@H](C)C(=O)O,One defined tetrahedral stereoisomer
+alanine-two,N[C@H](C)C(=O)O,The opposite defined tetrahedral stereoisomer
+alanine-unspecified,NC(C)C(=O)O,Connectivity retained but tetrahedral stereochemistry unspecified
+acetic-acid,CC(=O)O,Neutral protonation state
+sodium-acetate,CC(=O)[O-].[Na+],Disconnected salt with two components

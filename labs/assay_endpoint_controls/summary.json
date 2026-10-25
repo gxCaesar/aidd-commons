@@ -1,0 +1,1506 @@
+{
+  "assays": {
+    "1277": {
+      "audit": {
+        "admitted_compounds": 63,
+        "exclusion_counts": {},
+        "input_rows": 63,
+        "retained_rows": 63
+      },
+      "confidence_score": {
+        "count": 63,
+        "fraction_at_maximum": 0.015873015873015872,
+        "fraction_zero": 0.47619047619047616,
+        "maximum": 100.0,
+        "median": 26.0,
+        "minimum": 0.0
+      },
+      "curve_check": {
+        "development": {
+          "curves": 15,
+          "fraction_endpoint_within_factor_three": 0.6666666666666666,
+          "fraction_within_tolerance": 0.92,
+          "maximum_absolute_deviation": 12.305337767879756,
+          "median_absolute_deviation": 1.2815235862437362,
+          "median_endpoint_log10_error": 0.3947983848753871,
+          "p90_absolute_deviation": 3.993145309871024,
+          "points": 150
+        },
+        "fit_mode": "free",
+        "held_out": {
+          "curves": 13,
+          "fraction_endpoint_within_factor_three": 0.5384615384615384,
+          "fraction_within_tolerance": 0.9384615384615385,
+          "maximum_absolute_deviation": 11.362336177422929,
+          "median_absolute_deviation": 1.5138428701669522,
+          "median_endpoint_log10_error": 0.4662742466995601,
+          "p90_absolute_deviation": 4.157195602761835,
+          "points": 130
+        },
+        "mode": "refit_from_archived_points",
+        "tolerance_points": 5.0
+      },
+      "direction": "inhibition",
+      "endpoint": {
+        "label": "IC50",
+        "unit": "uM"
+      },
+      "examples": [
+        {
+          "activity_score": 0.0,
+          "compound_id": "1099239",
+          "concentrations_um": [
+            0.0018000000000000002,
+            0.0054,
+            0.0162,
+            0.048600000000000004,
+            0.1458,
+            0.4374,
+            1.3,
+            3.9,
+            11.8,
+            35.4
+          ],
+          "endpoints": {
+            "IC50": 35.0
+          },
+          "outcome": "Inactive",
+          "qualifier": ">",
+          "responses": [
+            -2.0,
+            -2.0,
+            -0.5,
+            -1.5,
+            0.2,
+            -0.1,
+            15.6,
+            27.9,
+            33.6,
+            38.0
+          ]
+        },
+        {
+          "activity_score": 0.0,
+          "compound_id": "11958496",
+          "concentrations_um": [
+            0.0018000000000000002,
+            0.0054,
+            0.0162,
+            0.048600000000000004,
+            0.1458,
+            0.4374,
+            1.3,
+            3.9,
+            11.8,
+            35.4
+          ],
+          "endpoints": {
+            "IC50": 35.0
+          },
+          "outcome": "Inactive",
+          "qualifier": ">",
+          "responses": [
+            -0.9,
+            -0.7,
+            1.2,
+            0.6,
+            3.7,
+            1.6,
+            4.9,
+            19.4,
+            36.0,
+            41.1
+          ]
+        }
+      ],
+      "licensed_claims": [
+        "The archived per-concentration values, read on the scale the archived protocol states, and the archived endpoint with its qualifier.",
+        "A comparison of two compounds measured in this assay under this normalisation, because both references are named and the equation is written down."
+      ],
+      "name": "Dose response cell-based screening assay for antagonists of neuropeptide Y receptor Y1 (NPY-Y1)",
+      "outcome_mix": {
+        "counts": {
+          "Active": 14,
+          "Inactive": 49
+        },
+        "fractions": {
+          "Active": 0.222222,
+          "Inactive": 0.777778
+        },
+        "total": 63
+      },
+      "readout_mix": {
+        "counts": {
+          "IC50": 63
+        },
+        "fractions": {
+          "IC50": 1.0
+        },
+        "total": 63
+      },
+      "reference_audit": {
+        "ambiguous_words_in_protocol": [],
+        "archived_equation_text": "Ratio = (T45 / T0); %Inhibition = [1-((Ratio Test_Compound - Median_Ratio_High_Control)/(Median_Ratio_Low_Control - Median_Ratio_High_Control))]*100, where Low_Control is wells containing DMSO, NPY and isoproterenol and High_Control is wells containing DMSO and isoproterenol.",
+        "archived_response_max": 410.7,
+        "archived_response_min": -6.2,
+        "archived_scale_high_percentile_95": 66.14499999999991,
+        "archived_scale_low_percentile_5": -1.9,
+        "archived_values_above_hundred": 14,
+        "archived_values_below_zero": 146,
+        "control_keywords_in_protocol": [
+          "control"
+        ],
+        "declared_regime": "positive_and_negative_reference",
+        "equation_matches_archived_scale": true,
+        "equation_scale_verdict": "zero_to_hundred_scale",
+        "equation_value_at_negative_control": 0.0,
+        "equation_value_at_positive_control": 100.0,
+        "fraction_inside_equation_range": 0.9841269841269841,
+        "normalisation_equation": "wells_relative_to_two_references",
+        "reference_keywords_in_protocol": [
+          "high_control",
+          "low_control"
+        ],
+        "references_declared": 2,
+        "scale_band_points": 25.0
+      },
+      "relation_mix": {
+        "counts": {
+          "<": 4,
+          "=": 28,
+          ">": 31
+        },
+        "fractions": {
+          "<": 0.063492,
+          "=": 0.444444,
+          ">": 0.492063
+        },
+        "total": 63
+      },
+      "replicate_structure": {
+        "archived_declaration": "test compounds were assayed in triplicate in a 10-point, 1:3 dilution series",
+        "counts": {
+          "counts": {
+            "29": 3,
+            "30": 60
+          },
+          "fractions": {
+            "29": 0.047619,
+            "30": 0.952381
+          },
+          "total": 63
+        },
+        "recorded_column": "Number of DataPoints",
+        "recorded_kind": "data_points_per_curve"
+      },
+      "unlicensed_claims": [
+        "A comparison of this assay's per-concentration values with the values of an assay normalised differently, without redoing the normalisation on the raw signal, which the archive does not carry.",
+        "A statement that every archived per-concentration value is a percentage on a 0-to-100 scale, because 14 of the archived values fall above 100."
+      ]
+    },
+    "439": {
+      "audit": {
+        "admitted_compounds": 69,
+        "exclusion_counts": {},
+        "input_rows": 69,
+        "retained_rows": 69
+      },
+      "confidence_score": {
+        "count": 69,
+        "fraction_at_maximum": 0.014492753623188406,
+        "fraction_zero": 0.3333333333333333,
+        "maximum": 100.0,
+        "median": 45.0,
+        "minimum": 0.0
+      },
+      "curve_check": {
+        "development": {
+          "curves": 22,
+          "fraction_endpoint_within_factor_three": null,
+          "fraction_within_tolerance": 0.8272727272727273,
+          "maximum_absolute_deviation": 89.53292178720994,
+          "median_absolute_deviation": 0.5452848516799145,
+          "median_endpoint_log10_error": null,
+          "p90_absolute_deviation": 12.683087114165083,
+          "points": 220
+        },
+        "fit_mode": "recompute",
+        "held_out": {
+          "curves": 33,
+          "fraction_endpoint_within_factor_three": null,
+          "fraction_within_tolerance": 0.803030303030303,
+          "maximum_absolute_deviation": 146.14048322212673,
+          "median_absolute_deviation": 0.6284234043804957,
+          "median_endpoint_log10_error": null,
+          "p90_absolute_deviation": 12.002052189317112,
+          "points": 330
+        },
+        "mode": "recompute_from_archived_parameters",
+        "tolerance_points": 5.0
+      },
+      "direction": "activation",
+      "endpoint": {
+        "label": "EC50",
+        "unit": "uM"
+      },
+      "examples": [
+        {
+          "activity_score": 0.0,
+          "compound_id": "1044226",
+          "concentrations_um": [
+            0.0023,
+            0.0068,
+            0.021,
+            0.062,
+            0.185,
+            0.545,
+            1.7,
+            5.0,
+            15.0,
+            45.0
+          ],
+          "endpoints": {
+            "EC50": 45.0
+          },
+          "outcome": "Inactive",
+          "qualifier": ">",
+          "responses": [
+            -0.07,
+            -0.9,
+            -0.8,
+            -0.93,
+            -1.54,
+            -0.72,
+            -1.06,
+            -1.17,
+            -1.82,
+            -1.31
+          ]
+        },
+        {
+          "activity_score": 33.0,
+          "compound_id": "1160933",
+          "concentrations_um": [
+            0.0023,
+            0.0068,
+            0.021,
+            0.062,
+            0.185,
+            0.545,
+            1.7,
+            5.0,
+            15.0,
+            45.0
+          ],
+          "endpoints": {
+            "EC50": 30.8
+          },
+          "outcome": "Inactive",
+          "qualifier": "=",
+          "responses": [
+            -0.37,
+            -0.2,
+            -0.67,
+            -0.47,
+            -0.14,
+            0.68,
+            2.92,
+            11.87,
+            30.81,
+            60.18
+          ]
+        }
+      ],
+      "licensed_claims": [
+        "The archived endpoint and its qualifier, and the shape of one compound's own archived curve.",
+        "A statement that one compound reached more response than another at the same tested concentration, on this assay's own scale."
+      ],
+      "name": "S1P3 Agonist Dose-Response Potency Assay",
+      "outcome_mix": {
+        "counts": {
+          "Active": 13,
+          "Inactive": 56
+        },
+        "fractions": {
+          "Active": 0.188406,
+          "Inactive": 0.811594
+        },
+        "total": 69
+      },
+      "readout_mix": {
+        "counts": {
+          "EC50": 69
+        },
+        "fractions": {
+          "EC50": 1.0
+        },
+        "total": 69
+      },
+      "reference_audit": {
+        "ambiguous_words_in_protocol": [],
+        "archived_equation_text": "All data reported was normalized on a per-plate basis to wells that contained cells in the presence of 1 micromolar S1P (i.e. 100% activation).",
+        "archived_response_max": 201.34,
+        "archived_response_min": -1.82,
+        "archived_scale_high_percentile_95": 68.16149999999999,
+        "archived_scale_low_percentile_5": -0.9609999999999999,
+        "archived_values_above_hundred": 4,
+        "archived_values_below_zero": 282,
+        "control_keywords_in_protocol": [
+          "control"
+        ],
+        "declared_regime": "single_positive_reference",
+        "equation_matches_archived_scale": true,
+        "equation_scale_verdict": "zero_to_hundred_scale",
+        "equation_value_at_negative_control": 0.0,
+        "equation_value_at_positive_control": 100.0,
+        "fraction_inside_equation_range": 0.9985507246376811,
+        "normalisation_equation": "relative_to_one_reference",
+        "reference_keywords_in_protocol": [
+          "positive control"
+        ],
+        "references_declared": 1,
+        "scale_band_points": 25.0
+      },
+      "relation_mix": {
+        "counts": {
+          "=": 55,
+          ">": 14
+        },
+        "fractions": {
+          "=": 0.797101,
+          ">": 0.202899
+        },
+        "total": 69
+      },
+      "replicate_structure": {
+        "archived_declaration": "each compound dilution series was assayed in triplicate",
+        "counts": {
+          "counts": {
+            "10": 55,
+            "unstated": 14
+          },
+          "fractions": {
+            "10": 0.797101,
+            "unstated": 0.202899
+          },
+          "total": 69
+        },
+        "recorded_column": "Number of Points",
+        "recorded_kind": "data_points_per_curve"
+      },
+      "unlicensed_claims": [
+        "The zero end of the response scale, because the archived protocol names one reference and no baseline, so the absolute percent has no stated origin.",
+        "A claim that the response is 100 percent at any concentration, because the reference is only stated to define the top of the scale.",
+        "A statement that every archived per-concentration value is a percentage on a 0-to-100 scale, because 4 of the archived values fall above 100."
+      ]
+    },
+    "464": {
+      "audit": {
+        "admitted_compounds": 706,
+        "exclusion_counts": {},
+        "input_rows": 706,
+        "retained_rows": 706
+      },
+      "confidence_score": {
+        "count": 706,
+        "fraction_at_maximum": 0.00141643059490085,
+        "fraction_zero": 0.08923512747875353,
+        "maximum": 86.0,
+        "median": 29.0,
+        "minimum": 0.0
+      },
+      "curve_check": {
+        "development": {
+          "curves": 308,
+          "fraction_endpoint_within_factor_three": null,
+          "fraction_within_tolerance": 0.7996747967479675,
+          "maximum_absolute_deviation": 2289.3274068813926,
+          "median_absolute_deviation": 2.180002812003138,
+          "median_endpoint_log10_error": null,
+          "p90_absolute_deviation": 8.661674841971056,
+          "points": 3075
+        },
+        "fit_mode": "recompute",
+        "held_out": {
+          "curves": 283,
+          "fraction_endpoint_within_factor_three": 1.0,
+          "fraction_within_tolerance": 0.8012048192771084,
+          "maximum_absolute_deviation": 1109.5055135658595,
+          "median_absolute_deviation": 2.19,
+          "median_endpoint_log10_error": 0.006541582591169153,
+          "p90_absolute_deviation": 8.263316429101582,
+          "points": 2822
+        },
+        "mode": "recompute_from_archived_parameters",
+        "tolerance_points": 5.0
+      },
+      "direction": "inhibition",
+      "endpoint": {
+        "label": "AC50",
+        "unit": "uM"
+      },
+      "examples": [
+        {
+          "activity_score": 39.0,
+          "compound_id": "1001404",
+          "concentrations_um": [
+            39.8,
+            13.3,
+            4.4,
+            1.5,
+            0.4919,
+            0.164,
+            0.054700000000000006,
+            0.0182,
+            0.0060999999999999995,
+            0.002
+          ],
+          "endpoints": {
+            "AC50": 2.09
+          },
+          "outcome": "Active",
+          "qualifier": "=",
+          "responses": [
+            78.0,
+            86.4,
+            81.0,
+            17.0,
+            -1.6,
+            -2.2,
+            -4.6,
+            -5.1,
+            -0.4,
+            -5.7
+          ]
+        },
+        {
+          "activity_score": 58.0,
+          "compound_id": "100335",
+          "concentrations_um": [
+            39.8,
+            13.3,
+            4.4,
+            1.5,
+            0.4919,
+            0.164,
+            0.054700000000000006,
+            0.0182,
+            0.0060999999999999995,
+            0.002
+          ],
+          "endpoints": {
+            "AC50": 0.32
+          },
+          "outcome": "Active",
+          "qualifier": "=",
+          "responses": [
+            97.8,
+            97.6,
+            97.1,
+            92.4,
+            78.4,
+            10.6,
+            -1.8,
+            0.0,
+            2.3,
+            -1.6
+          ]
+        }
+      ],
+      "licensed_claims": [
+        "The archived endpoint and its qualifier, and the shape of one compound's own archived curve.",
+        "A statement that one compound reached more response than another at the same tested concentration, on this assay's own scale."
+      ],
+      "name": "Cell Proliferation & Viability (Cytotoxicity) Dose Response Assay 60K MLSMR",
+      "outcome_mix": {
+        "counts": {
+          "Active": 331,
+          "Inactive": 375
+        },
+        "fractions": {
+          "Active": 0.468839,
+          "Inactive": 0.531161
+        },
+        "total": 706
+      },
+      "readout_mix": {
+        "counts": {
+          "AC50": 706
+        },
+        "fractions": {
+          "AC50": 1.0
+        },
+        "total": 706
+      },
+      "reference_audit": {
+        "ambiguous_words_in_protocol": [],
+        "archived_equation_text": "Percent inhibition was calculated from the median of the positive control doxorubicin at 4 micromolar final screening concentration.",
+        "archived_response_max": 101.2,
+        "archived_response_min": -16.3,
+        "archived_scale_high_percentile_95": 95.2,
+        "archived_scale_low_percentile_5": -6.3,
+        "archived_values_above_hundred": 81,
+        "archived_values_below_zero": 3116,
+        "control_keywords_in_protocol": [
+          "control"
+        ],
+        "declared_regime": "single_positive_reference",
+        "equation_matches_archived_scale": true,
+        "equation_scale_verdict": "zero_to_hundred_scale",
+        "equation_value_at_negative_control": 0.0,
+        "equation_value_at_positive_control": 100.0,
+        "fraction_inside_equation_range": 1.0,
+        "normalisation_equation": "relative_to_one_reference",
+        "reference_keywords_in_protocol": [
+          "positive control"
+        ],
+        "references_declared": 1,
+        "scale_band_points": 25.0
+      },
+      "relation_mix": {
+        "counts": {
+          "=": 591,
+          ">": 115
+        },
+        "fractions": {
+          "=": 0.83711,
+          ">": 0.16289
+        },
+        "total": 706
+      },
+      "replicate_structure": {
+        "archived_declaration": "750 of 765 compounds were serially diluted ten times at three fold-dilutions",
+        "counts": {
+          "counts": {
+            "26": 3,
+            "27": 14,
+            "28": 6,
+            "29": 4,
+            "30": 679
+          },
+          "fractions": {
+            "26": 0.004249,
+            "27": 0.01983,
+            "28": 0.008499,
+            "29": 0.005666,
+            "30": 0.961756
+          },
+          "total": 706
+        },
+        "recorded_column": "N DataPoints",
+        "recorded_kind": "data_points_per_curve"
+      },
+      "unlicensed_claims": [
+        "The zero end of the response scale, because the archived protocol names one reference and no baseline, so the absolute percent has no stated origin.",
+        "A claim that the response is 100 percent at any concentration, because the reference is only stated to define the top of the scale.",
+        "A statement that every archived per-concentration value is a percentage on a 0-to-100 scale, because 81 of the archived values fall above 100."
+      ]
+    },
+    "519": {
+      "audit": {
+        "admitted_compounds": 272,
+        "exclusion_counts": {},
+        "input_rows": 272,
+        "retained_rows": 272
+      },
+      "confidence_score": {
+        "count": 272,
+        "fraction_at_maximum": 0.003676470588235294,
+        "fraction_zero": 0.9117647058823529,
+        "maximum": 78.0,
+        "median": 0.0,
+        "minimum": 0.0
+      },
+      "curve_check": {
+        "development": {
+          "curves": 54,
+          "fraction_endpoint_within_factor_three": null,
+          "fraction_within_tolerance": 0.6536082474226804,
+          "maximum_absolute_deviation": 31.528005483305893,
+          "median_absolute_deviation": 2.6723002766804966,
+          "median_endpoint_log10_error": null,
+          "p90_absolute_deviation": 14.750291738277943,
+          "points": 485
+        },
+        "fit_mode": "fixed_range",
+        "held_out": {
+          "curves": 40,
+          "fraction_endpoint_within_factor_three": null,
+          "fraction_within_tolerance": 0.6218487394957983,
+          "maximum_absolute_deviation": 26.650786935567766,
+          "median_absolute_deviation": 3.2167577875811304,
+          "median_endpoint_log10_error": null,
+          "p90_absolute_deviation": 13.155866150881243,
+          "points": 357
+        },
+        "mode": "refit_from_archived_points",
+        "tolerance_points": 5.0
+      },
+      "direction": "inhibition",
+      "endpoint": {
+        "label": "IC50+Ki",
+        "unit": "uM"
+      },
+      "examples": [
+        {
+          "activity_score": 0.0,
+          "compound_id": "1011846",
+          "concentrations_um": [
+            0.010199999999999999,
+            0.0305,
+            0.0915,
+            0.274,
+            0.8230000000000001,
+            2.47,
+            7.41,
+            22.2,
+            66.7
+          ],
+          "endpoints": {
+            "IC50": 66.7,
+            "Ki": 43.7
+          },
+          "outcome": "Inactive",
+          "qualifier": ">",
+          "responses": [
+            34.07,
+            30.76,
+            25.37,
+            19.08,
+            18.52,
+            11.06,
+            7.18,
+            4.43,
+            5.78
+          ]
+        },
+        {
+          "activity_score": 0.0,
+          "compound_id": "1043390",
+          "concentrations_um": [
+            0.010199999999999999,
+            0.0305,
+            0.0915,
+            0.274,
+            0.8230000000000001,
+            2.47,
+            7.41,
+            22.2,
+            66.7
+          ],
+          "endpoints": {
+            "IC50": 50.0,
+            "Ki": 32.7
+          },
+          "outcome": "Inactive",
+          "qualifier": "=",
+          "responses": [
+            10.97,
+            6.66,
+            5.82,
+            5.77,
+            3.07,
+            2.08,
+            6.5,
+            24.75,
+            59.43
+          ]
+        }
+      ],
+      "licensed_claims": [
+        "The archived per-concentration values, read on the scale the archived protocol states, and the archived endpoint with its qualifier.",
+        "A comparison of two compounds measured in this assay under this normalisation, because both references are named and the equation is written down."
+      ],
+      "name": "Dose Response Assay for Formylpeptide Receptor (FPR) Ligands and Dose Response Counter-Screen Assay for Formylpeptide-Like-1 (FPRL1) Ligands",
+      "outcome_mix": {
+        "counts": {
+          "Active": 24,
+          "Inactive": 248
+        },
+        "fractions": {
+          "Active": 0.088235,
+          "Inactive": 0.911765
+        },
+        "total": 272
+      },
+      "readout_mix": {
+        "counts": {
+          "IC50": 272,
+          "Ki": 272
+        },
+        "fractions": {
+          "IC50": 0.5,
+          "Ki": 0.5
+        },
+        "total": 544
+      },
+      "reference_audit": {
+        "ambiguous_words_in_protocol": [],
+        "archived_equation_text": "%Inhibition = 100 x [1 - (MFI_test - MFI_PC)/(MFI_NC - MFI_PC)], where MFI_PC is the average median fluorescence intensity of positive control wells (unlabeled receptor-blocking peptide) and MFI_NC is the average median fluorescence intensity of negative control wells (buffer).",
+        "archived_response_max": 100.0,
+        "archived_response_min": 0.0,
+        "archived_scale_high_percentile_95": 60.299499999999995,
+        "archived_scale_low_percentile_5": 2.17,
+        "archived_values_above_hundred": 0,
+        "archived_values_below_zero": 0,
+        "control_keywords_in_protocol": [
+          "control"
+        ],
+        "declared_regime": "positive_and_negative_reference",
+        "equation_matches_archived_scale": true,
+        "equation_scale_verdict": "zero_to_hundred_scale",
+        "equation_value_at_negative_control": 0.0,
+        "equation_value_at_positive_control": 100.0,
+        "fraction_inside_equation_range": 1.0,
+        "normalisation_equation": "wells_relative_to_two_references",
+        "reference_keywords_in_protocol": [
+          "positive control",
+          "negative control"
+        ],
+        "references_declared": 2,
+        "scale_band_points": 25.0
+      },
+      "relation_mix": {
+        "counts": {
+          "=": 94,
+          ">": 178
+        },
+        "fractions": {
+          "=": 0.345588,
+          ">": 0.654412
+        },
+        "total": 272
+      },
+      "replicate_structure": {
+        "archived_declaration": "each compound was tested in duplicate to result in 18 data points",
+        "counts": {
+          "counts": {
+            "107": 1,
+            "13": 1,
+            "14": 2,
+            "18": 121,
+            "25": 2,
+            "27": 3,
+            "28": 4,
+            "30": 4,
+            "31": 1,
+            "32": 4,
+            "33": 2,
+            "34": 2,
+            "35": 5,
+            "36": 84,
+            "39": 1,
+            "45": 1,
+            "52": 1,
+            "53": 1,
+            "54": 12,
+            "56": 1,
+            "68": 1,
+            "89": 1,
+            "90": 17
+          },
+          "fractions": {
+            "107": 0.003676,
+            "13": 0.003676,
+            "14": 0.007353,
+            "18": 0.444853,
+            "25": 0.007353,
+            "27": 0.011029,
+            "28": 0.014706,
+            "30": 0.014706,
+            "31": 0.003676,
+            "32": 0.014706,
+            "33": 0.007353,
+            "34": 0.007353,
+            "35": 0.018382,
+            "36": 0.308824,
+            "39": 0.003676,
+            "45": 0.003676,
+            "52": 0.003676,
+            "53": 0.003676,
+            "54": 0.044118,
+            "56": 0.003676,
+            "68": 0.003676,
+            "89": 0.003676,
+            "90": 0.0625
+          },
+          "total": 272
+        },
+        "recorded_column": "N_POINTS",
+        "recorded_kind": "data_points_per_curve"
+      },
+      "unlicensed_claims": [
+        "A comparison of this assay's per-concentration values with the values of an assay normalised differently, without redoing the normalisation on the raw signal, which the archive does not carry."
+      ]
+    },
+    "548": {
+      "audit": {
+        "admitted_compounds": 94,
+        "exclusion_counts": {},
+        "input_rows": 94,
+        "retained_rows": 94
+      },
+      "confidence_score": {
+        "count": 94,
+        "fraction_at_maximum": 0.010638297872340425,
+        "fraction_zero": 0.010638297872340425,
+        "maximum": 100.0,
+        "median": 36.0,
+        "minimum": 0.0
+      },
+      "curve_check": {
+        "development": {
+          "curves": 31,
+          "fraction_endpoint_within_factor_three": null,
+          "fraction_within_tolerance": 0.7142857142857143,
+          "maximum_absolute_deviation": 32.527279571832054,
+          "median_absolute_deviation": 2.1225744518693093,
+          "median_endpoint_log10_error": null,
+          "p90_absolute_deviation": 12.177057258993319,
+          "points": 308
+        },
+        "fit_mode": "recompute",
+        "held_out": {
+          "curves": 33,
+          "fraction_endpoint_within_factor_three": null,
+          "fraction_within_tolerance": 0.7181818181818181,
+          "maximum_absolute_deviation": 36.04042102730291,
+          "median_absolute_deviation": 1.6467903124341507,
+          "median_endpoint_log10_error": null,
+          "p90_absolute_deviation": 12.438626602630972,
+          "points": 330
+        },
+        "mode": "recompute_from_archived_parameters",
+        "tolerance_points": 5.0
+      },
+      "direction": "inhibition",
+      "endpoint": {
+        "label": "IC50",
+        "unit": "uM"
+      },
+      "examples": [
+        {
+          "activity_score": 55.0,
+          "compound_id": "1234059",
+          "concentrations_um": [
+            0.003,
+            0.0091,
+            0.0274,
+            0.082,
+            0.246,
+            0.74,
+            2.2,
+            6.6,
+            20.0,
+            60.0
+          ],
+          "endpoints": {
+            "IC50": 11.1
+          },
+          "outcome": "Active",
+          "qualifier": "=",
+          "responses": [
+            7.4,
+            5.1,
+            4.6,
+            6.6,
+            7.5,
+            8.6,
+            18.8,
+            37.4,
+            63.0,
+            78.1
+          ]
+        },
+        {
+          "activity_score": 84.0,
+          "compound_id": "1245524",
+          "concentrations_um": [
+            0.003,
+            0.0091,
+            0.0274,
+            0.082,
+            0.246,
+            0.74,
+            2.2,
+            6.6,
+            20.0,
+            60.0
+          ],
+          "endpoints": {
+            "IC50": 1.761
+          },
+          "outcome": "Active",
+          "qualifier": "=",
+          "responses": [
+            10.3,
+            7.7,
+            6.9,
+            11.0,
+            12.6,
+            29.0,
+            57.3,
+            79.3,
+            94.8,
+            95.3
+          ]
+        }
+      ],
+      "licensed_claims": [
+        "The archived per-concentration values, read on the scale the archived protocol states, and the archived endpoint with its qualifier.",
+        "A comparison of two compounds measured in this assay under this normalisation, because both references are named and the equation is written down."
+      ],
+      "name": "Dose-response biochemical assay for inhibitors of protein kinase A (PKA) activity",
+      "outcome_mix": {
+        "counts": {
+          "Active": 62,
+          "Inactive": 32
+        },
+        "fractions": {
+          "Active": 0.659574,
+          "Inactive": 0.340426
+        },
+        "total": 94
+      },
+      "readout_mix": {
+        "counts": {
+          "IC50": 94
+        },
+        "fractions": {
+          "IC50": 1.0
+        },
+        "total": 94
+      },
+      "reference_audit": {
+        "ambiguous_words_in_protocol": [],
+        "archived_equation_text": "%inhibition = (test_compound - median_positive_control)/(median_positive_control - median_negative_control)*100, where positive control is Staurosporine and negative control is DMSO only.",
+        "archived_response_max": 111.3,
+        "archived_response_min": -5.5,
+        "archived_scale_high_percentile_95": 67.39999999999996,
+        "archived_scale_low_percentile_5": 0.5800000000000004,
+        "archived_values_above_hundred": 5,
+        "archived_values_below_zero": 33,
+        "control_keywords_in_protocol": [
+          "control"
+        ],
+        "declared_regime": "positive_and_negative_reference",
+        "equation_matches_archived_scale": false,
+        "equation_scale_verdict": "shifted_scale",
+        "equation_value_at_negative_control": -100.0,
+        "equation_value_at_positive_control": 0.0,
+        "fraction_inside_equation_range": 0.7620064034151548,
+        "normalisation_equation": "archived_pka_equation",
+        "reference_keywords_in_protocol": [
+          "positive control",
+          "negative control"
+        ],
+        "references_declared": 2,
+        "scale_band_points": 25.0
+      },
+      "relation_mix": {
+        "counts": {
+          "=": 64,
+          ">": 30
+        },
+        "fractions": {
+          "=": 0.680851,
+          ">": 0.319149
+        },
+        "total": 94
+      },
+      "replicate_structure": {
+        "archived_declaration": "each compound dilution was assayed in triplicate",
+        "counts": {
+          "counts": {
+            "27": 3,
+            "28": 1,
+            "30": 90
+          },
+          "fractions": {
+            "27": 0.031915,
+            "28": 0.010638,
+            "30": 0.957447
+          },
+          "total": 94
+        },
+        "recorded_column": "Number of Datapoints",
+        "recorded_kind": "data_points_per_curve"
+      },
+      "unlicensed_claims": [
+        "A comparison of this assay's per-concentration values with the values of an assay normalised differently, without redoing the normalisation on the raw signal, which the archive does not carry.",
+        "The equation as it is written in the archived protocol, because it does not reproduce the scale the archived values are on.",
+        "A statement that every archived per-concentration value is a percentage on a 0-to-100 scale, because 5 of the archived values fall above 100."
+      ]
+    },
+    "691": {
+      "audit": {
+        "admitted_compounds": 53,
+        "exclusion_counts": {},
+        "input_rows": 53,
+        "retained_rows": 53
+      },
+      "confidence_score": {
+        "count": 53,
+        "fraction_at_maximum": 0.018867924528301886,
+        "fraction_zero": 0.7169811320754716,
+        "maximum": 56.0,
+        "median": 0.0,
+        "minimum": 0.0
+      },
+      "curve_check": {
+        "development": {
+          "curves": 0,
+          "fraction_endpoint_within_factor_three": null,
+          "fraction_within_tolerance": null,
+          "maximum_absolute_deviation": null,
+          "median_absolute_deviation": null,
+          "median_endpoint_log10_error": null,
+          "p90_absolute_deviation": null,
+          "points": 0
+        },
+        "fit_mode": "free",
+        "held_out": {
+          "curves": 0,
+          "fraction_endpoint_within_factor_three": null,
+          "fraction_within_tolerance": null,
+          "maximum_absolute_deviation": null,
+          "median_absolute_deviation": null,
+          "median_endpoint_log10_error": null,
+          "p90_absolute_deviation": null,
+          "points": 0
+        },
+        "mode": "not_applicable_categorical_readout",
+        "tolerance_points": 5.0
+      },
+      "direction": "categorical",
+      "endpoint": {
+        "label": "MIC",
+        "unit": "uM"
+      },
+      "examples": [
+        {
+          "activity_score": 0.0,
+          "compound_id": "135415497",
+          "concentration_categories": [
+            "INACTIVE",
+            "INACTIVE",
+            "INACTIVE",
+            "INACTIVE",
+            "INACTIVE",
+            "INACTIVE",
+            "INACTIVE",
+            "INACTIVE",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "concentrations_um": [
+            0.78,
+            1.56,
+            3.13,
+            6.25,
+            12.5,
+            25.0,
+            50.0,
+            100.0,
+            0.78,
+            1.56,
+            3.13,
+            6.25,
+            12.5,
+            25.0,
+            50.0,
+            100.0
+          ],
+          "endpoints": {
+            "MIC": 100.0
+          },
+          "outcome": "Inactive",
+          "qualifier": ">"
+        },
+        {
+          "activity_score": 0.0,
+          "compound_id": "1830823",
+          "concentration_categories": [
+            "INACTIVE",
+            "INACTIVE",
+            "INACTIVE",
+            "INACTIVE",
+            "INACTIVE",
+            "INACTIVE",
+            "INACTIVE",
+            "INACTIVE",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "concentrations_um": [
+            0.78,
+            1.56,
+            3.13,
+            6.25,
+            12.5,
+            25.0,
+            50.0,
+            100.0,
+            0.78,
+            1.56,
+            3.13,
+            6.25,
+            12.5,
+            25.0,
+            50.0,
+            100.0
+          ],
+          "endpoints": {
+            "MIC": 100.0
+          },
+          "outcome": "Inactive",
+          "qualifier": ">"
+        }
+      ],
+      "licensed_claims": [
+        "A statement about this compound at the stated concentrations, on the terms the archive itself uses, including the boundary of its reported threshold."
+      ],
+      "name": "Zebrafish Lipid Metabolism Assay - Dose-Response Confirmation.",
+      "outcome_mix": {
+        "counts": {
+          "Active": 12,
+          "Inactive": 38,
+          "Inconclusive": 3
+        },
+        "fractions": {
+          "Active": 0.226415,
+          "Inactive": 0.716981,
+          "Inconclusive": 0.056604
+        },
+        "total": 53
+      },
+      "readout_mix": {
+        "counts": {
+          "MIC": 53
+        },
+        "fractions": {
+          "MIC": 1.0
+        },
+        "total": 53
+      },
+      "reference_audit": {
+        "ambiguous_words_in_protocol": [
+          "blank"
+        ],
+        "archived_equation_text": "",
+        "archived_response_max": null,
+        "archived_response_min": null,
+        "archived_scale_high_percentile_95": null,
+        "archived_scale_low_percentile_5": null,
+        "archived_values_above_hundred": 0,
+        "archived_values_below_zero": 0,
+        "control_keywords_in_protocol": [],
+        "declared_regime": "none_declared",
+        "equation_matches_archived_scale": null,
+        "equation_scale_verdict": "not_declared",
+        "equation_value_at_negative_control": null,
+        "equation_value_at_positive_control": null,
+        "fraction_inside_equation_range": null,
+        "normalisation_equation": "not_declared",
+        "reference_keywords_in_protocol": [],
+        "references_declared": 0,
+        "scale_band_points": 25.0
+      },
+      "relation_mix": {
+        "counts": {
+          ">": 38,
+          "unstated": 15
+        },
+        "fractions": {
+          ">": 0.716981,
+          "unstated": 0.283019
+        },
+        "total": 53
+      },
+      "replicate_structure": {
+        "archived_declaration": "compounds that gave a measurable MIC were retested a second time",
+        "counts": {
+          "counts": {
+            "1": 41,
+            "2": 12
+          },
+          "fractions": {
+            "1": 0.773585,
+            "2": 0.226415
+          },
+          "total": 53
+        },
+        "recorded_column": "Number of MIC determinations",
+        "recorded_kind": "independent_determinations"
+      },
+      "unlicensed_claims": [
+        "Any ranking of compounds by potency, because the endpoints of the response scale are set by controls that the archived protocol never names.",
+        "Any statement that the response was 0 percent or 100 percent at any concentration, because the archive reports categories and no defined scale.",
+        "A comparison of this assay's thresholds with the endpoints of an assay whose scale is defined by named controls."
+      ]
+    }
+  },
+  "computed_on": "2026-10-21",
+  "confidence_score": {
+    "count": 1257,
+    "fraction_at_maximum": 0.002386634844868735,
+    "fraction_zero": 0.3206046141607001,
+    "maximum": 100.0,
+    "median": 23.0,
+    "minimum": 0.0
+  },
+  "curve_tolerance_points": 5.0,
+  "protocol_id": "pubchem-bioassay-endpoint-controls-v1",
+  "readout_mix": {
+    "counts": {
+      "AC50": 706,
+      "EC50": 69,
+      "IC50": 429,
+      "Ki": 272,
+      "MIC": 53
+    },
+    "fractions": {
+      "AC50": 0.46174,
+      "EC50": 0.045128,
+      "IC50": 0.280576,
+      "Ki": 0.177894,
+      "MIC": 0.034663
+    },
+    "total": 1529
+  },
+  "relation_mix": {
+    "counts": {
+      "<": 4,
+      "=": 832,
+      ">": 406,
+      "unstated": 15
+    },
+    "fractions": {
+      "<": 0.003182,
+      "=": 0.661893,
+      ">": 0.322991,
+      "unstated": 0.011933
+    },
+    "total": 1257
+  },
+  "schema_version": "aidd-commons.assay-endpoint-controls-summary.v1",
+  "software": {
+    "numpy": "2.4.6",
+    "python": "3.11.15",
+    "rdkit": "2025.09.6",
+    "scipy": "1.17.1"
+  },
+  "source": {
+    "access": "FTP ranged container zips, one member per assay",
+    "cached_bytes": 407461,
+    "database": "PubChem BioAssay",
+    "declared_assays": 6
+  },
+  "split": {
+    "counts": {
+      "development": 644,
+      "held_out": 613
+    },
+    "grouping_unit": "PubChem compound identifier, across the whole declared set",
+    "rule": "sha256-seed-parity-by-compound",
+    "seed": 20261021
+  },
+  "split_stability": {
+    "1277": {
+      "development": {
+        "compounds": 36,
+        "readout_mix": {
+          "IC50": 36
+        },
+        "relation_mix": {
+          "<": 3,
+          "=": 15,
+          ">": 18
+        },
+        "score": {
+          "maximum": 100.0,
+          "median": 13.0
+        }
+      },
+      "held_out": {
+        "compounds": 27,
+        "readout_mix": {
+          "IC50": 27
+        },
+        "relation_mix": {
+          "<": 1,
+          "=": 13,
+          ">": 13
+        },
+        "score": {
+          "maximum": 85.0,
+          "median": 26.0
+        }
+      }
+    },
+    "439": {
+      "development": {
+        "compounds": 28,
+        "readout_mix": {
+          "EC50": 28
+        },
+        "relation_mix": {
+          "=": 22,
+          ">": 6
+        },
+        "score": {
+          "maximum": 99.0,
+          "median": 51.5
+        }
+      },
+      "held_out": {
+        "compounds": 41,
+        "readout_mix": {
+          "EC50": 41
+        },
+        "relation_mix": {
+          "=": 33,
+          ">": 8
+        },
+        "score": {
+          "maximum": 100.0,
+          "median": 36.0
+        }
+      }
+    },
+    "464": {
+      "development": {
+        "compounds": 361,
+        "readout_mix": {
+          "AC50": 361
+        },
+        "relation_mix": {
+          "=": 308,
+          ">": 53
+        },
+        "score": {
+          "maximum": 71.0,
+          "median": 29.0
+        }
+      },
+      "held_out": {
+        "compounds": 345,
+        "readout_mix": {
+          "AC50": 345
+        },
+        "relation_mix": {
+          "=": 283,
+          ">": 62
+        },
+        "score": {
+          "maximum": 86.0,
+          "median": 29.0
+        }
+      }
+    },
+    "519": {
+      "development": {
+        "compounds": 144,
+        "readout_mix": {
+          "IC50": 144,
+          "Ki": 144
+        },
+        "relation_mix": {
+          "=": 54,
+          ">": 90
+        },
+        "score": {
+          "maximum": 78.0,
+          "median": 0.0
+        }
+      },
+      "held_out": {
+        "compounds": 128,
+        "readout_mix": {
+          "IC50": 128,
+          "Ki": 128
+        },
+        "relation_mix": {
+          "=": 40,
+          ">": 88
+        },
+        "score": {
+          "maximum": 67.0,
+          "median": 0.0
+        }
+      }
+    },
+    "548": {
+      "development": {
+        "compounds": 50,
+        "readout_mix": {
+          "IC50": 50
+        },
+        "relation_mix": {
+          "=": 31,
+          ">": 19
+        },
+        "score": {
+          "maximum": 84.0,
+          "median": 36.0
+        }
+      },
+      "held_out": {
+        "compounds": 44,
+        "readout_mix": {
+          "IC50": 44
+        },
+        "relation_mix": {
+          "=": 33,
+          ">": 11
+        },
+        "score": {
+          "maximum": 100.0,
+          "median": 36.5
+        }
+      }
+    },
+    "691": {
+      "development": {
+        "compounds": 25,
+        "readout_mix": {
+          "MIC": 25
+        },
+        "relation_mix": {
+          ">": 20,
+          "unstated": 5
+        },
+        "score": {
+          "maximum": 48.0,
+          "median": 0.0
+        }
+      },
+      "held_out": {
+        "compounds": 28,
+        "readout_mix": {
+          "MIC": 28
+        },
+        "relation_mix": {
+          ">": 18,
+          "unstated": 10
+        },
+        "score": {
+          "maximum": 56.0,
+          "median": 0.0
+        }
+      }
+    }
+  }
+}

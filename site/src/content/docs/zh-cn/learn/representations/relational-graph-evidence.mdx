@@ -1,0 +1,67 @@
+---
+title: 资源图谱中的类型化关系与证据
+description: 区分类型化节点、有向关系、声明记录的证据与缺失边，不把连通性当作因果性。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="representations/relational-graph-evidence" />
+<ScrollableRegions />
+
+英文原文：[Typed relations and evidence in a resource graph](/learn/representations/relational-graph-evidence/)。
+
+## 学习目标与预备知识
+
+先读[蛋白、复合物、细胞状态与知识图谱表示](/zh-cn/learn/representations/complex-cell-and-knowledge-graphs/)。本课用资源 Atlas 展示可检查的图类型与证据规则。你将识别节点和边的类型，找到边在源记录中的证据，按明示规则判断缺失边，并解释为什么图中的路径不能确立机制。[关系图谱实验](/zh-cn/labs/relational-graph-audit/)可以离线重新计算案例。
+
+## 类型化节点与有向关系
+
+一个节点是一条资源记录，有稳定 id，并带有 `model` 或 `software` 等类型。关系是某条记录声明的带类型有向边。源节点就是做出声明的记录，其 `type` 说明这条记录怎样描述目标。反转箭头，或把 `uses` 换成 `used-by`，都会改变陈述。
+
+2026-10-23 的已提交目录生成 191 个节点，分属 10 种类型，以及 32 条有向边，分属 7 种类型。这些计数来自读取每条已提交的 YAML 记录、解析关系目标，再按节点和边分组。它们不是生物实体或实验相互作用的计数。例如，`model-cgflow` 声明了指向 `model-rxnflow` 和 `model-tacogfn` 的 `uses` 边。`model-tacogfn` 声明的反向边有自己的方向和类型 `used-by`。
+
+## 来源证据属于声明记录
+
+源记录的证据条目指出哪些来源支持其元数据组。对边而言，相关条目恰好是 `supports` 列表包含 `relations` 的条目。`model-cgflow` 记录把 `readme` 条目赋给这一组，因此检查器将 `readme` 附到它声明的两条边上。目标记录的证据不会自动支持源记录的主张。证据 id 本身也不能证明外部来源正确，只能让声明追溯到其引用的材料。
+
+按此规则，已提交运行中的 32 条已声明边均有证据，0 条无证据。若修改后的记录包含关系，却没有匹配的源记录证据，检查器会报告无证据边，导出检查会失败。这是结构性计算。它检查记录的支持关系映射，不判断链接页面的科学真实性。
+
+## 缺失边与候选配对
+
+两条记录之间没有关系，意思是这个目录没有声明关系。这不表示两个资源毫无关联、不兼容或已经被实验否定。协议规定，当两条记录共享至少 1 个任务或至少 1 个阶段，且任何方向都没有已声明关系时，这一无序配对成为候选。该规则找到 6754 个候选配对，与 32 条已声明边分开。它帮助定位目录覆盖薄弱之处，不是链接预测器。
+
+该规则把任务与阶段标签用作宽泛筛选字段。两个资源都涉及 `hit-discovery`，并不意味着其中一个使用、实现或继承了另一个。加入特定关系需要直接证据和合适的边类型。共享更多标签也不会把候选变成事实。
+
+## 案例演算
+
+下表依据 2026-10-23 目录中的声明。证据列给出声明记录中支持 `relations` 的条目。空单元格表示没有声明边，不是某条已存在的边缺乏证据。
+
+| 配对或声明 | 共享字段 | 已声明边 | 源记录证据 | 解释 |
+| --- | --- | --- | --- | --- |
+| `model-cgflow` 到 `model-rxnflow` | `molecular-generation` | `uses` | `readme` | 有向关系 |
+| `model-cgflow` 到 `model-tacogfn` | `molecular-generation` | `uses` | `readme` | 有向关系 |
+| `model-boltz-2` 与 `model-rxnflow` | `hit-discovery` | 无 | 无 | 候选配对 |
+
+按入边和出边的已声明实例计算，`model-cgflow` 的总度数为 3。`model-rxnflow` 没有声明出边，因此协议把它列入孤立记录，尽管它是另一条边的目标。整个目录中，161 条记录没有出边声明。这里的孤立描述声明行为，并非度数为 0。
+
+## 独立练习
+
+按照上述规则，先分类 `model-cgflow` 与 `model-rxnflow`，再分类 `model-boltz-2` 与 `model-rxnflow`。若有已声明边，说明方向和证据。若为候选，说明在做出 `uses` 主张前还需要什么证据。最后判断从 `model-tacogfn` 经 `model-cgflow` 到 `model-rxnflow` 的路径能否确立分子机制。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+`model-cgflow` 声明了指向 `model-rxnflow` 的 `uses`。它自己的 `readme` 证据条目支持 `relations`，所以这对记录虽共享任务，却不是候选。`model-boltz-2` 与 `model-rxnflow` 共享 `hit-discovery`，但任何方向都没有声明关系，因此符合候选规则。加入 `uses` 边需要直接支持依赖关系的来源，以及由适当的源记录做出声明。经过 2 条现有边的路径记录的是目录对资源的陈述，并不提供测定、干预或因果识别来支持分子机制。
+
+</details>
+
+## 材料不能说明什么
+
+这张图不测量模型性能、生物相互作用、化学活性或读者学习效果。有来源页面的关系仍可能出错，缺失关系也可能只是文档缺漏。候选配对不是关系。资源图谱中的路径不是机制。审计展示这些边界，同时保留记录中的边类型、方向和证据，供读者检查。
+
+## 来源与复核日期
+
+为本课阅读目录及其所引证据条目的日期是 2026-10-23。所列记录分别链接到 [Boltz 仓库](https://github.com/jwohlwend/boltz)、[CGFlow 仓库](https://github.com/tsa87/cgflow)、[RxnFlow 仓库](https://github.com/SeonghwanSeo/RxnFlow) 与 [TacoGFN 仓库](https://github.com/tsa87/tacogfn)。这些目录记录的复核日期是 2026-10-21，记载的仓库代码许可为 MIT。Boltz 记录还列有权重。不能假定链接的数据集和另行托管的检查点自动享有相同许可。复用前应查阅各记录的具体范围。
+
+原创课程文字采用 CC BY 4.0，实验代码采用 Apache-2.0。链接资源保留各自条款。最后复核于 2026-10-23。

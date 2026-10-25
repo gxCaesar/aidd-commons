@@ -1,0 +1,50 @@
+id: db-skempi
+name: SKEMPI 2.0
+kind: dataset
+summary: Measured affinity table for mutant and wild-type protein complexes.
+canonical_url: https://life.bsc.es/pid/skempi2/
+identifiers:
+  - scheme: dataset
+    value: SKEMPI 2.0
+    url: https://life.bsc.es/pid/skempi2/
+  - scheme: mirror
+    value: LiteFold/SKEMPI2
+    url: https://huggingface.co/datasets/LiteFold/SKEMPI2
+stages: [data-intake, biologics-design]
+modalities: [protein-complex, affinity-table]
+tasks: [affinity-data-inspection]
+relations: []
+status: { value: unverified }
+access_level: { value: source_available, evidence: [mirror-file] }
+openness:
+  inference_code: { value: not_applicable, evidence: [upstream-terms] }
+  training_code: { value: not_applicable, evidence: [upstream-terms] }
+  weights: { value: not_applicable, evidence: [upstream-terms] }
+  architecture: { value: not_applicable, evidence: [upstream-terms] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: not_applicable, evidence: [upstream-terms] }
+licenses:
+  - name: CC-BY-4.0
+    scope: Upstream SKEMPI 2.0 dataset
+    evidence: [upstream-terms]
+evidence:
+  - id: upstream-terms
+    url: https://life.bsc.es/pid/skempi2/info/terms
+    label: Upstream SKEMPI terms read 2026-10-21
+    supports: [name, kind, summary, identifiers, caveats, acknowledgements]
+  - id: mirror-card
+    url: https://huggingface.co/datasets/LiteFold/SKEMPI2
+    label: Mirror dataset card read 2026-10-21
+    supports: [identifiers, stages, modalities, tasks, caveats]
+  - id: mirror-file
+    url: https://huggingface.co/datasets/LiteFold/SKEMPI2/resolve/main/tables/labeled_skempi2_skempi_v2.csv.jsonl
+    label: Public JSONL snapshot retrieved 2026-10-21
+    supports: [identifiers, caveats]
+caveats:
+  - The LiteFold dataset is a re-host of the upstream CSV, not the canonical SKEMPI portal.
+  - Applicable upstream terms are CC BY 4.0, verified at the upstream terms URL. The mirror card declares license other rather than naming the upstream licence.
+  - The canonical portal requires a login for its database browser. The mirror file was publicly retrievable without an account on 2026-10-21.
+  - The mirror JSONL has comma-split overflow fragments and ragged primary values. Missing parsed fields in the primary value cannot be assumed to be missing upstream measurements.
+acknowledgements: [Barcelona Supercomputing Center]
+last_verified: "2026-10-21"

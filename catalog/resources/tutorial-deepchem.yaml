@@ -1,0 +1,38 @@
+id: tutorial-deepchem
+name: DeepChem step-by-step tutorials
+kind: tutorial
+summary: Notebook collection for molecular machine learning, protein modelling, bioinformatics, and scientific computing.
+canonical_url: https://github.com/deepchem/deepchem/tree/master/examples/tutorials
+identifiers: []
+stages: ["model-development","representation-learning","evaluation"]
+modalities: ["small-molecule","protein"]
+tasks: ["scientific-machine-learning-education"]
+relations: 
+  - type: demonstrates
+    target: tool-deepchem
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license-file] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: covers the source code in the repository, per the repository's LICENSE file, which states no narrower scope
+    evidence: [license-file]
+evidence:
+  - id: official-collection
+    url: https://github.com/deepchem/deepchem/tree/master/examples/tutorials
+    label: Official tutorial collection inspected 2026-09-09
+    supports: [name, kind, summary, stages, modalities, tasks, relations]
+  - id: license-file
+    url: https://raw.githubusercontent.com/deepchem/deepchem/HEAD/LICENSE
+    label: Repository LICENSE file (reviewed 2026-10-23)
+    supports: []
+caveats: []
+acknowledgements: []
+last_verified: "2026-10-23"

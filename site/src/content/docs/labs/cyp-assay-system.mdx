@@ -1,0 +1,147 @@
+---
+title: Does one CYP inhibition number predict another?
+description: Read real ChEMBL 37 IC50 records for two cytochrome P450 enzymes and see how weakly potency against one predicts potency against the other, and why naming the enzyme, assay and document matters.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Before you run
+
+**Mode: fresh independent computation over a live, versioned database
+snapshot.** Nothing here is a frozen, one-time evaluation: the admission
+rule is fixed by `protocol.json`, but the underlying ChEMBL release itself
+can, in principle, be superseded by a later one, so every command re-checks
+the release fields before doing anything else. No model is fitted anywhere
+in this lab.
+
+```bash
+python labs/cyp_assay_system/run_lab.py download   # fetches and caches the live snapshot
+python labs/cyp_assay_system/inspect_cyp_assay_system.py show
+python labs/cyp_assay_system/inspect_cyp_assay_system.py check
+```
+
+Python 3.11 or newer, NumPy, SciPy and RDKit. Network access only for the
+one-time download from the public ChEMBL REST API; no network access once
+the cache at `.cache/cyp_assay_system/` is present.
+
+## Why two whole targets, not two named assays
+
+The sibling [frozen-contract lab](/labs/chembl-contract-inspection/) admits
+records from two specific, named EGFR assays. A single CYP target's IC50
+record set does not look like that: it is spread across hundreds of
+independent assays and documents, run over years by different laboratories.
+That spread is part of what this lab teaches, not a nuisance to average
+away silently, so `protocol.json` reuses the EGFR lab's admission rule
+unmodified but applies it to two whole ChEMBL targets, CYP3A4 (`CHEMBL340`)
+and CYP2D6 (`CHEMBL289`), and tracks every admitted parent's contributing
+assays and documents rather than treating one target as one measurement.
+
+## The admission rule, and what it throws away
+
+A record is admitted only when it is an exact IC50 in nM, `standard_flag=1`,
+`potential_duplicate=0`, carries no data validity comment, names the parent
+molecule directly (`molecule_chembl_id` equal to `parent_molecule_chembl_id`),
+has an RDKit-valid structure, and reports a pChEMBL value consistent with
+its nM value to within a 0.011 tolerance. Computed on 2026-09-12:
+
+| Target | Input rows | Retained | Admitted parents |
+| --- | ---: | ---: | ---: |
+| CYP3A4 (`CHEMBL340`) | 6,750 | 6,118 | 5,251 |
+| CYP2D6 (`CHEMBL289`) | 3,432 | 3,031 | 2,781 |
+
+Repeated admitted activities for one parent under one target are aggregated
+by their median. 649 CYP3A4 parents and 181 CYP2D6 parents carry more than
+one admitted activity; `show` reports the median and maximum pChEMBL range
+across those repeats, so the aggregation's own disagreement is visible
+rather than hidden inside a single number.
+
+## One correlation, checked against itself
+
+1,195 parents are admitted under both targets. `show` reports two
+correlation summaries over them: the full overlap, and a "clean" subset of
+1,015 parents restricted to exactly one admitted activity per target from
+the same document, so neither pChEMBL value is itself a cross-study median.
+
+| Subset | n | Pearson r | Spearman rho | p |
+| --- | ---: | ---: | ---: | ---: |
+| Full overlap | 1,195 | 0.2987 | 0.2981 | 6.08e-26 |
+| Clean pairs only | 1,015 | 0.2990 | 0.3038 | 4.10e-23 |
+
+The two subsets agree with each other to about two significant figures,
+which is a robustness check, not two independent confirmations of the same
+underlying fact: both are read from overlapping real data, not from
+separate experiments. Both land far from either 0 (no relationship) or 1
+(the same measurement twice). CYP3A4 potency is a real but weak positive
+signal for CYP2D6 potency in this dataset.
+
+## What the average hides
+
+`show` also prints the most divergent named examples in each direction from
+the clean-pair subset:
+
+| Compound | CYP3A4 pIC50 | CYP2D6 pIC50 | Difference |
+| --- | ---: | ---: | ---: |
+| Albaconazole (`CHEMBL298817`) | 7.40 | 4.50 | +2.90 |
+| Quinidine (`CHEMBL1294`, not a clean pair) | 4.55 (1 record) | 7.37 median (32 records, pIC50 range 4.1) | not comparable as one pair |
+
+Albaconazole is markedly CYP3A4-selective in a single shared document.
+Quinidine cannot even enter the clean-pair table: its one CYP3A4 record sits
+beside 32 independent CYP2D6 records spanning more than a 10,000-fold range
+in reported potency. Reporting only "quinidine's CYP potency" as a single
+number would have already thrown away the fact that 32 different studies
+disagree with each other by four orders of magnitude before disagreeing
+with CYP3A4 at all.
+
+## What this does not show
+
+This protocol reads only in vitro IC50 inhibition records. It says nothing
+about transporters, enzyme induction, metabolite identification, or a
+clinical drug-drug-interaction outcome for any named drug pair, and it
+applies no correction for cross-study heterogeneity beyond the same-document
+"clean pair" comparison already declared. See `protocol.json`'s
+`excluded_by_design` list for the complete, machine-readable statement.
+
+## Independent exercise
+
+A slide deck states: "Compound Y is a potent CYP inhibitor (IC50 = 12 nM)."
+Using only what `show` reports, name two questions you would need answered
+before treating that sentence as comparable to any single row in this lab's
+overlap table, and explain why quinidine is a real compound for which those
+two questions have different answers depending on which record you pick.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+You need to know which CYP enzyme was tested, since CYP3A4 and CYP2D6
+potency correlate only weakly here (Spearman rho about 0.30 either way), and
+which assay and document produced the number, since a single target's
+records are not one measurement but hundreds of independent ones. Quinidine
+demonstrates why both matter at once: its one admitted CYP3A4 record reports
+pIC50 4.55, while its 32 admitted CYP2D6 records disagree with each other by
+more than four orders of magnitude (pIC50 range 4.1) before ever being
+compared to the CYP3A4 side. "Compound Y is a potent CYP inhibitor" cannot
+be checked against a record like this lab's until it names the enzyme, the
+assay, and the document.
+
+</details>
+
+## Sources and next lesson
+
+<div data-case-sources>
+
+- [ChEMBL 37 release status](https://www.ebi.ac.uk/chembl/api/data/status.json), read live on 2026-09-12
+- [ChEMBL 37 activity records for target CHEMBL340 (CYP3A4)](https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL340)
+- [ChEMBL 37 activity records for target CHEMBL289 (CYP2D6)](https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL289)
+
+</div>
+
+This page shares its admission rule with, but reads independent data from,
+the completed ChEMBL EGFR representation lab; it changes no split, no
+selected hyperparameter and no locked result there. Continue to [From
+metabolism to safety decisions](/learn/admet-pk/metabolism-to-safety/) for
+where this fits among the other ADMET evidence streams.
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-12.

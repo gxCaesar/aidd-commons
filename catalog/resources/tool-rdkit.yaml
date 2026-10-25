@@ -1,0 +1,44 @@
+id: tool-rdkit
+name: RDKit
+kind: software
+summary: Cheminformatics software toolkit with molecular processing and machine-learning utilities.
+canonical_url: https://github.com/rdkit/rdkit
+identifiers:
+  - scheme: documentation
+    value: "Official documentation"
+    url: https://www.rdkit.org/docs/index.html
+stages: [data-intake, representation-learning, property-prediction]
+modalities: [small-molecule]
+tasks: [cheminformatics]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [source-license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: not_applicable, evidence: [repository] }
+  weights: { value: not_applicable, evidence: [repository] }
+  architecture: { value: not_applicable, evidence: [repository] }
+  data_recipe: { value: not_applicable, evidence: [repository] }
+  training_data: { value: not_applicable, evidence: [repository] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: BSD-3-Clause
+    scope: RDKit source code covered by the repository licence; third-party components are not re-licensed here
+    evidence: [source-license]
+evidence:
+  - id: source-license
+    url: https://github.com/rdkit/rdkit/blob/master/license.txt
+    label: Repository BSD 3-Clause licence inspected 2026-09-09
+    supports: []
+  - id: resource-links-2026-09-08
+    url: https://github.com/rdkit/rdkit
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/rdkit/rdkit
+    label: RDKit repository
+    supports: [caveats, kind, modalities, name, stages, summary, tasks]
+caveats:
+  - The repository holds a classical implementation rather than a trained model, so the dimensions that describe training a model do not apply to it; the code was not run.
+acknowledgements: []
+last_verified: "2026-10-23"

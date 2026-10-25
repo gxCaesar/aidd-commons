@@ -1,0 +1,54 @@
+id: tool-bindcraft
+name: BindCraft
+kind: software
+summary: BindCraft is a binder design pipeline that runs AlphaFold2 backpropagation with ProteinMPNN and PyRosetta, filters the resulting designs and stops once a target number of candidates has passed the filters.
+canonical_url: https://github.com/martinpacesa/BindCraft
+identifiers:
+  - scheme: paper
+    value: "BindCraft preprint; DOI 10.1101/2024.09.30.615802"
+    url: https://www.biorxiv.org/content/10.1101/2024.09.30.615802
+  - scheme: source-code
+    value: "BindCraft repository"
+    url: https://github.com/martinpacesa/BindCraft
+stages: [design, candidate-nomination]
+modalities: [protein]
+tasks: [protein-design]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: unverified }
+  weights: { value: not_applicable, evidence: [readme, install-script] }
+  architecture: { value: available, evidence: [readme] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: covers the BindCraft source code only; the installer separately downloads AlphaFold2 parameters and installs PyRosetta, which the README says requires a licence for commercial purposes, and the ProteinMPNN weights are supplied by the user
+    evidence: [license, readme, install-script]
+evidence:
+  - id: repository
+    url: https://github.com/martinpacesa/BindCraft
+    label: BindCraft repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/martinpacesa/BindCraft/main/README.md
+    label: BindCraft README (reviewed 2026-10-21)
+    supports: [acknowledgements]
+  - id: install-script
+    url: https://raw.githubusercontent.com/martinpacesa/BindCraft/main/install_bindcraft.sh
+    label: BindCraft install script (reviewed 2026-10-21)
+    supports: []
+  - id: license
+    url: https://raw.githubusercontent.com/martinpacesa/BindCraft/main/LICENSE
+    label: BindCraft MIT licence file (reviewed 2026-10-21)
+    supports: []
+caveats:
+  - The install script downloads AlphaFold2 parameters from a Google storage bucket and installs PyRosetta from the RosettaCommons release channel, so a full run depends on separately licensed components.
+  - The README states that PyRosetta requires a licence for commercial purposes and gives no licence for the ProteinMPNN weights that the user must supply.
+  - The README describes an inference pipeline and states no training procedure or training corpus for it.
+acknowledgements:
+  - "The repository README credits ColabDesign, ProteinMPNN and PyRosetta."
+last_verified: "2026-10-21"

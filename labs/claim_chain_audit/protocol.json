@@ -1,0 +1,70 @@
+{
+  "schema_version": "aidd-commons.claim-chain-audit-protocol.v1",
+  "protocol_id": "aidd-commons.claim-chain-audit-v1",
+  "issued_on": "2026-10-23",
+  "sources": {
+    "self_record": {
+      "path": "catalog/comparisons/systems/aidd-commons.yaml",
+      "route": "read committed local YAML with PyYAML"
+    },
+    "independent_reading": {
+      "path": "catalog/comparisons/reviews/aidd-commons-blind-2026-09-11.yaml",
+      "route": "read committed local YAML with PyYAML"
+    },
+    "taxonomy": {
+      "path": "catalog/comparisons/taxonomy.yaml",
+      "route": "read committed local YAML with PyYAML"
+    }
+  },
+  "network": "none",
+  "download": "none",
+  "link_roles": [
+    "mechanism", "target", "activity", "selectivity", "exposure", "safety",
+    "synthesis", "reproducibility"
+  ],
+  "chains": [
+    {
+      "id": "candidate-evidence",
+      "topic_ids": [
+        "t06-mechanism-hypothesis-counterevidence",
+        "t06-causal-target-evidence",
+        "t07-endpoint-definition",
+        "t13-specificity-negative-selection",
+        "t08-exposure-pk-endpoint",
+        "t08-safety-toxicity-endpoint",
+        "t14-route-feasibility-material-safety",
+        "t17-reproduction-reporting-receipt"
+      ]
+    },
+    {
+      "id": "decision-handoff",
+      "topic_ids": [
+        "t06-perturbation-genetic-validation",
+        "t06-tractability-target-risk",
+        "t09-affinity-ranking",
+        "t09-screening-selection-repurposing-transfer",
+        "t08-pkpd-translational-assumption",
+        "t08-metabolism-ddi-risk",
+        "t14-retrosynthetic-disconnection",
+        "t04-provenance-versioning"
+      ]
+    }
+  ],
+  "rules": {
+    "link_resolution": "A link is resolved only when its self-record evidence list names at least one declared entry with access opened and a local repository file. An empty list or only non-opened entries leaves it unresolved. A missing opened file is refused.",
+    "depth_order": ["absent", "mentioned", "explained", "worked", "executable", "assessed"],
+    "assessed_without_runnable_basis": "worked",
+    "licence": "Use the ordinal depth after mapping assessed with no runnable basis to worked. Worked licenses a worked case or written exercise, not a measurement. Executable and assessed with a runnable basis license only the declared task over that basis.",
+    "weakest_link": "An unresolved link is weakest. Otherwise the minimum effective depth sets the chain depth. Report the first topic at that minimum and count links below the maximum effective depth.",
+    "unresolved_breaks_chain": "A chain with any unresolved link cannot be reported as a supported claim.",
+    "no_biological_conclusion": "A chain cannot establish a conclusion about a compound, target or therapy."
+  },
+  "counted_unit": "one link in one chain",
+  "boundary_statement": "A chain establishes that each named link's material exists and says what it says. It does not establish a claim about a compound, a target or a therapy. Its endpoints are only the topics it names.",
+  "excluded_by_design": [
+    "Any claim that a chain establishes a compound, a target or a therapy",
+    "Any ranking of chains by completeness",
+    "Any use of the self record's depth as evidence that the underlying material is correct",
+    "Any conclusion beyond the named topic endpoints"
+  ]
+}

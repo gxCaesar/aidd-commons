@@ -1,0 +1,192 @@
+version: "0.1"
+tracks:
+  - &track
+    id: foundations
+    order: 1
+    title: Fixture track
+    title_zh: 测试路径
+    summary: A valid fixture track.
+    summary_zh: 一个有效的测试路径。
+    audience: [testers]
+    prerequisites: []
+    cross_track_prerequisites: []
+    pipeline_stages: [onboarding]
+    coverage_state: curated-intro-core-source
+    learning_outcomes: [read-evidence, trace-decisions]
+    lessons:
+      - &intro
+        id: fixture-t01-intro
+        order: 1
+        title: Fixture introduction
+        type: intro
+        sections:
+          [
+            foundations,
+            practical-workflow,
+            evaluation,
+            frontier-open-questions,
+            v0-1-omissions,
+          ]
+        source_ids: [tool-deepchem]
+        prerequisites: []
+      - &core
+        id: fixture-t01-core
+        order: 2
+        title: Fixture core source path
+        type: core-source-path
+        sections: []
+        source_ids: [tool-deepchem]
+        prerequisites: [fixture-t01-intro]
+  - <<: *track
+    id: drug-discovery-foundations
+    order: 2
+    lessons:
+      - <<: *intro
+        id: fixture-t02-intro
+      - <<: *core
+        id: fixture-t02-core
+        prerequisites: [fixture-t02-intro]
+  - <<: *track
+    id: machine-learning
+    order: 3
+    lessons:
+      - <<: *intro
+        id: fixture-t03-intro
+      - <<: *core
+        id: fixture-t03-core
+        prerequisites: [fixture-t03-intro]
+  - <<: *track
+    id: data-governance
+    order: 4
+    lessons:
+      - <<: *intro
+        id: fixture-t04-intro
+      - <<: *core
+        id: fixture-t04-core
+        prerequisites: [fixture-t04-intro]
+  - <<: *track
+    id: representations
+    order: 5
+    lessons:
+      - <<: *intro
+        id: fixture-t05-intro
+      - <<: *core
+        id: fixture-t05-core
+        prerequisites: [fixture-t05-intro]
+  - <<: *track
+    id: mechanism-targets
+    order: 6
+    lessons:
+      - <<: *intro
+        id: fixture-t06-intro
+      - <<: *core
+        id: fixture-t06-core
+        prerequisites: [fixture-t06-intro]
+  - <<: *track
+    id: qsar-properties
+    order: 7
+    lessons:
+      - <<: *intro
+        id: fixture-t07-intro
+      - <<: *core
+        id: fixture-t07-core
+        prerequisites: [fixture-t07-intro]
+  - <<: *track
+    id: admet-pk
+    order: 8
+    lessons:
+      - <<: *intro
+        id: fixture-t08-intro
+      - <<: *core
+        id: fixture-t08-core
+        prerequisites: [fixture-t08-intro]
+  - <<: *track
+    id: dti-screening
+    order: 9
+    lessons:
+      - <<: *intro
+        id: fixture-t09-intro
+      - <<: *core
+        id: fixture-t09-core
+        prerequisites: [fixture-t09-intro]
+  - <<: *track
+    id: structure-and-pockets
+    order: 10
+    lessons:
+      - <<: *intro
+        id: fixture-t10-intro
+      - <<: *core
+        id: fixture-t10-core
+        prerequisites: [fixture-t10-intro]
+  - <<: *track
+    id: physics-based-modeling
+    order: 11
+    lessons:
+      - <<: *intro
+        id: fixture-t11-intro
+      - <<: *core
+        id: fixture-t11-core
+        prerequisites: [fixture-t10-intro]
+  - <<: *track
+    id: molecular-generation
+    order: 12
+    lessons:
+      - <<: *intro
+        id: fixture-t12-intro
+      - <<: *core
+        id: fixture-t12-core
+        prerequisites: [fixture-t12-intro]
+  - <<: *track
+    id: biologics-design
+    order: 13
+    lessons:
+      - <<: *intro
+        id: fixture-t13-intro
+      - <<: *core
+        id: fixture-t13-core
+        prerequisites: [fixture-t13-intro]
+  - <<: *track
+    id: synthesis-and-automation
+    order: 14
+    lessons:
+      - <<: *intro
+        id: fixture-t14-intro
+      - <<: *core
+        id: fixture-t14-core
+        prerequisites: [fixture-t14-intro]
+  - <<: *track
+    id: active-learning
+    order: 15
+    lessons:
+      - <<: *intro
+        id: fixture-t15-intro
+      - <<: *core
+        id: fixture-t15-core
+        prerequisites: [fixture-t15-intro]
+  - <<: *track
+    id: scientific-agents
+    order: 16
+    lessons:
+      - <<: *intro
+        id: fixture-t16-intro
+      - <<: *core
+        id: fixture-t16-core
+        prerequisites: [fixture-t16-intro]
+  - <<: *track
+    id: evaluation-and-reproducibility
+    order: 17
+    lessons:
+      - <<: *intro
+        id: fixture-t17-intro
+      - <<: *core
+        id: fixture-t17-core
+        prerequisites: [fixture-t17-intro]
+  - <<: *track
+    id: candidate-nomination
+    order: 18
+    lessons:
+      - <<: *intro
+        id: fixture-t18-intro
+      - <<: *core
+        id: fixture-t18-core
+        prerequisites: [fixture-t18-intro]

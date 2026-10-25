@@ -1,0 +1,148 @@
+---
+title: 按模态与证据选择生物大分子设计资源
+description: 依据生物对象和可支持的主张，选择抗体、多肽、表位与治疗性参考资源。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Choosing biologics-design resources by modality and evidence](/learn/biologics-design/modality-resource-guide/)。
+
+<LessonProgress lessonId="biologics-design/modality-resource-guide" />
+<ScrollableRegions />
+
+## 从构建体开始，而不是从数据库名称开始
+
+请先读[抗体与多肽设计及负向选择](/zh-cn/learn/biologics-design/antibody-peptide-design/)。
+生物大分子不是可互换的“一个序列”。抗体问题可能涉及可变区、配对链、形式、抗原
+状态和发现历史；多肽问题可能涉及序列、表位、呈递、修饰或功能测定；寡核苷酸或
+降解剂问题还增加递送、连接、靶标和细胞语境。因此选择资源必须先说明对象与下一步
+决定所需证据。
+
+检索前写五个字段：模态与构建体；输入实体；期望输出实体；纳入和排除条件；以及
+输出不能建立的主张。例如，“找与这对可变区查询相近的、实验确定的抗体—抗原结构”
+是结构检索任务；“找人 IgG 研究中的天然 repertoire 序列”是分布性序列任务。二者都
+不能建立结合、可开发性、专利自由、临床效应或最优设计。
+
+## 四项资源，四份不同证据契约
+
+<table>
+  <thead>
+    <tr>
+      <th>问题与输入</th>
+      <th>返回实体</th>
+      <th>资源</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>哪些实验确定的抗体或抗体复合物结构满足结构或序列查询？</td>
+      <td>带注释的结构记录、重轻链与抗体—抗原配对以及可下载结构。</td>
+      <td>
+        <a href="/atlas/db-sabdab2/">SAbDab2</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        哪些观测到的抗体 repertoire 序列满足供体和 repertoire 元数据约束？
+      </td>
+      <td>
+        带物种、isotype、链、组织、疾病和疫苗语境等字段的研究和 data-unit
+        序列记录。
+      </td>
+      <td>
+        <a href="/atlas/db-oas/">Observed Antibody Space</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        哪些 WHO 认可的抗体或单域抗体来源治疗物有已发布序列和结构覆盖记录？
+      </td>
+      <td>可按 INN、属性或可变区相似性搜索的治疗物条目。</td>
+      <td>
+        <a href="/atlas/db-thera-sabdab/">Thera-SAbDab</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        定义的表位问题关联哪些已报告的 B-cell、T-cell、MHC、抗原或受体证据？
+      </td>
+      <td>经过整理的免疫学记录和可下载实体表。</td>
+      <td>
+        <a href="/atlas/db-iedb/">Immune Epitope Database</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+SAbDab2 是结构选择。它收集公开可得、实验确定的抗体结构与复合物，并保留实验
+元数据、配对、构建体信息、IMGT 编号和抗原注释。输入可以是标识符、注释筛选或
+序列相关查询；输出是结构记录，不证明一个未见设计会折叠或结合。其下载说明明确
+提示，广泛且未处理的下载可含低分辨率结构、残基异常和致病性抗体。把文件称为 ML
+数据集前，先定义分辨率、构建体、抗原和 leakage 规则。另需区分其明确提供的训练发布版：
+[SAbDab2 官网](https://sabdab.opig.stats.ox.ac.uk/)链接了带标准 train/test 划分的
+预处理 AI/ML 训练数据（[Zenodo](https://doi.org/10.5281/zenodo.20083994)）。
+使用前检查版本与划分定义；现成 split 不自动保证新抗原或序列泛化任务的独立性。
+
+Observed Antibody Space（OAS）是 repertoire 分布选择。它将序列组织为研究层 data
+units，并暴露物种、链、isotype、组织来源、疾病和疫苗等供体与实验语境字段。这使
+研究者能提出有边界的已观测序列空间问题，却不能因此把序列称为治疗物。OAS 说明
+其筛选字段非互斥，bulk download 可超过 700 GB；元数据筛选是科学队列定义，而不
+只是存储便利。
+
+Thera-SAbDab 是治疗性参考选择。其可检索对象是已发布序列的 WHO 认可抗体或单域
+抗体来源治疗物，可连接名称、形式、靶标、开发属性、相似性查询和已有结构覆盖。
+它适合检查候选项与已披露治疗空间的关系，却不能证明不存在未披露项目，也不能以
+相似序列建立侵权。其范围明确限于 released sequences。
+
+IEDB 是表位证据选择，而不是抗体结构库。它导出跨表位、抗原、B-cell、T-cell、MHC
+ligand 与受体实体的整理实验和提交数据，并为数据库导出明确声明 CC BY 4.0。面对
+多肽或疫苗相关假设，必须保留 assay type、物种、响应语境、实验或提交来源，以及
+精确表位与抗原关系。一条表位记录不能单独证明新构建体在新人群中的免疫原性。
+
+本轮资源不把寡核苷酸或降解剂的主数据库伪装为已经覆盖。此类模态需要独立的
+构建体、递送、靶标与细胞语境契约；不能悄悄拿抗体序列或表位资源替代，并声称它
+解决了寡核苷酸或 induced-proximity 设计问题。
+
+## 构造案例：让候选项对应正确证据
+
+以下为**教学构造**。团队有针对受体 R 的抗体重、轻链配对可变区序列，需要一个
+结构合理性参考集、一个治疗物邻域检查和一个天然序列分布参考集；同时想知道一个
+针对 R 的已报告肽表位是否构成免疫风险主张。
+
+先用 [SAbDab2](/atlas/db-sabdab2/) 寻找与配对序列相近的实验结构，记录查询区域、
+identity 阈值、抗体形式、抗原状态和结构质量。这只返回模板与注释，并非候选项
+结构。随后以 [Thera-SAbDab](/atlas/db-thera-sabdab/) 检查相近的已发布治疗序列，
+同时保留其 WHO 认可和 released-sequence 范围。仅将 [OAS](/atlas/db-oas/) 用于另一
+个有明确说明的天然 repertoire 比较，例如命名组织和 isotype 的人重链；不可脱离
+队列标签与治疗序列混合。最后用 [IEDB](/atlas/db-iedb/) 检查所报肽表位、测定、
+物种和响应语境。这会提出有边界的免疫学问题，不证明该抗体免疫原、结合该表位或
+存在临床风险。
+
+## 独立资源选择题
+
+有两个请求：(A) 建立实验确定的抗体—抗原复合物非冗余训练集合；(B) 比较接种和
+未接种人 repertoire 研究间 CDR-H3 长度分布。每项应使用哪个资源，必须保留哪些
+元数据，什么会构成类别错误？
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+A 从 [SAbDab2](/atlas/db-sabdab2/) 开始，保留 PDB 或 SAbDab2 标识符、实验结构来源、
+抗体与抗原链、构建体和抗原类型、质量筛选、配对链状态，以及跨最终 split 去除相关
+结构的规则。B 使用 [OAS](/atlas/db-oas/)，保留研究和 data-unit 身份、存在时的供体
+链接、物种、链、isotype、组织、疫苗字段、序列处理状态和 CDR-H3 长度定义。类别
+错误包括把 SAbDab2 结构当作代表性人 repertoire 样本，或把 OAS 分布说成某序列结合
+指定抗原的证据。
+
+</details>
+
+## 来源与访问说明
+
+四项 Atlas 条目链接到本轮 2026-09-09 已打开的官方页面。SAbDab2 数据、
+[OAS 数据](https://opig.stats.ox.ac.uk/webapps/oas/)和 IEDB 数据库导出均有明确的
+CC BY 4.0 声明；这不等于它们的源代码或所有第三方链接资产都使用相同许可。
+未确定字段仍保留为未知。这些资源组织证据；它们不
+提供湿实验方案、治疗建议或机密开发工作的完整地图。
+
+译文更新：2026-09-09。

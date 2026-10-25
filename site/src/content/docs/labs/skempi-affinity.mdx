@@ -1,0 +1,87 @@
+---
+title: Independent observations in an affinity table
+description: Count complexes, audit partial records, and compare complex-held-out baselines in a SKEMPI 2.0 mirror.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+This lab addresses `t13-sequence-structure-function-objective`. Its question is how many independent observations a large measured-affinity table contains. After the lab, you should be able to distinguish rows from complexes, align ragged fields, identify a leaking split, and explain what an incomplete record cannot establish. Basic table handling and logarithms are the prerequisites. The [canonical English guide](/labs/skempi-affinity/) is this page.
+
+Mode is fresh independent computation under a frozen protocol. Use the project Python 3.11 environment and CPU. Network access is needed only when the snapshot is absent. The source is the public [LiteFold SKEMPI 2.0 mirror](https://huggingface.co/datasets/LiteFold/SKEMPI2), which normalizes the upstream CSV into JSONL. The [upstream portal](https://life.bsc.es/pid/skempi2/) is the canonical source.
+
+```bash
+.venv/bin/python labs/skempi_affinity/run_lab.py download
+.venv/bin/python labs/skempi_affinity/inspect_skempi_affinity.py show
+.venv/bin/python labs/skempi_affinity/inspect_skempi_affinity.py check
+.venv/bin/python labs/skempi_affinity/export_summary.py
+```
+
+The download cache is reused after byte-length validation. The export overwrites the committed small summary after a successful run. It does not replace source measurements.
+
+## Counted units and concentration
+
+The local reader of the [mirror file](https://huggingface.co/datasets/LiteFold/SKEMPI2/resolve/main/tables/labeled_skempi2_skempi_v2.csv.jsonl) counted 7,085 rows and 348 distinct `#Pdb` complexes on 2026-10-21. A row is a record, while the complex is the independent unit for this exercise. Multiple records can share a complex, a `Hold_out_proteins` pair, or a mutation identifier. Treating each such row as independent would make a row-based uncertainty interval too narrow.
+
+The same run grouped rows by the source field `Hold_out_type`. This field is an upstream grouping decision. It changes the meaning of a holdout, so the class label is retained rather than inferred from the row content.
+
+| `Hold_out_type` | Rows | Complexes | Both parsed affinities | Five largest complexes |
+| --- | ---: | ---: | ---: | ---: |
+| empty | 4,669 | 249 | 739 | 1,119 |
+| `AB/AG` | 830 | 51 | 719 | 347, or 41.8% of its rows |
+| `Pr/PI` | 1,026 | 59 | 1,026 | 862, or 84.0% of its rows |
+| `TCR/pMHC` | 560 | 37 | 2 | 313 |
+
+The `AB/AG` subset has 2 distinct `Hold_out_proteins` values, one of which is empty. The empty value is retained as a missing group label, not interpreted as a new measured interaction type. The five largest `AB/AG` complexes contribute 347 of 830 rows. This is 41.8% by the displayed count, even though they are only five independent units. Those counts come from the local positional reader and are recorded in the summary.
+
+## Positional alignment and partial records
+
+The mirror file is 6,148,969 bytes and uses a 29-field semicolon-delimited header inside each JSONL record. Its primary value has ragged widths. The reader splits the primary value, aligns by header position, and pads absent trailing fields with empty strings. It does not assume a fixed width.
+
+| Primary-value fields | Rows |
+| ---: | ---: |
+| 2 | 1,973 |
+| 5 | 62 |
+| 6 | 2,506 |
+| 11 | 57 |
+| 27 | 1,141 |
+| 29 | 1,346 |
+
+The run found additional `column_N` overflow fragments in 5,739 JSONL records. Those fragments arise from the mirror conversion. The frozen reader does not reconstruct them into inferred fields. Therefore a blank parsed affinity in this analysis means the primary value lacks that field. It does not prove the upstream CSV lacked a measurement. Counting all 560 `TCR/pMHC` rows as complete affinity pairs would contradict the 2 pairs the reader can actually verify.
+
+## Complex-held-out comparison
+
+The fixed evaluation uses only the 719 complete `AB/AG` rows. It shuffles eligible complex identifiers with seed 20261021 and reserves 20% of the distinct complexes for test. Only 44 of the 51 `AB/AG` complexes have an eligible pair, so the held-out test contains 9 complexes and 33 rows. The training side contains 35 complexes and 686 rows. No complex occurs on both sides.
+
+For a diagnostic only, the same seed assigns 20% of eligible rows to test. It places 144 rows in that row test set, and 142 of them share their complex with training. A row-held-out score would therefore mix familiar complexes into its nominal test set.
+
+The first cheap baseline predicts wild-type `log10(M)` affinity from the training median within `Hold_out_proteins`, using the training-global median for an unseen group. The second comparator uses the observed mutant affinity directly as a wild-type prediction. This comparator requires a measured mutant value and is not a prospective model. The target is the parsed wild-type affinity in M. No labels from held-out complexes are used to fit a median.
+
+| Comparator | Test-row MAE in log10(M) | Mean of complex MAEs in log10(M) |
+| --- | ---: | ---: |
+| Group-only training median | 1.427 | 1.684 |
+| Observed mutant value | 1.132 | 1.560 |
+
+These are the local 2026-10-21 outputs rounded to three decimals. The complex mean gives each held-out complex equal weight, while row MAE gives complexes with more rows more weight. Neither metric is an uncertainty interval or a claim of general performance. The number of independent held-out units is 9, not 33.
+
+## Worked interpretation and independent exercise
+
+From the measured `AB/AG` counts, compute 347 / 830 = 0.418. The top five complexes account for 41.8% of rows. Replacing the denominator with 51 complexes would answer a different question, because it would count units rather than rows. A valid uncertainty calculation for generalization to unseen complexes must resample or otherwise account for complexes, not pretend all 830 rows are independent.
+
+Exercise. A report calls all 830 `AB/AG` rows independent and evaluates with a random row split. State two corrections before trusting its interval or score. Check your answer against the observed counts above.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Use the complex as the independent unit. There are 51 source complexes, and only 44 contribute complete affinity pairs for this particular evaluation. Hold out whole complexes before fitting the group median. The diagnostic row split leaked 142 of 144 test rows by complex, so its score would not test transfer to unseen complexes. Incomplete primary records must remain visible rather than being counted as complete measurements.
+
+</details>
+
+## Scope and sources
+
+This lab supports an audit of table structure and a small complex-held-out comparison. It does not establish a prospective design method, a causal effect, or reader learning. The mirror is a re-host. Its card declares licence `other`, while the [upstream terms](https://life.bsc.es/pid/skempi2/info/terms) state Creative Commons Attribution 4.0 International Public License. The canonical portal's database browser requires login. The public mirror file was retrievable without an account on 2026-10-21. Original guide prose is CC BY 4.0 and original lab code is Apache-2.0.
+
+Continue to the [related curriculum lesson](/learn/biologics-design/antibody-peptide-design/) for the broader comparison topic. Last reviewed: 2026-10-21.

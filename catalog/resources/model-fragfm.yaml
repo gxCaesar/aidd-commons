@@ -1,0 +1,55 @@
+id: model-fragfm
+name: FragFM
+kind: model
+summary: "FragFM is a hierarchical fragment-level discrete flow-matching framework that generates molecular graphs as stochastic fragment bags followed by a lossless coarse-to-fine atom-level reconstruction."
+canonical_url: https://github.com/lee-jwon/FragFM
+identifiers:
+  - scheme: paper
+    value: "FragFM: Hierarchical Framework for Efficient Molecule Generation via Fragment-Level Discrete Flow Matching; arXiv 2502.15805"
+    url: https://arxiv.org/abs/2502.15805
+  - scheme: paper
+    value: "OpenReview entry for the FragFM submission"
+    url: https://openreview.net/forum?id=tr6vRn2aPg
+stages: [design, hit-discovery]
+modalities: [small-molecule, molecular-graph]
+tasks: [molecular-generation]
+relations:
+  - type: uses
+    target: benchmark-moses
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [repository] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: "repository source code only, with the notice to be retained; the released MOSES, GuacaMol, ZINC250k and NPGen data and the downloaded checkpoints carry no separate licence statement"
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/lee-jwon/FragFM
+    label: lee-jwon/FragFM repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: paper
+    url: https://arxiv.org/abs/2502.15805
+    label: arXiv abstract for the FragFM paper (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: readme
+    url: https://raw.githubusercontent.com/lee-jwon/FragFM/main/README.md
+    label: FragFM README
+    supports: [relations, caveats]
+  - id: license
+    url: https://raw.githubusercontent.com/lee-jwon/FragFM/main/LICENSE
+    label: FragFM MIT LICENSE
+    supports: []
+caveats:
+  - The README states no licence or usage terms for MOSES, GuacaMol, ZINC250k, NPGen or for the COCONUT database behind NPGen, so training-data terms are unverified.
+  - The raw and processed data archives and the coarse-to-fine autoencoder and flow-generator checkpoints are distributed through Google Drive with no stated licence or usage condition.
+  - The README associates the work with ICLR 2026; no acceptance text beyond that association was checked here.
+acknowledgements: []
+last_verified: "2026-10-21"

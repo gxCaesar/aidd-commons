@@ -1,0 +1,61 @@
+id: model-flowmol3
+name: FlowMol3
+kind: model
+summary: "FlowMol3 is a flow-matching model for unconditional 3D de novo small-molecule generation, released with its source code, the GEOM-Drugs training corpus and downloadable trained checkpoints."
+canonical_url: https://github.com/dunni3/FlowMol
+identifiers:
+  - scheme: paper
+    value: "FlowMol3: Flow Matching for 3D De Novo Small-Molecule Generation; arXiv 2508.12629"
+    url: https://arxiv.org/abs/2508.12629
+stages: [design, hit-discovery]
+modalities: [small-molecule, molecular-geometry, molecular-conformation]
+tasks: [molecular-generation]
+relations:
+  - type: uses
+    target: dataset-geom
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: available, evidence: [trained-models] }
+  architecture: { value: unverified }
+  data_recipe: { value: available, evidence: [model-flowmol3-readme] }
+  training_data: { value: available, evidence: [geom-dataset] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: "repository source code only, with the notice to be retained; the GEOM-Drugs training corpus is separately published under CC BY 4.0 with attribution required, and the trained checkpoints carry no stated licence"
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/dunni3/FlowMol
+    label: Dunni3/FlowMol repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: paper
+    url: https://arxiv.org/abs/2508.12629
+    label: arXiv abstract for the FlowMol3 paper (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: trained-models
+    url: https://github.com/Dunni3/FlowMol/blob/main/flowmol/trained_models/readme.md
+    label: FlowMol trained-model index
+    supports: [caveats]
+  - id: geom-dataset
+    url: https://zenodo.org/doi/10.5281/zenodo.19150583
+    label: GEOM-Drugs Zenodo record (CC BY 4.0)
+    supports: [relations]
+  - id: license
+    url: https://raw.githubusercontent.com/dunni3/FlowMol/main/LICENSE
+    label: FlowMol MIT LICENSE
+    supports: []
+  - id: model-flowmol3-readme
+    url: https://raw.githubusercontent.com/dunni3/FlowMol/HEAD/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The README states that the specifications of the model and of the data it is trained on are packaged into one configuration file that the reader supplies.
+  - The trained-model index lists no licence, attribution requirement or usage condition for the downloadable checkpoints.
+  - The README states the current release is FlowMol3, published on 18 August 2025; the earlier FlowMol versions are cited separately and are not covered by this record.
+  - The GEOM-Drugs corpus is described as a GEOM subset whose splits were created for MiDi, so the exact member molecules of any other GEOM release are not implied.
+acknowledgements: []
+last_verified: "2026-10-23"

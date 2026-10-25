@@ -1,0 +1,301 @@
+{
+  "boundary": "A modality is not a construct. A source record that gives a construct without a production host does not define a construct, and neither does a record with neither field. An unstated field is missing from that record, not necessarily from the therapeutic entity or the underlying science.",
+  "computed_on": "2026-10-23",
+  "enforced_rules": {
+    "aggregation": "An entity states a field when at least one selected source record states it. Construct definition requires construct and host in the same source record. Construct/host gaps are reported by entity and source.",
+    "comparison": "Compare normalized values only where two source records state the same field. One source's silence is a coverage difference, not a disagreement.",
+    "definition": "A source record defines a construct only when that same record states its modality, product-specific construct and production host. A modality alone is not a construct. An entity with neither construct nor host is not defined. Function remains a separate fourth field."
+  },
+  "entities_by_fields": {
+    "all_four": [
+      "adalimumab",
+      "agalsidase-beta",
+      "etanercept"
+    ],
+    "one": [
+      "human-insulin-humulin"
+    ],
+    "some_two_or_three": [
+      "insulin-lispro",
+      "reteplase"
+    ],
+    "zero": []
+  },
+  "entity_count": 6,
+  "gaps": {
+    "construct_without_host": [
+      {
+        "entity": "etanercept",
+        "source": "uniprot"
+      },
+      {
+        "entity": "insulin-lispro",
+        "source": "uniprot"
+      },
+      {
+        "entity": "reteplase",
+        "source": "uniprot"
+      }
+    ],
+    "host_without_construct": [
+      {
+        "entity": "agalsidase-beta",
+        "source": "uniprot"
+      }
+    ]
+  },
+  "per_entity": [
+    {
+      "defined_construct": true,
+      "entity": "adalimumab",
+      "field_count": 4,
+      "field_stated": {
+        "construct": true,
+        "expression_system": true,
+        "intended_function": true,
+        "modality": true
+      }
+    },
+    {
+      "defined_construct": true,
+      "entity": "agalsidase-beta",
+      "field_count": 4,
+      "field_stated": {
+        "construct": true,
+        "expression_system": true,
+        "intended_function": true,
+        "modality": true
+      }
+    },
+    {
+      "defined_construct": true,
+      "entity": "etanercept",
+      "field_count": 4,
+      "field_stated": {
+        "construct": true,
+        "expression_system": true,
+        "intended_function": true,
+        "modality": true
+      }
+    },
+    {
+      "defined_construct": false,
+      "entity": "human-insulin-humulin",
+      "field_count": 1,
+      "field_stated": {
+        "construct": false,
+        "expression_system": false,
+        "intended_function": false,
+        "modality": true
+      }
+    },
+    {
+      "defined_construct": false,
+      "entity": "insulin-lispro",
+      "field_count": 2,
+      "field_stated": {
+        "construct": true,
+        "expression_system": false,
+        "intended_function": false,
+        "modality": true
+      }
+    },
+    {
+      "defined_construct": false,
+      "entity": "reteplase",
+      "field_count": 3,
+      "field_stated": {
+        "construct": true,
+        "expression_system": false,
+        "intended_function": true,
+        "modality": true
+      }
+    }
+  ],
+  "per_field_counts": {
+    "construct": {
+      "stated": 5,
+      "unstated": 1
+    },
+    "expression_system": {
+      "stated": 3,
+      "unstated": 3
+    },
+    "intended_function": {
+      "stated": 4,
+      "unstated": 2
+    },
+    "modality": {
+      "stated": 6,
+      "unstated": 0
+    }
+  },
+  "per_source": [
+    {
+      "assembly": "heavy+light",
+      "defined_construct": true,
+      "entity": "adalimumab",
+      "field_stated": {
+        "construct": true,
+        "expression_system": true,
+        "intended_function": true,
+        "modality": true
+      },
+      "parts_distinguished": true,
+      "source": "dailymed"
+    },
+    {
+      "assembly": "homodimer",
+      "defined_construct": true,
+      "entity": "agalsidase-beta",
+      "field_stated": {
+        "construct": true,
+        "expression_system": true,
+        "intended_function": true,
+        "modality": true
+      },
+      "parts_distinguished": true,
+      "source": "dailymed"
+    },
+    {
+      "assembly": "unstated",
+      "defined_construct": false,
+      "entity": "agalsidase-beta",
+      "field_stated": {
+        "construct": false,
+        "expression_system": true,
+        "intended_function": false,
+        "modality": true
+      },
+      "parts_distinguished": false,
+      "source": "uniprot"
+    },
+    {
+      "assembly": "dimer",
+      "defined_construct": true,
+      "entity": "etanercept",
+      "field_stated": {
+        "construct": true,
+        "expression_system": true,
+        "intended_function": true,
+        "modality": true
+      },
+      "parts_distinguished": true,
+      "source": "dailymed"
+    },
+    {
+      "assembly": "unstated",
+      "defined_construct": false,
+      "entity": "etanercept",
+      "field_stated": {
+        "construct": true,
+        "expression_system": false,
+        "intended_function": true,
+        "modality": true
+      },
+      "parts_distinguished": false,
+      "source": "uniprot"
+    },
+    {
+      "assembly": "unstated",
+      "defined_construct": false,
+      "entity": "human-insulin-humulin",
+      "field_stated": {
+        "construct": false,
+        "expression_system": false,
+        "intended_function": false,
+        "modality": true
+      },
+      "parts_distinguished": false,
+      "source": "uniprot"
+    },
+    {
+      "assembly": "unstated",
+      "defined_construct": false,
+      "entity": "insulin-lispro",
+      "field_stated": {
+        "construct": true,
+        "expression_system": false,
+        "intended_function": false,
+        "modality": true
+      },
+      "parts_distinguished": false,
+      "source": "uniprot"
+    },
+    {
+      "assembly": "unstated",
+      "defined_construct": false,
+      "entity": "reteplase",
+      "field_stated": {
+        "construct": true,
+        "expression_system": false,
+        "intended_function": true,
+        "modality": true
+      },
+      "parts_distinguished": false,
+      "source": "uniprot"
+    }
+  ],
+  "protocol_id": "therapeutic-construct-records-v2",
+  "schema_version": "aidd-commons.biologic-construct-audit-summary.v2",
+  "software": {
+    "aidd_commons_labs": "0.2.0rc1",
+    "python": "3.11.15"
+  },
+  "source_coverage_differences": [
+    {
+      "entity": "agalsidase-beta",
+      "field": "construct",
+      "stated_by": "dailymed"
+    },
+    {
+      "entity": "agalsidase-beta",
+      "field": "intended_function",
+      "stated_by": "dailymed"
+    },
+    {
+      "entity": "etanercept",
+      "field": "expression_system",
+      "stated_by": "dailymed"
+    }
+  ],
+  "source_disagreements": [],
+  "source_fetched_at_utc": "2026-10-23T14:25:57+00:00",
+  "source_versions": [
+    {
+      "key": "P00750",
+      "source": "uniprot",
+      "version": 282
+    },
+    {
+      "key": "P01308",
+      "source": "uniprot",
+      "version": 284
+    },
+    {
+      "key": "P06280",
+      "source": "uniprot",
+      "version": 253
+    },
+    {
+      "key": "P20333",
+      "source": "uniprot",
+      "version": 247
+    },
+    {
+      "key": "a002b40c-097d-47a5-957f-7a7b1807af7f",
+      "source": "dailymed",
+      "version": 218
+    },
+    {
+      "key": "a06a9aec-fd5b-4c3e-a81f-eb46bb384100",
+      "source": "dailymed",
+      "version": 6
+    },
+    {
+      "key": "988513ab-b06f-4dd0-93f7-d2d4531dcce4",
+      "source": "dailymed",
+      "version": 35
+    }
+  ]
+}

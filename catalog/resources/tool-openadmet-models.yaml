@@ -1,0 +1,52 @@
+id: tool-openadmet-models
+name: OpenADMET Models
+kind: software
+summary: Machine-learning model implementations and training routines for building, testing and prototyping ADMET predictors.
+canonical_url: https://github.com/OpenADMET/openadmet-models
+identifiers: []
+stages: [dmpk-toxicology, model-development, evaluation]
+modalities: [small-molecule]
+tasks: [admet-prediction, model-training]
+relations: []
+status: { value: active, evidence: [commits] }
+access_level: { value: open_source, evidence: [source-license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: unverified }
+  architecture: { value: available, evidence: [repository] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: Apache-2.0
+    scope: The repository LICENSE file is the Apache License, Version 2.0, with sections 1 to 9 complete and the standard Appendix boilerplate truncated, and the Appendix carries the project notice "Copyright 2025 Open Molecular Software Foundation". The scope covers the repository source code and does not extend to any dataset, model or dependency the project uses.
+    evidence: [source-license]
+evidence:
+  - id: source-license
+    url: https://raw.githubusercontent.com/OpenADMET/openadmet-models/main/LICENSE
+    label: OpenADMET Models source LICENSE (Apache-2.0)
+    supports: [caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/OpenADMET/openadmet-models/main/README.md
+    label: OpenADMET Models README
+    supports: [caveats]
+  - id: repository
+    url: https://github.com/OpenADMET/openadmet-models
+    label: OpenADMET Models repository
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: commits
+    url: https://github.com/OpenADMET/openadmet-models/commits/main
+    label: OpenADMET Models commit history
+    supports: [caveats]
+  - id: releases
+    url: https://github.com/OpenADMET/openadmet-models/releases
+    label: OpenADMET Models release page
+    supports: [caveats]
+caveats:
+  - The reviewed LICENSE file states Apache-2.0 while the README states the library is made available under the MIT open source license; this record follows the licence file and preserves the conflict rather than treating the README as controlling terms.
+  - The LICENSE file's Appendix stops after the phrase "specific language governing permissions and" and replaces the standard Apache notice boilerplate with "Copyright 2025 Open Molecular Software Foundation".
+  - The opened repository does not establish endpoint-specific data provenance, split design, or released model weights.
+  - The repository's most recent commit shown is dated 13 October 2026, and the release page lists v0.2.0 as the latest tag.
+acknowledgements: []
+last_verified: "2026-10-21"

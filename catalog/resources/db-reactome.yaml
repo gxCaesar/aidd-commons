@@ -1,0 +1,73 @@
+id: db-reactome
+name: Reactome
+kind: database
+summary: Curated pathway database for biological mechanism interpretation.
+canonical_url: https://reactome.org/
+identifiers:
+- scheme: documentation
+  value: Reactome user guide
+  url: https://reactome.org/userguide
+- scheme: dataset
+  value: Reactome downloads
+  url: https://reactome.org/download-data
+stages:
+- disease-mechanism
+- target-discovery
+modalities:
+- pathway
+- protein
+tasks:
+- pathway-interpretation
+relations: []
+status:
+  value: unverified
+access_level:
+  value: open_source
+  evidence:
+  - license-agreement
+openness:
+  inference_code:
+    value: unverified
+  training_code:
+    value: unverified
+  weights:
+    value: unverified
+  architecture:
+    value: unverified
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: unverified
+licenses:
+- name: CC0
+  scope: All data in the Reactome database and the files derived from that data are licensed under the Creative Commons Public Domain Dedication, and a user may copy, modify and distribute them, even for commercial purposes, without asking for permission, with attribution encouraged but not required. The pathway illustrations, the icon library and the branding material are under CC BY 4.0 instead, and the software and code are under the terms of the same agreement.
+  evidence:
+  - license-agreement
+evidence:
+- id: resource-links-2026-09-08
+  url: https://reactome.org/
+  label: Official source for additional resource links (reviewed 2026-09-08)
+  supports:
+  - caveats
+  - identifiers
+- id: official-page
+  url: https://reactome.org/
+  label: Reactome official page
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+- id: license-agreement
+  url: https://reactome.org/license
+  label: Reactome license agreement (reviewed 2026-10-23) — the database data are CC0, the illustrations and icons CC BY 4.0
+  supports:
+  - caveats
+caveats:
+- The license agreement read on 2026-10-23 states that all data in the Reactome database and the files derived from that data are under the Creative Commons Public Domain Dedication, and that a user may copy, modify and distribute them, even for commercial purposes, without asking for permission. The pathway illustrations, the icon library and the branding material are under CC BY 4.0 instead, so the grant differs by artefact.
+acknowledgements: []
+last_verified: '2026-10-23'

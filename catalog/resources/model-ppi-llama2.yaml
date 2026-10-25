@@ -1,0 +1,47 @@
+id: model-ppi-llama2
+name: PPI-Llama2
+kind: model
+summary: Binder-design model that adapts Meta's Llama2 autoregressive architecture to generate protein binders from a target protein sequence alone, without structural input, published as an ICLR 2024 workshop poster.
+canonical_url: https://huggingface.co/ChatterjeeLab/PPI-Llama2
+identifiers:
+  - scheme: paper
+    value: "PPI-Llama2: De Novo Generation of Binding Proteins Conditioned On Target Sequence Alone; ICLR 2024 poster in the Generative and Experimental Perspectives for Biomolecular Design workshop"
+    url: https://iclr.cc/virtual/2024/22792
+  - scheme: model-weights
+    value: "ChatterjeeLab/PPI-Llama2"
+    url: https://huggingface.co/ChatterjeeLab/PPI-Llama2
+stages: [design]
+modalities: [protein]
+tasks: [protein-design, target-conditioned-generation]
+relations: []
+status: { value: unverified }
+access_level: { value: gated, evidence: [model-card] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: available, evidence: [model-card] }
+  architecture: { value: available, evidence: [model-card] }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC-BY-NC-ND-4.0
+    scope: the published weights, whose model metadata declares license cc-by-nc-nd-4.0, so non-commercial use only and no derivative works; the weights repository is manually gated and requires the access conditions to be accepted before the files can be retrieved
+    evidence: [model-card]
+evidence:
+  - id: model-card
+    url: https://huggingface.co/ChatterjeeLab/PPI-Llama2
+    label: PPI-Llama2 model card on Hugging Face (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks, caveats]
+  - id: paper-listing
+    url: https://iclr.cc/virtual/2024/22792
+    label: ICLR 2024 virtual session listing for the PPI-Llama2 paper (reviewed 2026-10-21)
+    supports: [name, kind, summary, identifiers, stages, modalities, tasks]
+caveats:
+  - "No source-code repository was located for this model: a GitHub repository search for PPI-Llama2 returned no results, and the model card states no code link, so the code dimensions stay unverified."
+  - The weights repository is manually gated, so the published files are reachable only after the stated conditions are accepted, and the conditions themselves were not displayed on the opened page.
+  - The weights are derived from Meta's Llama2, whose own licence terms the model card does not restate.
+  - The card states that the model was trained on protein-protein interaction sequences without naming the corpus or how it was assembled, so the data dimensions stay unverified.
+  - The OpenReview forum page for the paper returned a browser-verification screen instead of the record, so the paper text was not read; the abstract comes from the ICLR 2024 session listing.
+acknowledgements: []
+last_verified: "2026-10-21"

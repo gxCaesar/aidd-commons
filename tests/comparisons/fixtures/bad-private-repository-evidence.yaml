@@ -1,0 +1,24 @@
+id: private-repository-evidence
+name: Private repository evidence
+provider_class: curriculum
+canonical_repository_path: README.md
+summary: A fixture that must not expose an internal repository source.
+audiences: [graduate-students]
+languages: [en]
+metadata_evidence: [private-plan]
+access:
+  content: { value: open, evidence: [private-plan] }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage: []
+evidence:
+  - id: private-plan
+    repository_path: .superpowers/plans/private.md
+    title: Private plan
+    observed_scope: Internal planning material that cannot support a public claim.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

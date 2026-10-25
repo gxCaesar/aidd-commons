@@ -1,0 +1,199 @@
+---
+title: Diagnosing cross-assay prediction failure
+description: Read a primary-versus-separate-assay reversal without turning aggregate scores into a causal diagnosis.
+---
+
+import ChemblLockedPanel from "../../../../components/ChemblLockedPanel.astro";
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+<LessonProgress lessonId="evaluation-and-reproducibility/assay-shift-diagnosis" />
+
+## Aim
+
+This reading-existing-results lesson uses the completed ChEMBL 37 EGFR
+comparison to diagnose a cross-assay reversal. Do not fit a model, access
+row-level labels, reopen the completed evaluation, or choose from its outcomes.
+
+After a recipe works on a scaffold-disjoint primary assay but fails on a
+separate assay, what is evidence, what is hypothesis, and what should precede
+a new evaluation?
+
+## Learning objectives and prerequisites
+
+After this lesson, you should be able to:
+
+- separate the molecule scoring unit from the assay transfer-inference unit;
+- preserve recipe parity while reading the reversal; and
+- distinguish observed failure from an unestablished cause in a decision memo.
+
+Read [Metrics and uncertainty across four labs](/learn/evaluation-and-reproducibility/metrics-and-uncertainty/)
+and [Assay controls and dose-response](/learn/drug-discovery-foundations/assay-controls-dose-response/)
+first. You need only a browser and notes. The ChEMBL lab and its aggregate
+summaries, rather than this page, remain the numerical authorities.
+
+## 1. Name the comparison and its units
+
+The endpoint is median-aggregated parent-molecule pChEMBL from exact IC50
+records under the frozen contract. One parent molecule contributes one target
+and one prediction to each MAE. The primary scaffold test has 132 parents; the
+separate-assay evaluation has 170 parents.
+
+They are metric denominators, not 302 independent assay replicates. A molecule
+is the scoring unit; an assay is the transfer context, including source,
+procedure, compound set, and recorded labels. One completed primary context
+and one separate context cannot establish a reliable estimate of variation
+across a broader assay population.
+
+Fair recipe parity is more specific than a shared model name. Source release,
+endpoint filters, parent aggregation, scaffold membership, Ridge family, alpha
+grid, and validation selection rule were fixed. The recipes differ in declared
+input representation; their development-selected alphas are 1000 and 1. The
+documented paired evaluation applied the selected train-only recipes to both
+surfaces, without outcome-selected alpha, representation, or refit.
+
+Transport assumes more than no parent overlap: comparable endpoint construction,
+relevant structural signal for the new parents, and a relationship that remains
+useful in the new measurement context. The transfer test examines those
+assumptions; target identity, a matched solver, and scaffold separation do not
+certify them.
+
+T15 accessed labels shared with T05 before T05 evaluation. T05 retained its
+split, grid, and alphas without retuning, but is therefore not an untouched
+independent confirmation. This neither erases the scores nor makes the assays
+independent confirmations.
+
+## 2. Observe the reversal before explaining it
+
+The panel keeps every frozen baseline and metric visible. Lower MAE is better;
+the train-mean Spearman value is undefined because its prediction is constant.
+
+<ChemblLockedPanel />
+
+Morgan Ridge has the lowest primary MAE; Descriptor Ridge has the lowest
+separate-assay MAE and Morgan the highest. The hand calculation uses exact
+released aggregates. It is not a new experiment, residual analysis, or
+uncertainty estimate.
+
+```text
+primary descriptor-minus-Morgan MAE
+= 0.4685270107977128 - 0.41833032711934154
+= 0.05019668367837126 pChEMBL
+
+separate-assay descriptor-minus-Morgan MAE
+= 0.5792648712355700 - 3.1316760122202343
+= -2.5524111409846643 pChEMBL
+```
+
+The sign changes because the preferred representation changes with assay
+context. Morgan did not transport well to this separate assay under the frozen
+recipe. This establishes neither a universal ranking, significance result, nor
+failure mechanism.
+
+## 3. Keep hypotheses separate from evidence
+
+The aggregate-only summary has no identities, individual labels, predictions,
+or residual diagnostics. The MAEs cannot distinguish label-range difference,
+prediction offset, a few large errors, structure-distribution change, or their
+combination. None has been measured here.
+
+Three hypotheses may be carried forward, not promoted to causes: a different
+label range or chemical regime; different extrapolation of local fragments and
+descriptors; and different measurement context. The official primary
+[assay record](https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5736995.json)
+describes a TR-FRET biochemical assay with 6 or 12 µM ATP; the
+[separate assay record](https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3705421.json)
+describes a different kinase-assay kit and 100 µM ATP. ChEMBL classifies both
+as human single-protein EGFR assay type `B` (`Binding`) records, while their
+descriptions are biochemical kinase-activity readouts rather than direct-binding
+Kd measurements. Target identity does not make their measurement contexts
+interchangeable. The records make context a hypothesis, not a causal result.
+
+## 4. Diagnose in an order that does not retune on the test
+
+Preserve failed transfer as an outcome. Do not expand the alpha grid, alter
+features, remove difficult parents, or select a replacement because the score
+is poor. Those actions turn evaluation into development information.
+
+The cheapest next check is documentary: compare frozen contracts and source
+metadata for target assignment, endpoint and aggregation, assay format, ATP,
+substrate, detection, and parent overlap. It can reveal a mismatch or sharpen
+a context hypothesis without manufacturing a score; it cannot decide cause.
+
+Then design a fresh evaluation. Before its labels are used, specify assay
+source, grouping, endpoint transformation, recipes, selection rule, and
+descriptive diagnostics. A label-range or residual check must not select the
+model reported on that same fresh evaluation.
+
+## Transfer exercise: write the decision memo
+
+An independent group wants to use the current separate-assay result to choose
+a larger Morgan fingerprint and new alpha, then call a third EGFR assay an
+independent confirmation. Before third-assay labels, write a four-paragraph
+memo from the aggregate only; do not calculate a new statistic or inspect rows.
+
+Your memo must state the molecule and assay units, the supported conclusion
+from the reversal, one plausible cause that is not established, the cheapest
+next check, and why a fresh evaluation is still needed.
+
+<details data-worked-answer>
+<summary>Worked decision memo</summary>
+
+Morgan Ridge has lower MAE on 132 primary parents, while Descriptor Ridge has
+lower MAE on 170 separate-assay parents. These are parent-level denominators
+within two contexts, not 302 assay-independent replications. There is no
+uniform winner.
+
+A plausible explanation is changed measurement context or chemistry and label
+range. The aggregates cannot distinguish it from prediction offset, a few large
+errors, or representation-specific extrapolation. T15's earlier shared-label
+access prevents calling T05 untouched independent confirmation.
+
+The cheap next check is a read-only comparison of contracts and official
+metadata: format, ATP, substrate, detection, endpoint rules, and parent
+overlap. It may sharpen a hypothesis, but not revise completed recipes or
+claim a metadata-only cause.
+
+A third assay could provide a further bounded transfer check, not broad
+generalization. Before its labels, predeclare its source and context plus the
+entity/group separation appropriate to the transfer claim, freeze recipes and
+selection rule, and ensure no prior label exposure for this evaluation. Choosing
+fingerprint size or alpha from the current separate-assay result makes it
+development evidence; the third assay remains fresh only if its labels drive no
+further choice.
+
+</details>
+
+## State what was reproduced
+
+Reading the supplied aggregates reproduces neither model fitting nor the underlying
+assay. Recomputing MAE from saved predictions checks a metric calculation for
+those rows. Reproducing fitting additionally requires the source/version, eligible
+population, entity and split rules, representations, preprocessing, candidate
+grid and checkpoint selection, software environment, and the actually executed
+commands. A different assay tests transfer, not an identical rerun.
+
+For this lesson, a precise scope statement is: “We interpreted the completed
+ChEMBL 37 paired evaluation and its recorded limitations. No new fit or assay
+was run.” To practise this distinction, suppose another reader obtains the same
+MAE from the saved rows but has not executed training. Their supported claim is
+metric recomputation, not end-to-end reproduction or independent biological
+confirmation. Continue to [capstone case 2](/learn/candidate-nomination/capstone-workbook/)
+for a constructed prediction-table exercise with a worked answer.
+
+### Materials used here
+
+Read the [ChEMBL EGFR representation lab](/labs/chembl-egfr-representation-baselines/)
+and its bundled `protocol.json` and aggregate locked summary.
+The [official ChEMBL 37 directory](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/)
+identifies the versioned source release.
+
+This lesson adds no new fit, split, statistical inference, causal assay
+diagnosis, or claim of clinical utility. It teaches a bounded interpretation of
+existing results.
+Original lesson prose is CC BY 4.0; ChEMBL data retain their stated source
+terms.
+
+Last reviewed: 2026-09-09.

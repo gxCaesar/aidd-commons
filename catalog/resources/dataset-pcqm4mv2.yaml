@@ -1,0 +1,47 @@
+id: dataset-pcqm4mv2
+name: PCQM4Mv2
+kind: dataset
+summary: OGB large-scale molecular property prediction dataset.
+canonical_url: https://github.com/snap-stanford/ogb
+identifiers:
+  - scheme: documentation
+    value: "PCQM4Mv2 dataset and task"
+    url: https://ogb.stanford.edu/docs/lsc/pcqm4mv2/
+stages: [representation-learning, property-prediction, evaluation]
+modalities: [small-molecule]
+tasks: [molecular-property-prediction]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [resource-links-2026-09-08, license-file] }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: OGB repository software and documentation; the PCQM4Mv2 dataset carries its own CC BY 4.0 grant on the benchmark page.
+    evidence: [license-file]
+  - name: CC-BY-4.0
+    scope: The PCQM4Mv2 benchmark dataset, including the downloadable SMILES and training 3D structures; it does not license the OGB software.
+    evidence: [resource-links-2026-09-08]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://ogb.stanford.edu/docs/lsc/pcqm4mv2/
+    label: Official source for additional resource links (reviewed 2026-09-08)
+    supports: [identifiers, caveats]
+  - id: repository
+    url: https://github.com/snap-stanford/ogb
+    label: OGB repository
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: license-file
+    url: https://raw.githubusercontent.com/snap-stanford/ogb/HEAD/LICENSE
+    label: Repository LICENSE file (reviewed 2026-10-23)
+    supports: []
+caveats:
+  - PCQM4Mv2 data and OGB software have separate licences; the benchmark page does not grant rights to upstream PubChemQC source records beyond its released dataset.
+acknowledgements: []
+last_verified: "2026-10-23"

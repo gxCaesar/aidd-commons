@@ -1,0 +1,90 @@
+---
+title: 核酸、偶联物与降解剂
+description: 跨核酸与诱导邻近模态区分分子识别、递送、释放和功能后果。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Nucleic acids, conjugates, and degraders](/learn/biologics-design/nucleic-acids-conjugates-degraders/)。
+
+<LessonProgress lessonId="biologics-design/nucleic-acids-conjugates-degraders" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将比较序列导向核酸干预、ADC 和降解剂，写出它们实现产物性功能所需步骤，并识别把摄取或结合等同于功能的错误。请先读[生物大分子与多模态设计](/zh-cn/learn/biologics-design/multimodal-design/)。本课是阅读与手算课，不提供构建、递送或实验方案。
+
+## 不同模态的对象不同
+
+反义寡核苷酸（ASO）是意图在生物隔室内识别 RNA 的序列和化学修饰；其功能后果可涉及 RNase H、空间阻断或剪接调节。siRNA 还要求 guide strand loading 和有效 RNA-induced silencing complex。序列互补必要但不能证明入胞、内体逃逸、正确隔室、靶 RNA 改变或表型。[Kuijper et al.](https://pubmed.ncbi.nlm.nih.gov/32391605/) 说明了这些机制及其边界。
+
+ADC 不只是抗体加 payload：靶点识别、细胞摄取、胞内处理、payload 释放或活性、以及语境适当后果构成链条。异双功能降解剂同样要求靶标与 ligase 的同时有效结合、兼容 ternary complex、ubiquitination 和降解。任一组分的结合不证明降解；观察到蛋白量下降也不能在无区分对照时确认预期 ligase 路径。
+
+若 `p1, p2, …, pk` 为顺序必需步骤的条件成功概率，刻意简化链模型为 `P = Π p_j`。它假定步骤有序且概率已条件定义，并非拟合细胞模型；其教学价值是高摄取不能补偿近零逃逸或释放，最低环节可支配最终信号。
+
+## 建立证据链，而非平台口号
+
+<table>
+  <thead>
+    <tr>
+      <th>模态</th>
+      <th>核心对象和预期行动</th>
+      <th>独特证据缺口</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ASO / siRNA</td>
+      <td>序列、化学修饰、靶 RNA、隔室</td>
+      <td>产物性进入与靶 RNA 后果</td>
+    </tr>
+    <tr>
+      <td>ADC / 偶联物</td>
+      <td>靶向载体、linker、payload、靶点语境</td>
+      <td>摄取至释放链和 target-negative 响应</td>
+    </tr>
+    <tr>
+      <td>降解剂</td>
+      <td>target ligand、ligase ligand、linker、细胞语境</td>
+      <td>产物性 ternary route 对非特异丰度下降</td>
+    </tr>
+  </tbody>
+</table>
+
+所需负比较必须对准推断的弱环节。对序列导向干预，匹配 non-targeting sequence 和 target-rescue 或正交 RNA 读数可区分广泛应激与序列关联后果。对 ADC，target-negative 而其他匹配的语境可区分靶点关联递送与 payload-only 效应。对降解剂，nonbinding analogue 或路线破坏比较可检验蛋白下降是否需诱导邻近路径。没有一个对照可建立所有步骤。
+
+## 已构造案例：递送瓶颈
+
+全部为**教学构造值**。某假想 RNA 导向偶联候选项在命名细胞语境中记录：靶点关联摄取 `p1 = 0.80`、有效内体逃逸 `p2 = 0.25`、正确隔室作用 `p3 = 0.60`，故 `P = 0.80 × 0.25 × 0.60 = 0.12`，即在人工假设下 12% productive fraction。B 只把构造逃逸估计改成 `0.50`，则 `P = 0.80 × 0.50 × 0.60 = 0.24`。B 在该模型中翻倍，但摄取未变。教训不是应报告 12% 或 24% 为实测真理，而是证据若指向逃逸受限，“更好摄取”就是差的选择目标。target-negative 同 payload 语境和匹配 non-targeting sequence 仍重要：前者检验靶点关联递送，后者检验序列关联功能。二者良好也不建立人体获益。
+
+构造降解剂若两种细胞语境靶点结合信号不变，而蛋白丰度只在 C1 下降，可与 C1 特异的有效降解一致，也可为 C1-only stress 或周转差异；需路线区分对照，不能声称靶点结合迁移到 C2。
+
+## 局限与独立练习
+
+该乘法 toy model 忽略饱和、平行路线、可变化学计量和反馈；当参数被观测时，传统药理或生化模型可能更合适。更基本的限制是请求证据必须跟随模态机制；靶点结合、荧光摄取、序列分数都不是整个链的替代物。
+
+**手算练习（不可运行、非实证）：** C 有 `p1 = 0.70`、`p2 = 0.40`、`p3 = 0.50`；D 有 `0.90`、`0.20`、`0.50`。计算两者 `P`。哪个在该 toy model 下应聚焦 escape？为观察到的 RNA 改变写一个区分性负比较，以及两种计算均不能支持的结论。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+`P_C = 0.70 × 0.40 × 0.50 = 0.14`，`P_D = 0.90 × 0.20 × 0.50 = 0.09`。D 的 escape 项更低且构造输出更低，故应聚焦 escape。匹配 non-targeting sequence 或 target-negative context 可帮助区分序列关联结果与广泛应激。两种计算都不支持体内递送、安全性、临床疗效或实测速率。
+
+</details>
+
+## 来源与下一课
+
+来源于 2026-09-09 打开，支持模态边界；以上数字为构造。
+
+<div data-case-sources>
+
+- [Opportunities and challenges for antisense oligonucleotide therapies](https://pubmed.ncbi.nlm.nih.gov/32391605/)
+- [Catalytic in vivo protein knockdown by small-molecule PROTACs](https://pubmed.ncbi.nlm.nih.gov/26075522/)
+- [Antibody-drug conjugates for cancer therapy](https://pubmed.ncbi.nlm.nih.gov/27299281/)
+
+</div>
+
+继续读[可开发性与功能验证](/zh-cn/learn/biologics-design/developability-and-validation/)，决定一个可信构建在成为候选项前还需测什么。原始课程文字为 CC BY 4.0；链接来源保留其自身条款。
+
+译文更新：2026-09-09。

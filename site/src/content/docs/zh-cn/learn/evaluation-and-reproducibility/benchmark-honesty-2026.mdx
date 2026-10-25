@@ -1,0 +1,212 @@
+---
+title: 十三个评估案例对已报分数的说法
+description: 阅读十三个考察协议如何影响已报分数的基准与评估案例，并看清每个案例许可和不许可读者得出什么结论。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[What four 2026 benchmarks say about reported scores](/learn/evaluation-and-reproducibility/benchmark-honesty-2026/)。
+
+<LessonProgress lessonId="evaluation-and-reproducibility/benchmark-honesty-2026" />
+<ScrollableRegions />
+
+## 学习目标与前置知识
+
+你将读十三个基准与评估案例（多数发布于 2026 年），考察已报数字能否互相比较，以及它们的
+解释受到什么限制。你将看清每个案例测量什么、发现什么、以及明确不许可读者得出什么结论。你将对其中一个做手算，因为算术本身就是那个发现。请先读[诚实评估](/zh-cn/learn/evaluation-and-reproducibility/honest-evaluation/)、
+[泛化单位与估计量](/zh-cn/learn/evaluation-and-reproducibility/generalization-unit-and-estimand/)
+与[活性表中的泄漏路径](/zh-cn/learn/evaluation-and-reproducibility/split-leakage-routes/)。
+本课是阅读与手算课：本项目没有运行这些评估中的任何一个，也没有测过它们的任何数字。
+
+## 这些案例，以及各自提出的问题
+
+**PLABench** 问的是：已报的深度学习亲和力数字，在移除基准审计过的训练语料之后是否还成立。
+它在同一批靶点、同一套指标下运行 9 个序列模型与结构模型，并把评估分为三种情形：暖启动、
+冷药物、冷靶点。在它的 ChEMBL35 臂上，未过滤的集合是 84 个靶点上的 7,650 个配体。
+基准的相似度过滤会丢掉每一个与 14 个受审计训练语料中任一配体的 ECFP4 Tanimoto 超过
+0.85 的测试配体，随后丢掉剩下的不足 10 个配体的靶点。剩下的臂是 71 个靶点上的
+4,862 个配体。README 报告说：受审计的语料之一 SAIR 达到了该相似度阈值、命中未过滤基准的
+32.7%，对应被移除的 2,413 行；而领先模型在过滤之后仍然领先，README 自己的说法是：
+是过滤让这个结果变得可读。
+
+**多范式对接基准（Multi-Paradigm Docking Benchmark）** 问的是：对接分数与共折叠分数能不能
+放进同一张排行榜而不误导读者。它评测 6 个基于物理的对接方法（Vina、GNINA、ICM、
+ICM-RTCNN、SurfDock 与 UniDock2）与 4 个共折叠模型（AlphaFold 3、Boltz-1、Chai-1 与
+Protenix），并在汇总表之外发布位姿与逐体系文件。
+
+**Beyond Affinity** 问的是：当一个生成方法的数字其实是一个对接分数时，这个数字到底说了什么。
+它比较一维、二维与三维三种范式下的 15 个生成方法，并报告：三维方法通常给出更强的亲和力，
+但其化学有效性与位姿一致性可能更弱；一维方法在常规分子指标上可靠，却很少达到最好的亲和力；
+二维方法位于两者之间。
+
+**BenchTox** 问的是：文献里的毒性模型究竟能不能比较，因为那些比较在数据集、在预处理与在
+评估协议上都不同。它在一致条件下、跨多个数据集与多种划分策略评测 20 多种方法，补上一份
+结构化的文献分析，并把它的框架作为开源软件发布。
+
+**ShallowBench** 问的是：当靶点本身是最难的那一批时会怎样。它从 CrossDocked2020 整理出
+5,780 个浅口袋靶点，挑选方式是比较 Alpha Shape 的"盖"体积与蛋白质的原子体素体积，
+从而选出凹度低而结合面积足够的浅界面；它报告说，它测试的生成式药物设计模型在这些靶点上
+给出的预测结合亲和力更弱。
+
+**Beyond Random Splits** 问的是：分布偏移的**种类**会不会改变哪种架构看起来最好。它从
+ChEMBL 与 BindingDB 整理出 718,800 个唯一的药物-蛋白对，把一个 Morgan 指纹 + 蛋白 CNN
+基线与另外 12 个架构相比（后者由 4 种药物表示与 3 种 ESM-2 交互模式组合而成），并报告：
+在两种化学偏移下架构之间的一致性为秩相关 0.79，在蛋白偏移下为 0.39，在两者合并的偏移下
+为 -0.55，**排序反转**。
+
+**CryptoBench** 问的是：把一个结合位点叫做"隐蔽"需要什么。它用一对 apo 与 holo 结构来
+定义，把生成脚本以 MIT 许可发布，并把数据集放在一个未声明许可证的公开 OSF 项目上。
+
+**PLINDER** 问的是：一个蛋白质-配体相互作用数据集要做什么，它的数字才能和别人比较。它按
+发布的月份给数据集定版本，所以一个数字总是关于某个被指名的版本；它发布预先设定的训练、
+验证与测试划分，按蛋白-配体相互作用相似度最小化信息泄漏，测试子集里包含新的蛋白、口袋、
+相互作用与配体。
+
+**CACHE Challenge** 问的是：当那个数字是由预测之后才发生的实验产生时，一个基准长什么样。
+在它的回顾阶段，参与者从一个 400,000 个化合物的亲和选择质谱筛选里检索命中；前十名随后被邀请
+从 Enamine 目录前瞻性预测新命中，这些化合物由组织方采购并在自己的费用下做实验测试，
+胜者按前瞻阶段找到的新化学系列数量决定。
+
+**PoseBench** 问的是：当蛋白结构来自预测、结合口袋未知或存在多个配体时，对接与共折叠方法
+表现如何。工具包提供统一的推理、松弛、比对与打分流程，以及数据集与基准预测。论文报告了
+方法间的比较。
+
+**ProtDBench** 问的是：当验证器本身成为测量的一部分时会发生什么。它固定任务、协议与成功
+判据，用湿实验标注数据评测作为验证器的结构预测模型，并在十个蛋白靶点上比较有代表性的
+开源生成方法。
+
+**MAGI** 是一项考察真实先导优化项目限制因素的智能体研究。它在固定时间切分下重放三家
+制药公司的九个历史项目，生成路线一端是 LLM、另一端是接在可互换打分服务后面的 REINVENT 4。
+
+**BioStudyBench** 问的是：相较于先验知识，数据分析如何改变智能体与已发表结论的一致性。
+它的 25 个任务来自被评测模型开发者所报知识截止之后发表的研究。每个任务分别在有数据与工具
+和无数据与工具的条件下运行，每种条件重复三次。
+
+## 每个基准许可什么，又不许可什么
+
+这些研究把各领域测量过程中的一些环节明确写出，并展示它们如何影响已报结果。
+
+PLABench 的发现不是领先模型变了，而是：当泄漏被移除时数字会变，而且变化的方向取决于评估
+情形——README 给出 MixingDTA 的 RMSE 在 Davis 上从 0.462 升到 0.541、在 KIBA 上从 0.404
+升到 0.598，对应的是从暖启动走到冷靶点。一个报告了某个 RMSE 却没有说明评估情形的读者，
+其实并没有报告这个测量。这个基准没有做的是判定哪个模型最好，因为它给出的答案是：排序在
+过滤之后仍然成立，而绝对数字不成立。
+
+多范式对接基准的发现关乎报告的粒度而不是关乎这些系统本身。它在汇总表之外发布逐体系的
+ranking score，而它自己陈述的要点是：当共折叠模型记住了与训练相似的靶点时，汇总会误导人，
+所以结果必须在相似度分层之内读。它没有做的是给出一个单一排序；只拿汇总表的读者会丢掉
+这个基准的主要发现。
+
+Beyond Affinity 的发现是：亲和力不是一个完整的成功判据，因为一个漂亮的结合分数可以与无效的
+化学或与不准确的对接位姿并存。而同一个基准测的亲和力是 docking oracle 分数而不是实验测量，
+所以它的排序继承了 docking 分数已知的偏置。它没有做的是确立一个最佳范式，因为它报告的是
+一个权衡而不是一个赢家。
+
+BenchTox 的发现是：一致的条件比再多的一个方法更值钱，因为文献里的比较之所以难解读，
+原因出在协议而不是化学。它没有做的是把图方法与描述符或指纹基线相比较：它的范围是图方法，
+所以把它的排序当成全领域的排序的读者，读进去的比论文声称的更多。
+
+ShallowBench 的发现是关于靶点家族而不是架构，而且它的亲和力是**预测**的，所以排序继承了
+产生它的打分函数的偏置。它没有做的是确立"某方法在浅口袋上普遍失败"：靶点来自一条几何
+挑选规则，把这个数字读成关于所有困难靶点的陈述，就是越过挑选本身去推广。
+
+Beyond Random Splits 的发现是**误差与排序以不同方式移动**，这正是该论文自己的结论落在
+外推设置而不是平均误差上的原因。验证 RMSE 从两种化学偏移下的 0.950 与 0.945 升到蛋白偏移
+与双偏移下的 1.299 与 1.321，变化不大；而架构之间的一致性从 0.79 掉到 0.39，然后反转到
+-0.55。一个在化学偏移上选定架构、再去读生物偏移误差的读者，不会发现自己的选择已经变成了
+相反的那个。它没有做的是告诉读者自己会面对哪一种偏移。
+
+CryptoBench 的发现是**定义决定数据集**：结合一个在 apo 结构中不存在的口袋的配体按构造
+就是隐蔽的，而一个存在但形状不同的口袋不是。它没有做的是为数据的使用授权：脚本是 MIT、
+数据是公开的，而该项目未声明许可证，所以需要授权的读者必须去问作者。
+
+PLINDER 的发现是：划分的构造才是贡献，版本是另一半。测试子集是为新的蛋白、口袋、相互作用
+与配体挑选的，所以对着同样分子做随机划分报出的数字不是同一个测量，对着上个月版本报出的
+数字也不是同一个测量。它没有做的是确定数据的条款：仓库的 Apache-2.0 授权覆盖代码与生成
+器，数据从一个按月发布的公开目录提供，而项目站点没有为它声明任何条款。
+
+CACHE 的发现是：决定名次的数字由预测之后的实验产生，这正是它与回顾性基准的区别所在。它
+没有做的是让回顾阶段可与别的什么比较：那些命中是从组织方早已跑过的筛选里检索出来的，
+而决定这一轮名次的分数完全来自前瞻阶段。
+
+PoseBench 也揭示了一次测量修正。仓库公告记录了 1.0.0 版打分 bug，影响 Astex Diverse、
+DockGen-E 和 PoseBusters Benchmark 三个主配体数据集。修正后的 1.1.0 版报告各受评方法的
+性能平均降低约 15%，并建议重跑受影响分析。这不代表下降 15 个百分点，也不是适用于所有
+数据集的统一修正。方法比较仍取决于其数据集、指标与版本。
+
+ProtDBench 发现验证器相关偏置，以及相同过滤协议下的有限一致性。过滤规则、成功判据与
+吞吐感知的计算方式会改变关于效率、成功率与多样性的结论。它发布了 Apache-2.0 工具包，
+也报告了方法间的比较。新生成 binder 的成功意味着通过计算过滤器，不代表新的实验命中。
+在 Cao 能量模型设计候选物上测得的偏置，未必完全适用于深度生成设计。
+
+MAGI 发现目标达成情况随打分器准确度与适用性变化，而非随生成路线变化。四位盲评化学家
+无法可靠地区分智能体提议与留出化合物，并判断 SAR 推理可信但不完整。四个项目使用已发表
+的 GSK 系列，四个使用 Sanofi RetroDMTA 数据，一个 AstraZeneca 项目仍保密。提议的
+终点值来自预测，并非新测量。每种条件仅使用一个后端和一条轨迹，且没有固定目标对照，
+因此智能体对目标达成的因果贡献尚未被分离。
+
+BioStudyBench 报告，在八个模型上，数据与工具使平均通过率提高 47 个百分点。最强开放权重
+模型得 81.3%，最强闭源权重模型得 94.7%。这一比较不能识别权重访问方式的因果效应。
+通过表示在评分容差内与参照结果一致，不代表方法全面正确。时间截止与受限检索降低了污染
+风险，但不能证明每个答案都由独立分析得出。
+
+这就是可以迁移的那一课，也正是本项目用在自己的材料上的同一课。**基准的标题数字是关于一套
+协议的陈述。其中点明协议的那部分不是这个数字的弱点，而是让这个数字可用的那部分。**
+
+## 手工作练习
+
+**手工作练习（不可运行、非实证）：** 某基准未过滤的臂有 84 个靶点上的 7,650 个配体。
+它的相似度过滤移除 2,413 行，随后第二条规则移除每一个剩余不足 10 个配体的靶点，
+留下 71 个靶点上的 4,862 个配体。另一个基准比较三种范式下的 15 个生成方法，并报告
+三维方法达到更强的亲和力，而其有效性与位姿一致性可能更弱。第三个基准在一致条件下评测
+20 多种方法，全部是图方法。(a) 相似度过滤之后剩下多少配体？占未过滤臂的比例是多少？
+(b) 稀疏靶点规则随后又移除多少行？两条规则中哪一条做了更大的工作量？(c) 就第二个基准，
+说出你不该在不给评估情形的情况下报告的某个数字；就第三个基准，说出你不该从它的排序
+得出的某个结论。(d) 为三者各说出一个测量，它能把该基准的发现变成关于这个领域的一般性主张。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+(a) 7,650 − 2,413 = 5,237 个配体，占未过滤臂的 68.5%。(b) 稀疏靶点规则随后移除
+5,237 − 4,862 = 375 行，所以相似度过滤移除的行数约为靶点规则的六倍半。这两条规则并不等价，
+而一个报告"我们移除了近重复项"的读者，只说出了做了大部分工作量的那一条。(c) 就第二个基准，
+是那个亲和力数字本身：它是 docking oracle 分数，继承了对接函数的偏置，而且对这个基准另外
+单独报告的化学有效性一无所知。就第三个基准，是任何形如"图方法优于更简单的方法"的陈述，
+因为它跑的比较是在图方法之间进行的，描述符或指纹基线并不在其中。(d) 对第一个，需要用
+另一个语料构建的第二个靶点集，使泄漏控制的结果不是那 14 个受审计语料的属性。对第二个，
+需要实验亲和力而不是 docking oracle 分数，使亲和力与有效性之间的权衡是相对读者会据以
+行动的那个量来测量的。对第三个，需要在描述符与指纹基线上跑同一套协议，使那个排序讲的是
+范式而不是图方法这一族。
+
+</details>
+
+## 来源与下一课
+
+原有九条来源于 2026-10-24 审阅。新增的 PoseBench、ProtDBench、MAGI 和 BioStudyBench
+于 2026-10-25 根据全文及其链接仓库核对。这些来源支持各案例的范围、发现与发布声明，
+不支持构造出的练习，也不支持本项目测得的任何数字。
+
+<div data-case-sources>
+
+- [PLABench 仓库](https://github.com/BioinfoMachineLearning/PLABench) — Wang 与 Cheng，*Leakage-controlled benchmarking reveals generalization limits of deep learning for protein-ligand binding affinity prediction*，投稿中的手稿，数据见 [doi:10.5281/zenodo.22716174](https://doi.org/10.5281/zenodo.22716174)。
+- [A Multi-Paradigm Benchmark of Molecular Docking: From Physics to Co-folding and Hybrid Models](https://doi.org/10.5281/zenodo.19560204) — Xu、Homing、Nakano 与 Katritch，Zenodo 记录 19560204，代码见 [AaronXu9/dockStrat](https://github.com/AaronXu9/dockStrat)。
+- [Beyond Affinity: A Benchmark of 1D, 2D, and 3D Methods Reveals Critical Trade-offs in Structure-Based Drug Design](https://arxiv.org/abs/2601.14283) — Zheng、Zhang、Tan、Chen、Lu、Zhang、Sun、Zitnik、Fu 与 Liang，arXiv 2601.14283。
+- [Benchmarking graph-based models for in-silico toxicity prediction in drug discovery](https://arxiv.org/abs/2609.37555) — Suarez-Barro、Lama 与 Vidal，arXiv 2609.37555，框架见 [noel.suarez/benchtox](https://gitlab.citius.gal/noel.suarez/benchtox)。
+- [ShallowBench: Benchmarking Generative Drug Design Models on Shallow-Pocket Targets](https://arxiv.org/abs/2606.06717) — Reddy 与 Liu，arXiv 2606.06717。
+- [Beyond Random Splits: Evaluating Drug-Target Affinity Models Under Chemically and Biologically Motivated Distribution Shifts](https://arxiv.org/abs/2610.03456) — Chung 与另外十一位作者，arXiv 2610.03456。
+- [CryptoBench: cryptic protein-ligand binding sites dataset and benchmark](https://doi.org/10.1093/bioinformatics/btae745) — Škrhák、Novotný、Feidakis、Krivák 与 Hoksza，Bioinformatics 2024, 41, 1，脚本见 [skrhakv/CryptoBench](https://github.com/skrhakv/CryptoBench)，数据集见 [osf.io/pz4a9](https://osf.io/pz4a9/)。
+- [PLINDER: The Protein-Ligand Interactions Dataset and Evaluation Resource](https://doi.org/10.1101/2024.07.17.603955) — Durairaj 与另外二十五位作者，bioRxiv 2024，代码见 [plinder-org/plinder](https://github.com/plinder-org/plinder)，按月发布见 [cameo3d.org/plinder](https://cameo3d.org/plinder/)。
+- [CACHE Challenge](https://cache-challenge.org/) — 挑战站点，含其轮次、日期、费用安排与数据共享承诺。
+- [PoseBench](https://github.com/BioinfoMachineLearning/PoseBench) — MIT 许可的工具包及打分修正公告，研究见 [Assessing the potential of deep learning for protein–ligand docking](https://doi.org/10.1038/s42256-025-01160-1)，Morehead、Giri、Liu、Neupane 与 Cheng，Nature Machine Intelligence 8, 32–41 (2026)，于 2025 年在线发表。
+- [ProtDBench: A Unified Benchmark of Protein Binder Design and Evaluation](https://arxiv.org/abs/2605.04118) — Liu、Ren、Guan、Gong、Sun、Chen 与 Xiao，arXiv 2605.04118，附[全文](https://arxiv.org/html/2605.04118v2)及 [Apache-2.0 工具包](https://github.com/congliuUvA/ProtDBench)。
+- [From Benchmark to Bench: Can Agents Survive Real-World Drug Discovery?](https://arxiv.org/abs/2610.06411) — Llompart、Guner、Lai、Tibo 与 Xu，arXiv 2610.06411，[全文包含方法、局限与可用性声明](https://arxiv.org/html/2610.06411v2)。
+- [BioStudyBench: Evaluating Agents on Post-Cutoff Biomedical Studies](https://arxiv.org/abs/2610.07614) — Li、Karim 与 Gensbigler，arXiv 2610.07614，[全文包含评分定义与局限](https://arxiv.org/html/2610.07614v1)。
+
+</div>
+
+继续阅读[提名与验证](/zh-cn/learn/candidate-nomination/evidence-to-validation/)，
+把一套有评分的协议带进提名所依赖的决策。课程正文原始许可为 CC BY 4.0；所链接来源保留其
+自有条款。
+
+最后审阅：2026-10-25。

@@ -1,0 +1,95 @@
+{
+  "schema_version": "aidd-commons.objective-ladder-protocol.v1",
+  "protocol_id": "objective-ladder-six-objectives-v1",
+  "issued_on": "2026-10-22",
+  "declared_question": "For each examined entity, which of the six objectives has a public record that actually carries evidence at that level, and which does not?",
+  "objectives": [
+    "sequence-recovery",
+    "folding",
+    "structural-plausibility",
+    "binding",
+    "catalysis",
+    "function"
+  ],
+  "sources": [
+    {
+      "key": "uniprot",
+      "name": "UniProtKB",
+      "licence": "CC BY 4.0",
+      "route": "https://rest.uniprot.org/uniprotkb/{accession}.json"
+    },
+    {
+      "key": "alphafold-db",
+      "name": "AlphaFold Protein Structure Database",
+      "licence": "CC BY 4.0",
+      "route": "https://alphafold.ebi.ac.uk/api/prediction/{accession}"
+    },
+    {
+      "key": "rcsb",
+      "name": "RCSB Protein Data Bank",
+      "licence": "CC0 1.0",
+      "route": "https://data.rcsb.org/rest/v1/core/entry/{entry_id}"
+    },
+    {
+      "key": "rcsb-search",
+      "name": "RCSB Search API",
+      "licence": "CC0 1.0",
+      "route": "https://search.rcsb.org/rcsbsearch/v2/query"
+    },
+    {
+      "key": "skempi",
+      "name": "SKEMPI 2.0",
+      "licence": "CC BY 4.0",
+      "route": "https://huggingface.co/datasets/LiteFold/SKEMPI2/resolve/main/tables/labeled_skempi2_skempi_v2.csv.jsonl"
+    }
+  ],
+  "targets": [
+    {
+      "accession": "P00533",
+      "symbol": "EGFR",
+      "name": "Epidermal growth factor receptor",
+      "structure_id": "1IVO"
+    },
+    {
+      "accession": "P04626",
+      "symbol": "ERBB2",
+      "name": "Receptor protein-tyrosine kinase erbB-2",
+      "structure_id": "3MZW"
+    },
+    {
+      "accession": "P00374",
+      "symbol": "DHFR",
+      "name": "Dihydrofolate reductase",
+      "structure_id": "1BOZ"
+    },
+    {
+      "accession": "P04637",
+      "symbol": "TP53",
+      "name": "Cellular tumor antigen p53",
+      "structure_id": "1YCS"
+    },
+    {
+      "accession": "P03372",
+      "symbol": "ESR1",
+      "name": "Estrogen receptor",
+      "structure_id": "11SD"
+    },
+    {
+      "accession": "P08183",
+      "symbol": "ABCD1",
+      "name": "ATP-dependent transporter ABCB1",
+      "structure_id": "6C0V"
+    }
+  ],
+  "tolerances": {
+    "clash_distance_angstrom": 2.0,
+    "bond_length_tolerance_angstrom": 0.45,
+    "minimum_coordinate_rows": 500
+  },
+  "excluded_by_design": [
+    "any prediction of an affinity, potency or activity value: this laboratory reads records, it does not score compounds",
+    "any claim that a target is druggable, tractable or clinically validated: the laboratory reports which objective has a record, not what the record means for a programme",
+    "any ranking of the examined entities: the six objectives are read separately and are not combined into a score",
+    "any treatment of a predicted structure as an observation of how the entity folds: the model archive holds a model output, and the record names it as one"
+  ]
+}

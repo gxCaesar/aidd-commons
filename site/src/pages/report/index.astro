@@ -1,0 +1,45 @@
+---
+import AtlasFigure from "../../components/AtlasFigure.astro";
+import SiteShell from "../../components/SiteShell.astro";
+import manifest from "../../../../package.json";
+---
+
+<SiteShell
+  title="Living report"
+  description="A living technical map of methods, data, benchmarks, and process knowledge."
+>
+  <section aria-labelledby="report-title">
+    <p class="eyebrow">Living technical context</p>
+    <h1 id="report-title" class="page-heading">Report</h1>
+    <p class="page-intro">
+      The report separates observed source facts, project decisions, open questions,
+      and future work. It is not a performance leaderboard or a claim of exhaustive coverage.
+    </p>
+    <p class="section-intro">
+      Look at the two solid borders and the two dashed ones: the editorial guide
+      separates the statements that assert something from the statements that do not,
+      so a reader can tell an observation from a decision, an open question or a plan.
+    </p>
+    <AtlasFigure id="statement-classes" />
+    <p>
+      The document these figures belong to is published as a
+      <a href="/reports/aidd-commons-living-report-v0.1.pdf" download>PDF</a>.
+    </p>
+  </section>
+  <section class="section" aria-labelledby="current-report-title">
+    <h2 id="current-report-title">Current addendum: {manifest.version}</h2>
+    <p>The v0.2 addendum
+      records the comparison audit and completed teaching labs, including their
+      negative results and evidence limits. It does not replace the historical report.</p>
+    <div class="action-row">
+      <a class="button-link" href="/report/v0-2/">Read the v0.2 addendum</a>
+      <a class="button-secondary" href="/report/citation.cff" download="CITATION.cff">Download version citation</a>
+    </div>
+  </section>
+  <section class="section" aria-labelledby="historical-report-title">
+    <h2 id="historical-report-title">Historical v0.1 report</h2>
+    <p>The original eight-chapter report is preserved as the 4 September 2026
+      snapshot. It does not include the later completed labs; read it alongside the addendum.</p>
+    <a href="/reports/aidd-commons-living-report-v0.1.pdf" download>Download historical v0.1 PDF</a>
+  </section>
+</SiteShell>

@@ -1,0 +1,167 @@
+---
+title: Pocket states, confidence, and reusable structural evidence
+description: Define a pocket relative to a molecular state, interpret model confidence without turning it into experimental proof, and reuse open structural assets with their metadata intact.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="structure-and-pockets/pocket-states-and-confidence" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will define a binding pocket as a property of a declared molecular state,
+separate a confidence output from evidence of ligand binding, and make a
+reproducible decision about whether an open structural asset can be reused.
+Read [Structure, pockets, and co-folding](/learn/structure-and-pockets/cofolding-frontier/)
+and [Structure, affinity, and what a prediction names](/learn/structure-and-pockets/structure-affinity-mechanisms/)
+first. This is a browser and handworked reasoning lesson. It does not run pocket
+detection, predict a ligand, or establish that a site is druggable.
+
+## A pocket is defined by a state and a rule
+
+Calling a surface depression a pocket hides several choices. A useful pocket
+definition records a coordinate set or model, biological assembly or chain
+selection, protonation and ligand assumptions when relevant, the geometric rule,
+and the purpose of the call. Different workflows may call a solvent-accessible
+volume or ligand-centred residue neighbourhood, so they can disagree at flexible
+gates without either being wrong.
+
+Let `S` be a declared protein or complex state, `G` a geometric pocket rule, and
+`P(S, G)` the resulting set of atoms, residues, or volume. The statement
+`P(S_closed, G) != P(S_open, G)` is ordinary state dependence, not a
+contradiction. A **cryptic-site hypothesis** is stronger: the intended decision
+depends on a pocket that is unavailable or materially changed in a specified
+reference state but appears in one or more alternative states. It still needs a
+defined alternative-state source and an appropriate experiment before it becomes
+a binding or mechanism claim.
+
+This state language prevents two common errors. An apo pocket is not automatically
+the pocket used by a ligand-bound complex, and a predicted alternative does not
+show that an unobserved ligand will stabilize it. Coordinates, population,
+kinetics, ligandability, and functional consequence are distinct questions.
+
+## Confidence asks about an output, not a molecular decision
+
+Modern structure systems can provide confidence quantities alongside coordinates.
+For example, the AlphaFold 3 paper describes `pLDDT` as predicted local accuracy
+and `PAE` and `PDE` matrices as predicted errors for a generated structure
+[Abramson et al.](https://www.nature.com/articles/s41586-024-07487-w). These
+quantities can help identify portions of a proposed model that deserve cautious
+interpretation. They do not measure an experimental population, a ligand
+occupancy, an assay response, or the probability that a proposed pocket is
+actionable.
+
+Use confidence at the level it names. Local accuracy can guide cautious
+side-chain annotation, while pairwise error can flag relative-placement
+uncertainty. Neither makes model samples independent experimental structures;
+a global score is weak where a pocket depends on domain motion.
+
+| Question                                                    | Minimum object to retain                                                                     | What a confidence value cannot replace      |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| Is this a particular geometric pocket?                      | state `S`, rule `G`, coordinates and residue/volume output                                   | the definition of `G`                       |
+| Does the open state plausibly differ from the closed state? | both coordinate sets, alignment rule, change summary                                         | an experimental state population            |
+| May this site guide a next hypothesis?                      | target construct, intended decision, confidence and uncertainty notes                        | a binder, potency, or mechanism measurement |
+| Can another reader reuse the asset?                         | stable identifier, source URL, assembly/chain, method, retrieval date and transformation log | undocumented coordinate editing             |
+
+## Open structural assets are data, not illustrations
+
+An open record is reusable only when a reader can identify what was retrieved.
+The RCSB PDB programmatic interface exposes different services for search, data,
+and coordinate access; those services do not erase the distinction between an
+entry's metadata and a local derivative
+[RCSB PDB Web APIs](https://www.rcsb.org/docs/programmatic-access/web-apis-overview).
+For a teaching figure or downstream calculation, preserve the entry identifier,
+assembly versus asymmetric-unit choice, chain or entity identifiers, experimental
+method if supplied, resolution or validation fields when applicable, source URL,
+retrieval date, and every coordinate transformation.
+
+Do not silently repair missing atoms, rename residues, discard alternate
+locations, or merge chains and then call the result “the PDB structure.” Such a
+derivative can be useful, but it must name the edit and the purpose. Likewise,
+a model prediction may be an open asset with a clear license or access route,
+but it is not interchangeable with an experimental deposition. Reuse includes
+its provenance and limitations, not just its coordinates.
+
+Workflow openness has separate gates for code, weights, input schema, output
+artifact, and licence. An open coordinate entry does not supply the others;
+public code without declared inputs, outputs, and permission cannot establish
+reproduction of a claimed workflow.
+
+## Worked case: preserve two state hypotheses
+
+All values in this case are **constructed for teaching**. A team holds two
+coordinate assets for the same declared protein construct: `S_closed` and
+`S_open`. Rule `G` calls a connected cavity `>= 150 Å³`; `S_closed` has `90 Å³`
+near a selected residue set, while `S_open` has `160 Å³`. The two assets differ
+by `2.5 Å` after a declared local alignment. A structure model reports
+`pLDDT = 88` on its `0–100` scale around the putative gate and gate-to-domain
+`PAE = 7.4 Å`; neither quantity is a probability of a cryptic site or binding.
+An archive record gives `1.8 Å` as a reported experimental resolution for only
+`S_closed`.
+
+The valid teaching decision is not “a cryptic pocket is proven.” The team can
+write: “Under `G`, the two declared coordinate assets yield different pocket
+calls; the open-state geometry is a hypothesis whose relative placement remains
+uncertain.” It should not copy the `1.8 Å` field to `S_open`, or replace an
+uncertainty summary with a ligand-binding claim. A pose-sensitive follow-up must
+ask whether the alternative geometry corresponds to the relevant target state.
+
+## Limits and independent exercise
+
+Pocket callers vary in solvent, probe-radius, side-chain, and connectivity
+treatment. Predictors may generate alternatives where data do not constrain
+them, and archive identifiers alone do not name the matching assembly, chain,
+processing step, or biological condition. Narrow the decision rather than
+discarding coordinates.
+
+**Handworked exercise (not runnable or empirical):** A constructed project has
+`S_A` and `S_B`. Under the same `G`, `P(S_A, G)` is a `90 Å³` cavity and
+`P(S_B, G)` is a `210 Å³` cavity; the local alignment displacement is `1.0 Å`.
+The `S_B` model output has `pLDDT = 91` on its `0–100` scale, but no experiment
+has measured either state. Write one justified pocket statement and one statement
+you must not make. Then list two metadata fields needed before sharing `S_B` as
+a reusable asset.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+A justified statement is: “Under the declared rule `G`, the constructed
+coordinates give different pocket volumes for `S_A` and `S_B`; `S_B` supplies a
+hypothesis for an alternative pocket.” Do not state that the `210 Å³` pocket is
+observed in a population, binds a ligand, or is druggable. Useful metadata
+include a stable source identifier or URL, assembly and chain selection,
+coordinate/model version, retrieval date, biological condition, and a log of
+any transformation. `pLDDT = 91` is predicted local accuracy, not a probability
+and not a replacement for the absent experiment.
+
+</details>
+
+## Read three deposited states yourself
+
+The [EGFR structure evidence lab](/labs/egfr-structure-evidence/) runs this lesson's
+argument on three deposited crystal structures of one kinase. The same erlotinib
+ligand sits in one structure with a Lys745 to Glu762 distance of 3.71 A and in
+another, which its depositors call inactive, at 14.41 A. The binding site grows from
+15 to 25 residues as its cutoff moves from 4 to 6 A, and no file carries a ligand
+outside the ATP site, so none of them can define a second pocket.
+
+## Sources and next lesson
+
+The following sources were opened on 2026-09-09. They support the interpretation
+of model confidence and the distinction between archive services and local
+derivatives; they do not support the constructed pocket values.
+
+<div data-case-sources>
+
+- [Accurate structure prediction of biomolecular interactions with AlphaFold 3](https://www.nature.com/articles/s41586-024-07487-w)
+- [RCSB PDB Web APIs Overview](https://www.rcsb.org/docs/programmatic-access/web-apis-overview)
+
+</div>
+
+Continue to [Force fields and sampling](/learn/physics-based-modeling/force-fields-and-sampling/)
+when a state hypothesis must be turned into a declared physical model. Original
+lesson prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-09-09.

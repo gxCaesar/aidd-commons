@@ -1,0 +1,70 @@
+{
+  "mode": "local-document integration smoke test, not a benchmark",
+  "documents": [
+    {
+      "id": "openbabel-2011",
+      "pmcid": "PMC3198950",
+      "title": "Open Babel: An open chemical toolbox",
+      "citation": "O'Boyle NM, Banck M, James CA, Morley C, Vandermeersch T, Hutchison GR. Open Babel: An open chemical toolbox. J Cheminform. 2011;3:33. doi:10.1186/1758-2946-3-33.",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3198950/fullTextXML",
+      "license": "CC BY 2.0",
+      "license_url": "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+      "id": "cmms-gcl-2023",
+      "pmcid": "PMC10457661",
+      "title": "CMMS-GCL: cross-modality metabolic stability prediction with graph contrastive learning",
+      "citation": "Du B-X, Long Y, Li X, Wu M, Shi J-Y. CMMS-GCL: cross-modality metabolic stability prediction with graph contrastive learning. Bioinformatics. 2023;39(8):btad503. doi:10.1093/bioinformatics/btad503.",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10457661/fullTextXML",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/"
+    }
+  ],
+  "questions": [
+    {
+      "id": "openbabel-format-coverage",
+      "question": "According to the paper, what did Open Babel version 2.3 interconvert?",
+      "answerable": true,
+      "expected_document_ids": ["openbabel-2011"],
+      "reference_answer": "It interconverted over 110 chemical file formats.",
+      "source_anchor": "Abstract > Results",
+      "source_quote": "Open Babel version 2.3 interconverts over 110 formats."
+    },
+    {
+      "id": "openbabel-utilities",
+      "question": "Name two utilities, other than format conversion, that Open Babel provides according to the paper.",
+      "answerable": true,
+      "expected_document_ids": ["openbabel-2011"],
+      "reference_answer": "Conformer searching and 2D depiction. Other supported examples include filtering and substructure or similarity searching.",
+      "source_anchor": "Abstract > Conclusions",
+      "source_quote": "a variety of useful utilities from conformer searching and 2D depiction"
+    },
+    {
+      "id": "cmms-modalities",
+      "question": "Which two molecular modalities does CMMS-GCL use to extract molecular features?",
+      "answerable": true,
+      "expected_document_ids": ["cmms-gcl-2023"],
+      "reference_answer": "SMILES sequences and molecular graphs.",
+      "source_anchor": "Abstract > Results",
+      "source_quote": "two modality data, i.e. SMILES sequence and molecule graph"
+    },
+    {
+      "id": "cmms-task",
+      "question": "What prediction task was CMMS-GCL developed to address?",
+      "answerable": true,
+      "expected_document_ids": ["cmms-gcl-2023"],
+      "reference_answer": "Prediction of the metabolic stability of drug candidates.",
+      "source_anchor": "Abstract > Results",
+      "source_quote": "CMMS-GCL for predicting the metabolic stability of drug candidates"
+    },
+    {
+      "id": "joint-protocol-insufficient",
+      "question": "What shared train, validation, and test split should be used for a joint benchmark of Open Babel and CMMS-GCL?",
+      "answerable": false,
+      "expected_document_ids": ["openbabel-2011", "cmms-gcl-2023"],
+      "reference_answer": "Insufficient information: neither paper defines a shared benchmark or joint train/validation/test split across these two systems.",
+      "source_anchor": "Corpus-level negative control; not specified in either selected article.",
+      "source_quote": null
+    }
+  ]
+}

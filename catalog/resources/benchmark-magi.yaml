@@ -1,0 +1,40 @@
+id: benchmark-magi
+name: MAGI
+kind: agent
+summary: Modular molecular-design agent evaluated on nine retrospective lead-optimization campaigns under temporal cutoffs, comparing LLM generation with REINVENT 4 and examining scorer applicability.
+canonical_url: https://arxiv.org/abs/2610.06411
+identifiers:
+  - scheme: paper
+    value: "From Benchmark to Bench: Can Agents Survive Real-World Drug Discovery?; Llompart, Guner, Lai, Tibo and Xu, arXiv 2610.06411, submitted 5 October 2026, revised 9 October 2026"
+    url: https://arxiv.org/abs/2610.06411
+stages: [evaluation, lead-optimization]
+modalities: [small-molecule]
+tasks: [molecular-generation, agentic-planning, retrospective-replay, benchmark-evaluation]
+relations: []
+status: { value: unverified }
+access_level: { value: unverified }
+openness:
+  inference_code: { value: unverified }
+  training_code: { value: unverified }
+  weights: { value: unverified }
+  architecture: { value: available, evidence: [paper-fulltext] }
+  data_recipe: { value: available, evidence: [paper-fulltext] }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses: []
+evidence:
+  - id: paper-record
+    url: https://arxiv.org/abs/2610.06411
+    label: The arXiv record, re-opened on 2026-10-25, with its title, author list, dates and abstract
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: paper-fulltext
+    url: https://arxiv.org/html/2610.06411v2
+    label: Full text read on 2026-10-25, including the limitations, dataset descriptions and asset-release statement
+    supports: [kind, summary, caveats]
+caveats:
+  - "MAGI is an agent with a retrospective evaluation, not a standalone released benchmark. Its paper promises code and trained global ADMET models under an open-source licence upon publication, but supplies no release URL or named code licence. Current code, weights and access remain unverified."
+  - "Four campaigns use published GSK series and four use Sanofi RetroDMTA data. The AstraZeneca programme remains confidential. The nine campaigns must not all be described as private."
+  - "Objective attainment tracked scorer accuracy and applicability. Proposal endpoints are predictions, while reference and held-out endpoints are study measurements. One backend and trajectory per condition, with no static-objective control, do not isolate orchestration's causal contribution. Temporal cutoffs cannot exclude pretraining exposure."
+  - "Four blinded chemists could not reliably distinguish agent proposals from held-out compounds and found the SAR reasoning plausible but incomplete. This record did not run the replay or establish experimental activity for new proposals."
+acknowledgements: []
+last_verified: "2026-10-25"

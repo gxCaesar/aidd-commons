@@ -1,0 +1,74 @@
+---
+title: The independent unit in an affinity table
+description: Read row counts, ragged records, complete measurements, and held-out complexes without overstating the evidence.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="biologics-design/affinity-table-independent-unit" />
+
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Biologic construct identity and evaluation objectives](/learn/biologics-design/construct-identity-and-objectives/), this lesson asks a narrower question. You will identify the unit that can be held out, trace how a ragged mirror becomes a measured subset, and decide what a table-based score can support. This is a reading of the frozen [affinity-table lab](/labs/skempi-affinity/). The lab guide gives the mode, commands, cache behaviour, and reproducible output. This lesson does not replace that guide.
+
+## Rows and independent units
+
+The lab's frozen summary records 7085 source rows and 348 distinct complexes. A row is a record, while a complex is the independent unit for an unseen-complex claim. Rows can share a complex, a protein pair, or a mutation. A row-level interval that treats these repetitions as independent observations would be narrower than the evidence warrants. The AB/AG class alone has 830 rows but 51 complexes. Its five largest complexes contribute 347 rows. These are source-table counts, not independent replicate counts. [Lab guide](/labs/skempi-affinity/).
+
+## Ragged positional records
+
+The [mirror](https://huggingface.co/datasets/LiteFold/SKEMPI2) stores a semicolon-delimited primary value inside each JSONL row. Its primary values do not all have the same width. The frozen reader aligns each value to the header by position and pads absent trailing fields with empty strings. A fixed-width assumption can silently assign a value to the wrong field. The reader also leaves comma-split overflow fragments unreconstructed, so a blank parsed field is a property of this mirror reading rather than proof of an absent upstream measurement. [Lab guide](/labs/skempi-affinity/).
+
+| Primary-value fields | Rows |
+| ---: | ---: |
+| 2 | 1973 |
+| 5 | 62 |
+| 6 | 2506 |
+| 11 | 57 |
+| 27 | 1141 |
+| 29 | 1346 |
+
+The frozen summary records 5739 rows with overflow fragments. The distribution and fragment count come from the same observed lab run on 2026-10-21. [Lab guide](/labs/skempi-affinity/).
+
+## Complete measurements
+
+The evaluation needs both parsed affinity values to be finite and positive. The summary counts 2486 complete pairs among 7085 source rows. In the TCR/pMHC class, it counts 560 rows but only 2 complete pairs. Counting every row as a measured pair changes the analysis population. It would turn partial mirror records into measurements the reader did not verify. The source counts retain those rows, while split construction and metrics exclude incomplete pairs. [Lab guide](/labs/skempi-affinity/).
+
+## Held-out evaluation
+
+For AB/AG, the summary has 719 eligible rows with complete pairs. The row-split diagnostic puts 144 rows in test, of which 142 share a complex with training. This diagnostic is evidence of overlap, not an evaluation of transfer to unseen complexes. The frozen evaluation instead holds out whole complexes. Training contains 35 complexes and 686 rows. Test contains 9 complexes and 33 rows. No test complex belongs to training. [Lab guide](/labs/skempi-affinity/).
+
+The cheap baseline is a training-only median of wild-type log10(M) affinity within each protein group, with a training-global median for unseen groups. The observed-mutant comparator uses a test row's measured mutant value and is not a prospective predictor. The frozen summary reports the following errors without rounding. The row MAE weights rows, while the complex-mean MAE gives each test complex equal weight. Neither value is an uncertainty interval. [Lab guide](/labs/skempi-affinity/).
+
+| Comparator | Test-row MAE in log10(M) | Complex-mean MAE in log10(M) |
+| --- | ---: | ---: |
+| Training-group median | 1.427417380072399 | 1.6844078536090268 |
+| Observed-mutant value | 1.1318877872000341 | 1.5600351451153442 |
+
+## Data terms
+
+The [upstream SKEMPI terms](https://life.bsc.es/pid/skempi2/info/terms) state CC BY 4.0 for the source dataset. The [LiteFold mirror card](https://huggingface.co/datasets/LiteFold/SKEMPI2) declares its licence as other. The upstream statement governs the source data. The mirror's different card entry should be recorded as a provenance discrepancy, not substituted for the upstream terms. Attribute the upstream source when reusing its data. The lab's source audit was recorded on 2026-10-21. [Lab guide](/labs/skempi-affinity/).
+
+## Worked case
+
+Suppose a report calls the 830 AB/AG rows independent observations and then presents the row-split result as unseen-complex performance. The frozen summary instead identifies 51 source complexes and 719 complete pairs in that class. The five largest complexes supply 347 rows. In the row-split diagnostic, 142 of 144 test rows share a complex with training. The defensible reading keeps row count, complete-pair count, and complex count separate. It uses the 9 held-out test complexes for the stated evaluation, with uncertainty tied to complexes rather than repeated rows. These are interpretations of the [frozen lab result](/labs/skempi-affinity/), not a new experiment.
+
+## Independent exercise
+
+The frozen summary gives 560 TCR/pMHC rows, 37 complexes, and 2 complete affinity pairs. A proposed analysis treats every row as a measured pair and calculates an interval over rows. Identify the population error and the independent-unit error. Then state what the mirror audit cannot decide.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Only 2 rows have a complete pair under the frozen reader, so 560 cannot be the measured-pair population. The complex is the independent unit for a claim about unseen complexes, so 560 rows cannot supply 560 independent units. A missing parsed field in the mirror does not establish that the upstream record lacked a measurement, because the mirror has ragged primary values and unreconstructed overflow fragments. [Lab guide](/labs/skempi-affinity/).
+
+</details>
+
+## Scope and sources
+
+This material shows table structure, a fixed split diagnostic, and two simple comparators in one observed run. It does not show a prospective predictor, an interval calibrated across independent complexes, an upstream missing-data audit, or reader learning. See the [upstream portal](https://life.bsc.es/pid/skempi2/), [upstream terms](https://life.bsc.es/pid/skempi2/info/terms), [mirror card](https://huggingface.co/datasets/LiteFold/SKEMPI2), and [executable lab guide](/labs/skempi-affinity/).
+
+Last reviewed: 2026-10-21.

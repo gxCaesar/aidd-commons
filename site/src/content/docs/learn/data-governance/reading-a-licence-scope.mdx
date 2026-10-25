@@ -1,0 +1,201 @@
+---
+title: Reading a licence scope, not a licence name
+description: Read seven real licence scopes from this project's own records and see that the name on a licence is the least informative part of it.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="data-governance/reading-a-licence-scope" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will read seven licence scopes written by people who had to be precise
+about what they were granting, and you will find that the licence *name* is
+the least informative part of the grant. You will practise taking a scope
+apart into four questions, and you will apply that to a record in this
+catalogue. Read [Data contracts and licences](/learn/data-governance/data-contracts/)
+and [Entity resolution, scientific lineage and permitted
+reuse](/learn/data-governance/identity-lineage-and-reuse/) first; the
+earlier lesson establishes that access is not permission, and this one is
+about the mechanics of the permission itself. This is a reading lesson: no
+licence here is a legal opinion, and no reader is advised to rely on one.
+
+## The four questions a scope has to answer
+
+A licence name is a label. A scope is a set of answers, and a reader who wants
+to know what they may do has to find four of them.
+
+**Which asset does the grant cover?** A dataset, its code, an article and a
+hosted service are four different assets and they are often under four
+different terms in the same place. "CC BY 4.0" on an article says nothing
+about the repository next to it.
+
+**Which use does it permit?** Research, commercial use, redistribution and the
+making of derived products are four different permissions. Several of the
+scopes below draw that distinction explicitly.
+
+**What does it withhold?** A grant can be open and still withhold something:
+the parts of a dataset that came from a third party, a version that predates
+the licence, or a service behind a download button.
+
+**What does it leave unresolved?** The scope of a permissive grant often stops
+where the authors' own rights stop. A scope that says so is more useful to a
+reader than one that says nothing.
+
+## Seven scopes, read
+
+**FreeSolv v0.52.** The repository's current branch states that the data are
+covered by a licence file specifying CC-BY 4.0 and the code by a separate MIT
+file, and the same statement limits the grant: to the extent the data are the
+authors' own to license, and not for the parts that carry an upstream
+restriction. The pinned v0.52 tag the record names carries neither licence
+file nor a licence section, so the record carries no licence at all for the
+version it names. Two lessons sit in that one scope: a licence on a branch is
+not a licence on a tag, and a grant with a scope limit is narrower than its
+name.
+
+**GTEx Portal.** The portal publishes a licence of its own. It charges no
+fees or royalties and it restricts no use, and it requires two things: that a
+user acknowledge the portal as the source with a stated phrase, and that a
+user who republishes the data either keep the most current version or make
+known that the product does not reflect the most current data. A bespoke
+licence is still a licence, and it can impose duties that are not
+restrictions. It also reserves the right to change the format of the
+machine-readable data, which is a change a reader's pipeline has to survive.
+
+**ToxCast.** The agency's own statement is that its computational toxicology
+data are open data, free of all copyright restrictions, and fully and freely
+available for both non-commercial and commercial use. Nothing is withheld
+because there is nothing to withhold: these are works of the United States
+government. A record that leaves the licence field empty for such a resource
+has failed to say something true, and a record that writes "public domain"
+where the source says "open data" has said something the source did not.
+
+**SAbDab2.** The machine-learning release states its own terms, on the
+release, so the record can point at the exact artefact and version. That is the
+cleanest case here, and it is worth noticing what it takes: a deposit that
+states its licence, a version number, and a description of what is in it.
+
+**PLABench.** The code is MIT, and the same sentence says the grant covers
+the code and not the third-party model weights or the benchmark data, which
+keep their own terms; the repository records the official URL, checksum and
+licence of every third-party checkpoint it fetches. The data deposit carries
+only the Zenodo identifier other-open, with no licence name and no rights
+text, so the deposit does not itself name a grant. A permissive code licence
+does not travel to the data beside it, and a deposit that says only "open"
+does not say what the openness consists of.
+
+**Beyond Affinity.** The article carries CC BY 4.0 on arXiv, and the
+benchmark's code repository carries no licence file at all. The repository is
+public and readable, and a reader who assumes the article's licence reaches
+the code is wrong about the one thing they would rely on.
+
+**DepMap.** Current portal data are freely available for internal or
+non-profit research, and commercial use is not permitted under these terms
+and may require a separate licence agreement from the rights-holders. The
+clause worth noticing is the one about *models trained on* the data: a
+researcher who trains a model on free-for-research data and then uses the
+model commercially has not stayed inside the research permission, and a
+licence that only said "free for research" would not have told them so.
+
+## Worked case
+
+A reader wants to redistribute the SAbDab2 structures inside a teaching
+package. The record's scope says the Creative Commons Attribution 4.0 licence
+covers the machine-learning release, and the release states it for itself.
+So the four questions have answers: the asset is the release as deposited;
+the use permitted is redistribution with attribution; what is withheld is
+whatever the upstream structures carry, which the release does not state; and
+what is unresolved is whether the individual structures can be
+redistributed at all, because the deposit's grant covers the curation and the
+release rather than every upstream structure. The reader can proceed with
+attribution and a visible provenance note, and must not represent the
+package as clearing every upstream right.
+
+## Independent exercise
+
+**Handworked exercise (not runnable or empirical):** You are given four
+records. The first states that the data are covered by a licence file
+specifying CC-BY 4.0, that the grant reaches the data only to the extent
+they are the authors' own to license, and that the version you pinned carries
+no licence file at all. The second states that its data are free of all
+copyright restrictions and freely available for both non-commercial and
+commercial use, and that its repository carries no licence file. The third
+states that the code is MIT and that the third-party weights and the data
+are excluded from that grant, and that the data deposit carries only the
+identifier other-open. The fourth states that the data are free for internal
+or non-profit research, that commercial use is not permitted, and that this
+includes the sale or product use of models trained on the data. (a) For each
+record, name which asset the grant covers, which use it permits, what it
+withholds, and what it leaves unresolved. (b) Which of the four grants would
+let you put the data inside a commercial product, and under what conditions?
+(c) Which one looks most open by name and is narrowest in fact, and why does
+the name mislead? (d) For the record whose code is MIT and whose data
+deposit says only other-open, what would you have to obtain before shipping
+the data?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+(a) The first covers the repository's current branch, not the pinned version,
+so the asset you hold is not covered; it permits whatever the authors can
+license and withholds the parts carrying upstream restrictions, and it
+leaves the pinned version's terms unresolved. The second covers the data as
+such, permits commercial and non-commercial use, withholds nothing because
+the work is not copyrightable, and leaves nothing unresolved on its face. The
+third covers the code, permits reuse and redistribution of that code,
+withholds the third-party weights and the data, and leaves unresolved what
+"other-open" consists of, because no licence name and no rights text are
+attached. The fourth covers the current portal data, permits internal and
+non-profit research, withholds commercial use including the sale or product
+use of models trained on the data, and leaves unresolved whether a separate
+agreement will be granted and on what terms.
+
+(b) The second, on its face, because it says free for both non-commercial and
+commercial use. The fourth permits it only for internal or non-profit use
+and requires a separate agreement for anything commercial, and the third
+permits nothing about the data at all. The first permits nothing about the
+pinned version, because the version carries no licence.
+
+(c) The third, by name: MIT is the most permissive licence in this set, and
+it is the narrowest in fact for the data, because it covers code and
+excludes the data and the weights, while the deposit that holds the data
+states no licence name at all. The name misleads because a reader who reads
+the repository's licence badge has read a fact about the code and is likely
+to remember it as a fact about the project.
+
+(d) A grant that names what the deposit actually provides. The Zenodo
+identifier other-open with no name and no rights text is not a licence, and
+a reader who needs to ship the data has to ask the depositors what the
+identifier covers, and separately has to establish the terms of every
+third-party checkpoint the benchmark fetches, because the MIT grant excludes
+those and the repository only records their URLs, checksums and licences in
+its own inventory.
+
+</details>
+
+## Sources and next lesson
+
+The following records were read on 2026-10-24. They support the licence
+statements as each states them, and not the constructed exercise and not any
+legal conclusion.
+
+<div data-case-sources>
+
+- [FreeSolv v0.52](/atlas/freesolv-v0-52/) — the repository's licence files and its own licence statement, and the pinned tag that carries neither.
+- [GTEx Portal](/atlas/db-gtex-portal/) — the portal's own data licence, read from the licence route its application renders.
+- [ToxCast](/atlas/dataset-toxcast/) — the agency's statement that its computational toxicology data are open data free of copyright restrictions.
+- [SAbDab2](/atlas/db-sabdab2/) — the machine-learning release that states its own terms.
+- [PLABench](/atlas/benchmark-plabench/) — the MIT grant over the code, the excluded third-party weights, and the data deposit that names no licence.
+- [Beyond Affinity](/atlas/benchmark-beyond-affinity/) — the article's licence and the code repository that carries none.
+- [DepMap](/atlas/db-depmap/) — the portal's data terms, including the clause about models trained on the data.
+
+</div>
+
+Continue to [Structure, affinity, and mechanism](/learn/structure-and-pockets/structure-affinity-mechanisms/)
+to carry a permitted asset into a scientific claim. Original lesson prose is
+CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-10-24.

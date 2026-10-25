@@ -1,0 +1,57 @@
+---
+title: Drug discovery context
+description: Connect medicinal chemistry, structural biology, assays, and experimental decisions before modelling.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="drug-discovery-foundations/discovery-context" />
+
+## Foundations
+
+A discovery program connects a disease-relevant mechanism, a tractable target,
+a chemical or biologic intervention, and an experiment that can falsify the
+proposed mechanism. [ChEMBL](https://www.ebi.ac.uk/chembl/),
+[PubChem](https://pubchem.ncbi.nlm.nih.gov/), and
+[DrugBank](https://go.drugbank.com/) are useful identity and annotation sources;
+their public pages do not automatically grant bulk-data or redistribution rights.
+
+## Practical workflow
+
+Define the decision before collecting features: target nomination, hit triage,
+or lead optimization each needs a different unit and assay context. Normalize
+chemical identity, assay endpoint, organism, target construct, and measurement
+conditions. Use a simple [RDKit](https://github.com/rdkit/rdkit) descriptor or
+substructure check before relying on a learned representation.
+
+## Evaluation
+
+Check whether a reported activity is comparable across assay formats, and
+whether a historical analogue leaked across the split. A docking score or a
+single biochemical assay is not evidence of cellular efficacy, selectivity, or
+developability.
+
+## Frontier and open questions
+
+Multimodal target-to-candidate systems may join chemical, structural, and
+mechanistic evidence. Their utility depends on whether the linkages and the
+downstream experimental feedback are available at the same decision point.
+
+## What v0.1 does not yet teach
+
+This entry does not replace medicinal chemistry training, assay development, or
+clinical pharmacology. It contains no synthetic patient or assay outcomes.
+
+## Continue with a worked lesson
+
+Follow [assay controls and dose response](/learn/drug-discovery-foundations/assay-controls-dose-response/)
+to separate biological activity from the instrument readout before building a
+model table. Its numerical cases are explicitly constructed teaching examples.
+
+## Core-source path
+
+Compare the chemistry operations in [RDKit](https://github.com/rdkit/rdkit) and
+[Open Babel](https://github.com/openbabel/openbabel), then follow the
+[target-to-candidate map](/atlas/target-to-candidate-map/).
+
+Last reviewed: 2026-09-04.

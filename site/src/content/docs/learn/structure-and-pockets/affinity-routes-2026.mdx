@@ -1,0 +1,202 @@
+---
+title: Four routes through the 2026 affinity frontier
+description: Distinguish learned affinity outputs from force-field parameters, then read access and evidence limits across four releases.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="structure-and-pockets/affinity-routes-2026" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+After [Structure, affinity, and what a prediction names](/learn/structure-and-pockets/structure-affinity-mechanisms/)
+and [The open structure-prediction stack](/learn/structure-and-pockets/open-structure-stack/),
+identify the output of each route, distinguish an internally folded complex
+from a supplied structure, and state what the recorded assets permit a reader
+to inspect. This is a reading lesson with a written exercise. No resource was
+run for it.
+
+## Comparison contract
+
+These records describe different instruments, not a matched affinity
+benchmark. AQAffinity and Nesso-1 are learned prediction routes. ByteFF and
+ByteFF2 supply force-field parameters for molecular simulation rather than
+directly reporting that a ligand binds. A simulated free energy requires a
+specified downstream simulation and analysis protocol. It is neither a
+learned affinity scalar nor an experimental measurement. A route described as
+structure-free can still produce a structure internally. It means the reader
+does not supply an experimental complex structure as input to that route.
+
+## Four routes to an affinity number
+
+| Resource | Recorded route and input | Immediate output or asset | Where the claim stops |
+| --- | --- | --- | --- |
+| AQAffinity | Protein sequence and ligand representation, with internal complex folding | Predicted affinity | The gated page did not expose the model card or files to the record |
+| Nesso-1 | Coarse-grained co-folding from a protein sequence and ligand in SMILES, CCD code or SDF form | Affinity scalar and binder probability | Output units, sign convention and confidence measure were not established by the page |
+| ByteFF | Data-driven force-field parameterisation of a molecule | GROMACS-compatible ITP files | Parameters are not a binding free energy or a binding observation |
+| ByteFF2 | Graph-neural-network force fields for drug-like molecules | Published force-field weights for downstream simulation | A force-field release does not supply a binding result for a specified pair |
+
+The [structure metrics lesson](/learn/structure-and-pockets/structure-metrics-and-benchmarks/)
+similarly separates a comparison score from the biological conclusion a reader
+might attach to it. Here the distinction starts earlier, at the output itself.
+
+## AQAffinity
+
+AQAffinity is a structure-free affinity head built on the OpenFold3 trunk. It
+takes a protein sequence and ligand representation, folds the complex
+internally, and predicts affinity without a supplied experimental structure.
+The repository is gated, with automatic approval after a request. The repository
+description advertises source and weights, but the record could not read the model card
+or repository files. Inference code, weights, and training code therefore all
+remain unverified. A listing is not evidence that an unauthenticated reader
+can inspect or execute those assets.
+
+Repository metadata states Apache-2.0. Because the licence text and model card
+were inaccessible to the record, it does not establish the grant's scope for
+code, weights, or accompanying data. It also establishes no checkpoint name,
+training-data construction, output convention, or paper identifier. The
+recorded description rests on public project metadata rather than a read
+model card.
+
+## Nesso-1
+
+Nesso-1 co-folds a coarse-grained protein–ligand representation at token level
+without an MSA module or a heavy-atom generative module. It takes a sequence
+and a ligand in SMILES, CCD code, or SDF form, and returns an affinity scalar
+and binder probability. The record establishes inference and evaluation code
+and published weights. Training code remains unverified. The README makes no
+training-data statement, so neither a training dataset nor a data recipe can
+be recovered from this record. A linked technical report was not opened for
+the record, and its reported accuracy or speed is not carried here.
+
+The README and model card state Apache-2.0 for source code and published
+weights. The weights page supplies neither a checkpoint name nor a download
+command, so publication alone does not identify a runnable checkpoint. The
+accelerated kernels require CUDA 12, while other environments use the default
+installation or `--no_kernels`. The page does not establish units, a sign
+convention, a confidence measure, or a result-file schema for the affinity
+output. A binder probability is a model output, not a binding observation.
+
+## ByteFF
+
+ByteFF is a data-driven molecular-mechanics force field. It infers parameters
+for a molecule and writes GROMACS-compatible ITP files. The record establishes
+inference and training code, together with descriptions of its training phases
+and benchmark data. It does not establish a downloadable pretrained checkpoint,
+so its weights field is unverified. Its repository is archived and no longer
+maintained. The README directs readers to ByteFF2 for current models and
+offers a hosted API trial under separate terms. Service access is not a
+checkpoint a reader can run.
+
+The README states Apache-2.0 for repository source and shipped benchmark data.
+The paper and hosted API retain separate terms. The record describes the
+training data types but gives no molecule count or chemical-space inventory.
+It also gives no installation command or runnable example. Parameter files
+would still need a declared simulation protocol before any binding free-energy
+estimate could be interpreted.
+
+## ByteFF2
+
+ByteFF2 is the maintained successor and publishes two graph-neural-network
+force fields. ByteFF-26 is a non-polarisable release trained on the named
+THEMol corpus. ByteFF-Pol-25 is a polarisable release described as trained on
+high-level quantum-chemistry data without experimental calibration. The
+record establishes inference code and published weights on the linked Hugging
+Face repository, but not training code or a data recipe. The reader must
+choose a force field. The record does not establish which one a particular
+downstream use should take.
+
+The recorded Apache-2.0 grant covers repository source and its published
+weights. THEMol, GROMACS, and the required patched OpenMM each retain their
+own terms. The README provides no installation command for the force fields
+themselves. Running the release requires a patched OpenMM 8.3.1 and
+OpenMM-VelocityVerlet built from source, plus GROMACS 2025.3 built from source.
+This is a build route, not evidence that a reader has executed the weights or
+computed an affinity. The record establishes no pair-specific binding result.
+
+## Openness by dimension
+
+The seven columns preserve the catalogue's separate dimensions. Available
+means the cited record established access or documentation, not that this
+lesson executed the asset. Unverified means the record did not establish that
+dimension.
+
+| Resource | Inference code | Training code | Weights | Architecture | Data recipe | Training data | Evaluation code |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| AQAffinity | unverified | unverified | unverified | unverified | unverified | unverified | unverified |
+| Nesso-1 | available | unverified | available | unverified | unverified | unverified | available |
+| ByteFF | available | available | unverified | available | available | available | unverified |
+| ByteFF2 | available | unverified | available | available | unverified | available | unverified |
+
+## Worked case
+
+A reader has a protein sequence and a ligand and wants to know whether they
+bind. For each route, what output or asset could the reader seek, what must be
+obtained to use it, and where would its claim stop?
+
+AQAffinity offers an internally folded complex and an affinity prediction,
+but access first requires passing its gate. The record cannot establish a
+usable checkpoint or output convention from the unread files. Nesso-1 offers
+an affinity scalar and binder probability from sequence and ligand input.
+Its published weights must be located from the page, and the output convention
+and machine-specific kernel path must be checked before interpreting a number.
+Neither learned output establishes that the compound binds.
+
+ByteFF offers molecular parameters and GROMACS-compatible files, not a direct
+binder call. Its archived repository has no recorded downloadable checkpoint;
+the API trial is a separate service. ByteFF2 publishes weights for a choice of
+force field, but use requires the stated source builds and a downstream
+simulation protocol. Either force field can enter a calculation, yet neither
+record supplies a simulated free energy or a measurement for this pair. The
+reader would need a defined endpoint and independent biological evidence
+before claiming binding. No result has been generated in this case.
+
+## Independent exercise
+
+A colleague treats `available` weights as proof that every published model can
+be run locally and labels ByteFF's API trial a downloadable checkpoint. Use
+the openness table and the access facts to correct both claims. Which routes
+have weights marked `available`, and what still prevents a direct comparison
+of their affinity numbers?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The `weights` field is `available` for Nesso-1 and ByteFF2. It is `unverified`
+for AQAffinity and ByteFF. AQAffinity is gated, and its files were not read by
+the record. ByteFF lists no checkpoint, while its API trial is a hosted
+service. Nesso-1 does not name a checkpoint or download command, and ByteFF2
+requires source-built dependencies and a choice of force field. More
+fundamentally, Nesso-1 predicts an affinity scalar, whereas ByteFF2 supplies
+parameters for simulation. The records establish neither a common output
+definition nor a matched evaluation, so they support no direct ranking of
+affinity numbers.
+
+</details>
+
+## Scope
+
+None of the four resources was run here, and no affinity was predicted. A
+predicted affinity is not a measurement. A simulated free energy is not a
+measurement either, and the two outputs are not interchangeable. AQAffinity's
+model card and files were unreadable to the record, so its unverified fields
+cannot be filled by inference. The licences belong to the resources and their
+other components, with only the recorded reading of each grant carried here.
+Reading an openness cell does not execute an asset or establish a candidate's
+binding, selectivity, or experimental value.
+
+## Sources
+
+The following catalogue records were last verified on 2026-10-23. Their
+recorded access, openness, licence scopes, and caveats define this lesson.
+
+- `model-aqaffinity` records the gated [AQAffinity repository](https://huggingface.co/SandboxAQ/AQAffinity), reviewed on 2026-10-23. Its model card and files were not readable to the record.
+- `model-nesso` records the [Nesso-1 repository](https://github.com/recursionpharma/nesso), [README](https://raw.githubusercontent.com/recursionpharma/nesso/main/README.md), and [model card](https://huggingface.co/recursionpharma/nesso), reviewed on 2026-10-23.
+- `model-byteff` records the [ByteFF repository](https://github.com/bytedance/byteff) and [README](https://raw.githubusercontent.com/bytedance/byteff/master/README.md), reviewed on 2026-10-23.
+- `model-byteff2` records the [ByteFF2 repository](https://github.com/ByteDance-Seed/byteff2) and [README](https://raw.githubusercontent.com/ByteDance-Seed/byteff2/main/README.md), reviewed on 2026-10-23.
+
+Original lesson prose is CC BY 4.0. Linked sources retain their own terms.
+
+Last reviewed: 2026-10-23.

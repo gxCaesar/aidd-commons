@@ -1,0 +1,45 @@
+{
+  "schema_version": "aidd-commons.skempi-affinity-protocol.v1",
+  "protocol_id": "skempi2-complex-holdout-v1",
+  "issued_on": "2026-10-21",
+  "run_basis": "Fresh independent computation from the cached mirror snapshot under this frozen protocol. The committed summary is an observed run, not a reader outcome.",
+  "source": {
+    "data_version": "SKEMPI 2.0 CSV mirrored as LiteFold/SKEMPI2 JSONL, revision d17a8bb0ec82ed1a5f34e106106f9d1034d19d07",
+    "retrieval_url": "https://huggingface.co/datasets/LiteFold/SKEMPI2/resolve/main/tables/labeled_skempi2_skempi_v2.csv.jsonl",
+    "expected_bytes": 6148969,
+    "upstream_terms_url": "https://life.bsc.es/pid/skempi2/info/terms"
+  },
+  "alignment": {
+    "outer_key": "row",
+    "header_fields": 29,
+    "delimiter": ";",
+    "rule": "Read the value under the 29-field header key inside row. The mirror also stores comma-split overflow fragments as column_N keys; do not rejoin them into inferred fields. Split the header value on semicolons, align by position, and right-pad short values with empty strings. Reject values wider than the header."
+  },
+  "entity": {
+    "row": "One upstream CSV record identified by row_index",
+    "independent_unit": "#Pdb complex",
+    "interaction_class": "Hold_out_type, including the empty-string class",
+    "secondary_group": "Hold_out_proteins, including the empty-string group",
+    "analysis_subset": "Hold_out_type == AB/AG and both parsed affinities are finite and positive"
+  },
+  "endpoint": {
+    "target": "Affinity_wt_parsed",
+    "observed_comparator": "Affinity_mut_parsed",
+    "source_unit": "M",
+    "analysis_scale": "log10(M)",
+    "missing_rule": "Exclude incomplete or nonpositive parsed affinity pairs from the split and metrics, while retaining them in source counts."
+  },
+  "split": {
+    "rule": "Sort distinct eligible #Pdb values, shuffle with the fixed seed, and reserve the first ceil(20% of complexes) for test. Fit any group statistics on remaining complexes only.",
+    "independent_unit": "#Pdb complex",
+    "test_fraction": 0.2,
+    "diagnostic": "An identically seeded 20% row holdout is used only to count test rows whose #Pdb also occurs in training."
+  },
+  "baseline": {
+    "group_only": "Training median log10 wild-type affinity within Hold_out_proteins, with the training-global median for unseen groups.",
+    "observed_mutant": "Use each test row's observed mutant log10 affinity as its wild-type prediction. This is an observed comparator, not a prospective predictor.",
+    "fit_scope": "Group and global medians use training complexes only; no selection or tuning."
+  },
+  "metrics": ["test-row MAE in log10(M)", "test-complex mean absolute error in log10(M)", "test rows and complexes", "row-split leakage count"],
+  "seed": 20261021
+}

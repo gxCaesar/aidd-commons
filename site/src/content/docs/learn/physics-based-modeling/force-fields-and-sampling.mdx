@@ -1,0 +1,171 @@
+---
+title: Force fields, solvent, and sampling
+description: Treat a molecular-dynamics trajectory as samples from a declared approximate model, rather than as a movie that automatically proves molecular behaviour.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="physics-based-modeling/force-fields-and-sampling" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will name the terms and scope of a classical force field, distinguish solvent
+and long-range-interaction choices from a coordinate file, and estimate why saved
+trajectory frames are not automatically independent observations. Read [Physical
+model and system state](/learn/physics-based-modeling/physical-model-system-state/)
+and [Docking through FEP](/learn/physics-based-modeling/docking-to-fep/) first.
+This is a browser and hand-calculation lesson. It does not prescribe a production
+simulation, validate a parameter set, or report a molecular-dynamics result.
+
+## A force field is an approximate energy model
+
+For coordinates `x`, a common fixed-charge molecular-mechanics model can be
+written schematically as
+
+`U(x) = sum_bonds k_b(r-r0)^2 + sum_angles k_theta(theta-theta0)^2 + sum_torsions V_n[1+cos(n phi-delta)] + sum_i<j [4 epsilon_ij((sigma_ij/r_ij)^12 - (sigma_ij/r_ij)^6) + q_i q_j/(4 pi epsilon_0 r_ij)]`.
+
+The first terms restrain bonded geometry and torsions. The final sum represents
+short-range van der Waals and electrostatic interactions in one common form.
+The equation is a teaching sketch, not a universal functional form or a list of
+parameters for any molecule. Its parameters, atom types, combination rules,
+charge model, nonbonded treatment, and constraints define the model together.
+Changing one component can change the effective physical assumptions.
+
+Classical force fields are designed to approximate a named class of molecular
+interactions. They do not generally describe arbitrary bond breaking, charge
+transfer, electronic excitation, or a protonation state that has not been
+specified. A low potential energy is therefore not a general certificate of
+chemical correctness, and agreement within one force field is not independent
+confirmation of a structural hypothesis.
+
+## Solvent and boundary conditions are part of the system
+
+An explicit-solvent model represents water and ions as particles; an implicit
+model represents some solvent effects through a reduced description. Neither is
+“the same protein in water” unless the full model and target question are
+declared. With explicit solvent, water model and ion parameters must be
+compatible with the selected force field. Periodic boundary conditions, the box,
+a direct-space cutoff, and a long-range method such as PME also alter what is
+being evaluated.
+
+The OpenMM guide illustrates a system built from topology, a force field and a
+water model, using PME, a `1 nm` direct-space cutoff, hydrogen-bond constraints,
+and a Langevin integrator at `300 K`
+[OpenMM running simulations](https://docs.openmm.org/latest/userguide/application/02_running_sims.html).
+Those values are an implementation example, not defaults that transfer to every
+scientific question. The same guide makes visible why a trajectory cannot be
+understood from coordinates alone: topology, positions, force-field files,
+nonbonded method, constraints, integrator, temperature, and reporters each
+contribute to its meaning.
+
+| Item            | A decision-relevant record                                                  | A tempting but invalid shortcut           |
+| --------------- | --------------------------------------------------------------------------- | ----------------------------------------- |
+| molecular state | construct, chains, ligands, protonation and ions                            | “the target”                              |
+| energy model    | force-field and solvent-model identities, parameter source                  | “physics-based”                           |
+| boundary        | box, periodicity, cutoff and long-range method                              | a screenshot of coordinates               |
+| dynamics        | ensemble target, integrator, step size, thermostat/barostat and constraints | frame count alone                         |
+| analysis        | observable, burn-in rule, correlation diagnostic and independent unit       | treating every saved frame as a replicate |
+
+## Sampling is not merely generating many frames
+
+For a canonical ensemble, the ideal equilibrium coordinate distribution is
+`p(x) = exp(-beta U(x))/Z`, where `beta = 1/(k_B T)` and `Z` is the normalizing
+constant. An integrator and thermostat are numerical means of drawing an
+approximation to a declared ensemble; they do not demonstrate that equilibrium
+was reached. Initialization, equilibration, slow transitions, finite box effects,
+and model error can all dominate an apparently long trajectory.
+
+Adjacent frames in dynamics are correlated because the system evolves
+continuously. If a distance or pocket volume remains high for hundreds of saved
+frames, those frames provide repeated measurements of one slowly changing state,
+not hundreds of independent molecules. A useful report names the observable,
+the time origin or discarded burn-in, the correlation diagnostic, and the unit
+over which uncertainty is calculated. Independent starting systems or validated
+replicas can add evidence; repeated output from one state initialization cannot
+silently become a new biological sample size.
+
+The OpenMM theory guide describes the library as a toolkit for molecular
+simulation rather than a scientific validation protocol
+[OpenMM theory introduction](https://docs.openmm.org/latest/userguide/theory/01_introduction.html).
+That distinction matters: executable choices can be precise while the answer to
+the molecular question remains conditional on the model and sampling.
+
+## Worked case: ten thousand frames are not ten thousand replicates
+
+All values in this case are **constructed for teaching**. A trajectory saves
+`N = 10,000` frames at `Delta_t_save = 1 ps`, so its saved span is approximately
+`T = 10 ns`.
+For one declared pocket-distance observable, a diagnostic estimates integrated
+autocorrelation time `tau_int = 200 ps`. A rough effective-count approximation
+is `N_eff approx T/(2 tau_int) = 10,000 ps/(400 ps) = 25`.
+
+The right inference is not that there are exactly 25 independent molecular
+experiments. It is that a statistic treating `N = 10,000` rows as independent
+will severely overstate precision under this constructed correlation model.
+The team should report the observable used to estimate `tau_int`, the sampling
+interval, the discarded portion if any, and the fact that the approximation is
+diagnostic rather than a guarantee of equilibrium.
+
+Suppose the same team also compares two stated parameter bundles, `F_A + W_A`
+and `F_B + W_B`, where `F` names a biomolecular force field and `W` its intended
+water/ion model. It may compare them as two model assumptions if the system,
+observable, and sampling rule are held explicit. It should not claim that
+`F_A + W_B` is a neutral interpolation simply because coordinates load. Pairing
+is part of a parameterization and validation question, not a formatting choice.
+
+## Limits and independent exercise
+
+Force fields can be productive for a declared state and observable while being
+wrong for another state or transition. Sampling diagnostics can miss rare events
+or shared initialization bias. More frames reduce neither a mismatched endpoint
+nor an undeclared protonation assumption. Before comparing trajectories, match
+their system definition, energy model, ensemble, analysis window, and independent
+unit.
+
+**Handworked exercise (not runnable or empirical):** A constructed trajectory
+saves one frame per `2 ps` for `5 ns`, and a named observable has
+`tau_int = 100 ps`. Use `N_eff approx T/(2 tau_int)` to obtain the rough count.
+Then name one record that is required to interpret that count but is not a
+coordinate frame, and one claim the count cannot support by itself.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+`T = 5,000 ps`, so `N_eff approx 5,000/(2 x 100) = 25`. The save interval gives
+`2,500` stored frames, but it does not change the rough effective count under
+the stated `tau_int`. Required records include the observable definition,
+force-field and solvent identities, temperature/ensemble, initialization and
+burn-in rule, or the correlation diagnostic. The count alone cannot show that
+the trajectory equilibrated, that a pocket is experimentally populated, or that
+one parameter bundle is physically correct.
+
+</details>
+
+## Sources and next lesson
+
+The following official documentation pages were opened on 2026-09-09. They
+support the relationship among OpenMM system components and implementation
+choices; they do not support the constructed effective counts.
+
+<div data-case-sources>
+
+- [OpenMM User Guide: Running Simulations](https://docs.openmm.org/latest/userguide/application/02_running_sims.html)
+- [OpenMM User Guide: Theory Introduction](https://docs.openmm.org/latest/userguide/theory/01_introduction.html)
+
+</div>
+
+Continue to [Free-energy cycles and convergence](/learn/physics-based-modeling/free-energy-cycles-and-convergence/)
+when the decision requires a declared thermodynamic endpoint rather than a
+single-trajectory descriptive observable. Original lesson prose is CC BY 4.0;
+linked sources retain their own terms.
+
+To see a sampling contract executed, including how far apart the selected
+frames actually are and why frame-pooled metrics are forbidden, run
+[what the error is an error over](/labs/rmd17-contract-inspection/). To compute a
+real observable over a full ab initio trajectory and watch a naive uncertainty
+estimate understate itself, run [a trajectory observable, and how much of it you
+need](/labs/rmd17-dynamics-observable/).
+
+Last reviewed: 2026-09-11.

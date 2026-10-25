@@ -1,0 +1,81 @@
+---
+title: "资源指南：从疾病证据到靶点假设"
+description: 选择并连接疾病、遗传、细胞语境、扰动、蛋白和反应资源；不要把任一张表误当作靶点裁决。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+英文原文：[Resource guide: from disease evidence to target hypotheses](/learn/mechanism-targets/target-resource-guide/)。
+
+译文更新：2026-09-09。
+
+<LessonProgress lessonId="mechanism-targets/target-resource-guide" />
+<ScrollableRegions />
+
+## 学习目标
+
+完成本指南后，你应能写出靶点假设的证据对象，按下一个缺失对象选择来源，并保留到来源、版本和限制的链接。
+
+## 预备知识与边界
+
+先阅读[从疾病机制到靶点](/zh-cn/learn/mechanism-targets/disease-to-target/)和[从遗传证据到靶点假设](/zh-cn/learn/mechanism-targets/genetics-to-target-evidence/)。本页是资源选择阅读指南，不执行分析、不提名靶点、不定义生物学操作方案，也不提供临床建议。
+
+## 先写证据对象，再搜索基因
+
+打开门户前，先写出另一位读者可以检查的最小对象：
+
+```text
+{
+  disease: {ontology_id, phenotype_definition, population_or_model},
+  candidate: {HGNC_symbol, Ensembl_or_UniProt_id, molecular_action_unknown},
+  genetic_or_disease_evidence: [{study_id, build, allele, effect, cohort}],
+  context: {tissue, cell_type_or_model, state, species},
+  perturbation_or_response: {agent_or_genetic_reagent, dose_or_duration, readout},
+  provenance: {resource, release_or_date, URL, access_terms, exclusions}
+}
+```
+
+字段可以是 `unknown`，但不能从相邻行静默补全。`candidate` 不会因为靠近 GWAS 信号就成为因果基因；`molecular_action_unknown` 也不允许把它称为可激活或可抑制靶点。每次查询后问：_仍缺什么对象？哪一个资源能够暴露该对象？_
+
+## 有目的的资源链
+
+| 缺失对象        | 可检查或取得的内容                                                                                                                                                                  | 下一步连接                                                       | 关键限制                                                                                        |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 疾病--靶点证据  | [Open Targets](/atlas/db-open-targets-platform/)（[来源](https://platform.opentargets.org/)）：关联证据类型及网页/API/下载路径。                                                    | [GWAS Catalog](/atlas/db-gwas-catalog/) 位点/研究记录。          | 整合评分不是因果机制或干预方向。                                                                |
+| 已发表关联      | [GWAS Catalog](/atlas/db-gwas-catalog/)（[来源](https://www.ebi.ac.uk/gwas/)）：研究、变异、性状和目录记录。                                                                        | [GTEx Portal](/atlas/db-gtex-portal/) 组织/QTL 语境。            | 不是精细定位变异、效应基因或药物效应。                                                          |
+| 组织或 QTL 语境 | [GTEx Portal](/atlas/db-gtex-portal/)（[下载概览](https://gtexportal.org/home/downloads/adult-gtex/overview)）：公开表达与 QTL 文件。                                               | [CELLxGENE Census](/atlas/dataset-cellxgene-census/) 细胞切片。  | 原始 DNA/RNA 序列与完整供体元数据受控；AnVIL 访问需单独申请。                                   |
+| 细胞语境        | [CELLxGENE Census](/atlas/dataset-cellxgene-census/)（[来源](https://chanzuckerberg.github.io/cellxgene-census/)）：标准化 RNA 切片。                                               | 扰动特征或形态。                                                 | 可有重复细胞；记录 `is_primary_data` 决定。                                                     |
+| 转录反应        | [LINCS L1000 归档](/atlas/dataset-connectivity-map-l1000/)（[GEO 指南](https://clue.io/connectopedia/guide_to_geo_l1000_data)）：Phase I GSE92742、Phase II GSE70138 特征与元数据。 | [JUMP](/atlas/dataset-jump-cell-painting/) 表型或 PRISM 存活率。 | CLUE 工具已于 2026-01-31 退役；归档数据不等于可用的 Touchstone 查询服务，相似度不证明靶点结合。 |
+| 形态反应        | [JUMP Cell Painting](/atlas/dataset-jump-cell-painting/)（[来源](https://broadinstitute.github.io/jump_hub/)）：图像/特征、元数据和取数指南。                                       | 蛋白或反应证据。                                                 | 形态匹配不是机制；记录测定、板、细胞、处理。                                                    |
+| 蛋白/定位语境   | [Human Protein Atlas](/atlas/db-human-protein-atlas/)（[来源](https://www.proteinatlas.org/about/download)）：表达/定位下载。                                                       | 适用的细胞系反应资源。                                           | CC BY 4.0 覆盖可受版权保护数据库部分；第三方限制仍可能存在。                                    |
+| 癌症细胞系反应  | [PRISM](/atlas/dataset-prism-repurposing/)（[来源](https://depmap.org/repurposing/)）：pooled 存活率文件和元数据。                                                                  | 另行设计验证。                                                   | 不是临床效应、靶点结合或普遍疾病机制。                                                          |
+
+不要把这些压缩为一个“证据分数”。表中“下一步”要求的是**新对象**，不是合并不可比生产者群体的许可。
+
+## 推导案例：选择下一项资源
+
+这是一个**构造的选择案例**，不是实证结果。读者有 `disease = D-EXAMPLE`、候选 `GENE-Q` 和一条带研究编号的关联行，却没有效应基因映射、组织、细胞状态或干预方向。下一项资源是 GWAS Catalog 记录，因为缺失的是研究/变异/性状来源，不是细胞系分数。记录基因组版本、等位基因、人群、表型和汇总统计量是否可得后，才转向 GTEx；输出应为“找到或未找到语境证据”，而非“GENE-Q 是因果基因”。
+
+若组织过宽，Census 可缩窄**细胞语境问题**：声明物种、组织、注释、疾病/健康状态和 `is_primary_data`。表达差异仍不证明机制，因数据集、供体、处理和细胞组成可不同。L1000/JUMP 需记录扰动身份、细胞模型、剂量、时长和处理；PRISM 仅限其癌症细胞系存活率范围。缺失字段不能由图形一致性补全。
+
+## 独立问题
+
+同事说：“某门户将 `GENE-R` 排在某表型前列；它在组织视图中表达，且和一个化合物有相似的 JUMP 形态。请称其为已验证靶点。”最小的下一证据对象是什么？注释中必须出现哪两项来源限制？
+
+<details data-worked-answer>
+<summary>推导答案</summary>
+
+先索取关联证据类型行、研究/位点编号、表型、人群和发布日期，才决定是否检查 GWAS Catalog。注释必须说明：排序不确立因果基因或干预方向；表达或形态相似不证明靶点结合或疾病机制。JUMP 还需细胞模型和图像/特征处理；GTEx/Census 需组织/细胞定义和当期访问条款。
+
+</details>
+
+## 来源路径与复用边界
+
+Atlas 条目链接到已审阅资源页；下载或再分发前，在原始站点检查实时发布版和条款。
+Open Targets 的[许可页](https://platform-docs.opentargets.org/licence)分别声明 Platform 数据为 CC0、代码为 Apache-2.0；还应检查该页列出的上游条款。
+Human Protein Atlas 对数据库可受版权保护部分声明 CC BY 4.0。未确定范围的访问或许可证保留为 `unverified`。
+[CLUE 退役通知](https://assets.clue.io/resources/CLUE_Software_License_T_and_C.pdf)将公开数据指向 GEO；本页未下载归档文件，也未运行已退役的查询工具。
+全部案例为构造内容，不新增靶点发现、操作方案、临床解释或验证结果。
+
+最后审阅：2026-09-09。

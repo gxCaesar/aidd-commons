@@ -1,0 +1,348 @@
+---
+title: ChEMBL 37 EGFR representation baselines
+description: A frozen descriptor-versus-fingerprint comparison with separate development, primary evaluation, and failed assay-transfer evidence.
+---
+
+import ChemblPretestPanel from "../../../components/ChemblPretestPanel.astro";
+import ChemblLockedPanel from "../../../components/ChemblLockedPanel.astro";
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="chembl-egfr" />
+
+## Before you run
+
+Default mode: read completed empirical results; no installation or download is
+needed for the panels. The development and fresh-reproduction commands below
+have separate data/output contracts and are not an editable student activity in
+the author's checkout. Do not reuse these test labels to choose a new model.
+For isolated fitting practice, use the [student sandbox](/learn/machine-learning/student-modelling-sandbox/).
+Entry guidance updated: 2026-09-09; the original protocol and results are unchanged.
+
+This lab turns a representation choice into an auditable scientific comparison.
+The same molecules, endpoint, split, linear model family, regularisation grid,
+and metrics are held fixed. Only the input representation changes. The public
+evidence now includes completed primary and replication evaluations. The
+development snapshot is retained separately from these outcomes.
+
+<ChemblPretestPanel />
+
+<ChemblLockedPanel />
+
+## Learning objectives
+
+After completing the lab, you should be able to:
+
+1. translate an assay API record into an explicit endpoint and entity contract;
+2. explain why rows, parent molecules, and scaffolds are different units;
+3. fit descriptor preprocessing without leaking validation or held-out data;
+4. compare fixed descriptors and fingerprints under a matched Ridge protocol;
+5. separate development evidence from primary evaluation and assay-level
+   replication;
+6. recognize duplicate-label noise and a hyperparameter selected at a frozen
+   grid boundary.
+
+Recommended prerequisites are the lessons on [data contracts](/learn/data-governance/data-contracts/),
+[scientific machine learning](/learn/machine-learning/scientific-computing/), and
+[small-molecule representations](/learn/representations/small-molecule-representations/).
+
+## Source and endpoint contract
+
+The source is the official ChEMBL 37 REST API. The release status, assay
+metadata, activity filters, and expected counts are checked before any feature
+is built. This live endpoint is a time-bounded convenience: the downloader
+fails closed after the service advances beyond ChEMBL 37.
+
+| Field             | Frozen value                                                                |
+| ----------------- | --------------------------------------------------------------------------- |
+| Database          | ChEMBL 37, released 2026-05-01                                              |
+| Primary assay     | `CHEMBL5736995`, human EGFR binding, single protein, confidence 9           |
+| Replication assay | `CHEMBL3705421`, human wild-type EGFR binding, single protein, confidence 9 |
+| Target            | `CHEMBL203`                                                                 |
+| Endpoint          | exact IC50, `standard_flag=1`, `potential_duplicate=0`                      |
+| Unit              | nM, cross-checked against `pchembl_value`                                   |
+| Validity rule     | no `data_validity_comment`; non-null structure and label                    |
+
+The check `pChEMBL = 9 - log10(IC50 in nM)` is applied with the frozen
+0.011 pChEMBL tolerance recorded in `protocol.json`. This catches unit or field
+inconsistencies before modelling. The two assays share a target, but they remain
+different experimental sources. The second is therefore a transport check, not
+extra training data.
+
+## Entity and label contract
+
+The API query returned 975 rows for the primary assay. Nine lacked a usable
+structure, leaving 966 exact, valid rows. These collapse to 902 parent molecules.
+All retained rows already identify the assayed molecule as its parent, so the
+record's structure can be used without a second parent-structure lookup.
+
+When a parent has repeated eligible measurements, the frozen label is their
+median `pchembl_value`. This rule was declared before development. It is not a
+claim that repeated values are interchangeable:
+
+- 57 primary parents have more than one retained measurement;
+- their median within-parent pChEMBL range is 0.48;
+- the maximum observed range is 3.60.
+
+These disagreements expose a substantial assay-noise and curation limit. They
+are retained and summarized rather than deleted after seeing model residuals.
+
+The replication query contributes 173 rows and 170 parent molecules. There are
+three duplicated parents and no parent-molecule overlap with the primary assay.
+
+## Frozen representations
+
+Three baselines share the same training and validation molecules.
+
+### Train mean
+
+The mean training label is repeated for every prediction. It checks whether a
+representation model beats a target-only constant on the development slice.
+Its Spearman correlation is undefined by construction and is stored as `null`
+with status `undefined_constant_prediction`.
+
+### Descriptor Ridge
+
+The descriptor vector contains 214 named RDKit 2D descriptors from RDKit
+2025.09.6. `FpDensityMorgan1`, `FpDensityMorgan2`, and `FpDensityMorgan3` are
+excluded so the descriptor arm does not contain fingerprint-density summaries.
+
+Missing values are imputed with the training-column median. A column missing
+for every training molecule receives zero. Imputed columns are centered by the
+training mean and divided by the training population standard deviation; a
+zero scale is replaced by one. No validation, primary-held-out, or replication
+molecule contributes to these statistics.
+
+### Morgan Ridge
+
+The fingerprint is an RDKit binary `ExplicitBitVect` with radius 2 and 2,048
+bits. Chirality, bond types, and ring membership are enabled. Count simulation
+is disabled. The bit vector has no data-fitted preprocessing.
+
+Both representation models use Ridge with an intercept, `solver="lsqr"`,
+`tol=1e-8`, and `max_iter=10000`. The frozen alpha grid is:
+
+```text
+0.001, 0.01, 0.1, 1, 10, 100, 1000
+```
+
+Minimum validation MAE selects alpha; exact ties choose the smaller value. The
+selected training-only models are not refit on train plus validation.
+The execution v1.1 clarification (2026-09-08) permits one deterministic replay
+of the original train-only development fit. The complete reconstructed pretest
+must exactly match the saved evidence, including its selected alphas and
+validation predictions. Those same model objects are then reused for both
+locked evaluations; no new choice is made from locked outcomes. The original
+protocol and development summary are preserved, with the clarification in
+`labs/chembl_egfr/execution-amendment.json`.
+
+## Scaffold split
+
+The independent grouping unit is a chirality-aware RDKit Bemis-Murcko
+scaffold. Ring-free molecules receive the explicit key
+`acyclic:<canonical isomeric SMILES>` instead of sharing one empty scaffold.
+
+Scaffold groups are sorted by descending molecule count and then scaffold
+string. Whole groups fill train, then validation, then the primary held-out
+partition. The nominal targets and realised counts are:
+
+| Partition      | Target count | Realised count | Used for                         |
+| -------------- | -----------: | -------------: | -------------------------------- |
+| Train          |          631 |            634 | fit preprocessing and all models |
+| Validation     |          135 |            136 | select two Ridge alphas          |
+| Primary locked |          136 |            132 | completed one-time evaluation    |
+
+The mismatch is expected because a scaffold group is never split to hit an
+exact percentage. All 902 parent molecules appear exactly once, and no scaffold
+key crosses partitions. The primary assay contains 238 chirality-aware
+scaffold groups; the replication assay contains 23.
+
+This construction is a stringent structural grouping rule, not proof that the
+held-out molecules represent every real prospective distribution shift.
+
+## Development-only observations
+
+The development pretest ran once against the frozen grid. Values below are for
+the validation scaffolds and are retained only to document model selection.
+
+| Baseline         | Selected alpha | Validation MAE | Validation RMSE | Validation Spearman |
+| ---------------- | -------------: | -------------: | --------------: | ------------------: |
+| Train mean       |              — |       0.508710 |        0.642329 |              `null` |
+| Descriptor Ridge |           1000 |       0.446681 |        0.608036 |            0.363916 |
+| Morgan Ridge     |              1 |       0.372864 |        0.520720 |            0.649509 |
+
+Morgan Ridge has the lower validation errors in this one frozen development
+split. That observation selects the development configuration; it does not
+establish superiority on either locked evaluation. The descriptor alpha lies
+at the upper edge of the declared grid. Expanding the grid now would be outcome-informed
+retuning, so the grid remains unchanged and the boundary choice is a stated
+limitation.
+
+## Run the lab
+
+For reproduction in a fresh workspace, synchronize the pinned environment and
+download the version-checked source snapshot from the repository root:
+
+```sh
+uv sync --group dev
+env UV_CACHE_DIR=.cache/uv uv run python labs/chembl_egfr/run_lab.py download
+```
+
+Run the development path in that fresh workspace:
+
+```sh
+env UV_CACHE_DIR=.cache/uv uv run python labs/chembl_egfr/run_lab.py pretest
+```
+
+Do not repeat these commands in the completed author workspace. Its one-time
+state prevents another pretest or evaluation. The delivered development and
+locked summaries can be inspected without fitting or downloading anything.
+
+For long-term source recovery, use the official versioned
+[ChEMBL 37 release directory](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/).
+It retains the `chembl_37_sqlite.tar.gz` database archive alongside the release
+README, notes, schema documentation, and licence. Reconstruct the two assay
+queries from `protocol.json` and require every frozen count to match before
+fitting. The current CLI does not yet automate archive import; do not bypass a
+live-release mismatch by silently using a newer ChEMBL version.
+
+The public `development-summary.json` is aggregate-only. Local execution may
+create richer artifacts under `labs/chembl_egfr/results/` and cached ChEMBL
+responses under `.cache/chembl_egfr/`; neither directory is part of the curated
+public artifact.
+
+Read `labs/chembl_egfr/protocol.json` before interpreting output. The explicit
+descriptor registry matters because “RDKit descriptors” can change when a
+software release adds, removes, or reorders functions.
+
+## Completed evaluation and remaining boundaries
+
+Both the primary scaffold test and assay-level replication are `completed`.
+The public `labs/chembl_egfr/locked-summary.json` contains every baseline and
+metric from the paired run. It does not replace `development-summary.json`.
+
+The guarded `evaluate-locked` action is intentionally separate from `pretest`.
+It evaluated both surfaces in one confirmed invocation without retuning. The
+one-time local marker remains in place; do not remove it or repeat the run.
+
+This is a procedural lock, not a claim that public ChEMBL labels are secret.
+The development path parses all records to enforce source, entity, count, and
+scaffold contracts, but only training and validation records enter fitted-model
+or development-metric paths. T15 accessed shared labels before the T05
+evaluation. That exposure is disclosed: this result is not an entirely untouched
+independent confirmatory test. The split, grid and selected alphas were not
+retuned after the exposure.
+
+Keep three facts separate: validation-based selection, primary scaffold
+performance, and transport to the second assay. Morgan improves on the primary
+mean baseline but fails badly in the replication. Descriptor Ridge is best on
+replication MAE. This does not establish a universally superior representation
+or a causal explanation for the transfer failure.
+
+To regenerate the aggregate from already completed local results, use
+`uv run python labs/chembl_egfr/export_locked_summary.py`. This exports existing
+scores only; it does not run an evaluation or reconstruct a model.
+
+## Exercises
+
+1. **Contract trace.** Pick five fields from `protocol.json` and locate the
+   exact assertion that enforces each one in the Python implementation.
+2. **Grouping audit.** Inspect the saved development split and explain why 70/15/15
+   targets become 634/136/132 without calling the difference random error.
+3. **Noise audit.** Compare the median and maximum duplicate-parent label
+   ranges. State which performance claims this variation weakens.
+4. **Representation counterexample.** Construct a pair of molecules for which
+   chirality-aware and chirality-blind fingerprints differ in scientific
+   meaning. Do not assume the assay must resolve that difference.
+5. **Boundary diagnosis.** Explain three possible causes of descriptor Ridge
+   selecting alpha 1000. Propose a future preregistered sensitivity analysis
+   without modifying this frozen run.
+6. **Evaluation memo.** Use the completed scores to compare primary and
+   replication MAE. Keep every baseline and both outcomes visible, and state
+   how the earlier T15 label access limits the interpretation.
+
+<details>
+<summary>Worked answers and assessment criteria</summary>
+
+1. One valid five-field trace uses `data.validate_chembl_status` for the release,
+   `data._exclusion_reason` for `standard_flag`, and
+   `data.normalise_activity_rows` for the nM unit, the 0.011 pChEMBL consistency
+   tolerance, and equality of molecule and parent IDs. These functions are in
+   `labs/src/aidd_commons/chembl_egfr/data.py`. Credit requires the enforcing
+   branch and a concrete rejected input, not just the constant declaration.
+2. Whole scaffold groups cannot be divided to fill a target exactly. The
+   realised counts sum to 902 and preserve group disjointness. A correct answer
+   checks both properties and distinguishes nominal targets from actual counts;
+   changing membership to obtain exact percentages is not an acceptable repair.
+3. The median duplicate-parent range is 0.48 pChEMBL and the maximum is 3.60.
+   These are within-parent replicate ranges, not a measured lower bound on MAE
+   or a reason to drop parents. Credit requires retaining that distinction.
+4. `F[C@H](Cl)Br` and `F[C@@H](Cl)Br` encode opposite tetrahedral configurations.
+   A stereochemistry-blind view removes that distinction; a chirality-aware
+   input can preserve it. A correct answer does not infer different assay
+   activity merely from the representational distinction.
+5. Strong regularisation can be favored by correlated descriptors, weak signal,
+   or noisy development labels; these are hypotheses, not established causes.
+   A valid future study declares a new grid, budget, selection rule and fresh
+   evaluation data before observing outcomes. It does not expand this run's grid.
+6. Morgan has the lowest primary MAE but the highest replication MAE, while
+   descriptor Ridge has the lowest replication MAE. A passing memo includes all
+   three baselines, 132 primary and 170 replication parents, unchanged alphas,
+   the T15 shared-label exposure, and no pooled or universal-winner claim.
+
+</details>
+
+## Limitations and failure gates
+
+- One primary assay and one replication assay do not cover EGFR chemistry,
+  experimental formats, mutation states, or laboratories comprehensively.
+- A pChEMBL consistency check does not remove all assay, curation, or chemical
+  identity error.
+- Median aggregation hides the distribution of repeated measurements from the
+  model while the summary retains their disagreement.
+- Chirality-aware scaffolds are an implementation-defined grouping heuristic,
+  not a guarantee of prospective novelty.
+- The fixed Ridge baselines measure a representation under one linear
+  objective. They do not exhaust the attainable value of either representation.
+- The selected descriptor hyperparameter is on a grid boundary.
+- Validation differences are not uncertainty estimates and do not support a
+  general representation ranking.
+- Public labels make the one-time lock auditable workflow discipline rather
+  than cryptographic blinding.
+
+Stop and investigate if source metadata or frozen counts change, a parent maps
+to inconsistent structures, split groups overlap, any learned transform sees a
+non-training ID, a prediction is non-finite, or the locked action appears to
+have started previously. Do not repair a scientific contract mismatch by
+quietly changing expected counts.
+
+## Research follow-up
+
+Use the [cross-assay failure case](/learn/evaluation-and-reproducibility/assay-shift-diagnosis/)
+to build a diagnostic memo from these completed results. It adds no evaluation
+run and does not turn the failed transfer into an established causal explanation.
+
+## Sources and attribution
+
+- [ChEMBL 37 release README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README)
+  and [versioned SQLite archive](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/chembl_37_sqlite.tar.gz)
+  and [licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)
+  establish the version, release date, attribution requirement, and CC BY-SA
+  3.0 terms for ChEMBL database content.
+- Official ChEMBL records for [CHEMBL5736995](https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5736995.json)
+  and [CHEMBL3705421](https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3705421.json)
+  establish assay identity and context.
+- Rogers and Hahn, [Extended-connectivity fingerprints](https://doi.org/10.1021/ci100050t),
+  _Journal of Chemical Information and Modeling_ (2010).
+- Bemis and Murcko, [The properties of known drugs. 1. Molecular frameworks](https://pubmed.ncbi.nlm.nih.gov/8709122/),
+  _Journal of Medicinal Chemistry_ (1996).
+- [RDKit documentation](https://www.rdkit.org/docs/) documents the software
+  operations; the protocol pins the exact registry and parameters used here.
+
+ChEMBL data remains under its source terms. AIDD Commons redistributes no raw
+ChEMBL activity table in this lab. Original lab code is Apache-2.0 and original
+lesson prose is CC BY 4.0.
+
+Last reviewed: 2026-09-08.

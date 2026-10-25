@@ -1,0 +1,81 @@
+---
+title: "Open Development of AI Drug Discovery"
+subtitle: "A Living Map of Methods, Models, Data, Benchmarks, and Process Knowledge"
+author: "AIDD Commons contributors"
+date: "4 September 2026"
+lang: en-GB
+documentclass: report
+papersize: a4
+geometry:
+  - margin=24mm
+fontsize: 11pt
+mainfont: "texgyrepagella-regular.otf"
+mainfontoptions:
+  - "BoldFont=texgyrepagella-bold.otf"
+  - "ItalicFont=texgyrepagella-italic.otf"
+  - "BoldItalicFont=texgyrepagella-bolditalic.otf"
+sansfont: "texgyreheros-regular.otf"
+sansfontoptions:
+  - "BoldFont=texgyreheros-bold.otf"
+  - "ItalicFont=texgyreheros-italic.otf"
+  - "BoldItalicFont=texgyreheros-bolditalic.otf"
+monofont: "lmmono10-regular.otf"
+monofontoptions:
+  - "BoldFont=lmmonolt10-bold.otf"
+  - "ItalicFont=lmmonoslant10-regular.otf"
+colorlinks: true
+linkcolor: "AtlasBlue"
+urlcolor: "AtlasBlue"
+citecolor: "AtlasTeal"
+toc: true
+toc-depth: 2
+numbersections: true
+secnumdepth: 2
+reference-section-title: References
+header-includes:
+  - |
+    \definecolor{AtlasNavy}{HTML}{14213D}
+    \definecolor{AtlasBlue}{HTML}{1F5F99}
+    \definecolor{AtlasTeal}{HTML}{087E8B}
+    \definecolor{AtlasGold}{HTML}{B7791F}
+  - |
+    \usepackage{microtype}
+    \usepackage{fancyhdr}
+    \usepackage{booktabs}
+    \usepackage{array}
+    \usepackage{ragged2e}
+  # Figures. Every figure in the report is a vector PDF drawn by a script under
+  # report/figures, and it is included at the width of the text block with its
+  # aspect ratio kept, so a figure drawn wider than the page is scaled down rather
+  # than cropped. The caption setup interface is a separate file on some TeX
+  # installations and part of the caption package on others, so the file is loaded
+  # where it is there and the package where it is not.
+  - |
+    \usepackage{graphicx}
+    \IfFileExists{captionsetup.sty}{\usepackage{captionsetup}}{\usepackage{caption}}
+    \setkeys{Gin}{width=\textwidth,keepaspectratio}
+  # One continuous figure and table list. The report is one document, so the
+  # numbers do not restart at every chapter the way the report class numbers them
+  # by default. \@removefromreset is part of the LaTeX kernel from the 2020-10-01
+  # release on.
+  - |
+    \makeatletter
+    \@removefromreset{figure}{chapter}
+    \@removefromreset{table}{chapter}
+    \makeatother
+    \renewcommand{\thefigure}{\arabic{figure}}
+    \renewcommand{\thetable}{\arabic{table}}
+  - |
+    \pagestyle{fancy}
+    \fancyhf{}
+    \fancyhead[L]{\sffamily\small AIDD Commons · Living Report v0.1}
+    \fancyhead[R]{\sffamily\small Open development of AI drug discovery}
+    \fancyfoot[C]{\sffamily\small\thepage}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{14pt}
+  - |
+    \setlength{\emergencystretch}{3em}
+    \setlength{\parskip}{0.35em}
+    \setlength{\parindent}{1.1em}
+    \raggedbottom
+---

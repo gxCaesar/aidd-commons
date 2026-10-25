@@ -1,0 +1,89 @@
+---
+title: 按记录划分在哪些路径泄漏
+description: 在冻结的 ChEMBL 37 队列中检查分子、骨架、测定、靶点和受测形式的跨划分重叠。
+---
+
+英文原文：[Where a row split leaks](/labs/split-leakage-audit/)。
+
+## 准备与学习目标
+
+先读[三个实验中的划分与泄漏](/zh-cn/learn/evaluation-and-reproducibility/split-and-leakage-cases/)
+和[决策单元课程](/zh-cn/learn/foundations/decision-unit-scope/)。
+本实验在活性记录归并为独立测量后，检查哪些身份标识跨越划分。你将区分实测的重叠数量
+与预测主张，并指出这张表无法测量的路径。固定环境提供 Python 3.11.15 和
+RDKit 2025.09.6，无需加速器。
+
+## 运行模式与命令
+
+模式是在冻结协议下重新独立计算。下载命令会在已有经验证的本地 ChEMBL 37 快照时复用它，
+并在本实验的缓存中放置副本。首次冷启动可能访问 ChEMBL API。快照缓存后，计数与检查
+无需网络。命令不会拟合模型。汇总导出器只有在检查通过后才会覆盖派生汇总。
+
+```bash
+.venv/bin/python labs/split_leakage_audit/run_lab.py download
+.venv/bin/python labs/split_leakage_audit/inspect_split_leakage_audit.py show
+.venv/bin/python labs/split_leakage_audit/inspect_split_leakage_audit.py check
+.venv/bin/python labs/split_leakage_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/split_leakage_audit -q
+```
+
+## 测量单位与划分
+
+声明的 15 个种子分子归并为 10 个母体分子。源实验的纳入规则保留声明效力终点家族中
+以纳摩尔表示的点值，然后按母体、测定、文献和终点类型的唯一组合计为一次测量。
+488 条纳入的点值活性记录对应 486 个独立测量单位。划分前先归并重复的两个键。
+若一次测量有多条源记录，路径分组会保留这些记录中的所有受测形式。
+
+按记录划分先对测量键排序，以种子 20261023 打乱，再将 floor(0.8 × 486) 个测量
+分给训练集。按母体分组的划分使用同一个种子打乱完整母体标识。这两种划分回答不同问题，
+都没有根据性能数字挑选。
+
+| 划分 | 训练测量数 | 测试测量数 | 按母体未在训练中出现的测试测量数 |
+| --- | ---: | ---: | ---: |
+| 随机按记录 | 388 | 98 | 0 |
+| 按母体分组 | 133 | 353 | 353 |
+
+分组划分留出的是完整母体，因此记录数不均衡。在这个队列中，按记录划分有 0 个
+测试测量的母体未在训练中出现。
+
+## 已测量的路径
+
+如果一个测试测量的至少一个分组键也出现在训练中，就把它计入对应路径。共享组数是
+两侧都出现的不同键的数量。末列是在固定测试集不变的前提下，为使该路径不重叠而必须
+从训练集中移出的测量数。
+
+| 路径 | 与训练共享分组的测试记录 | 共享组数 | 需要留出的训练记录 |
+| --- | ---: | ---: | ---: |
+| 母体分子 | 98 | 6 | 381 |
+| Bemis-Murcko 骨架 | 98 | 6 | 379 |
+| 测定 | 1 | 1 | 1 |
+| 精确靶点标识 | 81 | 19 | 285 |
+| 标准受测形式 | 98 | 11 | 379 |
+
+在 5 条受测路径中，共有 98 个不同的测试测量至少在一条路径上与训练共享分组。
+全部 5 条路径都有贡献。母体、骨架和标准形式都达到 98，形成并列。已提交汇总
+按协议声明的路径顺序把母体记为最高重叠路径。
+
+骨架键是 RDKit 计算的手性感知 Bemis-Murcko 骨架，对无环结构另设显式键。
+它只是类似物重叠的代理，不能完整定义所有类似物。靶点键是 ChEMBL 的精确靶点
+标识，不是靶点家族注释。标准形式是受测结构经 RDKit 得到的规范异构 SMILES。
+这里检查形式共享，而不是已拟合的预处理流程。
+
+## 超出这张表的路径
+
+活性记录没有测量日期、供体标识、患者标识或采集站点标识，因此无法在这里测试
+时间、供体、患者、站点、靶点家族与已拟合预处理这六条路径。这张表缺少这些字段，不能证明其他数据集上的这些路径安全。
+
+## 材料边界与来源
+
+若训练与测试共享母体，按记录划分只被证明是按记录划分，并未证明能预测新化合物。
+按母体分组可消除此次分配中的母体重叠，却不能证明骨架、靶点、测定、形式或未测路径
+相互独立。这里没有模型、性能估计或总体流行率估计。
+
+计数来自[ChEMBL 37 活性记录](https://www.ebi.ac.uk/chembl/api/data/activity.json)
+及其[发布状态](https://www.ebi.ac.uk/chembl/api/data/status.json)，冻结快照于
+2026-10-21 读取。ChEMBL 37 发布于 2026-05-01，采用
+[Creative Commons Attribution-ShareAlike 3.0 Unported](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)。
+[RDKit 源码许可](https://github.com/rdkit/rdkit/blob/master/license.txt)
+于 2026-09-09 记录为 BSD 3-Clause。原创课程文字采用 CC BY 4.0，原创实验代码采用
+Apache-2.0。实验已提交汇总只含计数，不含活性记录。最后复核于 2026-10-23。

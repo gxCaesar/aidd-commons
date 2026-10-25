@@ -1,0 +1,99 @@
+id: dataset-cellxgene-census
+name: CZ CELLxGENE Discover Census
+kind: dataset
+summary: A publicly hosted data object and API for querying and analysing standardized single-cell RNA data from CZ CELLxGENE Discover.
+canonical_url: https://cellxgene.cziscience.com/
+identifiers:
+- scheme: documentation
+  value: CELLxGENE Census documentation
+  url: https://chanzuckerberg.github.io/cellxgene-census/
+stages:
+- disease-mechanism
+- target-discovery
+modalities:
+- single-cell-transcriptomics
+tasks:
+- cell-context-inspection
+- expression-query
+relations: []
+status:
+  value: active
+  evidence:
+  - census-documentation
+access_level:
+  value: open_source
+  evidence:
+  - census-documentation
+  - census-repository-reuse
+openness:
+  inference_code:
+    value: not_applicable
+    evidence:
+    - census-documentation
+  training_code:
+    value: not_applicable
+    evidence:
+    - census-documentation
+  weights:
+    value: not_applicable
+    evidence:
+    - census-documentation
+  architecture:
+    value: not_applicable
+    evidence:
+    - census-documentation
+  data_recipe:
+    value: unverified
+  training_data:
+    value: unverified
+  evaluation_code:
+    value: not_applicable
+    evidence:
+    - census-documentation
+licenses:
+- name: MIT
+  scope: The cellxgene-census repository code and documentation; it does not license independently contributed source studies.
+  evidence:
+  - census-repository-reuse
+- name: CC-BY-4.0
+  scope: Data published in CZ CELLxGENE Discover and made available through Census, with attribution to the original contributors; it does not license the site software.
+  evidence:
+  - census-repository-reuse
+  - discover-publication-policy
+evidence:
+- id: census-documentation
+  url: https://chanzuckerberg.github.io/cellxgene-census/
+  label: CELLxGENE Census documentation
+  supports:
+  - name
+  - kind
+  - summary
+  - stages
+  - modalities
+  - tasks
+  - caveats
+- id: discover-home
+  url: https://cellxgene.cziscience.com/
+  label: CZ CELLxGENE Discover home
+  supports:
+  - identifiers
+- id: terms-page
+  url: https://cellxgene.cziscience.com/tos
+  label: CZ CELLxGENE Discover Terms of Use read 2026-10-23
+  supports:
+  - caveats
+- id: census-repository-reuse
+  url: https://github.com/chanzuckerberg/cellxgene-census
+  label: Census repository README reuse statement — Repository content is MIT; Census data are CC-BY; the API and data are free to use.
+  supports:
+  - caveats
+- id: discover-publication-policy
+  url: https://cellxgene.cziscience.com/docs/032__Contribute%20and%20Publish%20Data
+  label: CZ CELLxGENE Discover data publication policy — Publicly published datasets are downloadable and reusable under CC-BY 4.0 with attribution.
+  supports:
+  - caveats
+caveats:
+- The site terms restrict re-identification and reserve rights in the web service; the CC-BY data grant and MIT repository grant have different scopes.
+- Census documentation notes that duplicate cells can occur across datasets and exposes is_primary_data for filtering.
+acknowledgements: []
+last_verified: '2026-10-23'

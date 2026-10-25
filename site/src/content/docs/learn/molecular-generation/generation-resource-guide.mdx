@@ -1,0 +1,139 @@
+---
+title: Choosing generation tools and evaluation tasks
+description: Separate the generator, search objective, distribution benchmark and downstream evaluation, then check the denominators behind a generated list.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+import ResourceGuideTables from "../../../../components/ResourceGuideTables.astro";
+
+<LessonProgress lessonId="molecular-generation/generation-resource-guide" />
+<ScrollableRegions />
+<ResourceGuideTables />
+
+## Learning goals and prerequisites
+
+After this guide, you should be able to choose a generation resource by its
+input/output contract, distinguish distribution learning from goal-directed
+optimization, and interpret a candidate list without hiding invalid or duplicate
+outputs. Read [Generation and search](/learn/molecular-generation/generation-and-search/)
+and [Flows and constrained search](/learn/molecular-generation/flows-and-constrained-search/)
+first. This is a reading and hand-calculation exercise; it does not run a
+generator or select real compounds for synthesis.
+
+## Choose the missing component
+
+“Generate better molecules” leaves both the task and the comparison undefined.
+A generator proposes objects, a scorer attaches a value, a search policy spends
+queries, and an evaluator examines the retained and rejected outputs. One
+software package may perform several roles, but the roles remain different.
+
+| Missing component                                        | Resource and official entry                                                                     | Input and output to inspect                                                                                                                               |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A configurable proposal and optimization workflow        | [REINVENT 4](/atlas/tool-reinvent-4/) ([repository](https://github.com/MolecularAI/REINVENT4))  | Prior model, run mode and configuration; sampled or optimized molecular proposals. Transfer learning and reinforcement learning are separate run choices. |
+| Distribution-learning evaluation                         | [MOSES](/atlas/benchmark-moses/) ([repository](https://github.com/molecularsets/moses))         | Generated SMILES plus declared training/reference sets; validity, uniqueness, novelty and distributional comparisons.                                     |
+| A choice between distribution and objective-driven tasks | [GuacaMol](/atlas/benchmark-guacamol/) ([repository](https://github.com/BenevolentAI/guacamol)) | A distribution-matching generator or a goal-directed generator interface; results from the corresponding assessment function.                             |
+| Configurable scoring and downstream evaluation           | [MolScore](/atlas/tool-molscore/) ([repository](https://github.com/MorganCThomas/MolScore))     | Objective configuration and proposed SMILES for scoring; generated and reference collections for downstream `moleval` analysis.                           |
+
+Choose MOSES-style evaluation when the question concerns the distribution of
+samples under a declared training/reference setup. Choose an objective-driven
+task when the question concerns search for a specified scoring function. A model
+can improve one while worsening the other. Neither establishes target activity.
+
+GuacaMol's two interfaces are explicit: `DistributionMatchingGenerator` with
+`assess_distribution_learning`, and `GoalDirectedGenerator` with
+`assess_goal_directed_generation`. Changing which function is called changes the
+task, not merely the reporting format. MolScore can integrate multiple scorers,
+but its built-in benchmark presets are reimplementations; inspect versions and
+settings before calling them identical to the original protocol.
+
+## Keep the software version and assets together
+
+The [REINVENT 3.2 repository](https://github.com/MolecularAI/Reinvent) was
+archived on 2025-05-24 and directs further development to REINVENT 4. The Atlas
+keeps its [legacy entry](/atlas/model-reinvent-3/) for historical reading.
+Use version 4's configuration and notebook instructions with version 4; its
+notebook directory uses Jupytext scripts. Do not combine an old environment, a
+new configuration and an unspecified prior model and call it a reproduction.
+
+The current REINVENT 4 source licence is Apache-2.0. Optional OpenEye components
+and some tests require a separate proprietary licence. The README links a prior
+archive, but the archive was not successfully inspected here; a link is not
+verification of every weight file, training corpus or asset licence. No install,
+training or generation command is needed for this guide.
+
+## Worked case: read the whole candidate funnel
+
+All counts below are **constructed for teaching**, not benchmark results. Freeze
+one canonical molecular-identity rule and one training reference before counting.
+A run makes 100 proposals. Of these, 80 pass the chosen validity check and those
+80 collapse to 50 unique identities. Thirty unique identities are absent from
+the training reference. Twelve of those 30 also pass the predeclared proxy gates.
+
+| Quantity in this case                        | Calculation       | What the denominator means                                                        |
+| -------------------------------------------- | ----------------- | --------------------------------------------------------------------------------- |
+| Validity                                     | `80 / 100 = 80%`  | All proposals, including invalid outputs                                          |
+| Unique fraction among valid outputs          | `50 / 80 = 62.5%` | Valid outputs before deduplication                                                |
+| Novelty among unique valid identities        | `30 / 50 = 60%`   | Unique identities, compared with the training reference                           |
+| Novel, proxy-passing identities per proposal | `12 / 100 = 12%`  | All attempts; this is an explicitly defined yield, not a standard benchmark score |
+
+Reporting “60% novel” does not mean 60 useful compounds were produced. The 12
+passing identities are still proposals. Their proxy gates do not prove a
+synthetic route, binding, selectivity or measured ADMET properties. A different
+tautomer, stereochemistry or salt policy can change the counts; keep the rule
+with the result.
+
+The [MOSES metric implementation](https://github.com/molecularsets/moses/blob/master/moses/metrics/metrics.py)
+shows why denominator inspection matters: validity is calculated before invalid
+outputs are removed; novelty compares unique valid identities with training
+identities. Its `unique@k` additionally restricts the evaluated valid sequence to
+the first `k` entries. The whole-list unique fraction above is not automatically
+`unique@1000`. Inspect the implementation when a metric label is ambiguous.
+
+## Compare search under a declared budget
+
+If one optimizer makes 1,000 scoring calls and another makes 50,000, their best
+scores alone do not isolate a method advantage. For a matched comparison,
+predeclare how scoring calls, duplicate/cache hits, failed evaluations and
+stopping count. Retain the score-versus-budget history alongside the candidate
+funnel. Keep a cheap retrieval or simple search baseline under the same access
+and budget. The best proposal from repeated adaptive queries is a selected
+example, not independent evidence that the scorer generalizes.
+
+## Independent exercise
+
+A second **constructed** run makes 80 proposals: 60 valid outputs, 40 unique
+identities and 10 unique identities absent from the same training reference.
+Compute the first three fractions above. Does its higher unique fraction prove
+better design? What must be matched before comparing its best score with the
+first run?
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Validity is `60 / 80 = 75%`; the unique fraction among valid outputs is
+`40 / 60 ≈ 66.7%`; novelty among unique valid identities is `10 / 40 = 25%`.
+The unique fraction is higher than 62.5%, but validity and novelty are lower.
+There is no overall winner without a declared decision rule, and none of these
+fractions demonstrates useful chemistry. Match identity handling, training and
+reference access, scorer and objective definitions, scoring budget, stopping
+and failure accounting before comparing search outcomes.
+
+</details>
+
+## Enumerate a space rather than quoting its size
+
+The [design space lab](/labs/design-space/) builds three declared constructions
+exactly and tests four molecules against them. Growing one space fourfold reached
+a single extra molecule and left a target differing by one ring atom exactly as
+unreachable, and two spaces of equal size turn out to share no member at all.
+
+## Continue from proposals to evidence
+
+Use [Route feasibility and feedback](/learn/synthesis-and-automation/route-feasibility-and-feedback/)
+for the separate synthesis question, and [ADMET resource selection](/learn/admet-pk/admet-resource-guide/)
+for endpoint-specific evidence. All upstream links were reviewed on 2026-09-09;
+linked software, data and model assets retain their own terms. No upstream
+workflow or performance comparison was run for this guide.
+
+Last reviewed: 2026-09-09.

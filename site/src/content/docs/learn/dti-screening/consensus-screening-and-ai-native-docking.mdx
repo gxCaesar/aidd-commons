@@ -1,0 +1,194 @@
+---
+title: Consensus virtual screening and AI-native docking
+description: Read a consensus screening platform's own three-benchmark evaluation and its own conclusion that no strategy generalizes, then separate an AI-native docking framework's abstract claims from a measurement.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="dti-screening/consensus-screening-and-ai-native-docking" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+You will read a virtual screening platform's own evaluation across three
+benchmarks and notice that the choice of benchmark moved its headline number
+by more than an order of magnitude, and that the platform's own authors say
+so. You will separate three claims that are usually reported as one: how many
+components a platform offers, how well the platform does on a benchmark, and
+whether a setting chosen on one target transfers to another. You will then
+read an AI-native docking framework's abstract and mark, claim by claim, which
+parts are a measurement and which are a demonstration. Read [Screening and
+affinity](/learn/dti-screening/screening-and-affinity/), [Screening
+prevalence, affinity scales, and transfer](/learn/dti-screening/screening-prevalence-and-transfer/)
+and [Docking, pose generation, and physical validity](/learn/dti-screening/docking-and-pose-validity/)
+first. This is a reading and hand-arithmetic lesson: this project ran no
+docking and measured no enrichment of its own.
+
+## Why a consensus exists, and what it costs the reader
+
+Consensus virtual screening runs the same compound library through several
+docking engines, keeps poses by several selection rules, rescores them with
+several scoring functions, and combines the resulting rankings by several
+consensus rules. The motivation is variance reduction. No single engine's
+ranking is reliable across targets, and a ranking averaged over several
+engines is usually more stable than any one of them.
+
+The cost is that the space of settings is combinatorial, and the reader has to
+choose one point in it. The platform read in this lesson, DockM8, states in
+its own paper that it supports five docking engines, 17 pose-selection
+methods, 17 scoring functions and five consensus methods, and that it yields
+over 55 million configurable protocols. The product of those four headline
+counts is 5 × 17 × 17 × 5 = 7,225, which is not 55 million. So the paper's
+protocol count is describing a larger space than the four categories it
+names, most plausibly by counting configurable input conformers, ligand
+preparation and grid settings as well. The number is the paper's, and this
+lesson does not reconstruct it; the observation worth carrying is that a
+platform's "breadth" figure and its "number of engines" figure are different
+numbers and only the second one is checkable by hand.
+
+The second framework read here, TRIDS, takes a different route to the same
+problem. Its abstract describes an AI-native docking framework that guides
+conformation sampling with the gradient of an analytic scoring function.
+That changes the failure mode rather than the aim. In a conventional pipeline
+the search explores and the scoring function ranks what the search found; an
+error in the scoring function then only misranks candidates. When the
+scoring function's gradient steers the sampling, the same error steers the
+search, and the search commits to it. A framework of this kind is not a
+consensus of engines but a single search with a differentiable objective, and
+its accuracy and its physical validity are both properties of that objective.
+
+## Worked case: one platform, three benchmarks, and the authors' own conclusion
+
+The DockM8 paper is by Lacour, Agha, Hirsch and Volkamer, published in
+*Journal of Cheminformatics* volume 18 on 18 September 2026 under DOI
+10.1186/s13321-026-01287-2. Its abstract reports a systematic evaluation on
+DEKOIS 2.0, DUD-E and Lit-PCBA, and gives median relative enrichments of
+100%, 82.59% and 8.85% respectively. Those are the paper's own figures and
+not a measurement this project made.
+
+The spread is the finding. The same platform, over the same protocol family,
+moves from a median relative enrichment of 100% on one benchmark to 8.85% on
+another. Whatever the absolute scale of that metric, the ratio between the
+best and the worst benchmark is a little over eleven, so the benchmark a number
+was measured on is part of what the number means. A reader who takes the DEKOIS
+2.0 number to a target whose binding mode is
+driven by lipophilicity rather than by a buried pocket is using the number
+the paper itself warns against, because the paper's own conclusion is that no
+pose-selection or consensus strategy excels universally and that workflows
+have to be tailored to the target.
+
+Two things about the paper's framing are worth reading carefully rather than
+parroting. First, it describes DockM8 as, in its own words, the most
+comprehensive open-source platform to integrate the complete consensus
+structure-based virtual screening pipeline. That is a self-characterisation
+of scope, published by the authors of the platform, and this project does not
+turn it into an independent comparison of platforms; no such comparison was
+run here. Second, the paper's own sentence that no strategy universally
+excels is a stronger and more useful claim than the headline enrichment
+would be, because it is the part that survives the change of benchmark. A
+platform claim that survives every benchmark it was tested on is the stronger
+claim, and this one does not make it.
+
+TRIDS is a useful contrast because its abstract is much lighter on numbers. It
+states that a single docking task completes in a fraction of a second, that
+the GPU memory footprint is a few hundred megabytes, that the method improves
+docking accuracy and passes physical validation, and that it was applied to a
+high-throughput TNF-α virtual screening that produced hits with novel
+scaffolds. The abstract names no benchmark and reports no metric value. So
+its evidence in the abstract is a demonstration on one target rather than a
+comparison against other methods on shared test sets, and the two kinds of
+abstract support two different amounts of belief. The arXiv record
+2510.24186 also identifies DSDP as the predecessor framework, with DSDPFlex
+alongside it in the repository's reference list, so this is the third
+generation of a line of work rather than a new approach from nothing.
+
+The licence layers differ too, and the difference is not cosmetic. DockM8's
+repository carries a GNU General Public Licence 3.0 file, which is copyleft
+and binds derivative redistribution; the licences of the docking engines and
+scoring functions it calls are their own and are not settled by the
+platform's licence. TRIDS's repository carries the Apache License, Version
+2.0, which is permissive, and its README adds a separate statement that the
+software is basically free to academic users and that anyone who wishes to
+sell it or use it in a commercial product should contact the authors. Those
+are two different kinds of fact about the same repository: what the licence
+file grants, and what the authors say they will agree to. A reader who needs
+commercial rights has to answer both.
+
+## Alternatives, limits, and independent exercise
+
+The limits of what this lesson establishes are specific. This project ran no
+docking, so no number above is a measurement here. The three enrichments are
+median relative enrichments as the paper defines them; this lesson does not
+reconstruct that metric's denominator, and a relative enrichment is a
+comparison against a decoy or a baseline rather than a binding measurement.
+DEKOIS 2.0 and DUD-E are decoy-based benchmarks, and enrichment on decoys is
+evidence about ranking actives above decoys, not evidence that anything
+binds. And a consensus inherits every engine's systematic error as well as
+its variance: averaging rankings over engines that share a scoring
+function's blind spot does not remove the blind spot.
+
+**Handworked exercise (not runnable or empirical):** A platform's abstract
+states that it supports five docking engines, 17 pose-selection methods, 17
+scoring functions and five consensus methods, that it yields over 55 million
+configurable protocols, and that it achieves median relative enrichments of
+100%, 82.59% and 8.85% on three benchmarks. It concludes that no
+pose-selection or consensus strategy universally excels. (a) Compute the
+product of the four component counts and state what it is not equal to, and
+what a reader can conclude about the space of protocols from that. (b) By
+what factor does the reported median relative enrichment differ between its
+best and its worst benchmark, and what does that factor say about how much
+of the platform's headline performance is a property of the benchmark rather
+than of the platform? (c) The abstract's conclusion and the headline
+enrichment point in opposite directions. Which of the two would you keep if
+you had to defend a screening decision for a target unlike all three
+benchmarks, and why? (d) Name one measurement this project would have to run
+before it could state a consensus screening claim as its own rather than as
+the paper's.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+(a) 5 × 17 × 17 × 5 = 7,225. It is not 55 million, so the protocol count
+describes a larger space than the four categories the abstract names, most
+plausibly by including configurable input conformers, ligand preparation and
+grid settings. From the four counts a reader can check the second figure's
+order of magnitude and nothing finer. (b) 100 / 8.85 ≈ 11.3, so the benchmark
+choice moves the reported number by about a factor of eleven, which is
+larger than any plausible gap between two of the platform's own scoring
+functions. Most of the apparent performance is a property of the benchmark.
+(c) Keep the conclusion, not the headline. The headline is a property of one
+benchmark and one protocol family, and the paper's own conclusion says the
+ranking is not stable across targets, so a number from one benchmark cannot
+be defended for an unlike target. The conclusion is the claim that survives
+the change of benchmark, and it is also the one that tells the reader what to
+do: pick the setting per target and measure it there. (d) A decision here
+would have to fix a target, a library, a protocol setting chosen in advance
+rather than after seeing the answer, and an enrichment metric with a stated
+denominator, run against at least one other setting on the same target and
+the same library. Until such a measurement exists, the platform's numbers
+are the paper's, and the honest statement is that the benchmark moves the
+number more than the platform does.
+
+</details>
+
+## Sources and next lesson
+
+The following primary sources were opened on 2026-10-24. They support the
+platform's scope, the reported enrichments and the licence facts as they
+state them, not the constructed exercise and not a screening result.
+
+<div data-case-sources>
+
+- [DockM8: an all-in-one open-source platform for consensus virtual screening in drug design](https://doi.org/10.1186/s13321-026-01287-2) — Lacour, Agha, Hirsch and Volkamer, *Journal of Cheminformatics* 18, 18 September 2026.
+- [DockM8 source repository, DrugBud-Suite/DockM8](https://github.com/DrugBud-Suite/DockM8)
+- [TRIDS: AI-native molecular docking framework for accelerating high-throughput virtual screening with physically valid binding poses](https://arxiv.org/abs/2510.24186) — arXiv 2510.24186, submitted 28 October 2025, revised 1 July 2026.
+- [TRIDS source repository, xuhanliu/trids](https://github.com/xuhanliu/trids)
+
+</div>
+
+Continue to [Structure, affinity, and mechanism](/learn/structure-and-pockets/structure-affinity-mechanisms/)
+to inspect which structural assumptions a score has inherited. Original lesson
+prose is CC BY 4.0; linked sources retain their own terms.
+
+Last reviewed: 2026-10-24.

@@ -1,0 +1,202 @@
+{
+  "aggregates": {
+    "ridge": {
+      "mae_range": 0.26879140131852175,
+      "median_mae": 2.6153983735364092
+    },
+    "train_mean": {
+      "mae_range": 0.17332219274227123,
+      "median_mae": 3.2432723614609493
+    }
+  },
+  "artifact_type": "reviewed-development-summary",
+  "development_evaluation": {
+    "ethanol": {
+      "ridge": {
+        "mae": 2.4810026728771484,
+        "rmse": 3.247065026776099,
+        "target_range": 24.092927373261773
+      },
+      "train_mean": {
+        "mae": 3.156611265089814,
+        "rmse": 4.111387287338285,
+        "target_range": 24.092927373261773
+      }
+    },
+    "malonaldehyde": {
+      "ridge": {
+        "mae": 2.74979407419567,
+        "rmse": 3.4728814982184435,
+        "target_range": 22.48464451127802
+      },
+      "train_mean": {
+        "mae": 3.329933457832085,
+        "rmse": 4.159755597580493,
+        "target_range": 22.48464451127802
+      }
+    }
+  },
+  "features": {
+    "bins_per_channel": 101,
+    "by_system": {
+      "ethanol": {
+        "channel_count": 5,
+        "element_pair_channels": [
+          "Z1-Z1",
+          "Z1-Z6",
+          "Z1-Z8",
+          "Z6-Z6",
+          "Z6-Z8"
+        ],
+        "feature_dimension": 505
+      },
+      "malonaldehyde": {
+        "channel_count": 6,
+        "element_pair_channels": [
+          "Z1-Z1",
+          "Z1-Z6",
+          "Z1-Z8",
+          "Z6-Z6",
+          "Z6-Z8",
+          "Z8-Z8"
+        ],
+        "feature_dimension": 606
+      }
+    },
+    "construction": "per-system lexicographic unordered element-pair channels",
+    "distance_bin_width_angstrom": 0.1
+  },
+  "limitations": [
+    "Development metrics use ethanol and malonaldehyde only; benzene and uracil are not run.",
+    "Stable original-index ordering does not remove molecular-dynamics time correlation.",
+    "Within-system development evaluation does not establish cross-system generalization."
+  ],
+  "locked_evaluations": {
+    "benzene": "not_run",
+    "uracil": "not_run"
+  },
+  "protocol_id": "rmd17-system-state-v1",
+  "reviewed_on": "2026-09-05",
+  "schema_version": "aidd-commons.rmd17-system-state-development-summary.v1",
+  "selection": {
+    "frozen_alphas": [
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0,
+      1000.0
+    ],
+    "selected_alpha": 100.0,
+    "validation_grid": [
+      {
+        "alpha": 0.001,
+        "median_validation_mae": 2.7510684479212797,
+        "per_system_validation_mae": {
+          "ethanol": 2.7088978008122653,
+          "malonaldehyde": 2.7932390950302945
+        }
+      },
+      {
+        "alpha": 0.01,
+        "median_validation_mae": 2.750933675418419,
+        "per_system_validation_mae": {
+          "ethanol": 2.7087530109508955,
+          "malonaldehyde": 2.793114339885942
+        }
+      },
+      {
+        "alpha": 0.1,
+        "median_validation_mae": 2.749639732906544,
+        "per_system_validation_mae": {
+          "ethanol": 2.707398477220486,
+          "malonaldehyde": 2.791880988592602
+        }
+      },
+      {
+        "alpha": 1.0,
+        "median_validation_mae": 2.7397846737848157,
+        "per_system_validation_mae": {
+          "ethanol": 2.6979836468168648,
+          "malonaldehyde": 2.7815857007527662
+        }
+      },
+      {
+        "alpha": 10.0,
+        "median_validation_mae": 2.693509281823463,
+        "per_system_validation_mae": {
+          "ethanol": 2.6675867934400594,
+          "malonaldehyde": 2.719431770206866
+        }
+      },
+      {
+        "alpha": 100.0,
+        "median_validation_mae": 2.6639868431185465,
+        "per_system_validation_mae": {
+          "ethanol": 2.6763783603654887,
+          "malonaldehyde": 2.6515953258716043
+        }
+      },
+      {
+        "alpha": 1000.0,
+        "median_validation_mae": 2.9650904068963424,
+        "per_system_validation_mae": {
+          "ethanol": 3.148191856452904,
+          "malonaldehyde": 2.7819889573397814
+        }
+      }
+    ]
+  },
+  "software": {
+    "numpy": "2.4.6",
+    "python": "3.11.15",
+    "scikit_learn": "1.9.0"
+  },
+  "source": {
+    "doi": "10.6084/m9.figshare.12672038.v4",
+    "licence": "CC0",
+    "version": 4
+  },
+  "split": {
+    "ordering_diagnostics_by_system": {
+      "ethanol": {
+        "adjacent_original_index_gap": {
+          "maximum": 721,
+          "median": 554,
+          "minimum": 404
+        },
+        "partition_boundary_gap": {
+          "train_to_validation": 526,
+          "validation_to_evaluation": 568
+        },
+        "strictly_increasing": true
+      },
+      "malonaldehyde": {
+        "adjacent_original_index_gap": {
+          "maximum": 1265,
+          "median": 991,
+          "minimum": 689
+        },
+        "partition_boundary_gap": {
+          "train_to_validation": 1117,
+          "validation_to_evaluation": 1034
+        },
+        "strictly_increasing": true
+      }
+    },
+    "original_index_ordering": "stable ascending old_indices",
+    "partitions": {
+      "evaluation": 200,
+      "train": 600,
+      "validation": 200
+    },
+    "selected_frames": 1000
+  },
+  "systems": {
+    "benzene": "not_run",
+    "ethanol": "development_evaluation_complete",
+    "malonaldehyde": "development_evaluation_complete",
+    "uracil": "not_run"
+  }
+}

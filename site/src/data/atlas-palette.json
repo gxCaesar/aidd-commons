@@ -1,0 +1,87 @@
+{
+  "name": "atlas-figure-palette",
+  "description": "The site's teal and coral identity, derived into a categorical figure set, an ordered ladder and a second channel. Mirror of report/figures/atlas_palette.py.",
+  "source_of_truth": "report/figures/atlas_palette.py",
+  "measured_by": "report/figures/measure_palette.py",
+  "evidence": "report/figures/out/palette-cvd.json",
+  "floors": {
+    "cvd_ciede2000": 10.0,
+    "luminance_spread": 0.22,
+    "wcag_contrast": 3.0,
+    "ladder_adjacent_luminance_gap": 0.05
+  },
+  "second_channel": {
+    "marker": {
+      "teal": "o",
+      "coral": "s",
+      "ember": "^",
+      "slate": "D"
+    },
+    "hatch": {
+      "teal": "",
+      "coral": "//",
+      "ember": "\\\\",
+      "slate": "xx"
+    },
+    "dash": {
+      "teal": "-",
+      "coral": "--",
+      "ember": ":",
+      "slate": [0, [3, 1, 1, 1]]
+    }
+  },
+  "themes": {
+    "light": {
+      "tokens": {
+        "bg": "#fbf8f1",
+        "panel": "#fffdf8",
+        "ink": "#13283d",
+        "muted": "#536675",
+        "rule": "#ccd4d3",
+        "teal": "#087c78",
+        "teal_deep": "#075e5c",
+        "coral": "#c85f51",
+        "focus": "#e05d44"
+      },
+      "categorical": {
+        "teal": "#399693",
+        "coral": "#c85f51",
+        "ember": "#8c4239",
+        "slate": "#4d5f6d"
+      },
+      "ladder": ["#e6f2f1", "#b5dcda", "#77b9bd", "#35757f", "#123a49"],
+      "fills": {
+        "teal": "#dfeeee",
+        "coral": "#f6e5e3",
+        "ember": "#ede1df",
+        "slate": "#e3e5e8"
+      }
+    },
+    "dark": {
+      "tokens": {
+        "bg": "#10202e",
+        "panel": "#172b3b",
+        "ink": "#edf3f2",
+        "muted": "#b7c6cc",
+        "rule": "#3d5665",
+        "teal": "#4fc7bf",
+        "teal_deep": "#90e4dc",
+        "coral": "#fc9a88",
+        "focus": "#ffb15b"
+      },
+      "categorical": {
+        "teal": "#4fc7bf",
+        "coral": "#bd7366",
+        "ember": "#ffb15b",
+        "slate": "#808b8f"
+      },
+      "ladder": ["#2c5c68", "#3f8183", "#5ba39d", "#86c9c3", "#bce8e3"],
+      "fills": {
+        "teal": "#245a56",
+        "coral": "#55342e",
+        "ember": "#735029",
+        "slate": "#3a3f40"
+      }
+    }
+  }
+}

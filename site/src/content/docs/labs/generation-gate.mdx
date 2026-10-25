@@ -1,0 +1,162 @@
+---
+title: Freeze the objective, then count the denominators
+description: Declare a design objective that can actually be applied, then screen twenty candidates through six gates whose denominators differ, and see what a single percent-valid figure replaces.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="generation-gate" />
+
+## Before you run
+
+**Mode: runnable inspection of committed files.** Two commands read a frozen
+objective, twenty candidates authored by hand, and the 642-molecule split table
+from the completed FreeSolv lab. **No generative model is run.** Nothing here is
+proposed for synthesis or for measurement, and no candidate carries a predicted
+property value.
+
+This lab needs RDKit, unlike the other offline inspectors here, because the gates
+are computed from structures rather than read from a record.
+
+```bash
+python labs/generation_gate/inspect_gate.py objective
+```
+
+## 1. An objective is only frozen if it can be applied
+
+The first command prints the five declared parts: target context, desired
+properties, prohibited motifs, synthesis limits, and the experimental decision.
+Read what each part had to carry.
+
+A desired property carries a **two-sided bound** and the function that computes
+it. A prohibited motif carries a **SMARTS pattern**, not a name. The synthesis
+limits carry counts and an element list. The decision carries a question, an
+assay, a batch size, a selection rule and an **abstention rule**.
+
+Those fields are the difference between an objective and a wish list. A property
+with no bound cannot stop anything. A motif named in prose cannot be applied. And
+an objective with no decision attached cannot say what a passing candidate is
+*for* — which is the most common of the three, because a property list feels like
+an objective while committing to nothing.
+
+The check enforces this in the strongest available way: **when the objective
+fails these checks the screen is not run at all.** An objective that cannot be
+applied has nothing to be applied to.
+
+## 2. Six gates, six denominators
+
+```bash
+python labs/generation_gate/inspect_gate.py screen
+```
+
+The gates run in order — validity, uniqueness, novelty, desired properties,
+prohibited motifs, synthesis limits — and **each gate's denominator is the
+previous gate's survivors**. The funnel prints entered, stopped and survived for
+every step, so no yield can be quoted flat.
+
+On this candidate set the headline figure is 18 of 20 valid. The number of
+candidates that survived every declared gate is 6 of 20. Both are true. Only one
+of them answers "how many candidates can go forward", and it is not the one that
+usually gets reported.
+
+## 3. Novelty is not one fact
+
+Four candidates are stopped by the novelty gate. Two of them are in the reference
+set's training split; two are in a held-out split.
+
+That distinction is the whole of what people mean by memorization, and it is
+**not a seventh gate**. It is the same check applied to a narrower reference set.
+A model that reproduces its training molecules and a model that reproduces
+held-out molecules have done different things, and a single novelty percentage
+reports neither unless the reference set is named beside it.
+
+The command prints both counts and the check requires the failures to come from
+more than one split, so the two can never silently merge.
+
+## 4. What the synthesis gate did not establish
+
+The synthesis limits are ring counts, stereocentre counts and a prohibited
+element list. They are **cheap structural proxies chosen before generation**, and
+the objective records `route_feasibility: not_assessed`.
+
+This is the gap that a pipeline reporting "synthesizable: 87%" quietly closes. No
+check in this lab can establish that any candidate can be made, and a check
+asserts that the objective keeps saying so.
+
+```bash
+python labs/generation_gate/inspect_gate.py check
+```
+
+Seventeen checks run, covering the objective's applicability, the reference set
+sizes against the file they are declared from, every candidate being stopped by
+the gate its label names, the funnel's chained denominators, and the frozen
+selection rule filling the batch from survivors only.
+
+## Independent exercise
+
+A report says: "Our model generated 10,000 molecules. 94% were valid, 91% were
+novel, and 87% passed our synthesizability filter. We selected the top 50 for
+synthesis."
+
+Name what you cannot compute from those three percentages, and say which single
+additional line would let you compute the most.
+
+<details data-worked-answer>
+<summary>Worked answer — the missing denominators, and the one line to ask for</summary>
+
+**You cannot compute how many molecules survived everything.** If the three
+percentages are each quoted against the original 10,000, the survivors could be
+anywhere from about 7,200 to 8,700 depending on how the failures overlap. If they
+are chained, the answer is a single number near 7,400. **The report does not say
+which**, and those are different claims. The chained reading is usually intended
+and the flat reading is usually written.
+
+**You cannot read the novelty figure at all.** Novel against what? Against the
+training set, the reference database, or the other 9,999 generated molecules?
+Each gives a different number, and the memorization question — how many are
+training molecules reproduced — is not answerable from a novelty rate that does
+not name its set.
+
+**You cannot tell whether "synthesizable" means anything.** A structural proxy
+and a retrosynthesis route are different claims, and the word covers both. If it
+is a proxy, 87% is a statement about ring counts and functional groups, not about
+whether anything can be made.
+
+**Nor can you tell what uniqueness did.** 10,000 generated molecules are not
+10,000 distinct molecules. If duplicates were removed before the percentages,
+the denominator is not 10,000; if not, the validity figure counts the same
+molecule many times.
+
+**And "top 50" names no rule.** Top by what, decided when? A selection rule
+chosen after seeing the candidates is the failure this whole lab is built
+against.
+
+**The one line to ask for.** Not the percentages restated — ask for **the funnel:
+the count entering and the count surviving at each step, in the order the steps
+were applied.** It resolves the flat-versus-chained ambiguity, exposes the
+uniqueness denominator, and makes every subsequent percentage recomputable. If
+the reply is that the steps were not applied in a fixed order, that is itself the
+answer.
+
+</details>
+
+## What this does not do
+
+This route runs no generative model, evaluates no model, and does not establish
+that any candidate is real, makeable or measurable. It applies a frozen objective
+to a constructed candidate set and reports what each gate removed. The candidates
+were authored to exercise the gates, so the counts teach the structure of the
+funnel rather than the behaviour of any generator.
+
+For the surrounding argument see
+[molecular design objectives and constrained search](/learn/molecular-generation/flows-and-constrained-search/)
+and the
+[generation resource guide](/learn/molecular-generation/generation-resource-guide/).
+The reference set comes from the
+[FreeSolv honest baselines](/labs/freesolv-honest-baselines/) lab.
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-10.

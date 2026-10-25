@@ -1,0 +1,56 @@
+id: model-boltz-1
+name: Boltz-1
+kind: model
+summary: Boltz-1 is an open biomolecular interaction model that predicts complex structures; its training code, preprocessed PDB and OpenFold self-distillation data and weights are published in the Boltz repository.
+canonical_url: https://github.com/jwohlwend/boltz
+identifiers:
+  - scheme: paper
+    value: "Boltz-1: Democratizing Biomolecular Interaction Modeling; DOI 10.1101/2024.11.19.624167"
+    url: https://doi.org/10.1101/2024.11.19.624167
+  - scheme: documentation
+    value: "Boltz training instructions and released preprocessed training data"
+    url: https://github.com/jwohlwend/boltz/blob/main/docs/training.md
+stages: [structure-prediction, evaluation]
+modalities: [biomolecular-complex]
+tasks: [co-folding]
+relations: []
+status: { value: unverified }
+access_level: { value: open_source, evidence: [license, readme] }
+openness:
+  inference_code: { value: available, evidence: [readme] }
+  training_code: { value: available, evidence: [training-doc] }
+  weights: { value: available, evidence: [readme] }
+  architecture: { value: available, evidence: [readme] }
+  data_recipe: { value: available, evidence: [training-doc] }
+  training_data: { value: available, evidence: [training-doc] }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: MIT
+    scope: covers the Boltz source code and the model weights, per the repository README; the preprocessed PDB and OpenFold training-data archives are hosted separately and the page states no terms for them
+    evidence: [license, readme]
+evidence:
+  - id: resource-links-2026-09-08
+    url: https://github.com/jwohlwend/boltz
+    label: Official source for additional resource links (reviewed 2026-09-08, re-opened 2026-10-21)
+    supports: [identifiers]
+  - id: repository
+    url: https://github.com/jwohlwend/boltz
+    label: Boltz repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/jwohlwend/boltz/main/README.md
+    label: Boltz README (re-opened 2026-10-21)
+    supports: []
+  - id: training-doc
+    url: https://raw.githubusercontent.com/jwohlwend/boltz/main/docs/training.md
+    label: Boltz training instructions and released training data (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/jwohlwend/boltz/main/LICENSE
+    label: Boltz MIT licence file (re-opened 2026-10-21)
+    supports: []
+caveats:
+  - The README states that updated training information for Boltz-2 is still to come, so the published training material covers Boltz-1.
+  - The preprocessed PDB and OpenFold training-data archives are hosted on a public bucket and the page states no licence terms for them.
+acknowledgements: []
+last_verified: "2026-10-21"

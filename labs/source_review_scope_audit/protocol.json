@@ -1,0 +1,61 @@
+{
+  "schema_version": "aidd-commons.source-review-scope-audit-protocol.v1",
+  "protocol_id": "aidd-commons.source-review-scope-audit-v1",
+  "issued_on": "2026-10-23",
+  "sources": {
+    "catalogue": "catalog/resources/*.yaml",
+    "independent_reading": "catalog/comparisons/reviews/aidd-commons-blind-2026-09-11.yaml",
+    "own_comparison_record": "catalog/comparisons/systems/aidd-commons.yaml"
+  },
+  "topic_id": "t01-source-review-scope",
+  "recorded_depth": "assessed",
+  "independent_depth": "assessed",
+  "parts": {
+    "surface": {
+      "field": "url",
+      "rule": "An absolute HTTP(S) URL with a host names a page or repository surface; a label alone is only a name."
+    },
+    "version": {
+      "field": "version",
+      "rule": "A nonempty dedicated release, tag or dated-policy value carries the version; text in the URL or label only names it in text."
+    },
+    "date": {
+      "field": "reviewed_on",
+      "rule": "A valid YYYY-MM-DD calendar date on the evidence entry carries the date; a date in its label is named in text, while record-level last_verified is not an entry date."
+    },
+    "scope": {
+      "field": "reviewed_scope",
+      "rule": "A nonempty dedicated description of exact reviewed material carries scope; a label naming a document type is named-in-text, but a generic project or repository name is absent. supports maps claims, not reviewed material."
+    }
+  },
+  "examined_record_ids": [
+    "db-rcsb-pdb",
+    "db-uniprot",
+    "tool-rdkit",
+    "model-boltz-2"
+  ],
+  "missing_record_rule": "Refuse an identifier absent from the committed resource catalogue.",
+  "unmeasurable_routes": [
+    {
+      "route": "linked-page-content",
+      "reason": "The audit reads the evidence entry but does not open the linked page, so it cannot verify the page's content."
+    },
+    {
+      "route": "moving-url-revision",
+      "reason": "A moving URL without an entry-level release or tag does not identify the exact revision reviewed."
+    },
+    {
+      "route": "review-thoroughness",
+      "reason": "Catalogue fields do not record the completeness of a human review."
+    },
+    {
+      "route": "licence-permission",
+      "reason": "A reference and a scope note do not determine the legal permission for a particular use."
+    }
+  ],
+  "excluded_by_design": [
+    "Any claim that a linked page says what its entry says it says",
+    "Any legal reading of what a licence permits",
+    "Any judgement about whether a review was thorough"
+  ]
+}

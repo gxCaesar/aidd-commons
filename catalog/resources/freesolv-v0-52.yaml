@@ -1,0 +1,63 @@
+id: freesolv-v0-52
+name: FreeSolv v0.52
+kind: dataset
+summary: Versioned hydration free-energy dataset.
+canonical_url: https://github.com/MobleyLab/FreeSolv
+identifiers:
+  - scheme: release-doi
+    value: 10.5281/zenodo.1161245
+    url: https://doi.org/10.5281/zenodo.1161245
+  - scheme: pinned-data
+    value: v0.52/database.txt
+    url: https://raw.githubusercontent.com/MobleyLab/FreeSolv/v0.52/database.txt
+stages: []
+modalities: []
+tasks: []
+relations: []
+status:
+  value: unverified
+access_level:
+  value: source_available
+  evidence:
+  - pinned-data
+  - branch-licence-statement
+openness:
+  inference_code: { value: not_applicable, evidence: [pinned-data] }
+  training_code: { value: not_applicable, evidence: [pinned-data] }
+  weights: { value: not_applicable, evidence: [pinned-data] }
+  architecture: { value: not_applicable, evidence: [pinned-data] }
+  data_recipe: { value: available, evidence: [pinned-data] }
+  training_data: { value: unverified }
+  evaluation_code: { value: not_applicable, evidence: [pinned-data] }
+licenses: []
+evidence:
+  - id: repository
+    url: https://github.com/MobleyLab/FreeSolv
+    label: FreeSolv repository
+    supports: [kind, caveats]
+  - id: pinned-data
+    url: https://raw.githubusercontent.com/MobleyLab/FreeSolv/v0.52/database.txt
+    label: FreeSolv v0.52 database, read on 2026-10-24, whose header names version v0.52 and the date 6/11/17
+    supports: [name, summary, identifiers, caveats]
+  - id: release-doi
+    url: https://doi.org/10.5281/zenodo.1161245
+    label: FreeSolv release DOI
+    supports: [identifiers, caveats]
+  - id: branch-licence-statement
+    url: https://raw.githubusercontent.com/MobleyLab/FreeSolv/master/README.md
+    label: The licence section of the repository's current README, read on 2026-10-24
+    supports: [caveats]
+  - id: branch-data-licence
+    url: https://raw.githubusercontent.com/MobleyLab/FreeSolv/master/LICENSE
+    label: The data licence file on the repository's current branch, read on 2026-10-24, whose first lines name the Attribution 4.0 International license
+    supports: [caveats]
+  - id: branch-code-licence
+    url: https://raw.githubusercontent.com/MobleyLab/FreeSolv/master/LICENSE_code
+    label: The code licence file on the repository's current branch, read on 2026-10-24, which grants permission to use, copy, modify and distribute
+    supports: [caveats]
+caveats:
+  - The v0.52 release metadata does not declare licence terms; master branch licences are not evidence for this version. The repository's current branch carries a LICENSE file specifying CC-BY 4.0 over the data and a LICENSE_code file with an MIT licence over the code, and its README states that the grant reaches the data only so far as the data is the authors' own to license and that the data derives from various sources that may carry other licences. The pinned v0.52 tag carries neither file nor a licence section in its README, so the record carries no licence and a reader who needs one for this version has to ask the laboratory.
+  - The pinned database file is a semicolon-delimited text file whose header names version v0.52 and the date 6/11/17, and it carries compound identifiers, structures, experimental values with uncertainties, calculated values, reference DOIs and notes. The versioned README documents the calculation protocol for the calculated values, the GAFF force field in TIP3P water with AM1-BCC charges, the GROMACS package and the curation of experimental values from prior literature.
+  - The release DOI's Zenodo metadata states no licence term, and the record does not read it as establishing one.
+acknowledgements: []
+last_verified: "2026-10-24"

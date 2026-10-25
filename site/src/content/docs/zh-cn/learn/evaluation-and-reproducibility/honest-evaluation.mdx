@@ -1,0 +1,54 @@
+---
+title: 诚实评估
+description: 在解读 AIDD 结果之前审查独立泛化单位。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Honest evaluation](/learn/evaluation-and-reproducibility/honest-evaluation/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="evaluation-and-reproducibility/honest-evaluation" />
+
+## 基础
+
+评估从预期要泛化的单位开始：分子、骨架、靶点、蛋白质家族、测定、患者、时间段或
+实验活动。只有当划分、标签、泄漏控制和比较协议明确时，高分才具有信息量。
+
+## 实践工作流
+
+在模型比较之前编写数据契约并冻结划分构建、模型选择、指标和不确定性报告。使用低成本
+基线，并审查重复、骨架、靶点和时间重叠。
+[Therapeutics Data Commons](https://tdcommons.ai/) 和
+[OGB](https://ogb.stanford.edu/) 发布任务定义，但项目仍需检查匹配的终点。
+
+## 评估
+
+报告基准版本、输入、标签、划分、选择协议、失败运行，以及实际独立单位上的不确定性。
+对于结构，[PoseBusters](https://github.com/maabuu/posebusters) 检查选定的物理合理性条件；
+它不验证生物效力。
+
+## 前沿与开放问题
+
+分布外评估、数据集偏移、标签噪声和基准泄漏仍是活跃问题。
+[DrugOOD](https://drugood.github.io/) 使一类分布偏移明确化，而非部署决策可能失败的所有
+方式。
+
+## v0.1 尚未教授的内容
+
+v0.1 不发布新的基准分数，不断言任何划分默认无泄漏，也不因一个仓库链接就认证可复现性。
+
+## 核心来源路径
+
+在[三个实验中的数据划分与泄漏](/zh-cn/learn/evaluation-and-reproducibility/split-and-leakage-cases/)中
+练习这些区别。只需浏览器，四个案例与参考答案取自已完成的 ChEMBL、rMD17 和候选池预算实验。
+练习入口添加于 2026-09-08；下方科学来源的审阅日期保持不变。
+
+接着阅读[四个实验中的指标与不确定性](/zh-cn/learn/evaluation-and-reproducibility/metrics-and-uncertainty/)，
+区分预测误差、秩关联、区间覆盖率和预算内找回表现。第二项练习入口添加于 2026-09-09。
+
+从 [TDC](https://tdcommons.ai/) 和 [OGB](https://ogb.stanford.edu/) 的任务文档开始，
+然后在采用已报告的比较之前检查确切的数据和划分实现。
+
+最后审阅：2026-09-04。

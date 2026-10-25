@@ -1,0 +1,158 @@
+---
+title: Predictive uncertainty, calibration and decisions
+description: Calculate a finite-sample conformal interval, distinguish calibration from ranking, and derive a decision threshold from an explicit teaching utility.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="qsar-properties/uncertainty-to-decisions" />
+<ScrollableRegions />
+
+## What does the interval describe?
+
+Read [probability, loss and checkpoints](/learn/machine-learning/probability-loss-and-checkpoints/)
+and [chemical applicability domains](/learn/qsar-properties/chemical-series-and-domains/).
+You will calculate a prediction interval and a decision threshold, then identify
+why neither survives an arbitrary population shift. All numerical examples are
+constructed, not observed model calibration or a recommendation about real compounds.
+
+Measurement noise, variation among future observations, parameter uncertainty
+and uncertainty in an estimated average are different objects. A confidence
+interval for mean test MAE does not give a prediction interval for a new molecule.
+An ensemble's spread can reveal disagreement among fitted recipes, but shared
+data, features and biases can make every member confidently wrong. “Epistemic”
+and “aleatoric” labels do not identify these components without an observation
+model and assumptions about what varies.
+
+A predictive distribution must name its endpoint and population. An interval
+for a noisy future assay measurement need not equal an interval for a latent
+noise-free property. An interval calibrated on one assay context need not cover
+measurements from another. First define the quantity; then choose an uncertainty
+method suited to that quantity and available calibration data.
+
+## Worked split-conformal interval
+
+Fit a point predictor on training data. Set aside separate calibration observations
+and compute absolute residuals `rᵢ=|yᵢ−f(xᵢ)|`. With `n` calibration residuals
+and desired miscoverage `α`, use the order statistic at
+`k=ceil((n+1)(1−α))`. If `k` exceeds `n`, use an infinite radius rather than
+silently replacing it by the largest finite residual. The resulting symmetric
+interval is `[f(x)−q, f(x)+q]`. The
+[conformal prediction tutorial](https://arxiv.org/html/2107.07511v6) explains
+the exchangeability condition and finite-sample correction.
+
+Construct nine sorted calibration residuals:
+
+```text
+0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9
+n = 9, α = 0.20
+k = ceil(10 × 0.80) = 8
+q = 0.8
+f(query) = 2.0 → interval [1.2, 2.8]
+```
+
+The radius has the same unit as the endpoint. It is not a percentage of the
+prediction. This construction targets marginal coverage over exchangeable future
+observations and calibration samples. It does not mean that every molecular
+series has 80% coverage or that this particular fixed unknown value carries a
+frequentist 80% probability of lying inside its realized interval.
+
+With only four calibration residuals and `α=0.10`, the index is `ceil(5×0.9)=5`.
+An unbounded interval is the valid result of this basic rule, not an implementation
+error to hide by clipping the index. More informative assumptions or more suitable
+calibration data can change the problem; choosing a more attractive quantile
+after viewing test coverage does not preserve the original guarantee.
+
+The split predictor must not be refitted on its calibration labels while reusing
+the same residual rule. A scale-adaptive score can normalize residuals by a
+positive predicted scale, but that scale and the score definition also require
+a valid fitting/calibration design. Repeated cells from the same donor or many
+analogues from one series may not be exchangeable as independent future groups.
+Group-level coverage needs a group-level method and corresponding units, not
+merely renaming the axis of a cell-level interval plot.
+
+## Calibration and ranking are different
+
+For binary labels, calibration asks whether stated probabilities agree with
+outcome frequencies in the population being assessed. A reliability diagram
+compares predicted probabilities with empirical frequencies in bins. The
+[scikit-learn calibration guide](https://scikit-learn.org/stable/modules/calibration.html)
+describes these diagnostics and fitted calibration mappings. Calibration fitting
+needs data separate from the labels used to fit the underlying classifier.
+
+In a toy bin, ten candidates each receive probability 0.8 and six are positive.
+The observed frequency is 0.6, giving a bin discrepancy of 0.2. Ten outcomes
+provide a noisy estimate; this single bin does not prove that the true calibration
+error is exactly 0.2. Nor does a low aggregate discrepancy establish calibration
+within every assay or chemical series. Report counts and inspect relevant groups
+without selecting only favorable bins.
+
+A monotone probability transformation can preserve ranking while changing
+calibration. Conversely, a model predicting the population prevalence for every
+candidate can be calibrated in aggregate while providing no ranking information.
+Changing the decision threshold does not alter the scores or their ranking;
+it changes which action is assigned. The [official threshold guide](https://scikit-learn.org/stable/modules/classification_threshold.html)
+separates this decision problem from probability estimation.
+
+## Derive a decision instead of defaulting to 0.5
+
+Construct a nonclinical teaching utility: advancing a true positive yields benefit
+`B=9`, advancing a negative incurs cost `C=1`, and declining yields zero. With
+probability `p` of a positive, expected utility of advancing is
+
+```text
+U(advance) = pB − (1−p)C = 10p−1
+advance when p > C/(B+C) = 0.10
+```
+
+This threshold is 0.10, not 0.50, because the declared costs are asymmetric.
+At `p=0.20`, utility is 1.0; at `p=0.05`, it is −0.5. These numbers are invented
+utility units, not drug-development economics. The derivation assumes the
+probabilities and utilities apply to the decision population and that there are
+no additional constraints or consequences. Real safety requirements cannot be
+replaced by this toy weighted score.
+
+If only two equal-cost candidates can be tested, positive utility alone is not
+enough: rank eligible candidates by expected utility and choose within capacity.
+For probabilities 0.40, 0.30 and 0.20, the utilities are 3, 2 and 1, so the first
+two are selected under these assumptions. If costs, delays, correlated outcomes
+or information value differ, this simple ordering may no longer solve the task.
+High uncertainty is not automatically high decision value.
+
+## Run the threshold yourself
+
+The [property decision lab](/labs/property-decision-threshold/) applies a frozen
+three-way rule to this repository's own calibrated FreeSolv intervals. It shows
+that only one of four split and model combinations reaches the nominal coverage
+it was built for, that this combination has the widest band and abstains the
+most, and that the model with the lowest error is not the one whose intervals
+support a threshold.
+
+## Independent exercises
+
+1. Use the nine calibration residuals above with `α=0.30`. Find `k`, `q` and
+   the interval around prediction 2.0.
+2. Keep benefit 9 but change the false-positive cost to 3. Derive the new threshold
+   and evaluate utility at `p=0.20`.
+3. A predictor is calibrated on assay A, then ranks compounds for assay B with
+   different prevalence and measurement conditions. Which claims require new evidence?
+4. A model's test coverage is too low. Can you enlarge the interval until test
+   coverage looks acceptable and report the same test as untouched validation?
+
+<details data-worked-answer>
+<summary>Worked answers — retain assumptions and the selection boundary</summary>
+
+The index is `ceil(10×0.70)=7`, radius 0.7 and interval `[1.3,2.7]`. With cost 3,
+utility is `12p−3`, threshold `3/12=0.25`, and utility at 0.20 is −0.6. Calibration,
+coverage and decision utility in B need evidence for B or justified transfer
+assumptions; ranking quality may also change. Test-driven resizing is a new
+selection step. Report it as retrospective adjustment and use independent data
+for a fresh confirmatory coverage claim.
+
+</details>
+
+Continue to [acquisition under delayed feedback](/learn/active-learning/acquisition-delays-and-stopping/)
+to distinguish immediate predicted utility from the value of learning.
+
+Original examples and prose: CC BY 4.0. Sources reviewed: 2026-09-09.

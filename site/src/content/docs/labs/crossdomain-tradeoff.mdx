@@ -1,0 +1,134 @@
+---
+title: Cross-domain nomination decisions without a composite score
+description: Execute the candidate-nomination workbook's own rule on its teaching table and on 58 measured ChEMBL parents, and see which required input each candidate lacks.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+Read the [capstone workbook](/learn/candidate-nomination/capstone-workbook/), and
+its Case 5 on the cross-domain nomination with a missing requirement, and the
+[multi-endpoint integration laboratory](/labs/multi-endpoint-integration/)
+first. This laboratory executes the rule that case teaches. You will resolve
+five required inputs for each candidate, name the input that blocks the
+nomination, report the next decision the evidence points to, and see that a
+census of endpoint families is not a nomination decision.
+
+## Fresh independent computation
+
+The mode is a fresh independent computation under a frozen ChEMBL 37 protocol.
+Use the project's Python 3.11 environment. The first command validates the
+existing caches and writes nothing. All commands use no network once the
+snapshots are cached and need no accelerator. The export command overwrites
+the committed summary only after the contract and summary checks pass.
+
+```bash
+.venv/bin/python labs/crossdomain_tradeoff/run_lab.py download
+.venv/bin/python labs/crossdomain_tradeoff/inspect_crossdomain_tradeoff.py show
+.venv/bin/python labs/crossdomain_tradeoff/inspect_crossdomain_tradeoff.py check
+.venv/bin/python labs/crossdomain_tradeoff/export_summary.py
+.venv/bin/python -m pytest labs/tests/crossdomain_tradeoff -q
+```
+
+## The rule this laboratory executes
+
+The rule is the curriculum's, not a laboratory's. The workbook states a
+fictional project's teaching thresholds and five required inputs, and this
+laboratory runs exactly that rule in one place.
+
+| Required input | The rule | Where it comes from |
+| --- | --- | --- |
+| Potency | A matched potency of at most 50 nM | The admitted response-potency points |
+| Selectivity ratio | A ratio of at least 20 against an intended target | Not covered by the measured families |
+| Exposure ratio | An exposure-to-effective-concentration ratio of at least 3 | Not covered by the measured families |
+| Safety package | An independently reviewed safety package | Not covered by the measured families |
+| Functional validation | Interpretable functional validation | Not covered by the measured families |
+
+The thresholds are the fictional project's teaching thresholds and not
+pharmacological criteria. No composite, no weighted sum, no overall
+desirability value and no ordering of the candidates is produced, and the
+audit refuses a decision that carries a field the rule does not name, a
+missing input filled with a default, or a next decision that points at
+changing the product requirement.
+
+## What the teaching table decides
+
+The workbook's own three candidates are executed by the same code, and the
+computed answer is the lesson's worked answer.
+
+| Candidate | Blocked by | Next decision the evidence points to |
+| --- | --- | --- |
+| N1 | Selectivity ratio (8 against a required 20) | Revise the candidate |
+| N2 | Exposure ratio (2 against a required 3) | Revise the candidate |
+| N3 | Safety package missing | Close an evidence gap |
+
+None of the three satisfies the complete requirement, and none of them points
+at changing the profile: changing a threshold so that a favourite passes is a
+change to the requirement and not a discovery.
+
+## What the measured cohort decides
+
+The measured cohort is every parent the validated integration laboratory reads
+that carries at least two measured endpoint families, because a cross-domain
+decision cannot be posed on a single family. Of the 7,908 parents in the
+cohort, 8 carry only efficacy, 1,062 only exposure, 6,780 only interaction,
+1 carries efficacy with exposure and 57 carry exposure with interaction. Those
+58 are the measured candidates.
+
+The rule cannot be posed on any of them, and the reason is specific.
+
+| Required input | Measured candidates | Why |
+| --- | --- | --- |
+| Potency | 57 absent, 1 indeterminate | The one candidate with potency points mixes endpoint types, so no single potency value is the family's |
+| Selectivity ratio | 58 not covered | A comparison between CYP3A4 and CYP2D6 is not a selectivity ratio against an intended target |
+| Exposure ratio | 58 not covered | In vitro intrinsic clearance is not an exposure and cannot form the ratio without a declared effective concentration |
+| Safety package | 58 not covered | No measured safety material exists here, and a review is a human decision no measurement supplies |
+| Functional validation | 58 not covered | The measured assay records classify assay records rather than validate a compound's function |
+
+All 58 are blocked at the potency input, all point at closing an evidence gap,
+and none completes a nomination. This is the measured form of the point the
+endpoint-counting laboratory cannot make: a census that reports 7,908
+compounds, 1,120 exposure medians and 6,837 CYP inhibition measurements
+describes coverage of the measured families, and says nothing about whether
+the inputs a nomination decision needs are among them. Here they are not. The
+two families the cohort holds in abundance are not the two the rule asks for.
+
+## Independent exercise
+
+Inspect `CHEMBL1144`, the only measured candidate with potency points. Name
+the state of each of the five inputs, state which input blocks the
+nomination, and explain why a selectivity ratio cannot be formed from the
+cohort's CYP inhibition records even when both enzymes are measured.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+Its potency input is indeterminate: the admitted records mix endpoint types,
+so the family has no single potency value and the gate cannot be decided. Its
+selectivity ratio, exposure ratio, safety package and functional validation
+are each not covered, for the reasons in the table above. The potency input
+therefore blocks the nomination, the next decision is to close an evidence
+gap, and the nomination is not complete. A selectivity ratio compares a
+compound's activity against two drug-metabolising enzymes. The workbook's
+input is a ratio against an intended target, and a comparison between two
+metabolism enzymes does not establish anything about the target the compound
+is meant to act on, however clean the numbers are.
+
+</details>
+
+## Sources and attribution
+
+| Snapshot | Source and licence | Snapshot read on |
+| --- | --- | --- |
+| Decision-unit activity | [ChEMBL 37 release](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/) and [CC BY-SA 3.0 licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-10-21 |
+| Intrinsic clearance | [AstraZeneca dataset CHEMBL3301361](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361) in ChEMBL 37, under the same [CC BY-SA 3.0 licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+| CYP inhibition | [ChEMBL 37 release](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/) under the same [CC BY-SA 3.0 licence](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+| Teaching table | The [capstone workbook](/learn/candidate-nomination/capstone-workbook/), Case 5, original teaching material, CC BY 4.0 | 2026-10-24 |
+
+The measured records carry no confidence interval, so a gate evaluated on a
+family's representative value is a statement about the admitted records and
+not about a quantity with an error bar. Original lesson prose is CC BY 4.0 and
+original laboratory code is Apache-2.0. Last reviewed 2026-10-24.

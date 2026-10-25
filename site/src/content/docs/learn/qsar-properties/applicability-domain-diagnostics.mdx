@@ -1,0 +1,65 @@
+---
+title: Applicability-domain diagnostics
+description: Interpret distance from a fitted population alongside scaffold-held-out prediction error.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="qsar-properties/applicability-domain-diagnostics" />
+<ScrollableRegions />
+
+## Learning goals and prerequisites
+
+Read [chemical series and domains](/learn/qsar-properties/chemical-series-and-domains/) and [regression and classification errors](/learn/qsar-properties/regression-classification-errors/) first. You should be able to define what a proposed applicability domain would cover, calculate a nearest-training distance, and state which generalization claim a split can support. The [FreeSolv diagnostic lab](/labs/applicability-domain-audit/) supplies a runnable case.
+
+An applicability domain is a claim about which intended inputs and measurement contexts a fitted predictor can be used for under a stated performance criterion. It needs a declared population, endpoint, representation, loss, and decision procedure. A distance to training data may reveal sparse support in one representation. It does not, by itself, establish acceptable error for a query.
+
+## Distance is conditional on representation
+
+The laboratory computes MolWt, MolLogP, TPSA, NumHDonors and NumHAcceptors with RDKit. For each property, its absolute test–training difference is divided by the population standard deviation measured in training, with 1 replacing a zero deviation. The five scaled differences are averaged. The smallest resulting distance over training molecules is the test molecule's nearest-training distance. This rule is a laboratory choice, and the distance has no physical unit.
+
+| Constructed pair | Five scaled property differences | Mean distance |
+| --- | --- | ---: |
+| Query and training A | 1, 0, 0, 0, 0 | 0.2 |
+| Query and training B | 0, 1, 1, 0, 0 | 0.4 |
+
+In this constructed calculation, A is the nearest training molecule. A zero in a property column says that the selected property matches after scaling. It does not say that the molecules or their hydration free energies are identical. Stereochemistry and other structural distinctions may not appear in these five summaries. A warning threshold would need its own development and evaluation procedure, tied to the intended error cost and population.
+
+## Scaffold-held-out error
+
+The laboratory uses a Bemis-Murcko scaffold split, with each acyclic molecule assigned its own canonical-SMILES group. It fits ridge regression on chirality-aware Morgan fingerprints using training labels alone, then measures absolute error on test labels. The distance representation and the model fingerprint are deliberately different. The distance asks about selected global properties, while the fingerprint supplies the baseline prediction.
+
+A row-random split may place related scaffolds in both partitions and tests interpolation near known chemistry. A scaffold split holds its defined groups apart and asks about molecules from groups unseen in training. Neither split alone proves performance on a future assay, altered measurement context or any individual new molecule. The split rule and representation must accompany every reported contrast.
+
+## Worked case from measured counts
+
+The committed FreeSolv v0.52 computation contains 642 measured molecules and 382 distinct scaffold keys. Its two-way split puts 514 molecules from 254 keys in training and 128 molecules from 128 keys in test. The measured hydration free energy has a median of -3.53 kcal/mol, with first and third quartiles of -5.7275 and -1.215 kcal/mol.
+
+The test nearest-training distance has a median of 0.023539, with quartiles of 0.000205 and 0.082516 and an interquartile range of 0.082312. The largest nearest-training distance is 0.43877 for `mobley_9460824`, whose nearest training molecule is `mobley_1849020`. The same test molecule is 3.996323 from its farthest training molecule, `mobley_4587267`. The last distance is not the nearest-neighbour diagnostic.
+
+| Test half ranked by nearest-training distance | Molecules | Median absolute error, kcal/mol |
+| --- | ---: | ---: |
+| Smaller distance | 64 | 0.586647 |
+| Larger distance | 64 | 0.800081 |
+
+The larger-distance half has the higher observed median error under this fixed ridge baseline. The two medians do not establish a monotone error curve or a domain boundary. The training set's property scale and the scaffold split are part of the result, not universal chemistry constants.
+
+## Independent exercise
+
+Using the measured table, calculate the difference between the two median absolute errors. State the number of test molecules behind each median. A colleague proposes using the overall distance median of 0.023539 as a pass/fail boundary for a new molecule. Explain which evidence is missing. Then state how the claim would change if the same cohort were split at random by row.
+
+<details data-worked-answer>
+<summary>Worked answer</summary>
+
+The difference is 0.213434 kcal/mol, calculated as 0.800081 minus 0.586647. Each median summarizes 64 of the 128 test molecules. The median distance only divides this test sample in half. It was not calibrated against a tolerable error or prospectively checked for a new molecule, so it is not a pass/fail boundary. A row-random split could put related scaffolds on both sides. Its error contrast would describe that different split and would not replace the held-out-scaffold result.
+
+</details>
+
+## What the material does not show
+
+This case does not decide whether a new molecule lies inside an applicability domain. It does not fit a better model, optimize the five properties, or turn their distance into a statement about chemical mechanism. It reports observed error for one release, one scaffold assignment and one inexpensive baseline. A difference between group medians is a diagnostic prompt for further validation, not a per-molecule performance estimate.
+
+## Sources and review date
+
+The [FreeSolv v0.52 release](https://doi.org/10.5281/zenodo.1161245), [RDKit documentation](https://www.rdkit.org/docs/index.html), local release and project source records were read on 2026-10-23. The v0.52 release metadata does not declare licence terms, so its licence remains unverified. The RDKit source record names BSD-3-Clause for covered code and does not relicense third-party components. Original lesson prose is CC BY 4.0 and laboratory code is Apache-2.0. Last reviewed on 2026-10-23.

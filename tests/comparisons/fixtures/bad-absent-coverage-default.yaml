@@ -1,0 +1,29 @@
+id: absent-default-system
+name: Absent default system
+provider_class: curriculum
+canonical_url: https://example.org/absent-default
+summary: A fixture that tries to convert every omitted topic into absence.
+audiences: [graduate-students]
+languages: [en]
+metadata_evidence: [overview]
+access:
+  content: { value: open, evidence: [overview] }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage_default:
+  depth: absent
+  evidence: [overview]
+  reviewed_scope: Public overview
+  note: This unsafe default would turn unreviewed topics into absence.
+coverage: []
+evidence:
+  - id: overview
+    url: https://example.org/absent-default
+    title: Example overview
+    observed_scope: System identity only.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-04

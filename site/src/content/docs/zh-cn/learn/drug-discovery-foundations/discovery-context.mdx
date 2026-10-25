@@ -1,0 +1,53 @@
+---
+title: 药物发现语境
+description: 在建模前连接药物化学、结构生物学、测定和实验决策。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Drug discovery context](/learn/drug-discovery-foundations/discovery-context/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="drug-discovery-foundations/discovery-context" />
+
+## 基础
+
+一个发现项目连接与疾病相关的机制、可药靶点、化学或生物制剂干预，以及能够证伪所提
+机制的实验。[ChEMBL](https://www.ebi.ac.uk/chembl/)、
+[PubChem](https://pubchem.ncbi.nlm.nih.gov/) 和
+[DrugBank](https://go.drugbank.com/) 是有用的身份和注释来源；其公开页面并不会自动
+授予批量数据或再分发权利。
+
+## 实践工作流
+
+在收集特征之前定义决策：靶点提名、命中分流或先导优化各需要不同的单位和测定语境。
+规范化化学身份、测定终点、生物体、靶点构建体和测量条件。在依赖学习得到的表示之前，
+先使用简单的 [RDKit](https://github.com/rdkit/rdkit) 描述符或子结构检查。
+
+## 评估
+
+检查报告的活性在不同测定格式中是否可比，以及历史类似物是否跨划分泄漏。对接评分或
+单一生化测定不是细胞效力、选择性或可开发性的证据。
+
+## 前沿与开放问题
+
+多模态靶点至候选项系统可能连接化学、结构和机制证据。其效用取决于这些连接以及
+下游实验反馈能否在同一个决策点获得。
+
+## v0.1 尚未教授的内容
+
+本条目不替代药物化学培训、测定开发或临床药理学。它不包含合成的患者或测定结果。
+
+## 继续学习手算案例
+
+阅读[测定对照与剂量反应](/zh-cn/learn/drug-discovery-foundations/assay-controls-dose-response/)，
+在建立模型表之前，先区分生物活性与仪器读出。数值案例明确为构造的教学示例。
+
+## 核心来源路径
+
+比较 [RDKit](https://github.com/rdkit/rdkit) 与
+[Open Babel](https://github.com/openbabel/openbabel) 中的化学操作，然后沿着
+[靶点至候选项地图](/atlas/target-to-candidate-map/)继续。
+
+最后审阅：2026-09-04。

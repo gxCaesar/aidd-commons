@@ -1,0 +1,89 @@
+id: model-mace
+name: MACE
+kind: model
+summary: MACE is a code base for machine-learned interatomic potentials with higher-order equivariant message passing, and it publishes pretrained foundation potentials for materials and molecules.
+canonical_url: https://github.com/ACEsuit/mace
+identifiers:
+  - scheme: paper
+    value: "A foundation model for atomistic materials chemistry; arXiv:2401.00096"
+    url: https://arxiv.org/abs/2401.00096
+  - scheme: model-weights
+    value: "MACE pretrained foundation models published as GitHub releases"
+    url: https://github.com/ACEsuit/mace-foundations
+  - scheme: dataset
+    value: "Materials Project trajectory (MPtrj) dataset, figshare record 23713842"
+    url: https://figshare.com/articles/dataset/Materials_Project_Trjectory_MPtrj_Dataset/23713842
+stages: [physics-based-modelling, model-development, evaluation]
+modalities: [molecular-geometry, molecular-conformation, small-molecule]
+tasks: [molecular-energy-regression, force-learning, molecular-dynamics, model-training]
+relations: []
+status: { value: active, evidence: [github-api] }
+access_level: { value: open_source, evidence: [code-license] }
+openness:
+  inference_code: { value: available, evidence: [repository, readme] }
+  training_code: { value: available, evidence: [repository, readme, foundations-readme] }
+  weights: { value: available, evidence: [foundations-readme, releases] }
+  architecture: { value: available, evidence: [repository, readme] }
+  data_recipe: { value: available, evidence: [model-mace-readme] }
+  training_data: { value: available, evidence: [readme, foundations-readme] }
+  evaluation_code: { value: available, evidence: [eval-script] }
+licenses:
+  - name: MIT
+    scope: the MACE source code in this repository, per LICENSE.md (Copyright (c) 2022 ACEsuit/mace). The README's License section links to a file named MIT.md, but the repository ships LICENSE.md. The mace-foundations README also lists MACE-MP-0a, MACE-MP-0b, MACE-MP-0b2, MACE-MP-0b3 and MACE-MPA-0 as MIT, while the release notes for those tags carry no licence statement of their own.
+    evidence: [code-license, foundations-readme, releases]
+  - name: ASL
+    scope: "the MACE-OMAT-0, MACE-MATPES-PBE-0, MACE-MATPES-r2SCAN-0, MACE-OMOL-0, MACE-MH-0/1 and MACE-MDP checkpoints, whose release notes state that the model is distributed under the ASL license. ASL is an academic non-commercial licence: it does not allow commercial use, it requires derivative works to be licensed under ASL with their source made available, and it requires the copyright notice to be retained. It is not an open-source licence."
+    evidence: [foundations-readme, releases, asl-license]
+evidence:
+  - id: repository
+    url: https://github.com/ACEsuit/mace
+    label: MACE repository
+    supports: [name, kind, summary, stages, modalities, tasks]
+  - id: readme
+    url: https://raw.githubusercontent.com/ACEsuit/mace/develop/README.md
+    label: MACE README with the pretrained model table
+    supports: [identifiers, caveats]
+  - id: foundations-readme
+    url: https://raw.githubusercontent.com/ACEsuit/mace-foundations/main/README.md
+    label: mace-foundations README with the per-model training dataset and licence table
+    supports: [identifiers, caveats]
+  - id: releases
+    url: https://github.com/ACEsuit/mace-foundations/releases
+    label: mace-foundations release notes
+    supports: [caveats]
+  - id: eval-script
+    url: https://raw.githubusercontent.com/ACEsuit/mace/develop/mace/cli/eval_configs.py
+    label: MACE evaluation script for configurations in an xyz file
+    supports: []
+  - id: preprocess-script
+    url: https://raw.githubusercontent.com/ACEsuit/mace/develop/mace/cli/preprocess_data.py
+    label: MACE preprocessing script that turns xyz configurations into a training-ready HDF5 file
+    supports: [caveats]
+  - id: code-license
+    url: https://raw.githubusercontent.com/ACEsuit/mace/develop/LICENSE.md
+    label: MACE licence file
+    supports: []
+  - id: asl-license
+    url: https://raw.githubusercontent.com/gabor1/asl/master/ASL.md
+    label: Academic Software Licence text
+    supports: []
+  - id: github-api
+    url: https://api.github.com/repos/ACEsuit/mace
+    label: GitHub repository metadata for ACEsuit/mace
+    supports: []
+  - id: model-mace-readme
+    url: https://raw.githubusercontent.com/ACEsuit/mace/HEAD/README.md
+    label: The project page the training-data statement was read from (reviewed 2026-10-23)
+    supports: [caveats]
+caveats:
+  - The README states that the MACE-MP models are trained on the raw DFT energies of the Materials Project trajectories and that the PolarMACE checkpoints are trained on the OMol25 dataset.
+  - The README's License section links to a file named MIT.md that the repository does not ship; the licence text is in LICENSE.md.
+  - The release notes for the mace-mp-0, mace_mp_0b, mace_mp_0b2, mace_mp_0b3 and mace_mpa_0 tags carry no licence statement, so the MIT status of the MACE-MP and MACE-MPA checkpoints rests on the two README tables, while the newer release notes state ASL explicitly.
+  - "The two README tables disagree on the element count of the MACE-OMOL-0 checkpoint: the mace-foundations table gives 83 elements and the MACE README table gives 89."
+  - Training-data availability is claimed for the MACE-MP checkpoints, which the README states are trained on MPtrj selected from Materials Project relaxation trajectories. MACE-MPA-0 adds sAlex, a subsample of Alexandria, whose redistribution terms are not stated on any opened page, so the openness of that part of the corpus is unverified.
+  - The two README tables name the OMAT, OMOL, MATPES and SPICE corpora for the non-MP checkpoints without stating their licences or their redistribution terms, so the training-data claim in this record is limited to the MPtrj-trained MACE-MP checkpoints.
+  - The figshare page for the MPtrj dataset returned HTTP 403 during this review, so the dataset's own licence text was not inspected.
+  - The repository ships a preprocessing script that converts xyz configurations into a training-ready HDF5 file, and the model tables name the level of theory per checkpoint, but no opened page documents the full procedure used to select and label the training structures.
+  - The README states that the MACE-MP models are trained on MPTrj raw DFT energies from VASP outputs and are not directly comparable to Materials Project or CHGNet energies, which carry MP2020Compatibility corrections for some transition metal oxides, fluorides and anions.
+acknowledgements: []
+last_verified: "2026-10-23"

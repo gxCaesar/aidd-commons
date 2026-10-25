@@ -1,0 +1,204 @@
+---
+title: Diversity, uncertainty, and experimental feedback
+description: Trace what a selector reads, when a predictor updates, and what a retrospective campaign cannot establish.
+---
+
+import LessonProgress from "../../../../components/LessonProgress.astro";
+
+<LessonProgress lessonId="active-learning/diversity-uncertainty-feedback" />
+
+## Before you start
+
+Read [Experiment pools, budgets, and feasibility](/learn/active-learning/experiment-pools-and-budgets/)
+first. This lesson bridges its label-blind diversity policy to the requirements
+of model-based acquisition. You will trace information flow, predict the effect
+of changing labels, and write a feedback contract. No installation, model fit,
+new assay or repeated evaluation is required.
+
+Keep these existing case materials available. The pool-budget lab provides the
+completed aggregate and downloadable real protocol; the representation lab
+explains the shared-label limitation.
+
+<div data-case-sources>
+
+- [ChEMBL representation comparison](/labs/chembl-egfr-representation-baselines/)
+- [Pool-budget simulator and real campaign](/labs/pool-budget-campaign/)
+
+</div>
+
+The quoted claims below are deliberately incorrect exercises. All numerical
+observations refer to the completed real replay, not the artificial-score
+simulator. This is a reading exercise, not an approved new acquisition study.
+
+## Follow the information, not the method name
+
+The current MaxMin policy uses Morgan fingerprints and Tanimoto distance. It
+chooses the remaining candidate whose nearest reference molecule is farthest
+away, where references include the initial molecules and every earlier pick.
+References update after each pick, including within a batch. Labels and fitted
+predictions are not inputs. The lab uses an explicit greedy loop with its own
+declared ties; the [RDKit MaxMin API](https://www.rdkit.org/docs/source/rdkit.SimDivFilters.rdSimDivPickers.html)
+is a related diversity-picker reference, not a promise of identical defaults.
+
+The real replay has a predictor, but its information goes to evaluation:
+
+1. Build the complete MaxMin and fixed random acquisition orders from structures
+   and the declared partitions, without providing labels to either selector.
+2. At checkpoint zero, fit Ridge on initial labels. At each later checkpoint,
+   fit on initial labels plus that policy's acquisitions through that checkpoint.
+   Predict the fixed evaluation set each time, keeping Ridge `alpha=1` unchanged.
+3. Freeze every policy's checkpoint predictions before scoring. Only then may
+   the scorer read evaluation labels for MAE and original-pool labels for
+   top-decile recovery. Neither score changes future choices.
+
+Labels therefore update the predictor, but never the acquisition order. The
+artificial-score simulator is simpler still: it fits no predictor. Do not
+transfer a feature of the real replay to that simulator.
+
+## Case 1: a refitted predictor is not a feedback selector
+
+> “Ridge is fitted after every batch, so this is uncertainty-driven active
+> learning. The next batch adapts to the activity just observed.”
+
+Name the missing connection. Could the current acquisition order be calculated
+before seeing any activity values? What information changes within a MaxMin
+batch, and what does not?
+
+<details data-worked-answer>
+<summary>Case 1 — worked answer</summary>
+
+The missing connection is from observed labels, through the fitted predictor,
+to the next acquisition decision. The complete current order can be calculated
+without activity values. Adding acquired structures changes the geometric
+reference set; it does not make MaxMin sensitive to their measured activity.
+
+The real replay's predictor learns from initial and acquired labels and is
+assessed separately. Its changing MAE does not demonstrate model-guided
+selection. A defensible description is “label-blind diversity acquisition with
+checkpoint-wise predictive assessment.” This is not evidence of a calibrated
+uncertainty policy or Bayesian optimization.
+
+</details>
+
+## Case 2: distance, uncertainty, and utility differ
+
+> “The most distant molecule is the most uncertain. The most uncertain molecule
+> is the most potent, so MaxMin optimizes the assay objective.”
+
+Separate structural distance, predictive uncertainty and expected experimental
+value. Would the same acquisition objective serve both improving predictions
+over a pool and finding its highest-activity entries?
+
+<details data-worked-answer>
+<summary>Case 2 — worked answer</summary>
+
+A fingerprint distance measures dissimilarity under a representation. It is
+neither a calibrated predictive probability nor a potency estimate. This lab
+does not estimate uncertainty for its Ridge predictions. Even a model-supplied
+uncertainty estimate would need an explicit interpretation and assessment;
+high uncertainty alone does not imply high activity or a feasible experiment.
+
+Reducing predictive error and recovering high-activity entries are different
+objectives. An acquisition rule must express which decision matters. For
+contrast, the [BoTorch getting-started example](https://botorch.org/#get-started)
+fits a Gaussian process and passes it, with the best observed value, to an
+expected-improvement acquisition function. Its suggested candidate depends on
+the fitted model. That example does not establish calibration, feasibility or
+superiority on this molecular pool, and expected improvement is not a rule
+to pick the most uncertain candidate alone.
+
+The completed MaxMin recovery AUC is **0.05078125** in the primary assay and
+**0** in the separate assay, below every fixed random instance in each. Optimizing
+fingerprint diversity did not deliver better target recovery in these comparisons.
+The separate pool has only one scaffold group, so its scaffold fraction cannot
+distinguish policies. These results do not prove that random selection is
+universally best. Keep all five random instances; they are not independent assays.
+
+</details>
+
+## Case 3: which label change may change which output?
+
+> “If the selector is label-blind, changing any labels must leave all its
+> reported scores and predictions unchanged.”
+
+Hold structures, identities, partitions, seeds, ties and budget fixed. Consider
+two thought experiments: change only evaluation labels, or permute labels only
+within the original acquisition pool. Which outputs must remain unchanged?
+Which may change? Do not rerun the completed campaign to answer.
+
+<details data-worked-answer>
+<summary>Case 3 — worked answer</summary>
+
+Changing only evaluation labels must leave acquisition orders and all frozen
+predictions unchanged: those labels are never fitted. Recovery also stays
+unchanged because its targets are defined in the pool, not the evaluation set.
+Evaluation MAE may change because its comparison targets change.
+
+Permuting pool labels must also leave both label-blind policies' acquisition
+orders unchanged. But the top-decile target identities can change, and therefore
+recovery may change. The checkpoint-zero predictor remains unchanged because
+initial labels are held fixed. Later predictions and MAE may change when the
+permutation changes labels of acquired parents that enter fitting.
+
+“May change” is not “must change”: a permutation or numerical coincidence can
+leave an output equal. A changed acquisition order under these fixed inputs
+would contradict the label-blind contract. Unchanged picks alone do not prove
+that fitting or scoring respects its own access boundary. The existing engine
+tests check evaluation-label isolation using a controlled fixture; this lesson
+does not claim a new mutation experiment on the real assays.
+
+</details>
+
+## Case 4: replay feedback is not laboratory feedback
+
+> “Replace MaxMin with an uncertainty score, read the current batch's final
+> activities while filling it, and use evaluation MAE to pick the next rule.
+> The retrospective winner then proves prospective discovery.”
+
+Identify the timing violation and the evaluation violation. What would a future
+batch study need to specify before any new outcomes were observed?
+
+<details data-worked-answer>
+<summary>Case 4 — worked answer</summary>
+
+For a batch whose outcomes arrive together, none of those actual outcomes is
+available while filling that batch. A model may account for pending candidates
+under a declared method, but model-generated assumptions are not measurements.
+Using final batch labels early changes the information available to the policy.
+Using evaluation MAE to select the next rule turns evaluation into development.
+
+A future study must declare its target and objective, eligible pool, initial
+labels, representation, surrogate and uncertainty interpretation, acquisition
+rule, batch size, outcome availability, refitting schedule and stopping rule.
+It also needs a separate development and evaluation plan, matched random and
+diversity baselines, and a budget accounting for failures and delays. Historical
+successful measurements do not estimate future synthesis or assay failure rates.
+
+T15 accessed labels shared with T05 before T05 evaluation, and its fixed Ridge
+setting reuses T05 development selection. The replay is neither untouched T05 corroboration nor
+prospective discovery. Designing a future protocol does not authorize tuning
+on these exposed outcomes and then calling them a new independent evaluation.
+
+</details>
+
+## Write an information-access card
+
+For the current replay, write one sentence each for the selector's inputs, the
+predictor's training labels, the scorer's labels and the time each becomes
+available. Then describe the missing model-to-selection connection for a
+hypothetical model-based policy. Mark that policy **not run** and leave unknown
+costs, failure rates and uncertainty performance unknown.
+
+A complete answer distinguishes structure updates from outcome feedback,
+refitting from acquisition, prediction assessment from target recovery, and
+retrospective evidence from prospective validation. It names an objective
+before suggesting an acquisition rule and keeps evaluation outcomes outside
+selection. It must not promise that uncertainty or a new model would reverse
+the observed negative result.
+
+For metric interpretation, continue to [Metrics and uncertainty across four labs](/learn/evaluation-and-reproducibility/metrics-and-uncertainty/).
+This lesson changes no frozen protocol, result or comparison score and adds no
+learner-outcome evidence. Original prose is CC BY 4.0; linked data and software
+retain their own terms.
+
+Last reviewed: 2026-09-09.

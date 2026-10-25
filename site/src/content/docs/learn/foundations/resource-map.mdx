@@ -1,0 +1,65 @@
+---
+title: Current curriculum and resource map
+description: Find the resources assigned to each teaching unit and distinguish reading availability from instructional depth and completeness.
+---
+
+import CurriculumResourceMap from "../../../../components/CurriculumResourceMap.astro";
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+Use this map when you know your scientific question and need to find its lesson,
+data sources or tools. For a sequential course, use the
+[curriculum routes](/learn/foundations/curriculum-map/) instead.
+
+<ScrollableRegions />
+
+## What the columns mean
+
+The unit is a learning objective. Its linked chapter may teach several units.
+The activity labels describe that chapter, not mastery of every linked objective.
+Its resources are the chapter's registered reading: a shared reference does not
+establish that every section of that resource supports every linked unit.
+Additional track reading is shown separately and is not counted again in the
+chapter list. Resource kinds describe objects, not a quality ranking.
+
+For a practical task, look for the endpoint definition, a suitable data source,
+an implementable method and a matched evaluation example. A missing resource
+kind in an assigned list identifies a curation question, not proof that the
+resource does not exist. Open the Atlas entry for access and licence details;
+an unknown field is not permission to use an asset.
+
+## Resource-selection guides
+
+- [Disease evidence and target hypotheses](/learn/mechanism-targets/target-resource-guide/)
+- [ADMET and pharmacokinetic questions](/learn/admet-pk/admet-resource-guide/)
+- [Therapeutic modalities and developability](/learn/biologics-design/modality-resource-guide/)
+- [Physical-modelling tools and output quantities](/learn/physics-based-modeling/physics-resource-guide/)
+- [Generation tools, benchmarks and candidate accounting](/learn/molecular-generation/generation-resource-guide/)
+- [Scientific agents, evidence and task evaluation](/learn/scientific-agents/agent-resource-guide/)
+
+## Choose a first external tutorial
+
+The starting tasks below are suggested reading exercises, not claims that this
+site ran the upstream notebooks. Use each project's current environment and
+data instructions; no common runtime or hardware requirement is assumed.
+
+| Your next task                      | Official collection                                                                       | Suggested preparation and first output                                                                                                                                                  |
+| ----------------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Inspect molecular representations   | [RDKit Cookbook](https://www.rdkit.org/docs/Cookbook.html)                                | Basic Python and SMILES; choose a representation or drawing recipe and explain its input and output.                                                                                    |
+| Follow a drug-discovery workflow    | [TeachOpenCADD](https://projects.volkamerlab.org/teachopencadd/talktorials.html)          | Python plus the relevant chemistry lesson; choose one talktorial and identify its data source, operations and interpretation.                                                           |
+| Learn molecular ML machinery        | [DeepChem tutorials](https://github.com/deepchem/deepchem/tree/master/examples/tutorials) | Python and train/validation/test concepts; start with introductory dataset, featurizer and model examples. Describe the split before comparing a score.                                 |
+| Inspect an ADMET modelling example  | [OpenADMET Demos](https://github.com/OpenADMET/openadmet-demos)                           | Endpoint and assay literacy; trace the CYP3A4 example from curation to training and evaluation. Produce an endpoint-and-split note, not a clinical conclusion.                          |
+| Understand free-energy calculations | [OpenFE tutorials](https://docs.openfree.energy/en/latest/tutorials/index.html)           | Read the force-field, sampling and free-energy lessons first. Select a relative or absolute calculation tutorial and list its system, states and sampling assumptions before execution. |
+| Build an acquisition loop           | [BoTorch tutorials](https://botorch.org/docs/tutorials)                                   | The official entry assumes Bayesian optimization and PyTorch familiarity and points newcomers to Ax. Trace a full loop's objective, surrogate, acquisition and candidate update.        |
+
+## Current associations
+
+<CurriculumResourceMap />
+
+## Keep current delivery separate from historical comparisons
+
+This map is rebuilt from the current curriculum and catalog. The
+[dated comparison audit](/audit/) retains its own source cutoff and review scope.
+Neither a larger resource count nor more written destinations updates those
+historical depth judgements. There is no new “most comprehensive” score here.
+
+Last reviewed: 2026-09-09.

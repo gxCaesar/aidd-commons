@@ -1,0 +1,139 @@
+---
+title: Same units, different scales
+description: Separate the seven components a docking score comes out of, and work out which reported numbers may be compared at all.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="docking-protocol" />
+
+## Before you run
+
+**Mode: runnable inspection of committed declarations.** **No docking program is
+run**, no structure is prepared, and the reported numbers are illustrative values
+rather than results.
+
+```bash
+python labs/docking_protocol/inspect_protocol.py show
+```
+
+A docking score arrives as a number with units, which invites comparison with any
+other number carrying those units. It is the output of seven declared choices.
+
+## 1. Five components move the number, two move what it means
+
+**Search, pose generation, scoring, rescoring and constraints** each change the
+number. A different amount of searching finds different poses, so the best score
+found is a property of the search as much as of the ligand. A constraint removes
+poses from consideration, so it changes which pose is best.
+
+**Decoys and validation** change no score at all. They decide whether an
+enrichment figure exists and whether the scores were ever checked to behave as
+scores. That is exactly why they are the easiest two to leave out: a protocol
+without them still produces a full column of numbers.
+
+## 2. The cleanest incomparable pair
+
+`p-baseline` and `p-rescored` differ in **exactly one component**. Same search,
+same pose generation, same scoring function, same constraints, same decoys, same
+validation. Same ligand, same structure.
+
+One applies a second scoring function to the top pose.
+
+| protocol | reported |
+| --- | --- |
+| `p-baseline` | **-8.2** |
+| `p-rescored` | **-10.7** |
+
+Both in kcal per mole. **Nothing about the ligand changed and the 2.5 gap is
+entirely the protocol.** The second number came out of a different function, so
+the two are not on one scale.
+
+## 3. No pair in this set may be compared
+
+The command works out every pair and names the components that block it:
+
+- `p-baseline` against `p-rescored`: blocked by rescoring
+- `p-baseline` against `p-constrained`: blocked by search and constraints
+- `p-rescored` against `p-constrained`: blocked by search, rescoring and constraints
+
+**Shared units are not shared scale.** Three protocols, three numbers, one
+reference ligand, and no legitimate comparison among them.
+
+## 4. What a protocol without validation cannot report
+
+```bash
+python labs/docking_protocol/inspect_protocol.py check
+```
+
+`p-constrained` declares no validation and no decoys. The lab records what it
+therefore cannot report: **any claim that its scores behave as scores**, because
+nothing was validated, and **any enrichment figure**, because there is no decoy
+set to enrich against.
+
+Eleven checks run. A protocol that is not fully declared stops the run before any
+comparison is attempted, because a comparison against an unstated protocol is not
+a comparison.
+
+## Independent exercise
+
+A slide compares two series: "series A docks at -9.4, series B at -7.1. We are
+progressing A." The methods section says the two series were docked at different
+times by different people using the same program.
+
+Say what you would need to establish before the comparison means anything, and
+what you would do if that information no longer exists.
+
+<details data-worked-answer>
+<summary>Worked answer — the five questions, and the fallback</summary>
+
+**Same program is not the same protocol.** The five score-moving components can
+all differ between two runs of one program: exhaustiveness, box definition and
+padding, how conformers and protonation states were generated, which scoring
+function was selected, whether anything was rescored, and whether any constraint
+was applied. Any one of those makes -9.4 and -7.1 numbers on different scales.
+
+**Two of them are especially likely here.** Different people at different times
+usually means different box definitions, because the box is drawn by hand around
+whatever reference was available then. And exhaustiveness is the setting people
+raise when a run looks unconverged, so the series that was worked on harder tends
+to carry the larger number.
+
+**Validation is the one nobody will have.** Even if both protocols match, a score
+means something only if the protocol was checked, usually by redocking a reference
+ligand and reporting the RMSD. If neither run has that, the comparison is between
+two unvalidated quantities and matching protocols would not rescue it.
+
+**What to do if the information is gone.** Do not reconstruct it from memory, and
+do not compare the numbers with a caveat attached, because the caveat does not
+travel with the number onto the next slide. **Redock both series under one
+declared protocol.** It is cheap relative to the decision, it produces numbers
+that are comparable by construction, and it is the only route that ends with a
+defensible sentence.
+
+If redocking is not possible, the honest report is that the two numbers cannot be
+compared and that the progression decision rests on whatever evidence is not a
+docking score.
+
+</details>
+
+## What this does not do
+
+It runs no docking program, prepares no structure, and does not establish that any
+score is correct. It reads declarations and reports which comparisons the
+declarations permit.
+
+**A reported docking score is the best number a particular search found under a
+particular scoring function with particular constraints.** It is not a binding
+free energy, not a prediction of activity, and not comparable to a number produced
+by a different protocol.
+
+For the surrounding argument see
+[docking through FEP](/learn/physics-based-modeling/docking-to-fep/) and the
+[physics resource guide](/learn/physics-based-modeling/physics-resource-guide/).
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-11.

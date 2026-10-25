@@ -1,0 +1,84 @@
+---
+title: 实体类别与标识符
+description: 将测量读作受测分子记录、其母体、检测、靶点与文献之间的关系。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+import ScrollableRegions from "../../../../../components/ScrollableRegions.astro";
+
+<LessonProgress lessonId="foundations/entity-kinds-and-identifiers" />
+<ScrollableRegions />
+
+英文原文：[Entity kinds and identifiers](/learn/foundations/entity-kinds-and-identifiers/)。
+
+## 学习目标与预备知识
+
+学完本课，你应能说出 ChEMBL 活性行中每个标识符背后的实体类别，区分受测分子记录及其母体，并解释共享靶点允许和不允许哪些比较。先阅读[来源与实体素养](/zh-cn/learn/foundations/source-and-entity-literacy/)和[一个决策单元的尺度](/zh-cn/learn/foundations/decision-unit-scope/)。[实体术语实验](/zh-cn/labs/entity-glossary-audit/)使这套计数规则可以运行。
+
+## 五类可命名实体
+
+一个活性数值同时关联着多种东西。分子记录命名受测形式。其母体标识符提供本次计数声明的分组单位。检测标识符指出测量系统，靶点标识符指出检测所针对的对象，文献标识符指出发表来源。这些标识符与报告值之间具有不同关系。即使两个标识符字段出现相同字符，也不表示它们含义相同。
+
+| 实体类别 | ChEMBL 字段 | 回答的问题 |
+| --- | --- | --- |
+| 分子记录 | `molecule_chembl_id` | 测试了哪种存储形式？ |
+| 母体分子 | `parent_molecule_chembl_id` | 该形式归入哪个母体？ |
+| 检测 | `assay_chembl_id` | 哪个测量系统产生了这一行？ |
+| 靶点 | `target_chembl_id` | 针对哪个已记录实体进行测量？ |
+| 文献 | `document_chembl_id` | 在哪里报告？ |
+
+只要报告计数，这一区分就很重要。分子记录数、母体分子数、检测数和文献数分别回答四个问题。靶点数又回答另一个问题。它们都不能代替独立测量数，后者首先需要准入规则和分组键。
+
+## 分子记录与母体
+
+在生物活性讨论中，化合物一词往往指被比较的实体。然而数据库同时提供受测分子记录和母体分组，因此计数必须明确使用哪一个。有些母体是制剂，单说化合物并不能消除这一歧义。
+
+ChEMBL 可能给盐型分配独立的分子记录，并将该记录映射到一个母体。这两个标识符在本实验的分组规则下代表同一个母体层面的物质，同时保留实际受测形式的差异。这是数据库关系和声明的计数选择。它不证明不同制剂在化学上可以互换，也不意味着在别的分析中可以合并两个标识符。
+
+本教学队列的协议声明了 15 个种子分子记录，解析为 10 个母体。其中只有 9 个母体有被准入的点测量行。在被准入行中，71 行的分子记录不同于其母体，涉及 6 个子形式标识符。5 个已声明的盐型种子贡献了其中 65 行。另一个子形式标识符仍标作子形式，因为缓存中的种子记录未给出其化学形式名称。
+
+## 推导案例
+
+冻结的 ChEMBL 37 准入规则保留 AC50、EC50、IC50、Kd 或 Ki 的经整理点测量，单位为 nM。它得到 488 条被准入行。按母体、检测、文献和终点分组后得到 486 次独立测量。其中一个组含有两个分子记录标识符。若每组只计一个标识符，就会抹掉这个观察到的不一致。改为计数行中的使用次数，每个字段各有 488 次，五个字段共 2,440 次。
+
+| 被准入行中的类别 | 不同标识符 |
+| --- | ---: |
+| 分子记录 | 15 |
+| 母体分子 | 9 |
+| 检测 | 481 |
+| 靶点 | 100 |
+| 文献 | 221 |
+| 各类别合计 | 826 |
+
+100 个靶点标识符中有 21 个包含多个分子记录的测量。这足以找出可能进行同靶点比较的位置。比较数值之前，还须检查检测条件、终点类别、生物体和关系符号。共享靶点本身不能使两个结果可比。
+
+## 独立练习
+
+考虑一组构造的 3 条被准入行。A 行命名分子 M、母体 P、检测 X、靶点 T 和文献 D。B 行命名分子 N、同一个母体 P、检测 X、靶点 T 和文献 D。两行的终点也相同。C 行命名分子 M、母体 P、检测 Y、靶点 U 和文献 E。假设 N 是已声明的 P 的盐型。计数各类别的不同标识符，按母体、检测、文献和终点键计数独立测量，并找出哪个靶点支持对多个分子记录作比较。
+
+<details>
+<summary>参考答案</summary>
+
+这 3 行命名了 2 个分子记录、1 个母体、2 个检测、2 个靶点和 2 篇文献。它们形成 2 次独立测量，因为 A 与 B 共享完整分组键。T 同时有 M 和 N 的行，而 U 只有 M。B 是分子记录不同于其母体的那一行。共享靶点和分组测量都不能证明 M 与 N 在化学上等同。
+
+</details>
+
+## 材料没有显示什么
+
+缓存的活性行不携带复合物、细胞状态、患者或治疗候选项标识符。488 条被准入行中的每条都缺少这几类的标识符。这限制了对它们的主张，并不意味着每行本应命名其中一类。靶点标识符不是疾病标签，文献标识符是来源线索，而非数值正确的证明。队列是为演示计数规则而选，因此其中的比例不能估计整个 ChEMBL 中的频率或药物作用。
+
+## 运行审核
+
+模式是依照冻结的本地快照进行全新独立计算。缓存就位后无需网络，也无需加速器。使用 Python 3.11。下载命令会验证并复制现有缓存。检查器不写入文件，导出器仅在检查通过后替换精简汇总。
+
+```bash
+.venv/bin/python labs/entity_glossary_audit/run_lab.py download
+.venv/bin/python labs/entity_glossary_audit/inspect_entity_glossary_audit.py show
+.venv/bin/python labs/entity_glossary_audit/inspect_entity_glossary_audit.py check
+.venv/bin/python labs/entity_glossary_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/entity_glossary_audit -q
+```
+
+## 来源与署名
+
+Atlas 来源 ID 为 `dataset-chembl-activity` 和 `db-chembl-37`。为取得缓存来源，曾在 2026-10-21 阅读 [ChEMBL 37 发行版 README](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/README)、[模式文档](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/schema_documentation.txt)和[发行版许可](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE)。本课的计数来自实验在 2026-10-23 对经过验证的缓存所做的计算。ChEMBL 数据保留 Creative Commons Attribution-ShareAlike 3.0 Unported 条款。原创课程文字采用 CC BY 4.0，实验代码采用 Apache-2.0。最后复核于 2026-10-23。

@@ -1,0 +1,423 @@
+id: chembl-training
+name: ChEMBL Quick Tour
+provider_class: curriculum
+canonical_url: https://www.ebi.ac.uk/training/online/courses/chembl-quick-tour/
+summary: An EMBL-EBI self-paced course introducing ChEMBL content, curation, search, access routes, and bioactivity information.
+audiences: [chemistry-students, pharmacology-students, life-science-researchers]
+languages: [en]
+metadata_evidence: [course-overview]
+access:
+  content: { value: open, evidence: [course-overview] }
+  code: { value: unverified }
+  data: { value: open, evidence: [data-access] }
+  solutions: { value: unverified }
+licenses:
+  - name: Creative Commons Attribution 4.0 International
+    scope: EMBL-EBI course materials except where a page supplies separate licensing details
+    evidence: [course-overview]
+coverage_default:
+  depth: unverified
+  evidence: []
+  reviewed_scope: No topic-specific evidence was encoded for omitted taxonomy topics in this dated review.
+  note: Omitted topics remain unverified and must not be treated as absent.
+coverage:
+  - topic_id: t02-assay-endpoint-controls
+    depth: explained
+    evidence: [course-overview, curation]
+    reviewed_scope: Course overview and ChEMBL curation lesson
+    note: The course explains bioactivity records, assays, targets, compounds, confidence, and curated source relationships.
+  - topic_id: t04-entity-identity-resolution
+    depth: explained
+    evidence: [course-overview, data-access]
+    reviewed_scope: Course learning outcomes and data-access lesson
+    note: The course teaches searching and retrieving compound, target, assay, and activity information through several access routes.
+  - topic_id: t04-data-contract
+    depth: explained
+    evidence: [curation, data-access]
+    reviewed_scope: Data curation and access lessons
+    note: The reviewed lessons describe record relationships, curation fields, source links, and website, service, and download access modes.
+  - topic_id: t04-provenance-versioning
+    depth: explained
+    evidence: [curation]
+    reviewed_scope: ChEMBL data-curation lesson
+    note: The lesson explains extraction from scientific literature and links among documents, assays, targets, compounds, and activities.
+  - topic_id: t03-prediction-target-loss
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t03-inductive-bias-selection
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t03-training-validation-selection
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t03-computational-uncertainty
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t07-endpoint-definition
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t07-chemical-standardisation
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t07-property-representation-selection
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t07-regression-formulation
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t07-classification-formulation
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t07-property-task-split-design
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t07-calibration
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t07-applicability-domain
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t07-interpretability-sar
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t07-property-decision-use
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t08-exposure-pk-endpoint
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t08-metabolism-ddi-risk
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t08-safety-toxicity-endpoint
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t08-pkpd-translational-assumption
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t08-multiendpoint-tradeoff
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t09-target-assay-screen-unit
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t09-binding-mode-pose-hypothesis
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t09-binder-classification
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t09-affinity-ranking
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t09-screening-selection-repurposing-transfer
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t10-structure-evidence-state
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t10-binding-site-pocket-definition
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t10-complex-cofolding-hypothesis
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t10-structural-confidence-alternatives
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t10-asset-openness-reproducibility
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t11-physical-model-system-state
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t11-docking-scoring-protocol
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t11-dynamic-simulation-observable
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t11-free-energy-endpoint-network
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t11-convergence-protocol-uncertainty
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t12-design-objective-constraints
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t12-candidate-design-space
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t12-multiobjective-search-diversity
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t12-validity-novelty-synthetic-screen
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t12-generated-candidate-evaluation-batch
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t13-biologic-modality-construct
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t13-sequence-structure-function-objective
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t13-specificity-negative-selection
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t13-expression-developability-manufacturability
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t13-functional-validation
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t14-reaction-record-condition-unit
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t14-atom-mapping-transformation-class
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t14-retrosynthetic-disconnection
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t14-route-feasibility-material-safety
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t14-forward-reaction-lab-feedback
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t15-experiment-pool-budget-feasibility
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t15-acquisition-policy-uncertainty
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t15-batch-diversity-multiobjective-allocation
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t15-time-ordered-feedback-update
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t15-stopping-rule-policy-evaluation
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t16-scientific-task-action-boundary
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t16-source-retrieval-evidence-grounding
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t16-tool-input-output-contract
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t16-trace-recovery
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t16-human-review-authority-evaluation
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t17-generalization-unit
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t17-split-leakage-audit
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t17-baseline-model-selection-protocol
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t17-metric-endpoint-uncertainty
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t17-ood-transportability
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t17-reproduction-reporting-receipt
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t18-evidence-package-claim-chain
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t18-crossdomain-tradeoff-decision
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t18-counterevidence-failure-analysis
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t18-nomination-readiness-next-experiment
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+  - topic_id: t18-openness-biosecurity-governance-boundary
+    depth: absent
+    evidence: [course-contents]
+    reviewed_scope: All seven course pages reviewed on 2026-09-11, being the overview, what ChEMBL is, how the data is curated, accessing the data, searching the web interface, viewing results, and programmatic access via web services
+    note: No page of the reviewed course addresses this topic. The course teaches what the database contains, how records are curated, and three routes for retrieving them. It teaches no modelling, evaluation, design or workflow method.
+evidence:
+  - id: course-contents
+    url: https://www.ebi.ac.uk/training/online/courses/chembl-quick-tour/accessing-chembl-data/searching-using-the-web-interface/
+    title: ChEMBL Quick Tour complete course contents
+    observed_scope: The full course table of contents carried in the navigation of every page, together with the searching, results-viewing and web-services lessons. Search covers entity browsing, target families, text matching, substructure and similarity, and sequence similarity. Results covers tables, report cards, bioactivity tables and CSV or TSV download. Web services links out to external documentation and notebooks that were not reviewed.
+    access: opened
+    reviewed_on: 2026-09-11
+  - id: course-overview
+    url: https://www.ebi.ac.uk/training/online/courses/chembl-quick-tour/
+    title: ChEMBL Quick Tour
+    observed_scope: Audience, prerequisites, learning outcomes, self-paced access, course activities, course review date, and CC BY 4.0 course-material terms.
+    access: opened
+    reviewed_on: 2026-09-04
+    version: "course page last reviewed March 2022"
+  - id: curation
+    url: https://www.ebi.ac.uk/training/online/courses/chembl-quick-tour/what-is-chembl/how-is-chembl-data-curated/
+    title: How is ChEMBL data curated?
+    observed_scope: Literature-derived curation and the document, assay, target, compound, activity, and confidence relationships.
+    access: opened
+    reviewed_on: 2026-09-04
+  - id: data-access
+    url: https://www.ebi.ac.uk/training/online/courses/chembl-quick-tour/accessing-chembl-data/
+    title: Accessing ChEMBL data
+    observed_scope: Public website, web-service, and download routes described by the official course.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats:
+  - The course page reports a March 2022 content-review date; current webpage availability does not establish that every scientific example or interface description was updated in 2026.
+  - The CC BY 4.0 statement applies to the course materials subject to stated exceptions, not automatically to all ChEMBL data, APIs, or linked third-party content.
+last_verified: 2026-09-11

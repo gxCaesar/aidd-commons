@@ -1,0 +1,57 @@
+---
+title: 结构、口袋与共折叠
+description: 将结构预测作为针对特定分子问题的有边界证据来阅读。
+---
+
+import LessonProgress from "../../../../../components/LessonProgress.astro";
+
+英文原文：[Structure, pockets, and co-folding](/learn/structure-and-pockets/cofolding-frontier/)。
+
+译文更新：2026-09-08。
+
+<LessonProgress lessonId="structure-and-pockets/cofolding-frontier" />
+
+## 基础
+
+结构预测、口袋识别和共折叠是相关但不同的任务。预测的复合物可以支持一个结构假设；
+它本身并不能确立结合、选择性、细胞活性或治疗机制。在解读输出前，需要记录对象、
+输入状态和预期实验决策。
+
+## 实践工作流
+
+从实验已知的序列、构建体、配体状态和测定语境开始。检查所选系统是否实际发布了预期
+用途所需的推理代码、权重、训练材料和评估材料。
+[开放共折叠前沿 Atlas](/atlas/open-cofolding-frontier/) 将这些维度分开，而不是将仓库
+视为一揽子开放性主张。
+
+## 评估
+
+使用与决策匹配的留出结构或生化问题，并在信息可用时检查物理合理性、替代状态、校准和
+与训练相似示例的重叠。用测定、结构或扰动确认与决策相关的预测，而不是仅靠模型评分。
+
+在比较系统之前，先把主张分开。单体预测、复合物预测、共折叠位姿、对接位姿与实验结合测量是五件
+不同的事，却以同一种文件格式到达；[主张分离实验](/zh-cn/labs/cofolding-claim-separation/)
+用一条离线命令打印出每个登记系统实际支撑的是哪一件。
+
+## 前沿与开放问题
+
+[AlphaFold 3](https://www.nature.com/articles/s41586-024-07487-w)、
+[Chai-1](https://github.com/chaidiscovery/chai-lab)、
+[Boltz](https://github.com/jwohlwend/boltz)、
+[OpenFold](https://github.com/aqlaboratory/openfold) 和
+[Protenix](https://github.com/bytedance/Protenix) 提供了不同的资产和文档组合。因此，
+报告的准确性不能替代资产级可复现性审查。
+
+## v0.1 尚未教授的内容
+
+v0.1 不对共折叠系统作普遍排序，不提供前瞻性验证数据集，也不在第一手证据未说明时
+推断可用性。
+
+## 核心来源路径
+
+阅读 [AlphaFold 3 文章](https://www.nature.com/articles/s41586-024-07487-w)，然后阅读
+[Chai-1](https://github.com/chaidiscovery/chai-lab) 和
+[Boltz](https://github.com/jwohlwend/boltz) 的实现和许可材料。使用
+[Atlas 清单](/atlas/open-cofolding-frontier/)识别每条记录仍未验证的问题。
+
+最后审阅：2026-09-04。

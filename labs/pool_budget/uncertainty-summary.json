@@ -1,0 +1,129 @@
+{
+  "schema_version": "aidd-commons.pool-budget-uncertainty-summary.v1",
+  "protocol_id": "chembl37-egfr-pool-budget-uncertainty-v1",
+  "completed_on": "2026-09-11",
+  "data_kind": "retrospective-assay-replay",
+  "software": {
+    "python": "3.11.15",
+    "numpy": "2.4.6",
+    "rdkit": "2025.9.6",
+    "scikit-learn": "1.9.0"
+  },
+  "assays": {
+    "CHEMBL5736995": {
+      "partitions": {
+        "initial": {
+          "parents": 90,
+          "groups": 62
+        },
+        "pool": {
+          "parents": 631,
+          "groups": 97
+        },
+        "evaluation": {
+          "parents": 181,
+          "groups": 79
+        }
+      },
+      "budget": {
+        "batch_size": 31,
+        "acquired_count": 124,
+        "original_pool_parent_count": 631,
+        "checkpoints": [
+          0,
+          31,
+          62,
+          93,
+          124
+        ],
+        "actual_budget_fraction": 0.196513470681458
+      },
+      "policy": {
+        "name": "ensemble-variance-uncertainty",
+        "recovery": [
+          0.0,
+          0.0625,
+          0.109375,
+          0.171875,
+          0.21875
+        ],
+        "normalized_auc": 0.11328125,
+        "scaffold_fraction": [
+          0.0,
+          0.1958762886597938,
+          0.31958762886597936,
+          0.41237113402061853,
+          0.4639175257731959
+        ],
+        "evaluation_mae": [
+          0.4212856881575679,
+          0.403437020245006,
+          0.3963453911786058,
+          0.41325981509291254,
+          0.405910834847792
+        ]
+      }
+    },
+    "CHEMBL3705421": {
+      "partitions": {
+        "initial": {
+          "parents": 12,
+          "groups": 10
+        },
+        "pool": {
+          "parents": 130,
+          "groups": 1
+        },
+        "evaluation": {
+          "parents": 28,
+          "groups": 12
+        }
+      },
+      "budget": {
+        "batch_size": 6,
+        "acquired_count": 24,
+        "original_pool_parent_count": 130,
+        "checkpoints": [
+          0,
+          6,
+          12,
+          18,
+          24
+        ],
+        "actual_budget_fraction": 0.18461538461538463
+      },
+      "policy": {
+        "name": "ensemble-variance-uncertainty",
+        "recovery": [
+          0.0,
+          0.15384615384615385,
+          0.15384615384615385,
+          0.23076923076923078,
+          0.23076923076923078
+        ],
+        "normalized_auc": 0.16346153846153846,
+        "scaffold_fraction": [
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evaluation_mae": [
+          0.6979529423554165,
+          0.7335339734280415,
+          0.7204462718274313,
+          0.5930889969675738,
+          0.5647155116021457
+        ]
+      }
+    }
+  },
+  "interpretation": [
+    "Two retrospective assay replays; no prospective experimental or discovery claim.",
+    "Ensemble variance is a ranking signal for acquisition, not a checked calibrated interval.",
+    "Ridge alpha=1 was inherited from the same frozen contract as the completed campaign; this is not an independently tuned model.",
+    "T15 accessed labels shared with T05 before T05 evaluation, as the completed campaign already discloses; this run inherits that same exposure.",
+    "No confidence intervals, p values, or pooled inferential comparisons are reported."
+  ]
+}

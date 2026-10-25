@@ -1,0 +1,264 @@
+---
+import { parse } from "yaml";
+
+import {
+  capabilitiesForLesson,
+  type Curriculum,
+} from "../../../scripts/curriculum/curriculum.js";
+import curriculumSource from "../../../catalog/curriculum/tracks.yaml?raw";
+
+interface Props {
+  chinese?: boolean;
+}
+
+const { chinese = false } = Astro.props;
+const curriculum = parse(curriculumSource) as Curriculum;
+const lessonsByQualifiedId = new Map(
+  curriculum.tracks.flatMap((track) =>
+    track.lessons.map((lesson) => [
+      `${track.id}/${lesson.id}`,
+      { lesson, track },
+    ]),
+  ),
+);
+const lessonsById = new Map(
+  curriculum.tracks.flatMap((track) =>
+    track.lessons.map((lesson) => [lesson.id, { lesson, track }]),
+  ),
+);
+const corePath = curriculum.learning_paths.find((path) => path.kind === "core");
+const specialistPaths = curriculum.learning_paths.filter(
+  (path) => path.kind === "specialist",
+);
+
+const labels = chinese
+  ? {
+      capabilities: "教学能力",
+      core: "核心路径",
+      externalPrerequisites: "路径外先修课程",
+      lessonPrerequisites: "本课先修课程",
+      open: "打开课程",
+      specialist: "专题路径",
+      step: "步骤",
+    }
+  : {
+      capabilities: "Capabilities",
+      core: "Core route",
+      externalPrerequisites: "Prerequisites outside this route",
+      lessonPrerequisites: "Lesson prerequisites",
+      open: "Open lesson",
+      specialist: "Specialist routes",
+      step: "Step",
+    };
+
+const capabilityLabels = chinese
+  ? {
+      orientation: "导览",
+      explanation: "讲解",
+      "worked-example": "示例",
+      exercise: "练习",
+      runnable: "可运行",
+    }
+  : {
+      orientation: "Orientation",
+      explanation: "Explanation",
+      "worked-example": "Worked example",
+      exercise: "Exercise",
+      runnable: "Runnable",
+    };
+
+function lessonHref(lessonId: string): string {
+  return chinese ? `/zh-cn/learn/${lessonId}/` : `/learn/${lessonId}/`;
+}
+
+function lessonTitle(lessonId: string): string {
+  const resolved = lessonsByQualifiedId.get(lessonId);
+  if (!resolved) return lessonId;
+  return chinese ? resolved.lesson.title_zh ?? resolved.lesson.title : resolved.lesson.title;
+}
+
+function lessonTrackTitle(lessonId: string): string {
+  const resolved = lessonsByQualifiedId.get(lessonId);
+  if (!resolved) return lessonId;
+  return chinese ? resolved.track.title_zh : resolved.track.title;
+}
+
+function canonicalPrerequisites(lessonId: string): string[] {
+  const resolved = lessonsByQualifiedId.get(lessonId);
+  if (!resolved) return [];
+  return resolved.lesson.prerequisites.flatMap((prerequisite) => {
+    const prerequisiteLesson = lessonsById.get(prerequisite);
+    return prerequisiteLesson
+      ? [`${prerequisiteLesson.track.id}/${prerequisiteLesson.lesson.id}`]
+      : [];
+  });
+}
+---
+
+<section class="learning-routes" aria-label={chinese ? "学习路径" : "Learning routes"} data-learning-routes>
+  {corePath && (
+    <section class="learning-routes__group" id="core-route" aria-labelledby="core-route-title">
+      <p class="learning-routes__eyebrow">{labels.core}</p>
+      <article class="learning-routes__route" data-learning-path={corePath.id}>
+        <h2 id="core-route-title">{chinese ? corePath.title_zh : corePath.title}</h2>
+        <p>{chinese ? corePath.description_zh : corePath.description}</p>
+        <ol class="learning-routes__steps">
+          {corePath.lesson_ids.map((lessonId, index) => {
+            const resolved = lessonsByQualifiedId.get(lessonId);
+            if (!resolved || resolved.lesson.type === "core-source-path") return null;
+            const prerequisites = canonicalPrerequisites(lessonId);
+            const capabilities = capabilitiesForLesson(resolved.lesson);
+            return (
+              <li>
+                <span class="learning-routes__step">{labels.step} {index + 1}</span>
+                <div>
+                  <a href={lessonHref(lessonId)}>{lessonTitle(lessonId)}</a>
+                  <p>{lessonTrackTitle(lessonId)}</p>
+                  {prerequisites.length > 0 && (
+                    <p>
+                      <strong>{labels.lessonPrerequisites}.</strong>{" "}
+                      {prerequisites.map((prerequisite, prerequisiteIndex) => (
+                        <Fragment>
+                          {prerequisiteIndex > 0 ? ", " : ""}
+                          <a href={lessonHref(prerequisite)}>{lessonTitle(prerequisite)}</a>
+                        </Fragment>
+                      ))}
+                    </p>
+                  )}
+                  {capabilities.length > 0 && (
+                    <p><strong>{labels.capabilities}.</strong>{" "}{capabilities.map((capability) => capabilityLabels[capability]).join(", ")}</p>
+                  )}
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </article>
+    </section>
+  )}
+
+  <section class="learning-routes__group" id="specialist-routes" aria-labelledby="specialist-routes-title">
+    <p class="learning-routes__eyebrow">{labels.specialist}</p>
+    <h2 id="specialist-routes-title">{chinese ? "按问题进入专题学习" : "Specialist routes by question"}</h2>
+    <div class="learning-routes__specialists">
+      {specialistPaths.map((path) => (
+        <article class="learning-routes__route" data-learning-path={path.id}>
+          <h3>{chinese ? path.title_zh : path.title}</h3>
+          <p>{chinese ? path.description_zh : path.description}</p>
+          {path.prerequisites.length > 0 && (
+            <p class="learning-routes__external-prerequisites">
+              <strong>{labels.externalPrerequisites}.</strong>{" "}
+              {path.prerequisites.map((lessonId, index) => (
+                <Fragment>
+                  {index > 0 ? ", " : ""}
+                  <a href={lessonHref(lessonId)}>{lessonTitle(lessonId)}</a>
+                </Fragment>
+              ))}
+            </p>
+          )}
+          <ol class="learning-routes__steps">
+            {path.lesson_ids.map((lessonId, index) => {
+              const resolved = lessonsByQualifiedId.get(lessonId);
+              if (!resolved || resolved.lesson.type === "core-source-path") return null;
+              const prerequisites = canonicalPrerequisites(lessonId);
+              const capabilities = capabilitiesForLesson(resolved.lesson);
+              return (
+                <li>
+                  <span class="learning-routes__step">{labels.step} {index + 1}</span>
+                  <div>
+                    <a href={lessonHref(lessonId)}>{lessonTitle(lessonId)}</a>
+                    <p>{lessonTrackTitle(lessonId)}</p>
+                    {prerequisites.length > 0 && (
+                      <p>
+                        <strong>{labels.lessonPrerequisites}.</strong>{" "}
+                        {prerequisites.map((prerequisite, prerequisiteIndex) => (
+                          <Fragment>
+                            {prerequisiteIndex > 0 ? ", " : ""}
+                            <a href={lessonHref(prerequisite)}>{lessonTitle(prerequisite)}</a>
+                          </Fragment>
+                        ))}
+                      </p>
+                    )}
+                    {capabilities.length > 0 && (
+                      <p><strong>{labels.capabilities}.</strong>{" "}{capabilities.map((capability) => capabilityLabels[capability]).join(", ")}</p>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </article>
+      ))}
+    </div>
+  </section>
+</section>
+
+<style>
+  .learning-routes {
+    display: grid;
+    gap: 2rem;
+    margin-block: 1.5rem;
+  }
+
+  .learning-routes__group > h2,
+  .learning-routes__route h2,
+  .learning-routes__route h3 {
+    margin-top: 0;
+  }
+
+  .learning-routes__eyebrow,
+  .learning-routes__step {
+    color: var(--sl-color-text-accent);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .learning-routes__route {
+    padding: 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.35rem;
+    background: var(--sl-color-bg-nav);
+  }
+
+  .learning-routes__specialists {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .learning-routes__steps {
+    display: grid;
+    gap: 0.75rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: none;
+  }
+
+  .learning-routes__steps li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.7rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+
+  .learning-routes__steps a {
+    font-weight: 700;
+  }
+
+  .learning-routes__steps p,
+  .learning-routes__external-prerequisites {
+    margin: 0.25rem 0;
+    color: var(--sl-color-gray-3);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 44rem) {
+    .learning-routes__specialists {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

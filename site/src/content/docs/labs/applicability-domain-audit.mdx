@@ -1,0 +1,80 @@
+---
+title: Audit a FreeSolv applicability-domain diagnostic
+description: Compare nearest-training property distance with ridge prediction error on scaffold-held-out molecules.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+This laboratory serves `t07-applicability-domain`. Read [applicability-domain diagnostics](/learn/qsar-properties/applicability-domain-diagnostics/) and the [FreeSolv baseline guide](/labs/freesolv-honest-baselines/) first. You will calculate a distance to the fitted population, compare error across distance halves, and explain why the result is a diagnostic rather than a domain boundary. Familiarity with molecular descriptors and ridge regression is useful.
+
+Mode is fresh independent computation over a frozen protocol and the local FreeSolv release. Use the project Python 3.11 environment and CPU. No network, download or accelerator is needed. `check` and `show` write nothing. The exporter overwrites only the committed aggregate summary after the audit passes.
+
+```bash
+.venv/bin/python labs/applicability_domain_audit/run_lab.py check
+.venv/bin/python labs/applicability_domain_audit/inspect_applicability_domain_audit.py show
+.venv/bin/python labs/applicability_domain_audit/inspect_applicability_domain_audit.py check
+.venv/bin/python labs/applicability_domain_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/applicability_domain_audit -q
+```
+
+## Source and measurement
+
+| Input | Release | Bytes | Read on | Licence for this release |
+| --- | --- | ---: | --- | --- |
+| `.cache/freesolv/freesolv-v0.52-database.txt` | FreeSolv v0.52 | 144897 | 2026-10-23 | unverified |
+
+The file is a local copy of the [pinned FreeSolv v0.52 release](https://raw.githubusercontent.com/MobleyLab/FreeSolv/v0.52/database.txt). The loader requires the declared byte length and release header, then parses the fourth semicolon-delimited field as measured hydration free energy in kcal/mol. The v0.52 release metadata does not declare licence terms. A current repository licence cannot establish the terms of that historical release.
+
+## Cohort and scaffold split
+
+The table comes from the committed 2026-10-23 computation. The median and quartiles use the measured endpoint. The split groups Bemis-Murcko scaffolds and gives each acyclic molecule its own canonical-SMILES key. A seeded, size-ordered assignment places whole groups into training until the 80% target is reached. No scaffold occurs on both sides.
+
+| Population or statistic | Value |
+| --- | ---: |
+| Molecules | 642 |
+| Distinct scaffolds | 382 |
+| Measured median, kcal/mol | -3.53 |
+| Measured first quartile, kcal/mol | -5.7275 |
+| Measured third quartile, kcal/mol | -1.215 |
+| Measured interquartile range, kcal/mol | 4.5125 |
+| Training molecules | 514 |
+| Test molecules | 128 |
+| Training scaffolds | 254 |
+| Test scaffolds | 128 |
+
+## Distance and error contrast
+
+The distance representation is a laboratory choice of five RDKit properties, MolWt, MolLogP, TPSA, NumHDonors and NumHAcceptors. For each property, an absolute difference is divided by its training-set population standard deviation, with 1 used if that deviation is zero. The mean of those five scaled differences is calculated for each test–training pair. The smallest pair distance is the test molecule's nearest-training distance. Ridge regression on chirality-aware Morgan fingerprints supplies predictions. Its `alpha=1.0`, radius 2 and 2048 bits are fixed before this computation.
+
+The median and quartiles below summarize the 128 nearest-training distances. These distances have no physical unit. The test molecule with the largest nearest-training distance is identified by its source ID. Its farthest-training comparison is also shown so that the two different pairwise statements remain explicit.
+
+| Distance statistic | Value |
+| --- | ---: |
+| First quartile | 0.000205 |
+| Median | 0.023539 |
+| Third quartile | 0.082516 |
+| Interquartile range | 0.082312 |
+| Largest nearest-training distance | 0.43877 |
+| Test molecule at that distance | `mobley_9460824` |
+| Its nearest training molecule | `mobley_1849020` |
+| Its farthest-training distance | 3.996323 |
+| Its farthest training molecule | `mobley_4587267` |
+
+The test molecules are sorted by nearest-training distance and source ID, then divided into equal halves. Each error is the absolute difference between a ridge prediction and the measured value.
+
+| Test half | Molecules | Median absolute error, kcal/mol |
+| --- | ---: | ---: |
+| Smaller distance | 64 | 0.586647 |
+| Larger distance | 64 | 0.800081 |
+
+## Limits of the material
+
+The larger-distance half has a higher median error in this run. That contrast does not identify a usable threshold or estimate the error of a particular new molecule. Distinct structures can share nearly identical values of these five properties. The audit does not fit a better model or turn its chosen distance into a claim about chemical mechanism. This scaffold split probes held-out grouping under one operational scaffold definition. A random split can leave related scaffolds on both sides and supports a different generalization claim.
+
+## Sources and terms
+
+The [FreeSolv release](https://doi.org/10.5281/zenodo.1161245), the [RDKit documentation](https://www.rdkit.org/docs/index.html), the local release and the project's source records were read on 2026-10-23. The FreeSolv v0.52 licence remains unverified. The RDKit source record names BSD-3-Clause for covered code and does not relicense third-party components. Original guide prose is CC BY 4.0 and laboratory code is Apache-2.0. Linked resources retain their own terms. Last reviewed on 2026-10-23.

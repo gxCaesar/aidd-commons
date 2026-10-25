@@ -1,0 +1,24 @@
+id: bad-evidence-after-record-review
+name: Evidence reviewed after record
+provider_class: tutorial-collection
+canonical_url: https://example.org/evidence-after-record
+summary: A fixture whose evidence review is later than the record review date.
+audiences: [researchers]
+languages: [en]
+metadata_evidence: [overview]
+access:
+  content: { value: open, evidence: [overview] }
+  code: { value: unverified }
+  data: { value: unverified }
+  solutions: { value: unverified }
+licenses: []
+coverage: []
+evidence:
+  - id: overview
+    url: https://example.org/evidence-after-record
+    title: Later evidence review
+    observed_scope: System identity and public content access.
+    access: opened
+    reviewed_on: 2026-09-04
+caveats: []
+last_verified: 2026-09-03

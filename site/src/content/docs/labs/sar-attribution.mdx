@@ -1,0 +1,170 @@
+---
+title: The explanation pointed at the wrong atoms
+description: Fit a model to data whose generating rule is known, explain it, and watch the credit land on a substructure that causes nothing.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+import LabDownloads from "../../../components/LabDownloads.astro";
+
+<ScrollableRegions />
+
+<LabDownloads lab="sar-attribution" />
+
+## Before you run
+
+**Mode: runnable demonstration on constructed data.** The command reads one
+committed JSON file, fits a ridge model on Morgan fingerprints, and traces the
+credit back to atoms. **No activity value here is real**, no molecule was
+measured, and nothing is a design proposal.
+
+```bash
+python labs/sar_attribution/inspect_attribution.py show
+```
+
+Model explanations are routinely read as statements about which atoms cause
+activity. On real data that reading cannot be checked, because the cause is
+exactly what you were trying to learn. **Here it can**, because the labels come
+from a rule stated in the dataset.
+
+## 1. The dataset stores a rule, not labels
+
+A molecule is active if and only if it contains a carboxylic acid. That is the
+whole generating rule. The file contains **no label field at all** — labels are
+computed from the rule every time, so no label can drift away from its cause, and
+a test asserts the file has none.
+
+A second substructure, an unsubstituted furan, is **perfectly correlated with the
+cause** across the sixteen training molecules and has no causal role whatsoever.
+Every active carries both; no inactive carries either.
+
+That correlation is not a flaw in the data. It is the ordinary situation. A
+series explored around one scaffold will confound the scaffold with whatever made
+the series worth exploring.
+
+## 2. The model fits, which is when an explanation feels safest
+
+Largest training error across all sixteen molecules: **0.0549**. Actives predict
+near one, inactives near zero.
+
+This is the case where reading an explanation feels safe. The model has clearly
+learned something, so surely the explanation reports what it learned. It does —
+and that is the problem.
+
+## 3. The credit lands on atoms that cause nothing
+
+Per-atom credit is traced back through fingerprint bit provenance, then summed
+over the acid atoms, the furan atoms, and everything else.
+
+**The confounder outscores the true cause on 7 of 8 active molecules.** Every
+active molecule assigns positive credit to furan atoms, which by construction
+cause nothing.
+
+It won for a reason worth naming. **The furan appears in an identical environment
+every time, so its bits repeat. The acid appears in a different environment each
+time, so its credit is split across many distinct bits.** Uniformity, not
+importance, is what concentrates weight — and nothing in the explanation
+distinguishes the two.
+
+## 4. The analogues are the experiment
+
+An explanation produces a hypothesis: *the furan matters*. A matched pair that
+breaks the correlation is what tests it.
+
+| id | molecule | cause | proxy | predicted | called |
+| --- | --- | --- | --- | --- | --- |
+| a01 | `CCCc1ccoc1` | 0 | 1 | +0.4908 | inactive |
+| a02 | `OC(=O)CCc1ccccc1` | 1 | 0 | +0.4607 | inactive |
+| a03 | `OC(=O)CCc1ccoc1` | 1 | 1 | +0.9671 | active |
+| a04 | `CCCCc1ccncc1` | 0 | 0 | -0.0086 | inactive |
+
+Read a01 and a02 together. They have **opposite true activity**. The model
+separates them by **0.0300** and puts them in the **wrong order**: the molecule
+with no cause at all scores higher than the genuinely active one, which is then
+called inactive at a threshold declared before fitting.
+
+The two controls behave exactly as the rule dictates, which is what makes the
+first pair readable rather than noise.
+
+```bash
+python labs/sar_attribution/inspect_attribution.py check
+```
+
+Fourteen checks run, including that the correlation is perfect in training, that
+the confounder is declared non-causal, that the threshold was declared before
+fitting, and that the inverted ranking still holds.
+
+## 5. What this licenses, and what it does not
+
+**It licenses a hypothesis.** An explanation reports which features the model
+used. That is a fact about the model and it is worth having. Turning it into a
+claim about which atoms cause activity needs an analogue that breaks the
+correlation, and that is an experiment rather than a re-reading of the same fit.
+
+**It does not license a causal atom effect.** Here the non-causal substructure
+carried the larger share of credit, and that was visible only because the
+generating rule was known.
+
+**On real data this check is unavailable.** You cannot compare the explanation to
+the cause, because the cause is what you are trying to find. The analogue is the
+only route left, and it costs an experiment.
+
+## Independent exercise
+
+A colleague shows you an attribution heat map over an active compound. The
+sulfonamide is coloured strongly. They propose: "the sulfonamide is driving
+activity, so let's keep it fixed and optimise elsewhere."
+
+Say what the heat map does and does not support, and design the cheapest
+experiment that would distinguish the two possibilities.
+
+<details data-worked-answer>
+<summary>Worked answer — what the colour means, and the pair to make</summary>
+
+**The heat map supports one claim: the model's prediction depends on those
+atoms.** That is a fact about the fitted function, and it is checkable by
+perturbing the input. It is not a fact about chemistry.
+
+**The competing explanation is a confound, and it is usually the likelier one.**
+If the sulfonamide entered the series early and every subsequent analogue kept it,
+then every active in the training data carries it and the model cannot separate
+its contribution from whatever else those molecules share. The lab above is that
+situation made visible: the confounder took the larger share of credit while
+causing nothing.
+
+**"Keep it fixed and optimise elsewhere" is the decision the confound damages
+most.** It removes the only compounds that could have distinguished the two
+explanations, and it does so before the question is asked. After that round, the
+correlation is stronger and the heat map looks more convincing, having gained no
+new evidence.
+
+**The cheapest experiment is a matched pair.** Make one analogue that removes or
+replaces the sulfonamide while holding the rest of the molecule as fixed as
+synthesis allows, and one that keeps the sulfonamide but changes a region the
+model treats as unimportant. If activity survives removal, the attribution was
+reading a confound. If it collapses, the hypothesis survives this test — which is
+not the same as being confirmed, and the next series will re-confound it unless
+the pair is repeated.
+
+**And check what the model says about the pair before making it.** In the lab
+above the model gave two molecules of opposite true activity scores 0.0300 apart
+and in the wrong order. A model that cannot separate the pair on paper is telling
+you the pair is worth making, and that its own attribution should not be used to
+skip it.
+
+</details>
+
+## What this does not do
+
+This route does not evaluate an attribution method, rank explanation techniques,
+or establish anything about real structure-activity relationships. It constructs
+one situation where the answer is known and shows what an explanation does in it.
+The molecules were authored for teaching, and the exact predictions depend on the
+fingerprint implementation, observed with RDKit 2025.09.6 and NumPy 2.4.6.
+
+For the surrounding argument see
+[interpretability and structure-activity relationships](/learn/qsar-properties/chemical-series-and-domains/)
+and
+[uncertainty to decisions](/learn/qsar-properties/uncertainty-to-decisions/).
+
+Original prose is CC BY 4.0 and original lesson code is Apache-2.0. Last
+reviewed: 2026-09-11.

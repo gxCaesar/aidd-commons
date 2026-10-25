@@ -1,0 +1,49 @@
+id: benchmark-cryptobench
+name: CryptoBench
+kind: benchmark
+summary: Dataset of protein cryptic binding sites built from apo and holo structure pairs, published as public creation scripts under an MIT licence and as a public dataset on the Open Science Framework.
+canonical_url: https://github.com/skrhakv/CryptoBench
+identifiers:
+  - scheme: dataset
+    value: "the CryptoBench dataset of protein cryptic binding sites, an Open Science Framework project created on 27 February 2024 and last modified on 17 January 2026"
+    url: https://osf.io/pz4a9/
+  - scheme: code
+    value: "the scripts that create the dataset, skrhakv/CryptoBench"
+    url: https://github.com/skrhakv/CryptoBench
+  - scheme: paper
+    value: "CryptoBench: cryptic protein-ligand binding sites dataset and benchmark; Skrhak, Novotny, Feidakis, Krivak and Hoksza, Bioinformatics 2024, 41, 1, DOI 10.1093/bioinformatics/btae745"
+    url: https://doi.org/10.1093/bioinformatics/btae745
+stages: [structure-prediction, hit-discovery]
+modalities: [protein-ligand-complex, protein-pocket]
+tasks: [structure-retrieval, protein-pocket]
+relations: []
+status: { value: active, evidence: [repository] }
+access_level: { value: source_available, evidence: [repository, osf-project] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: not_applicable, evidence: [repository] }
+  weights: { value: not_applicable, evidence: [repository] }
+  architecture: { value: not_applicable, evidence: [repository] }
+  data_recipe: { value: available, evidence: [repository] }
+  training_data: { value: available, evidence: [osf-project] }
+  evaluation_code: { value: available, evidence: [repository] }
+licenses:
+  - name: MIT
+    scope: "The MIT licence the repository carries, which covers the scripts that create the dataset. It does not reach the dataset the scripts produce, and the Open Science Framework project states no licence of its own."
+    evidence: [repository]
+evidence:
+  - id: repository
+    url: https://github.com/skrhakv/CryptoBench
+    label: The CryptoBench creation-scripts repository, which is public and carries an MIT licence, read on 2026-10-24
+    supports: [name, kind, summary, stages, modalities, tasks, identifiers, caveats]
+  - id: osf-project
+    url: https://api.osf.io/v2/nodes/pz4a9/
+    label: The Open Science Framework project record for the dataset, read on 2026-10-24, which states the project as public with no licence
+    supports: [identifiers, caveats]
+caveats:
+  - "The dataset is public on the Open Science Framework and the project record carries no licence, so a reader who needs a grant to redistribute the files has to ask the authors. The repository's MIT licence covers the scripts that create the dataset and not the dataset itself."
+  - "A cryptic site is defined here by an apo and holo structure pair, so what the dataset can be used for is bounded by that definition: a ligand that binds a pocket which is absent in the apo structure is cryptic by construction, and a pocket that is present but differently shaped is not. A reader who reads the dataset as a general set of hard targets would be reading more into it than the definition carries."
+  - "The repository was created in June 2024 and last pushed in June 2026, and the paper is a Bioinformatics article, so this is a 2024 line of work rather than a 2026 one."
+  - "The record did not download the dataset or run the creation scripts."
+acknowledgements: []
+last_verified: "2026-10-24"

@@ -1,0 +1,69 @@
+{
+  "admitted_measurement_count": 486,
+  "admitted_point_row_count": 488,
+  "aggregate": {
+    "contaminated_test_rows": 98,
+    "contributing_routes": 5
+  },
+  "cohort": {
+    "declared_seeds": 15,
+    "resolved_parents": 10
+  },
+  "computed_on": "2026-10-23",
+  "grouped_parent_split": {
+    "test_rows": 353,
+    "train_rows": 133,
+    "unseen_parent_test_rows": 353
+  },
+  "highest_overlap_route": "parent",
+  "protocol_id": "chembl37-split-leakage-routes-v1",
+  "routes": {
+    "assay": {
+      "shared_groups": 1,
+      "test_rows_with_train_group": 1,
+      "train_rows_to_hold_out": 1
+    },
+    "parent": {
+      "shared_groups": 6,
+      "test_rows_with_train_group": 98,
+      "train_rows_to_hold_out": 381
+    },
+    "scaffold": {
+      "shared_groups": 6,
+      "test_rows_with_train_group": 98,
+      "train_rows_to_hold_out": 379
+    },
+    "standard_form": {
+      "shared_groups": 11,
+      "test_rows_with_train_group": 98,
+      "train_rows_to_hold_out": 379
+    },
+    "target": {
+      "shared_groups": 19,
+      "test_rows_with_train_group": 81,
+      "train_rows_to_hold_out": 285
+    }
+  },
+  "row_split": {
+    "seed": 20261023,
+    "test_rows": 98,
+    "train_rows": 388
+  },
+  "schema_version": "aidd-commons.split-leakage-audit-summary.v1",
+  "software": {
+    "python": "3.11.15",
+    "rdkit": "2025.09.6"
+  },
+  "source": {
+    "database": "ChEMBL_37",
+    "release_date": "2026-05-01"
+  },
+  "untestable_routes": {
+    "donor": "The activity rows have no donor identifier.",
+    "fitted-preprocessing": "The table holds measurements rather than a fitted transformation, so a preprocessing step fitted on the test set cannot be observed here.",
+    "patient": "The activity rows have no patient identifier.",
+    "site": "The activity rows have no collection site identifier.",
+    "target-family": "The activity rows carry a target identifier and not a protein family, and the snapshot carries no target-to-family mapping, so a route through a family of related targets cannot be measured here.",
+    "temporal": "The activity rows have no measurement date."
+  }
+}

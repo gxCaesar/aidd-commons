@@ -1,0 +1,115 @@
+---
+import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import manifest from "../data/atlas-figures.json";
+
+/**
+ * One figure from the report, drawn by the report's own generators and themed with the
+ * site's own properties.
+ *
+ * The drawing is inlined rather than pointed at. A picture element is a separate
+ * document, and a separate document does not inherit the page's custom properties, so a
+ * figure loaded as a picture cannot follow the reader's theme at all and would sit on the
+ * page in the report's light palette whatever the reader chose. Inline, `var(--atlas-ink)`
+ * resolves against the page, the manual theme toggle is followed with no script, and the
+ * file under `/figures/` stays the one source of the drawing.
+ *
+ * The alt text is the figure's own: it states what a reader should take from the drawing
+ * rather than naming it, and it is registered beside the drawing in
+ * `site/src/data/atlas-figures.json`. The caption is the report's committed caption, so
+ * the site and the report cannot drift apart on what a figure says.
+ *
+ * The space the figure takes is reserved by the drawn ratio, which the frame carries, so
+ * the page does not move under the reader. There is no separate request to defer: the
+ * drawing arrives with the page, as text, and the attributes a picture element would
+ * carry for that purpose have nothing to act on here.
+ */
+interface Props {
+  /** The id the figure is registered under in the manifest. */
+  id: string;
+}
+
+const { id } = Astro.props;
+
+interface FigureEntry {
+  id: string;
+  file: string;
+  alt: string;
+  caption: string;
+  pages: string[];
+}
+
+const figures = manifest.figures as FigureEntry[];
+const figure = figures.find((entry) => entry.id === id);
+if (!figure) {
+  throw new Error(`AtlasFigure: no figure is registered under the id "${id}".`);
+}
+
+// The drawings live in the public directory, which the browser serves and the build
+// does not compile, so they are read from disk when the page is rendered. The site
+// directory is found from the working directory, which is the site itself under the
+// documented commands, and from the source layout, which is where the dev server reads
+// them from.
+const figureDirectory = [
+  resolve(process.cwd(), "public", "figures"),
+  resolve(process.cwd(), "site", "public", "figures"),
+  fileURLToPath(new URL("../public/figures", import.meta.url)),
+].find((directory) => existsSync(directory));
+
+if (!figureDirectory) {
+  throw new Error(
+    "AtlasFigure: the figures directory was not found. Run site/scripts/make-site-figures.py first.",
+  );
+}
+
+const markup = await readFile(resolve(figureDirectory, figure.file), "utf8");
+
+// The drawn size, so the frame reserves the space before the drawing is painted and the
+// page does not move under the reader.
+const viewBox = /viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(markup);
+const aspect = viewBox ? `${viewBox[1]} / ${viewBox[2]}` : "auto";
+---
+
+<figure class="atlas-figure">
+  <div
+    class="atlas-figure__frame"
+    style={`aspect-ratio: ${aspect}`}
+    role="img"
+    aria-label={figure.alt}
+    set:html={markup}
+  />
+  <figcaption class="atlas-figure__caption">
+    {figure.caption}
+  </figcaption>
+</figure>
+
+<style>
+  .atlas-figure {
+    margin: 1.75rem 0;
+  }
+
+  .atlas-figure__frame {
+    /* The drawn ratio belongs to the drawing, so the frame's padding and border sit
+       outside it rather than inside the reserved space. */
+    box-sizing: content-box;
+    border: 1px solid var(--atlas-rule);
+    background: var(--atlas-panel);
+    padding: 0.75rem;
+  }
+
+  .atlas-figure__frame :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .atlas-figure__caption {
+    margin-top: 0.7rem;
+    color: var(--atlas-muted);
+    font-size: 0.86rem;
+    line-height: 1.5;
+  }
+</style>

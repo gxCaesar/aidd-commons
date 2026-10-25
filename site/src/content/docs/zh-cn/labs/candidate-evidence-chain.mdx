@@ -1,0 +1,85 @@
+---
+title: 组装单个化合物的证据链
+description: 对选定的 ChEMBL 母体分子，追踪从机制到有界主张的实测与缺失环节。
+---
+
+import ScrollableRegions from "../../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+[English canonical version](/labs/candidate-evidence-chain/)
+
+## 准备与学习目标
+
+先阅读[候选提名练习册](/learn/candidate-nomination/capstone-workbook/)和[多终点档案指南](/labs/multi-endpoint-integration/)。本实验检验按顺序保留从机制到可重复性的环节时，单个化合物的证据能够支持什么。读者将识别每个环节的来源与状态，找出第一个缺少实测证据的环节，并保留其后的测量记录而不将它们提升为提名主张。
+
+## 全新独立计算
+
+此模式是在冻结的 ChEMBL 37 协议下进行全新独立计算。使用固定的 Python 3.11 环境和现有缓存快照。缓存就绪后，命令不需要网络或加速器。`download` 仅验证缓存，不写入数据。`show` 连同测量记录打印各环节。`check` 重新计算证据链并核对已提交的摘要。导出命令仅在审计全部通过后覆盖这一小型摘要。
+
+```bash
+.venv/bin/python labs/candidate_evidence_chain/run_lab.py download
+.venv/bin/python labs/candidate_evidence_chain/inspect_candidate_evidence_chain.py show
+.venv/bin/python labs/candidate_evidence_chain/inspect_candidate_evidence_chain.py check
+.venv/bin/python labs/candidate_evidence_chain/export_summary.py
+.venv/bin/python -m pytest labs/tests/candidate_evidence_chain -q
+```
+
+## 证据状态与八个环节
+
+实测环节须有该母体分子被纳入的数值、单位、测定或靶标以及文献。缺失表示其他母体分子曾在该类别接受测量，但此母体没有合格记录。构造表示环节仅依赖教学数据。未覆盖表示这里没有与该母体匹配的材料。构造的教学案例并未连接到这些 ChEMBL 母体，因此以下证据链没有将它们用作证据。
+
+| 顺序中的环节 | 本实验的判定规则 | 在 3 个母体中的状态 |
+| --- | --- | --- |
+| 机制 | 需要针对该化合物的机制验证 | 3 个均未覆盖 |
+| 靶标 | 需要实测的预期靶标结合或验证 | 3 个均未覆盖 |
+| 活性 | 被纳入的精确 `AC50`、`EC50` 或 `IC50` 反应效力测量 | 1 个实测，2 个缺失 |
+| 选择性 | 同一文献中各有一项被纳入的 CYP3A4 和 CYP2D6 `IC50`，且各自仅基于一条活性记录 | 1 个实测，2 个缺失 |
+| 暴露 | 具名体外测定体系中被纳入的内在清除率 | 3 个实测 |
+| 安全性 | 没有与这些化合物匹配的安全性测量 | 3 个均未覆盖 |
+| 合成 | 没有与这些化合物匹配的实验合成结果 | 3 个均未覆盖 |
+| 可重复性 | 没有对整个化合物证据链的独立重复 | 3 个均未覆盖 |
+
+CYP 环节只描述 CYP3A4 与 CYP2D6 抑制的差异，不能证明相对于预期治疗靶标的选择性。清除率环节报告真实的体外测量，但不能证明全身暴露。安全性和路线恢复教学实验使用其他对象的构造数据。这些记录不能填补这些母体分子的相应环节。
+
+## 单化合物证据链
+
+下列数值均为各来源读取器按纳入规则处理后的 ChEMBL 37 记录。摘要保留选定证据链中所有被纳入的测量。表格列出辨别不同证据模式所需的记录。清除率记录来自文献 `CHEMBL3301361`。
+
+| 母体 | 活性 | 选择性 | 内在清除率 | 第一个非实测环节 |
+| --- | --- | --- | --- | --- |
+| `CHEMBL1144` | 33 项反应效力测量。其中一项 `EC50` 为 7800 `nM`，测定 `CHEMBL5234138`，文献 `CHEMBL5233232` | 缺失 | 大鼠肝细胞中为 26.98 `uL.min-1.(10^6cells)-1`，测定 `CHEMBL3301371` | 机制 |
+| `CHEMBL1232461` | 缺失 | 缺失。单独一项 CYP2D6 数值为 6.89 `pChEMBL`，测定 `CHEMBL5701064`，文献 `CHEMBL5696440`，不足以形成配对 | 人肝微粒体中为 14.13 `mL.min-1.g-1`，测定 `CHEMBL3301370`。大鼠肝细胞中为 10.23 `uL.min-1.(10^6cells)-1`，测定 `CHEMBL3301371` | 机制 |
+| `CHEMBL1963249` | 缺失 | CYP3A4 为 5.62 `pChEMBL`，测定 `CHEMBL6078958`。CYP2D6 为 4.08 `pChEMBL`，测定 `CHEMBL6078959`，两者均来自文献 `CHEMBL6078621` | 人肝细胞中为 26.92 `uL.min-1.(10^6cells)-1`，测定 `CHEMBL3301372` | 机制 |
+
+| 母体 | 实测 | 缺失 | 构造 | 未覆盖 | 支持有界主张 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `CHEMBL1144` | 2 | 1 | 0 | 5 | 否 |
+| `CHEMBL1232461` | 1 | 2 | 0 | 5 | 否 |
+| `CHEMBL1963249` | 2 | 1 | 0 | 5 | 否 |
+
+机制是所有 3 条证据链中第一个非实测环节。因此，首个停止环节的分布为机制 3，能够支持主张的证据链为 0。虽然它们在后续环节的实测状态不同，但正式的停止位置相同。证据链只能延伸到测量所及之处。本仓库没有测量的化合物证据类别会被标为未覆盖，不会用其他化合物的数值填充。
+
+## 主张边界与独立练习
+
+只有所有环节均为实测时，一条证据链才可支持主张。缺失、构造或未覆盖的环节都会使主张停止。即使整条链均为实测，主张的范围也不能超过首个实测环节自身的范围。本实验不能证明化合物是开发候选、其机制正确，或缺失环节可以补齐。这里没有这些母体分子的实测安全性、合成或临床结局。重新运行审计不等于独立实验重复。
+
+检查 `CHEMBL1963249`。解释为什么其同一文献中的 CYP 配对是一个范围有限的实测选择性环节，以及为什么它仍不能支持提名主张。
+
+<details data-worked-answer>
+<summary>参考答案</summary>
+
+两项 CYP 测量描述了同一文献中对这两种酶的不同抑制程度，没有检验预期靶标选择性。证据链在到达这一配对之前的机制环节就已停止。安全性、合成和可重复性环节也未覆盖。主张不能跨越这些缺口。
+
+</details>
+
+## 来源与署名
+
+| 材料 | 来源与许可 | 快照读取日期 |
+| --- | --- | --- |
+| 活性 | [ChEMBL 37 版本](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/)依照 [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-10-21 |
+| 内在清除率 | ChEMBL 37 中的[AstraZeneca 数据集 CHEMBL3301361](https://www.ebi.ac.uk/chembl/explore/document/CHEMBL3301361)，依照 [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+| CYP 抑制 | [ChEMBL 37 版本](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/)依照 [CC BY-SA 3.0](https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_37/LICENSE) | 2026-09-12 |
+| 构造的安全性和路线案例 | [安全性证据](/labs/safety-evidence/)和[路线恢复](/labs/retro-disconnection/)，原创教学材料依照 CC BY 4.0 | 非化合物快照 |
+
+原创指南文字依照 CC BY 4.0，原创实验代码依照 Apache-2.0。最后审阅于 2026-10-23。

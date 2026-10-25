@@ -1,0 +1,37 @@
+---
+import {
+  evidenceForIds,
+  evidenceForSupport,
+} from "../lib/atlas-state.js";
+import type { Resource } from "../data/resource.js";
+
+interface Props {
+  emptyMessage: string;
+  evidence: Resource["evidence"];
+  ids?: string[];
+  support?: string;
+}
+
+const { emptyMessage, evidence, ids, support } = Astro.props;
+const linkedEvidence = ids
+  ? evidenceForIds(evidence, ids)
+  : support
+    ? evidenceForSupport(evidence, support)
+    : [];
+---
+
+<span class="claim-evidence">
+  {linkedEvidence.length > 0 ? (
+    <>
+      <span>Evidence: </span>
+      {linkedEvidence.map((entry, index) => (
+        <Fragment>
+          {index > 0 && ", "}
+          <a href={entry.url}>{entry.label}</a>
+        </Fragment>
+      ))}
+    </>
+  ) : (
+    <span class="claim-evidence--unknown">{emptyMessage}</span>
+  )}
+</span>

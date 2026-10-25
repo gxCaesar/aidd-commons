@@ -1,0 +1,51 @@
+id: tool-flow-matching
+name: flow_matching
+kind: software
+summary: "flow_matching is a PyTorch library for continuous and discrete flow-matching algorithms, with worked examples for image and text modalities."
+canonical_url: https://github.com/facebookresearch/flow_matching
+identifiers:
+  - scheme: paper
+    value: "Flow Matching Guide and Code; arXiv 2412.06264"
+    url: https://arxiv.org/abs/2412.06264
+stages: [model-development]
+modalities: [image, text]
+tasks: [model-training]
+relations: []
+status: { value: unverified }
+access_level: { value: research_only, evidence: [license] }
+openness:
+  inference_code: { value: available, evidence: [repository] }
+  training_code: { value: available, evidence: [repository] }
+  weights: { value: not_available, evidence: [repository] }
+  architecture: { value: unverified }
+  data_recipe: { value: unverified }
+  training_data: { value: unverified }
+  evaluation_code: { value: unverified }
+licenses:
+  - name: CC BY-NC 4.0
+    scope: "repository code only, non-commercial use; the licence grants adaptation and redistribution for NonCommercial purposes only, so the library cannot be used for commercial work, and no terms are stated for the example datasets"
+    evidence: [license]
+evidence:
+  - id: repository
+    url: https://github.com/facebookresearch/flow_matching
+    label: facebookresearch/flow_matching repository (reviewed 2026-10-21)
+    supports: [name, kind, summary, stages, modalities, tasks, caveats]
+  - id: readme
+    url: https://raw.githubusercontent.com/facebookresearch/flow_matching/main/README.md
+    label: flow_matching README
+    supports: [caveats, acknowledgements]
+  - id: paper
+    url: https://arxiv.org/abs/2412.06264
+    label: arXiv abstract for the Flow Matching Guide and Code paper (reviewed 2026-10-21)
+    supports: [identifiers]
+  - id: license
+    url: https://raw.githubusercontent.com/facebookresearch/flow_matching/main/LICENSE
+    label: flow_matching CC BY-NC 4.0 LICENSE
+    supports: []
+caveats:
+  - The README states that the code in this repository is CC BY-NC licensed, so the library is limited to non-commercial use.
+  - The README states that this version releases no pre-trained models; the example models must be trained from scratch.
+  - The example datasets are named without stated licence terms, so training-data availability is unverified.
+acknowledgements:
+  - The README asks users to cite "Flow Matching Guide and Code" and provides the BibTeX key lipman2024flowmatchingguidecode.
+last_verified: "2026-10-21"

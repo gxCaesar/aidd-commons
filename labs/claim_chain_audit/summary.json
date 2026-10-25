@@ -1,0 +1,72 @@
+{
+  "schema_version": "aidd-commons.claim-chain-audit-summary.v1",
+  "protocol_id": "aidd-commons.claim-chain-audit-v1",
+  "computed_on": "2026-10-24",
+  "software": {
+    "python": "3.11.15",
+    "pyyaml": "6.0.3",
+    "aidd_commons": "0.2.0rc1"
+  },
+  "counted_unit": "one link in one chain",
+  "chains": [
+    {
+      "id": "candidate-evidence",
+      "link_count": 8,
+      "link_state_counts": {
+        "absent": 0,
+        "mentioned": 0,
+        "explained": 0,
+        "worked": 2,
+        "executable": 0,
+        "assessed": 6,
+        "unresolved": 0
+      },
+      "weakest_link": {
+        "topic_id": "t06-causal-target-evidence",
+        "depth": "worked"
+      },
+      "below_strongest_count": 2,
+      "comparison_counts": {
+        "agree": 8,
+        "reading_shallower": 0,
+        "reading_deeper": 0
+      },
+      "disagreement_count": 0,
+      "supported_claim": true,
+      "claim_scope": "named-topic-material-only"
+    },
+    {
+      "id": "decision-handoff",
+      "link_count": 8,
+      "link_state_counts": {
+        "absent": 0,
+        "mentioned": 0,
+        "explained": 0,
+        "worked": 1,
+        "executable": 0,
+        "assessed": 7,
+        "unresolved": 0
+      },
+      "weakest_link": {
+        "topic_id": "t06-tractability-target-risk",
+        "depth": "worked"
+      },
+      "below_strongest_count": 1,
+      "comparison_counts": {
+        "agree": 8,
+        "reading_shallower": 0,
+        "reading_deeper": 0
+      },
+      "disagreement_count": 0,
+      "supported_claim": true,
+      "claim_scope": "named-topic-material-only"
+    }
+  ],
+  "total_disagreement_links": 0,
+  "boundary_statement": "A chain establishes that each named link's material exists and says what it says. It does not establish a claim about a compound, a target or a therapy. Its endpoints are only the topics it names.",
+  "enforced_rules": {
+    "link_resolution": "A link is resolved only when its self-record evidence list names at least one declared entry with access opened and a local repository file. An empty list or only non-opened entries leaves it unresolved. A missing opened file is refused.",
+    "unresolved_breaks_chain": "A chain with any unresolved link cannot be reported as a supported claim.",
+    "no_biological_conclusion": "A chain cannot establish a conclusion about a compound, target or therapy."
+  }
+}

@@ -1,0 +1,85 @@
+---
+title: Audit claims against evidence and unknowns
+description: Classify the foundations cells of 13 comparison providers and inspect the recorded claim gates with an offline command.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+This laboratory serves `t01-evidence-claim-unknown`. Read [Evidence, claims and unresolved fields](/learn/foundations/evidence-claims-and-unknowns/) and [source and entity literacy](/learn/foundations/source-and-entity-literacy/) first. You will distinguish an evidenced depth, an interval, an unsupported depth and a declared unknown. You will also compare the project's stated depth with an independent reading and inspect the conditions attached to its superlative claims. Familiarity with YAML helps, but no modelling experience is required.
+
+## Mode and commands
+
+Mode is a fresh independent computation over a frozen protocol and committed comparison records. Use the project Python 3.11.15 environment with PyYAML 6.0.3 and CPU. The commands need no network, download or accelerator. Run them from the repository root. `check` and `show` write nothing. The exporter overwrites only the compact summary after the checks pass.
+
+```bash
+.venv/bin/python labs/claims_evidence_audit/run_lab.py check
+.venv/bin/python labs/claims_evidence_audit/inspect_claims_evidence_audit.py show
+.venv/bin/python labs/claims_evidence_audit/inspect_claims_evidence_audit.py check
+.venv/bin/python labs/claims_evidence_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/claims_evidence_audit -q
+```
+
+## Records and state rules
+
+The protocol selects 4 foundations topics across 13 provider records. The loader reads their YAML entries, the taxonomy, the independent reading and the comparison export in place. It checks the export's whole-catalogue inventory of 1209 cells, comprising 591 explicit observations and 618 declared defaults. The selected track contains 52 cells. The inspector prints each cell's recorded depth, evidence identifiers and note, followed by the counts.
+
+| State | Rule | What a reader may do |
+| --- | --- | --- |
+| `direct-observation` | An explicit depth has resolvable evidence in its provider record. | Report the recorded depth and its reviewed source surface. |
+| `bounded-inference` | An explicit `unverified` depth retains evidence but has a lower-upper interval. | Keep the interval open and avoid a point ranking. |
+| `unsupported-claim` | An explicit depth lacks evidence, cites an undeclared entry or names a missing local file. | Repair the reference before using the depth. |
+| `unresolved-field` | The provider's evidence-free `unverified` default supplies the cell. | Record the missing review without treating it as absence. |
+
+An evidenced `absent` depth is a direct observation about the reviewed material. It does not prove absence beyond that review. The interval state is possible under the frozen rule, although none of these selected cells has it.
+
+## State counts by provider
+
+The table reproduces the saved computation dated 2026-10-24. Each row counts the same 4 topics. `D`, `B`, `U` and `R` follow the states in the table above, with `R` reserved for unresolved fields.
+
+| Provider | D | B | U | R |
+| --- | ---: | ---: | ---: | ---: |
+| `agil` | 0 | 0 | 0 | 4 |
+| `aidd-commons` | 4 | 0 | 0 | 0 |
+| `build-ai-drug-discovery-pipelines` | 4 | 0 | 0 | 0 |
+| `chembl-training` | 0 | 0 | 0 | 4 |
+| `deepchem-tutorials` | 0 | 0 | 0 | 4 |
+| `european-aidd-network` | 1 | 0 | 0 | 3 |
+| `ml4drug-book` | 0 | 0 | 0 | 4 |
+| `o3dc` | 1 | 0 | 0 | 3 |
+| `openmm-cookbook` | 0 | 0 | 0 | 4 |
+| `practical-cheminformatics` | 0 | 0 | 0 | 4 |
+| `rdkit-cookbook` | 0 | 0 | 0 | 4 |
+| `teachopencadd` | 4 | 0 | 0 | 0 |
+| `therapeutics-data-commons` | 0 | 0 | 0 | 4 |
+| Total | 14 | 0 | 0 | 38 |
+
+## Unsupported depths and independent disagreements
+
+The selected records contain 0 unsupported claims. That result means the declared references resolve under this local check. It does not independently verify what an external source says. The project row and the independent reading now agree on every examined topic. They did not when the laboratory did not exist: the record called the source-review topic `worked` and the reading called it `assessed`, and the twenty-seventh batch raised the record once the laboratory made the difference checkable.
+
+| Topic | Recorded project depth | Independent depth | Direction |
+| --- | --- | --- | --- |
+| `t01-source-review-scope` | `assessed` | `assessed` | Agree |
+
+The comparison's ordinal convention treats an independent `assessed` reading without runnable material as `worked`. The table applies that convention before comparing depths.
+
+## Recorded claim conditions
+
+The saved 2026-10-24 computation records both statuses as `not_established`. The laboratory recalculates the numerical bound conditions and reports the correction-window field from the local comparison export. These fields describe a dated snapshot. The commands read the current committed export rather than polling the public website, and the summary's `computed_on` date identifies that local calculation. A later export may carry a different window status without establishing either claim.
+
+| Claim | Measured bound condition | Recorded status | Correction-window condition |
+| --- | --- | --- | --- |
+| Most comprehensive | Explained lower bound 93 exceeds strongest external upper bound 92. The bound condition is measured and satisfied. | `not_established` | Public 30-day window required, recorded as `not_recorded` in this prepublication snapshot. |
+| Most detailed | 18 executable or assessed tracks exceed the required 12, with 17 on real data. Worked lower bound 93 exceeds strongest external upper bound 91. The bound condition is measured and satisfied. | `not_established` | Public 30-day window required, recorded as `not_recorded` in this prepublication snapshot. |
+
+## Limits of the material
+
+An `unresolved-field` cell does not say that the provider does not cover the topic. The project's own depth is a floor it chose to state, not a measurement of how well it teaches. These records are dated reviews of selected source surfaces. The laboratory neither reopens external pages nor measures reader learning. A passing local evidence check cannot turn the recorded superlatives into established claims.
+
+## Sources and terms
+
+The worked example uses the provider records, taxonomy, independent reading and comparison export from the saved computation dated 2026-10-24. Evidence identifiers and review notes remain attached to the original records and are printed by the inspector. Regenerate the laboratory summary after the comparison export changes. Original guide prose is CC BY 4.0 and laboratory code is Apache-2.0. Linked materials retain their own terms.

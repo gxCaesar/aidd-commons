@@ -1,0 +1,82 @@
+---
+title: Audit an evidence-package claim chain
+description: Resolve linked teaching claims across mechanism, target, activity, selectivity, exposure, safety, synthesis and reproducibility.
+---
+
+import ScrollableRegions from "../../../components/ScrollableRegions.astro";
+
+<ScrollableRegions />
+
+## Preparation and learning objectives
+
+This laboratory serves `t18-evidence-package-claim-chain`. Read the [candidate-nomination capstone workbook](/learn/candidate-nomination/capstone-workbook/) before running it. You will resolve each named link against its evidence entry, distinguish a written exercise from a runnable task, locate the weakest link and compare the project record with an independent reading. Familiarity with YAML is useful. No model training is required.
+
+## Mode and commands
+
+Mode is a fresh independent computation over a frozen protocol and the repository's own committed comparison records. Use Python 3.11.15 and PyYAML 6.0.3 on a CPU. The commands need no network, download or accelerator. Run them from the repository root. `download`, `show` and `check` write nothing. Export overwrites only this laboratory's compact summary after the checks pass.
+
+```bash
+.venv/bin/python labs/claim_chain_audit/run_lab.py download
+.venv/bin/python labs/claim_chain_audit/inspect_claim_chain_audit.py show
+.venv/bin/python labs/claim_chain_audit/inspect_claim_chain_audit.py check
+.venv/bin/python labs/claim_chain_audit/export_summary.py
+.venv/bin/python -m pytest labs/tests/claim_chain_audit -q
+```
+
+## Chains and links
+
+The protocol fixes 2 routes with 8 links each. Every link is a topic in the taxonomy. Its state is the self-record depth after the comparison's ordinal rule is applied. An `assessed` reading without a runnable basis counts as `worked`. Such a written exercise licenses no measurement. An `executable` or runnable `assessed` state licenses only the declared task over its inputs.
+
+| Chain | Role | Topic | Self state |
+| --- | --- | --- | --- |
+| `candidate-evidence` | Mechanism | `t06-mechanism-hypothesis-counterevidence` | `worked` |
+| `candidate-evidence` | Target | `t06-causal-target-evidence` | `worked` |
+| `candidate-evidence` | Activity | `t07-endpoint-definition` | `assessed` |
+| `candidate-evidence` | Selectivity | `t13-specificity-negative-selection` | `assessed` |
+| `candidate-evidence` | Exposure | `t08-exposure-pk-endpoint` | `executable` |
+| `candidate-evidence` | Safety | `t08-safety-toxicity-endpoint` | `executable` |
+| `candidate-evidence` | Synthesis | `t14-route-feasibility-material-safety` | `worked` |
+| `candidate-evidence` | Reproducibility | `t17-reproduction-reporting-receipt` | `executable` |
+| `decision-handoff` | Mechanism | `t06-perturbation-genetic-validation` | `assessed` |
+| `decision-handoff` | Target | `t06-tractability-target-risk` | `worked` |
+| `decision-handoff` | Activity | `t09-affinity-ranking` | `executable` |
+| `decision-handoff` | Selectivity | `t09-screening-selection-repurposing-transfer` | `executable` |
+| `decision-handoff` | Exposure | `t08-pkpd-translational-assumption` | `assessed` |
+| `decision-handoff` | Safety | `t08-metabolism-ddi-risk` | `executable` |
+| `decision-handoff` | Synthesis | `t14-retrosynthetic-disconnection` | `executable` |
+| `decision-handoff` | Reproducibility | `t04-provenance-versioning` | `assessed` |
+
+## Weakest links
+
+A chain is as strong as its weakest link. The inspector takes the minimum effective depth, identifies the first topic at that depth and counts links below the strongest state reached in the same chain. All 16 selected links currently resolve to opened evidence. An empty evidence list or evidence whose entries are all other than `opened` makes its link unresolved and prevents a supported-chain report.
+
+| Chain | Links | Weakest topic | Weakest state | Links below strongest | Unresolved |
+| --- | ---: | --- | --- | ---: | ---: |
+| `candidate-evidence` | 8 | `t06-mechanism-hypothesis-counterevidence` | `worked` | 6 | 0 |
+| `decision-handoff` | 8 | `t06-tractability-target-risk` | `worked` | 5 | 0 |
+
+## Independent reading
+
+The self record and independent reading agree on 9 links and differ on 7. The reading is deeper on all 7 differences and shallower on 0. These are differences in recorded teaching depth, not independent biological measurements.
+
+| Chain | Topic | Self state | Independent state |
+| --- | --- | --- | --- |
+| `candidate-evidence` | `t08-exposure-pk-endpoint` | `executable` | `assessed` |
+| `candidate-evidence` | `t08-safety-toxicity-endpoint` | `executable` | `assessed` |
+| `candidate-evidence` | `t17-reproduction-reporting-receipt` | `executable` | `assessed` |
+| `decision-handoff` | `t09-affinity-ranking` | `executable` | `assessed` |
+| `decision-handoff` | `t09-screening-selection-repurposing-transfer` | `executable` | `assessed` |
+| `decision-handoff` | `t08-metabolism-ddi-risk` | `executable` | `assessed` |
+| `decision-handoff` | `t14-retrosynthetic-disconnection` | `executable` | `assessed` |
+
+## Independent check
+
+Consider a copy of the first chain in which the mechanism topic's evidence entries are no longer `opened`. Predict its weakest link and supported status before running `check` on a constructed test record. The link becomes `unresolved`, the mechanism topic is the weakest link and the chain cannot be reported as supported. Averaging the remaining depths would miss that refusal.
+
+## Limits of the material
+
+A chain establishes that each named link's material exists and says what it says. It does not establish a claim about a compound, a target or a therapy. Its endpoints are only the topics it names. The selected topics do not describe one shared candidate, and the project's own depth label does not verify the scientific correctness of the material behind it. A passing check enforces these boundaries and does not measure reader learning.
+
+## Sources and terms
+
+The committed self record, independent reading and taxonomy were read on 2026-10-23. The self record gives `last_verified` as 2026-10-23. The independent record began on 2026-09-11 and documents later readings. The commands read these 3 local YAML files directly. Original guide prose is CC BY 4.0 and laboratory code is Apache-2.0. Linked material retains its own terms.
